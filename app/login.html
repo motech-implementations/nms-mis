@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html>
+	<head>
+		<title>Login Page</title>
+
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+
+		<script type="text/javascript" src="scripts/global/urls.js"></script>
+
+		<!-- main -->
+		<script type="text/javascript" src="/scripts/controllers/login.js"></script>
+
+		<!-- Controllers -->
+		
+		<!-- Directives -->
+		
+
+		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+		<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+
+		<link rel="stylesheet" href="scripts/style.css">
+		<link rel="stylesheet" href="styles/style.css">
+	</head>
+
+	<body>
+		<h1>Welcome!</h1>
+
+		<div id="div-login" class="form-horizontal col-sm-6">
+			<h1>Login</h1>
+			<p class="error"></p>
+			<form action="http://localhost:8080/NMSReportingSuite/nms/login" method="post">
+				<div class="form-group">
+					<input type="text" class="form-control" id="username" name="username" placeholder="Username" >
+				</div>
+				<div class="form-group">
+					<input type="password" class="form-control" id="password" name="password" placeholder="Password">
+				</div>
+				<div class="form-group">
+					<input type="checkbox" class="form-control" id="rememberMe" name="rememberMe">I have a bike<br>
+				</div>
+				<button id="btn-login" class="btn btn-default">Login</button>
+			</form>
+		</div>
+<!-- 
+		<form id="loginForm" action="" method="post">
+			<label for="username" id="username-label">Username:</label><br>
+			<input name="username" type="text"><br><br>
+			<label for="password" id="password-label">Password:</label><br>
+			<input name="password" type="password"><br>
+			<input type="submit" id="loginButton" value="Login">
+		</form> -->
+	</body>
+</html>
