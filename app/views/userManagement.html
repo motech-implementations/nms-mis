@@ -1,0 +1,13 @@
+<div  class="container-fluid" ng-controller="UserManagementController">
+
+		<ul class="breadcrumb" ng-if="currentPageTitle">
+			<li><a ng-click="userTable()">User Management</a></li>
+			<li class="active">{{currentPageTitle}}</li>
+		</ul>
+
+		<div user-table ng-if="display('user-table')"></div>
+		<div bulk-user ng-if="display('bulk-user')"></div>
+		<div create-user ng-if="display('create-user')"></div>
+		<div edit-user ng-if="display('edit-user')"></div>
+
+</div>

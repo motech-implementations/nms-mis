@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>User Management</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	
+	
+	<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+	<script type="text/javascript" src="bower_components/angular-ui-validate/dist/validate.min.js"></script>
+	<script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+	<script type="text/javascript" src="bower_components/angular-messages/angular-messages.min.js"></script>
+	<script type="text/javascript" src="bower_components/angular-route/angular-route.min.js"></script>
+
+	<script type="text/javascript" src="scripts/global/urls.js"></script>
+
+	<!-- main -->
+	<script type="text/javascript" src="scripts/app.js"></script>
+	<script type="text/javascript" src="scripts/json/user.json"></script>
+
+	<!-- Factory -->
+	<script type="text/javascript" src="scripts/factories/userTable.js"></script>
+	<script type="text/javascript" src="scripts/factories/navBar.js"></script>
+	<script type="text/javascript" src="scripts/factories/userForm.js"></script>
+
+	<!-- Controllers -->
+	<script type="text/javascript" src="scripts/controllers/main.js"></script>
+	<script type="text/javascript" src="scripts/controllers/navBar.js"></script>
+	<script type="text/javascript" src="scripts/controllers/userManagement.js"></script>
+	<script type="text/javascript" src="scripts/controllers/userTable.js"></script>
+	<script type="text/javascript" src="scripts/controllers/editUser.js"></script>
+	<script type="text/javascript" src="scripts/controllers/bulkUser.js"></script>
+	<script type="text/javascript" src="scripts/controllers/createUser.js"></script>
+	<script type="text/javascript" src="scripts/controllers/reports.js"></script>
+	
+
+	<!-- Directives -->
+	<script type="text/javascript" src="scripts/directives/navBar.js"></script>
+	<script type="text/javascript" src="scripts/directives/userManagement.js"></script>
+	<script type="text/javascript" src="scripts/directives/userTable.js"></script>
+	<script type="text/javascript" src="scripts/directives/editUser.js"></script>
+	<script type="text/javascript" src="scripts/directives/bulkUser.js"></script>
+	<script type="text/javascript" src="scripts/directives/createUser.js"></script>
+	<script type="text/javascript" src="scripts/directives/pagination.js"></script>
+	<script type="text/javascript" src="scripts/directives/reports.js"></script>
+	
+
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+
+	<link rel="stylesheet" href="scripts/style.css">
+	<link rel="stylesheet" href="styles/style.css">
+
+</head>
+<body ng-app="nmsReports" ng-controller="MainController">
+	<div nav-bar></div>
+	<div class="body-body">
+		<div user-management ng-if="currentPage=='user-management'"></div>
+		<div reports ng-if="currentPage=='reports'"></div>
+	</div>
+
+</body>
+</html> 
