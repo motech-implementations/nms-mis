@@ -28,13 +28,15 @@ public class LoginController {
     protected String returnLoginView(Model model, @ModelAttribute LoginUser loginUser) {
 //        System.out.println("\n\n" + SecurityUtils.getSubject().getSession()+ "!!!!!!!!!!!\n\n");
         ensureUserIsLoggedOut();
-        return "redirect:/static/html/login.html";
+        return "redirect:http://127.0.0.1:4040/login";
     }
 
     @RequestMapping(value={"/nms/login"}, method= RequestMethod.POST)
     public String login(Model model, @ModelAttribute LoginUser loginUser, BindingResult errors) {
         validator.validate(loginUser, errors);
-
+        System.out.println("username = " + loginUser.getUsername());
+        System.out.println("password = " + loginUser.getPassword());
+        System.out.println("rememberme " + loginUser.isRememberMe());
         if( errors.hasErrors() ) {
             return returnLoginView(model, loginUser);
         }
@@ -50,8 +52,14 @@ public class LoginController {
         if( errors.hasErrors() ) {
             return returnLoginView(model, loginUser);
         } else {
-            return "redirect:/nms/index";
+            return "redirect:http://127.0.0.1:4040/index";
         }
+    }
+
+    @RequestMapping(value = {"/nms/index"}, method = RequestMethod.GET)
+    protected String returnHomeView(Model model) {
+//        System.out.println("\n\n" + SecurityUtils.getSubject().getSession()+ "!!!!!!!!!!!\n\n");
+        return "redirect:http://127.0.0.1:4040/index";
     }
 
     private void ensureUserIsLoggedOut() {

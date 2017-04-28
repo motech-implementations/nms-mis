@@ -4,14 +4,14 @@
 
 		<form name="createUserForm" class="form-horizontal" novalidate>
 
-			<div class="form-group" ng-class="{'has-error':createUserForm.username.$invalid && !createUserForm.username.$pristine}">
+			<div class="form-group" ng-class="{'has-error':createUserForm.fullName.$invalid && !createUserForm.fullName.$pristine}">
 				<label class="control-label col-xs-2">Name</label>
 				<div class="col-xs-10">
-					<input name="username" id="username" type="text" class="form-control" placeholder="Name" ng-model="newUser.username" required 
+					<input name="fullName" id="fullName" type="text" class="form-control" placeholder="Name" ng-model="newUser.fullName" required 
 					ng-pattern="/^[A-Za-z ]*$/" ng-minlength="3"
-					tooltip-placement="top" uib-tooltip="Errors: {{createUserForm.username.$error|json}}" >
+					tooltip-placement="top" uib-tooltip="Errors: {{createUserForm.fullName.$error|json}}" >
 
-					<div ng-messages="createUserForm.username.$error" role="alert" ng-show="!createUserForm.username.$pristine">
+					<div ng-messages="createUserForm.fullName.$error" role="alert" ng-show="!createUserForm.fullName.$pristine">
 						<div ng-message="required">This field cannot be empty</div>
 						<div ng-message="pattern">Name should only contain alphabetical characters</div>
 						<div ng-message="minlength">Name is too short</div>
@@ -19,10 +19,25 @@
 				</div>
 			</div>
 
+			<div class="form-group" ng-class="{'has-error':createUserForm.username.$invalid && !createUserForm.username.$pristine}">
+				<label class="control-label col-xs-2">Name</label>
+				<div class="col-xs-10">
+					<input name="username" id="username" type="text" class="form-control" placeholder="Name" ng-model="newUser.username" required 
+					ng-pattern="/^[A-Za-z0-9]*$/" ng-minlength="5"
+					tooltip-placement="top" uib-tooltip="Errors: {{createUserForm.username.$error|json}}" >
+
+					<div ng-messages="createUserForm.username.$error" role="alert" ng-show="!createUserForm.username.$pristine">
+						<div ng-message="required">This field cannot be empty</div>
+						<div ng-message="pattern">Username should not contain specoal characters or spaces</div>
+						<div ng-message="minlength">Username is too short</div>
+					</div>
+				</div>
+			</div>
+
 			<div class="form-group" ng-class="{'has-error':createUserForm.accessType.$invalid && !createUserForm.accessType.$pristine}">
 				<label class="control-label col-xs-2">Access Type</label>
 				<div class="col-xs-10">
-					<select name="accessType" id="accessType" class="form-control"  ng-model="newUser.accessType" ng-options="item for item in accessTypeList" required
+					<select name="accessType" id="accessType" class="form-control"  ng-model="newUser.accessType" ng-options="item as item.roleDescription for item in accessTypeList track by item.roleId" required
 					tooltip-placement="top" uib-tooltip="Errors: {{createUserForm.accessType.$error|json}}"
 					style="width: 200px;">
 					</select>
@@ -36,7 +51,7 @@
 			<div class="form-group" ng-class="{'has-error':createUserForm.accessLevel.$invalid && !createUserForm.accessLevel.$pristine}">
 				<label class="control-label col-xs-2">Access Level</label>
 				<div class="col-xs-10">
-					<select name="accessLevel" id="accessLevel" class="form-control"  ng-model="newUser.accessLevel" ng-options="item for item in accessLevelList" required
+					<select name="accessLevel" id="accessLevel" class="form-control"  ng-model="accessLevel" ng-options="item for item in accessLevelList" required
 					tooltip-placement="top" uib-tooltip="Errors: {{createUserForm.accessLevel.$error|json}}">
 					</select>
 
@@ -51,7 +66,7 @@
 			<div class="form-group" ng-class="{'has-error':createUserForm.state.$invalid && !createUserForm.state.$pristine}">
 				<label class="control-label col-xs-2">State</label>
 				<div class="col-xs-10">
-					<select name="state" id="state" class="form-control" ng-model="newUser.place.state" ng-options="item for item in states" ng-disabled="getAccessLevel(1)" ng-required="!getAccessLevel(1)">
+					<select name="state" id="state" class="form-control" ng-model="place.state" ng-options="item as item.location for item in states track by item.locationId" ng-disabled="getAccessLevel(1)" ng-required="!getAccessLevel(1)">
 					</select>
 				</div>
 			</div>
@@ -59,7 +74,7 @@
 			<div class="form-group" ng-class="{'has-error':createUserForm.district.$invalid && !createUserForm.district.$pristine}">
 				<label class="control-label col-xs-2">District</label>
 				<div class="col-xs-10">
-					<select name="district" id="district" class="form-control" ng-model="newUser.place.district" ng-options="item for item in districts" ng-disabled="getAccessLevel(2)" ng-required="!getAccessLevel(2)">
+					<select name="district" id="district" class="form-control" ng-model="place.district" ng-options="item as item.location for item in districts track by item.locationId" ng-disabled="getAccessLevel(2)" ng-required="!getAccessLevel(2)">
 					</select>
 				</div>
 			</div>
@@ -67,35 +82,35 @@
 			<div class="form-group" ng-class="{'has-error':createUserForm.block.$invalid && !createUserForm.block.$pristine}">
 				<label class="control-label col-xs-2">Block</label>
 				<div class="col-xs-10">
-					<select name="block" id="block" class="form-control" ng-model="newUser.place.block"
-						ng-options="item for item in blocks" ng-disabled="getAccessLevel(3)" ng-required="!getAccessLevel(3)">
+					<select name="block" id="block" class="form-control" ng-model="place.block"
+						ng-options="item as item.location for item in blocks track by item.locationId" ng-disabled="getAccessLevel(3)" ng-required="!getAccessLevel(3)">
 					</select>
 				</div>
 			</div>
 
 			<hr>
 
-			<div class="form-group" ng-class="{'has-error':createUserForm.email.$invalid && !createUserForm.email.$pristine}">
+			<div class="form-group" ng-class="{'has-error':createUserForm.emailId.$invalid && !createUserForm.emailId.$pristine}">
 				<label class="control-label col-xs-2">Email</label>
 				<div class="col-xs-10">
-					<input name="email" id="email" type="email" class="form-control" class="form-control" ng-model="newUser.email" placeholder="Email" required
-					tooltip-placement="top" uib-tooltip="Errors: {{createUserForm.email.$error|json}}">
+					<input name="emailId" id="emailId" type="email" class="form-control" class="form-control" ng-model="newUser.emailId" placeholder="Email" required
+					tooltip-placement="top" uib-tooltip="Errors: {{createUserForm.emailId.$error|json}}">
 
-					<div ng-messages="createUserForm.email.$error" role="alert" ng-show="!createUserForm.email.$pristine">
+					<div ng-messages="createUserForm.emailId.$error" role="alert" ng-show="!createUserForm.emailId.$pristine">
 						<div ng-message="required">This field cannot be empty</div>
 						<div ng-message="email">Enter a valid email</div>
 					</div>
 				</div>
 			</div>
 
-			<div class="form-group" ng-class="{'has-error':createUserForm.contactNo.$invalid && !createUserForm.contactNo.$pristine}">
+			<div class="form-group" ng-class="{'has-error':createUserForm.phoneNumber.$invalid && !createUserForm.phoneNumber.$pristine}">
 				<label class="control-label col-xs-2">Contact no.</label>
 				<div class="col-xs-10">
-					<input name="contactNo" id="contactNo" type="text" class="form-control" ng-model="newUser.contactNo" placeholder="Contact no." required
+					<input name="phoneNumber" id="phoneNumber" type="text" class="form-control" ng-model="newUser.phoneNumber" placeholder="Contact no." required
 					ng-pattern="/^[0-9]*$/" ng-minlength="10" ng-maxlength="10"
-					tooltip-placement="top" uib-tooltip="Errors: {{createUserForm.contactNo.$error|json}}">
+					tooltip-placement="top" uib-tooltip="Errors: {{createUserForm.phoneNumber.$error|json}}">
 
-					<div ng-messages="createUserForm.contactNo.$error" role="alert" ng-show="!createUserForm.contactNo.$pristine">
+					<div ng-messages="createUserForm.phoneNumber.$error" role="alert" ng-show="!createUserForm.phoneNumber.$pristine">
 						<div ng-message="required">This field cannot be empty</div>
 						<div ng-message="pattern">Input contains non-numeric characters</div>
 						<div ng-message="minlength">Number is too short</div>
@@ -104,7 +119,7 @@
 				</div>
 
 			</div>
-
+<!-- 
 			<div class="form-group" ng-class="{'has-error':createUserForm.newPassword.$invalid && !createUserForm.newPassword.$pristine}">
 				<label class="control-label col-xs-2">New Password</label>
 				<div class="col-xs-10">
@@ -121,7 +136,7 @@
 					tooltip-placement="top" uib-tooltip="Errors: {{createUserForm.confirmPassword.$error|json}}">
 				</div>
 			</div>
-
+ -->
 			<div class="form-group">
 				<div class="col-xs-offset-2 col-xs-10">
 					<button class="btn btn-primary" ng-click="clearForm()">Cancel</button>

@@ -31,4 +31,9 @@ public class LocationController {
     public @ResponseBody List<Location> getLocationsByLocationId(@PathVariable("locationId") Integer locationId) {
         return locationService.getAllSubLocations(locationId);
     }
+
+    @RequestMapping(value = {"/subLocations/{locationId}"}, method = RequestMethod.GET)
+    public @ResponseBody List<Location> getChildLocations(@PathVariable("locationId") Integer locationId) {
+        return locationService.getAllSubLocations(locationId);
+    }
 }

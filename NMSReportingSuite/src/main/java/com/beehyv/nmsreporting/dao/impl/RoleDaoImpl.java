@@ -20,10 +20,10 @@ public class RoleDaoImpl extends AbstractDao<Integer, Role> implements RoleDao {
     }
 
     @Override
-    public List<Role> findByRoleDescription(String role) {
+    public Role findByRoleDescription(String role) {
         Criteria criteria = createEntityCriteria();
-        criteria.add(Restrictions.eq("roleDescription", role).ignoreCase());
-        return (List<Role>) criteria.list();
+        criteria.add(Restrictions.eq("role_desc", role));
+        return (Role) criteria.list().get(0);
     }
 
     public List<Role> getAllRoles() {

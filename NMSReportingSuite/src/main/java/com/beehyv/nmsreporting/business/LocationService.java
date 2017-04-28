@@ -14,6 +14,8 @@ public interface LocationService {
 
     public List<Location> getAllSubLocations(Integer locationId);
 
+    public List<Location> getChildLocations(int locationId);
+
     public void createNewLocation(Location location);
 
     public void updateExistingLocation(Location location);

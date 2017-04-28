@@ -5,6 +5,7 @@
 			var roles = [];
 			var users = [];
 			var locations = [];
+			var currentUser = {};
 
 			return {
 				downloadRoles: function() {
@@ -49,7 +50,18 @@
 						}
 					}
 					return toRet;
+				},
+
+				downloadCreator: function(){
+					return $http.get(backend_root + 'nms/user/currentUser');
+				},
+				setCreator: function(data){
+					currentUser = data;
+				},
+				getCreator: function(){
+					return currentUser;
 				}
+
 			};
 		}]);
 })();

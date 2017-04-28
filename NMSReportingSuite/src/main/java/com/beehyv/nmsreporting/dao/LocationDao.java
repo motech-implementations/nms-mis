@@ -16,6 +16,8 @@ public interface LocationDao {
 
     public List<Location> getAllSubLocations(Location location);
 
+    public List<Location> getChildLocations(int locationId);
+
     public void saveLocation(Location location);
 
     public void deleteLocation(Location location);

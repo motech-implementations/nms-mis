@@ -33,6 +33,10 @@ public class LocationServiceImpl implements LocationService {
         return locationDao.getAllSubLocations(location);
     }
 
+    public List<Location> getChildLocations(int locationId){
+        return locationDao.getChildLocations(locationId);
+    }
+
     public void createNewLocation(Location location) {
         locationDao.saveLocation(location);
     }

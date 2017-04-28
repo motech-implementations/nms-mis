@@ -4,6 +4,7 @@ import com.beehyv.nmsreporting.dao.AbstractDao;
 import com.beehyv.nmsreporting.dao.LocationDao;
 import com.beehyv.nmsreporting.model.Location;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
@@ -53,6 +54,15 @@ public class LocationDaoImpl extends AbstractDao<Integer, Location> implements L
             getLocations(l,subLocations);
         }
         return subLocations;
+    }
+
+    public List<Location> getChildLocations(int locationId){
+//        Criteria criteria = createEntityCriteria();
+//        criteria.add(Restrictions.eq("referenceId", locationId));
+//        return criteria.list();
+        Query query = getSession().createQuery("from Location where referenceId= :id");
+        query.setLong("id", locationId);
+        return query.list();
     }
 
     public void saveLocation(Location location) {

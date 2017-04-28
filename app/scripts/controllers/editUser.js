@@ -113,20 +113,20 @@
 					console.log($scope.user);
 					$http({
 						method  : 'POST',
-						url     : backend_root + 'nms/user/create-user',
+						url     : backend_root + 'nms/user/update-user',
 						data    : $scope.user, //forms user object
-						headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
+						headers : {'Content-Type': 'application/json'} 
 					})
-					.then(function(data) {
-						if (data.errors) {
-							// Showing errors.
-							$scope.errorName = data.errors.name;
-							$scope.errorUserName = data.errors.username;
-							$scope.errorEmail = data.errors.email;
-						} else {
-							$scope.message = data.message;
-						}
-					});
+					// .then(function(data) {
+					// 	if (data.errors) {
+					// 		// Showing errors.
+					// 		$scope.errorName = data.errors.name;
+					// 		$scope.errorUserName = data.errors.username;
+					// 		$scope.errorEmail = data.errors.email;
+					// 	} else {
+					// 		$scope.message = data.message;
+					// 	}
+					// });
 				}
 				else{
 					angular.forEach($scope.editUserForm.$error, function (field) {

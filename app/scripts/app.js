@@ -15,7 +15,6 @@ var nmsReportsApp = angular
 		$routeProvider
 		// .when('/', {
 		// 	templateUrl: 'login.html',
-		// 	controller: 'ReportController'
 		// })
 		.when('/login', {
 			templateUrl: 'login.html',
@@ -23,8 +22,8 @@ var nmsReportsApp = angular
 		.when('/index',{
 			templateUrl: 'main.html',
 		})
-		.otherwise({
-			templateUrl: 'login.html',
-		});
+/*		.otherwise({
+			redirectTo: 'login.html',
+		});*/
 	}])
 		// $logProvider.debugEnabled(false);

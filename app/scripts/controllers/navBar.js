@@ -1,7 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("NavBarController", ['$scope', 'NavBarFactory', function($scope, NavBarFactory){
+		.controller("NavBarController", ['$scope', 'NavBarFactory', 'AuthFactory', function($scope, NavBarFactory, AuthFactory){
 			
 
 			$scope.loadMenu =function(){
@@ -27,6 +27,9 @@
 			// 	$scope.status.isopen = !$scope.status.isopen;
 			// };
 
+			$scope.logout = function(){
+				AuthFactory.logout();
+			}
 
 		}]
 	)}
