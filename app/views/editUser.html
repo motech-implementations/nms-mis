@@ -1,0 +1,134 @@
+<div ng-controller="EditUserController">
+	<div class="well">
+		<h1>Edit User</h1>
+
+		<form name="editUserForm" class="form-horizontal" novalidate>
+
+			<div class="form-group" ng-class="{'has-error':editUserForm.fullName.$invalid && !editUserForm.fullName.$pristine}">
+				<label class="control-label col-xs-2">Name</label>
+				<div class="col-xs-10">
+					<input name="fullName" id="fullName" type="text" class="form-control" placeholder="Name" ng-model="user.fullName" required 
+					ng-pattern="/^[A-Za-z ]*$/" ng-minlength="3"
+					tooltip-placement="top" uib-tooltip="Errors: {{editUserForm.fullName.$error|json}}" >
+
+					<div ng-messages="editUserForm.fullName.$error" role="alert" ng-show="!editUserForm.fullName.$pristine">
+						<div ng-message="required">This field cannot be empty</div>
+						<div ng-message="pattern">Name should only contain alphabetical characters</div>
+						<div ng-message="minlength">Name is too short</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group" ng-class="{'has-error':editUserForm.accessType.$invalid && !editUserForm.accessType.$pristine}">
+				<label class="control-label col-xs-2">Access Type</label>
+				<div class="col-xs-10">
+					<select name="accessType" id="accessType" class="form-control"  ng-model="user.roleId" ng-options="item as item.roleDescription for item in accessTypeList track by item.roleId" required
+					tooltip-placement="top" uib-tooltip="Errors: {{editUserForm.accessType.$error|json}}"
+					style="width: 200px;">
+					</select>
+
+					<div ng-messages="editUserForm.accessType.$error" role="alert" ng-show="!editUserForm.accessType.$pristine">
+						<div ng-message="required">Select an option</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group" ng-class="{'has-error':editUserForm.accessLevel.$invalid && !editUserForm.accessLevel.$pristine}">
+				<label class="control-label col-xs-2">Access Level</label>
+				<div class="col-xs-10">
+					<select name="accessLevel" id="accessLevel" class="form-control"  ng-model="accessLevel" ng-options="item for item in accessLevelList" required
+					tooltip-placement="top" uib-tooltip="Errors: {{editUserForm.accessLevel.$error|json}}">
+					</select>
+
+					<div ng-messages="editUserForm.accessLevel.$error" role="alert" ng-show="!editUserForm.accessLevel.$pristine">
+						<div ng-message="required">Select an option</div>
+					</div>
+				</div>
+			</div>
+
+			<hr>
+
+			<div class="form-group" ng-class="{'has-error':editUserForm.state.$invalid && !editUserForm.state.$pristine}">
+				<label class="control-label col-xs-2">State</label>
+				<div class="col-xs-10">
+					<select name="state" id="state" class="form-control" ng-model="place.state" ng-options="item as item.location for item in states track by item.locationId" ng-disabled="getAccessLevel(1)" ng-required="!getAccessLevel(1)">
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group" ng-class="{'has-error':editUserForm.district.$invalid && !editUserForm.district.$pristine}">
+				<label class="control-label col-xs-2">District</label>
+				<div class="col-xs-10">
+					<select name="district" id="district" class="form-control" ng-model="place.district" ng-options="item as item.location for item in districts track by item.locationId" ng-disabled="getAccessLevel(2)" ng-required="!getAccessLevel(2)">
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group" ng-class="{'has-error':editUserForm.block.$invalid && !editUserForm.block.$pristine}">
+				<label class="control-label col-xs-2">Block</label>
+				<div class="col-xs-10">
+					<select name="block" id="block" class="form-control" ng-model="place.block"
+						ng-options="item as item.location for item in blocks track by item.locationId" ng-disabled="getAccessLevel(3)" ng-required="!getAccessLevel(3)">
+					</select>
+				</div>
+			</div>
+
+			<hr>
+
+			<div class="form-group" ng-class="{'has-error':editUserForm.emailId.$invalid && !editUserForm.emailId.$pristine}">
+				<label class="control-label col-xs-2">Email</label>
+				<div class="col-xs-10">
+					<input name="emailId" id="emailId" type="email" class="form-control" class="form-control" ng-model="user.emailId" placeholder="Email" required
+					tooltip-placement="top" uib-tooltip="Errors: {{editUserForm.emailId.$error|json}}">
+
+					<div ng-messages="editUserForm.emailId.$error" role="alert" ng-show="!editUserForm.emailId.$pristine">
+						<div ng-message="required">This field cannot be empty</div>
+						<div ng-message="email">Enter a valid email</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group" ng-class="{'has-error':editUserForm.phoneNumber.$invalid && !editUserForm.phoneNumber.$pristine}">
+				<label class="control-label col-xs-2">Contact no.</label>
+				<div class="col-xs-10">
+					<input name="phoneNumber" id="phoneNumber" type="text" class="form-control" ng-model="user.phoneNumber" placeholder="Contact no." required
+					ng-pattern="/^[0-9]*$/" ng-minlength="10" ng-maxlength="10"
+					tooltip-placement="top" uib-tooltip="Errors: {{editUserForm.phoneNumber.$error|json}}">
+
+					<div ng-messages="editUserForm.phoneNumber.$error" role="alert" ng-show="!editUserForm.phoneNumber.$pristine">
+						<div ng-message="required">This field cannot be empty</div>
+						<div ng-message="pattern">Input contains non-numeric characters</div>
+						<div ng-message="minlength">Number is too short</div>
+						<div ng-message="maxlength">Number is too long</div>
+					</div>
+				</div>
+
+			</div>
+<!-- 
+			<div class="form-group" ng-class="{'has-error':editUserForm.newPassword.$invalid && !editUserForm.newPassword.$pristine}">
+				<label class="control-label col-xs-2">New Password</label>
+				<div class="col-xs-10">
+					<input name="newPassword" id="newPassword" type="password" class="form-control" ng-model="user.newPassword" placeholder="New Password" required
+					tooltip-placement="top" uib-tooltip="Errors: {{editUserForm.newPassword.$error|json}}">
+				</div>
+			</div>
+
+			<div class="form-group" ng-class="{'has-error':editUserForm.confirmPassword.$invalid && !editUserForm.confirmPassword.$pristine && (editUserForm.newPassword != editUserForm.confirmPassword)}">
+				<label class="control-label col-xs-2">Confirm Password</label>
+				<div class="col-xs-10">
+					<input name="confirmPassword" id="confirmPassword" type="password" class="form-control" ng-model="confirmPassword" placeholder="Confirm Password" required 
+					ui-validate="'$value==user.newPassword'" ui-validate-watch=" 'newPassword'"
+					tooltip-placement="top" uib-tooltip="Errors: {{editUserForm.confirmPassword.$error|json}}">
+				</div>
+			</div>
+ -->
+			<div class="form-group">
+				<div class="col-xs-offset-2 col-xs-10">
+					<button class="btn btn-primary" ng-click="clearForm()">Cancel</button>
+					<button type="submit" class="btn btn-primary" ng-click="editUserSubmit()" tooltip-placement="top" uib-tooltip="User: {{user|json}}">Update User</button>
+				</div>
+			</div>
+
+		</form>
+	</div>
+</div>

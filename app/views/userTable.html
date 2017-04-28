@@ -1,0 +1,47 @@
+<div ng-controller="UserTableController">
+
+	<div class="well userMngHeader">
+		<h1>User Management</h1>
+		<div>
+			<input  class="form-control" ng-model="filterText" type="text" name="tableSearch" placeholder="Search">
+			
+			<button class="btn btn-primary" name="bulkUpload" ng-click="bulkUpload()">Upload Bulk Users</button>
+			<button class="btn btn-primary" name="newUser" ng-click="newUser()">Create new User</button>
+		</div>
+	</div>
+
+	<div class="well">
+		<!-- <ul>
+			<li ng-repeat="item in data">{{item.name}}</li>
+		</ul> -->
+		<table class="table table-bordered table-striped">
+			<tr>
+				<th ng-repeat="header in headers" ng-if="header != '$$hashKey'">{{header}}</th>
+				<th>Edit</th>
+				<th>Delete</th>
+			</tr>
+			<!-- <tr ng-repeat="item in data"> -->
+			<tr ng-repeat="item in filterData = (getAllUsers() | filter : search) | limitTo : numPerPage : numPerPage*(currentPageNo-1)">
+				<td class ="{{header}}" ng-repeat="header in headers" ng-if="header != '$$hashKey'">{{item[header]}}</td>
+				<!-- <td>{{item.id}}</td>
+				<td>{{item.name}}</td>
+				<td>{{item.username}}</td>
+				<td>{{item.phone}}</td>
+				<td>{{item.email}}</td>
+				<td>{{item.role}}</td> -->
+				<td ng-click="editUser(item)">Edit</td>
+				<td ng-click="deleteUser(item)">Delete</td>
+			</tr>
+		</table>
+
+		<pagination 
+			total-items=filterData.length 
+			items-per-page="numPerPage"
+			current-page="currentPageNo"
+			class="pagination-small">
+		</pagination>
+	</div>
+
+	
+
+</div>
