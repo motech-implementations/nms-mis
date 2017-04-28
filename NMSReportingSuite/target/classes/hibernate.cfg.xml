@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <!-- DB schema will be updated if needed -->
+        <property name="hbm2ddl.auto">update</property>
+
+        <mapping class="com.beehyv.nmsreporting.model.User"/>
+        <mapping class="com.beehyv.nmsreporting.model.ModificationTracker"/>
+        <mapping class="com.beehyv.nmsreporting.model.Location"/>
+        <mapping class="com.beehyv.nmsreporting.model.Permissions"/>
+        <mapping class="com.beehyv.nmsreporting.model.Role"/>
+
+    </session-factory>
+</hibernate-configuration>
