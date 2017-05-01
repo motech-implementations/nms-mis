@@ -50,12 +50,10 @@ public class UserController {
 
     //To be changed
     @RequestMapping(value={"/tableList/{locationId}"})
-    public @ResponseBody List<UserDto> getTableList(@PathVariable("locationId") Integer locationId) {
+    public @ResponseBody List<User> getTableList(@PathVariable("locationId") Integer locationId) {
         List<UserDto> tabDto = new ArrayList<>();
         List<Location> tabLocation;
-        List<User> tabUsers;
-        tabUsers = userService.findAllActiveUsersByLocation(locationId);
-
+        List<User> tabUsers = userService.findAllActiveUsersByLocation(locationId);
         String[] levels = {"National", "State", "District", "Block"};
         for(User user: tabUsers){
             UserDto user1 = new UserDto();
@@ -84,11 +82,11 @@ public class UserController {
             }
             user1.setAccessType(user.getRoleId().getRoleDescription());
             user1.setCreatedBy(true);
-            user1.setUsername(user.getUsername());
+//            user1.setUsername(user.getUsername());
             tabDto.add(user1);
 
         }
-        return tabDto;
+        return tabUsers;
     }
 
 //    @RequestMapping(value={"/accessLevel/{userId}"})
@@ -111,17 +109,16 @@ public class UserController {
     }
 
     @RequestMapping(value = {"/update-user"}, method = RequestMethod.POST)
-    public void updateExistingUser(@RequestBody /*String modificationDetails*/ User user) {
-    /*    ObjectMapper mapper = new ObjectMapper();
+    public void updateExistingUser(@RequestBody String modificationDetails) {
+        ObjectMapper mapper = new ObjectMapper();
         JsonNode node = null;
-        System.out.println("update this : " + modificationDetails);
         try {
             node = mapper.readTree(modificationDetails);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        User user = mapper.convertValue(node.get("user"), User.class);*/
+        User user = mapper.convertValue(node.get("user"), User.class);
         userService.updateExistingUser(user);
 
 //        String trackModification = mapper.convertValue(node.get("modification"), String.class);

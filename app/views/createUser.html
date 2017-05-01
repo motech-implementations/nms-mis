@@ -5,7 +5,7 @@
 		<form name="createUserForm" class="form-horizontal" novalidate>
 
 			<div class="form-group" ng-class="{'has-error':createUserForm.fullName.$invalid && !createUserForm.fullName.$pristine}">
-				<label class="control-label col-xs-2">Name</label>
+				<label class="control-label col-xs-2">Full Name</label>
 				<div class="col-xs-10">
 					<input name="fullName" id="fullName" type="text" class="form-control" placeholder="Name" ng-model="newUser.fullName" required 
 					ng-pattern="/^[A-Za-z ]*$/" ng-minlength="3"
@@ -20,7 +20,7 @@
 			</div>
 
 			<div class="form-group" ng-class="{'has-error':createUserForm.username.$invalid && !createUserForm.username.$pristine}">
-				<label class="control-label col-xs-2">Name</label>
+				<label class="control-label col-xs-2">Username</label>
 				<div class="col-xs-10">
 					<input name="username" id="username" type="text" class="form-control" placeholder="Name" ng-model="newUser.username" required 
 					ng-pattern="/^[A-Za-z0-9]*$/" ng-minlength="5"
