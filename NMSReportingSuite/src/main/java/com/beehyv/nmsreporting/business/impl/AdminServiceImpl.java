@@ -722,6 +722,53 @@ public class AdminServiceImpl implements AdminService {
 
     }
 
+    @Override
+    public void getCumulativeCourseCompletionCSV() {
+        //Create blank workbook
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        //Create a blank sheet
+        XSSFSheet spreadsheet = workbook.createSheet(
+                " Employee Info ");
+        //Create row object
+        XSSFRow row;
+        //This data needs to be written (Object[])
+        Map < String, Object[] > empinfo =
+                new TreeMap < String, Object[] >();
+        empinfo.put( "1", new Object[] {
+                "Full Name", "STATE", "DISTRICT", "BLOCK", "Phone number", "Email ID", "UserName", "Creation Date", "Role" });
+
+        Set < String > keyid = empinfo.keySet();
+        int rowid = 0;
+        for (String key : keyid)
+        {
+            row = spreadsheet.createRow(rowid++);
+            Object [] objectArr = empinfo.get(key);
+            int cellid = 0;
+            for (Object obj : objectArr)
+            {
+                Cell cell = row.createCell(cellid++);
+                cell.setCellValue((String)obj);
+            }
+        }
+        //Write the workbook in file system
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(new File("Writesheet.csv"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            workbook.write(out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private String retrievePropertiesFromFileLocationProties() {
         Properties prop = new Properties();
         InputStream input = null;

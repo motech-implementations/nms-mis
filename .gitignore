@@ -1,2 +1,8 @@
+<<<<<<< HEAD
 NMSReportingSuite/.idea/
 NMSReportingSuite/target/
+=======
+NMSReportingSuite/target
+NMSReportingSuite/.idea/
+app/.idea/
+>>>>>>> 42a3520fae507fa5312716e514b898e5743d4b01

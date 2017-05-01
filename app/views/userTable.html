@@ -16,7 +16,29 @@
 		</ul> -->
 		<table class="table table-bordered table-striped">
 			<tr>
-				<th ng-repeat="header in headers" ng-if="header != '$$hashKey'">{{header}}</th>
+				<!-- <th ng-repeat="header in headers" ng-if="header != '$$hashKey'">{{header}}</th> -->
+				<th >Id</th>
+				<th >Name</th>
+				<th >Username</th>
+				<th >Phone no.</th>
+				<th >Email id</th>
+				<!-- <th class="th-dropdown">
+                            <select
+                                    filter-by="accessType"
+                                    filter-type="select"
+                                    ng-model="access"
+                                    ng-change="filter()">
+                                <option value="">Access Type</option>
+                                <option ng-repeat="option in statusOptions track by option.value"
+                                        value="{{option.value}}">{{option.text}}
+                                </option>
+                            </select>
+                        </th> -->
+                <th>Access Type</th>
+                <th>Access Level</th>
+                <th>State</th>
+                <th>District</th>
+                <th>Block</th>
 				<th>Edit</th>
 			</tr>
 			<!-- <tr ng-repeat="item in data"> -->
@@ -37,8 +59,8 @@
 			</tr>
 		</table>
 
-		<pagination 
-			total-items=filterData.length 
+		<pagination
+			total-items=filterData.length
 			items-per-page="numPerPage"
 			current-page="currentPageNo"
 			class="pagination-small">

@@ -9,4 +9,7 @@ public interface AdminService {
   public HashMap startBulkDataImport();
 
   public void getBulkDataImportCSV();
+
+  public void getCumulativeCourseCompletionCSV();
+
 }
