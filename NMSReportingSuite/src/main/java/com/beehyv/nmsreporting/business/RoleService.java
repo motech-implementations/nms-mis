@@ -12,6 +12,8 @@ public interface RoleService {
 
     public List<Role> getAllRoles();
 
+    public List<Role> getRoles();
+
     public void createNewRole(Role role);
 
     public void updateExistingRole(Role role);

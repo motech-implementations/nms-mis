@@ -9,7 +9,7 @@
 
 			return {
 				downloadRoles: function() {
-					return $http.get(backend_root + 'nms/admin/roles');
+					return $http.get(backend_root + 'nms/user/roles');
 				},
 				setRoles: function(values){
 					roles = values;

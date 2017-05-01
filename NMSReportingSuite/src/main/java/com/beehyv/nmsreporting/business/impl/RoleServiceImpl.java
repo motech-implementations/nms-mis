@@ -26,6 +26,12 @@ public class RoleServiceImpl implements RoleService {
         return roleDao.getAllRoles();
     }
 
+    public List<Role> getRoles(){
+        List<Role> roles = getAllRoles();
+        roles.remove(0);
+        return roles;
+    }
+
     public void createNewRole(Role role) {
         roleDao.saveRole(role);
     }

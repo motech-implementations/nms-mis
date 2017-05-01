@@ -1,12 +1,10 @@
 package com.beehyv.nmsreporting.controller;
 
 import com.beehyv.nmsreporting.business.ModificationTrackerService;
+import com.beehyv.nmsreporting.business.RoleService;
 import com.beehyv.nmsreporting.business.UserService;
 import com.beehyv.nmsreporting.dto.UserDto;
-import com.beehyv.nmsreporting.model.Location;
-import com.beehyv.nmsreporting.model.ModificationTracker;
-import com.beehyv.nmsreporting.model.ModificationType;
-import com.beehyv.nmsreporting.model.User;
+import com.beehyv.nmsreporting.model.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +29,9 @@ public class UserController {
     private UserService userService;
 
     @Autowired
+    private RoleService roleService;
+
+    @Autowired
     private ModificationTrackerService modificationTrackerService;
 
     @RequestMapping(value = {"/", "/list"}, method = RequestMethod.GET)
@@ -43,6 +44,11 @@ public class UserController {
         return userService.findAllActiveUsersByLocation(locationId);
     }
 
+    @RequestMapping(value={"/roles"})
+    public @ResponseBody List<Role> getRoles() {
+        return roleService.getRoles();
+    }
+
     @RequestMapping(value={"/currentUser"})
     public @ResponseBody User getCurrentUser() {
         return userService.getCurrentUser();
@@ -50,7 +56,7 @@ public class UserController {
 
     //To be changed
     @RequestMapping(value={"/tableList/{locationId}"})
-    public @ResponseBody List<User> getTableList(@PathVariable("locationId") Integer locationId) {
+    public @ResponseBody List<UserDto> getTableList(@PathVariable("locationId") Integer locationId) {
         List<UserDto> tabDto = new ArrayList<>();
         List<Location> tabLocation;
         List<User> tabUsers = userService.findAllActiveUsersByLocation(locationId);
@@ -59,6 +65,7 @@ public class UserController {
             UserDto user1 = new UserDto();
             user1.setId(user.getUserId());
             user1.setName(user.getFullName());
+            user1.setUsername(user.getUsername());
             user1.setEmail(user.getEmailId());
             user1.setPhoneNumber(user.getPhoneNumber());
             int x = 0;
@@ -82,11 +89,10 @@ public class UserController {
             }
             user1.setAccessType(user.getRoleId().getRoleDescription());
             user1.setCreatedBy(true);
-//            user1.setUsername(user.getUsername());
             tabDto.add(user1);
 
         }
-        return tabUsers;
+        return tabDto;
     }
 
 //    @RequestMapping(value={"/accessLevel/{userId}"})
