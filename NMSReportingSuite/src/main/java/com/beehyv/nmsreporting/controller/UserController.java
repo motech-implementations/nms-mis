@@ -50,7 +50,7 @@ public class UserController {
 
     //To be changed
     @RequestMapping(value={"/tableList/{locationId}"})
-    public @ResponseBody List<User> getTableList(@PathVariable("locationId") Integer locationId) {
+    public @ResponseBody List<UserDto> getTableList(@PathVariable("locationId") Integer locationId) {
         List<UserDto> tabDto = new ArrayList<>();
         List<Location> tabLocation;
         List<User> tabUsers = userService.findAllActiveUsersByLocation(locationId);
@@ -82,11 +82,11 @@ public class UserController {
             }
             user1.setAccessType(user.getRoleId().getRoleDescription());
             user1.setCreatedBy(true);
-//            user1.setUsername(user.getUsername());
+            user1.setUsername(user.getUsername());
             tabDto.add(user1);
 
         }
-        return tabUsers;
+        return tabDto;
     }
 
 //    @RequestMapping(value={"/accessLevel/{userId}"})

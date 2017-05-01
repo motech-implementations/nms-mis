@@ -33,12 +33,13 @@
 			$scope.search = function (row) {
 				return (angular.lowercase(row.name).includes(angular.lowercase($scope.filterText) || '') || 
 						angular.lowercase(row.username).includes(angular.lowercase($scope.filterText) || '') || 
-						angular.lowercase(row.phone).includes(angular.lowercase($scope.filterText) || '') || 
+						angular.lowercase(row.phoneNumber).includes(angular.lowercase($scope.filterText) || '') ||
 						angular.lowercase(row.email).includes(angular.lowercase($scope.filterText) || '') || 
-						angular.lowercase(row.accessLevel).includes(angular.lowercase($scope.filterText) || '') ||
-						angular.lowercase(row.state).includes(angular.lowercase($scope.filterText) || '') ||
-						angular.lowercase(row.district).includes(angular.lowercase($scope.filterText) || '') ||
-						angular.lowercase(row.block).includes(angular.lowercase($scope.filterText) || ''));
+						angular.lowercase(row.accessLevel).includes(angular.lowercase($scope.filterText) || '') //||
+//						angular.lowercase(row.state).includes(angular.lowercase($scope.filterText) || '') ||
+//						angular.lowercase(row.district).includes(angular.lowercase($scope.filterText) || '') ||
+//						angular.lowercase(row.block).includes(angular.lowercase($scope.filterText) || '')
+						);
 			};
 
 			
