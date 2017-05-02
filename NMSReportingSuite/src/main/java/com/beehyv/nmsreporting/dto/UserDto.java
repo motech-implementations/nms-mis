@@ -16,9 +16,9 @@ public class UserDto {
     String email;
     String accessType;
     String accessLevel;
-    String state= null;
-    String district= null;
-    String block= null;
+    String state= "";
+    String district= "";
+    String block= "";
 
     public boolean isCreatedBy() {
         return createdBy;

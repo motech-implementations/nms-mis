@@ -48,8 +48,8 @@ public class AdminController {
                 stream.write(bytes);
                 stream.close();
 
-
-                return "You successfully uploaded file=" + name;
+                return "redirect:/nms/admin/startBulkDataImportProcess";
+                //return "You successfully uploaded file=" + name;
             } catch (Exception e) {
                 return "You failed to upload " + name + " => " + e.getMessage();
             }
@@ -57,6 +57,7 @@ public class AdminController {
             return "You failed to upload " + name
                     + " because the file was empty.";
         }
+
     }
 
     @RequestMapping(value = "/startBulkDataImportProcess", method = RequestMethod.GET)
