@@ -74,5 +74,11 @@ public class AdminController {
         return "Bulkimport";
     }
 
+    @RequestMapping(value = "/getCumulativeCourseCompCSV", method = RequestMethod.GET)
+    @ResponseBody
+    public String getCumulativeCourseCompletionCSV() throws ParseException, java.text.ParseException{
+        adminService.getBulkDataImportCSV();
+        return "Bulkimport";
+    }
 
 }
