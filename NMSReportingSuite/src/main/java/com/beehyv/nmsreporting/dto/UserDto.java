@@ -19,16 +19,9 @@ public class UserDto {
     String state= null;
     String district= null;
     String block= null;
-
-    public boolean isCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(boolean createdBy) {
-        this.createdBy = createdBy;
-    }
-
     boolean createdBy;
+
+
 
     public int getId() {
         return id;
@@ -110,4 +103,11 @@ public class UserDto {
         this.block = block;
     }
 
+    public boolean isCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(boolean createdBy) {
+        this.createdBy = createdBy;
+    }
 }

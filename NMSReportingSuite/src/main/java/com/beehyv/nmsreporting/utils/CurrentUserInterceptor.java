@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class CurrentUserInterceptor extends HandlerInterceptorAdapter {
 
+    @Autowired
     private UserService userService;
 
     @Autowired

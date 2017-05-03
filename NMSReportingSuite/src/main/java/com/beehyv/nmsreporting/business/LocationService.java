@@ -10,6 +10,8 @@ import java.util.List;
 public interface LocationService {
     public Location findLocationById(Integer locationId);
 
+    public Location findLocationByName(String locationName);
+
     public List<Location> getAllLocations();
 
     public List<Location> getAllSubLocations(Integer locationId);

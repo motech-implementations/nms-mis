@@ -23,6 +23,10 @@ public class LocationServiceImpl implements LocationService {
         return locationDao.findByLocationId(locationId);
     }
 
+    public Location findLocationByName(String locationName){
+        return locationDao.findByLocation(locationName).get(0);
+    }
+
     public List<Location> getAllLocations() {
         return locationDao.getAllLocations();
     }

@@ -1,5 +1,6 @@
 package com.beehyv.nmsreporting.controller;
 
+import com.beehyv.nmsreporting.business.LocationService;
 import com.beehyv.nmsreporting.business.ModificationTrackerService;
 import com.beehyv.nmsreporting.business.RoleService;
 import com.beehyv.nmsreporting.business.UserService;
@@ -17,6 +18,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -30,6 +32,9 @@ public class UserController {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private LocationService locationService;
 
     @Autowired
     private ModificationTrackerService modificationTrackerService;
@@ -102,6 +107,41 @@ public class UserController {
 //        return x;
 //    }
 
+    @RequestMapping(value={"/dto/{userId}"})
+    public @ResponseBody UserDto getUserDto(@PathVariable("userId") Integer userId) {
+        User user = userService.findUserByUserId(userId);
+        List<Location> tabLocation;
+        String[] levels = {"National", "State", "District", "Block"};
+        UserDto user1 = new UserDto();
+        user1.setId(user.getUserId());
+        user1.setName(user.getFullName());
+        user1.setUsername(user.getUsername());
+        user1.setEmail(user.getEmailId());
+        user1.setPhoneNumber(user.getPhoneNumber());
+        int x = 0;
+        tabLocation = new ArrayList<>();
+        Location loc = user.getLocationId();
+        while(loc.getReferenceId() != null){
+            tabLocation.add(loc);
+            loc = loc.getReferenceId();
+            x++;
+        }
+        user1.setAccessLevel(levels[x]);
+        Collections.reverse(tabLocation);
+        if(x>=1){
+            user1.setState(tabLocation.get(0).getLocation());
+        }
+        if(x>=2){
+            user1.setDistrict(tabLocation.get(1).getLocation());
+        }
+        if(x>=3){
+            user1.setBlock(tabLocation.get(2).getLocation());
+        }
+        user1.setAccessType(user.getRoleId().getRoleDescription());
+        user1.setCreatedBy(true);
+        return user1;
+    }
+
     @RequestMapping(value = {"/create-user"}, method = RequestMethod.POST)
     public void createNewUser(@RequestBody User user) {
         userService.createNewUser(user);
@@ -114,18 +154,119 @@ public class UserController {
 //        modificationTrackerService.saveModification(modification);
     }
 
-    @RequestMapping(value = {"/update-user"}, method = RequestMethod.POST)
-    public void updateExistingUser(@RequestBody String modificationDetails) {
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode node = null;
-        try {
-            node = mapper.readTree(modificationDetails);
-        } catch (IOException e) {
-            e.printStackTrace();
+    private String getAttr(String str){
+        return str.split("=")[1];
+    }
+
+    @RequestMapping(value = {"/create-new"}, method = RequestMethod.POST)
+    public void userDto(@RequestBody String user1) {
+
+        User user = new User();
+        System.out.println(user1);
+        String[] attrs = user1.split("&");
+
+        HashMap<String, String> userMap = new HashMap<>();
+        for(String attr : attrs){
+            String[] arr = attr.split("=");
+            userMap.put(arr[0], arr[1]);
         }
 
-        User user = mapper.convertValue(node.get("user"), User.class);
+        user.setUsername(userMap.get("username"));
+        user.setFullName(userMap.get("name").replace("+", " "));
+        user.setPhoneNumber(userMap.get("phoneNumber"));
+        user.setEmailId(userMap.get("email").replace("%40", "@"));
+        user.setAccountStatus("ACTIVE");
+        user.setCreatedByUser(userService.getCurrentUser());
+        user.setCreationDate(new java.util.Date());
+        user.setRoleId(roleService.findRoleByRoleId(Integer.parseInt(userMap.get("accessType"))));
+        user.setPassword(userMap.get("phoneNumber"));
+        String locId = "";
+        if(userMap.get("accessLevel").equalsIgnoreCase("block")) {
+            locId = userMap.get("block");
+        } else if(userMap.get("accessLevel").equalsIgnoreCase("district")) {
+            locId = userMap.get("district");
+        } else if(userMap.get("accessLevel").equalsIgnoreCase("state")) {
+            locId = userMap.get("state");
+        } else {
+            locId = "1";
+        }
+        user.setLocationId(locationService.findLocationById(Integer.parseInt(locId)));
+
+        userService.createNewUser(user);
+
+        /*
+        user.setUsername(user1.getUsername());
+        user.setFullName(user1.getName());
+        user.setPhoneNumber(user1.getPhoneNumber());
+        user.setEmailId(user1.getEmail());
+        user.setAccountStatus("ACTIVE");
+        user.setCreatedByUser(userService.getCurrentUser());
+        user.setCreationDate(new java.util.Date());
+        user.setRoleId(roleService.findRoleByRoleDesc(user1.getAccessType()));
+        user.setPassword(user1.getPhoneNumber());
+        String locName = "";
+        if(user1.getAccessLevel().equalsIgnoreCase("block")) {
+            locName = user1.getBlock();
+        } else if(user1.getAccessLevel().equalsIgnoreCase("district")) {
+            locName = user1.getDistrict();
+        } else if(user1.getAccessLevel().equalsIgnoreCase("state")) {
+            locName = user1.getState();
+        } else {
+            locName = "national";
+        }
+        user.setLocationId(locationService.findLocationByName(locName));
+
+        userService.createNewUser(user);*/
+    }
+
+    @RequestMapping(value = {"/update-user"}, method = RequestMethod.POST)
+    public void updateExistingUser(@RequestBody String userDtoString) {
+//        ObjectMapper mapper = new ObjectMapper();
+//        JsonNode node = null;
+//        try {
+//            node = mapper.readTree(userDtoString);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+//        UserDto userDto = mapper.convertValue(node.get("user"), UserDto.class);
+
+        System.out.println("asdfsadfsa     " + userDtoString);
+
+        String[] attrs = userDtoString.split("&");
+
+        HashMap<String, String> userMap = new HashMap<>();
+        for(String attr : attrs){
+            String[] arr = attr.split("=");
+            userMap.put(arr[0], arr[1]);
+        }
+
+        User user = userService.findUserByUsername(userMap.get("username"));
+
+        user.setFullName(userMap.get("name").replace("+", " "));
+        user.setPhoneNumber(userMap.get("phoneNumber"));
+        user.setEmailId(userMap.get("email").replace("%40", "@"));
+        user.setAccountStatus("ACTIVE");
+        user.setCreatedByUser(userService.getCurrentUser());
+        user.setCreationDate(new java.util.Date());
+        user.setRoleId(roleService.findRoleByRoleId(Integer.parseInt(userMap.get("accessType"))));
+        user.setPassword(userMap.get("phoneNumber"));
+        String locId = "";
+        if(userMap.get("accessLevel").equalsIgnoreCase("block")) {
+            locId = userMap.get("block");
+        } else if(userMap.get("accessLevel").equalsIgnoreCase("district")) {
+            locId = userMap.get("district");
+        } else if(userMap.get("accessLevel").equalsIgnoreCase("state")) {
+            locId = userMap.get("state");
+        } else {
+            locId = "1";
+        }
+        user.setLocationId(locationService.findLocationById(Integer.parseInt(locId)));
+
         userService.updateExistingUser(user);
+
+
+//        userService.updateExistingUser(user);
 
 //        String trackModification = mapper.convertValue(node.get("modification"), String.class);
 //
