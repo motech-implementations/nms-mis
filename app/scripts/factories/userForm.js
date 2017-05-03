@@ -24,8 +24,9 @@
 				setUsers: function(value){
 					users = value;
 				},
-				getUser: function(){
-					return users[2];
+
+				getUser: function(id){
+					return $http.get(backend_root + 'nms/user/dto/' + id);
 				},
 
 				downloadLocations: function(){
@@ -51,6 +52,14 @@
 					}
 					return toRet;
 				},
+				getLocationByName: function(name){
+					for(loc in locations){
+						if(loc.location == name){
+							return loc;
+						}
+					}
+					return null;
+				},
 
 				downloadCreator: function(){
 					return $http.get(backend_root + 'nms/user/currentUser');
@@ -60,6 +69,15 @@
 				},
 				getCreator: function(){
 					return currentUser;
+				},
+
+				createUserSubmitDto: function(newUser){
+					$http({
+						method  : 'post',
+						url     : 'http://localhost:8080/NMSReportingSuite/nms/user/create-new',
+						data    : newUser, //forms user object
+						headers : {'Content-Type': 'application/json'} 
+					});
 				}
 
 			};

@@ -18,18 +18,16 @@
 			$scope.accessLevelList = ["National", "State", "District", "Block"];
 
 			$scope.newUser = {};
-
 			
 
 			$scope.getAccessLevel = function(level){
 				var list = $scope.accessLevelList;
-				var item = $scope.accessLevel
+				var item = $scope.newUser.accessLevel
 				return list.indexOf(item) < level;
 			}
 
 			$scope.clearForm = function(){
 				$scope.newUser = {};
-				$scope.confirmPassword = null;
 				$scope.createUserForm.$setPristine();
 
 				$scope.$parent.currentPage = "user-table";
@@ -37,16 +35,28 @@
 			}
 
 			$scope.createUserSubmit = function() {
-				if ($scope.createUserForm.$valid) {
-					$scope.newUser.createdByUser = null;
-					$scope.newUser.accountStatus = 'active';
+				if ($scope.createUserForm.$valid && !$scope.createUserForm.$pristine) {
 					console.log(JSON.stringify($scope.newUser));
-					$http({
-						method  : 'POST',
-						url     : 'http://localhost:8080/NMSReportingSuite/nms/user/create-user',
-						data    : JSON.stringify($scope.newUser), //forms user object
-						headers : {'Content-Type': 'application/json'} 
-					});
+
+					// UserFormFactory.createUserSubmitDto($scope.newUser);
+					// $http.post('http://localhost:8080/NMSReportingSuite/nms/user/create-new', $scope.newUser);
+
+					// $http.post('http://localhost:8080/NMSReportingSuite/nms/user/create-new',
+					// $scope.newUser, 
+					// {'Content-Type': 'application/json'})
+					// .success(function (data, status, headers, config) {
+					// 	console.log(data);
+					// })
+					// .error(function (data, status, header, config) {
+					// 	console.log(data);
+					// });
+
+					// $http({
+					// 	method  : 'post',
+					// 	url     : 'http://localhost:8080/NMSReportingSuite/nms/user/create-new',
+					// 	data    : JSON.stringify($scope.newUser), //forms user object
+					// 	headers : {'Content-Type': 'application/json'} 
+					// });
 				}
 				else{
 					angular.forEach($scope.createUserForm.$error, function (field) {
@@ -58,42 +68,52 @@
 			};
 
 			$scope.onAccessLevelChanged = function(){
+				$scope.newUser.createdBy = true;
+
 				$scope.place = {};
-				$scope.newUser.locationId = 
+
+				$scope.newUser.state = null;
+				$scope.newUser.district = null;
+				$scope.newUser.block = null;
+
 				$scope.createUserForm.state.$setPristine(false);
 				$scope.createUserForm.district.$setPristine(false);
 				$scope.createUserForm.block.$setPristine(false);
 			}
 
-			$scope.$watch('accessLevel', function(oldValue, newValue){
+			$scope.$watch('newUser.accessLevel', function(oldValue, newValue){
 				if(oldValue !== newValue){
 					$scope.onAccessLevelChanged();
 				}
-			});
-			$scope.$watch('newUser.phoneNumber', function(value){
-				$scope.newUser.password = value;
 			});
 
 			$scope.$watch('place.state', function(value){
 				if(value != null){
 					$scope.districts = UserFormFactory.getChildLocations(value.locationId);
+
 					$scope.place.district = null;
 					$scope.place.block = null;
-					$scope.newUser.locationId = value;
+
+					$scope.newUser.state = value.location;
+					$scope.newUser.district = null;
+					$scope.newUser.block = null;
 				}
 			});
 
 			$scope.$watch('place.district', function(value){
 				if(value != null){
 					$scope.blocks = UserFormFactory.getChildLocations(value.locationId);
+
 					$scope.place.block = null;
-					$scope.newUser.locationId = value;
+
+					$scope.newUser.district = value.location;
+					$scope.newUser.block = null;
 				}
 			});
 
-			$scope.$watch('place.state', function(value){
+			$scope.$watch('place.block', function(value){
 				if(value != null){
-					$scope.newUser.locationId = value;
+					$scope.newUser.block = value.location;
 				}
 			});
 

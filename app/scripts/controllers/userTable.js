@@ -45,7 +45,6 @@
 
 			$scope.editUser = function(user){
 				console.log("edit");
-				console.log(user);
 				$scope.$parent.editUser(user.id);
 			}
 

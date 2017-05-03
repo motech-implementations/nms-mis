@@ -161,7 +161,29 @@ public class UserController {
     @RequestMapping(value = {"/create-new"}, method = RequestMethod.POST)
     public void userDto(@RequestBody String user1) {
 
+
         User user = new User();
+        /*
+        user.setFullName(user1.getName());
+        user.setUsername(user1.getUsername());
+        user.setEmailId(user1.getEmail());
+        user.setPhoneNumber(user1.getPhoneNumber());
+        user.setRoleId(roleService.findRoleByRoleDesc(user1.getAccessType()));
+        user.setAccountStatus("ACTIVE");
+        user.setCreatedByUser(userService.getCurrentUser());
+        String locId = "";
+        if(user1.getAccessLevel().equalsIgnoreCase("block")) {
+            locId = user1.getBlock();
+        } else if(user1.getAccessLevel().equalsIgnoreCase("district")) {
+            locId = user1.getDistrict();
+        } else if(user1.getAccessLevel().equalsIgnoreCase("state")) {
+            locId = user1.getState();
+        } else {
+            locId = "India";
+        }
+        user.setLocationId(locationService.findLocationByName(locId));
+        */
+        user1 = user1.replace("+", " ").replace("%40", "@");
         System.out.println(user1);
         String[] attrs = user1.split("&");
 
@@ -230,7 +252,7 @@ public class UserController {
 //        }
 
 //        UserDto userDto = mapper.convertValue(node.get("user"), UserDto.class);
-
+        userDtoString = userDtoString.replace("+", " ").replace("%40", "@");
         System.out.println("asdfsadfsa     " + userDtoString);
 
         String[] attrs = userDtoString.split("&");
@@ -243,9 +265,9 @@ public class UserController {
 
         User user = userService.findUserByUsername(userMap.get("username"));
 
-        user.setFullName(userMap.get("name").replace("+", " "));
+        user.setFullName(userMap.get("name"));
         user.setPhoneNumber(userMap.get("phoneNumber"));
-        user.setEmailId(userMap.get("email").replace("%40", "@"));
+        user.setEmailId(userMap.get("email"));
         user.setAccountStatus("ACTIVE");
         user.setCreatedByUser(userService.getCurrentUser());
         user.setCreationDate(new java.util.Date());
