@@ -94,6 +94,7 @@ public class UserController {
             }
             user1.setAccessType(user.getRoleId().getRoleDescription());
             user1.setCreatedBy(true);
+
             tabDto.add(user1);
 
         }
