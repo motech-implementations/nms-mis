@@ -16,19 +16,11 @@ public class UserDto {
     String email;
     String accessType;
     String accessLevel;
-    String state= null;
-    String district= null;
-    String block= null;
-
-    public boolean isCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(boolean createdBy) {
-        this.createdBy = createdBy;
-    }
-
+    String state= "";
+    String district= "";
+    String block= "";
     boolean createdBy;
+
 
     public int getId() {
         return id;
@@ -110,4 +102,11 @@ public class UserDto {
         this.block = block;
     }
 
+    public boolean isCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(boolean createdBy) {
+        this.createdBy = createdBy;
+    }
 }

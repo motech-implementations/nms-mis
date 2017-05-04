@@ -2,9 +2,9 @@
 
 /**
  * @ngdoc overview
- * @name alacritiReports
+ * @name NMS Reporting
  * @description
- * # alacrityReportsUiApp
+ * # NMS Reporting UI app
  *
  * Main module of the application.
  */

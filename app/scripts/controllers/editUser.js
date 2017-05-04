@@ -5,118 +5,116 @@
 
 			// console.log($scope.$parent.idToEdit);
 
-			// $scope.$watch('$scope.$parent.idToEdit', function(value){
-			// 	console.log(value);
-			// })
+			$scope.$watch('$parent.idToEdit', function(value){
+				console.log(value);
+			})
 			$scope.accessLevelList = ["National", "State", "District", "Block"];
 
-			$scope.user = {};
+			$scope.editUser = {};
 			$scope.place = {};
 
 			UserFormFactory.downloadRoles()
 			.then(function(result){
 				UserFormFactory.setRoles(result.data);
 				$scope.accessTypeList = UserFormFactory.getRoles();
+
 			});
 
 			UserFormFactory.downloadLocations()
 			.then(function(result){
 				UserFormFactory.setLocations(result.data);
-				
+
 			})
 
-			UserFormFactory.downloadUsers()
+
+
+			UserFormFactory.getUser($scope.$parent.idToEdit)
 			.then(function(result){
-				UserFormFactory.setUsers(result.data);
-				$scope.user = UserFormFactory.getUser();
-				$scope.getLocations($scope.user.locationId);
-			})
+				$scope.editUser = result.data;
 
-			$scope.getLocations = function(loc){
-				$scope.location = [];
-				while(loc.referenceId != null){
-					$scope.location.unshift(loc);
-					loc = loc.referenceId;
-				}
-				$scope.accessLevel = $scope.accessLevelList[($scope.location).length];
+				// $scope.place.state = UserFormFactory.getLocationByName($scope.editUser.state);
+				// $scope.place.district = UserFormFactory.getLocationByName($scope.editUser.district);
+				// $scope.place.block = UserFormFactory.getLocationByName($scope.editUser.block);
+
+
+
+				console.log($scope.editUser);
 
 				$scope.states = UserFormFactory.getChildLocations(1);
-				$scope.place.state = $scope.location[0];
-				$scope.districts = UserFormFactory.getChildLocations($scope.location[0].locationId);
-				$scope.place.state = $scope.location[1];
-				$scope.blocks = UserFormFactory.getChildLocations($scope.location[1].locationId);
-				$scope.place.state = $scope.location[2];
-				
-				console.log($scope.location)
-			}
+				$scope.place.state = UserFormFactory.getLocationByName($scope.editUser.state);
 
+				$scope.districts = UserFormFactory.getChildLocations($scope.place.state.locationId);
+				$scope.place.district = UserFormFactory.getLocationByName($scope.editUser.district);
 
+				$scope.states = UserFormFactory.getChildLocations($scope.place.district.locationId);
+				$scope.place.block = UserFormFactory.getLocationByName($scope.editUser.block);
+			})
 
 			$scope.getAccessLevel = function(level){
 				var list = $scope.accessLevelList;
-				var item = $scope.accessLevel;
+				var item = $scope.editUser.accessLevel;
 				return list.indexOf(item) < level;
 			}
 
 			$scope.onAccessLevelChanged = function(){
-
 				$scope.place = {};
+
+				$scope.editUser.state = null;
+				$scope.editUser.district = null;
+				$scope.editUser.block = null;
 
 				$scope.editUserForm.state.$setPristine(false);
 				$scope.editUserForm.district.$setPristine(false);
 				$scope.editUserForm.block.$setPristine(false);
-
-				$scope.states = UserFormFactory.getChildLocations(1);
-				$scope.districts = [];
-				$scope.blocks = [];
 			}
 
-			$scope.$watch('accessLevel', function(oldValue, newValue){
+			$scope.$watch('editUser.accessLevel', function(oldValue, newValue){
 				if(oldValue !== newValue){
 					$scope.onAccessLevelChanged();
 				}
 			});
 
-
-
 			$scope.$watch('place.state', function(value){
 				if(value != null){
+					$scope.editUser.state = value.location;
+					$scope.editUser.district = null;
+					$scope.editUser.block = null;
+
 					$scope.districts = UserFormFactory.getChildLocations(value.locationId);
-					$scope.final = value;
 					$scope.blocks = [];
 
-					$scope.place.district = {};
+					$scope.place.district = null;
+					$scope.place.block = null;
 				}
 			});
 			$scope.$watch('place.district', function(value){
 				if(value != null){
-					$scope.blocks = UserFormFactory.getChildLocations(value.locationId);
-					$scope.final = value;
+					$scope.editUser.district = value.location;
+					$scope.editUser.block = null;
 
-					$scope.place.block = {};
+					$scope.blocks = UserFormFactory.getChildLocations(value.locationId);
+
+					$scope.place.block = null;
 				}
 			});
 			$scope.$watch('place.block', function(value){
 				if(value != null){
-					$scope.final = value;
+					$scope.editUser.block = value.location;
 				}
 			});
-			$scope.$watch('final', function(value){
-				console.log(value);
-				$scope.locationId = value;
-			});
-
 
 
 			$scope.editUserSubmit = function() {
 				if ($scope.editUserForm.$valid) {
 					console.log($scope.user);
-					$http({
-						method  : 'POST',
-						url     : backend_root + 'nms/user/update-user',
-						data    : $scope.user, //forms user object
-						headers : {'Content-Type': 'application/json'} 
-					})
+					// $http({
+					// 	method  : 'POST',
+					// 	url     : backend_root + 'nms/user/update-user',
+					// 	data    : $scope.editUser, //forms user object
+					// 	headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
+					// })
+
+					
 					// .then(function(data) {
 					// 	if (data.errors) {
 					// 		// Showing errors.

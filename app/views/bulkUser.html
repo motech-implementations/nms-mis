@@ -1,13 +1,15 @@
 <div ng-controller="BulkUserController">
 	<div class="well">
+		<form name="bulkUploadForm" class="form-horizontal" novalidate enctype="multipart/form-data" action="http://localhost:8080/NMSReportingSuite/nms/admin/uploadFile" method="post">
 		<div class="form-group" style="display: inline-block; width: 300px;">
 			<input type="file" class="form-control" name="bulkCsv" value="Select .csv file">
 		</div>
-		<button class="btn btn-primary" name="uploadCsv">Upload File</button>
-		<button class="btn btn-primary" name="downloadTemplate">Download Template</button>
+		<button type="submit" class="btn btn-primary" name="uploadCsv">Upload File</button>
+
 		<br>
 		<p>Note: Document should be in CSV format.</p>
-
+		</form>
+		<button class="btn btn-primary" name="downloadTemplate">Download Template</button>
 		<ul>
 			<li ng-repeat="row in listErrors()">{{row}}</li>
 		</ul>

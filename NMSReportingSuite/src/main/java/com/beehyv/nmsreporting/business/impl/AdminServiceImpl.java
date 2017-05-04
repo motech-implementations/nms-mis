@@ -44,7 +44,7 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private LocationDao locationDao;
     @Override
-    public HashMap startBulkDataImport() {
+    public HashMap startBulkDataImport(User loggedInUser) {
         Pattern pattern;
         Matcher matcher;
         Map<Integer,String> errorCreatingUsers=new HashMap<Integer,String>();
@@ -106,9 +106,7 @@ public class AdminServiceImpl implements AdminService {
                             continue;
                         }
 
-                       UserDetails userdetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-                       String loggedUserName=userdetails.getUsername();
-                       User loggedInUser=userDao.findByUserName(loggedUserName);
+
                         int loggedUserRole=loggedInUser.getRoleId().getRoleId();
 
                         String userPhone=Line[4];

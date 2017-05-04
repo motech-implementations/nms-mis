@@ -22,8 +22,18 @@ public class RoleServiceImpl implements RoleService {
         return roleDao.findByRoleId(roleId);
     }
 
+    public Role findRoleByRoleDesc(String desc){
+        return roleDao.findByRoleDescription(desc).get(0);
+    }
+
     public List<Role> getAllRoles() {
         return roleDao.getAllRoles();
+    }
+
+    public List<Role> getRoles(){
+        List<Role> roles = getAllRoles();
+        roles.remove(0);
+        return roles;
     }
 
     public void createNewRole(Role role) {

@@ -10,7 +10,11 @@ import java.util.List;
 public interface RoleService {
     public Role findRoleByRoleId(Integer roleId);
 
+    public Role findRoleByRoleDesc(String desc);
+
     public List<Role> getAllRoles();
+
+    public List<Role> getRoles();
 
     public void createNewRole(Role role);
 
