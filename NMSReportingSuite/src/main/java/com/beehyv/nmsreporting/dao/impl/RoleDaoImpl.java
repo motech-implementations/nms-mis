@@ -22,7 +22,7 @@ public class RoleDaoImpl extends AbstractDao<Integer, Role> implements RoleDao {
     @Override
     public List<Role> findByRoleDescription(String role) {
         Criteria criteria = createEntityCriteria();
-        criteria.add(Restrictions.eq("role_desc", role));
+        criteria.add(Restrictions.eq("roleDescription", role));
         return criteria.list();
     }
 

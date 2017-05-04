@@ -1,6 +1,8 @@
 package com.beehyv.nmsreporting.controller;
 
 import com.beehyv.nmsreporting.business.AdminService;
+import com.beehyv.nmsreporting.business.UserService;
+import com.beehyv.nmsreporting.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.ParseException;
 import org.springframework.stereotype.Controller;
@@ -25,10 +27,12 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
+    @Autowired
+    private UserService userService;
 
-    @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
+    @RequestMapping(value = "/uploadFile",headers=("content-type=multipart/*"), method = RequestMethod.POST)
     @ResponseBody
-    public String uploadFileHandler(@RequestParam("file") MultipartFile file) {
+    public String uploadFileHandler(@RequestParam("bulkCsv") MultipartFile file) {
         String name = "BulkImportDatacr7ms10.csv";
         if (!file.isEmpty()) {
             try {
@@ -49,8 +53,9 @@ public class AdminController {
                 stream.close();
 
                 return "redirect:/nms/admin/startBulkDataImportProcess";
-                //return "You successfully uploaded file=" + name;
+                /*return "You successfully uploaded file=" + name;*/
             } catch (Exception e) {
+                System.out.println(e);
                 return "You failed to upload " + name + " => " + e.getMessage();
             }
         } else {
@@ -63,7 +68,8 @@ public class AdminController {
     @RequestMapping(value = "/startBulkDataImportProcess", method = RequestMethod.GET)
     @ResponseBody
     public HashMap startBulkDataImportProcess() throws ParseException, java.text.ParseException{
-       HashMap object= adminService.startBulkDataImport();
+        User user = userService.getCurrentUser();
+        HashMap object= adminService.startBulkDataImport(user);
        return object;
     }
 

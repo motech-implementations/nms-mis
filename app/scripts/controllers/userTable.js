@@ -23,6 +23,12 @@
 			$scope.resetPage = function(){
 				$scope.currentPageNo = 1;
 			}
+			$scope.resetDistrict = function(){
+            	$scope.districtName = "";
+            }
+			$scope.resetBlock = function(){
+            	$scope.blockName = "";
+            }
 
 			$scope.getAllUsers = function(){
 				return UserTableFactory.getAllUsers();
@@ -49,6 +55,8 @@
                 return aL;
             }
             $scope.getUniqueStates = function(){
+//                $scope.districtName = "";
+//                $scope.blockName = "";
                 var states = [];
                 var users = UserTableFactory.getAllUsers();
                 for(var i=0;i<users.length;i++){
@@ -58,21 +66,28 @@
                 }
             return states;
             }
+            $scope.$watch('stateName', $scope.resetDistrict);
+            $scope.$watch('stateName', $scope.resetBlock);
             $scope.getUniqueDistricts = function(){
                 var districts = [];
                 var users = UserTableFactory.getAllUsers();
                 for(var i=0;i<users.length;i++){
-                    if((users[i].district!="")&&(districts.indexOf(users[i].district)==-1)) {
+                    if((angular.lowercase(users[i].state).includes(angular.lowercase($scope.stateName)||''))&&
+                    (angular.lowercase(users[i].block).includes(angular.lowercase($scope.blockName)||''))&&
+                    ((users[i].district!="")&&(districts.indexOf(users[i].district)==-1))) {
                         districts.push(users[i].district);
                     }
                 }
             return districts;
             }
+            $scope.$watch('districtName', $scope.resetBlock);
             $scope.getUniqueBlocks = function(){
                 var blocks = [];
                 var users = UserTableFactory.getAllUsers();
                 for(var i=0;i<users.length;i++){
-                    if((users[i].block!="")&&(blocks.indexOf(users[i].block)==-1)) {
+                    if((angular.lowercase(users[i].state).includes(angular.lowercase($scope.stateName)||'')) &&
+                    (angular.lowercase(users[i].district).includes(angular.lowercase($scope.districtName)||''))&&
+                    ((users[i].block!="")&&(blocks.indexOf(users[i].block)==-1))) {
                         blocks.push(users[i].block);
                     }
                 }
@@ -80,7 +95,9 @@
             }
 
 			$scope.$watch('numPerPage', $scope.resetPage);
-
+//            $scope.$watch('filterData', function(value){
+//            console.log(value);
+//            });
 			$scope.search = function (row) {
 				return (angular.lowercase(row.name).includes(angular.lowercase($scope.filterText) || '') || 
 						angular.lowercase(row.username).includes(angular.lowercase($scope.filterText) || '') || 
