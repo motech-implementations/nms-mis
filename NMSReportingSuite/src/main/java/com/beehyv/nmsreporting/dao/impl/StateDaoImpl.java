@@ -1,0 +1,40 @@
+package com.beehyv.nmsreporting.dao.impl;
+
+import com.beehyv.nmsreporting.dao.AbstractDao;
+import com.beehyv.nmsreporting.dao.StateDao;
+import com.beehyv.nmsreporting.model.Location;
+import com.beehyv.nmsreporting.model.State;
+
+import java.util.List;
+
+/**
+ * Created by beehyv on 4/5/17.
+ */
+public class StateDaoImpl extends AbstractDao<Integer, State> implements StateDao {
+
+
+    @Override
+    public State findByStateId(Integer stateId) {
+        return getByKey(stateId);
+    }
+
+    @Override
+    public List<State> findByName(String stateName) {
+        return null;
+    }
+
+    @Override
+    public List<State> getDistricts(int stateId) {
+        return null;
+    }
+
+    @Override
+    public void saveLocation(State state) {
+
+    }
+
+    @Override
+    public void deleteLocation(State state) {
+
+    }
+}

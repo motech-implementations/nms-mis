@@ -6,6 +6,7 @@ import com.beehyv.nmsreporting.dao.RoleDao;
 import com.beehyv.nmsreporting.dao.UserDao;
 import com.beehyv.nmsreporting.model.Location;
 import com.beehyv.nmsreporting.model.Role;
+import com.beehyv.nmsreporting.model.State;
 import com.beehyv.nmsreporting.model.User;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -81,6 +82,7 @@ public class AdminServiceImpl implements AdminService {
                         User user = new User();
                         Role role;
                         Location locaation;
+                        State state;
 
 
 
@@ -201,6 +203,7 @@ public class AdminServiceImpl implements AdminService {
                         }
                         if((userRoleId==4)){
                             List<Location> userLocation=locationDao.findByLocation(State);
+
                             if((userLocation==null)||(userLocation.size()==0)){
                                  Integer rowNum=linNumber;
                                 String authorityError="Please enter the valid location for this user.";
@@ -723,7 +726,39 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void getCumulativeCourseCompletionCSV() {
+    public void getCumulativeCourseCompletionCSV(String State,String District,String Block) {
+        UserDetails userdetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String loggedUserName=userdetails.getUsername();
+        User loggedInUser=userDao.findByUserName(loggedUserName);
+        int loggedUserRole=loggedInUser.getRoleId().getRoleId();
+        String rootPath = System.getProperty("user.home") + File.separator + "Documents/CumulativeCourseCompletionCSVs";
+        File dir = new File(rootPath);
+        if (!dir.exists())
+            dir.mkdirs();
+        if(loggedUserRole==1||loggedUserRole==2){
+           List<Location> States=locationDao.getChildLocations(1);
+            for (Location state:States)
+                {
+                    String stateName=state.getLocation();
+                    int stateId=state.getLocationId();
+                    List<Location> Districts=locationDao.getChildLocations(stateId);
+                    for (Location district:Districts){
+                        String districtName=district.getLocation();
+                        int districtId=district.getLocationId();
+                        List<Location> Blocks=locationDao.getChildLocations(districtId);
+                        for (Location block:Blocks){
+                            String blockName=block.getLocation();
+                            String rootPath1 = System.getProperty("user.home") + File.separator + "Documents/CumulativeCourseCompletionCSVs/"+stateName+"/"+districtName+"/"+blockName;
+                            File dir1 = new File(rootPath1);
+                            if (!dir1.exists())
+                                dir1.mkdirs();
+                        }
+                    }
+
+                 }
+
+
+        }
         //Create blank workbook
         XSSFWorkbook workbook = new XSSFWorkbook();
         //Create a blank sheet
@@ -735,7 +770,7 @@ public class AdminServiceImpl implements AdminService {
         Map < String, Object[] > empinfo =
                 new TreeMap < String, Object[] >();
         empinfo.put( "1", new Object[] {
-                "Full Name", "STATE", "DISTRICT", "BLOCK", "Phone number", "Email ID", "UserName", "Creation Date", "Role" });
+                "Full Name","Mobile Number", "STATE", "DISTRICT", "BLOCK", "Taluka", "Health Facility", "Health Sub Facility", "Creation Date", "Role" });
 
         Set < String > keyid = empinfo.keySet();
         int rowid = 0;
@@ -766,6 +801,40 @@ public class AdminServiceImpl implements AdminService {
             out.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void getCumulativeCourseCompletionCSV1(Integer LocationId) {
+        List<Location> States=locationDao.getChildLocations(LocationId);
+        for (Location state:States)
+        {
+            String stateName=state.getLocation();
+            String rootPathState = System.getProperty("user.home") + File.separator + "Documents/CumulativeCourseCompletionCSVs/"+stateName;
+            File dirState = new File(rootPathState);
+            if (!dirState.exists())
+                dirState.mkdirs();
+            int stateId=state.getLocationId();
+            List<Location> Districts=locationDao.getChildLocations(stateId);
+            for (Location district:Districts){
+                String districtName=district.getLocation();
+
+                String rootPathDistrict = rootPathState+"/"+districtName;
+                File dirDistrict = new File(rootPathDistrict);
+                if (!dirDistrict.exists())
+                    dirDistrict.mkdirs();
+                int districtId=district.getLocationId();
+                List<Location> Blocks=locationDao.getChildLocations(districtId);
+                for (Location block:Blocks){
+                    String blockName=block.getLocation();
+                    String rootPathblock = rootPathDistrict+"/"+blockName;
+                    File dirBlock = new File(rootPathblock);
+                    if (!dirBlock.exists())
+                        dirBlock.mkdirs();
+
+                }
+            }
+
         }
     }
 

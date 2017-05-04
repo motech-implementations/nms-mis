@@ -43,8 +43,20 @@ public class User {
 	private String emailId;
 
 	@ManyToOne
-	@JoinColumn(name="location")
+	@JoinColumn(name="location",insertable = false,updatable = false)
 	private Location locationId;
+
+	@ManyToOne
+	@JoinColumn(name="state")
+	private State stateId;
+
+	@ManyToOne
+	@JoinColumn(name="district")
+	private District districtId;
+
+	@ManyToOne
+	@JoinColumn(name="block")
+	private Taluka talukaId;
 	
 	@Column(name="creation_date")
 	private Date creationDate;

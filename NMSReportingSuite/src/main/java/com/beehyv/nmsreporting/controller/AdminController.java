@@ -4,10 +4,7 @@ import com.beehyv.nmsreporting.business.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.ParseException;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedOutputStream;
@@ -75,9 +72,16 @@ public class AdminController {
 
     @RequestMapping(value = "/getCumulativeCourseCompCSV", method = RequestMethod.GET)
     @ResponseBody
-    public String getCumulativeCourseCompletionCSV() throws ParseException, java.text.ParseException{
-        adminService.getBulkDataImportCSV();
+    public String getCumulativeCourseCompletionCSV(@PathVariable("state") String State,@PathVariable("district") String District,@PathVariable("block") String Block) throws ParseException, java.text.ParseException{
+        adminService.getCumulativeCourseCompletionCSV(State,District,Block);
         return "Bulkimport";
     }
 
+    @RequestMapping(value = "/getCumulativeCourseCompCSV1", method = RequestMethod.GET)
+    @ResponseBody
+    public String getCumulativeCourseCompletionCSV1() throws ParseException, java.text.ParseException{
+
+        adminService.getCumulativeCourseCompletionCSV1(2);
+        return "Bulkimport";
+    }
 }
