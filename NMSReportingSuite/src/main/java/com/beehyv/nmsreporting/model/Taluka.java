@@ -9,31 +9,49 @@ import java.util.Set;
  * Created by beehyv on 4/5/17.
  */
 @Entity
-@Table(name="USER_TALUKA")
+@Table(name="dim_taluka")
 public class Taluka {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name="taluka_id", columnDefinition = "TINYINT")
+    @Column(name="id", columnDefinition = "SMALLINT")
     private Integer talukaId;
 
     @Column(name="taluka_name")
     private String talukaName;
 
-    @Column(name="last_modified_date", columnDefinition = "TIMESTAMP")
-    private Date lastmodifiesDate;
+    @Column(name="last_modified", columnDefinition = "TIMESTAMP")
+    private Date lastModified;
 
+    @Column(name="loc_id", columnDefinition = "BIGINT(20)")
+    private Long locationId;
 
     @OneToMany(cascade=CascadeType.PERSIST, fetch=FetchType.EAGER, mappedBy="talukaOfBlock")
     private Set<Block> blocks = new HashSet<>();
 
     @ManyToOne
-    @JoinColumn(name="state_id", columnDefinition = "SMALLINT")
+    @JoinColumn(name="state_id", columnDefinition = "TINYINT")
     private State stateOfTaluka;
 
     @ManyToOne
     @JoinColumn(name="district_id", columnDefinition = "SMALLINT")
     private District districtOfTaluka;
+
+    public Date getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
+    }
+
+    public Long getLocationId() {
+        return locationId;
+    }
+
+    public void setLocationId(Long locationId) {
+        this.locationId = locationId;
+    }
 
     public Integer getTalukaId() {
         return talukaId;
@@ -49,14 +67,6 @@ public class Taluka {
 
     public void setTalukaName(String talukaName) {
         this.talukaName = talukaName;
-    }
-
-    public Date getLastmodifiesDate() {
-        return lastmodifiesDate;
-    }
-
-    public void setLastmodifiesDate(Date lastmodifiesDate) {
-        this.lastmodifiesDate = lastmodifiesDate;
     }
 
     public Set<Block> getBlocks() {
