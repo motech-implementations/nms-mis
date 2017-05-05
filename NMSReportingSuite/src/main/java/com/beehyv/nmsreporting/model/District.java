@@ -13,19 +13,21 @@ import java.util.Set;
  * Created by beehyv on 4/5/17.
  */
 @Entity
-@Table(name="USER_DISTRICT")
+@Table(name="dim_district")
 public class District {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name="district_id", columnDefinition = "SMALLINT")
+    @Column(name="id", columnDefinition = "SMALLINT")
     private Integer districtId;
 
-    @Column(name="district_name", columnDefinition = "VARCHAR")
+    @Column(name="district_name")
     private String districtName;
 
-    @Column(name="last_modified_date", columnDefinition = "TIMESTAMP")
-    private Date lastmodifiesDate;
+    @Column(name="last_modified", columnDefinition = "TIMESTAMP")
+    private Date lastModified;
 
+    @Column(name="loc_id", columnDefinition = "BIGINT(20)")
+    private Long locationId;
 
     @OneToMany(cascade=CascadeType.PERSIST, fetch=FetchType.EAGER, mappedBy="districtOfBlock")
     private Set<Block> blocks = new HashSet<>();
@@ -45,12 +47,19 @@ public class District {
         this.talukas = talukas;
     }
 
-    public Date getLastmodifiesDate() {
-        return lastmodifiesDate;
+    public Date getLastModified() {
+        return lastModified;
     }
 
-    public void setLastmodifiesDate(Date lastmodifiesDate) {
-        this.lastmodifiesDate = lastmodifiesDate;
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
+    }
+    public Long getLocationId() {
+        return locationId;
+    }
+
+    public void setLocationId(Long locationId) {
+        this.locationId = locationId;
     }
 
     public Integer getDistrictId() {

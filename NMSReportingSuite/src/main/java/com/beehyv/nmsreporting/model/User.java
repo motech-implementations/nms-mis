@@ -39,25 +39,17 @@ public class User {
 	private Location locationId;
 
 	@ManyToOne
-	@JoinColumn(name="state")
+	@JoinColumn(name="state",columnDefinition = "TINYINT")
 	private State stateId;
 
 	@ManyToOne
-	@JoinColumn(name="district")
+	@JoinColumn(name="district", columnDefinition = "SMALLINT")
 	private District districtId;
 
 	@ManyToOne
-	@JoinColumn(name="block")
+	@JoinColumn(name="healthblock", columnDefinition = "INT")
 	private Block blockId;
-
-	public Block getBlockId() {
-		return blockId;
-	}
-
-	public void setBlockId(Block blockId) {
-		this.blockId = blockId;
-	}
-
+	
 	@Column(name="creation_date")
 	private Date creationDate;
 	
@@ -102,7 +94,6 @@ public class User {
 	}
 
 
-
 	public String getAccessLevel() {
 		return accessLevel;
 	}
@@ -117,6 +108,14 @@ public class User {
 
 	public void setAccessType(String accessType) {
 		this.accessType = accessType;
+	}
+
+	public Block getBlockId() {
+		return blockId;
+	}
+
+	public void setBlockId(Block blockId) {
+		this.blockId = blockId;
 	}
 
 	public Integer getUserId() {

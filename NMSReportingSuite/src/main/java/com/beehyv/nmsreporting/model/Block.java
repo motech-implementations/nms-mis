@@ -13,24 +13,26 @@ import java.util.Set;
  * Created by beehyv on 4/5/17.
  */
 @Entity
-@Table(name="USER_BLOCK")
+@Table(name="dim_healthblock")
 public class Block {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name="block_id", columnDefinition = "INT")
+    @Column(name="id", columnDefinition = "INT")
     private Integer blockId;
 
-    @Column(name="block_name")
+    @Column(name="healthblock_name")
     private String blockName;
 
-    @Column(name="last_modified_date", columnDefinition = "TIMESTAMP")
-    private Date lastmodifiesDate;
+    @Column(name="last_modified", columnDefinition = "TIMESTAMP")
+    private Date lastModified;
+
+    @Column(name="loc_id", columnDefinition = "BIGINT(20)")
+    private Long locationId;
 
     @ManyToOne
     @JoinColumn(name="taluka_id", columnDefinition = "SMALLINT")
     private Taluka talukaOfBlock;
-
 
     @ManyToOne
     @JoinColumn(name="district_id", columnDefinition = "SMALLINT")
@@ -40,16 +42,20 @@ public class Block {
     @JoinColumn(name="state_id", columnDefinition = "TINYINT")
     private State stateOfBlock;
 
-
-
-
-
-    public Date getLastmodifiesDate() {
-        return lastmodifiesDate;
+    public Date getLastModified() {
+        return lastModified;
     }
 
-    public void setLastmodifiesDate(Date lastmodifiesDate) {
-        this.lastmodifiesDate = lastmodifiesDate;
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
+    }
+
+    public Long getLocationId() {
+        return locationId;
+    }
+
+    public void setLocationId(Long locationId) {
+        this.locationId = locationId;
     }
 
     public Integer getBlockId() {
