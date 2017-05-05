@@ -47,15 +47,15 @@ public class User {
 	private Location locationId;
 
 	@ManyToOne
-	@JoinColumn(name="state")
+	@JoinColumn(name="state",columnDefinition = "TINYINT")
 	private State stateId;
 
 	@ManyToOne
-	@JoinColumn(name="district")
+	@JoinColumn(name="district", columnDefinition = "SMALLINT")
 	private District districtId;
 
 	@ManyToOne
-	@JoinColumn(name="healthblock")
+	@JoinColumn(name="healthblock", columnDefinition = "INT")
 	private Block blockId;
 	
 	@Column(name="creation_date")
