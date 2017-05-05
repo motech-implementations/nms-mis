@@ -26,19 +26,19 @@ public class User {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="user_id")
 	private Integer userId;
-	
+
 	@Column(name="username")
 	private String username;
-	
+
 	@Column(name="password")
 	private String password;
-	
+
 	@Column(name="full_name")
 	private String fullName;
-	
+
 	@Column(name="phone_no")
 	private String phoneNumber;
-	
+
 	@Column(name="email_id")
 	private String emailId;
 
@@ -55,28 +55,52 @@ public class User {
 	private District districtId;
 
 	@ManyToOne
-	@JoinColumn(name="block")
-	private Taluka talukaId;
-	
+	@JoinColumn(name="healthblock")
+	private Block blockId;
+
 	@Column(name="creation_date")
 	private Date creationDate;
-	
+
 	@ManyToOne
 	@JoinColumn(name="created_by_user")
 	private User createdByUser;
-	
+
 	@OneToMany(mappedBy="createdByUser")
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@JsonIgnore
 	private Set<User> createdUsers = new HashSet<>();
-	
+
 	@ManyToOne
 	@JoinColumn(name="role_id")
 	private Role roleId;
-	
+
 	@Column(name="account_status")
 	private String accountStatus = AccountStatus.PENDING.getAccountStatus();
-	
+
+	public State getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(State stateId) {
+		this.stateId = stateId;
+	}
+
+	public District getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(District districtId) {
+		this.districtId = districtId;
+	}
+
+	public Block getBlockId() {
+		return blockId;
+	}
+
+	public void setBlockId(Block blockId) {
+		this.blockId = blockId;
+	}
+
 	public Integer getUserId() {
 		return userId;
 	}
