@@ -1,13 +1,8 @@
 package com.beehyv.nmsreporting.business.impl;
 
 import com.beehyv.nmsreporting.business.AdminService;
-import com.beehyv.nmsreporting.dao.LocationDao;
-import com.beehyv.nmsreporting.dao.RoleDao;
-import com.beehyv.nmsreporting.dao.UserDao;
-import com.beehyv.nmsreporting.model.Location;
-import com.beehyv.nmsreporting.model.Role;
-import com.beehyv.nmsreporting.model.State;
-import com.beehyv.nmsreporting.model.User;
+import com.beehyv.nmsreporting.dao.*;
+import com.beehyv.nmsreporting.model.*;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -40,6 +35,14 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private RoleDao roleDao;
 //    @Autowired
+@Autowired
+private StateDao stateDao;
+
+    @Autowired
+    private DistrictDao districtDao;
+
+    @Autowired
+    private BlockDao blockDao;
 
     @Autowired
     private LocationDao locationDao;
@@ -87,6 +90,7 @@ public class AdminServiceImpl implements AdminService {
 
 
 
+
                         String userName=Line[6];
                         if(userName==""){
                             Integer rowNum=linNumber;
@@ -109,6 +113,8 @@ public class AdminServiceImpl implements AdminService {
 
                         int loggedUserRole=loggedInUser.getRoleId().getRoleId();
 
+                        String loggedUserAccess=loggedInUser.getAccessLevel();
+                        AccessLevel loggedUserAccessLevel=AccessLevel.getLevel(loggedUserAccess);
                         String userPhone=Line[4];
                         if(userPhone==""){
                             Integer rowNum=linNumber;
@@ -168,6 +174,32 @@ public class AdminServiceImpl implements AdminService {
                         /*user.setCreatedByUser(loggedInUser);*/
 
                         List<Role> userRole=roleDao.findByRoleDescription(Line[8]);
+
+                        String State=Line[1];
+                        String District=Line[2];
+                        String Block=Line[3];
+
+
+
+                        boolean isLevel= AccessLevel.isLevel(Line[8]);
+
+                        if(!(isLevel)){
+                            Integer rowNum=linNumber;
+                            String userNameError="Please specify the access level for user";
+                            errorCreatingUsers.put(rowNum,userNameError);
+                            continue;
+                        }
+
+                        boolean isType=AccessType.isType(Line[9]);
+
+                        if(!(isType)){
+                            Integer rowNum=linNumber;
+                            String userNameError="Please specify the role for user";
+                            errorCreatingUsers.put(rowNum,userNameError);
+                            continue;
+                        }
+
+
                         if(userRole==null||userRole.size()==0){
                             Integer rowNum=linNumber;
                             String userNameError="Please specify the role of user";
@@ -176,6 +208,242 @@ public class AdminServiceImpl implements AdminService {
                         }
 
                         int userRoleId=userRole.get(0).getRoleId();
+
+                        String UserRole=AccessType.getType(Line[9]);
+
+                        AccessLevel accessLevel= AccessLevel.getLevel(Line[8]);
+
+                        if(UserRole=="ADMIN"){
+                            if((accessLevel==AccessLevel.NATIONAL)||(accessLevel==AccessLevel.STATE)){
+                                Integer rowNum=linNumber;
+                                String authorityError="You don't have authority to create this user.";
+                                errorCreatingUsers.put(rowNum,authorityError);
+                                continue;
+                            }
+                            else if(loggedUserAccessLevel==AccessLevel.DISTRICT){
+                                Integer rowNum=linNumber;
+                                String authorityError="You don't have authority to create this user.";
+                                errorCreatingUsers.put(rowNum,authorityError);
+                                continue;
+                            }
+                            else{
+                                List<State> userStateList=stateDao.findByName(State);
+                                List<District> userDistrictList=districtDao.findByName(District);
+                                District userDistrict=null;
+                                State userState=null;
+                                if(userDistrictList.size()==1){
+
+                                    userDistrict=userDistrictList.get(0);
+                                    userState=userDistrict.getStateOfDistrict();
+                                }
+                                else{
+                                    for(District district:userDistrictList){
+                                        State parent=district.getStateOfDistrict();
+                                        if((userStateList!=null)&&(userStateList.size()!=0)){
+                                            if(parent.getStateId()==userStateList.get(0).getStateId()){
+                                                userDistrict=district;
+                                                userState=parent;
+                                                break;
+                                            }
+                                        }
+
+                                    }
+                                }
+                                if(userDistrict==null){
+                                    Integer rowNum=linNumber;
+                                    String authorityError="Please enter the valid district for this user.";
+                                    errorCreatingUsers.put(rowNum,authorityError);
+                                    continue;
+                                }
+                                else {
+                                    if(loggedInUser.getStateId().getStateId()!=userState.getStateId()){
+                                        Integer rowNum=linNumber;
+                                        String authorityError="You don't have authority to create this user.";
+                                        errorCreatingUsers.put(rowNum,authorityError);
+                                        continue;
+                                    }
+                                    else {
+                                        boolean isAdminAvailable = userDao.isAdminCreated(userDistrict);
+                                        if (!(isAdminAvailable)) {
+                                            user.setAccessLevel(AccessLevel.DISTRICT.getAccessLevel());
+                                            user.setDistrictId(userDistrict);
+                                            user.setStateId(userState);
+                                        } else {
+                                            Integer rowNum = linNumber;
+                                            String authorityError = "Admin is available for this district.";
+                                            errorCreatingUsers.put(rowNum, authorityError);
+                                            continue;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if(UserRole=="USER"){
+                            if(loggedUserAccessLevel.ordinal()>accessLevel.ordinal()){
+                                Integer rowNum=linNumber;
+                                String authorityError="You don't have authority to create this user.";
+                                errorCreatingUsers.put(rowNum,authorityError);
+                                continue;
+                            }
+                            else{
+                                if(accessLevel==AccessLevel.NATIONAL){
+                                    user.setAccessLevel(AccessLevel.NATIONAL.getAccessLevel());
+                                }
+                                else if(accessLevel==AccessLevel.STATE){
+                                    user.setAccessLevel(accessLevel.getAccessLevel());
+                                    List<State> userStateList=stateDao.findByName(State);
+                                    if((userStateList==null)||(userStateList.size()==0)){
+                                        Integer rowNum=linNumber;
+                                        String authorityError="Please enter the valid State for this user.";
+                                        errorCreatingUsers.put(rowNum,authorityError);
+                                        continue;
+                                    }
+                                    else{
+                                        if(loggedUserAccessLevel==AccessLevel.STATE){
+                                            if(loggedInUser.getStateId().getStateId()!=userStateList.get(0).getStateId())
+                                            {
+                                                Integer rowNum=linNumber;
+                                                String authorityError="You don't have authority to create this user.";
+                                                errorCreatingUsers.put(rowNum,authorityError);
+                                                continue;
+                                            }
+                                            else user.setStateId(userStateList.get(0));
+                                        }
+
+                                        else user.setStateId(userStateList.get(0));
+                                    }
+                                }
+                                else if(accessLevel==AccessLevel.DISTRICT){
+                                    List<State> userStateList=stateDao.findByName(State);
+                                    List<District> userDistrictList=districtDao.findByName(District);
+                                    District userDistrict=null;
+                                    State userState=null;
+                                    if(userDistrictList.size()==1){
+                                        userDistrict=userDistrictList.get(0);
+                                        userState=userDistrict.getStateOfDistrict();
+                                    }
+                                    else{
+                                        for(District district:userDistrictList){
+                                            State parent=district.getStateOfDistrict();
+                                            if((userStateList!=null)&&(userStateList.size()!=0)){
+                                                if(parent.getStateId()==userStateList.get(0).getStateId()){
+                                                    userDistrict=district;
+                                                    userState=parent;
+                                                    break;
+                                                }
+                                            }
+
+                                        }
+                                    }
+                                    if(userDistrict==null){
+                                        Integer rowNum=linNumber;
+                                        String authorityError="Please enter the valid district for this user.";
+                                        errorCreatingUsers.put(rowNum,authorityError);
+                                        continue;
+                                    }
+                                    else {
+                                        if(((loggedUserAccessLevel==AccessLevel.STATE)&&(loggedInUser.getStateId().getStateId()!=userState.getStateId()))||((loggedUserAccessLevel==AccessLevel.DISTRICT)&&(loggedInUser.getDistrictId().getDistrictId()!=userDistrict.getDistrictId()))){
+                                            Integer rowNum=linNumber;
+                                            String authorityError="You don't have authority to create this user.";
+                                            errorCreatingUsers.put(rowNum,authorityError);
+                                            continue;
+                                        }
+                                        else {
+                                                user.setAccessLevel(AccessLevel.DISTRICT.getAccessLevel());
+                                                user.setDistrictId(userDistrict);
+                                                user.setStateId(userState);
+
+                                        }
+                                    }
+
+
+                                }
+                                else {
+                                    user.setAccessLevel(AccessLevel.BLOCK.getAccessLevel());
+                                    List<State> userStateList=stateDao.findByName(State);
+                                    List<District> userDistrictList=districtDao.findByName(District);
+                                    List<Block> userBlockList=blockDao.findByName(Block);
+                                    State userState=null;
+                                    District userDistrict=null;
+                                    Block userBlock=null;
+                                    if(userBlockList.size()==1){
+                                        userBlock= userBlockList.get(0);
+                                        userDistrict=userBlock.getDistrictOfBlock();
+                                        userState=userDistrict.getStateOfDistrict();
+
+                                    }
+                                    else if ((userBlockList.size()==0)||userBlockList==null){
+                                        Integer rowNum=linNumber;
+                                        String authorityError="Please enter the valid Block for this user.";
+                                        errorCreatingUsers.put(rowNum,authorityError);
+                                    }
+                                    else{
+                                        List<Block> commonDistrict = null;
+                                        for (Block block:userBlockList){
+                                            District parent=block.getDistrictOfBlock();
+                                            if(userDistrictList.size()>0){
+                                                for(District district:userDistrictList){
+                                                    if(parent.getDistrictId()==district.getDistrictId()){
+                                                        commonDistrict.add(block);
+                                                    }
+                                                }
+
+                                            }
+                                        }
+                                        for(Block block:commonDistrict){
+                                            State parent=block.getStateOfBlock();
+                                            if(userState!=null){
+                                                if(parent.getStateId()==userStateList.get(0).getStateId()){
+                                                    userBlock=block;
+                                                    userDistrict=userBlock.getDistrictOfBlock();
+                                                    userState=userBlock.getStateOfBlock();
+                                                    break;
+                                                }
+
+                                            }
+                                        }
+                                        if(userBlock==null){
+                                            Integer rowNum=linNumber;
+                                            String authorityError="Please enter the valid location for this user.";
+                                            errorCreatingUsers.put(rowNum,authorityError);
+                                            continue;
+                                        }
+                                        else{
+                                            if(((loggedUserAccessLevel==AccessLevel.STATE)&&(loggedInUser.getStateId().getStateId()!=userState.getStateId()))||((loggedUserAccessLevel==AccessLevel.DISTRICT)&&(loggedInUser.getDistrictId().getDistrictId()!=userDistrict.getDistrictId())))
+                                            {
+                                                Integer rowNum=linNumber;
+                                                String authorityError="You don't have authority to create this user.";
+                                                errorCreatingUsers.put(rowNum,authorityError);
+                                                continue;
+                                            }
+                                            else{
+                                                user.setBlockId(userBlock);
+                                                user.setStateId(userState);
+                                                user.setDistrictId(userDistrict);
+                                            }
+                                        }
+                                    }
+
+                                }
+
+                            }
+
+
+
+
+
+
+
+
+                        }
+
+                       /* if(userRoleId==1||userRoleId==3){
+                            Integer rowNum=linNumber;
+                            String authorityError="You don't have authority to create this user.";
+                            errorCreatingUsers.put(rowNum,authorityError);
+                            continue;
+                        }
+
                         
                         if(userRoleId==1||userRoleId==3){
                              Integer rowNum=linNumber;
@@ -184,9 +452,7 @@ public class AdminServiceImpl implements AdminService {
                             continue;
                         }
                         user.setRoleId(userRole.get(0));
-                        String State=Line[1];
-                        String District=Line[2];
-                        String Block=Line[3];
+
                         if((userRoleId==2)){
                             if(loggedUserRole<1){
                                  Integer rowNum=linNumber;
@@ -374,7 +640,7 @@ public class AdminServiceImpl implements AdminService {
                                     }
                                 }
                             }
-                        }
+                        }*/
                         userDao.saveUser(user);
 
 
@@ -668,7 +934,7 @@ public class AdminServiceImpl implements AdminService {
 
         //CSV file header
 
-        String FILE_HEADER = "Full Name, STATE, DISTRICT, BLOCK, Phone number, Email ID, UserName, Creation Date, Role";
+        String FILE_HEADER = "Full Name, STATE, DISTRICT, BLOCK, Phone number, Email ID, UserName, Creation Date, Access Level,Role";
         FileWriter fileWriter = null;
         try {
 

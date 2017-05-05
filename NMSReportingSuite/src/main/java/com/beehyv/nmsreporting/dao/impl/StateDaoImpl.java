@@ -4,6 +4,8 @@ import com.beehyv.nmsreporting.dao.AbstractDao;
 import com.beehyv.nmsreporting.dao.StateDao;
 import com.beehyv.nmsreporting.model.Location;
 import com.beehyv.nmsreporting.model.State;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
 
@@ -20,7 +22,10 @@ public class StateDaoImpl extends AbstractDao<Integer, State> implements StateDa
 
     @Override
     public List<State> findByName(String stateName) {
-        return null;
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.eq("stateName", stateName).ignoreCase());
+        return (List<State>) criteria.list();
+
     }
 
     @Override
@@ -30,11 +35,11 @@ public class StateDaoImpl extends AbstractDao<Integer, State> implements StateDa
 
     @Override
     public void saveLocation(State state) {
-
+        persist(state);
     }
 
     @Override
     public void deleteLocation(State state) {
-
+        delete(state);
     }
 }

@@ -4,15 +4,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -56,8 +48,16 @@ public class User {
 
 	@ManyToOne
 	@JoinColumn(name="block")
-	private Taluka talukaId;
-	
+	private Block blockId;
+
+	public Block getBlockId() {
+		return blockId;
+	}
+
+	public void setBlockId(Block blockId) {
+		this.blockId = blockId;
+	}
+
 	@Column(name="creation_date")
 	private Date creationDate;
 	
@@ -76,7 +76,49 @@ public class User {
 	
 	@Column(name="account_status")
 	private String accountStatus = AccountStatus.PENDING.getAccountStatus();
-	
+
+	@Enumerated(EnumType.STRING)
+	@Column(name="access_type")
+	private String accessType;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name="access_level")
+	private  String accessLevel;
+
+	public State getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(State stateId) {
+		this.stateId = stateId;
+	}
+
+	public District getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(District districtId) {
+		this.districtId = districtId;
+	}
+
+
+
+	public String getAccessLevel() {
+		return accessLevel;
+	}
+
+	public void setAccessLevel(String accessLevel) {
+		this.accessLevel = accessLevel;
+	}
+
+	public String getAccessType() {
+		return accessType;
+	}
+
+	public void setAccessType(String accessType) {
+		this.accessType = accessType;
+	}
+
 	public Integer getUserId() {
 		return userId;
 	}

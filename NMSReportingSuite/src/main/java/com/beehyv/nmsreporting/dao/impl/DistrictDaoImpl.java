@@ -4,6 +4,9 @@ import com.beehyv.nmsreporting.dao.AbstractDao;
 import com.beehyv.nmsreporting.dao.DistrictDao;
 import com.beehyv.nmsreporting.model.District;
 import com.beehyv.nmsreporting.model.Location;
+import com.beehyv.nmsreporting.model.State;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
 
@@ -18,7 +21,10 @@ public class DistrictDaoImpl extends AbstractDao<Integer, District> implements D
 
     @Override
     public List<District> findByName(String districtName) {
-        return null;
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.eq("districtName", districtName).ignoreCase());
+        return (List<District>) criteria.list();
+
     }
 
     @Override
@@ -28,11 +34,11 @@ public class DistrictDaoImpl extends AbstractDao<Integer, District> implements D
 
     @Override
     public void saveLocation(District district) {
-
+        persist(district);
     }
 
     @Override
     public void deleteLocation(District district) {
-
+        delete(district);
     }
 }
