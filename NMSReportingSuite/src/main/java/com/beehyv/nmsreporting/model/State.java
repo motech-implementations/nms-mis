@@ -13,19 +13,23 @@ import java.util.Set;
  * Created by beehyv on 4/5/17.
  */
 @Entity
-@Table(name="USER_STATE")
+@Table(name="dim_state")
 public class State {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name="state_id", columnDefinition = "TINYINT")
+    @Column(name="id", columnDefinition = "TINYINT")
     private Integer stateId;
 
     @Column(name="state_name")
     private String stateName;
 
-    @Column(name="last_modified_date", columnDefinition = "TIMESTAMP")
-    private Date lastmodifiesDate;
+
+    @Column(name="loc_id", columnDefinition = "BIGINT(20)")
+    private Long locationId;
+
+    @Column(name="last_modified", columnDefinition = "TIMESTAMP")
+    private Date lastModified;
 
     @OneToMany(cascade=CascadeType.PERSIST, fetch=FetchType.EAGER, mappedBy="stateOfDistrict")
     private Set<District> districts = new HashSet<>();
@@ -36,7 +40,21 @@ public class State {
     @OneToMany(cascade=CascadeType.PERSIST, fetch=FetchType.EAGER, mappedBy="stateOfTaluka")
     private Set<Taluka> talukas = new HashSet<>();
 
+    public Long getLocationId() {
+        return locationId;
+    }
 
+    public void setLocationId(Long locationId) {
+        this.locationId = locationId;
+    }
+
+    public Date getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
+    }
     public Set<Block> getBlocks() {
         return blocks;
     }
@@ -67,14 +85,6 @@ public class State {
 
     public void setStateName(String stateName) {
         this.stateName = stateName;
-    }
-
-    public Date getLastmodifiesDate() {
-        return lastmodifiesDate;
-    }
-
-    public void setLastmodifiesDate(Date lastmodifiesDate) {
-        this.lastmodifiesDate = lastmodifiesDate;
     }
 
     public Set<District> getDistricts() {

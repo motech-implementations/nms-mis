@@ -55,8 +55,8 @@ public class User {
 	private District districtId;
 
 	@ManyToOne
-	@JoinColumn(name="block")
-	private Taluka talukaId;
+	@JoinColumn(name="healthblock")
+	private Block blockId;
 	
 	@Column(name="creation_date")
 	private Date creationDate;
@@ -76,7 +76,31 @@ public class User {
 	
 	@Column(name="account_status")
 	private String accountStatus = AccountStatus.PENDING.getAccountStatus();
-	
+
+	public State getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(State stateId) {
+		this.stateId = stateId;
+	}
+
+	public District getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(District districtId) {
+		this.districtId = districtId;
+	}
+
+	public Block getBlockId() {
+		return blockId;
+	}
+
+	public void setBlockId(Block blockId) {
+		this.blockId = blockId;
+	}
+
 	public Integer getUserId() {
 		return userId;
 	}
