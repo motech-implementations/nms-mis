@@ -1,5 +1,6 @@
 package com.beehyv.nmsreporting.dao;
 
+import com.beehyv.nmsreporting.model.District;
 import com.beehyv.nmsreporting.model.Location;
 import com.beehyv.nmsreporting.model.Role;
 import com.beehyv.nmsreporting.model.User;
@@ -32,5 +33,5 @@ public interface UserDao {
 
     public void saveUser(User user);
 
-    public boolean isAdminCreated (Location districtId,Role roleId);
+    public boolean isAdminCreated (District districtId);
 }

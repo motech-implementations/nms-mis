@@ -15,7 +15,7 @@ public interface BlockDao {
     public List<Block> findByName(String blockName);
 
 
-    public List<Block> getChildBlocks(int blockId);
+
 
     public void saveBlock(Block block);
 

@@ -2,10 +2,7 @@ package com.beehyv.nmsreporting.dao.impl;
 
 import com.beehyv.nmsreporting.dao.AbstractDao;
 import com.beehyv.nmsreporting.dao.UserDao;
-import com.beehyv.nmsreporting.model.AccountStatus;
-import com.beehyv.nmsreporting.model.Location;
-import com.beehyv.nmsreporting.model.Role;
-import com.beehyv.nmsreporting.model.User;
+import com.beehyv.nmsreporting.model.*;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
@@ -79,17 +76,19 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
         persist(user);
     }
 
-
-    public boolean isAdminCreated(Location districtId, Role roleId) {
+    @Override
+    public boolean isAdminCreated(District districtId) {
         Criteria criteria = createEntityCriteria();
-        criteria.add(Restrictions.and(Restrictions.eq("locationId", districtId),
-                Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus()),Restrictions.eq("roleId", roleId)));
+        criteria.add(Restrictions.and(Restrictions.eq("district", districtId),
+                Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus()),Restrictions.eq("access_level",AccessLevel.DISTRICT.getAccessLevel()),Restrictions.eq("access_type",AccessType.ADMIN.getAccesType())));
         List<User> Admins=(List<User>) criteria.list();
         if(Admins==null||Admins.size()==0){
             return true;
         }
         else return false;
     }
+
+
 
 
 

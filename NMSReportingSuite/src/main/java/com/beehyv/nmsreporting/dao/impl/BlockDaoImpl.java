@@ -3,6 +3,9 @@ package com.beehyv.nmsreporting.dao.impl;
 import com.beehyv.nmsreporting.dao.AbstractDao;
 import com.beehyv.nmsreporting.dao.BlockDao;
 import com.beehyv.nmsreporting.model.Block;
+import com.beehyv.nmsreporting.model.Taluka;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
 
@@ -17,21 +20,20 @@ public class BlockDaoImpl extends AbstractDao<Integer, Block> implements BlockDa
 
     @Override
     public List<Block> findByName(String blockName) {
-        return null;
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.eq("blockName", blockName).ignoreCase());
+        return (List<Block>) criteria.list();
     }
 
-    @Override
-    public List<Block> getChildBlocks(int blockId) {
-        return null;
-    }
+
 
     @Override
     public void saveBlock(Block block) {
-
+        persist(block);
     }
 
     @Override
     public void deleteBlock(Block block) {
-
+        delete(block);
     }
 }
