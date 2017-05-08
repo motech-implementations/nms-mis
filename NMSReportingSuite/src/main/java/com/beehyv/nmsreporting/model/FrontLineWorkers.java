@@ -10,7 +10,7 @@ import java.util.Date;
 @Table(name="front_line_worker")
 public class FrontLineWorkers {
 
-    @javax.persistence.Id
+    @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="flw_id")
     private Integer flwId;

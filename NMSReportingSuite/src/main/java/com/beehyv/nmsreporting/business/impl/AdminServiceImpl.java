@@ -34,9 +34,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private RoleDao roleDao;
-//    @Autowired
-@Autowired
-private StateDao stateDao;
+
+    @Autowired
+    private StateDao stateDao;
 
     @Autowired
     private DistrictDao districtDao;

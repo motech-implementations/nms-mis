@@ -7,12 +7,14 @@ import com.beehyv.nmsreporting.model.Location;
 import com.beehyv.nmsreporting.model.State;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
  * Created by beehyv on 4/5/17.
  */
+@Repository("districtDao")
 public class DistrictDaoImpl extends AbstractDao<Integer, District> implements DistrictDao {
     @Override
     public District findByDistrictId(Integer districtId) {

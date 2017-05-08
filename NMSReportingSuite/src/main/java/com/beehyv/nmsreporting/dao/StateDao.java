@@ -1,6 +1,5 @@
 package com.beehyv.nmsreporting.dao;
 
-import com.beehyv.nmsreporting.model.Location;
 import com.beehyv.nmsreporting.model.State;
 
 import java.util.List;
@@ -10,14 +9,13 @@ import java.util.List;
  */
 public interface StateDao {
 
-    public State findByStateId(Integer stateId);
+    State findByStateId(Integer stateId);
 
-    public List<State> findByName(String stateName);
+    List<State> findByName(String stateName);
 
+    List<State> getAllStates();
 
-    public List<State> getDistricts(int stateId);
+    void saveLocation(State state);
 
-    public void saveLocation(State state);
-
-    public void deleteLocation(State state);
+    void deleteLocation(State state);
 }

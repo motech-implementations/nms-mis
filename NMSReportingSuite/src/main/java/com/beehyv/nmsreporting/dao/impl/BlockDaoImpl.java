@@ -6,12 +6,14 @@ import com.beehyv.nmsreporting.model.Block;
 import com.beehyv.nmsreporting.model.Taluka;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
  * Created by beehyv on 4/5/17.
  */
+@Repository("blockDao")
 public class BlockDaoImpl extends AbstractDao<Integer, Block> implements BlockDao {
     @Override
     public Block findByblockId(Integer blockId) {

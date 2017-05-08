@@ -2,16 +2,17 @@ package com.beehyv.nmsreporting.dao.impl;
 
 import com.beehyv.nmsreporting.dao.AbstractDao;
 import com.beehyv.nmsreporting.dao.StateDao;
-import com.beehyv.nmsreporting.model.Location;
 import com.beehyv.nmsreporting.model.State;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
  * Created by beehyv on 4/5/17.
  */
+@Repository("stateDao")
 public class StateDaoImpl extends AbstractDao<Integer, State> implements StateDao {
 
 
@@ -29,8 +30,9 @@ public class StateDaoImpl extends AbstractDao<Integer, State> implements StateDa
     }
 
     @Override
-    public List<State> getDistricts(int stateId) {
-        return null;
+    public List<State> getAllStates() {
+        Criteria criteria = createEntityCriteria();
+        return (List<State>) criteria.list();
     }
 
     @Override

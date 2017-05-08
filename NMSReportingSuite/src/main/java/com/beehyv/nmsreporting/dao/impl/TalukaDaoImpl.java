@@ -7,13 +7,15 @@ import com.beehyv.nmsreporting.model.Location;
 import com.beehyv.nmsreporting.model.Taluka;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
  * Created by beehyv on 4/5/17.
  */
-public class talukaDaoImpl extends AbstractDao<Integer, Taluka> implements TalukaDao {
+@Repository("talukaDao")
+public class TalukaDaoImpl extends AbstractDao<Integer, Taluka> implements TalukaDao {
     @Override
     public Taluka findByTalukaId(Integer talukaId) {
         return getByKey(talukaId);

@@ -67,6 +67,12 @@ public class LocationServiceImpl implements LocationService {
 //    public void deleteExistingLocation(Location location) {
 //        locationDao.deleteLocation(location);
 //    }
+    /*----------------------General----------------------*/
+
+    @Override
+    public List<State> getAllStates() {
+        return stateDao.getAllStates();
+    }
 
     /*----------------------State-------------------------*/
 

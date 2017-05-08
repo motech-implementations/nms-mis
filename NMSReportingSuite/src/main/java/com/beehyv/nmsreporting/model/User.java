@@ -69,11 +69,11 @@ public class User {
 	@Column(name="account_status")
 	private String accountStatus = AccountStatus.PENDING.getAccountStatus();
 
-	@Enumerated(EnumType.STRING)
+//	@Enumerated(EnumType.STRING)
 	@Column(name="access_type")
 	private String accessType;
 
-	@Enumerated(EnumType.STRING)
+//	@Enumerated(EnumType.STRING)
 	@Column(name="access_level")
 	private  String accessLevel;
 
