@@ -108,6 +108,11 @@ public class LocationServiceImpl implements LocationService {
         return blockDao.getBlocksOfDistrict(districtDao.findByDistrictId(districtId));
     }
 
+    @Override
+    public State getStateOfDistrict(Integer districtId) {
+        return districtDao.getStateOfDistrict(districtDao.findByDistrictId(districtId));
+    }
+
     /*----------------------Taluka-------------------------*/
 
     @Override
@@ -127,4 +132,8 @@ public class LocationServiceImpl implements LocationService {
         return blockDao.findByName(blockName).get(0);
     }
 
+    @Override
+    public District getDistrictOfBlock(Integer blockId) {
+        return blockDao.getDistrictOfBlock(blockDao.findByblockId(blockId));
+    }
 }

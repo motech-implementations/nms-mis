@@ -57,6 +57,11 @@ public class BlockDaoImpl extends AbstractDao<Integer, Block> implements BlockDa
     }
 
     @Override
+    public District getDistrictOfBlock(Block block) {
+        return block.getDistrictOfBlock();
+    }
+
+    @Override
     public void saveBlock(Block block) {
         persist(block);
     }

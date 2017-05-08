@@ -54,12 +54,22 @@ public class LocationController {
         return locationService.getChildDistricts(stateId);
     }
 
-    /*--------------------------State-----------------------------*/
+    @RequestMapping(value = {"/SoD/{districtId}"}, method = RequestMethod.GET)
+    public @ResponseBody State getStateOfDistrict(@PathVariable("districtId") Integer districtId) {
+        return locationService.getStateOfDistrict(districtId);
+    }
+
+    /*--------------------------Block-----------------------------*/
 
     @RequestMapping(value = {"/blocks/{districtId}"}, method = RequestMethod.GET)
     public @ResponseBody List<Block> getBlocksOfDistrict(@PathVariable("districtId") Integer districtId) {
         return (List<Block>) locationService.getChildBlocks(districtId);
     }
 
-    /*--------------------------State-----------------------------*/
+    @RequestMapping(value = {"/DoB/{blockId}"}, method = RequestMethod.GET)
+    public @ResponseBody District getDistrictOfBlock(@PathVariable("blockId") Integer blockId) {
+        return locationService.getDistrictOfBlock(blockId);
+    }
+
+    /*--------------------------Extra-----------------------------*/
 }

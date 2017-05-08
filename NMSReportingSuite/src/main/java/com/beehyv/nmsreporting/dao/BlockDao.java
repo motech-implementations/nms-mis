@@ -25,6 +25,8 @@ public interface BlockDao {
 
     public List<Block> getAllBlocks();
 
+    public District getDistrictOfBlock(Block block);
+
     public void saveBlock(Block block);
 
     public void deleteBlock(Block block);

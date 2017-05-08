@@ -44,6 +44,8 @@ public interface LocationService {
 
     List<Block> getChildBlocks(Integer districtId);
 
+    State getStateOfDistrict(Integer districtId);
+
     /*----------------------Taluka-------------------------*/
 
     Taluka findTalukaById(Integer talukaId);
@@ -53,5 +55,7 @@ public interface LocationService {
     Block findBlockById(Integer blockId);
 
     Block findBlockByName(String blockName);
+
+    District getDistrictOfBlock(Integer blockId);
 
 }

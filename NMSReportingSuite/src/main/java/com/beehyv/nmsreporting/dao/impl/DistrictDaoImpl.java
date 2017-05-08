@@ -43,6 +43,11 @@ public class DistrictDaoImpl extends AbstractDao<Integer, District> implements D
     }
 
     @Override
+    public State getStateOfDistrict(District district) {
+        return district.getStateOfDistrict();
+    }
+
+    @Override
     public void saveLocation(District district) {
         persist(district);
     }

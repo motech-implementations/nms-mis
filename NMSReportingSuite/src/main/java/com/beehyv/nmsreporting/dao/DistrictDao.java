@@ -19,6 +19,8 @@ public interface DistrictDao {
 
     public List<District> getAllDistricts();
 
+    public State getStateOfDistrict(District district);
+
     public void saveLocation(District district);
 
     public void deleteLocation(District district);
