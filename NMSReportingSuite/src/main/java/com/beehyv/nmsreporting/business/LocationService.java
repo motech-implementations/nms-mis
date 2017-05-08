@@ -34,13 +34,7 @@ public interface LocationService {
 
     State findStateByName(String stateName);
 
-    List<District> getChildDistricts(State state);
-
-//    public void createNewState(State state);
-//
-//    public void updateExistingState(State state);
-//
-//    public void deleteExistingState(State state);
+    List<District> getChildDistricts(Integer stateId);
 
     /*----------------------District-------------------------*/
 
@@ -48,23 +42,11 @@ public interface LocationService {
 
     District findDistrictByName(String districtName);
 
-    List<Block> getChildBlocks(District district);
-
-//    public void createNewDistrict(District district);
-//
-//    public void updateExistingDistrict(District district);
-//
-//    public void deleteExistingDistrict(District district);
+    List<Block> getChildBlocks(Integer districtId);
 
     /*----------------------Taluka-------------------------*/
 
     Taluka findTalukaById(Integer talukaId);
-
-//    public void createNewTaluka(Taluka taluka);
-//
-//    public void updateExistingTaluka(Taluka taluka);
-//
-//    public void deleteExistingTaluka(Taluka taluka);
 
     /*----------------------Block-------------------------*/
 
@@ -72,9 +54,4 @@ public interface LocationService {
 
     Block findBlockByName(String blockName);
 
-//    public void createNewBlock(Block block);
-//
-//    public void updateExistingBlock(Block block);
-//
-//    public void deleteExistingBlock(Block block);
 }

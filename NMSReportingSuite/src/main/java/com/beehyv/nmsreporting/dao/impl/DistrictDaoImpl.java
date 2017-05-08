@@ -30,8 +30,16 @@ public class DistrictDaoImpl extends AbstractDao<Integer, District> implements D
     }
 
     @Override
-    public List<District> getTalukas(int districtId) {
-        return null;
+    public List<District> getDistrictsOfState(State state) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.eq("stateOfDistrict", state));
+        return (List<District>) criteria.list();
+    }
+
+    @Override
+    public List<District> getAllDistricts() {
+        Criteria criteria = createEntityCriteria();
+        return (List<District>) criteria.list();
     }
 
     @Override

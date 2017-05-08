@@ -51,14 +51,14 @@ public class LocationController {
 
     @RequestMapping(value = {"/districts/{stateId}"}, method = RequestMethod.GET)
     public @ResponseBody List<District> getDistrictsOfState(@PathVariable("stateId") Integer stateId) {
-        return (List<District>) locationService.findStateById(stateId).getDistricts();
+        return locationService.getChildDistricts(stateId);
     }
 
     /*--------------------------State-----------------------------*/
 
     @RequestMapping(value = {"/blocks/{districtId}"}, method = RequestMethod.GET)
     public @ResponseBody List<Block> getBlocksOfDistrict(@PathVariable("districtId") Integer districtId) {
-        return (List<Block>) locationService.findDistrictById(districtId).getBlocks();
+        return (List<Block>) locationService.getChildBlocks(districtId);
     }
 
     /*--------------------------State-----------------------------*/

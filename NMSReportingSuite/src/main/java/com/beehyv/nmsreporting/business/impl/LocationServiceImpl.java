@@ -87,28 +87,9 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public List<District> getChildDistricts(State state) {
-        return (List<District>) state.getDistricts();
+    public List<District> getChildDistricts(Integer stateId) {
+        return districtDao.getDistrictsOfState(stateDao.findByStateId(stateId));
     }
-
-//    @Override
-//    public void createNewState(State state) {
-//        stateDao.saveLocation(state);
-//    }
-//
-//    @Override
-//    public void updateExistingState(State state) {
-//        State entity = stateDao.findByStateId(state.getStateId());
-//        if(entity != null) {
-//            entity.setStateId(state.getLocation());
-//            entity.setReferenceId(location.getReferenceId());
-//        }
-//    }
-//
-//    @Override
-//    public void deleteExistingState(State state) {
-//        stateDao.deleteLocation(state);
-//    }
 
     /*----------------------District-------------------------*/
 
@@ -123,24 +104,9 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public List<Block> getChildBlocks(District district) {
-        return (List<Block>) district.getBlocks();
+    public List<Block> getChildBlocks(Integer districtId) {
+        return blockDao.getBlocksOfDistrict(districtDao.findByDistrictId(districtId));
     }
-
-//    @Override
-//    public void createNewDistrict(District district) {
-//        districtDao.saveLocation(district);
-//    }
-//
-//    @Override
-//    public void updateExistingDistrict(District district) {
-//
-//    }
-//
-//    @Override
-//    public void deleteExistingDistrict(District district) {
-//        districtDao.deleteLocation(district);
-//    }
 
     /*----------------------Taluka-------------------------*/
 
@@ -148,21 +114,6 @@ public class LocationServiceImpl implements LocationService {
     public Taluka findTalukaById(Integer talukaId) {
         return talukaDao.findByTalukaId(talukaId);
     }
-
-//    @Override
-//    public void createNewTaluka(Taluka taluka) {
-//        talukaDao.saveTaluka(taluka);
-//    }
-//
-//    @Override
-//    public void updateExistingTaluka(Taluka taluka) {
-//
-//    }
-//
-//    @Override
-//    public void deleteExistingTaluka(Taluka taluka) {
-//        talukaDao.deleteTaluka(taluka);
-//    }
 
     /*----------------------Block-------------------------*/
 
@@ -176,18 +127,4 @@ public class LocationServiceImpl implements LocationService {
         return blockDao.findByName(blockName).get(0);
     }
 
-//    @Override
-//    public void createNewBlock(Block block) {
-//        blockDao.saveBlock(block);
-//    }
-//
-//    @Override
-//    public void updateExistingBlock(Block block) {
-//
-//    }
-//
-//    @Override
-//    public void deleteExistingBlock(Block block) {
-//        blockDao.deleteBlock(block);
-//    }
 }

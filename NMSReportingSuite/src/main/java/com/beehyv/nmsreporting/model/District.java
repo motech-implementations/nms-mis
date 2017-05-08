@@ -29,12 +29,15 @@ public class District {
     @Column(name="loc_id", columnDefinition = "BIGINT(20)")
     private Long locationId;
 
-    @OneToMany(cascade=CascadeType.PERSIST, fetch=FetchType.EAGER, mappedBy="districtOfBlock")
+    @JsonIgnore
+    @OneToMany(cascade=CascadeType.PERSIST, fetch=FetchType.LAZY, mappedBy="districtOfBlock")
     private Set<Block> blocks = new HashSet<>();
 
-    @OneToMany(cascade=CascadeType.PERSIST, fetch=FetchType.EAGER, mappedBy="districtOfTaluka")
+    @JsonIgnore
+    @OneToMany(cascade=CascadeType.PERSIST, fetch=FetchType.LAZY, mappedBy="districtOfTaluka")
     private Set<Taluka> talukas = new HashSet<>();
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="state_id", columnDefinition = "TINYINT")
     private State stateOfDistrict;

@@ -31,13 +31,16 @@ public class State {
     @Column(name="last_modified", columnDefinition = "TIMESTAMP")
     private Date lastModified;
 
-    @OneToMany(cascade=CascadeType.PERSIST, fetch=FetchType.EAGER, mappedBy="stateOfDistrict")
+    @JsonIgnore
+    @OneToMany(cascade=CascadeType.PERSIST, fetch=FetchType.LAZY, mappedBy="stateOfDistrict")
     private Set<District> districts = new HashSet<>();
 
-    @OneToMany(cascade=CascadeType.PERSIST, fetch=FetchType.EAGER, mappedBy="stateOfBlock")
+    @JsonIgnore
+    @OneToMany(cascade=CascadeType.PERSIST, fetch=FetchType.LAZY, mappedBy="stateOfBlock")
     private Set<Block> blocks = new HashSet<>();
 
-    @OneToMany(cascade=CascadeType.PERSIST, fetch=FetchType.EAGER, mappedBy="stateOfTaluka")
+    @JsonIgnore
+    @OneToMany(cascade=CascadeType.PERSIST, fetch=FetchType.LAZY, mappedBy="stateOfTaluka")
     private Set<Taluka> talukas = new HashSet<>();
 
     public Long getLocationId() {

@@ -4,6 +4,7 @@ import com.beehyv.nmsreporting.dao.AbstractDao;
 import com.beehyv.nmsreporting.dao.TalukaDao;
 import com.beehyv.nmsreporting.model.District;
 import com.beehyv.nmsreporting.model.Location;
+import com.beehyv.nmsreporting.model.State;
 import com.beehyv.nmsreporting.model.Taluka;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
@@ -29,8 +30,23 @@ public class TalukaDaoImpl extends AbstractDao<Integer, Taluka> implements Taluk
     }
 
     @Override
-    public List<Taluka> getChildTalukas(int talukaId) {
-        return null;
+    public List<Taluka> getTalukasOfDistrict(District district) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.eq("districtOfTaluka", district));
+        return (List<Taluka>) criteria.list();
+    }
+
+    @Override
+    public List<Taluka> getTalukasOfState(State state) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.eq("stateOfTaluka", state));
+        return (List<Taluka>) criteria.list();
+    }
+
+    @Override
+    public List<Taluka> getAllTalukas() {
+        Criteria criteria = createEntityCriteria();
+        return (List<Taluka>) criteria.list();
     }
 
     @Override

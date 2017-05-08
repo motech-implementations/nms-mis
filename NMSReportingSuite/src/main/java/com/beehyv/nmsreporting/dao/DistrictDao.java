@@ -15,8 +15,9 @@ public interface DistrictDao {
 
     public List<District> findByName(String districtName);
 
+    public List<District> getDistrictsOfState(State state);
 
-    public List<District> getTalukas(int districtId);
+    public List<District> getAllDistricts();
 
     public void saveLocation(District district);
 
