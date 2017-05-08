@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.beehyv.nmsreporting.enums.AccountStatus;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 

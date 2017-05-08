@@ -1,4 +1,4 @@
-package com.beehyv.nmsreporting.model;
+package com.beehyv.nmsreporting.enums;
 
 /**
  * Created by beehyv on 5/5/17.
