@@ -39,6 +39,18 @@
 					return locations;
 				},
 
+				getStates: function(){
+					return $http.get(backend_root + 'nms/location/states');
+				},
+
+				getDistricts: function(stateId){
+					return $http.get(backend_root + 'nms/location/districts/' + stateId);
+				},
+
+				getBlocks: function(districtId){
+					return $http.get(backend_root + 'nms/location/blocks/' + districtId);
+				},
+
 				getChildLocations: function(locId){
 					if(locId == null){
 						locId = 1;
@@ -74,9 +86,12 @@
 				createUserSubmitDto: function(newUser){
 					$http({
 						method  : 'post',
-						url     : 'http://localhost:8080/NMSReportingSuite/nms/user/create-new',
+						url     : 'http://localhost:8080/NMSReportingSuite/nms/user/createFromDto',
 						data    : newUser, //forms user object
-						headers : {'Content-Type': 'application/json'} 
+						headers : {
+							'Content-Type': 'application/json', 
+							'Access-Control-Allow-Origin' : '*', 
+							'Access-Control-Allow-Credentials' : true} 
 					});
 				}
 

@@ -69,9 +69,9 @@ public class User {
 	@Column(name="account_status")
 	private String accountStatus = AccountStatus.PENDING.getAccountStatus();
 
-//	@Enumerated(EnumType.STRING)
-	@Column(name="access_type")
-	private String accessType;
+////	@Enumerated(EnumType.STRING)
+//	@Column(name="access_type")
+//	private String accessType;
 
 //	@Enumerated(EnumType.STRING)
 	@Column(name="access_level")
@@ -102,13 +102,13 @@ public class User {
 		this.accessLevel = accessLevel;
 	}
 
-	public String getAccessType() {
-		return accessType;
-	}
-
-	public void setAccessType(String accessType) {
-		this.accessType = accessType;
-	}
+//	public String getAccessType() {
+//		return accessType;
+//	}
+//
+//	public void setAccessType(String accessType) {
+//		this.accessType = accessType;
+//	}
 
 	public Block getBlockId() {
 		return blockId;

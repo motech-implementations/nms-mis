@@ -154,38 +154,16 @@ public class UserController {
 //        modificationTrackerService.saveModification(modification);
     }
 
-    private String getAttr(String str){
-        return str.split("=")[1];
+    @RequestMapping(value={"/userNameAvailable/{username}"})
+    public @ResponseBody Boolean userNameAvailable(@PathVariable("username") String username) {
+        System.out.println(username);
+        return userService.findUserByUsername(username) != null;
     }
 
-    @RequestMapping(value = {"/create-new"}, method = RequestMethod.POST)
-    public void userDto(@RequestBody String user1) {
-
-
-        User user = new User();
-        /*
-        user.setFullName(user1.getName());
-        user.setUsername(user1.getUsername());
-        user.setEmailId(user1.getEmail());
-        user.setPhoneNumber(user1.getPhoneNumber());
-        user.setRoleId(roleService.findRoleByRoleDesc(user1.getAccessType()));
-        user.setAccountStatus("ACTIVE");
-        user.setCreatedByUser(userService.getCurrentUser());
-        String locId = "";
-        if(user1.getAccessLevel().equalsIgnoreCase("block")) {
-            locId = user1.getBlock();
-        } else if(user1.getAccessLevel().equalsIgnoreCase("district")) {
-            locId = user1.getDistrict();
-        } else if(user1.getAccessLevel().equalsIgnoreCase("state")) {
-            locId = user1.getState();
-        } else {
-            locId = "India";
-        }
-        user.setLocationId(locationService.findLocationByName(locId));
-        */
-        user1 = user1.replace("+", " ").replace("%40", "@");
-        System.out.println(user1);
-        String[] attrs = user1.split("&");
+    @RequestMapping(value = {"/createFromDto"}, method = RequestMethod.POST)
+    public String createFromDto(@RequestBody String userDto) {
+        userDto = userDto.replace("+", " ").replace("%40", "@").replace("string%3A", "");
+        String[] attrs = userDto.split("&");
 
         HashMap<String, String> userMap = new HashMap<>();
         for(String attr : attrs){
@@ -193,52 +171,43 @@ public class UserController {
             userMap.put(arr[0], arr[1]);
         }
 
-        user.setUsername(userMap.get("username"));
-        user.setFullName(userMap.get("name").replace("+", " "));
-        user.setPhoneNumber(userMap.get("phoneNumber"));
-        user.setEmailId(userMap.get("email").replace("%40", "@"));
-        user.setAccountStatus("ACTIVE");
-        user.setCreatedByUser(userService.getCurrentUser());
-        user.setCreationDate(new java.util.Date());
-        user.setRoleId(roleService.findRoleByRoleId(Integer.parseInt(userMap.get("accessType"))));
-        user.setPassword(userMap.get("phoneNumber"));
-        String locId = "";
-        if(userMap.get("accessLevel").equalsIgnoreCase("block")) {
-            locId = userMap.get("block");
-        } else if(userMap.get("accessLevel").equalsIgnoreCase("district")) {
-            locId = userMap.get("district");
-        } else if(userMap.get("accessLevel").equalsIgnoreCase("state")) {
-            locId = userMap.get("state");
-        } else {
-            locId = "1";
+        if(userService.findUserByUsername(userMap.get("username")) != null){
+            System.out.println("user exists");
+            return "redirect:http://127.0.0.1:4040/index";
         }
-        user.setLocationId(locationService.findLocationById(Integer.parseInt(locId)));
 
-        userService.createNewUser(user);
-
-        /*
-        user.setUsername(user1.getUsername());
-        user.setFullName(user1.getName());
-        user.setPhoneNumber(user1.getPhoneNumber());
-        user.setEmailId(user1.getEmail());
-        user.setAccountStatus("ACTIVE");
-        user.setCreatedByUser(userService.getCurrentUser());
-        user.setCreationDate(new java.util.Date());
-        user.setRoleId(roleService.findRoleByRoleDesc(user1.getAccessType()));
-        user.setPassword(user1.getPhoneNumber());
-        String locName = "";
-        if(user1.getAccessLevel().equalsIgnoreCase("block")) {
-            locName = user1.getBlock();
-        } else if(user1.getAccessLevel().equalsIgnoreCase("district")) {
-            locName = user1.getDistrict();
-        } else if(user1.getAccessLevel().equalsIgnoreCase("state")) {
-            locName = user1.getState();
-        } else {
-            locName = "national";
+        User newUser = new User();
+        newUser.setFullName(userMap.get("name"));
+        newUser.setUsername(userMap.get("username"));
+        newUser.setPhoneNumber(userMap.get("phoneNumber"));
+        newUser.setEmailId(userMap.get("email"));
+        newUser.setAccessLevel(userMap.get("accessLevel").toUpperCase());
+        newUser.setPassword(userMap.get("phoneNumber"));
+        try{
+            newUser.setStateId(locationService.findStateById(Integer.parseInt(userMap.get("state"))));
+        }catch (Exception e){
+            newUser.setStateId(null);
         }
-        user.setLocationId(locationService.findLocationByName(locName));
 
-        userService.createNewUser(user);*/
+        try{
+            newUser.setDistrictId(locationService.findDistrictById(Integer.parseInt(userMap.get("district"))));
+        }catch (Exception e){
+            newUser.setDistrictId(null);
+        }
+
+        try{
+            newUser.setBlockId(locationService.findBlockById(Integer.parseInt(userMap.get("block"))));
+        }catch (Exception e){
+            newUser.setDistrictId(null);
+        }
+        newUser.setRoleId(roleService.findRoleByRoleId(Integer.parseInt(userMap.get("accessType"))));
+        newUser.setAccountStatus(AccountStatus.PENDING.getAccountStatus());
+        newUser.setCreatedByUser(getCurrentUser());
+        newUser.setCreationDate(new java.util.Date());
+
+        userService.createNewUser(newUser);
+
+        return "redirect:http://127.0.0.1:4040/index";
     }
 
     @RequestMapping(value = {"/update-user"}, method = RequestMethod.POST)
