@@ -1,4 +1,4 @@
-package com.beehyv.nmsreporting.model;
+package com.beehyv.nmsreporting.enums;
 
 public enum AccountStatus {
 	ACTIVE("ACTIVE"),

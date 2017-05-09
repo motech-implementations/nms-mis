@@ -4,7 +4,7 @@ import com.beehyv.nmsreporting.business.UserService;
 import com.beehyv.nmsreporting.dao.LocationDao;
 import com.beehyv.nmsreporting.dao.RoleDao;
 import com.beehyv.nmsreporting.dao.UserDao;
-import com.beehyv.nmsreporting.model.AccountStatus;
+import com.beehyv.nmsreporting.enums.AccountStatus;
 import com.beehyv.nmsreporting.model.Location;
 import com.beehyv.nmsreporting.model.User;
 import org.apache.shiro.SecurityUtils;

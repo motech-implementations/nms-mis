@@ -1,5 +1,7 @@
 package com.beehyv.nmsreporting.model;
 
+import com.beehyv.nmsreporting.enums.ModificationType;
+
 import java.sql.Date;
 
 import javax.persistence.Column;

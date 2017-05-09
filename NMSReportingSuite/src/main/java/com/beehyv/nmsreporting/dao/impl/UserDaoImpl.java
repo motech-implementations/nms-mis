@@ -2,6 +2,9 @@ package com.beehyv.nmsreporting.dao.impl;
 
 import com.beehyv.nmsreporting.dao.AbstractDao;
 import com.beehyv.nmsreporting.dao.UserDao;
+import com.beehyv.nmsreporting.enums.AccessLevel;
+import com.beehyv.nmsreporting.enums.AccessType;
+import com.beehyv.nmsreporting.enums.AccountStatus;
 import com.beehyv.nmsreporting.model.*;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
@@ -80,7 +83,7 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
     public boolean isAdminCreated(District districtId) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.and(Restrictions.eq("district", districtId),
-                Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus()),Restrictions.eq("access_level",AccessLevel.DISTRICT.getAccessLevel()),Restrictions.eq("access_type",AccessType.ADMIN.getAccesType())));
+                Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus()),Restrictions.eq("access_level", AccessLevel.DISTRICT.getAccessLevel()),Restrictions.eq("access_type", AccessType.ADMIN.getAccesType())));
         List<User> Admins=(List<User>) criteria.list();
         if(Admins==null||Admins.size()==0){
             return true;
