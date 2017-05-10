@@ -9,7 +9,6 @@
 			$scope.numPerPageList = [10, 20];
 
 			$scope.init = function(){
-				$scope.headers = UserTableFactory.headers();
 				$scope.currentPageNo = 1;
 				$scope.numPerPage = $scope.numPerPageList[0];
 			}
