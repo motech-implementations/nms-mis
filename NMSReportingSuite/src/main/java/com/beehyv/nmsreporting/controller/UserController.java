@@ -41,9 +41,14 @@ public class UserController {
         return userService.findAllActiveUsers();
     }
 
-    @RequestMapping(value={"/list/{locationId}"})
-    public @ResponseBody List<User> getUsersByLocation(@PathVariable("locationId") Integer locationId) {
-        return userService.findAllActiveUsersByLocation(locationId);
+//    @RequestMapping(value={"/list/{locationId}"})
+//    public @ResponseBody List<User> getUsersByLocation(@PathVariable("locationId") Integer locationId) {
+//        return userService.findAllActiveUsersByLocation(locationId);
+//    }
+
+    @RequestMapping(value={"/myUserList"})
+    public @ResponseBody List<User> getMyUsers() {
+        return userService.findMyUsers(userService.getCurrentUser());
     }
 
     @RequestMapping(value={"/roles"})
@@ -57,10 +62,10 @@ public class UserController {
     }
 
     //To be changed
-    @RequestMapping(value={"/tableList/{locationId}"})
-    public @ResponseBody List<UserDto> getTableList(@PathVariable("locationId") Integer locationId) {
+    @RequestMapping(value={"/tableList"})
+    public @ResponseBody List<UserDto> getTableList() {
         List<UserDto> tabDto = new ArrayList<>();
-        List<User> tabUsers = userService.findAllActiveUsers();
+        List<User> tabUsers = userService.findMyUsers(userService.getCurrentUser());
         String[] levels = {"National", "State", "District", "Block"};
         for(User user: tabUsers){
             UserDto user1 = new UserDto();
@@ -169,7 +174,7 @@ public class UserController {
         newUser.setPhoneNumber(userMap.get("phoneNumber"));
         newUser.setEmailId(userMap.get("email"));
         newUser.setAccessLevel(userMap.get("accessLevel").toUpperCase());
-        newUser.setPassword(userMap.get("phoneNumber"));
+        newUser.setPassword(userMap.get("username"));
         try{
             newUser.setStateId(locationService.findStateById(Integer.parseInt(userMap.get("state"))));
         }catch (Exception e){
@@ -189,7 +194,7 @@ public class UserController {
         }
         newUser.setRoleId(roleService.findRoleByRoleId(Integer.parseInt(userMap.get("accessType"))));
         newUser.setAccountStatus(AccountStatus.PENDING.getAccountStatus());
-        newUser.setCreatedByUser(getCurrentUser());
+        newUser.setCreatedByUser(userService.getCurrentUser());
         newUser.setCreationDate(new java.util.Date());
 
         userService.createNewUser(newUser);

@@ -1,11 +1,8 @@
 package com.beehyv.nmsreporting.business.impl;
 
 import com.beehyv.nmsreporting.business.UserService;
-import com.beehyv.nmsreporting.dao.LocationDao;
-import com.beehyv.nmsreporting.dao.RoleDao;
-import com.beehyv.nmsreporting.dao.UserDao;
+import com.beehyv.nmsreporting.dao.*;
 import com.beehyv.nmsreporting.enums.AccountStatus;
-import com.beehyv.nmsreporting.model.Location;
 import com.beehyv.nmsreporting.model.User;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +10,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.sql.Date;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by beehyv on 15/3/17.
@@ -26,7 +24,13 @@ public class UserServiceImpl implements UserService{
     private UserDao userDao;
 
     @Autowired
-    private LocationDao locationDao;
+    private StateDao stateDao;
+
+    @Autowired
+    private DistrictDao districtDao;
+
+    @Autowired
+    private BlockDao blockDao;
 
     @Autowired
     private RoleDao roleDao;
@@ -34,18 +38,22 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Override
     public User findUserByUserId(Integer userId) {
         return userDao.findByUserId(userId);
     }
 
+    @Override
     public User findUserByUsername(String username) {
         return userDao.findByUserName(username);
     }
 
+    @Override
     public User findUserByEmailId(String emailId) {
         return userDao.findByEmailId(emailId);
     }
 
+    @Override
     public User getCurrentUser() {
         final Integer currentUserId = (Integer) SecurityUtils.getSubject().getPrincipal();
         if(currentUserId != null) {
@@ -55,52 +63,58 @@ public class UserServiceImpl implements UserService{
         }
     }
 
+    @Override
     public List<User> findUsersByPhoneNumber(String phoneNumber) {
         return userDao.findByPhoneNumber(phoneNumber);
     }
 
-    public List<User> findUsersByLocation(Integer locationId) {
-        return userDao.findByLocation(locationDao.findByLocationId(locationId));
-    }
-
+    @Override
     public List<User> findUsersByCreationDate(Date creationDate) {
         return userDao.findByCreationDate(creationDate);
     }
 
+    @Override
     public List<User> findAllActiveUsers() {
-        return userDao.getAllActiveUsers();
+        return userDao.getActiveUsers();
     }
 
-    public List<User> findAllActiveUsersByLocation(Integer locationId) {
-        List<Location> subLocations = locationDao.getAllSubLocations(locationDao.findByLocationId(locationId));
-        List<User> listOfUsersByLocation = new ArrayList<>();
-
-        for(Location location: subLocations) {
-            listOfUsersByLocation.addAll(userDao.findByLocation(location));
-        }
-
-        Collections.sort(listOfUsersByLocation, new Comparator<User>() {
-            @Override
-            public int compare(User o1, User o2) {
-                return o1.getUserId()-o2.getUserId();
-            }
-        });
-        return listOfUsersByLocation;
-    }
-
+    @Override
     public List<User> findAllActiveUsersByRole(Integer roleId) {
         return userDao.getUsersByRole(roleDao.findByRoleId(roleId));
     }
 
+    @Override
     public List<User> findUsersByAccountStatus(String accountStatus) {
         return userDao.getUsersByAccountStatus(accountStatus);
     }
 
+    @Override
+    public List<User> findMyUsers(User currentUser) {
+
+        String accessLevel = "NATIONAL";
+        if(accessLevel.equalsIgnoreCase("State")){
+            return userDao.getUsersByLocation("stateId", currentUser.getStateId());
+        }
+        else if(accessLevel.equalsIgnoreCase("District")){
+            return userDao.getUsersByLocation("districtId", currentUser.getDistrictId());
+        }
+        else if(accessLevel.equalsIgnoreCase("Block")){
+            return userDao.getUsersByLocation("blockId", currentUser.getBlockId());
+        }
+        else if(accessLevel.equalsIgnoreCase("National")){
+            return userDao.getAllUsers();
+        }
+        else
+            return new ArrayList<User>();
+    }
+
+    @Override
     public void createNewUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDao.saveUser(user);
     }
 
+    @Override
     public void updateExistingUser(User user) {
         User entity = userDao.findByUserId(user.getUserId());
         if(entity != null) {
@@ -118,6 +132,7 @@ public class UserServiceImpl implements UserService{
         }
     }
 
+    @Override
     public void deleteExistingUser(User user) {
         User entity = userDao.findByUserId(user.getUserId());
         if(entity != null) {
@@ -125,6 +140,7 @@ public class UserServiceImpl implements UserService{
         }
     }
 
+    @Override
     public boolean isUsernameUnique(String username, Integer userId) {
         User user = userDao.findByUserName(username);
         return (user == null || ((userId != null) && (user.getUserId() == userId)));

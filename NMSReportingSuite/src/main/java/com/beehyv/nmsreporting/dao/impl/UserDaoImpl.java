@@ -10,7 +10,8 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,6 +19,8 @@ import java.util.List;
  */
 @Repository("userDao")
 public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
+
+    @Override
     public User findByUserId(Integer userId) {
         return getByKey(userId);
     }
@@ -29,6 +32,7 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
         return (User) criteria.uniqueResult();
     }
 
+    @Override
     public User findByEmailId(String emailId) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.and(Restrictions.eq("emailId", emailId),
@@ -36,6 +40,7 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
         return (User) criteria.uniqueResult();
     }
 
+    @Override
     public List<User> findByPhoneNumber(String phoneNumber) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.and(Restrictions.eq("phoneNumber", phoneNumber),
@@ -43,31 +48,34 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
         return (List<User>) criteria.list();
     }
 
-    public List<User> findByLocation(Location locationId) {
-        Criteria criteria = createEntityCriteria();
-        criteria.add(Restrictions.and(Restrictions.eq("locationId", locationId),
-                Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus())));
-        return (List<User>) criteria.list();
-    }
-
+    @Override
     public List<User> findByCreationDate(Date creationDate) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.eq("creationDate", creationDate));
         return (List<User>) criteria.list();
     }
 
-    public List<User> getAllActiveUsers() {
+    @Override
+    public List<User> getActiveUsers() {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus()));
         return (List<User>) criteria.list();
     }
 
+    @Override
+    public List<User> getAllUsers() {
+        Criteria criteria = createEntityCriteria();
+        return (List<User>) criteria.list();
+    }
+
+    @Override
     public List<User> getUsersByAccountStatus(String accountStatus) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.eq("accountStatus", accountStatus));
         return (List<User>) criteria.list();
     }
 
+    @Override
     public List<User> getUsersByRole(Role roleId) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.and(Restrictions.eq("roleId", roleId),
@@ -75,6 +83,14 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
         return (List<User>) criteria.list();
     }
 
+    @Override
+    public <E> List<User> getUsersByLocation(String propertyName, E location) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.eq(propertyName, location));
+        return (List<User>) criteria.list();
+    }
+
+    @Override
     public void saveUser(User user) {
         persist(user);
     }
@@ -90,9 +106,5 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
         }
         else return false;
     }
-
-
-
-
 
 }
