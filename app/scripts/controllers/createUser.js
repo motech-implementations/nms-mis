@@ -9,12 +9,6 @@
 				$scope.accessTypeList = UserFormFactory.getRoles();
 			});
 
-			// UserFormFactory.downloadCreator()
-			// .then(function(result){
-			// 	UserFormFactory.setCreator(result.data)
-			// 	$scope.newUser.createdByUser = UserFormFactory.getCreator();
-			// })
-
 			$scope.getStates = function(){
 				return UserFormFactory.getStates()
 				.then(function(result){
@@ -41,33 +35,7 @@
 
 			$scope.accessLevelList = ["National", "State", "District", "Block"];
 
-			$scope.newUser = {
-				// /*int*/ id;
-			 //    /*String*/ name;
-			 //    /*String*/ username;
-			 //    /*String*/ phoneNumber;
-			 //    /*String*/ email;
-			 //    /*String*/ accessType;
-			 //    /*String*/ accessLevel;
-			 //    /*String*/ state= "";
-			 //    /*String*/ district= "";
-			 //    /*String*/ block= "";
-			 //    /*boolean*/ createdBy;
-
-			 /*
-			 User: {
-				  "name": "asdfas",
-				  "username": "sadfsaf",
-				  "accessType": "2",
-				  "accessLevel": "District",
-				  "state": "1",
-				  "district": "1",
-				  "block": null,
-				  "email": "safsdfas@fasf",
-				  "phoneNumber": "1111111111"
-}
-*/
-			};
+			$scope.newUser = {};
 			
 
 			$scope.getAccessLevel = function(level){

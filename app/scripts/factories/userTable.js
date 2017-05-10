@@ -9,7 +9,7 @@
 			// })
 			return {
 				getUsers: function() {
-					//return $http.get(backend_root + 'nms/user/tableList/1')
+					// return $http.get(backend_root + 'nms/user/tableList/1')
 					return $http.get('newUser.json');
 				},
 				setUsers: function(values){

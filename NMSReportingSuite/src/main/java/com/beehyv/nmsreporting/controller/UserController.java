@@ -5,19 +5,16 @@ import com.beehyv.nmsreporting.business.ModificationTrackerService;
 import com.beehyv.nmsreporting.business.RoleService;
 import com.beehyv.nmsreporting.business.UserService;
 import com.beehyv.nmsreporting.dto.UserDto;
-import com.beehyv.nmsreporting.model.*;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.beehyv.nmsreporting.enums.AccountStatus;
+import com.beehyv.nmsreporting.model.Role;
+import com.beehyv.nmsreporting.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -63,8 +60,7 @@ public class UserController {
     @RequestMapping(value={"/tableList/{locationId}"})
     public @ResponseBody List<UserDto> getTableList(@PathVariable("locationId") Integer locationId) {
         List<UserDto> tabDto = new ArrayList<>();
-        List<Location> tabLocation;
-        List<User> tabUsers = userService.findAllActiveUsersByLocation(locationId);
+        List<User> tabUsers = userService.findAllActiveUsers();
         String[] levels = {"National", "State", "District", "Block"};
         for(User user: tabUsers){
             UserDto user1 = new UserDto();
@@ -73,24 +69,21 @@ public class UserController {
             user1.setUsername(user.getUsername());
             user1.setEmail(user.getEmailId());
             user1.setPhoneNumber(user.getPhoneNumber());
-            int x = 0;
-            tabLocation = new ArrayList<>();
-            Location loc = user.getLocationId();
-            while(loc.getReferenceId() != null){
-                tabLocation.add(loc);
-                loc = loc.getReferenceId();
-                x++;
+            user1.setAccessLevel(user.getAccessLevel());
+            try {
+                user1.setState(user.getStateId().getStateName());
+            } catch(NullPointerException e){
+                user1.setState("");
             }
-            user1.setAccessLevel(levels[x]);
-            Collections.reverse(tabLocation);
-            if(x>=1){
-                user1.setState(tabLocation.get(0).getLocation());
+            try {
+                user1.setDistrict(user.getDistrictId().getDistrictName());
+            } catch(NullPointerException e){
+                user1.setDistrict("");
             }
-            if(x>=2){
-                user1.setDistrict(tabLocation.get(1).getLocation());
-            }
-            if(x>=3){
-                user1.setBlock(tabLocation.get(2).getLocation());
+            try {
+                user1.setBlock(user.getBlockId().getBlockName());
+            } catch(NullPointerException e){
+                user1.setBlock("");
             }
             user1.setAccessType(user.getRoleId().getRoleDescription());
             user1.setCreatedBy(true);
@@ -100,17 +93,14 @@ public class UserController {
         return tabDto;
     }
 
-//    @RequestMapping(value={"/accessLevel/{userId}"})
-//    public @ResponseBody Integer getUserAccessLevel(@PathVariable("userId") Integer userId) {
-//        User usr = userService.findUserByUserId(userId);
-//
-//        return x;
-//    }
+    @RequestMapping(value={"/user/{userId}"})
+    public @ResponseBody User getUserById(@PathVariable("userId") Integer userId) {
+        return userService.findUserByUserId(userId);
+    }
 
     @RequestMapping(value={"/dto/{userId}"})
     public @ResponseBody UserDto getUserDto(@PathVariable("userId") Integer userId) {
         User user = userService.findUserByUserId(userId);
-        List<Location> tabLocation;
         String[] levels = {"National", "State", "District", "Block"};
         UserDto user1 = new UserDto();
         user1.setId(user.getUserId());
@@ -118,24 +108,21 @@ public class UserController {
         user1.setUsername(user.getUsername());
         user1.setEmail(user.getEmailId());
         user1.setPhoneNumber(user.getPhoneNumber());
-        int x = 0;
-        tabLocation = new ArrayList<>();
-        Location loc = user.getLocationId();
-        while(loc.getReferenceId() != null){
-            tabLocation.add(loc);
-            loc = loc.getReferenceId();
-            x++;
+        user1.setAccessLevel(user.getAccessLevel());
+        try {
+            user1.setState(user.getStateId().getStateName());
+        } catch(NullPointerException e){
+            user1.setState("");
         }
-        user1.setAccessLevel(levels[x]);
-        Collections.reverse(tabLocation);
-        if(x>=1){
-            user1.setState(tabLocation.get(0).getLocation());
+        try {
+            user1.setDistrict(user.getDistrictId().getDistrictName());
+        } catch(NullPointerException e){
+            user1.setDistrict("");
         }
-        if(x>=2){
-            user1.setDistrict(tabLocation.get(1).getLocation());
-        }
-        if(x>=3){
-            user1.setBlock(tabLocation.get(2).getLocation());
+        try {
+            user1.setBlock(user.getBlockId().getBlockName());
+        } catch(NullPointerException e){
+            user1.setBlock("");
         }
         user1.setAccessType(user.getRoleId().getRoleDescription());
         user1.setCreatedBy(true);
@@ -211,7 +198,7 @@ public class UserController {
     }
 
     @RequestMapping(value = {"/update-user"}, method = RequestMethod.POST)
-    public void updateExistingUser(@RequestBody String userDtoString) {
+    public String updateExistingUser(@RequestBody String userDto) {
 //        ObjectMapper mapper = new ObjectMapper();
 //        JsonNode node = null;
 //        try {
@@ -221,43 +208,51 @@ public class UserController {
 //        }
 
 //        UserDto userDto = mapper.convertValue(node.get("user"), UserDto.class);
-        userDtoString = userDtoString.replace("+", " ").replace("%40", "@");
-        System.out.println("asdfsadfsa     " + userDtoString);
-
-        String[] attrs = userDtoString.split("&");
-
+        userDto = userDto.replace("+", " ").replace("%40", "@").replace("string%3A", "");
+        String[] attrs = userDto.split("&");
         HashMap<String, String> userMap = new HashMap<>();
         for(String attr : attrs){
             String[] arr = attr.split("=");
             userMap.put(arr[0], arr[1]);
         }
+//
+//        for(String key : userMap.keySet()){
+//            System.out.println(key + " : " + userMap.get(key));
+//        }
 
-        User user = userService.findUserByUsername(userMap.get("username"));
+
+        User user = userService.findUserByUserId(Integer.parseInt(userMap.get("id")));
 
         user.setFullName(userMap.get("name"));
         user.setPhoneNumber(userMap.get("phoneNumber"));
         user.setEmailId(userMap.get("email"));
-        user.setAccountStatus("ACTIVE");
-        user.setCreatedByUser(userService.getCurrentUser());
-        user.setCreationDate(new java.util.Date());
+        user.setAccessLevel(userMap.get("accessLevel"));
         user.setRoleId(roleService.findRoleByRoleId(Integer.parseInt(userMap.get("accessType"))));
-        user.setPassword(userMap.get("phoneNumber"));
-        String locId = "";
-        if(userMap.get("accessLevel").equalsIgnoreCase("block")) {
-            locId = userMap.get("block");
-        } else if(userMap.get("accessLevel").equalsIgnoreCase("district")) {
-            locId = userMap.get("district");
-        } else if(userMap.get("accessLevel").equalsIgnoreCase("state")) {
-            locId = userMap.get("state");
-        } else {
-            locId = "1";
-        }
-        user.setLocationId(locationService.findLocationById(Integer.parseInt(locId)));
 
+        try{
+            user.setStateId(locationService.findStateById(Integer.parseInt(userMap.get("state"))));
+        }catch (Exception e){
+            user.setStateId(null);
+        }
+
+        try{
+            user.setDistrictId(locationService.findDistrictById(Integer.parseInt(userMap.get("district"))));
+        }catch (Exception e){
+            user.setDistrictId(null);
+        }
+
+        try{
+            user.setBlockId(locationService.findBlockById(Integer.parseInt(userMap.get("block"))));
+        }catch (Exception e){
+            user.setDistrictId(null);
+        }
         userService.updateExistingUser(user);
 
+        for(String key : userMap.keySet()){
+            System.out.println(key + " : " + userMap.get(key));
+        }
 
-//        userService.updateExistingUser(user);
+        return "redirect:http://127.0.0.1:4040/index";
 
 //        String trackModification = mapper.convertValue(node.get("modification"), String.class);
 //
@@ -269,6 +264,40 @@ public class UserController {
 //        modification.setModificationDescription(trackModification);
 //        modificationTrackerService.saveModification(modification);
     }
+/*
+    @CrossOrigin
+    @RequestMapping(value = {"/update-user-2"}, method = RequestMethod.POST)
+    public String updateExistingUser2(@RequestBody UserDto userDto) {
+        System.out.println(userDto.getName() + "**********************");
+        User user = userService.findUserByUserId(userDto.getId());
+        user.setFullName(userDto.getName());
+        user.setPhoneNumber(userDto.getPhoneNumber());
+        user.setEmailId(userDto.getEmail());
+        user.setAccessLevel(userDto.getAccessLevel());
+        user.setRoleId(roleService.findRoleByRoleId(Integer.parseInt(userDto.getAccessType())));
+
+        try{
+            user.setStateId(locationService.findStateById(Integer.parseInt(userDto.getState())));
+        }catch (Exception e){
+            user.setStateId(null);
+        }
+
+        try{
+            user.setDistrictId(locationService.findDistrictById(Integer.parseInt(userDto.getDistrict())));
+        }catch (Exception e){
+            user.setDistrictId(null);
+        }
+
+        try{
+            user.setBlockId(locationService.findBlockById(Integer.parseInt(userDto.getBlock())));
+        }catch (Exception e){
+            user.setDistrictId(null);
+        }
+
+        userService.updateExistingUser(user);
+
+        return "redirect:/home";
+    }*/
 
     @RequestMapping(value = {"/delete-user"}, method = RequestMethod.POST)
     public void deleteExistingUser(@RequestBody User user) {
