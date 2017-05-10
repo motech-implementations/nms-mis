@@ -77,7 +77,7 @@ public class AdminController {
         return "Bulkimport";
     }
 
-    @RequestMapping(value = "/getCumulativeCourseCompCSV/{state}/{district}/{block}", method = RequestMethod.GET)
+    @RequestMapping(value = "/getCumulativeCourseCompCSV", method = RequestMethod.GET)
     @ResponseBody
     public String getCumulativeCourseCompletionCSV(@PathVariable("state") String State,@PathVariable("district") String District,@PathVariable("block") String Block) throws ParseException, java.text.ParseException{
         adminService.getCumulativeCourseCompletionCSV(State,District,Block);
