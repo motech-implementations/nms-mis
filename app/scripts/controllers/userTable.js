@@ -125,7 +125,7 @@
 
 			$scope.editUser = function(user){
 				console.log("edit");
-				$scope.$parent.editUser(user.id);
+				$scope.$parent.editUser(user);
 			}
 
 			$scope.deleteUser = function(user){

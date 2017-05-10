@@ -4,6 +4,8 @@
 
 		<form name="editUserForm" class="form-horizontal" novalidate action="http://localhost:8080/NMSReportingSuite/nms/user/update-user" method="POST">
 
+		<!-- <form name="editUserForm" class="form-horizontal" novalidate> -->
+
 			<div class="form-group" ng-class="{'has-error':editUserForm.name.$invalid && !editUserForm.name.$pristine}">
 				<label class="control-label col-xs-2">Full Name</label>
 				<div class="col-xs-10">
@@ -19,17 +21,16 @@
 				</div>
 			</div>
 
-			<div class="form-group" ng-class="{'has-error':editUserForm.username.$invalid && !editUserForm.username.$pristine}">
-				<label class="control-label col-xs-2">Username</label>
+			<div class="form-group" ng-class="{'has-error':editUserForm.id.$invalid && !editUserForm.id.$pristine}" ng-hide="true">
+				<label class="control-label col-xs-2">Id</label>
 				<div class="col-xs-10">
-					<input name="username" id="username" type="text" class="form-control" placeholder="Username" ng-model="editUser.username" required ng-hide="true"
-					ng-pattern="/^[A-Za-z0-9]*$/" ng-minlength="5"
-					tooltip-placement="top" uib-tooltip="Errors: {{editUserForm.username.$error|json}}" >
+					<input name="id" id="id" type="text" class="form-control" placeholder="Id" ng-model="editUser.id" required 
+					ng-pattern="/^[0-9]*$/"
+					tooltip-placement="top" uib-tooltip="Errors: {{editUserForm.id.$error|json}}" >
 
-					<div ng-messages="editUserForm.username.$error" role="alert" ng-show="!editUserForm.username.$pristine">
+					<div ng-messages="editUserForm.id.$error" role="alert" ng-show="!editUserForm.id.$pristine">
 						<div ng-message="required">This field cannot be empty</div>
-						<div ng-message="pattern">Username should not contain special characters or spaces</div>
-						<div ng-message="minlength">Username is too short</div>
+						<div ng-message="pattern">Input contains non-numeric characters</div>
 					</div>
 				</div>
 			</div>
@@ -37,7 +38,7 @@
 			<div class="form-group" ng-class="{'has-error':editUserForm.accessType.$invalid && !editUserForm.accessType.$pristine}">
 				<label class="control-label col-xs-2">Access Type</label>
 				<div class="col-xs-10">
-					<select name="accessType" id="accessType" class="form-control"  ng-model="editUser.accessType" ng-options="item.roleDescription as item.roleDescription for item in accessTypeList track by item.roleId" required
+					<select name="accessType" id="accessType" class="form-control"  ng-model="editUser.accessType" ng-options="(item.roleId + '') as item.roleDescription for item in accessTypeList track by item.roleId" required
 					tooltip-placement="top" uib-tooltip="Errors: {{editUserForm.accessType.$error|json}}"
 					style="width: 200px;">
 					</select>
@@ -66,7 +67,7 @@
 			<div class="form-group" ng-class="{'has-error':editUserForm.state.$invalid && !editUserForm.state.$pristine}">
 				<label class="control-label col-xs-2">State</label>
 				<div class="col-xs-10">
-					<select name="state" id="state" class="form-control" ng-model="place.state" ng-options="item as item.location for item in states track by item.locationId" ng-disabled="getAccessLevel(1)" ng-required="!getAccessLevel(1)">
+					<select name="state" id="state" class="form-control" ng-model="editUser.state" ng-options="item as item.stateName for item in states track by item.stateId" ng-disabled="getAccessLevel(1)" ng-required="!getAccessLevel(1)">
 					</select>
 				</div>
 			</div>
@@ -74,7 +75,7 @@
 			<div class="form-group" ng-class="{'has-error':editUserForm.district.$invalid && !editUserForm.district.$pristine}">
 				<label class="control-label col-xs-2">District</label>
 				<div class="col-xs-10">
-					<select name="district" id="district" class="form-control" ng-model="place.district" ng-options="item as item.location for item in districts track by item.locationId" ng-disabled="getAccessLevel(2)" ng-required="!getAccessLevel(2)">
+					<select name="district" id="district" class="form-control" ng-model="editUser.district" ng-options="item as item.districtName for item in districts track by item.districtId" ng-disabled="getAccessLevel(2)" ng-required="!getAccessLevel(2)">
 					</select>
 				</div>
 			</div>
@@ -82,8 +83,8 @@
 			<div class="form-group" ng-class="{'has-error':editUserForm.block.$invalid && !editUserForm.block.$pristine}">
 				<label class="control-label col-xs-2">Block</label>
 				<div class="col-xs-10">
-					<select name="block" id="block" class="form-control" ng-model="place.block"
-						ng-options="item as item.location for item in blocks track by item.locationId" ng-disabled="getAccessLevel(3)" ng-required="!getAccessLevel(3)">
+					<select name="block" id="block" class="form-control" ng-model="editUser.block"
+						ng-options="item as item.blockName for item in blocks track by item.blockId" ng-disabled="getAccessLevel(3)" ng-required="!getAccessLevel(3)">
 					</select>
 				</div>
 			</div>
@@ -140,7 +141,7 @@
 			<div class="form-group">
 				<div class="col-xs-offset-2 col-xs-10">
 					<button class="btn btn-primary" ng-click="clearForm()">Cancel</button>
-					<button type="submit" class="btn btn-primary" tooltip-placement="top" uib-tooltip="User: {{editUser|json}}">Update User</button>
+					<button type="submit" ng-click="editUserSubmit()" class="btn btn-primary" tooltip-placement="top" uib-tooltip="User: {{editUser|json}}">Update User</button>
 				</div>
 			</div>
 
