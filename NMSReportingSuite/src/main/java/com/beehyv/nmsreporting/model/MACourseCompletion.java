@@ -14,25 +14,25 @@ public class MACourseCompletion {
     @Column(name="id")
     private Integer Id;
 
-    @Column(name="flw_Id")
+    @Column(name="flw_id")
     private Integer flwId;
 
     @Column(name="score")
     private Integer score;
 
-    @Column(name="hasPassed")
+    @Column(name="has_passed")
     private Boolean passed;
 
-    @Column(name="chapterWiseScore")
+    @Column(name="chapter_wise_score")
     private String chapterWiseScore;
 
-    @Column(name="lastDeliveryStatus")
+    @Column(name="last_delivery_status")
     private String lastDeliveryStatus;
 
-    @Column(name="senrNotification")
+    @Column(name="sent_notification")
     private Boolean senrNotification;
 
-    @Column(name="lastModified")
+    @Column(name="last_modified")
     private Date lastModifiedDate;
 
     public Integer getId() {

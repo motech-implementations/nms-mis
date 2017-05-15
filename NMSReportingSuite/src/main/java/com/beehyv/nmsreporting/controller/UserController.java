@@ -193,7 +193,7 @@ public class UserController {
             newUser.setDistrictId(null);
         }
         newUser.setRoleId(roleService.findRoleByRoleId(Integer.parseInt(userMap.get("accessType"))));
-        newUser.setAccountStatus(AccountStatus.PENDING.getAccountStatus());
+        newUser.setAccountStatus(AccountStatus.ACTIVE.getAccountStatus());
         newUser.setCreatedByUser(userService.getCurrentUser());
         newUser.setCreationDate(new java.util.Date());
 

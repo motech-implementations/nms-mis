@@ -88,7 +88,7 @@ public class AdminController {
     @ResponseBody
     public String getCumulativeCourseCompletionCSV1() throws ParseException, java.text.ParseException{
 
-        adminService.getCumulativeCourseCompletionCSV1(2);
+        adminService.getCumulativeCourseCompletionCSV1(1);
         return "Bulkimport";
     }
 }
