@@ -12,6 +12,7 @@
 	<script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 	<script type="text/javascript" src="bower_components/angular-messages/angular-messages.min.js"></script>
 	<script type="text/javascript" src="bower_components/angular-route/angular-route.min.js"></script>
+	<script type="text/javascript" src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
 
 	<script type="text/javascript" src="scripts/global/urls.js"></script>
 
@@ -58,8 +59,7 @@
 <body ng-app="nmsReports" ng-controller="MainController">
 	<div nav-bar></div>
 	<div class="body-body">
-		<div user-management ng-if="currentPage=='user-management'"></div>
-		<div reports ng-if="currentPage=='reports'"></div>
+		<div ui-view></div>
 	</div>
 
 </body>
