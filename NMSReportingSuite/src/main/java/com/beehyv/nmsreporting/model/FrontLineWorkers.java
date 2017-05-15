@@ -12,52 +12,52 @@ public class FrontLineWorkers {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name="flw_id")
+    @Column(name="id", columnDefinition = "BIGINT(20)")
     private Integer flwId;
 
-    @Column(name="flw_name")
+    @Column(name="flw_name", columnDefinition = "VARCHAR(255)")
     private String fullName;
 
-    @Column(name="flw_msisdn")
+    @Column(name="flw_msisdn", columnDefinition = "BIGINT(10)")
     private String mobileNumber;
 
-    @Column(name="external_flw_id")
+    @Column(name="external_flw_id", columnDefinition = "BIGINT(20)")
     private String externalFlwId;
 
-    @Column(name="flw_designation")
+    @Column(name="flw_designation", columnDefinition = "BOOLEAN")
     private String designation;
 
-    @Column(name="language")
+    @Column(name="language", columnDefinition = "TINYINT(4)")
     private String language;
 
-    @Column(name="flw_status")
+    @Column(name="flw_status", columnDefinition = "TINYINT(4)")
     private String jobStatus;
 
-    @Column(name="state_id")
+    @Column(name="state_id", columnDefinition = "TINYINT")
     private Integer state;
 
-    @Column(name="district_id")
+    @Column(name="district_id", columnDefinition = "SMALLINT(6)")
     private Integer district;
 
-    @Column(name="taluka_id")
+    @Column(name="taluka_id", columnDefinition = "SMALLINT(6)")
     private Integer taluka;
 
-    @Column(name="village_id")
+    @Column(name="village_id", columnDefinition = "INT(11)")
     private Integer village;
 
-    @Column(name="block_id")
+    @Column(name="block_id", columnDefinition = "INT(11)")
     private Integer block;
 
-    @Column(name="facility_id")
+    @Column(name="facility_id", columnDefinition = "INT(11)")
     private Integer facility;
 
-    @Column(name="subfacility_id")
+    @Column(name="subfacility_id", columnDefinition = "INT(11)")
     private Integer subfacility;
 
-    @Column(name="creation_Date")
+    @Column(name="creation_date", columnDefinition = "DATE")
     private Date creationDate;
 
-    @Column(name="lastModified_Date")
+    @Column(name="last_modified", columnDefinition = "DATE")
     private Date lastModifiedDate;
 
     public Integer getFlwId() {
