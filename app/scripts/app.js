@@ -26,30 +26,49 @@ var nmsReportsApp = angular
 // 			redirectTo: 'login.html',
 // 		});*/
 // 	}])
+	.run( ['$rootScope', '$state', '$stateParams',
+		function ($rootScope, $state, $stateParams) {
+			$rootScope.$state = $state;
+			$rootScope.$stateParams = $stateParams;
+		}
+	])
 
 	.config(function ($stateProvider, $urlRouterProvider) {
 
-		$urlRouterProvider.otherwise('/user-management');
+		
+			
 
 		$stateProvider
-			// HOME STATES AND NESTED VIEWS ========================================
-			.state('user-management', {
-				url: '/user-management',
+
+			.state('userManagement', {
+				url: '/userManagement',
+				abstract: true,
 				templateUrl: '../views/userManagement.html'
 			})
+			.state('userManagement.userTable', {
+				url: '',
+				templateUrl: '../views/userTable.html'
+			})
+			.state('userManagement.bulkUpload', {
+				url: '/bulkUpload',
+				templateUrl: '../views/bulkUser.html'
+			})
+			.state('userManagement.createUser', {
+				url: '/create',
+				templateUrl: '../views/createUser.html'
+			})
+			.state('userManagement.editUser', {
+				url: '/edit/{id}',
+				templateUrl: '../views/editUser.html'
+			})
 
-			// ABOUT PAGE AND MULTIPLE NAMED VIEWS =================================
+
+
 			.state('reports', {
 				url: '/reports',
 				templateUrl: '../views/reports.html'     
 			});
 
-		  // $stateProvider.state('login', {
-		  //   url:'/login',
-		  //   templateUrl: 'login.html'
-		  // })
-		  // .state('index',{
-		  //   url:'/index',
-		  //   templateUrl: 'index.html'
-		  // });
-	  });
+		$urlRouterProvider
+			.otherwise('/userManagement')
+	});

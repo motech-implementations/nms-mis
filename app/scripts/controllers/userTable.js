@@ -1,10 +1,9 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("UserTableController", ['$scope', 'UserTableFactory', function($scope, UserTableFactory){
+		.controller("UserTableController", ['$scope', '$state', '$stateParams', 'UserTableFactory', function($scope, $state, $stateParams, UserTableFactory){
 
-			// $scope.v = [];
-			// $scope.v = TestFactory.getUsers();
+			$stateParams.path = ['User Management'];
 
 			$scope.numPerPageList = [10, 20];
 
@@ -122,9 +121,9 @@
             }
 			
 
-			$scope.editUser = function(user){
+			$scope.editUser = function(userId){
 				console.log("edit");
-				$scope.$parent.editUser(user);
+				$state.go('userManagement.editUser');
 			}
 
 			$scope.deleteUser = function(user){
