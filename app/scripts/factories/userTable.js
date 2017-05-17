@@ -9,17 +9,14 @@
 			// })
 			return {
 				getUsers: function() {
-					//return $http.get(backend_root + 'nms/user/tableList/1')
-					return $http.get('newUser.json');
+					return $http.get(backend_root + 'nms/user/tableList')
+					// return $http.get('newUser.json');
 				},
 				setUsers: function(values){
 					users = values;
 				},
 				getAllUsers: function() {   
 					return users;
-				},
-				headers: function(){
-					return Object.keys(users[0]);
 				}
 			};
 		}]);

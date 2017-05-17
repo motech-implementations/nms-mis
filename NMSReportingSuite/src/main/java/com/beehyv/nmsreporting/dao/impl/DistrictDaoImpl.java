@@ -5,6 +5,7 @@ import com.beehyv.nmsreporting.dao.DistrictDao;
 import com.beehyv.nmsreporting.model.*;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 /**
  * Created by beehyv on 4/5/17.
  */
+@Repository("districtDao")
 public class DistrictDaoImpl extends AbstractDao<Integer, District> implements DistrictDao {
     @Override
     public District findByDistrictId(Integer districtId) {
@@ -37,6 +39,23 @@ public class DistrictDaoImpl extends AbstractDao<Integer, District> implements D
     @Override
     public List<Taluka> getTalukas(int districtId) {
         return null;
+    }
+
+    public List<District> getDistrictsOfState(State state) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.eq("stateOfDistrict", state));
+        return (List<District>) criteria.list();
+    }
+
+    @Override
+    public List<District> getAllDistricts() {
+        Criteria criteria = createEntityCriteria();
+        return (List<District>) criteria.list();
+    }
+
+    @Override
+    public State getStateOfDistrict(District district) {
+        return district.getStateOfDistrict();
     }
 
     @Override

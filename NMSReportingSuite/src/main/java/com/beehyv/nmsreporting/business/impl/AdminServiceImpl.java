@@ -2,10 +2,11 @@ package com.beehyv.nmsreporting.business.impl;
 
 import com.beehyv.nmsreporting.business.AdminService;
 import com.beehyv.nmsreporting.dao.*;
+import com.beehyv.nmsreporting.enums.AccessLevel;
+import com.beehyv.nmsreporting.enums.AccessType;
 import com.beehyv.nmsreporting.model.*;
 import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -35,9 +36,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private RoleDao roleDao;
-//    @Autowired
-@Autowired
-private StateDao stateDao;
+
+    @Autowired
+    private StateDao stateDao;
 
     @Autowired
     private DistrictDao districtDao;
@@ -191,7 +192,7 @@ private StateDao stateDao;
                             continue;
                         }
 
-                        boolean isType=AccessType.isType(Line[9]);
+                        boolean isType= AccessType.isType(Line[9]);
 
                         if(!(isType)){
                             Integer rowNum=linNumber;
@@ -445,7 +446,7 @@ private StateDao stateDao;
                             continue;
                         }
 
-                        
+
                         if(userRoleId==1||userRoleId==3){
                              Integer rowNum=linNumber;
                             String authorityError="You don't have authority to create this user.";

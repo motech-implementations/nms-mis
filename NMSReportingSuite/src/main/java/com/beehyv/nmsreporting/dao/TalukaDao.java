@@ -1,5 +1,7 @@
 package com.beehyv.nmsreporting.dao;
 
+import com.beehyv.nmsreporting.model.District;
+import com.beehyv.nmsreporting.model.State;
 import com.beehyv.nmsreporting.model.Taluka;
 import com.beehyv.nmsreporting.model.Taluka;
 
@@ -14,8 +16,11 @@ public interface TalukaDao {
 
     public List<Taluka> findByName(String talukaName);
 
+    List<Taluka> getTalukasOfDistrict(District district);
 
-    public List<Taluka> getChildTalukas(int talukaId);
+    List<Taluka> getTalukasOfState(State state);
+
+    List<Taluka> getAllTalukas();
 
     public void saveTaluka(Taluka taluka);
 

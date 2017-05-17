@@ -1,37 +1,37 @@
 package com.beehyv.nmsreporting.dao;
 
 import com.beehyv.nmsreporting.model.District;
-import com.beehyv.nmsreporting.model.Location;
 import com.beehyv.nmsreporting.model.Role;
 import com.beehyv.nmsreporting.model.User;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by beehyv on 14/3/17.
  */
 public interface UserDao {
-    public User findByUserId(Integer userId);
+    User findByUserId(Integer userId);
 
-    public User findByUserName(String username);
+    User findByUserName(String username);
 
-    public User findByEmailId(String emailId);
+    User findByEmailId(String emailId);
 
-    public List<User> findByPhoneNumber(String phoneNumber);
+    List<User> findByPhoneNumber(String phoneNumber);
 
-    public List<User> findByLocation(Location locationId);
+    List<User> findByCreationDate(Date creationDate);
 
-    public List<User> findByCreationDate(Date creationDate);
+    List<User> getActiveUsers();
 
-    public List<User> getAllActiveUsers();
+    List<User> getAllUsers();
 
-    public List<User> getUsersByAccountStatus(String accountStatus);
+    List<User> getUsersByAccountStatus(String accountStatus);
 
-    public List<User> getUsersByRole(Role roleId);
+    List<User> getUsersByRole(Role roleId);
 
-    public void saveUser(User user);
+    <E> List<User> getUsersByLocation(String propertyName, E location);
 
-    public boolean isAdminCreated (District districtId);
+    void saveUser(User user);
+
+    boolean isAdminCreated(District districtId);
 }

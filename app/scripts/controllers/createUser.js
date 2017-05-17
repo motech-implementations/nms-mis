@@ -9,11 +9,29 @@
 				$scope.accessTypeList = UserFormFactory.getRoles();
 			});
 
-			UserFormFactory.downloadLocations()
-			.then(function(result){
-				UserFormFactory.setLocations(result.data);
-				$scope.states = UserFormFactory.getChildLocations(1);
-			})
+			$scope.getStates = function(){
+				return UserFormFactory.getStates()
+				.then(function(result){
+					$scope.states = result.data;
+					$scope.districts = [];
+					$scope.blocks = [];
+				});
+			}
+			
+			$scope.getDistricts = function(stateId){
+				return UserFormFactory.getDistricts(stateId)
+				.then(function(result){
+					$scope.districts = result.data;
+					$scope.blocks = [];
+				});
+			}
+
+			$scope.getBlocks =function(districtId){
+				return UserFormFactory.getBlocks(districtId)
+				.then(function(result){
+					$scope.blocks = result.data;
+				});
+			}
 
 			$scope.accessLevelList = ["National", "State", "District", "Block"];
 
@@ -41,9 +59,9 @@
 					// UserFormFactory.createUserSubmitDto($scope.newUser);
 					// $http.post('http://localhost:8080/NMSReportingSuite/nms/user/create-new', $scope.newUser);
 
-					// $http.post('http://localhost:8080/NMSReportingSuite/nms/user/create-new',
-					// $scope.newUser, 
-					// {'Content-Type': 'application/json'})
+					// $http.post('http://localhost:8080/NMSReportingSuite/nms/user/createFromDto',
+					// JSON.stringify($scope.newUser), 
+					// {'Content-Type': 'application/text'})
 					// .success(function (data, status, headers, config) {
 					// 	console.log(data);
 					// })
@@ -53,10 +71,11 @@
 
 					// $http({
 					// 	method  : 'post',
-					// 	url     : 'http://localhost:8080/NMSReportingSuite/nms/user/create-new',
-					// 	data    : JSON.stringify($scope.newUser), //forms user object
+					// 	url     : 'http://localhost:8080/NMSReportingSuite/nms/user/createFromDto',
+					// 	data    : $scope.newUser, //forms user object
 					// 	headers : {'Content-Type': 'application/json'} 
 					// });
+
 				}
 				else{
 					angular.forEach($scope.createUserForm.$error, function (field) {
@@ -68,8 +87,8 @@
 			};
 
 			$scope.onAccessLevelChanged = function(){
-				$scope.newUser.createdBy = true;
 
+				$scope.getStates();
 				$scope.place = {};
 
 				$scope.newUser.state = null;
@@ -87,33 +106,41 @@
 				}
 			});
 
-			$scope.$watch('place.state', function(value){
+			$scope.$watch('newUser.state', function(value){
 				if(value != null){
-					$scope.districts = UserFormFactory.getChildLocations(value.locationId);
+					$scope.getDistricts(value)
+					.then(function(){
+						// $scope.place.district = null;
+						// $scope.place.block = null;
 
-					$scope.place.district = null;
-					$scope.place.block = null;
+						// $scope.newUser.state = value.stateName;
+						$scope.newUser.district = null;
+						$scope.newUser.block = null;
 
-					$scope.newUser.state = value.location;
-					$scope.newUser.district = null;
-					$scope.newUser.block = null;
+						// console.log($scope.place);
+					})
 				}
 			});
 
-			$scope.$watch('place.district', function(value){
+			$scope.$watch('newUser.district', function(value){
 				if(value != null){
-					$scope.blocks = UserFormFactory.getChildLocations(value.locationId);
+					$scope.getBlocks(value)
+					.then(function(){
+						// $scope.place.block = null;
 
-					$scope.place.block = null;
+						// $scope.newUser.district = value.districtName;
+						$scope.newUser.block = null;
 
-					$scope.newUser.district = value.location;
-					$scope.newUser.block = null;
+						// console.log($scope.place);
+					})
 				}
 			});
 
-			$scope.$watch('place.block', function(value){
+			$scope.$watch('newUser.block', function(value){
 				if(value != null){
-					$scope.newUser.block = value.location;
+					// $scope.newUser.block = value.blockName;
+
+					// console.log($scope.place);
 				}
 			});
 

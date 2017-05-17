@@ -30,14 +30,17 @@ public class Block {
     @Column(name="loc_id", columnDefinition = "BIGINT(20)")
     private Long locationId;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="taluka_id", columnDefinition = "SMALLINT")
     private Taluka talukaOfBlock;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="district_id", columnDefinition = "SMALLINT")
     private District districtOfBlock;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="state_id", columnDefinition = "TINYINT")
     private State stateOfBlock;

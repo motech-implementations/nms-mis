@@ -2,40 +2,38 @@ package com.beehyv.nmsreporting.business;
 
 import com.beehyv.nmsreporting.model.User;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by beehyv on 14/3/17.
  */
 public interface UserService {
-    public User findUserByUserId(Integer userId);
+    User findUserByUserId(Integer userId);
 
-    public User findUserByUsername(String username);
+    User findUserByUsername(String username);
 
-    public User getCurrentUser();
+    User getCurrentUser();
 
-    public User findUserByEmailId(String emailId);
+    User findUserByEmailId(String emailId);
 
-    public List<User> findUsersByPhoneNumber(String phoneNumber);
+    List<User> findUsersByPhoneNumber(String phoneNumber);
 
-    public List<User> findUsersByLocation(Integer locationId);
+    List<User> findUsersByCreationDate(Date creationDate);
 
-    public List<User> findUsersByCreationDate(Date creationDate);
+    List<User> findAllActiveUsers();
 
-    public List<User> findAllActiveUsers();
+    List<User> findAllActiveUsersByRole(Integer roleId);
 
-    public List<User> findAllActiveUsersByLocation(Integer locationId);
+    List<User> findUsersByAccountStatus(String accountStatus);
 
-    public List<User> findAllActiveUsersByRole(Integer roleId);
+    List<User> findMyUsers(User currentUser);
 
-    public List<User> findUsersByAccountStatus(String accountStatus);
+    void createNewUser(User user);
 
-    public void createNewUser(User user);
+    void updateExistingUser(User user);
 
-    public void updateExistingUser(User user);
+    void deleteExistingUser(User user);
 
-    public void deleteExistingUser(User user);
-
-    public boolean isUsernameUnique(String username, Integer userId);
+    boolean isUsernameUnique(String username, Integer userId);
 }

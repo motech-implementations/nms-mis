@@ -1,7 +1,10 @@
 package com.beehyv.nmsreporting.controller;
 
 import com.beehyv.nmsreporting.business.LocationService;
+import com.beehyv.nmsreporting.model.Block;
+import com.beehyv.nmsreporting.model.District;
 import com.beehyv.nmsreporting.model.Location;
+import com.beehyv.nmsreporting.model.State;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,4 +39,37 @@ public class LocationController {
     public @ResponseBody List<Location> getChildLocations(@PathVariable("locationId") Integer locationId) {
         return locationService.getAllSubLocations(locationId);
     }
+
+    /*--------------------------State-----------------------------*/
+
+    @RequestMapping(value = {"/states"}, method = RequestMethod.GET)
+    public @ResponseBody List<State> getAllStates() {
+        return locationService.getAllStates();
+    }
+
+    /*--------------------------District-----------------------------*/
+
+    @RequestMapping(value = {"/districts/{stateId}"}, method = RequestMethod.GET)
+    public @ResponseBody List<District> getDistrictsOfState(@PathVariable("stateId") Integer stateId) {
+        return locationService.getChildDistricts(stateId);
+    }
+
+    @RequestMapping(value = {"/SoD/{districtId}"}, method = RequestMethod.GET)
+    public @ResponseBody State getStateOfDistrict(@PathVariable("districtId") Integer districtId) {
+        return locationService.getStateOfDistrict(districtId);
+    }
+
+    /*--------------------------Block-----------------------------*/
+
+    @RequestMapping(value = {"/blocks/{districtId}"}, method = RequestMethod.GET)
+    public @ResponseBody List<Block> getBlocksOfDistrict(@PathVariable("districtId") Integer districtId) {
+        return (List<Block>) locationService.getChildBlocks(districtId);
+    }
+
+    @RequestMapping(value = {"/DoB/{blockId}"}, method = RequestMethod.GET)
+    public @ResponseBody District getDistrictOfBlock(@PathVariable("blockId") Integer blockId) {
+        return locationService.getDistrictOfBlock(blockId);
+    }
+
+    /*--------------------------Extra-----------------------------*/
 }

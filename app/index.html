@@ -12,6 +12,7 @@
 	<script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 	<script type="text/javascript" src="bower_components/angular-messages/angular-messages.min.js"></script>
 	<script type="text/javascript" src="bower_components/angular-route/angular-route.min.js"></script>
+	<script type="text/javascript" src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
 
 	<script type="text/javascript" src="scripts/global/urls.js"></script>
 
@@ -22,7 +23,7 @@
 
 	<!-- Factory -->
 	<script type="text/javascript" src="scripts/factories/userTable.js"></script>
-	<script type="text/javascript" src="scripts/factories/navBar.js"></script>
+	<!-- <script type="text/javascript" src="scripts/factories/navBar.js"></script> -->
 	<script type="text/javascript" src="scripts/factories/auth.js"></script>
 	<script type="text/javascript" src="scripts/factories/userForm.js"></script>
 
@@ -38,7 +39,7 @@
 	
 
 	<!-- Directives -->
-	<script type="text/javascript" src="scripts/directives/navBar.js"></script>
+	<!-- <script type="text/javascript" src="scripts/directives/navBar.js"></script> -->
 	<script type="text/javascript" src="scripts/directives/userManagement.js"></script>
 	<script type="text/javascript" src="scripts/directives/userTable.js"></script>
 	<script type="text/javascript" src="scripts/directives/editUser.js"></script>
@@ -56,10 +57,40 @@
 
 </head>
 <body ng-app="nmsReports" ng-controller="MainController">
-	<div nav-bar></div>
+	<div class="container">
+		<div class="navbar-header" style="padding: 20px;">
+			<a class="navbar-brand" href="#">WebSiteName</a>
+		</div>
+		<pre>
+      <!-- Here's some values to keep an eye on in the sample in order to understand $state and $stateParams -->
+      $state = {{$state.current.name}}
+      $stateParams = {{$stateParams}}
+      $state full url = {{ $state.$current.url.source }}
+      <!-- $state.$current is not a public api, we are using it to
+           display the full url for learning purposes-->
+    </pre>
+	</div>
+	<div ng-controller="NavBarController as navCtrl">
+		<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+			<ul class="nav navbar-nav">
+				<li>
+					<ul class="breadcrumb list-inline" style="margin-left: 50px;">
+						<li ng-repeat="item in breadcrumbDict"></li>
+					</ul>
+				</li>
+			</ul>
+
+			<ul class="nav navbar-nav navbar-right nav-menu">
+				<li><a ui-sref="reports">Reports</a></li>
+				<li><a ui-sref="userManagement.userTable">User Management</a></li>
+				<li><a>My Profile</a></li>
+				<li><a href="http://localhost:8080/NMSReportingSuite/nms/logout">Logout</a></li>
+			</ul>
+		</nav>
+	</div>
+
 	<div class="body-body">
-		<div user-management ng-if="currentPage=='user-management'"></div>
-		<div reports ng-if="currentPage=='reports'"></div>
+		<div ui-view></div>
 	</div>
 
 </body>

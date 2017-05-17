@@ -4,9 +4,8 @@
 		<h1>User Management</h1>
 		<div>
 			<input  class="form-control" ng-model="filterText" type="text" name="tableSearch" placeholder="Search">
-			
-			<button class="btn btn-primary" name="bulkUpload" ng-click="bulkUpload()">Upload Bulk Users</button>
-			<button class="btn btn-primary" name="newUser" ng-click="newUser()">Create new User</button>
+			<button class="btn btn-primary" name="bulkUpload" ui-sref="userManagement.bulkUpload">Upload Bulk Users</button>
+            <button class="btn btn-primary" name="newUser" ui-sref="userManagement.createUser">Create new User</button>
 		</div>
 	</div>
 
@@ -82,7 +81,7 @@
 				<td>{{item.state}}</td>
 				<td>{{item.district}}</td>
 				<td>{{item.block}}</td>
-                <td ng-if="item.createdBy" ng-click="editUser(item)"><a href="#">Edit</a></td>
+                <td ng-if="item.createdBy"><a ng-click="editUser(item.id)">Edit</a></td>
 			</tr>
 		</table>
 

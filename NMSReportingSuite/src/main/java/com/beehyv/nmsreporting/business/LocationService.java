@@ -1,6 +1,6 @@
 package com.beehyv.nmsreporting.business;
 
-import com.beehyv.nmsreporting.model.Location;
+import com.beehyv.nmsreporting.model.*;
 
 import java.util.List;
 
@@ -8,19 +8,54 @@ import java.util.List;
  * Created by beehyv on 15/3/17.
  */
 public interface LocationService {
-    public Location findLocationById(Integer locationId);
+    Location findLocationById(Integer locationId);
 
-    public Location findLocationByName(String locationName);
+    Location findLocationByName(String locationName);
 
-    public List<Location> getAllLocations();
+    List<Location> getAllLocations();
 
-    public List<Location> getAllSubLocations(Integer locationId);
+    List<Location> getAllSubLocations(Integer locationId);
 
-    public List<Location> getChildLocations(int locationId);
+    List<Location> getChildLocations(int locationId);
 
-    public void createNewLocation(Location location);
+//    public void createNewLocation(Location location);
+//
+//    public void updateExistingLocation(Location location);
+//
+//    public void deleteExistingLocation(Location location);
 
-    public void updateExistingLocation(Location location);
+    /*----------------------General-----------------------*/
 
-    public void deleteExistingLocation(Location location);
+    List<State> getAllStates();
+
+    /*----------------------State-------------------------*/
+
+    State findStateById(Integer stateId);
+
+    State findStateByName(String stateName);
+
+    List<District> getChildDistricts(Integer stateId);
+
+    /*----------------------District-------------------------*/
+
+    District findDistrictById(Integer districtId);
+
+    District findDistrictByName(String districtName);
+
+    List<Block> getChildBlocks(Integer districtId);
+
+    State getStateOfDistrict(Integer districtId);
+
+    /*----------------------Taluka-------------------------*/
+
+    Taluka findTalukaById(Integer talukaId);
+
+    /*----------------------Block-------------------------*/
+
+    Block findBlockById(Integer blockId);
+
+    Block findBlockByName(String blockName);
+
+    District getDistrictOfBlock(Integer blockId);
+
 }

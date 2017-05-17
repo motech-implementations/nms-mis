@@ -1,5 +1,7 @@
 package com.beehyv.nmsreporting.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.HashSet;
@@ -26,13 +28,16 @@ public class Taluka {
     @Column(name="loc_id", columnDefinition = "BIGINT(20)")
     private Long locationId;
 
+    @JsonIgnore
     @OneToMany(cascade=CascadeType.PERSIST, fetch=FetchType.EAGER, mappedBy="talukaOfBlock")
     private Set<Block> blocks = new HashSet<>();
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="state_id", columnDefinition = "TINYINT")
     private State stateOfTaluka;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="district_id", columnDefinition = "SMALLINT")
     private District districtOfTaluka;

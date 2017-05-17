@@ -2,7 +2,7 @@
 	<div class="well">
 		<h1>Create new User</h1>
 
-		<form name="createUserForm" class="form-horizontal" novalidate action="http://localhost:8080/NMSReportingSuite/nms/user/create-new" method="POST">
+		<form name="createUserForm" class="form-horizontal" novalidate action="http://localhost:8080/NMSReportingSuite/nms/user/createFromDto" method="post">
 
 			<div class="form-group" ng-class="{'has-error':createUserForm.name.$invalid && !createUserForm.name.$pristine}">
 				<label class="control-label col-xs-2">Full Name</label>
@@ -37,7 +37,7 @@
 			<div class="form-group" ng-class="{'has-error':createUserForm.accessType.$invalid && !createUserForm.accessType.$pristine}">
 				<label class="control-label col-xs-2">Access Type</label>
 				<div class="col-xs-10">
-					<select name="accessType" id="accessType" class="form-control"  ng-model="newUser.accessType" ng-options="item.roleDescription as item.roleDescription for item in accessTypeList track by item.roleId" required
+					<select name="accessType" id="accessType" class="form-control"  ng-model="newUser.accessType" ng-options="(item.roleId + '') as item.roleDescription for item in accessTypeList track by item.roleId" required
 					tooltip-placement="top" uib-tooltip="Errors: {{createUserForm.accessType.$error|json}}"
 					style="width: 200px;">
 					</select>
@@ -66,7 +66,7 @@
 			<div class="form-group" ng-class="{'has-error':createUserForm.state.$invalid && !createUserForm.state.$pristine}">
 				<label class="control-label col-xs-2">State</label>
 				<div class="col-xs-10">
-					<select name="state" id="state" class="form-control" ng-model="place.state" ng-options="item as item.location for item in states track by item.locationId" ng-disabled="getAccessLevel(1)" ng-required="!getAccessLevel(1)">
+					<select name="state" id="state" class="form-control" ng-model="newUser.state" ng-options="(item.stateId + '') as item.stateName for item in states track by item.stateId" ng-disabled="getAccessLevel(1)" ng-required="!getAccessLevel(1)">
 					</select>
 				</div>
 			</div>
@@ -74,7 +74,7 @@
 			<div class="form-group" ng-class="{'has-error':createUserForm.district.$invalid && !createUserForm.district.$pristine}">
 				<label class="control-label col-xs-2">District</label>
 				<div class="col-xs-10">
-					<select name="district" id="district" class="form-control" ng-model="place.district" ng-options="item as item.location for item in districts track by item.locationId" ng-disabled="getAccessLevel(2)" ng-required="!getAccessLevel(2)">
+					<select name="district" id="district" class="form-control" ng-model="newUser.district" ng-options="(item.districtId + '') as item.districtName for item in districts track by item.districtId" ng-disabled="getAccessLevel(2)" ng-required="!getAccessLevel(2)">
 					</select>
 				</div>
 			</div>
@@ -82,8 +82,8 @@
 			<div class="form-group" ng-class="{'has-error':createUserForm.block.$invalid && !createUserForm.block.$pristine}">
 				<label class="control-label col-xs-2">Block</label>
 				<div class="col-xs-10">
-					<select name="block" id="block" class="form-control" ng-model="place.block"
-						ng-options="item as item.location for item in blocks track by item.locationId" ng-disabled="getAccessLevel(3)" ng-required="!getAccessLevel(3)">
+					<select name="block" id="block" class="form-control" ng-model="newUser.block"
+						ng-options="(item.blockId + '') as item.blockName for item in blocks track by item.blockId" ng-disabled="getAccessLevel(3)" ng-required="!getAccessLevel(3)">
 					</select>
 				</div>
 			</div>
