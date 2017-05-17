@@ -1,5 +1,6 @@
 package com.beehyv.nmsreporting.dao;
 
+import com.beehyv.nmsreporting.model.District;
 import com.beehyv.nmsreporting.model.Location;
 import com.beehyv.nmsreporting.model.State;
 
@@ -14,8 +15,10 @@ public interface StateDao {
 
     public List<State> findByName(String stateName);
 
+    public List<District> getChildLocations(Integer stateId);
 
-    public List<State> getDistricts(int stateId);
+    public List<State> getAllStates();
+    public List<District> getDistricts(int stateId);
 
     public void saveLocation(State state);
 

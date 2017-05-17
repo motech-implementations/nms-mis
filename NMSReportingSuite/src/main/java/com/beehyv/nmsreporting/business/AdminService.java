@@ -1,6 +1,7 @@
 package com.beehyv.nmsreporting.business;
 
 import com.beehyv.nmsreporting.model.User;
+import org.apache.poi.ss.formula.functions.T;
 
 import java.util.HashMap;
 
@@ -15,6 +16,6 @@ public interface AdminService {
 
   public void getCumulativeCourseCompletionCSV(String State,String District,String Block);
 
-  public void getCumulativeCourseCompletionCSV1(Integer LocationId);
+  public void getCumulativeCourseCompletionCSV1(Integer LocationId,String Parent);
 
 }

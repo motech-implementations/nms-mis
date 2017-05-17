@@ -2,6 +2,7 @@ package com.beehyv.nmsreporting.controller;
 
 import com.beehyv.nmsreporting.business.AdminService;
 import com.beehyv.nmsreporting.business.UserService;
+import com.beehyv.nmsreporting.model.AccessLevel;
 import com.beehyv.nmsreporting.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.ParseException;
@@ -87,8 +88,10 @@ public class AdminController {
     @RequestMapping(value = "/getCumulativeCourseCompCSV1", method = RequestMethod.GET)
     @ResponseBody
     public String getCumulativeCourseCompletionCSV1() throws ParseException, java.text.ParseException{
-
-        adminService.getCumulativeCourseCompletionCSV1(2);
+        User loggedInUser = userService.getCurrentUser();
+        String loggedUserAccess=loggedInUser.getAccessLevel();
+        AccessLevel loggedUserAccessLevel=AccessLevel.getLevel(loggedUserAccess);
+        adminService.getCumulativeCourseCompletionCSV1(2,loggedUserAccess);
         return "Bulkimport";
     }
 }

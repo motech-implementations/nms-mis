@@ -2,12 +2,11 @@ package com.beehyv.nmsreporting.dao.impl;
 
 import com.beehyv.nmsreporting.dao.AbstractDao;
 import com.beehyv.nmsreporting.dao.DistrictDao;
-import com.beehyv.nmsreporting.model.District;
-import com.beehyv.nmsreporting.model.Location;
-import com.beehyv.nmsreporting.model.State;
+import com.beehyv.nmsreporting.model.*;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,7 +27,15 @@ public class DistrictDaoImpl extends AbstractDao<Integer, District> implements D
     }
 
     @Override
-    public List<District> getTalukas(int districtId) {
+    public List<Block> getBlocks(int districtId) {
+        District district=getByKey(districtId);
+        List<Block> childDistricts=new ArrayList<>();
+        childDistricts.addAll(district.getBlocks());
+        return childDistricts;
+    }
+
+    @Override
+    public List<Taluka> getTalukas(int districtId) {
         return null;
     }
 

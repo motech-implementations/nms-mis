@@ -3,6 +3,7 @@ package com.beehyv.nmsreporting.business.impl;
 import com.beehyv.nmsreporting.business.AdminService;
 import com.beehyv.nmsreporting.dao.*;
 import com.beehyv.nmsreporting.model.*;
+import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -1069,37 +1070,78 @@ private StateDao stateDao;
     }
 
     @Override
-    public void getCumulativeCourseCompletionCSV1(Integer LocationId) {
-        List<Location> States=locationDao.getChildLocations(LocationId);
-        for (Location state:States)
-        {
-            String stateName=state.getLocation();
-            String rootPathState = System.getProperty("user.home") + File.separator + "Documents/CumulativeCourseCompletionCSVs/"+stateName;
-            File dirState = new File(rootPathState);
-            if (!dirState.exists())
-                dirState.mkdirs();
-            int stateId=state.getLocationId();
-            List<Location> Districts=locationDao.getChildLocations(stateId);
-            for (Location district:Districts){
-                String districtName=district.getLocation();
+    public void getCumulativeCourseCompletionCSV1(Integer LocationId,String Parent) {
 
-                String rootPathDistrict = rootPathState+"/"+districtName;
+        /*List<Location> Statess=locationDao.getChildLocations(LocationId);*/
+        if(Parent=="NATIONAL") {
+
+            List<State> states = stateDao.getAllStates();
+
+            for (State state : states) {
+                String stateName = state.getStateName();
+                String rootPathState = System.getProperty("user.home") + File.separator + "Documents/CumulativeCourseCompletionCSVs/" + stateName;
+                File dirState = new File(rootPathState);
+                if (!dirState.exists())
+                    dirState.mkdirs();
+                int stateId = state.getStateId();
+                List<District> Districts = stateDao.getChildLocations(stateId);
+
+                for (District district : Districts) {
+                    String districtName = district.getDistrictName();
+
+                    String rootPathDistrict = rootPathState + "/" + districtName;
+                    File dirDistrict = new File(rootPathDistrict);
+                    if (!dirDistrict.exists())
+                        dirDistrict.mkdirs();
+                    int districtId = district.getDistrictId();
+                    List<Block> Blocks = districtDao.getBlocks(districtId);
+                    for (Block block : Blocks) {
+                        String blockName = block.getBlockName();
+                        String rootPathblock = rootPathDistrict + "/" + blockName;
+                        File dirBlock = new File(rootPathblock);
+                        if (!dirBlock.exists())
+                            dirBlock.mkdirs();
+
+                    }
+                }
+
+            }
+        }
+        else if (Parent=="STATE") {
+
+            List<District> Districts = stateDao.getChildLocations(LocationId);
+
+            for (District district : Districts) {
+                String districtName = district.getDistrictName();
+
+                String rootPathDistrict = System.getProperty("user.home") + File.separator + "Documents/CumulativeCourseCompletionCSVs/" + districtName;
                 File dirDistrict = new File(rootPathDistrict);
                 if (!dirDistrict.exists())
                     dirDistrict.mkdirs();
-                int districtId=district.getLocationId();
-                List<Location> Blocks=locationDao.getChildLocations(districtId);
-                for (Location block:Blocks){
-                    String blockName=block.getLocation();
-                    String rootPathblock = rootPathDistrict+"/"+blockName;
+                int districtId = district.getDistrictId();
+                List<Block> Blocks = districtDao.getBlocks(districtId);
+                for (Block block : Blocks) {
+                    String blockName = block.getBlockName();
+                    String rootPathblock = rootPathDistrict + "/" + blockName;
                     File dirBlock = new File(rootPathblock);
                     if (!dirBlock.exists())
                         dirBlock.mkdirs();
 
                 }
             }
-
         }
+        else {
+            List<Block> Blocks = districtDao.getBlocks(LocationId);
+            for (Block block : Blocks) {
+                String blockName = block.getBlockName();
+                String rootPathblock = System.getProperty("user.home") + File.separator + "Documents/CumulativeCourseCompletionCSVs/" + blockName;
+                File dirBlock = new File(rootPathblock);
+                if (!dirBlock.exists())
+                    dirBlock.mkdirs();
+
+            }
+        }
+
     }
 
     private String retrievePropertiesFromFileLocationProties() {
