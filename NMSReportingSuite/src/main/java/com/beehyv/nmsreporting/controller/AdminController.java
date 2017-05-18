@@ -2,6 +2,7 @@ package com.beehyv.nmsreporting.controller;
 
 import com.beehyv.nmsreporting.business.AdminService;
 import com.beehyv.nmsreporting.business.UserService;
+import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.ParseException;
@@ -12,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -77,18 +79,27 @@ public class AdminController {
         return "Bulkimport";
     }
 
-    @RequestMapping(value = "/getCumulativeCourseCompCSV", method = RequestMethod.GET)
+   /* @RequestMapping(value = "/getCumulativeCourseCompCSV", method = RequestMethod.GET)
     @ResponseBody
     public String getCumulativeCourseCompletionCSV(@PathVariable("state") String State,@PathVariable("district") String District,@PathVariable("block") String Block) throws ParseException, java.text.ParseException{
         adminService.getCumulativeCourseCompletionCSV(State,District,Block);
         return "Bulkimport";
-    }
+    }*/
 
-    @RequestMapping(value = "/getCumulativeCourseCompCSV1", method = RequestMethod.GET)
+    @RequestMapping(value = "/getCumulativeCourseCompCSV1/{fromDate}/{toDate}", method = RequestMethod.GET)
     @ResponseBody
-    public String getCumulativeCourseCompletionCSV1() throws ParseException, java.text.ParseException{
-
-        adminService.getCumulativeCourseCompletionCSV1(1);
+    public String getCumulativeCourseCompletionCSV1(@PathVariable("fromDate") Date fromDate, @PathVariable("toDate") Date toDate) throws ParseException, java.text.ParseException{
+        User loggedInUser = userService.getCurrentUser();
+        String loggedUserAccess=loggedInUser.getAccessLevel();
+        AccessLevel loggedUserAccessLevel=AccessLevel.getLevel(loggedUserAccess);
+        int Locationid=0;
+        if(loggedUserAccess=="STATE"){
+            Locationid=loggedInUser.getStateId().getStateId();
+        }
+        else if(loggedUserAccess=="DISTRICT"){
+            Locationid=loggedInUser.getDistrictId().getDistrictId();
+        }
+        adminService.getCumulativeCourseCompletionCSV1(Locationid,loggedUserAccess,fromDate,toDate);
         return "Bulkimport";
     }
 }

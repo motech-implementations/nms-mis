@@ -5,6 +5,7 @@ import com.beehyv.nmsreporting.dao.*;
 import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.AccessType;
 import com.beehyv.nmsreporting.model.*;
+import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -44,6 +45,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private BlockDao blockDao;
+
+    @Autowired
+    private MACourseAttemptDao maCourseAttemptDao;
 
     @Autowired
     private LocationDao locationDao;
@@ -991,8 +995,8 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void getCumulativeCourseCompletionCSV(String State,String District,String Block) {
-        UserDetails userdetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public void getCumulativeCourseCompletionCSV(List<FrontLineWorkers> successFulcandidates,String rootPath,String place) {
+        /*UserDetails userdetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String loggedUserName=userdetails.getUsername();
         User loggedInUser=userDao.findByUserName(loggedUserName);
         int loggedUserRole=loggedInUser.getRoleId().getRoleId();
@@ -1023,12 +1027,12 @@ public class AdminServiceImpl implements AdminService {
                  }
 
 
-        }
+        }*/
         //Create blank workbook
         XSSFWorkbook workbook = new XSSFWorkbook();
         //Create a blank sheet
         XSSFSheet spreadsheet = workbook.createSheet(
-                " Employee Info ");
+                " MA Course Completion Report ");
         //Create row object
         XSSFRow row;
         //This data needs to be written (Object[])
@@ -1036,7 +1040,14 @@ public class AdminServiceImpl implements AdminService {
                 new TreeMap < String, Object[] >();
         empinfo.put( "1", new Object[] {
                 "Full Name","Mobile Number", "STATE", "DISTRICT", "BLOCK", "Taluka", "Health Facility", "Health Sub Facility", "Creation Date", "Role" });
+        Integer counter=2;
+        for(FrontLineWorkers frontLineWorker:successFulcandidates){
+            empinfo.put((counter.toString()), new Object[]{
+                    frontLineWorker.getFullName(),frontLineWorker.getMobileNumber(),frontLineWorker.getState().getStateName(),frontLineWorker.getDistrict().getDistrictName(),frontLineWorker.getBlock().getBlockName(),
+                    
 
+            });
+        }
         Set < String > keyid = empinfo.keySet();
         int rowid = 0;
         for (String key : keyid)
@@ -1053,7 +1064,7 @@ public class AdminServiceImpl implements AdminService {
         //Write the workbook in file system
         FileOutputStream out = null;
         try {
-            out = new FileOutputStream(new File("Writesheet.csv"));
+            out = new FileOutputStream(new File(rootPath+"/"+"MACourseCompletionreport"+"-"+place ));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -1070,37 +1081,154 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void getCumulativeCourseCompletionCSV1(Integer LocationId) {
-        List<Location> States=locationDao.getChildLocations(LocationId);
-        for (Location state:States)
-        {
-            String stateName=state.getLocation();
-            String rootPathState = System.getProperty("user.home") + File.separator + "Documents/CumulativeCourseCompletionCSVs/"+stateName;
-            File dirState = new File(rootPathState);
-            if (!dirState.exists())
-                dirState.mkdirs();
-            int stateId=state.getLocationId();
-            List<Location> Districts=locationDao.getChildLocations(stateId);
-            for (Location district:Districts){
-                String districtName=district.getLocation();
+    public void getCumulativeCourseCompletionCSV1(Integer LocationId,String Parent,Date fromDate,Date toDate) {
 
-                String rootPathDistrict = rootPathState+"/"+districtName;
-                File dirDistrict = new File(rootPathDistrict);
-                if (!dirDistrict.exists())
-                    dirDistrict.mkdirs();
-                int districtId=district.getLocationId();
-                List<Location> Blocks=locationDao.getChildLocations(districtId);
-                for (Location block:Blocks){
-                    String blockName=block.getLocation();
-                    String rootPathblock = rootPathDistrict+"/"+blockName;
-                    File dirBlock = new File(rootPathblock);
-                    if (!dirBlock.exists())
-                        dirBlock.mkdirs();
+        /*List<Location> Statess=locationDao.getChildLocations(LocationId);*/
+        if(Parent=="NATIONAL") {
 
+            List<State> states = stateDao.getAllStates();
+            String rootPath=System.getProperty("user.home") + File.separator + "Documents/CumulativeCourseCompletionCSVs";
+            List<FrontLineWorkers> successFullcandidates=maCourseAttemptDao.getSuccessFulFirstCompletion(fromDate,toDate);
+            getCumulativeCourseCompletionCSV(successFullcandidates,rootPath,"National");
+            for (State state : states) {
+                String stateName = state.getStateName();
+                String rootPathState = System.getProperty("user.home") + File.separator + "Documents/CumulativeCourseCompletionCSVs/" + stateName;
+                File dirState = new File(rootPathState);
+                if (!dirState.exists())
+                    dirState.mkdirs();
+                
+                int stateId = state.getStateId();
+                List<FrontLineWorkers> candidatesFromThisState=new ArrayList<>();
+                for (FrontLineWorkers asha:successFullcandidates){
+                    if(asha.getState()==stateId){
+                        candidatesFromThisState.add(asha);
+                    }
+                }
+
+                getCumulativeCourseCompletionCSV(candidatesFromThisState,rootPathState,stateName);
+                List<District> Districts = stateDao.getChildLocations(stateId);
+
+                for (District district : Districts) {
+                    String districtName = district.getDistrictName();
+
+                    String rootPathDistrict = rootPathState + "/" + districtName;
+                    File dirDistrict = new File(rootPathDistrict);
+                    if (!dirDistrict.exists())
+                        dirDistrict.mkdirs();
+                    int districtId = district.getDistrictId();
+                    List<FrontLineWorkers> candidatesFromThisDistrict=new ArrayList<>();
+                    for (FrontLineWorkers asha:candidatesFromThisState){
+                        if(asha.getDistrict()==districtId){
+                            candidatesFromThisDistrict.add(asha);
+                        }
+                    }
+
+                    getCumulativeCourseCompletionCSV(candidatesFromThisDistrict,rootPathDistrict,districtName);
+                    List<Block> Blocks = districtDao.getBlocks(districtId);
+                    for (Block block : Blocks) {
+                        String blockName = block.getBlockName();
+                        String rootPathblock = rootPathDistrict + "/" + blockName;
+                        File dirBlock = new File(rootPathblock);
+                        if (!dirBlock.exists())
+                            dirBlock.mkdirs();
+
+                        int blockId=block.getBlockId();
+                        List<FrontLineWorkers> candidatesFromThisBlock=new ArrayList<>();
+                        for (FrontLineWorkers asha:candidatesFromThisDistrict){
+                            if(asha.getBlock()==blockId){
+                                candidatesFromThisBlock.add(asha);
+                            }
+                        }
+
+                        getCumulativeCourseCompletionCSV(candidatesFromThisBlock,rootPathblock,blockName);
+
+                    }
+                }
+
+            }
+        }
+        else if (Parent=="STATE") {
+
+            List<District> Districts = stateDao.getChildLocations(LocationId);
+            String statename=stateDao.findByStateId(LocationId).getStateName();
+            String rootPath=System.getProperty("user.home") + File.separator + "Documents/CumulativeCourseCompletionCSVs";
+            List<FrontLineWorkers> successFullcandidates=maCourseAttemptDao.getSuccessFulFirstCompletion(fromDate,toDate);
+            List<FrontLineWorkers> candidatesFromThisState=new ArrayList<>();
+            for (FrontLineWorkers asha:successFullcandidates){
+                if(asha.getState()==LocationId){
+                    candidatesFromThisState.add(asha);
                 }
             }
 
+            getCumulativeCourseCompletionCSV(candidatesFromThisState,rootPath,statename);
+            for (District district : Districts) {
+                String districtName = district.getDistrictName();
+
+                String rootPathDistrict = System.getProperty("user.home") + File.separator + "Documents/CumulativeCourseCompletionCSVs/" + districtName;
+                File dirDistrict = new File(rootPathDistrict);
+                if (!dirDistrict.exists())
+                    dirDistrict.mkdirs();
+                int districtId = district.getDistrictId();
+
+                List<FrontLineWorkers> candidatesFromThisDistrict=new ArrayList<>();
+                for (FrontLineWorkers asha:candidatesFromThisState){
+                    if(asha.getDistrict()==districtId){
+                        candidatesFromThisDistrict.add(asha);
+                    }
+                }
+
+                getCumulativeCourseCompletionCSV(candidatesFromThisDistrict,rootPathDistrict,districtName);
+                List<Block> Blocks = districtDao.getBlocks(districtId);
+                for (Block block : Blocks) {
+                    String blockName = block.getBlockName();
+                    String rootPathblock = rootPathDistrict + "/" + blockName;
+                    File dirBlock = new File(rootPathblock);
+                    if (!dirBlock.exists())
+                        dirBlock.mkdirs();
+                    int blockId=block.getBlockId();
+                    List<FrontLineWorkers> candidatesFromThisBlock=new ArrayList<>();
+                    for (FrontLineWorkers asha:candidatesFromThisDistrict){
+                        if(asha.getBlock()==blockId){
+                            candidatesFromThisBlock.add(asha);
+                        }
+                    }
+
+                    getCumulativeCourseCompletionCSV(candidatesFromThisBlock,rootPathblock,blockName);
+
+                }
+            }
         }
+        else {
+            List<Block> Blocks = districtDao.getBlocks(LocationId);
+            String districtName=districtDao.findByDistrictId(LocationId).getDistrictName();
+            String rootPath=System.getProperty("user.home") + File.separator + "Documents/CumulativeCourseCompletionCSVs";
+            List<FrontLineWorkers> successFullcandidates=maCourseAttemptDao.getSuccessFulFirstCompletion(fromDate,toDate);
+            List<FrontLineWorkers> candidatesFromThisDistrict=new ArrayList<>();
+            for (FrontLineWorkers asha:successFullcandidates){
+                if(asha.getDistrict()==LocationId){
+                    candidatesFromThisDistrict.add(asha);
+                }
+            }
+            getCumulativeCourseCompletionCSV(candidatesFromThisDistrict,rootPath,districtName);
+            for (Block block : Blocks) {
+                String blockName = block.getBlockName();
+                String rootPathblock = System.getProperty("user.home") + File.separator + "Documents/CumulativeCourseCompletionCSVs/" + blockName;
+                File dirBlock = new File(rootPathblock);
+                if (!dirBlock.exists())
+                    dirBlock.mkdirs();
+                int blockId=block.getBlockId();
+                List<FrontLineWorkers> candidatesFromThisBlock=new ArrayList<>();
+                for (FrontLineWorkers asha:candidatesFromThisDistrict){
+                    if(asha.getBlock()==blockId){
+                        candidatesFromThisBlock.add(asha);
+                    }
+                }
+
+                getCumulativeCourseCompletionCSV(candidatesFromThisBlock,rootPathblock,blockName);
+
+            }
+        }
+
     }
 
     private String retrievePropertiesFromFileLocationProties() {

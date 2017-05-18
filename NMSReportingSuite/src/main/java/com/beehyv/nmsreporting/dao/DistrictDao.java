@@ -1,8 +1,9 @@
 package com.beehyv.nmsreporting.dao;
 
+import com.beehyv.nmsreporting.model.Block;
 import com.beehyv.nmsreporting.model.District;
-import com.beehyv.nmsreporting.model.Location;
 import com.beehyv.nmsreporting.model.State;
+import com.beehyv.nmsreporting.model.Taluka;
 
 import java.util.List;
 
@@ -11,17 +12,21 @@ import java.util.List;
  */
 public interface DistrictDao {
 
-    public District findByDistrictId(Integer districtId);
+    District findByDistrictId(Integer districtId);
 
-    public List<District> findByName(String districtName);
+    List<District> findByName(String districtName);
 
-    public List<District> getDistrictsOfState(State state);
+    List<District> getDistrictsOfState(State state);
 
-    public List<District> getAllDistricts();
+    List<Block> getBlocks(int districtId);
 
-    public State getStateOfDistrict(District district);
+    List<Taluka> getTalukas(int districtId);
 
-    public void saveLocation(District district);
+    List<District> getAllDistricts();
 
-    public void deleteLocation(District district);
+    State getStateOfDistrict(District district);
+
+    void saveLocation(District district);
+
+    void deleteLocation(District district);
 }
