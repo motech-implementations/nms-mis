@@ -1,18 +1,19 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("MainController", ['$scope', 'UserFormFactory', '$state', function($scope, UserFormFactory, $state){
+		.controller("MainController", ['$scope', '$state', '$http', 'UserFormFactory', function($scope, $state, $http, UserFormFactory,){
 			
 			$scope.breadcrumbDict = {
 				'userManagement.userTable': ['User Management'],
 				'userManagement.createUser': ['User Management', 'Create User'],
 				
 			}
-			// $scope.onUserManagementLoad = function() {
-			// 	$state.go('user-management.user-table')
-			// };
 
-			// $scope.onUserManagementLoad();
-		}]
-	)}
+			$scope.activeTab = function(tabName){
+				return $state.current.name.includes(tabName);
+			}
+
+			$scope.breadCrumb = ['User Management', 'Create User'];
+		}
+	])}
 )()

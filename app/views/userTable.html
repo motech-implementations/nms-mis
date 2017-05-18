@@ -1,71 +1,69 @@
-<div ng-controller="UserTableController">
+<div ng-controller="UserTableController" class='userTable'>
 
-	<div class="well userMngHeader">
-		<h1>User Management</h1>
-		<div>
-			<input  class="form-control" ng-model="filterText" type="text" name="tableSearch" placeholder="Search">
-			<button class="btn btn-primary" name="bulkUpload" ui-sref="userManagement.bulkUpload">Upload Bulk Users</button>
-            <button class="btn btn-primary" name="newUser" ui-sref="userManagement.createUser">Create new User</button>
+	<div class="well header">
+		
+		<div class='inputs row'>
+			<h1 class='col-sm-6'>User Management</h1>
+			<input  class="col-sm-2 form-control" ng-model="filterText" type="text" name="tableSearch" placeholder="Search">
+			<button class="col-sm-2 btn btn-primary" name="bulkUpload" ui-sref="userManagement.bulkUpload">Upload Bulk Users</button>
+			<button class="col-sm-2 btn btn-primary" name="newUser" ui-sref="userManagement.createUser">Create new User</button>
 		</div>
 	</div>
 
 	<div class="well">
-		<!-- <ul>
-			<li ng-repeat="item in data">{{item.name}}</li>
-		</ul> -->
 		<table class="table table-bordered table-striped">
 			<tr>
 				<!-- <th ng-repeat="header in headers" ng-if="header != '$$hashKey'">{{header}}</th> -->
-                <th ng-click="sort_by('id')"><a href="#">Id</a></th>
-                <th ng-click="sort_by('name')"><a href="#">Name</a></th>
-                <th ng-click="sort_by('username')"><a href="#">Username</a></th>
-                <th ng-click="sort_by('phoneNumber')"><a href="#">Phone no.</a></th>
-                <th ng-click="sort_by('email')"><a href="#">Email id</a></th>
-				 <th class="th-dropdown">
-                            <select ng-model="accType">
-                                <option value="">Access Type</option>
-                                <option ng-repeat="aType in uniqueAT = (getUniqueAccessTypes())"
-                                        value="{{aType}}">{{aType}}
-                                </option>
-                            </select>
-                        </th>
-                <!--<th>Access Type</th>-->
-                <th class="th-dropdown">
-                    <select ng-model="accLevel">
-                        <option value="">Access Level</option>
-                        <option ng-repeat="aLevel in uniqueAL = (getUniqueAccessLevels())"
-                                value="{{aLevel}}">{{aLevel}}
-                        </option>
-                    </select>
-                </th>
-                <th class="th-dropdown">
-                    <select ng-model="stateName">
-                        <option value="">State</option>
-                        <option ng-repeat="sName in sNames = (getUniqueStates())"
-                                value="{{sName}}">{{sName}}
-                        </option>
-                    </select>
-                </th>
-                <th class="th-dropdown">
-                    <select ng-model="districtName">
-                        <option value="">District</option>
-                        <option ng-repeat="dName in dNames = (getUniqueDistricts())"
-                                value="{{dName}}">{{dName}}
-                        </option>
-                    </select>
-                </th>
-                <th class="th-dropdown">
-                    <select ng-model="blockName">
-                        <option value="">Block</option>
-                        <option ng-repeat="bName in bNames = (getUniqueBlocks())"
-                                value="{{bName}}">{{bName}}
-                        </option>
-                    </select>
-                </th>
-                <!--<th>Access Level</th>-->
-                <!--<th>State</th>-->
-                <!--<th>District</th>-->
-                <!--<th>Block</th>-->
+				<th ng-click="sort_by('id')"><a>Id</a></th>
+				<th ng-click="sort_by('name')"><a>Name</a></th>
+				<th ng-click="sort_by('username')"><a>Username</a></th>
+				<th ng-click="sort_by('phoneNumber')"><a>Phone no.</a></th>
+				<th ng-click="sort_by('email')"><a>Email id</a></th>
+				<th class="th-dropdown">
+					<select ng-model="accType">
+						<option value="">Access Type</option>
+						<option ng-repeat="aType in uniqueAT = (getUniqueAccessTypes())"
+								value="{{aType}}">{{aType}}
+						</option>
+					</select>
+				</th>
+				<!--<th>Access Type</th>-->
+				<th class="th-dropdown">
+					<select ng-model="accLevel">
+						<option value="">Access Level</option>
+						<option ng-repeat="aLevel in uniqueAL = (getUniqueAccessLevels())"
+								value="{{aLevel}}">{{aLevel}}
+						</option>
+					</select>
+				</th>
+				<th class="th-dropdown">
+					<select ng-model="stateName">
+						<option value="">State</option>
+						<option ng-repeat="sName in sNames = (getUniqueStates())"
+								value="{{sName}}">{{sName}}
+						</option>
+					</select>
+				</th>
+				<th class="th-dropdown">
+					<select ng-model="districtName">
+						<option value="">District</option>
+						<option ng-repeat="dName in dNames = (getUniqueDistricts())"
+								value="{{dName}}">{{dName}}
+						</option>
+					</select>
+				</th>
+				<th class="th-dropdown">
+					<select ng-model="blockName">
+						<option value="">Block</option>
+						<option ng-repeat="bName in bNames = (getUniqueBlocks())"
+								value="{{bName}}">{{bName}}
+						</option>
+					</select>
+				</th>
+				<!--<th>Access Level</th>-->
+				<!--<th>State</th>-->
+				<!--<th>District</th>-->
+				<!--<th>Block</th>-->
 				<th>Edit</th>
 			</tr>
 			<!-- <tr ng-repeat="item in data"> -->
@@ -81,7 +79,7 @@
 				<td>{{item.state}}</td>
 				<td>{{item.district}}</td>
 				<td>{{item.block}}</td>
-                <td ng-if="item.createdBy"><a ng-click="editUser(item.id)">Edit</a></td>
+				<td ng-if="item.createdBy"><a ng-click="editUser(item.id)">Edit</a></td>
 			</tr>
 		</table>
 
@@ -92,7 +90,4 @@
 			class="pagination-small">
 		</pagination>
 	</div>
-
-	
-
 </div>

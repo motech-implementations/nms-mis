@@ -33,17 +33,14 @@ var nmsReportsApp = angular
 		}
 	])
 
-	.config(function ($stateProvider, $urlRouterProvider) {
-
-		
-			
+	.config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
 
 		$stateProvider
 
 			.state('userManagement', {
 				url: '/userManagement',
 				abstract: true,
-				templateUrl: '../views/userManagement.html'
+				templateUrl: '../views/userManagement.html',
 			})
 			.state('userManagement.userTable', {
 				url: '',
@@ -66,9 +63,16 @@ var nmsReportsApp = angular
 
 			.state('reports', {
 				url: '/reports',
-				templateUrl: '../views/reports.html'     
+				templateUrl: '../views/reports.html',
 			});
 
 		$urlRouterProvider
 			.otherwise('/userManagement')
+
+
+			
+		$httpProvider.defaults.headers.common = {};
+		$httpProvider.defaults.headers.post = {};
+		$httpProvider.defaults.headers.put = {};
+		$httpProvider.defaults.headers.patch = {};
 	});

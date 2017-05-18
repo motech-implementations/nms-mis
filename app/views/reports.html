@@ -9,24 +9,44 @@
 		<div class="row">
 			<div class="col-xs-7">
 				<div class="form-group col-xs-4">
-					<label for="name">Select Reports Category</label>
-					<select class="form-control" id="reportCaterory" ng-model="reportCaterory">
+					<label>Select Reports Category</label>
+					<div class="btn-group" uib-dropdown dropdown-append-to-body>
+						<button id="btn-append-to-body" type="button" class="btn" uib-dropdown-toggle style="width: 200px;">
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" style="width: 200px;">
+							<li role="menuitem"><a>Mobile Academy</a></li>
+							<li role="menuitem"><a>Kilkari Reports</a></li>
+						</ul>
+					</div>
+				<!-- <select class="form-control" id="reportCaterory" ng-model="reportCaterory">
 						<option>Mobile Academy Reports</option>
 						<option>Kilkari Reports</option>
-					</select>
+					</select> -->
 				</div>
 				<div class="form-group col-xs-4">
-					<label for="email">Select Reports</label>
-					<select class="form-control" id="reportName" ng-model="reportName">
+					<label>Select Reports</label>
+					<div class="btn-group" uib-dropdown dropdown-append-to-body>
+						<button id="btn-append-to-body" type="button" class="btn" uib-dropdown-toggle style="width: 200px;">
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" style="width: 200px">
+							<li role="menuitem"><a>Report 1</a></li>
+							<li role="menuitem"><a>Report 2</a></li>
+							<li role="menuitem"><a>Report 3</a></li>
+							<li role="menuitem"><a>Report 4</a></li>
+						</ul>
+					</div>
+					<!-- <select class="form-control" id="reportName" ng-model="reportName">
 						<option>Report 1</option>
 						<option>Report 2</option>
 						<option>Report 3</option>
 						<option>Report 4</option>
-					</select>
+					</select> -->
 				</div>
 				<div class="form-group col-xs-4">
-					<label for="pwd">Select Date Range</label>
-					<input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+					<label>Select Date Range</label>
+					<input type="button" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
 					<span class="input-group-btn">
 						<button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
 					</span>
