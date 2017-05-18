@@ -33,20 +33,24 @@ public class FrontLineWorkers {
     @Column(name="flw_status", columnDefinition = "TINYINT(4)")
     private String jobStatus;
 
-    @Column(name="state_id", columnDefinition = "TINYINT")
-    private Integer state;
+    @ManyToOne
+    @JoinColumn(name="state_id", columnDefinition = "TINYINT")
+    private State state;
 
-    @Column(name="district_id", columnDefinition = "SMALLINT(6)")
-    private Integer district;
+    @ManyToOne
+    @JoinColumn(name="district_id", columnDefinition = "SMALLINT(6)")
+    private District district;
 
-    @Column(name="taluka_id", columnDefinition = "SMALLINT(6)")
-    private Integer taluka;
+    @ManyToOne
+    @JoinColumn(name="taluka_id", columnDefinition = "SMALLINT(6)")
+    private Taluka taluka;
 
     @Column(name="village_id", columnDefinition = "INT(11)")
     private Integer village;
 
-    @Column(name="block_id", columnDefinition = "INT(11)")
-    private Integer block;
+    @ManyToOne
+    @JoinColumn(name="block_id", columnDefinition = "INT(11)")
+    private Block block;
 
     @Column(name="facility_id", columnDefinition = "INT(11)")
     private Integer facility;
@@ -116,35 +120,36 @@ public class FrontLineWorkers {
         this.jobStatus = jobStatus;
     }
 
-    public Integer getState() {
+
+    public State getState() {
         return state;
     }
 
-    public void setState(Integer state) {
+    public void setState(State state) {
         this.state = state;
     }
 
-    public Integer getDistrict() {
+    public District getDistrict() {
         return district;
     }
 
-    public void setDistrict(Integer district) {
+    public void setDistrict(District district) {
         this.district = district;
     }
 
-    public Integer getTaluka() {
+    public Taluka getTaluka() {
         return taluka;
     }
 
-    public void setTaluka(Integer taluka) {
+    public void setTaluka(Taluka taluka) {
         this.taluka = taluka;
     }
 
-    public Integer getBlock() {
+    public Block getBlock() {
         return block;
     }
 
-    public void setBlock(Integer block) {
+    public void setBlock(Block block) {
         this.block = block;
     }
 
