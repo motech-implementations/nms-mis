@@ -12,9 +12,9 @@ import java.util.List;
  */
 public interface TalukaDao {
 
-    public Taluka findByTalukaId(Integer talukaId);
+    Taluka findByTalukaId(Integer talukaId);
 
-    public List<Taluka> findByName(String talukaName);
+    List<Taluka> findByName(String talukaName);
 
     List<Taluka> getTalukasOfDistrict(District district);
 
@@ -22,7 +22,7 @@ public interface TalukaDao {
 
     List<Taluka> getAllTalukas();
 
-    public void saveTaluka(Taluka taluka);
+    void saveTaluka(Taluka taluka);
 
-    public void deleteTaluka(Taluka taluka);
+    void deleteTaluka(Taluka taluka);
 }

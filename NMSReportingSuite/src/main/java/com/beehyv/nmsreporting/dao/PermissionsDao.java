@@ -8,11 +8,12 @@ import java.util.List;
  * Created by beehyv on 15/3/17.
  */
 public interface PermissionsDao {
-    public Permissions findByPermissionId(Integer permissionId);
 
-    public List<Permissions> getAllPermissions();
+    Permissions findByPermissionId(Integer permissionId);
 
-    public void savePermission(Permissions permission);
+    List<Permissions> getAllPermissions();
 
-    public void deletePermission(Permissions permission);
+    void savePermission(Permissions permission);
+
+    void deletePermission(Permissions permission);
 }

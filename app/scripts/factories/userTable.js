@@ -9,8 +9,8 @@
 			// })
 			return {
 				getUsers: function() {
-					// return $http.get(backend_root + 'nms/user/tableList')
-					return $http.get('newUser.json');
+					return $http.get(backend_root + 'nms/user/tableList')
+					// return $http.get('newUser.json');
 				},
 				setUsers: function(values){
 					users = values;

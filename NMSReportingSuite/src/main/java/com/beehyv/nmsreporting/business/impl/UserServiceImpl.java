@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public List<User> findMyUsers(User currentUser) {
 
-        String accessLevel = "NATIONAL";
+        String accessLevel = currentUser.getAccessLevel();
         if(accessLevel.equalsIgnoreCase("State")){
             return userDao.getUsersByLocation("stateId", currentUser.getStateId());
         }

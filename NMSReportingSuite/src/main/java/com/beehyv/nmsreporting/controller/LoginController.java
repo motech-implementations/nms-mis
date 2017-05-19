@@ -6,7 +6,6 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
-import org.apache.shiro.session.UnknownSessionException;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Created by beehyv on 15/3/17.
@@ -28,7 +27,7 @@ public class LoginController {
     protected String returnLoginView(Model model, @ModelAttribute LoginUser loginUser) {
 //        System.out.println("\n\n" + SecurityUtils.getSubject().getSession()+ "!!!!!!!!!!!\n\n");
         ensureUserIsLoggedOut();
-        return "redirect:http://127.0.0.1:4040/login";
+        return "redirect:http://localhost:8080/app/#!/login";
     }
 
     @RequestMapping(value={"/nms/login"}, method= RequestMethod.POST)
@@ -52,14 +51,20 @@ public class LoginController {
         if( errors.hasErrors() ) {
             return returnLoginView(model, loginUser);
         } else {
-            return "redirect:http://127.0.0.1:4040/index";
+            return "redirect:http://localhost:8080/app/#!/userManagement";
         }
     }
 
     @RequestMapping(value = {"/nms/index"}, method = RequestMethod.GET)
     protected String returnHomeView(Model model) {
 //        System.out.println("\n\n" + SecurityUtils.getSubject().getSession()+ "!!!!!!!!!!!\n\n");
-        return "redirect:http://127.0.0.1:4040/index";
+        return "redirect:http://localhost:8080/app/#!/userManagement";
+    }
+
+    @RequestMapping(value = {"/nms/loginDummy"}, method = RequestMethod.GET)
+    protected @ResponseBody LoginUser dummy() {
+//        System.out.println("\n\n" + SecurityUtils.getSubject().getSession()+ "!!!!!!!!!!!\n\n");
+        return new LoginUser();
     }
 
     private void ensureUserIsLoggedOut() {

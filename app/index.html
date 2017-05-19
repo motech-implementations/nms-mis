@@ -34,6 +34,7 @@
 	<script type="text/javascript" src="scripts/controllers/bulkUser.js"></script>
 	<script type="text/javascript" src="scripts/controllers/createUser.js"></script>
 	<script type="text/javascript" src="scripts/controllers/reports.js"></script>
+	<script type="text/javascript" src="scripts/controllers/login.js"></script>
 	
 
 	<!-- Directives -->
@@ -53,7 +54,7 @@
 
 </head>
 <body ng-app="nmsReports" ng-controller="MainController">
-	<div class='nav-bar'>
+	<div class='nav-bar' ng-hide='$state.current.name=="login"'>
 		<div class="nav-header">
 			<div>
 				<a class="navbar-brand" href="#">WebSiteName</a>
@@ -68,8 +69,9 @@
 
 		<div class="nav">
 			<ul class="breadcrumb">
-				<li>User Management</li>
-				<li>Create New User</li>
+				<li ng-repeat="item in getBreadCrumb($state.current.name)">
+					<a u ui-sref='{{item.sref}}' ng-class="{'active': {{item.active}} }" >{{item.name}}</a>
+				</li>
 			</ul>
 			<ul class="nav-menu">
 				<li>

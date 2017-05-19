@@ -10,17 +10,17 @@ import java.util.List;
  * Created by beehyv on 15/3/17.
  */
 public interface ModificationTrackerDao {
-    public ModificationTracker findModificationById(Integer modificationId);
+    ModificationTracker findModificationById(Integer modificationId);
 
-    public void saveModification(ModificationTracker modification);
+    void saveModification(ModificationTracker modification);
 
-    public void deleteModification(ModificationTracker modification);
+    void deleteModification(ModificationTracker modification);
 
-    public List<ModificationTracker> getAllModifications();
+    List<ModificationTracker> getAllModifications();
 
-    public List<ModificationTracker> getAllModificationsByUser(User userId);
+    List<ModificationTracker> getAllModificationsByUser(User userId);
 
-    public List<ModificationTracker> getAllModifiersForUser(User userId);
+    List<ModificationTracker> getAllModifiersForUser(User userId);
 
-    public List<ModificationTracker> getAllModificationsByDate(Date date);
+    List<ModificationTracker> getAllModificationsByDate(Date date);
 }
