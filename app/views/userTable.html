@@ -79,7 +79,7 @@
 				<td>{{item.state}}</td>
 				<td>{{item.district}}</td>
 				<td>{{item.block}}</td>
-				<td ng-if="item.createdBy"><a ng-click="editUser(item.id)">Edit</a></td>
+				<td ng-if="item.createdBy"><a ui-sref="userManagement.editUser({ id: '{{item.id}}' })">Edit</a></td>
 			</tr>
 		</table>
 

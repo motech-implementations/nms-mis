@@ -11,7 +11,11 @@
 				},
 				'userManagement.createUser': {
 					'name': 'Create User',
-					'sref': 'userManagement.userTable',
+					'sref': 'userManagement.createUser',
+				},
+				'userManagement.bulkUpload': {
+					'name': 'Bulk User Upload',
+					'sref': ''
 				}
 			}
 		}]);

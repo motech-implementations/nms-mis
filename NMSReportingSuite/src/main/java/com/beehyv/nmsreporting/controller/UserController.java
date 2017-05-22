@@ -115,17 +115,18 @@ public class UserController {
         user1.setPhoneNumber(user.getPhoneNumber());
         user1.setAccessLevel(user.getAccessLevel());
         try {
-            user1.setState(user.getStateId().getStateName());
+            user1.setState(user.getStateId().getStateId() + "");
         } catch(NullPointerException e){
             user1.setState("");
         }
+        System.out.println("state = " + user1.getState().toString());
         try {
-            user1.setDistrict(user.getDistrictId().getDistrictName());
+            user1.setDistrict(user.getDistrictId().getDistrictId().toString());
         } catch(NullPointerException e){
             user1.setDistrict("");
         }
         try {
-            user1.setBlock(user.getBlockId().getBlockName());
+            user1.setBlock(user.getBlockId().getBlockId().toString());
         } catch(NullPointerException e){
             user1.setBlock("");
         }
@@ -165,7 +166,7 @@ public class UserController {
 
         if(userService.findUserByUsername(userMap.get("username")) != null){
             System.out.println("user exists");
-            return "redirect:http://127.0.0.1:4040/index";
+            return "redirect:http://localhost:8080/#!/";
         }
 
         User newUser = new User();
@@ -199,7 +200,7 @@ public class UserController {
 
         userService.createNewUser(newUser);
 
-        return "redirect:http://127.0.0.1:4040/index";
+        return "redirect:http://localhost:8080/#!/";
     }
 
     @RequestMapping(value = {"/update-user"}, method = RequestMethod.POST)
@@ -257,7 +258,7 @@ public class UserController {
             System.out.println(key + " : " + userMap.get(key));
         }
 
-        return "redirect:http://127.0.0.1:4040/index";
+        return "redirect:http://localhost:8080/#!/";
 
 //        String trackModification = mapper.convertValue(node.get("modification"), String.class);
 //
@@ -269,7 +270,7 @@ public class UserController {
 //        modification.setModificationDescription(trackModification);
 //        modificationTrackerService.saveModification(modification);
     }
-/*
+
     @CrossOrigin
     @RequestMapping(value = {"/update-user-2"}, method = RequestMethod.POST)
     public String updateExistingUser2(@RequestBody UserDto userDto) {
@@ -301,8 +302,8 @@ public class UserController {
 
         userService.updateExistingUser(user);
 
-        return "redirect:/home";
-    }*/
+        return "redirect:http://localhost:8080/#!/";
+    }
 
     @RequestMapping(value = {"/delete-user"}, method = RequestMethod.POST)
     public void deleteExistingUser(@RequestBody User user) {

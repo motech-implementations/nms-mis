@@ -40,15 +40,12 @@
 					return $http.get(backend_root + 'nms/location/blocks/' + districtId);
 				},
 
-				getUserToEdit: function(){
-					return userToEdit;
-				},
-				setUserToEdit: function(user){
-					userToEdit = user;
-				},
-
 				getUser: function(id){
 					return $http.get(backend_root + 'nms/user/user/' + id);
+				},
+
+				getUserDto: function(id){
+					return $http.get(backend_root + 'nms/user/dto/' + id);
 				},
 
 				downloadCreator: function(){
