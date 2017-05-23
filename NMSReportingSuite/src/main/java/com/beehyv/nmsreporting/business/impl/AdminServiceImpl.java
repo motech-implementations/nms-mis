@@ -55,6 +55,12 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private  FrontLineWorkersDao frontLineWorkersDao;
 
+    @Autowired
+    private  AnonymousUsersDao anonymousUsersDao;
+
+    @Autowired
+    private CircleDao circleDao;
+
     @Override
     public HashMap startBulkDataImport(User loggedInUser) {
         Pattern pattern;
@@ -994,6 +1000,25 @@ public class AdminServiceImpl implements AdminService {
         }
     }
 
+    @Override
+    public void createFolders(String reportType){
+
+        List<Circle> circleList=circleDao.getAllCircles();
+        String rootPath = System.getProperty("user.home") + File.separator + "Documents/Reports";
+        File dir = new File(rootPath + "/" + reportType);
+        if (!dir.exists())
+            dir.mkdirs();
+        for(Circle circle:circleList){
+            String circleName=circle.getCircleName();
+            String rootPathCircle=rootPath+"/"+reportType+"/"+circleName;
+            File dirCircle=new File(rootPathCircle);
+            if (!dirCircle.exists())
+                dirCircle.mkdirs();
+        }
+
+
+    }
+
     public void getCumulativeCourseCompletion(List<FrontLineWorkers> successfulCandidates, String rootPath, String place, Date toDate) {
         //Create blank workbook
         XSSFWorkbook workbook = new XSSFWorkbook();
@@ -1046,8 +1071,56 @@ public class AdminServiceImpl implements AdminService {
         }
     }
 
-    public void getCircleWiseAnonymousUsers(List<AnonymousUsers> anonymousCandidates, String rootPath, String place, Date toDate){
+    public void getCircleWiseAnonymousUsers(List<AnonymousUsers> anonymousUsersList, String rootPath, String place, Date toDate){
 
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        //Create a blank sheet
+        XSSFSheet spreadsheet = workbook.createSheet(
+                " Circle-wise Anonymous Users Report");
+        //Create row object
+        XSSFRow row;
+        //This data needs to be written (Object[])
+        Map<String, Object[]> empinfo =
+                new TreeMap<String, Object[]>();
+        empinfo.put("1", new Object[]{
+                "Circle Name", "Mobile Number", "Last Called Date"});
+        Integer counter = 2;
+        for (AnonymousUsers anonymousUser : anonymousUsersList) {
+            empinfo.put((counter.toString()), new Object[]{
+                    anonymousUser.getCircleId(), anonymousUser.getMsisdn(), anonymousUser.getLastCalledDate()
+
+
+            });
+            counter++;
+        }
+        Set<String> keyid = empinfo.keySet();
+        int rowid = 0;
+        for (String key : keyid) {
+            row = spreadsheet.createRow(rowid++);
+            Object[] objectArr = empinfo.get(key);
+            int cellid = 0;
+            for (Object obj : objectArr) {
+                Cell cell = row.createCell(cellid++);
+                cell.setCellValue((String) obj);
+            }
+        }
+        //Write the workbook in file system
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(new File(rootPath + "/" + "MA_AnonymousUsersReport" + "_" + place + "_" + toDate + ".xlsx"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            workbook.write(out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
    public void getCumulativeInactiveUsers(List<FrontLineWorkers> inactiveCandidates, String rootPath, String place, Date toDate){
@@ -1167,7 +1240,14 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void getCircleWiseAnonymousFiles(Date toDate) {
-        
+        List<Circle> circleList=circleDao.getAllCircles();
+        String rootPath = System.getProperty("user.home") + File.separator + "Documents/Reports/CumulativeAnonymousUsers";
+
+        for(Circle circle:circleList){
+            String circleName=circle.getCircleName();
+            List<AnonymousUsers> anonymousUsersList=anonymousUsersDao.getAnonymousUsersCircle(toDate,circle.getCircleIdId());
+            getCircleWiseAnonymousUsers(anonymousUsersList,rootPath,circleName,toDate);
+        }
     }
 
     @Override
