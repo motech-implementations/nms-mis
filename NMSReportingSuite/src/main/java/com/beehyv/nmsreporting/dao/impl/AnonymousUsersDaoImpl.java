@@ -6,6 +6,7 @@ import com.beehyv.nmsreporting.model.AnonymousUsers;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 /**
  * Created by beehyv on 23/5/17.
  */
+@Repository("anonymousUsersDao")
 public class AnonymousUsersDaoImpl extends AbstractDao<Integer,AnonymousUsers> implements AnonymousUsersDao{
 
     @Override
