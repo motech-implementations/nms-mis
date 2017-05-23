@@ -1,14 +1,13 @@
 package com.beehyv.nmsreporting.model;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
  * Created by beehyv on 23/5/17.
  */
+@Entity
+@Table(name = "dim_circle")
 public class Circle {
 
     @Id

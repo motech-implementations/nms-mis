@@ -8,7 +8,7 @@ import java.util.Date;
  * Created by beehyv on 16/5/17.
  */
 @Entity
-@Table(name="ma_blocked_users")
+@Table(name="ma_anonymous_users")
 public class AnonymousUsers {
 
     @Id

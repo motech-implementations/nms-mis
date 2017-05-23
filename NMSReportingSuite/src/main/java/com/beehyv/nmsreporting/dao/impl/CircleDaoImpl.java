@@ -21,4 +21,9 @@ public class CircleDaoImpl extends AbstractDao<Integer,Circle> implements Circle
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("circleName"));
         return (List<Circle>) criteria.list();
     }
+
+    @Override
+    public Circle getByCircleId(Integer circleId) {
+        return getByKey(circleId);
+    }
 }

@@ -53,10 +53,10 @@ public class AdminServiceImpl implements AdminService {
     private KilkariSixWeeksNoAnswerDao kilkariSixWeeksNoAnswerDao;
 
     @Autowired
-    private  FrontLineWorkersDao frontLineWorkersDao;
+    private FrontLineWorkersDao frontLineWorkersDao;
 
     @Autowired
-    private  AnonymousUsersDao anonymousUsersDao;
+    private AnonymousUsersDao anonymousUsersDao;
 
     @Autowired
     private CircleDao circleDao;
@@ -410,223 +410,11 @@ public class AdminServiceImpl implements AdminService {
                                             }
                                         }
                                     }
-
                                 }
-
-                            }
-
-
-                        }
-
-                       /* if(userRoleId==1||userRoleId==3){
-                            Integer rowNum=linNumber;
-                            String authorityError="You don't have authority to create this user.";
-                            errorCreatingUsers.put(rowNum,authorityError);
-                            continue;
-                        }
-
-
-                        if(userRoleId==1||userRoleId==3){
-                             Integer rowNum=linNumber;
-                            String authorityError="You don't have authority to create this user.";
-                            errorCreatingUsers.put(rowNum,authorityError);
-                            continue;
-                        }
-                        user.setRoleId(userRole.get(0));
-
-                        if((userRoleId==2)){
-                            if(loggedUserRole<1){
-                                 Integer rowNum=linNumber;
-                                String authorityError="You don't have authority to create this user.";
-                                errorCreatingUsers.put(rowNum,authorityError);
-                                continue;
-                            }
-                            else {
-                                Location userLocation = locationDao.findByLocationId(1);
-                                user.setLocationId(userLocation);
                             }
                         }
-                        if((userRoleId==4)){
-                            List<Location> userLocation=locationDao.findByLocation(State);
-
-                            if((userLocation==null)||(userLocation.size()==0)){
-                                 Integer rowNum=linNumber;
-                                String authorityError="Please enter the valid location for this user.";
-                                errorCreatingUsers.put(rowNum,authorityError);
-                                continue;
-                            }
-                            else{
-                                if((loggedUserRole==1)||((loggedUserRole==3)&&(loggedInUser.getLocationId().getLocationId()==userLocation.get(0).getLocationId())))
-                                {
-                                    user.setLocationId(userLocation.get(0));
-
-                                }
-                                else{
-                                     Integer rowNum=linNumber;
-                                    String authorityError="You don't have authority to create this user.";
-                                    errorCreatingUsers.put(rowNum,authorityError);
-                                    continue;
-                                }
-                            }
-
-
-                        }
-                        if((userRoleId==5)){
-                            List<Location> userState=locationDao.findByLocation(State);
-                            List<Location> userDistrict=locationDao.findByLocation(District);
-                            Location userlocation=null;
-                            if(userDistrict.size()==1){
-                                userlocation=userDistrict.get(0);
-                            }
-                            else{
-                                for(Location location:userDistrict){
-                                    Location parent=location.getReferenceId();
-                                    if(userState!=null){
-                                        if(parent.getLocationId()==userState.get(0).getLocationId()){
-                                            userlocation=location;
-                                            break;
-                                        }
-                                    }
-
-                                }
-                            }
-
-                            if(userlocation==null){
-                                 Integer rowNum=linNumber;
-                                String authorityError="Please enter the valid location for this user.";
-                                errorCreatingUsers.put(rowNum,authorityError);
-                                continue;
-                            }
-                            else{
-
-                                if((loggedUserRole==1)||((loggedUserRole==3)&&(loggedInUser.getLocationId().getLocationId()==userlocation.getReferenceId().getLocationId())))
-                                {
-                                    boolean isAdminAvailable=userDao.isAdminCreated(userlocation,userRole.get(0));
-                                    if(!isAdminAvailable){
-                                        user.setLocationId(userlocation);
-                                    }
-                                    else{
-                                         Integer rowNum=linNumber;
-                                        String authorityError="Admin is available for this District.";
-                                        errorCreatingUsers.put(rowNum,authorityError);
-                                        continue;
-                                    }
-
-
-                                }
-                                else {
-                                     Integer rowNum=linNumber;
-                                    String authorityError="You don't have authority to create this user.";
-                                    errorCreatingUsers.put(rowNum,authorityError);
-                                    continue;
-                                }
-                            }
-
-
-                        }
-                        if((userRoleId==6)){
-                            List<Location> userState=locationDao.findByLocation(State);
-                            List<Location> userDistrict=locationDao.findByLocation(District);
-                            Location userlocation=null;
-                            if(userDistrict.size()==1){
-                                userlocation=userDistrict.get(0);
-                            }
-                            else{
-                                for(Location location:userDistrict){
-                                    Location parent=location.getReferenceId();
-                                    if(userState!=null){
-                                        if(parent.getLocationId()==userState.get(0).getLocationId()){
-                                            userlocation=location;
-                                            break;
-                                        }
-                                    }
-
-                                }
-                            }
-
-                            if(userlocation==null){
-                                 Integer rowNum=linNumber;
-                                String authorityError="Please enter the valid location for this user.";
-                                errorCreatingUsers.put(rowNum,authorityError);
-                                continue;
-                            }
-                            else{
-                                if((loggedUserRole==1)||((loggedUserRole==3)&&(loggedInUser.getLocationId().getLocationId()==userlocation.getReferenceId().getLocationId()))||((loggedUserRole==5)&&(loggedInUser.getLocationId().getLocationId()==userlocation.getLocationId())))
-                                {
-                                    user.setLocationId(userlocation);
-
-                                }
-                                else {
-                                     Integer rowNum=linNumber;
-                                    String authorityError="You don't have authority to create this user.";
-                                    errorCreatingUsers.put(rowNum,authorityError);
-                                    continue;
-                                }
-                            }
-
-
-                        }
-                        if((userRoleId==7)){
-                            List<Location> userState=locationDao.findByLocation(State);
-                            List<Location> userDistrict=locationDao.findByLocation(District);
-                            List<Location> userBlock=locationDao.findByLocation(Block);
-                            Location userlocation=null;
-                            if(userBlock.size()==1){
-                                user.setLocationId(userBlock.get(0));
-                            }
-                            else if ((userBlock.size()==0)||userBlock==null){
-                                 Integer rowNum=linNumber;
-                                String authorityError="Please enter the valid Block for this user.";
-                                errorCreatingUsers.put(rowNum,authorityError);
-                            }
-                            else{
-                                List<Location> commonDistrict = null;
-                                for (Location location:userBlock){
-                                    Location parent=location.getReferenceId();
-                                    if(userDistrict.size()>0){
-                                        for(Location district:userDistrict){
-                                            if(parent.getLocationId()==district.getLocationId()){
-                                                commonDistrict.add(location);
-                                            }
-                                        }
-
-                                    }
-                                }
-                                for(Location location:commonDistrict){
-                                    Location parent=location.getReferenceId().getReferenceId();
-                                    if(userState!=null){
-                                        if(parent.getLocationId()==userState.get(0).getLocationId()){
-                                            userlocation=location;
-                                            break;
-                                        }
-
-                                    }
-                                }
-                                if(userlocation==null){
-                                     Integer rowNum=linNumber;
-                                    String authorityError="Please enter the valid location for this user.";
-                                    errorCreatingUsers.put(rowNum,authorityError);
-                                    continue;
-                                }
-                                else{
-                                    if((loggedUserRole==1)||((loggedUserRole==3)&&(loggedInUser.getLocationId().getLocationId()==userlocation.getReferenceId().getReferenceId().getLocationId()))||((loggedUserRole==5)&&(loggedInUser.getLocationId().getLocationId()==userlocation.getReferenceId().getLocationId())))
-                                    {
-                                        user.setLocationId(userlocation);
-                                    }
-                                    else{
-                                         Integer rowNum=linNumber;
-                                        String authorityError="You don't have authority to create this user.";
-                                        errorCreatingUsers.put(rowNum,authorityError);
-                                        continue;
-                                    }
-                                }
-                            }
-                        }*/
                         userDao.saveUser(user);
-
-
                     }
-
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -640,223 +428,6 @@ public class AdminServiceImpl implements AdminService {
                         }
                     }
                 }
-
-                /*BufferedReader br = null;
-                String line = "";
-                String cvsSplitBy = ",";
-                XSSFWorkbook workbook = null;
-                try {
-                    workbook = new XSSFWorkbook(fis);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                } finally {
-                    if (workbook != null) {
-
-                        XSSFSheet spreadsheet = workbook.getSheetAt(0);
-                        Iterator<Row> rowIterator = spreadsheet.iterator();
-                        if(rowIterator.hasNext()){
-                            rowIterator.next();
-                        }
-                        while (rowIterator.hasNext()) {
-                            User user = new User();
-                            Role role;
-                            Location locaation;
-
-
-                            row = (XSSFRow) rowIterator.next();
-                            Iterator<Cell> cellIterator = row.cellIterator();
-                           *//* user.setUsername(row.getCell(6).getRawValue());*//*
-                            String userName=row.getCell(6).getStringCellValue();
-                            if(userName==""){
-                                Integer rowNum=linNumber;
-                                String userNameError="Please specify the username for user";
-                                errorCreatingUsers.put(rowNum,userNameError);
-                                continue;
-                            }
-                            User UsernameExist=null;
-                            UsernameExist=userDao.findByUserName(row.getCell(6).getStringCellValue());
-                            if(UsernameExist==null){
-                                user.setUsername(row.getCell(6).getStringCellValue());
-                            }
-                            else{
-                                Integer rowNum=linNumber;
-                                String userNameError="Username already exists.";
-                                errorCreatingUsers.put(rowNum,userNameError);
-                                continue;
-                            }
-
-                            *//*UserDetails userdetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-                            String loggedUserName=userdetails.getUsername();
-                            User loggedInUser=userDao.findByUserName(loggedUserName);
-                            int loggedUserRole=loggedInUser.getRoleId().getRoleId();*//*
-
-                            String userPhone=row.getCell(4).getRawValue();
-                            if(userPhone==""){
-                                Integer rowNum=linNumber;
-                                String userNameError="Please specify the phone number for user";
-                                errorCreatingUsers.put(rowNum,userNameError);
-                                continue;
-                            }
-
-                            String regexStr1 = "^[0-9]*$";
-                            String regexStr2 = "^[0-9]{10}$";
-                            if (!(userPhone.matches(regexStr1))||!(userPhone.matches(regexStr2))){
-                                Integer rowNum=linNumber;
-                                String userNameError="Please check the format of phone number for user";
-                                errorCreatingUsers.put(rowNum,userNameError);
-                                continue;
-                            }
-                            user.setPassword(row.getCell(4).getRawValue());
-                            *//*String userFullName=row.getCell(1).getRawValue();*//*
-
-                            user.setFullName(row.getCell(0).getStringCellValue());
-
-
-                            user.setPhoneNumber(row.getCell(4).getRawValue());
-
-                            String userEmail=row.getCell(5).getStringCellValue();
-                            if(userEmail==""){
-                                Integer rowNum=linNumber;
-                                String userNameError="Please specify the Email for user";
-                                errorCreatingUsers.put(rowNum,userNameError);
-                                continue;
-                            }
-                            String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                                                    + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-
-
-                            user.setEmailId(row.getCell(5).getStringCellValue());
-                            java.sql.Date sqlDate = new java.sql.Date(row.getCell(7).getDateCellValue().getTime());
-                            user.setCreationDate((sqlDate) );
-
-                            *//*user.setCreatedByUser(loggedInUser);*//*
-
-                            Role userRole=roleDao.findByRoleDescription(row.getCell(8).getStringCellValue());
-                            if(userRole==null){
-                                Integer rowNum=linNumber;
-                                String userNameError="Please specify the role of user";
-                                errorCreatingUsers.put(rowNum,userNameError);
-                                continue;
-                            }
-
-                            int userRoleId=userRole.getRoleId();
-                            if(userRoleId==1||userRoleId==3){
-                                Integer rowNum=linNumber;
-                                String authorityError="You don't have authority to create this user.";
-                                errorCreatingUsers.put(rowNum,authorityError);
-                                continue;
-                            }
-                            user.setRoleId(userRole);
-                            String State=row.getCell(1).getStringCellValue();
-                            String District=row.getCell(2).getStringCellValue();
-                            String Block=row.getCell(3).getStringCellValue();
-                            if((userRoleId==2)){
-                                Location userLocation=locationDao.findByLocationId(1);
-                                user.setLocationId(userLocation);
-                            }
-                            if((userRoleId==4)){
-                                List<Location> userLocation=locationDao.findByLocation(State);
-                                if((userLocation==null)||(userLocation.size()==0)){
-                                    Integer rowNum=linNumber;
-                                    String authorityError="Please enter the valid location for this user.";
-                                    errorCreatingUsers.put(rowNum,authorityError);
-                                    continue;
-                                }
-                                else{
-                                    user.setLocationId(userLocation.get(0));
-                                }
-
-
-                            }
-                            if((userRoleId==5)||(userRoleId==6)){
-                                List<Location> userState=locationDao.findByLocation(State);
-                                List<Location> userDistrict=locationDao.findByLocation(District);
-                                Location userlocation=null;
-                                if(userDistrict.size()==1){
-                                    userlocation=userDistrict.get(0);
-                                }
-                                else{
-                                    for(Location location:userDistrict){
-                                        Location parent=location.getReferenceId();
-                                        if(userState!=null){
-                                            if(parent.getLocationId()==userState.get(0).getLocationId()){
-                                                userlocation=location;
-                                                break;
-                                            }
-                                        }
-
-                                    }
-                                }
-
-                                if(userlocation==null){
-                                    Integer rowNum=linNumber;
-                                    String authorityError="Please enter the valid location for this user.";
-                                    errorCreatingUsers.put(rowNum,authorityError);
-
-                                }
-                                else{
-                                    user.setLocationId(userlocation);
-                                }
-
-
-                            }
-                            if((userRoleId==7)){
-                                List<Location> userState=locationDao.findByLocation(State);
-                                List<Location> userDistrict=locationDao.findByLocation(District);
-                                List<Location> userBlock=locationDao.findByLocation(Block);
-                                Location userlocation=null;
-                                if(userBlock.size()==1){
-                                    user.setLocationId(userBlock.get(0));
-                                }
-                                else if ((userBlock.size()==0)||userBlock==null){
-                                    Integer rowNum=linNumber;
-                                    String authorityError="Please enter the valid Block for this user.";
-                                    errorCreatingUsers.put(rowNum,authorityError);
-                                }
-                                else{
-                                    List<Location> commonDistrict = null;
-                                    for (Location location:userBlock){
-                                        Location parent=location.getReferenceId();
-                                        if(userDistrict.size()>0){
-                                            for(Location district:userDistrict){
-                                                if(parent.getLocationId()==district.getLocationId()){
-                                                   commonDistrict.add(location);
-                                                }
-                                            }
-
-                                        }
-                                    }
-                                    for(Location location:commonDistrict){
-                                        Location parent=location.getReferenceId().getReferenceId();
-                                        if(userState!=null){
-                                            if(parent.getLocationId()==userState.get(0).getLocationId()){
-                                                userlocation=location;
-                                                break;
-                                            }
-
-                                        }
-                                    }
-                                    if(userlocation==null){
-                                        Integer rowNum=linNumber;
-                                        String authorityError="Please enter the valid location for this user.";
-                                        errorCreatingUsers.put(rowNum,authorityError);
-
-                                    }
-                                    else{
-                                        user.setLocationId(userlocation);
-                                    }
-                                }
-                            }
-                           userDao.saveUser(user);
-
-                        }
-                        try {
-                            fis.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }*/
             }
 
         }
@@ -864,104 +435,34 @@ public class AdminServiceImpl implements AdminService {
     }
 
     public void getBulkDataImportCSV() {
-      /*  //Create blank workbook
-        XSSFWorkbook workbook = new XSSFWorkbook();
-        //Create a blank sheet
-        XSSFSheet spreadsheet = workbook.createSheet(
-                " Employee Info ");
-        //Create row object
-        XSSFRow row;
-        //This data needs to be written (Object[])
-        Map < String, Object[] > empinfo =
-                new TreeMap < String, Object[] >();
-        empinfo.put( "1", new Object[] {
-                "Full Name", "STATE", "DISTRICT", "BLOCK", "Phone number", "Email ID", "UserName", "Creation Date", "Role" });
-
-        Set < String > keyid = empinfo.keySet();
-        int rowid = 0;
-        for (String key : keyid)
-        {
-            row = spreadsheet.createRow(rowid++);
-            Object [] objectArr = empinfo.get(key);
-            int cellid = 0;
-            for (Object obj : objectArr)
-            {
-                Cell cell = row.createCell(cellid++);
-                cell.setCellValue((String)obj);
-            }
-        }
-        //Write the workbook in file system
-        FileOutputStream out = null;
-        try {
-            out = new FileOutputStream(new File("Writesheet.csv"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
-            workbook.write(out);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
-
         String NEW_LINE_SEPARATOR = "\n";
 
-
         //CSV file header
-
         String FILE_HEADER = "Full Name, STATE, DISTRICT, BLOCK, Phone number, Email ID, UserName, Creation Date, Access Level,Role";
         FileWriter fileWriter = null;
         try {
-
             fileWriter = new FileWriter("BulkImportData.csv");
 
-
             //Write the CSV file header
-
             fileWriter.append(FILE_HEADER.toString());
 
-
             //Add a new line separator after the header
-
             fileWriter.append(NEW_LINE_SEPARATOR);
 
-
             //Write a new student object list to the CSV file
-
-
             System.out.println("CSV file was created successfully !!!");
-
         } catch (Exception e) {
-
             System.out.println("Error in CsvFileWriter !!!");
-
             e.printStackTrace();
         } finally {
-
-
             try {
-
                 fileWriter.flush();
-
                 fileWriter.close();
-
             } catch (IOException e) {
-
                 System.out.println("Error while flushing/closing fileWriter !!!");
-
                 e.printStackTrace();
-
             }
-
-
         }
-
-
     }
 
     @Override
@@ -1001,17 +502,17 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void createFolders(String reportType){
+    public void createFolders(String reportType) {
 
-        List<Circle> circleList=circleDao.getAllCircles();
+        List<Circle> circleList = circleDao.getAllCircles();
         String rootPath = System.getProperty("user.home") + File.separator + "Documents/Reports";
         File dir = new File(rootPath + "/" + reportType);
         if (!dir.exists())
             dir.mkdirs();
-        for(Circle circle:circleList){
-            String circleName=circle.getCircleName();
-            String rootPathCircle=rootPath+"/"+reportType+"/"+circleName;
-            File dirCircle=new File(rootPathCircle);
+        for (Circle circle : circleList) {
+            String circleName = circle.getCircleName();
+            String rootPathCircle = rootPath + "/" + reportType + "/" + circleName;
+            File dirCircle = new File(rootPathCircle);
             if (!dirCircle.exists())
                 dirCircle.mkdirs();
         }
@@ -1071,7 +572,7 @@ public class AdminServiceImpl implements AdminService {
         }
     }
 
-    public void getCircleWiseAnonymousUsers(List<AnonymousUsers> anonymousUsersList, String rootPath, String place, Date toDate){
+    public void getCircleWiseAnonymousUsers(List<AnonymousUsers> anonymousUsersList, String rootPath, String place, Date toDate) {
 
         XSSFWorkbook workbook = new XSSFWorkbook();
         //Create a blank sheet
@@ -1087,7 +588,7 @@ public class AdminServiceImpl implements AdminService {
         Integer counter = 2;
         for (AnonymousUsers anonymousUser : anonymousUsersList) {
             empinfo.put((counter.toString()), new Object[]{
-                    anonymousUser.getCircleId(), anonymousUser.getMsisdn(), anonymousUser.getLastCalledDate()
+                    place, anonymousUser.getMsisdn(), anonymousUser.getLastCalledDate()
 
 
             });
@@ -1123,67 +624,67 @@ public class AdminServiceImpl implements AdminService {
         }
     }
 
-   public void getCumulativeInactiveUsers(List<FrontLineWorkers> inactiveCandidates, String rootPath, String place, Date toDate){
+    public void getCumulativeInactiveUsers(List<FrontLineWorkers> inactiveCandidates, String rootPath, String place, Date toDate) {
 
-       XSSFWorkbook workbook = new XSSFWorkbook();
-       //Create a blank sheet
-       XSSFSheet spreadsheet = workbook.createSheet(
-               "Cumulative Inactive Users Report ");
-       //Create row object
-       XSSFRow row;
-       //This data needs to be written (Object[])
-       Map<String, Object[]> empinfo =
-               new TreeMap<String, Object[]>();
-       empinfo.put("1", new Object[]{
-               "Full Name", "Mobile Number", "STATE", "DISTRICT", "BLOCK", "Taluka", "Health Facility", "Health Sub Facility", "Creation Date", "Job Status"});
-       Integer counter = 2;
-       for (FrontLineWorkers frontLineWorker : inactiveCandidates) {
-           empinfo.put((counter.toString()), new Object[]{
-                   frontLineWorker.getFullName(), frontLineWorker.getMobileNumber(), frontLineWorker.getState().getStateName(), frontLineWorker.getDistrict().getDistrictName(), frontLineWorker.getBlock().getBlockName(),
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        //Create a blank sheet
+        XSSFSheet spreadsheet = workbook.createSheet(
+                "Cumulative Inactive Users Report ");
+        //Create row object
+        XSSFRow row;
+        //This data needs to be written (Object[])
+        Map<String, Object[]> empinfo =
+                new TreeMap<String, Object[]>();
+        empinfo.put("1", new Object[]{
+                "Full Name", "Mobile Number", "STATE", "DISTRICT", "BLOCK", "Taluka", "Health Facility", "Health Sub Facility", "Creation Date", "Job Status"});
+        Integer counter = 2;
+        for (FrontLineWorkers frontLineWorker : inactiveCandidates) {
+            empinfo.put((counter.toString()), new Object[]{
+                    frontLineWorker.getFullName(), frontLineWorker.getMobileNumber(), frontLineWorker.getState().getStateName(), frontLineWorker.getDistrict().getDistrictName(), frontLineWorker.getBlock().getBlockName(),
 
 
-           });
-           counter++;
-       }
-       Set<String> keyid = empinfo.keySet();
-       int rowid = 0;
-       for (String key : keyid) {
-           row = spreadsheet.createRow(rowid++);
-           Object[] objectArr = empinfo.get(key);
-           int cellid = 0;
-           for (Object obj : objectArr) {
-               Cell cell = row.createCell(cellid++);
-               cell.setCellValue((String) obj);
-           }
-       }
-       //Write the workbook in file system
-       FileOutputStream out = null;
-       try {
-           out = new FileOutputStream(new File(rootPath + "/" + "MAInactiveUsersReport" + "_" + place + "_" + toDate + ".xlsx"));
-       } catch (FileNotFoundException e) {
-           e.printStackTrace();
-       }
-       try {
-           workbook.write(out);
-       } catch (IOException e) {
-           e.printStackTrace();
-       }
-       try {
-           out.close();
-       } catch (IOException e) {
-           e.printStackTrace();
-       }
-   }
+            });
+            counter++;
+        }
+        Set<String> keyid = empinfo.keySet();
+        int rowid = 0;
+        for (String key : keyid) {
+            row = spreadsheet.createRow(rowid++);
+            Object[] objectArr = empinfo.get(key);
+            int cellid = 0;
+            for (Object obj : objectArr) {
+                Cell cell = row.createCell(cellid++);
+                cell.setCellValue((String) obj);
+            }
+        }
+        //Write the workbook in file system
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(new File(rootPath + "/" + "MAInactiveUsersReport" + "_" + place + "_" + toDate + ".xlsx"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            workbook.write(out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-    public void getKilkariSixWeekNoAnswer(List<KilkariSixWeeksNoAnswer> kilkariSixWeeksNoAnswersList, String rootPath, String place, Date toDate){
+    public void getKilkariSixWeekNoAnswer(List<KilkariSixWeeksNoAnswer> kilkariSixWeeksNoAnswersList, String rootPath, String place, Date toDate) {
 
     }
 
-    public void getKilkariSelfDeactivation(List<KilkariSelfDeactivated> kilkariSelfDeactivatedList, String rootPath, String place, Date toDate){
+    public void getKilkariSelfDeactivation(List<KilkariSelfDeactivated> kilkariSelfDeactivatedList, String rootPath, String place, Date toDate) {
 
     }
 
-    public void getKilkariLowUsage(List<KilkariLowUsage> kilkariLowUsageList, String rootPath, String place, Date toDate){
+    public void getKilkariLowUsage(List<KilkariLowUsage> kilkariLowUsageList, String rootPath, String place, Date toDate) {
 
     }
 
@@ -1240,13 +741,13 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void getCircleWiseAnonymousFiles(Date toDate) {
-        List<Circle> circleList=circleDao.getAllCircles();
+        List<Circle> circleList = circleDao.getAllCircles();
         String rootPath = System.getProperty("user.home") + File.separator + "Documents/Reports/CumulativeAnonymousUsers";
 
-        for(Circle circle:circleList){
-            String circleName=circle.getCircleName();
-            List<AnonymousUsers> anonymousUsersList=anonymousUsersDao.getAnonymousUsersCircle(toDate,circle.getCircleIdId());
-            getCircleWiseAnonymousUsers(anonymousUsersList,rootPath,circleName,toDate);
+        for (Circle circle : circleList) {
+            String circleName = circle.getCircleName();
+            List<AnonymousUsers> anonymousUsersList = anonymousUsersDao.getAnonymousUsersCircle(toDate, circle.getCircleIdId());
+            getCircleWiseAnonymousUsers(anonymousUsersList, rootPath, circleName, toDate);
         }
     }
 
