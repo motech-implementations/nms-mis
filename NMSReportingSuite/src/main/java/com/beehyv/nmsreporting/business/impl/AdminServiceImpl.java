@@ -1085,12 +1085,15 @@ public class AdminServiceImpl implements AdminService {
     public void getCumulativeCourseCompletionFiles(Date fromDate,Date toDate) {
 
             List<State> states = stateDao.getAllStates();
-            String rootPath=System.getProperty("user.home") + File.separator + "Documents/CumulativeCourseCompletionCSVs";
+            String rootPath=System.getProperty("user.home") + File.separator + "Documents/Reports/CumulativeCourseCompletionCSVs";
+            File dir = new File(rootPath);
+            if (!dir.exists())
+                dir.mkdirs();
             List<FrontLineWorkers> successFullcandidates=maCourseAttemptDao.getSuccessFulFirstCompletion(fromDate,toDate);
             getCumulativeCourseCompletionCSV(successFullcandidates,rootPath,"National");
             for (State state : states) {
                 String stateName = state.getStateName();
-                String rootPathState = System.getProperty("user.home") + File.separator + "Documents/CumulativeCourseCompletionCSVs/" + stateName;
+                String rootPathState = System.getProperty("user.home") + File.separator + "Documents/Reports/CumulativeCourseCompletionCSVs/" + stateName;
                 File dirState = new File(rootPathState);
                 if (!dirState.exists())
                     dirState.mkdirs();
