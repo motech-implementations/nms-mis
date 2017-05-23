@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by beehyv on 23/5/17.
  */
-@Repository("KilkariSixWeeksNoAnswerDao")
+@Repository("kilkariSixWeeksNoAnswerDao")
 public class KilkariSixWeeksNoAnswerDaoImpl extends AbstractDao<Integer, KilkariSixWeeksNoAnswer> implements KilkariSixWeeksNoAnswerDao {
     @Override
     public List<KilkariSixWeeksNoAnswer> getKilkariUsers(Date fromDate, Date toDate) {

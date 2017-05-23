@@ -29,7 +29,7 @@ public interface AdminService {
 
   void getKilkariLowUsageFiles(Date fromDate, Date toDate);
 
-  void getKilkariSelfDeactvationFiles(Date fromDate, Date toDate);
+  void getKilkariSelfDeactivationFiles(Date fromDate, Date toDate);
 
   void createFiles(String fileName);
 

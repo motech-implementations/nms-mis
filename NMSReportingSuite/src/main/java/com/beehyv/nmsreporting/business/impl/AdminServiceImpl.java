@@ -44,6 +44,18 @@ public class AdminServiceImpl implements AdminService {
     private BlockDao blockDao;
 
     @Autowired
+    private VillageDao villageDao;
+
+    @Autowired
+    private HealthFacilityDao healthFacilityDao;
+
+    @Autowired
+    private HealthSubFacilityDao healthSubFacilityDao;
+
+    @Autowired
+    private TalukaDao talukaDao;
+
+    @Autowired
     private MACourseAttemptDao maCourseAttemptDao;
 
     @Autowired
@@ -51,6 +63,12 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private KilkariSixWeeksNoAnswerDao kilkariSixWeeksNoAnswerDao;
+
+    @Autowired
+    private KilkariLowUsageDao kilkariLowUsageDao;
+
+    @Autowired
+    private KilkariSelfDeactivatedDao kilkariSelfDeactivatedDao;
 
     @Autowired
     private FrontLineWorkersDao frontLineWorkersDao;
@@ -676,16 +694,187 @@ public class AdminServiceImpl implements AdminService {
         }
     }
 
-    public void getKilkariSixWeekNoAnswer(List<KilkariSixWeeksNoAnswer> kilkariSixWeeksNoAnswersList, String rootPath, String place, Date toDate) {
+    public void getKilkariSixWeekNoAnswer(List<KilkariSixWeeksNoAnswer> kilkariSixWeeksNoAnswersList, String rootPath, String place, Date toDate){
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        //Create a blank sheet
+        XSSFSheet spreadsheet = workbook.createSheet(
+                " Kilkari Non-answering beneficiaries Report");
+        //Create row object
+        XSSFRow row;
+        //This data needs to be written (Object[])
+        Map<String, Object[]> empinfo =
+                new TreeMap<String, Object[]>();
+        empinfo.put("1", new Object[]{
+                "State", "District", "Health block", "Taluka", "Health Facility", "Health SubFacility", "Village", "Beneficiary MCTS/RCH Id", "Benificiary Name", "Mobile Number", "Age On Service In Weeks"});
+        Integer counter = 2;
+        for (KilkariSixWeeksNoAnswer kilkari : kilkariSixWeeksNoAnswersList) {
+            empinfo.put((counter.toString()), new Object[]{
+                    stateDao.findByStateId(kilkari.getStateId()).getStateName(),
+                    districtDao.findByDistrictId(kilkari.getDistrictId()).getDistrictName(),
+                    blockDao.findByblockId(kilkari.getBlockId()).getBlockName(),
+                    villageDao.findByVillageId(kilkari.getVillageId()).getTalukaOfVillage().getTalukaName(),
+                    healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthFacilityOfHealthSubFacility().getHealthFacilityName(),
+                    healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthSubFacilityName(),
+                    villageDao.findByVillageId(kilkari.getVillageId()),
+                    kilkari.getMctsId(),
+                    kilkari.getName(),
+                    kilkari.getMsisdn(),
+                    kilkari.getAgeOnService()
 
+            });
+            counter++;
+        }
+        Set<String> keyid = empinfo.keySet();
+        int rowid = 0;
+        for (String key : keyid) {
+            row = spreadsheet.createRow(rowid++);
+            Object[] objectArr = empinfo.get(key);
+            int cellid = 0;
+            for (Object obj : objectArr) {
+                Cell cell = row.createCell(cellid++);
+                cell.setCellValue((String) obj);
+            }
+        }
+        //Write the workbook in file system
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(new File(rootPath + "/" + "KilkariNonAnsweringBeneficiariesReport" + "_" + place + "_" + toDate + ".xlsx"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            workbook.write(out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void getKilkariSelfDeactivation(List<KilkariSelfDeactivated> kilkariSelfDeactivatedList, String rootPath, String place, Date toDate) {
+    public void getKilkariSelfDeactivation(List<KilkariSelfDeactivated> kilkariSelfDeactivatedList, String rootPath, String place, Date toDate){
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        //Create a blank sheet
+        XSSFSheet spreadsheet = workbook.createSheet(
+                " Kilkari self-deactivators Report");
+        //Create row object
+        XSSFRow row;
+        //This data needs to be written (Object[])
+        Map<String, Object[]> empinfo =
+                new TreeMap<String, Object[]>();
+        empinfo.put("1", new Object[]{
+                "State", "District", "Health block", "Taluka", "Health Facility", "Health SubFacility", "Village", "Beneficiary MCTS/RCH Id", "Benificiary Name", "Mobile Number", "Age On Service In Weeks", "Date of activation", "Date when beneficiary self-deactivated", "Number of calls answered when subscribed to Kilkari"});
+        Integer counter = 2;
+        for (KilkariSelfDeactivated kilkari : kilkariSelfDeactivatedList) {
+            empinfo.put((counter.toString()), new Object[]{
+                    stateDao.findByStateId(kilkari.getStateId()).getStateName(),
+                    districtDao.findByDistrictId(kilkari.getDistrictId()).getDistrictName(),
+                    blockDao.findByblockId(kilkari.getBlockId()).getBlockName(),
+                    villageDao.findByVillageId(kilkari.getVillageId()).getTalukaOfVillage().getTalukaName(),
+                    healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthFacilityOfHealthSubFacility().getHealthFacilityName(),
+                    healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthSubFacilityName(),
+                    villageDao.findByVillageId(kilkari.getVillageId()),
+                    kilkari.getMctsId(),
+                    kilkari.getName(),
+                    kilkari.getMsisdn(),
+                    kilkari.getAgeOnService(),
+                    kilkari.getPackActivationDate(),
+                    kilkari.getDeactivationDate(),
+                    kilkari.getCallsAnswered()
 
+            });
+            counter++;
+        }
+        Set<String> keyid = empinfo.keySet();
+        int rowid = 0;
+        for (String key : keyid) {
+            row = spreadsheet.createRow(rowid++);
+            Object[] objectArr = empinfo.get(key);
+            int cellid = 0;
+            for (Object obj : objectArr) {
+                Cell cell = row.createCell(cellid++);
+                cell.setCellValue((String) obj);
+            }
+        }
+        //Write the workbook in file system
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(new File(rootPath + "/" + "KilkariSelfDeactivatorsReport" + "_" + place + "_" + toDate + ".xlsx"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            workbook.write(out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void getKilkariLowUsage(List<KilkariLowUsage> kilkariLowUsageList, String rootPath, String place, Date toDate) {
+    public void getKilkariLowUsage(List<KilkariLowUsage> kilkariLowUsageList, String rootPath, String place, Date toDate){
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        //Create a blank sheet
+        XSSFSheet spreadsheet = workbook.createSheet(
+                " Kilkari Low Usage beneficiaries Report");
+        //Create row object
+        XSSFRow row;
+        //This data needs to be written (Object[])
+        Map<String, Object[]> empinfo =
+                new TreeMap<String, Object[]>();
+        empinfo.put("1", new Object[]{
+                "State", "District", "Health block", "Taluka", "Health Facility", "Health SubFacility", "Village", "Beneficiary MCTS/RCH Id", "Benificiary Name", "Mobile Number", "Age On Service In Weeks"});
+        Integer counter = 2;
+        for (KilkariLowUsage kilkari : kilkariLowUsageList) {
+            empinfo.put((counter.toString()), new Object[]{
+                    stateDao.findByStateId(kilkari.getStateId()).getStateName(),
+                    districtDao.findByDistrictId(kilkari.getDistrictId()).getDistrictName(),
+                    blockDao.findByblockId(kilkari.getBlockId()).getBlockName(),
+                    villageDao.findByVillageId(kilkari.getVillageId()).getTalukaOfVillage().getTalukaName(),
+                    healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthFacilityOfHealthSubFacility().getHealthFacilityName(),
+                    healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthSubFacilityName(),
+                    villageDao.findByVillageId(kilkari.getVillageId()),
+                    kilkari.getMctsId(),
+                    kilkari.getName(),
+                    kilkari.getMsisdn(),
+                    kilkari.getAgeOnService()
 
+            });
+            counter++;
+        }
+        Set<String> keyid = empinfo.keySet();
+        int rowid = 0;
+        for (String key : keyid) {
+            row = spreadsheet.createRow(rowid++);
+            Object[] objectArr = empinfo.get(key);
+            int cellid = 0;
+            for (Object obj : objectArr) {
+                Cell cell = row.createCell(cellid++);
+                cell.setCellValue((String) obj);
+            }
+        }
+        //Write the workbook in file system
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(new File(rootPath + "/" + "KilkariLowUsageBeneficiariesReport" + "_" + place + "_" + toDate + ".xlsx"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            workbook.write(out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -853,12 +1042,102 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void getKilkariLowUsageFiles(Date fromDate, Date toDate) {
+        List<State> states = stateDao.getAllStates();
+        String rootPath = System.getProperty("user.home") + File.separator + "Documents/Reports/KilkariLowUsage";
+        List<KilkariLowUsage> kilkariLowUsageList = kilkariLowUsageDao.getKilkariLowUsageUsers(fromDate, toDate);
+        getKilkariLowUsage(kilkariLowUsageList, rootPath, "National", toDate);
+        for (State state : states) {
+            String stateName = state.getStateName();
+            String rootPathState = System.getProperty("user.home") + File.separator + "Documents/Reports/KilkariLowUsage/" + stateName;
+            int stateId = state.getStateId();
+            List<KilkariLowUsage> candidatesFromThisState = new ArrayList<>();
+            for (KilkariLowUsage kilkari : kilkariLowUsageList) {
+                if (kilkari.getStateId() == stateId) {
+                    candidatesFromThisState.add(kilkari);
+                }
+            }
 
+            getKilkariLowUsage(candidatesFromThisState, rootPathState, stateName, toDate);
+            List<District> districts = stateDao.getChildLocations(stateId);
+
+            for (District district : districts) {
+                String districtName = district.getDistrictName();
+                String rootPathDistrict = rootPathState + "/" + districtName;
+                int districtId = district.getDistrictId();
+                List<KilkariLowUsage> candidatesFromThisDistrict = new ArrayList<>();
+                for (KilkariLowUsage kilkari : candidatesFromThisState) {
+                    if (kilkari.getDistrictId() == districtId) {
+                        candidatesFromThisDistrict.add(kilkari);
+                    }
+                }
+
+                getKilkariLowUsage(candidatesFromThisDistrict, rootPathDistrict, districtName, toDate);
+                List<Block> Blocks = districtDao.getBlocks(districtId);
+                for (Block block : Blocks) {
+                    String blockName = block.getBlockName();
+                    String rootPathblock = rootPathDistrict + "/" + blockName;
+
+                    int blockId = block.getBlockId();
+                    List<KilkariLowUsage> candidatesFromThisBlock = new ArrayList<>();
+                    for (KilkariLowUsage kilkari : candidatesFromThisDistrict) {
+                        if (kilkari.getBlockId() == blockId) {
+                            candidatesFromThisBlock.add(kilkari);
+                        }
+                    }
+                    getKilkariLowUsage(candidatesFromThisBlock, rootPathblock, blockName, toDate);
+                }
+            }
+        }
     }
 
     @Override
-    public void getKilkariSelfDeactvationFiles(Date fromDate, Date toDate) {
+    public void getKilkariSelfDeactivationFiles(Date fromDate, Date toDate) {
+        List<State> states = stateDao.getAllStates();
+        String rootPath = System.getProperty("user.home") + File.separator + "Documents/Reports/KilkariSelfDeactivated";
+        List<KilkariSelfDeactivated> kilkariSelfDeactivatedList = kilkariSelfDeactivatedDao.getSelfDeactivatedUsers(fromDate, toDate);
+        getKilkariSelfDeactivation(kilkariSelfDeactivatedList, rootPath, "National", toDate);
+        for (State state : states) {
+            String stateName = state.getStateName();
+            String rootPathState = System.getProperty("user.home") + File.separator + "Documents/Reports/KilkariSelfDeactivated/" + stateName;
+            int stateId = state.getStateId();
+            List<KilkariSelfDeactivated> candidatesFromThisState = new ArrayList<>();
+            for (KilkariSelfDeactivated kilkari : kilkariSelfDeactivatedList) {
+                if (kilkari.getStateId() == stateId) {
+                    candidatesFromThisState.add(kilkari);
+                }
+            }
 
+            getKilkariSelfDeactivation(candidatesFromThisState, rootPathState, stateName, toDate);
+            List<District> districts = stateDao.getChildLocations(stateId);
+
+            for (District district : districts) {
+                String districtName = district.getDistrictName();
+                String rootPathDistrict = rootPathState + "/" + districtName;
+                int districtId = district.getDistrictId();
+                List<KilkariSelfDeactivated> candidatesFromThisDistrict = new ArrayList<>();
+                for (KilkariSelfDeactivated kilkari : candidatesFromThisState) {
+                    if (kilkari.getDistrictId() == districtId) {
+                        candidatesFromThisDistrict.add(kilkari);
+                    }
+                }
+
+                getKilkariSelfDeactivation(candidatesFromThisDistrict, rootPathDistrict, districtName, toDate);
+                List<Block> Blocks = districtDao.getBlocks(districtId);
+                for (Block block : Blocks) {
+                    String blockName = block.getBlockName();
+                    String rootPathblock = rootPathDistrict + "/" + blockName;
+
+                    int blockId = block.getBlockId();
+                    List<KilkariSelfDeactivated> candidatesFromThisBlock = new ArrayList<>();
+                    for (KilkariSelfDeactivated kilkari : candidatesFromThisDistrict) {
+                        if (kilkari.getBlockId() == blockId) {
+                            candidatesFromThisBlock.add(kilkari);
+                        }
+                    }
+                    getKilkariSelfDeactivation(candidatesFromThisBlock, rootPathblock, blockName, toDate);
+                }
+            }
+        }
     }
 
     private String retrievePropertiesFromFileLocationProties() {

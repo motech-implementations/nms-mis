@@ -1,6 +1,7 @@
 package com.beehyv.nmsreporting.model;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by beehyv on 14/5/17.
@@ -13,9 +14,6 @@ public class KilkariLowUsage {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="id", columnDefinition = "INT(11)")
     private Integer kilkariId;
-
-    @Column(name="month_id", columnDefinition = "SMALLINT(6)")
-    private Integer monthId;
 
     @Column(name="mcts_id", columnDefinition = "BIGINT(20)")
     private Long mctsId;
@@ -47,20 +45,15 @@ public class KilkariLowUsage {
     @Column(name="village_id", columnDefinition = "INT(11)")
     private Integer villageId;
 
+    @Column(name="modification_date", columnDefinition = "DATE")
+    private Date modificationDate;
+
     public Integer getKilkariId() {
         return kilkariId;
     }
 
     public void setKilkariId(Integer kilkariId) {
         this.kilkariId = kilkariId;
-    }
-
-    public Integer getMonthId() {
-        return monthId;
-    }
-
-    public void setMonthId(Integer monthId) {
-        this.monthId = monthId;
     }
 
     public Long getMctsId() {
@@ -141,5 +134,13 @@ public class KilkariLowUsage {
 
     public void setVillageId(Integer villageId) {
         this.villageId = villageId;
+    }
+
+    public Date getModificationDate() {
+        return modificationDate;
+    }
+
+    public void setModificationDate(Date modificationDate) {
+        this.modificationDate = modificationDate;
     }
 }
