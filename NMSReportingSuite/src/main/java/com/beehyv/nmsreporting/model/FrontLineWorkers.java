@@ -31,7 +31,7 @@ public class FrontLineWorkers {
     private String language;
 
     @Column(name="flw_status", columnDefinition = "TINYINT(4)")
-    private String jobStatus;
+    private String status;
 
     @ManyToOne
     @JoinColumn(name="state_id", columnDefinition = "TINYINT")
@@ -112,14 +112,13 @@ public class FrontLineWorkers {
         this.language = language;
     }
 
-    public String getJobStatus() {
-        return jobStatus;
+    public String getStatus() {
+        return status;
     }
 
-    public void setJobStatus(String jobStatus) {
-        this.jobStatus = jobStatus;
+    public void setStatus(String status) {
+        this.status = status;
     }
-
 
     public State getState() {
         return state;

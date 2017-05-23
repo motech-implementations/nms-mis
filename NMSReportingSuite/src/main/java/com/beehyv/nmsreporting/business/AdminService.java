@@ -21,7 +21,7 @@ public interface AdminService {
 
   void getCumulativeCourseCompletionFiles(Date fromDate, Date toDate);
 
-  void getCircleWiseAnonymousFiles(Date fromDate, Date toDate);
+  void getCircleWiseAnonymousFiles(Date toDate);
 
   void getCumulativeInactiveFiles(Date fromDate, Date toDate);
 

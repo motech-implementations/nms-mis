@@ -52,6 +52,9 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private KilkariSixWeeksNoAnswerDao kilkariSixWeeksNoAnswerDao;
 
+    @Autowired
+    private  FrontLineWorkersDao frontLineWorkersDao;
+
     @Override
     public HashMap startBulkDataImport(User loggedInUser) {
         Pattern pattern;
@@ -1047,9 +1050,57 @@ public class AdminServiceImpl implements AdminService {
 
     }
 
-//    public void getCumulativeInactiveUsers(List<E> inactiveCandidates, String rootPath, String place, Date toDate){
-//
-//    }
+   public void getCumulativeInactiveUsers(List<FrontLineWorkers> inactiveCandidates, String rootPath, String place, Date toDate){
+
+       XSSFWorkbook workbook = new XSSFWorkbook();
+       //Create a blank sheet
+       XSSFSheet spreadsheet = workbook.createSheet(
+               " MA Course Completion Report ");
+       //Create row object
+       XSSFRow row;
+       //This data needs to be written (Object[])
+       Map<String, Object[]> empinfo =
+               new TreeMap<String, Object[]>();
+       empinfo.put("1", new Object[]{
+               "Full Name", "Mobile Number", "STATE", "DISTRICT", "BLOCK", "Taluka", "Health Facility", "Health Sub Facility", "Creation Date", "Job Status"});
+       Integer counter = 2;
+       for (FrontLineWorkers frontLineWorker : inactiveCandidates) {
+           empinfo.put((counter.toString()), new Object[]{
+                   frontLineWorker.getFullName(), frontLineWorker.getMobileNumber(), frontLineWorker.getState().getStateName(), frontLineWorker.getDistrict().getDistrictName(), frontLineWorker.getBlock().getBlockName(),
+
+
+           });
+           counter++;
+       }
+       Set<String> keyid = empinfo.keySet();
+       int rowid = 0;
+       for (String key : keyid) {
+           row = spreadsheet.createRow(rowid++);
+           Object[] objectArr = empinfo.get(key);
+           int cellid = 0;
+           for (Object obj : objectArr) {
+               Cell cell = row.createCell(cellid++);
+               cell.setCellValue((String) obj);
+           }
+       }
+       //Write the workbook in file system
+       FileOutputStream out = null;
+       try {
+           out = new FileOutputStream(new File(rootPath + "/" + "MACourseCompletionreport" + "_" + place + "_" + toDate + ".xlsx"));
+       } catch (FileNotFoundException e) {
+           e.printStackTrace();
+       }
+       try {
+           workbook.write(out);
+       } catch (IOException e) {
+           e.printStackTrace();
+       }
+       try {
+           out.close();
+       } catch (IOException e) {
+           e.printStackTrace();
+       }
+   }
 
     public void getKilkariSixWeekNoAnswer(List<KilkariSixWeeksNoAnswer> kilkariSixWeeksNoAnswersList, String rootPath, String place, Date toDate){
 
@@ -1115,13 +1166,58 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void getCircleWiseAnonymousFiles(Date fromDate, Date toDate) {
-
+    public void getCircleWiseAnonymousFiles(Date toDate) {
+        
     }
 
     @Override
     public void getCumulativeInactiveFiles(Date fromDate, Date toDate) {
+        List<State> states = stateDao.getAllStates();
+        String rootPath = System.getProperty("user.home") + File.separator + "Documents/Reports/CumulativeInactiveUsers";
+        List<FrontLineWorkers> inactiveFrontLineWorkers = frontLineWorkersDao.getInactiveFrontLineWorkers();
+        getCumulativeInactiveUsers(inactiveFrontLineWorkers, rootPath, "National", toDate);
+        for (State state : states) {
+            String stateName = state.getStateName();
+            String rootPathState = System.getProperty("user.home") + File.separator + "Documents/Reports/CumulativeInactiveUsers/" + stateName;
+            int stateId = state.getStateId();
+            List<FrontLineWorkers> candidatesFromThisState = new ArrayList<>();
+            for (FrontLineWorkers asha : inactiveFrontLineWorkers) {
+                if (asha.getState().getStateId() == stateId) {
+                    candidatesFromThisState.add(asha);
+                }
+            }
 
+            getCumulativeInactiveUsers(candidatesFromThisState, rootPathState, stateName, toDate);
+            List<District> districts = stateDao.getChildLocations(stateId);
+
+            for (District district : districts) {
+                String districtName = district.getDistrictName();
+                String rootPathDistrict = rootPathState + "/" + districtName;
+                int districtId = district.getDistrictId();
+                List<FrontLineWorkers> candidatesFromThisDistrict = new ArrayList<>();
+                for (FrontLineWorkers asha : candidatesFromThisState) {
+                    if (asha.getDistrict().getDistrictId() == districtId) {
+                        candidatesFromThisDistrict.add(asha);
+                    }
+                }
+
+                getCumulativeInactiveUsers(candidatesFromThisDistrict, rootPathDistrict, districtName, toDate);
+                List<Block> Blocks = districtDao.getBlocks(districtId);
+                for (Block block : Blocks) {
+                    String blockName = block.getBlockName();
+                    String rootPathblock = rootPathDistrict + "/" + blockName;
+
+                    int blockId = block.getBlockId();
+                    List<FrontLineWorkers> candidatesFromThisBlock = new ArrayList<>();
+                    for (FrontLineWorkers asha : candidatesFromThisDistrict) {
+                        if (asha.getBlock().getBlockId() == blockId) {
+                            candidatesFromThisBlock.add(asha);
+                        }
+                    }
+                    getCumulativeInactiveUsers(candidatesFromThisBlock, rootPathblock, blockName, toDate);
+                }
+            }
+        }
     }
 
     @Override
