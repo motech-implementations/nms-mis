@@ -22,11 +22,6 @@
 					return $http.get(backend_root + 'nms/user/roles');
 				},
 
-				getAccessLevels: function() {
-					return $http.get(backend_root + 'nms/user/getAccessLevelOptions');
-				},
-
-
 				downloadUsers: function(id){
 					return $http.get(backend_root + 'nms/user/list');
 				},
@@ -53,18 +48,6 @@
 
 				getUserDto: function(id){
 					return $http.get(backend_root + 'nms/user/dto/' + id);
-				},
-
-				
-
-				createUserSubmitDto: function(newUser){
-					$http({
-						method  : 'post',
-						url     : 'http://localhost:8080/NMSReportingSuite/nms/user/createFromDto',
-						data    : newUser, //forms user object
-						headers : {
-							'Content-Type': 'application/json'} 
-					});
 				}
 
 			};

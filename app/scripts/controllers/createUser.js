@@ -15,10 +15,10 @@
 				$scope.accessTypeList = result.data;
 			});
 
-			UserFormFactory.getAccessLevels()
-			.then(function(result){
-				$scope.accessLevelList = result.data;
-			})
+			// UserFormFactory.getAccessLevels()
+			// .then(function(result){
+			// 	$scope.accessLevelList = result.data;
+			// })
 
 			$scope.accessLevelList = ["NATIONAL", "STATE", "DISTRICT", "BLOCK"]
 
@@ -71,26 +71,16 @@
 				if ($scope.createUserForm.$valid && !$scope.createUserForm.$pristine) {
 					console.log(JSON.stringify($scope.newUser));
 
-					// UserFormFactory.createUserSubmitDto($scope.newUser);
-					// $http.post('http://localhost:8080/NMSReportingSuite/nms/user/create-new', $scope.newUser);
-
-					// $http.post('http://localhost:8080/NMSReportingSuite/nms/user/createFromDto',
-					// JSON.stringify($scope.newUser), 
-					// {'Content-Type': 'application/text'})
-					// .success(function (data, status, headers, config) {
-					// 	console.log(data);
-					// })
-					// .error(function (data, status, header, config) {
-					// 	console.log(data);
-					// });
 					delete $scope.newUser.$$hashKey;
 
 					$http({
 						method  : 'post',
-						url     : 'http://localhost:8080/NMSReportingSuite/nms/user/createFromDto2',
+						url     : 'http://localhost:8080/NMSReportingSuite/nms/user/createUser',
 						data    : $scope.newUser, //forms user object
 						headers : {'Content-Type': 'application/json'} 
-					});
+					}).then(function(result){
+						alert(result.data);
+					})
 
 				}
 				else{
@@ -107,9 +97,9 @@
 				$scope.getStates();
 				$scope.place = {};
 
-				$scope.newUser.state = null;
-				$scope.newUser.district = null;
-				$scope.newUser.block = null;
+				$scope.newUser.stateId = null;
+				$scope.newUser.districtId = null;
+				$scope.newUser.blockId = null;
 
 				$scope.createUserForm.state.$setPristine(false);
 				$scope.createUserForm.district.$setPristine(false);
@@ -122,41 +112,26 @@
 				}
 			});
 
-			$scope.$watch('newUser.state', function(value){
+			$scope.$watch('newUser.stateId', function(value){
 				if(value != null){
-					$scope.getDistricts(value)
-					.then(function(){
-						// $scope.place.district = null;
-						// $scope.place.block = null;
+					$scope.newUser.district = null;
+					$scope.newUser.block = null;
 
-						// $scope.newUser.state = value.stateName;
-						$scope.newUser.district = null;
-						$scope.newUser.block = null;
-
-						// console.log($scope.place);
-					})
+					$scope.getDistricts(value.stateId)
 				}
 			});
 
-			$scope.$watch('newUser.district', function(value){
+			$scope.$watch('newUser.districtId', function(value){
 				if(value != null){
-					$scope.getBlocks(value)
-					.then(function(){
-						// $scope.place.block = null;
+					$scope.newUser.block = null;
 
-						// $scope.newUser.district = value.districtName;
-						$scope.newUser.block = null;
-
-						// console.log($scope.place);
-					})
+					$scope.getBlocks(value.districtId);
 				}
 			});
 
-			$scope.$watch('newUser.block', function(value){
+			$scope.$watch('newUser.blockId', function(value){
 				if(value != null){
-					// $scope.newUser.block = value.blockName;
 
-					// console.log($scope.place);
 				}
 			});
 

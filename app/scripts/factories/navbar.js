@@ -15,7 +15,25 @@
 				},
 				'userManagement.bulkUpload': {
 					'name': 'Bulk User Upload',
-					'sref': ''
+					'sref': 'userManagement.bulkUpload',
+				},
+				'userManagement.createUser': {
+					'name': 'Create new sser'
+					'sref': 'userManagement.createUser',
+				},
+				'userManagement.editUser': {
+					'name': 'Edit user', 
+					'sref': 'userManagement.editUser',
+				},
+				'reports': {
+					'name': 'Reports',
+					'sref': 'reports',
+				}
+			}
+
+			return{
+				getState: function(state){
+					return states[state];
 				}
 			}
 		}]);

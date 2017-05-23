@@ -22,6 +22,37 @@
 						'sref': 'userManagement.createUser',
 						'active': false,
 					},
+				], 
+				'userManagement.editUser': [
+					{
+						'name': 'User Management',
+						'sref': 'userManagement.userTable',
+						'active': true,
+					},
+					{
+						'name': 'Edit User',
+						'sref': 'userManagement.editUser',
+						'active': false,
+					},
+				], 
+				'userManagement.bulkUpload': [
+					{
+						'name': 'User Management',
+						'sref': 'userManagement.userTable',
+						'active': true,
+					},
+					{
+						'name': 'Bulk Upload',
+						'sref': 'userManagement.bulkUpload',
+						'active': false,
+					},
+				],
+				'reports': [
+					{
+						'name': 'Reports',
+						'sref': 'reports',
+						'active': false,
+					},
 				]
 			}
 

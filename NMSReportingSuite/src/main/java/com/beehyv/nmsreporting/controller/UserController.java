@@ -15,10 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by beehyv on 15/3/17.
@@ -144,9 +141,36 @@ public class UserController {
         return user1;
     }
 
-    @RequestMapping(value = {"/create-user"}, method = RequestMethod.POST)
-    public void createNewUser(@RequestBody User user) {
+    @RequestMapping(value = {"/createUser"}, method = RequestMethod.POST)
+    public String createNewUser(@RequestBody User user) {
+
+        if(userService.findUserByUsername(user.getUsername()) != null){
+            System.out.println("user exists");
+            return "redirect:http://localhost:8080/app/#!/#fail";
+        }
+
+        user.setPassword(user.getPhoneNumber());
+        user.setCreationDate(new Date());
+        user.setCreatedByUser(userService.getCurrentUser());
+        user.setAccountStatus(AccountStatus.ACTIVE.getAccountStatus());
+
+        if(userService.getCurrentUser().getStateId().getStateId() != null &&
+                userService.getCurrentUser().getStateId().getStateId() != user.getStateId().getStateId()){
+            return "redirect:http://localhost:8080/app/#!/#unauthorised";
+        }
+        if(userService.getCurrentUser().getDistrictId().getDistrictId() != null &&
+                userService.getCurrentUser().getDistrictId().getDistrictId() != user.getDistrictId().getDistrictId()){
+            return "redirect:http://localhost:8080/app/#!/#unauthorised";
+        }
+
+        if(user.getRoleId().getRoleId() == 2 && user.getAccessLevel().equals(AccessLevel.BLOCK.getAccessLevel())){
+            return "redirect:http://localhost:8080/app/#!/#unauthorised";
+        }
+
         userService.createNewUser(user);
+
+        return "redirect:http://localhost:8080/app/#!/#success";
+
 //        ModificationTracker modification = new ModificationTracker();
 //        modification.setModificationDate(new Date(System.currentTimeMillis()));
 //        modification.setModificationDescription("Account creation");
@@ -156,155 +180,12 @@ public class UserController {
 //        modificationTrackerService.saveModification(modification);
     }
 
-    @RequestMapping(value={"/userNameAvailable/{username}"})
-    public @ResponseBody Boolean userNameAvailable(@PathVariable("username") String username) {
-        System.out.println(username);
-        return userService.findUserByUsername(username) != null;
-    }
-
-    @RequestMapping(value = {"/createFromDto"}, method = RequestMethod.POST)
-    public String createFromDto(@RequestBody String userDto) {
-        userDto = userDto.replace("+", " ").replace("%40", "@").replace("string%3A", "");
-        String[] attrs = userDto.split("&");
-
-        HashMap<String, String> userMap = new HashMap<>();
-        for(String attr : attrs){
-            String[] arr = attr.split("=");
-            userMap.put(arr[0], arr[1]);
-        }
-
-        if(userService.findUserByUsername(userMap.get("username")) != null){
-            System.out.println("user exists");
-            return "redirect:http://localhost:8080/#!/";
-        }
-
-        User newUser = new User();
-        newUser.setFullName(userMap.get("name"));
-        newUser.setUsername(userMap.get("username"));
-        newUser.setPhoneNumber(userMap.get("phoneNumber"));
-        newUser.setEmailId(userMap.get("email"));
-        newUser.setAccessLevel(userMap.get("accessLevel").toUpperCase());
-        newUser.setPassword(userMap.get("username"));
-        try{
-            newUser.setStateId(locationService.findStateById(Integer.parseInt(userMap.get("state"))));
-        }catch (Exception e){
-            newUser.setStateId(null);
-        }
-
-        try{
-            newUser.setDistrictId(locationService.findDistrictById(Integer.parseInt(userMap.get("district"))));
-        }catch (Exception e){
-            newUser.setDistrictId(null);
-        }
-
-        try{
-            newUser.setBlockId(locationService.findBlockById(Integer.parseInt(userMap.get("block"))));
-        }catch (Exception e){
-            newUser.setDistrictId(null);
-        }
-        newUser.setRoleId(roleService.findRoleByRoleId(Integer.parseInt(userMap.get("accessType"))));
-        newUser.setAccountStatus(AccountStatus.ACTIVE.getAccountStatus());
-        newUser.setCreatedByUser(userService.getCurrentUser());
-        newUser.setCreationDate(new java.util.Date());
-
-        userService.createNewUser(newUser);
-
-        return "redirect:http://localhost:8080/#!/";
-    }
-
-    @RequestMapping(value = {"/createFromDto2"}, method = RequestMethod.POST)
-    public String createFromDto2(@RequestBody UserDto userDto) {
-
-        User newUser = new User();
-        newUser.setFullName(userDto.getName());
-        newUser.setUsername(userDto.getUsername());
-        newUser.setPhoneNumber(userDto.getPhoneNumber());
-        newUser.setEmailId(userDto.getEmail());
-        newUser.setAccessLevel(userDto.getAccessLevel().toUpperCase());
-        newUser.setPassword(userDto.getPhoneNumber());
-        try{
-            newUser.setStateId(locationService.findStateById(Integer.parseInt(userDto.getState())));
-        }catch (Exception e){
-            newUser.setStateId(null);
-        }
-
-        try{
-            newUser.setDistrictId(locationService.findDistrictById(Integer.parseInt(userDto.getDistrict())));
-        }catch (Exception e){
-            newUser.setDistrictId(null);
-        }
-
-        try{
-            newUser.setBlockId(locationService.findBlockById(Integer.parseInt(userDto.getBlock())));
-        }catch (Exception e){
-            newUser.setDistrictId(null);
-        }
-        newUser.setRoleId(roleService.findRoleByRoleId(Integer.parseInt(userDto.getAccessType())));
-        newUser.setAccountStatus(AccountStatus.ACTIVE.getAccountStatus());
-        newUser.setCreatedByUser(userService.getCurrentUser());
-        newUser.setCreationDate(new java.util.Date());
-
-        userService.createNewUser(newUser);
-
-        return "redirect:http://localhost:8080/#!/";
-    }
-
     @RequestMapping(value = {"/updateUser"}, method = RequestMethod.POST)
-    public String updateExistingUser(@RequestBody String userDto) {
-//        ObjectMapper mapper = new ObjectMapper();
-//        JsonNode node = null;
-//        try {
-//            node = mapper.readTree(userDtoString);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-//        UserDto userDto = mapper.convertValue(node.get("user"), UserDto.class);
-        userDto = userDto.replace("+", " ").replace("%40", "@").replace("string%3A", "");
-        String[] attrs = userDto.split("&");
-        HashMap<String, String> userMap = new HashMap<>();
-        for(String attr : attrs){
-            String[] arr = attr.split("=");
-            userMap.put(arr[0], arr[1]);
-        }
-//
-//        for(String key : userMap.keySet()){
-//            System.out.println(key + " : " + userMap.get(key));
-//        }
-
-
-        User user = userService.findUserByUserId(Integer.parseInt(userMap.get("id")));
-
-        user.setFullName(userMap.get("name"));
-        user.setPhoneNumber(userMap.get("phoneNumber"));
-        user.setEmailId(userMap.get("email"));
-        user.setAccessLevel(userMap.get("accessLevel"));
-        user.setRoleId(roleService.findRoleByRoleId(Integer.parseInt(userMap.get("accessType"))));
-
-        try{
-            user.setStateId(locationService.findStateById(Integer.parseInt(userMap.get("state"))));
-        }catch (Exception e){
-            user.setStateId(null);
-        }
-
-        try{
-            user.setDistrictId(locationService.findDistrictById(Integer.parseInt(userMap.get("district"))));
-        }catch (Exception e){
-            user.setDistrictId(null);
-        }
-
-        try{
-            user.setBlockId(locationService.findBlockById(Integer.parseInt(userMap.get("block"))));
-        }catch (Exception e){
-            user.setDistrictId(null);
-        }
+    public String updateExistingUser(@RequestBody User user) {
+        user.setCreatedByUser(userService.getCurrentUser());
         userService.updateExistingUser(user);
+        System.out.println("******************saved***************");
 
-        for(String key : userMap.keySet()){
-            System.out.println(key + " : " + userMap.get(key));
-        }
-
-        return "redirect:http://localhost:8080/#!/";
 
 //        String trackModification = mapper.convertValue(node.get("modification"), String.class);
 //
@@ -315,6 +196,8 @@ public class UserController {
 //        modification.setModifiedUserId(user);
 //        modification.setModificationDescription(trackModification);
 //        modificationTrackerService.saveModification(modification);
+
+        return "redirect:http://localhost:8080/app/#!/";
     }
 
     @RequestMapping(value = {"/updateUser2"}, method = RequestMethod.POST)
@@ -347,15 +230,18 @@ public class UserController {
 
         userService.updateExistingUser(user);
 
-        return "redirect:http://localhost:8080/#!/";
-    }
 
-    @RequestMapping(value = {"/updateUser3"}, method = RequestMethod.POST)
-    public String updateExistingUser3(@RequestBody User user) {
-        user.setCreatedByUser(userService.getCurrentUser());
-        userService.updateExistingUser(user);
-        System.out.println("******************saved***************");
-        return "redirect:http://localhost:8080/#!/";
+//        String trackModification = mapper.convertValue(node.get("modification"), String.class);
+//
+//        ModificationTracker modification = new ModificationTracker();
+//        modification.setModificationDate(new Date(System.currentTimeMillis()));
+//        modification.setModificationType(ModificationType.UPDATE.getModificationType());
+//        modification.setModifiedByUserId(userService.findUserByUsername(getPrincipal()));
+//        modification.setModifiedUserId(user);
+//        modification.setModificationDescription(trackModification);
+//        modificationTrackerService.saveModification(modification);
+
+        return "redirect:http://localhost:8080/app/#!/";
     }
 
     @RequestMapping(value = {"/delete-user"}, method = RequestMethod.POST)
@@ -367,26 +253,6 @@ public class UserController {
 //        modification.setModificationDescription("Account deletion");
 //        modification.setModifiedUserId(user);
 //        modification.setModifiedByUserId(userService.findUserByUsername(getPrincipal()));
-    }
-
-    @RequestMapping(value = {"/getAccessLevelOptions"})
-    public @ResponseBody String[] getAccessLevelOptions() {
-        if(getCurrentUser().getAccessLevel().equalsIgnoreCase("NATIONAL")) {
-            String[] n = {"NATIONAL", "STATE", "DISTRICT", "BLOCK"};
-            return n;
-        }
-        else if(getCurrentUser().getAccessLevel().equalsIgnoreCase("STATE")) {
-            String[] s = {"STATE", "DISTRICT", "BLOCK"};
-            return s;
-        }
-        else if(getCurrentUser().getAccessLevel().equalsIgnoreCase("DISTRICT")) {
-            String[] d = {"DISTRICT", "BLOCK"};
-            return d;
-        }
-        else{
-            String[] b = {"BLOCK"};
-            return b;
-        }
     }
 
     private String getPrincipal(){

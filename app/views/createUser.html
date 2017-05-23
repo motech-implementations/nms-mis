@@ -6,14 +6,14 @@
 
 		<form name="createUserForm" class="form-horizontal" novalidate>
 
-			<div class="form-group" ng-class="{'has-error':createUserForm.name.$invalid && !createUserForm.name.$pristine}">
+			<div class="form-group" ng-class="{'has-error':createUserForm.fullName.$invalid && !createUserForm.fullName.$pristine}">
 				<label class="control-label col-xs-2">Full Name</label>
 				<div class="col-xs-10">
-					<input name="name" id="name" type="text" class="form-control" placeholder="Full Name" ng-model="newUser.name" required 
+					<input name="fullName" id="fullName" type="text" class="form-control" placeholder="Full Name" ng-model="newUser.fullName" required 
 					ng-pattern="/^[A-Za-z ]*$/" ng-minlength="3"
-					tooltip-placement="top" uib-tooltip="Errors: {{createUserForm.name.$error|json}}" >
+					tooltip-placement="top" uib-tooltip="Errors: {{createUserForm.fullName.$error|json}}" >
 
-					<div ng-messages="createUserForm.name.$error" role="alert" ng-show="!createUserForm.name.$pristine">
+					<div ng-messages="createUserForm.fullName.$error" role="alert" ng-show="!createUserForm.fullName.$pristine">
 						<div ng-message="required">This field cannot be empty</div>
 						<div ng-message="pattern">Name should only contain alphabetical characters</div>
 						<div ng-message="minlength">Name is too short</div>
@@ -39,7 +39,7 @@
 			<div class="form-group" ng-class="{'has-error':createUserForm.accessType.$invalid && !createUserForm.accessType.$pristine}">
 				<label class="control-label col-xs-2">Access Type</label>
 				<div class="col-xs-10">
-					<select name="accessType" id="accessType" class="form-control"  ng-model="newUser.accessType" ng-options="(item.roleId + '') as item.roleDescription for item in accessTypeList track by item.roleId" required
+					<select name="accessType" id="accessType" class="form-control"  ng-model="newUser.roleId" ng-options="item as item.roleDescription for item in accessTypeList track by item.roleId" required
 					tooltip-placement="top" uib-tooltip="Errors: {{createUserForm.accessType.$error|json}}"
 					style="width: 200px;">
 					</select>
@@ -68,7 +68,7 @@
 			<div class="form-group" ng-class="{'has-error':createUserForm.state.$invalid && !createUserForm.state.$pristine}">
 				<label class="control-label col-xs-2">State</label>
 				<div class="col-xs-10">
-					<select name="state" id="state" class="form-control" ng-model="newUser.state" ng-options="(item.stateId + '') as item.stateName for item in states track by item.stateId" ng-disabled="getAccessLevel(1)" ng-required="!getAccessLevel(1)">
+					<select name="state" id="state" class="form-control" ng-model="newUser.stateId" ng-options="item as item.stateName for item in states track by item.stateId" ng-disabled="getAccessLevel(1)" ng-required="!getAccessLevel(1)">
 					</select>
 				</div>
 			</div>
@@ -76,7 +76,7 @@
 			<div class="form-group" ng-class="{'has-error':createUserForm.district.$invalid && !createUserForm.district.$pristine}">
 				<label class="control-label col-xs-2">District</label>
 				<div class="col-xs-10">
-					<select name="district" id="district" class="form-control" ng-model="newUser.district" ng-options="(item.districtId + '') as item.districtName for item in districts track by item.districtId" ng-disabled="getAccessLevel(2)" ng-required="!getAccessLevel(2)">
+					<select name="district" id="district" class="form-control" ng-model="newUser.districtId" ng-options="item as item.districtName for item in districts track by item.districtId" ng-disabled="getAccessLevel(2)" ng-required="!getAccessLevel(2)">
 					</select>
 				</div>
 			</div>
@@ -84,21 +84,21 @@
 			<div class="form-group" ng-class="{'has-error':createUserForm.block.$invalid && !createUserForm.block.$pristine}">
 				<label class="control-label col-xs-2">Block</label>
 				<div class="col-xs-10">
-					<select name="block" id="block" class="form-control" ng-model="newUser.block"
-						ng-options="(item.blockId + '') as item.blockName for item in blocks track by item.blockId" ng-disabled="getAccessLevel(3)" ng-required="!getAccessLevel(3)">
+					<select name="block" id="block" class="form-control" ng-model="newUser.blockId"
+						ng-options="item as item.blockName for item in blocks track by item.blockId" ng-disabled="getAccessLevel(3)" ng-required="!getAccessLevel(3)">
 					</select>
 				</div>
 			</div>
 
 			<hr>
 
-			<div class="form-group" ng-class="{'has-error':createUserForm.email.$invalid && !createUserForm.email.$pristine}">
+			<div class="form-group" ng-class="{'has-error':createUserForm.emailId.$invalid && !createUserForm.emailId.$pristine}">
 				<label class="control-label col-xs-2">Email</label>
 				<div class="col-xs-10">
-					<input name="email" id="email" type="email" class="form-control" class="form-control" ng-model="newUser.email" placeholder="Email" required
-					tooltip-placement="top" uib-tooltip="Errors: {{createUserForm.email.$error|json}}">
+					<input name="emailId" id="emailId" type="email" class="form-control" class="form-control" ng-model="newUser.emailId" placeholder="Email" required
+					tooltip-placement="top" uib-tooltip="Errors: {{createUserForm.emailId.$error|json}}">
 
-					<div ng-messages="createUserForm.email.$error" role="alert" ng-show="!createUserForm.email.$pristine">
+					<div ng-messages="createUserForm.emailId.$error" role="alert" ng-show="!createUserForm.emailId.$pristine">
 						<div ng-message="required">This field cannot be empty</div>
 						<div ng-message="email">Enter a valid email</div>
 					</div>
@@ -142,7 +142,7 @@
 			<div class="form-group">
 				<div class="col-xs-offset-2 col-xs-10">
 					<button class="btn btn-primary" ng-click="clearForm()">Cancel</button>
-					<button type="submit" ng-click="createUserSubmit()" ng-disabled="createUserForm.name.$invalid && !createUserForm.name.$pristine" class="btn btn-primary" tooltip-placement="top" uib-tooltip="User: {{newUser|json}}">Create New User</button>
+					<button type="submit" ng-click="createUserSubmit()" ng-disabled="createUserForm.fullName.$invalid && !createUserForm.fullName.$pristine" class="btn btn-primary" tooltip-placement="top" uib-tooltip="User: {{newUser|json}}">Create New User</button>
 				</div>
 			</div>
 

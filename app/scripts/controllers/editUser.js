@@ -116,7 +116,7 @@
 					console.log($scope.editUser);
 					$http({
 						method  : 'POST',
-						url     : backend_root + 'nms/user/updateUser3',
+						url     : backend_root + 'nms/user/updateUser',
 						data    : $scope.editUser, //forms user object
 						headers : {'Content-Type': 'application/json'} 
 					})

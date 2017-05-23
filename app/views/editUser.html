@@ -9,7 +9,7 @@
 			<div class="form-group" ng-class="{'has-error':editUserForm.fullName.$invalid && !editUserForm.fullName.$pristine}">
 				<label class="control-label col-xs-2">Full Name</label>
 				<div class="col-xs-10">
-					<input name="name" id="name" type="text" class="form-control" placeholder="Name" ng-model="editUser.fullName" required 
+					<input name="fullName" id="fullName" type="text" class="form-control" placeholder="Name" ng-model="editUser.fullName" required 
 					ng-pattern="/^[A-Za-z ]*$/" ng-minlength="3"
 					tooltip-placement="top" uib-tooltip="Errors: {{editUserForm.fullName.$error|json}}" >
 

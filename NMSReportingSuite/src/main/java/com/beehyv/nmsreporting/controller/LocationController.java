@@ -1,10 +1,9 @@
 package com.beehyv.nmsreporting.controller;
 
 import com.beehyv.nmsreporting.business.LocationService;
-import com.beehyv.nmsreporting.model.Block;
-import com.beehyv.nmsreporting.model.District;
-import com.beehyv.nmsreporting.model.Location;
-import com.beehyv.nmsreporting.model.State;
+import com.beehyv.nmsreporting.business.UserService;
+import com.beehyv.nmsreporting.enums.AccessLevel;
+import com.beehyv.nmsreporting.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +24,9 @@ public class LocationController {
     @Autowired
     private LocationService locationService;
 
+    @Autowired
+    private UserService userService;
+
     @RequestMapping(value = {"/", "list"}, method = RequestMethod.GET)
     public @ResponseBody List<Location> getAllLocations() {
         return locationService.getAllLocations();
@@ -44,14 +46,35 @@ public class LocationController {
 
     @RequestMapping(value = {"/states"}, method = RequestMethod.GET)
     public @ResponseBody List<State> getAllStates() {
-        return locationService.getAllStates();
+        User user = userService.getCurrentUser();
+        List<State> states;
+        if(user.getAccessLevel().equals(AccessLevel.NATIONAL.getAccessLevel())) {
+            states = locationService.getAllStates();
+        }
+        else{
+            states = new ArrayList<>();
+            states.add(user.getStateId());
+        }
+        return states;
     }
 
     /*--------------------------District-----------------------------*/
 
     @RequestMapping(value = {"/districts/{stateId}"}, method = RequestMethod.GET)
     public @ResponseBody List<District> getDistrictsOfState(@PathVariable("stateId") Integer stateId) {
-        return locationService.getChildDistricts(stateId);
+        User user = userService.getCurrentUser();
+        List<District> districts;
+        if(user.getAccessLevel().equals(AccessLevel.NATIONAL.getAccessLevel())) {
+            districts = locationService.getChildDistricts(stateId);
+        }
+        else if(user.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel())) {
+            districts = locationService.getChildDistricts(user.getStateId().getStateId());
+        }
+        else{
+            districts = new ArrayList<>();
+            districts.add(user.getDistrictId());
+        }
+        return districts;
     }
 
     @RequestMapping(value = {"/SoD/{districtId}"}, method = RequestMethod.GET)
@@ -63,7 +86,24 @@ public class LocationController {
 
     @RequestMapping(value = {"/blocks/{districtId}"}, method = RequestMethod.GET)
     public @ResponseBody List<Block> getBlocksOfDistrict(@PathVariable("districtId") Integer districtId) {
-        return (List<Block>) locationService.getChildBlocks(districtId);
+        User user = userService.getCurrentUser();
+        List<Block> blocks;
+        if(user.getAccessLevel().equals(AccessLevel.NATIONAL.getAccessLevel())) {
+            blocks = locationService.getChildBlocks(districtId);
+        }
+        else if(user.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel())) {
+            if(locationService.findDistrictById(districtId).getStateOfDistrict().getStateId() == user.getStateId().getStateId()){
+                blocks = locationService.getChildBlocks(districtId);
+            }
+            else{
+                blocks = new ArrayList<>();
+            }
+        }
+        else{
+            blocks = locationService.getChildBlocks(user.getDistrictId().getDistrictId());
+        }
+
+        return blocks;
     }
 
     @RequestMapping(value = {"/DoB/{blockId}"}, method = RequestMethod.GET)
