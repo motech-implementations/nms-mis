@@ -2,22 +2,30 @@
 	var nmsReportsApp = angular
 		.module('nmsReports')
 		.factory( 'UserFormFactory', ['$http', function($http) {
-			var roles = [];
 			var users = [];
 			var currentUser = {};
 
-			var userToEdit;
-
 			return {
-				downloadRoles: function() {
+				downloadCurrentUser: function(){
+					return $http.get(backend_root + 'nms/user/currentUser');
+				},
+				setCurrentUser: function(user){
+					currentUser = user;
+				},
+				getCurrentUser: function(){
+					return currentUser;
+				},
+
+
+
+				getRoles: function() {
 					return $http.get(backend_root + 'nms/user/roles');
 				},
-				setRoles: function(values){
-					roles = values;
+
+				getAccessLevels: function() {
+					return $http.get(backend_root + 'nms/user/getAccessLevelOptions');
 				},
-				getRoles: function() {   
-					return roles;
-				},
+
 
 				downloadUsers: function(id){
 					return $http.get(backend_root + 'nms/user/list');
@@ -26,10 +34,9 @@
 					users = value;
 				},
 
-
-
 				getStates: function(){
-					return $http.get(backend_root + 'nms/location/states');
+						return $http.get(backend_root + 'nms/location/states');
+
 				},
 
 				getDistricts: function(stateId){
@@ -48,9 +55,7 @@
 					return $http.get(backend_root + 'nms/user/dto/' + id);
 				},
 
-				downloadCreator: function(){
-					return $http.get(backend_root + 'nms/user/currentUser');
-				},
+				
 
 				createUserSubmitDto: function(newUser){
 					$http({
@@ -58,9 +63,7 @@
 						url     : 'http://localhost:8080/NMSReportingSuite/nms/user/createFromDto',
 						data    : newUser, //forms user object
 						headers : {
-							'Content-Type': 'application/json', 
-							'Access-Control-Allow-Origin' : '*', 
-							'Access-Control-Allow-Credentials' : true} 
+							'Content-Type': 'application/json'} 
 					});
 				}
 

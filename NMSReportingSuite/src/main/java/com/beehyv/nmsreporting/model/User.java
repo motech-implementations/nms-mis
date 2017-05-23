@@ -54,6 +54,7 @@ public class User {
 	@Column(name="creation_date")
 	private Date creationDate;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="created_by_user")
 	private User createdByUser;

@@ -123,10 +123,10 @@ public class UserServiceImpl implements UserService{
                 entity.setPassword(passwordEncoder.encode(user.getPassword()));
             entity.setFullName(user.getFullName());
             entity.setEmailId(user.getEmailId());
-            entity.setLocationId(user.getLocationId());
+            entity.setStateId(user.getStateId());
+            entity.setDistrictId(user.getDistrictId());
+            entity.setBlockId(user.getBlockId());
             entity.setAccountStatus(user.getAccountStatus());
-            entity.setCreatedByUser(user.getCreatedByUser());
-            entity.setCreationDate(user.getCreationDate());
             entity.setPhoneNumber(user.getPhoneNumber());
             entity.setRoleId(user.getRoleId());
         }

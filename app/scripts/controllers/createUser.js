@@ -3,11 +3,32 @@
 		.module('nmsReports')
 		.controller("CreateUserController", ['$scope', 'UserFormFactory', '$http', function($scope, UserFormFactory, $http){
 			
-			UserFormFactory.downloadRoles()
+			UserFormFactory.downloadCurrentUser()
 			.then(function(result){
-				UserFormFactory.setRoles(result.data);
-				$scope.accessTypeList = UserFormFactory.getRoles();
+				console.log(result.data);
+				UserFormFactory.setCurrentUser(result.data);
+			})
+
+
+			UserFormFactory.getRoles()
+			.then(function(result){
+				$scope.accessTypeList = result.data;
 			});
+
+			UserFormFactory.getAccessLevels()
+			.then(function(result){
+				$scope.accessLevelList = result.data;
+			})
+
+			$scope.accessLevelList = ["NATIONAL", "STATE", "DISTRICT", "BLOCK"]
+
+			$scope.getAccessLevel = function(level){
+			
+				var list = $scope.accessLevelList;
+				var item = $scope.newUser.accessLevel
+				var off = 4 - list.length;
+				return list.indexOf(item) + off < level;
+			}
 
 			$scope.getStates = function(){
 				return UserFormFactory.getStates()
@@ -33,16 +54,10 @@
 				});
 			}
 
-			$scope.accessLevelList = ["National", "State", "District", "Block"];
-
 			$scope.newUser = {};
 			
 
-			$scope.getAccessLevel = function(level){
-				var list = $scope.accessLevelList;
-				var item = $scope.newUser.accessLevel
-				return list.indexOf(item) < level;
-			}
+
 
 			$scope.clearForm = function(){
 				$scope.newUser = {};
@@ -68,13 +83,14 @@
 					// .error(function (data, status, header, config) {
 					// 	console.log(data);
 					// });
+					delete $scope.newUser.$$hashKey;
 
-					// $http({
-					// 	method  : 'post',
-					// 	url     : 'http://localhost:8080/NMSReportingSuite/nms/user/createFromDto',
-					// 	data    : $scope.newUser, //forms user object
-					// 	headers : {'Content-Type': 'application/json'} 
-					// });
+					$http({
+						method  : 'post',
+						url     : 'http://localhost:8080/NMSReportingSuite/nms/user/createFromDto2',
+						data    : $scope.newUser, //forms user object
+						headers : {'Content-Type': 'application/json'} 
+					});
 
 				}
 				else{

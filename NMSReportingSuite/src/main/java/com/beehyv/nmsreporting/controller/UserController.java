@@ -5,6 +5,7 @@ import com.beehyv.nmsreporting.business.ModificationTrackerService;
 import com.beehyv.nmsreporting.business.RoleService;
 import com.beehyv.nmsreporting.business.UserService;
 import com.beehyv.nmsreporting.dto.UserDto;
+import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.AccountStatus;
 import com.beehyv.nmsreporting.model.Role;
 import com.beehyv.nmsreporting.model.User;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by beehyv on 15/3/17.
@@ -91,7 +93,14 @@ public class UserController {
                 user1.setBlock("");
             }
             user1.setAccessType(user.getRoleId().getRoleDescription());
-            user1.setCreatedBy(true);
+            int a;
+            try{
+                a = user.getCreatedByUser().getUserId();
+            } catch (NullPointerException e){
+                a = 0;
+            }
+            int b = getCurrentUser().getUserId();
+            user1.setCreatedBy(a == b || getCurrentUser().getRoleId().getRoleId() == 1);
             tabDto.add(user1);
 
         }
@@ -130,7 +139,7 @@ public class UserController {
         } catch(NullPointerException e){
             user1.setBlock("");
         }
-        user1.setAccessType(user.getRoleId().getRoleDescription());
+        user1.setAccessType(user.getRoleId().getRoleId().toString());
         user1.setCreatedBy(true);
         return user1;
     }
@@ -203,7 +212,44 @@ public class UserController {
         return "redirect:http://localhost:8080/#!/";
     }
 
-    @RequestMapping(value = {"/update-user"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/createFromDto2"}, method = RequestMethod.POST)
+    public String createFromDto2(@RequestBody UserDto userDto) {
+
+        User newUser = new User();
+        newUser.setFullName(userDto.getName());
+        newUser.setUsername(userDto.getUsername());
+        newUser.setPhoneNumber(userDto.getPhoneNumber());
+        newUser.setEmailId(userDto.getEmail());
+        newUser.setAccessLevel(userDto.getAccessLevel().toUpperCase());
+        newUser.setPassword(userDto.getPhoneNumber());
+        try{
+            newUser.setStateId(locationService.findStateById(Integer.parseInt(userDto.getState())));
+        }catch (Exception e){
+            newUser.setStateId(null);
+        }
+
+        try{
+            newUser.setDistrictId(locationService.findDistrictById(Integer.parseInt(userDto.getDistrict())));
+        }catch (Exception e){
+            newUser.setDistrictId(null);
+        }
+
+        try{
+            newUser.setBlockId(locationService.findBlockById(Integer.parseInt(userDto.getBlock())));
+        }catch (Exception e){
+            newUser.setDistrictId(null);
+        }
+        newUser.setRoleId(roleService.findRoleByRoleId(Integer.parseInt(userDto.getAccessType())));
+        newUser.setAccountStatus(AccountStatus.ACTIVE.getAccountStatus());
+        newUser.setCreatedByUser(userService.getCurrentUser());
+        newUser.setCreationDate(new java.util.Date());
+
+        userService.createNewUser(newUser);
+
+        return "redirect:http://localhost:8080/#!/";
+    }
+
+    @RequestMapping(value = {"/updateUser"}, method = RequestMethod.POST)
     public String updateExistingUser(@RequestBody String userDto) {
 //        ObjectMapper mapper = new ObjectMapper();
 //        JsonNode node = null;
@@ -271,8 +317,7 @@ public class UserController {
 //        modificationTrackerService.saveModification(modification);
     }
 
-    @CrossOrigin
-    @RequestMapping(value = {"/update-user-2"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/updateUser2"}, method = RequestMethod.POST)
     public String updateExistingUser2(@RequestBody UserDto userDto) {
         System.out.println(userDto.getName() + "**********************");
         User user = userService.findUserByUserId(userDto.getId());
@@ -305,6 +350,14 @@ public class UserController {
         return "redirect:http://localhost:8080/#!/";
     }
 
+    @RequestMapping(value = {"/updateUser3"}, method = RequestMethod.POST)
+    public String updateExistingUser3(@RequestBody User user) {
+        user.setCreatedByUser(userService.getCurrentUser());
+        userService.updateExistingUser(user);
+        System.out.println("******************saved***************");
+        return "redirect:http://localhost:8080/#!/";
+    }
+
     @RequestMapping(value = {"/delete-user"}, method = RequestMethod.POST)
     public void deleteExistingUser(@RequestBody User user) {
         userService.deleteExistingUser(user);
@@ -314,6 +367,26 @@ public class UserController {
 //        modification.setModificationDescription("Account deletion");
 //        modification.setModifiedUserId(user);
 //        modification.setModifiedByUserId(userService.findUserByUsername(getPrincipal()));
+    }
+
+    @RequestMapping(value = {"/getAccessLevelOptions"})
+    public @ResponseBody String[] getAccessLevelOptions() {
+        if(getCurrentUser().getAccessLevel().equalsIgnoreCase("NATIONAL")) {
+            String[] n = {"NATIONAL", "STATE", "DISTRICT", "BLOCK"};
+            return n;
+        }
+        else if(getCurrentUser().getAccessLevel().equalsIgnoreCase("STATE")) {
+            String[] s = {"STATE", "DISTRICT", "BLOCK"};
+            return s;
+        }
+        else if(getCurrentUser().getAccessLevel().equalsIgnoreCase("DISTRICT")) {
+            String[] d = {"DISTRICT", "BLOCK"};
+            return d;
+        }
+        else{
+            String[] b = {"BLOCK"};
+            return b;
+        }
     }
 
     private String getPrincipal(){

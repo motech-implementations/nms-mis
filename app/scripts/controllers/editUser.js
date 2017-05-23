@@ -3,38 +3,63 @@
 		.module('nmsReports')
 		.controller("EditUserController", ['$scope', 'UserFormFactory', '$http', '$stateParams', function($scope, UserFormFactory, $http, $stateParams){
 
-			$scope.id = $stateParams.id;
-
-			UserFormFactory.getUserDto( /*UserFormFactory.getUserToEdit()*/$scope.id )
+			UserFormFactory.downloadCurrentUser()
 			.then(function(result){
 				console.log(result.data);
+				UserFormFactory.setCurrentUser(result.data);
+			})
+
+
+			UserFormFactory.getUser($stateParams.id)
+			.then(function(result){
+				console.log(result.data);
+				console.log(JSON.stringify(result.data));
 				$scope.editUser = result.data;
 
-				
+				$scope.states = [$scope.editUser.stateId];
+				$scope.districts = [$scope.editUser.districtId];
+				$scope.blocks = [$scope.editUser.blockId];
 			});
 			
+			// UserFormFactory.getAccessLevels()
+			// .then(function(result){
+			// 	$scope.accessLevelList = result.data;
 
-			$scope.accessLevelList = ["National", "State", "District", "Block"];
+			
+			// })
 
+			$scope.accessLevelList = ["NATIONAL", "STATE", "DISTRICT", "BLOCK"];
+
+			$scope.getAccessLevel = function(level){
+				var list = $scope.accessLevelList;
+				var item = $scope.editUser.accessLevel
+				var off = 4 - list.length;
+				return list.indexOf(item) + off < level;
+			}
+			
 			$scope.editUser = {};
 
-			UserFormFactory.downloadRoles()
+			UserFormFactory.getRoles()
 			.then(function(result){
-				UserFormFactory.setRoles(result.data);
-				$scope.accessTypeList = UserFormFactory.getRoles();
+				$scope.accessTypeList = result.data;
 			});
 
 			$scope.getStates = function(){
 				return UserFormFactory.getStates()
 				.then(function(result){
-					$scope.states = result.data;
+					if(UserFormFactory.getCurrentUser.stateId != null){
+						$scope.states = [];
+						$scope.states.push(UserFormFactory.getCurrentUser.stateId);
+					}else{
+						$scope.states = result.data;
+					}
 					$scope.districts = [];
 					$scope.blocks = [];
 				});
 			}
 			
 			$scope.getDistricts = function(stateId){
-				return UserFormFactory.getDistricts(stateId.stateId)
+				return UserFormFactory.getDistricts(stateId)
 				.then(function(result){
 					$scope.districts = result.data;
 					$scope.blocks = [];
@@ -42,16 +67,10 @@
 			}
 
 			$scope.getBlocks =function(districtId){
-				return UserFormFactory.getBlocks(districtId.districtId)
+				return UserFormFactory.getBlocks(districtId)
 				.then(function(result){
 					$scope.blocks = result.data;
 				});
-			}
-
-			$scope.getAccessLevel = function(level){
-				var list = $scope.accessLevelList;
-				var item = $scope.editUser.accessLevel;
-				return list.indexOf(item) < level;
 			}
 
 			$scope.onAccessLevelChanged = function(){
@@ -63,27 +82,27 @@
 			}
 
 			$scope.$watch('editUser.accessLevel', function(oldValue, newValue){
-				if(oldValue !== newValue){
+				if(oldValue !== newValue && oldValue != null){
 					$scope.onAccessLevelChanged();
 				}
 			});
 
-			$scope.$watch('editUser.state', function(value){
+			$scope.$watch('editUser.stateId', function(value){
 				if(value != null){
-					$scope.editUser.district = null;
-					$scope.editUser.block = null;
+					$scope.editUser.districtId = null;
+					$scope.editUser.blockId = null;
 
-					$scope.getDistricts(value)
+					$scope.getDistricts(value.stateId)
 				}
 			});
-			$scope.$watch('editUser.district', function(value){
+			$scope.$watch('editUser.districtId', function(value){
 				if(value != null){
-					$scope.editUser.block = null;
+					$scope.editUser.blockId = null;
 
-					$scope.getBlocks(value);
+					$scope.getBlocks(value.districtId);
 				}
 			});
-			$scope.$watch('editUser.block', function(value){
+			$scope.$watch('editUser.blockId', function(value){
 				if(value != null){
 
 				}
@@ -92,45 +111,18 @@
 			$scope.editUserSubmit = function() {
 				if ($scope.editUserForm.$valid) {
 
-					// $scope.editUser.accessType = $scope.editUser.accessType.roleId + '';
-					// if($scope.editUser.state != null){
-					// 	$scope.editUser.state = $scope.editUser.state.stateId + ''
-					// }else{
-					// 	delete $scope.editUser.state;
-					// }
-					// if($scope.editUser.district != null){
-					// 	$scope.editUser.district = $scope.editUser.district.districtId + ''
-					// }else{
-					// 	delete $scope.editUser.district;
-					// }
-					// if($scope.editUser.block != null){
-					// 	$scope.editUser.block = $scope.editUser.block.blockId + ''
-					// }else{
-					// 	delete $scope.editUser.block;
-					// }
 					delete $scope.editUser.$$hashKey;
 
 					console.log($scope.editUser);
 					$http({
 						method  : 'POST',
-						url     : backend_root + 'nms/user/update-user-2',
+						url     : backend_root + 'nms/user/updateUser3',
 						data    : $scope.editUser, //forms user object
 						headers : {'Content-Type': 'application/json'} 
 					})
-
-					
-					// .then(function(data) {
-					// 	if (data.errors) {
-					// 		// Showing errors.
-					// 		$scope.errorName = data.errors.name;
-					// 		$scope.errorUserName = data.errors.username;
-					// 		$scope.errorEmail = data.errors.email;
-					// 	} else {
-					// 		$scope.message = data.message;
-					// 	}
-					// });
 				}
 				else{
+					console.log("error")
 					angular.forEach($scope.editUserForm.$error, function (field) {
 						angular.forEach(field, function(errorField){
 							errorField.$setDirty();
