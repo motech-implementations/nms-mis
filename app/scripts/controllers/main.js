@@ -1,18 +1,39 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("MainController", ['$scope', 'UserFormFactory', '$state', function($scope, UserFormFactory, $state){
+		.controller("MainController", ['$scope', '$state', '$http', 'UserFormFactory', function($scope, $state, $http, UserFormFactory,){
 			
-			$scope.breadcrumbDict = {
-				'userManagement.userTable': ['User Management'],
-				'userManagement.createUser': ['User Management', 'Create User'],
-				
+			$scope.breadCrumbDict = {
+				'userManagement.userTable': [
+					{
+						'name': 'User Management',
+						'sref': 'userManagement.userTable',
+						'active': false,
+					}
+				],
+				'userManagement.createUser': [
+					{
+						'name': 'User Management',
+						'sref': 'userManagement.userTable',
+						'active': true,
+					},
+					{
+						'name': 'Create User',
+						'sref': 'userManagement.createUser',
+						'active': false,
+					},
+				]
 			}
-			// $scope.onUserManagementLoad = function() {
-			// 	$state.go('user-management.user-table')
-			// };
 
-			// $scope.onUserManagementLoad();
-		}]
-	)}
+			$scope.getBreadCrumb = function(state){
+				return $scope.breadCrumbDict[state];
+			}
+
+			$scope.activeTab = function(tabName){
+				return $state.current.name.includes(tabName);
+			}
+
+			$scope.breadCrumb = ['User Management', 'Create User'];
+		}
+	])}
 )()

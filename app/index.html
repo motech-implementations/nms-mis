@@ -23,75 +23,74 @@
 
 	<!-- Factory -->
 	<script type="text/javascript" src="scripts/factories/userTable.js"></script>
-	<!-- <script type="text/javascript" src="scripts/factories/navBar.js"></script> -->
 	<script type="text/javascript" src="scripts/factories/auth.js"></script>
 	<script type="text/javascript" src="scripts/factories/userForm.js"></script>
 
 	<!-- Controllers -->
 	<script type="text/javascript" src="scripts/controllers/main.js"></script>
-	<script type="text/javascript" src="scripts/controllers/navBar.js"></script>
 	<script type="text/javascript" src="scripts/controllers/userManagement.js"></script>
 	<script type="text/javascript" src="scripts/controllers/userTable.js"></script>
 	<script type="text/javascript" src="scripts/controllers/editUser.js"></script>
 	<script type="text/javascript" src="scripts/controllers/bulkUser.js"></script>
 	<script type="text/javascript" src="scripts/controllers/createUser.js"></script>
 	<script type="text/javascript" src="scripts/controllers/reports.js"></script>
+	<script type="text/javascript" src="scripts/controllers/login.js"></script>
 	
 
 	<!-- Directives -->
-	<!-- <script type="text/javascript" src="scripts/directives/navBar.js"></script> -->
-	<script type="text/javascript" src="scripts/directives/userManagement.js"></script>
+	<script type="text/javascript" src="scripts/directives/pagination.js"></script>
+	<!-- <script type="text/javascript" src="scripts/directives/userManagement.js"></script>
 	<script type="text/javascript" src="scripts/directives/userTable.js"></script>
 	<script type="text/javascript" src="scripts/directives/editUser.js"></script>
 	<script type="text/javascript" src="scripts/directives/bulkUser.js"></script>
 	<script type="text/javascript" src="scripts/directives/createUser.js"></script>
-	<script type="text/javascript" src="scripts/directives/pagination.js"></script>
-	<script type="text/javascript" src="scripts/directives/reports.js"></script>
+	<script type="text/javascript" src="scripts/directives/reports.js"></script> -->
 
 
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
 
-	<link rel="stylesheet" href="scripts/style.css">
 	<link rel="stylesheet" href="styles/style.css">
 
 </head>
 <body ng-app="nmsReports" ng-controller="MainController">
-	<div class="container">
-		<div class="navbar-header" style="padding: 20px;">
-			<a class="navbar-brand" href="#">WebSiteName</a>
+	<div class='nav-bar' ng-hide='$state.current.name=="login"'>
+		<div class="nav-header">
+			<div>
+				<a class="navbar-brand" href="#">WebSiteName</a>
+			</div>
+			<pre>
+				$state = {{$state.current.name}}
+				$stateParams = {{$stateParams}}
+				$state full url = {{ $state.$current.url.source }}
+				$state active tab = {{ $route.current.activetab }}
+			</pre>
 		</div>
-		<pre>
-      <!-- Here's some values to keep an eye on in the sample in order to understand $state and $stateParams -->
-      $state = {{$state.current.name}}
-      $stateParams = {{$stateParams}}
-      $state full url = {{ $state.$current.url.source }}
-      <!-- $state.$current is not a public api, we are using it to
-           display the full url for learning purposes-->
-    </pre>
-	</div>
-	<div ng-controller="NavBarController as navCtrl">
-		<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
-			<ul class="nav navbar-nav">
-				<li>
-					<ul class="breadcrumb list-inline" style="margin-left: 50px;">
-						<li ng-repeat="item in breadcrumbDict"></li>
-					</ul>
+
+		<div class="nav">
+			<ul class="breadcrumb">
+				<li ng-repeat="item in getBreadCrumb($state.current.name)">
+					<a u ui-sref='{{item.sref}}' ng-class="{'active': {{item.active}} }" >{{item.name}}</a>
 				</li>
 			</ul>
-
-			<ul class="nav navbar-nav navbar-right nav-menu">
-				<li><a ui-sref="reports">Reports</a></li>
-				<li><a ui-sref="userManagement.userTable">User Management</a></li>
-				<li><a>My Profile</a></li>
-				<li><a href="http://localhost:8080/NMSReportingSuite/nms/logout">Logout</a></li>
+			<ul class="nav-menu">
+				<li>
+					<a href="http://localhost:8080/NMSReportingSuite/nms/logout">Logout</a>
+				</li>
+				<li>
+					<a ui-sref="userManagement.profile">My Profile</a>
+				</li>
+				<li ng-class="{active: activeTab('userManagement')}">
+					<a ui-sref="userManagement.userTable">User Management</a>
+				</li>
+				<li ng-class="{active: activeTab('reports')}">
+					<a ui-sref="reports">Reports</a>
+				</li>
 			</ul>
-		</nav>
+		</div>
 	</div>
 
-	<div class="body-body">
-		<div ui-view></div>
-	</div>
+	<div ui-view></div>
 
 </body>
 </html> 

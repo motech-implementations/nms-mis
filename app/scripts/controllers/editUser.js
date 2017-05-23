@@ -1,14 +1,14 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("EditUserController", ['$scope', 'UserFormFactory', '$http', function($scope, UserFormFactory, $http){
+		.controller("EditUserController", ['$scope', 'UserFormFactory', '$http', '$stateParams', function($scope, UserFormFactory, $http, $stateParams){
 
-			UserFormFactory.getUser( UserFormFactory.getUserToEdit().id )
+			$scope.id = $stateParams.id;
+
+			UserFormFactory.getUserDto( /*UserFormFactory.getUserToEdit()*/$scope.id )
 			.then(function(result){
 				console.log(result.data);
-				$scope.user = result.data;
-				$scope.editUser = UserFormFactory.getUserToEdit()
-				$scope.editUser.accessType = $scope.user.roleId;
+				$scope.editUser = result.data;
 
 				
 			});
@@ -30,8 +30,6 @@
 					$scope.states = result.data;
 					$scope.districts = [];
 					$scope.blocks = [];
-
-					$scope.editUser.state = $scope.user.stateId;
 				});
 			}
 			
@@ -40,8 +38,6 @@
 				.then(function(result){
 					$scope.districts = result.data;
 					$scope.blocks = [];
-
-					$scope.editUser.district = $scope.user.districtId;
 				});
 			}
 
@@ -49,8 +45,6 @@
 				return UserFormFactory.getBlocks(districtId.districtId)
 				.then(function(result){
 					$scope.blocks = result.data;
-
-					$scope.editUser.block = $scope.user.blockId;
 				});
 			}
 
@@ -117,12 +111,12 @@
 					delete $scope.editUser.$$hashKey;
 
 					console.log($scope.editUser);
-					// $http({
-					// 	method  : 'POST',
-					// 	url     : backend_root + 'nms/user/update-user-2',
-					// 	data    : $scope.editUser, //forms user object
-					// 	headers : {'Content-Type': 'application/json'} 
-					// })
+					$http({
+						method  : 'POST',
+						url     : backend_root + 'nms/user/update-user-2',
+						data    : $scope.editUser, //forms user object
+						headers : {'Content-Type': 'application/json'} 
+					})
 
 					
 					// .then(function(data) {

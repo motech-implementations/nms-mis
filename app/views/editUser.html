@@ -2,9 +2,9 @@
 	<div class="well">
 		<h1>Edit User</h1>
 
-		<form name="editUserForm" class="form-horizontal" novalidate action="http://localhost:8080/NMSReportingSuite/nms/user/update-user" method="POST">
+		<!-- <form name="editUserForm" class="form-horizontal" novalidate action="http://localhost:8080/NMSReportingSuite/nms/user/update-user" method="POST"> -->
 
-		<!-- <form name="editUserForm" class="form-horizontal" novalidate> -->
+		<form name="editUserForm" class="form-horizontal" novalidate>
 
 			<div class="form-group" ng-class="{'has-error':editUserForm.name.$invalid && !editUserForm.name.$pristine}">
 				<label class="control-label col-xs-2">Full Name</label>
@@ -67,7 +67,7 @@
 			<div class="form-group" ng-class="{'has-error':editUserForm.state.$invalid && !editUserForm.state.$pristine}">
 				<label class="control-label col-xs-2">State</label>
 				<div class="col-xs-10">
-					<select name="state" id="state" class="form-control" ng-model="editUser.state" ng-options="item as item.stateName for item in states track by item.stateId" ng-disabled="getAccessLevel(1)" ng-required="!getAccessLevel(1)">
+					<select name="state" id="state" class="form-control" ng-model="editUser.state" ng-options="item.stateId as item.stateName for item in states track by item.stateId" ng-disabled="getAccessLevel(1)" ng-required="!getAccessLevel(1)">
 					</select>
 				</div>
 			</div>

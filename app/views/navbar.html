@@ -1,0 +1,34 @@
+<div class='nav-bar'>
+	<div class="nav-header">
+		<div>
+			<a class="navbar-brand" href="#">WebSiteName</a>
+		</div>
+		<pre>
+			$state = {{$state.current.name}}
+			$stateParams = {{$stateParams}}
+			$state full url = {{ $state.$current.url.source }}
+			$state active tab = {{ $route.current.activetab }}
+		</pre>
+	</div>
+
+	<div class="nav">
+		<ul class="breadcrumb">
+			<li>User Management</li>
+			<li>Create New User</li>
+		</ul>
+		<ul class="nav-menu">
+			<li>
+				<a href="http://localhost:8080/NMSReportingSuite/nms/logout">Logout</a>
+			</li>
+			<li>
+				<a ui-sref="userManagement.profile">My Profile</a>
+			</li>
+			<li ng-class="{active: activeTab('userManagement')}">
+				<a ui-sref="userManagement.userTable">User Management</a>
+			</li>
+			<li ng-class="{active: activeTab('reports')}">
+				<a ui-sref="reports">Reports</a>
+			</li>
+		</ul>
+	</div>
+</div>

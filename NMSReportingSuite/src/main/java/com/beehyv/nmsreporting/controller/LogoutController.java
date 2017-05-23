@@ -19,6 +19,6 @@ public class LogoutController extends AbstractController{
     @RequestMapping(method = RequestMethod.GET)
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
         SecurityUtils.getSubject().logout();
-        return new ModelAndView("redirect:http://localhost:8080/NMSReportingSuite/nms/login");
+        return new ModelAndView("redirect:http://localhost:8080/app/#!/login");
     }
 }

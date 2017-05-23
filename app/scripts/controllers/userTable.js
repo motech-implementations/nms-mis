@@ -1,9 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("UserTableController", ['$scope', '$state', '$stateParams', 'UserTableFactory', function($scope, $state, $stateParams, UserTableFactory){
-
-			$stateParams.path = ['User Management'];
+		.controller("UserTableController", ['$scope', '$state', 'UserTableFactory', function($scope, $state, UserTableFactory){
 
 			$scope.numPerPageList = [10, 20];
 

@@ -9,6 +9,7 @@ import com.beehyv.nmsreporting.model.User;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,6 +18,7 @@ import java.util.List;
 /**
  * Created by beehyv on 17/5/17.
  */
+@Repository("maCourseAttemptDao")
 public class MACourseAttemptDaoImpl extends AbstractDao<Integer, User> implements MACourseAttemptDao {
 
 
