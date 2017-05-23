@@ -33,4 +33,6 @@ public interface AdminService {
 
   void createFiles(String fileName);
 
+  void createFolders(String reportType);
+
 }
