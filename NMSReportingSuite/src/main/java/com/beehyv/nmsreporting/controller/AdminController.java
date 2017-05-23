@@ -88,20 +88,18 @@ public class AdminController {
 
     @RequestMapping(value = "/getCumulativeCourseCompCSV1/{fromDate}/{toDate}", method = RequestMethod.GET)
     @ResponseBody
-    public String getCumulativeCourseCompletionCSV1(@PathVariable("fromDate") Long fromDateMillis, @PathVariable("toDate") Long toDateMillis) throws ParseException, java.text.ParseException{
-        Date fromDate = new Date(fromDateMillis);
-        Date toDate = new Date(toDateMillis);
-        User loggedInUser = userService.getCurrentUser();
+    public String getCumulativeCourseCompletionExcels(@PathVariable("fromDate") Date fromDate, @PathVariable("toDate") Date toDate) throws ParseException, java.text.ParseException{
+        /*User loggedInUser = userService.getCurrentUser();
         String loggedUserAccess=loggedInUser.getAccessLevel();
         AccessLevel loggedUserAccessLevel=AccessLevel.getLevel(loggedUserAccess);
         int Locationid=0;
-        if(loggedUserAccess.equals("STATE")){
+        if(loggedUserAccess=="STATE"){
             Locationid=loggedInUser.getStateId().getStateId();
         }
-        else if(loggedUserAccess.equals("DISTRICT")){
+        else if(loggedUserAccess=="DISTRICT"){
             Locationid=loggedInUser.getDistrictId().getDistrictId();
-        }
-        adminService.getCumulativeCourseCompletionCSV1(Locationid,loggedUserAccess,fromDate,toDate);
+        }*/
+        adminService.getCumulativeCourseCompletionFiles(fromDate,toDate);
         return "Bulkimport";
     }
 }

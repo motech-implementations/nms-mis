@@ -45,15 +45,14 @@ public class MACourseAttemptDaoImpl extends AbstractDao<Integer, User> implement
     }
 
     @Override
-    public Date getFirstCompletionDate(Integer flwId,Date fromDate, Date toDate) {
+    public Date getFirstCompletionDate(Integer flwId) {
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("lastModifiedDate"));
         criteria.add(Restrictions.and(Restrictions.eq("flwId",flwId),
                 Restrictions.eq("passed",true)));
         MACourseCompletion firstCompletion=(MACourseCompletion)criteria.list().get(0);
-        if(firstCompletion.getLastModifiedDate().after(fromDate)&&firstCompletion.getLastModifiedDate().before(toDate)){
+
             return firstCompletion.getLastModifiedDate();
-        }
-        return null;
+
 
     }
 }
