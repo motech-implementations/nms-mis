@@ -32,6 +32,9 @@ public class KilkariLowUsage {
     @Column(name="calls_answered", columnDefinition = "INT(11)")
     private Integer callsAnswered;
 
+    @Column(name="state_id", columnDefinition = "TINYINT")
+    private Integer stateId;
+
     @Column(name="district_id", columnDefinition = "SMALLINT(6)")
     private Integer districtId;
 
@@ -98,6 +101,14 @@ public class KilkariLowUsage {
 
     public void setCallsAnswered(Integer callsAnswered) {
         this.callsAnswered = callsAnswered;
+    }
+
+    public Integer getStateId() {
+        return stateId;
+    }
+
+    public void setStateId(Integer stateId) {
+        this.stateId = stateId;
     }
 
     public Integer getDistrictId() {
