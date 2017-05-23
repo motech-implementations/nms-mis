@@ -19,6 +19,6 @@ public interface AdminService {
 
   public void getCumulativeCourseCompletionCSV(List<FrontLineWorkers> successFulcandidates, String rootPath,String place);
 
-  public void getCumulativeCourseCompletionCSV1(Integer LocationId, String Parent, Date fromDate, Date toDate);
+  public void getCumulativeCourseCompletionFiles(Date fromDate, Date toDate);
 
 }

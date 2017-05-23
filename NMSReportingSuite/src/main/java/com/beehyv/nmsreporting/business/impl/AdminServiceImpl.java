@@ -218,7 +218,7 @@ public class AdminServiceImpl implements AdminService {
 
                         AccessLevel accessLevel= AccessLevel.getLevel(Line[8]);
 
-                        if(UserRole=="ADMIN"){
+                        if(UserRole.equalsIgnoreCase("ADMIN")){
                             if((accessLevel==AccessLevel.NATIONAL)||(accessLevel==AccessLevel.STATE)){
                                 Integer rowNum=linNumber;
                                 String authorityError="You don't have authority to create this user.";
@@ -283,7 +283,7 @@ public class AdminServiceImpl implements AdminService {
                                 }
                             }
                         }
-                        if(UserRole=="USER"){
+                        if(UserRole.equalsIgnoreCase("USER")){
                             if(loggedUserAccessLevel.ordinal()>accessLevel.ordinal()){
                                 Integer rowNum=linNumber;
                                 String authorityError="You don't have authority to create this user.";
@@ -1039,14 +1039,15 @@ public class AdminServiceImpl implements AdminService {
         Map < String, Object[] > empinfo =
                 new TreeMap < String, Object[] >();
         empinfo.put( "1", new Object[] {
-                "Full Name","Mobile Number", "STATE", "DISTRICT", "BLOCK", "Taluka", "Health Facility", "Health Sub Facility", "Creation Date", "Role" });
+                "Full Name","Mobile Number", "STATE", "DISTRICT", "BLOCK", "Taluka", "Health Facility", "Health Sub Facility", "First Completion Date", "Role" });
         Integer counter=2;
         for(FrontLineWorkers frontLineWorker:successFulcandidates){
             empinfo.put((counter.toString()), new Object[]{
                     frontLineWorker.getFullName(),frontLineWorker.getMobileNumber(),frontLineWorker.getState().getStateName(),frontLineWorker.getDistrict().getDistrictName(),frontLineWorker.getBlock().getBlockName(),
-                    
+                    maCourseAttemptDao.getFirstCompletionDate(frontLineWorker.getFlwId())
 
             });
+            counter++;
         }
         Set < String > keyid = empinfo.keySet();
         int rowid = 0;
@@ -1064,7 +1065,7 @@ public class AdminServiceImpl implements AdminService {
         //Write the workbook in file system
         FileOutputStream out = null;
         try {
-            out = new FileOutputStream(new File(rootPath+"/"+"MACourseCompletionreport"+"-"+place ));
+            out = new FileOutputStream(new File(rootPath+"/"+"MACourseCompletionreport"+"-"+place+".xlsx" ));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -1081,10 +1082,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void getCumulativeCourseCompletionCSV1(Integer LocationId,String Parent,Date fromDate,Date toDate) {
-
-        /*List<Location> Statess=locationDao.getChildLocations(LocationId);*/
-        if(Parent=="NATIONAL") {
+    public void getCumulativeCourseCompletionFiles(Date fromDate,Date toDate) {
 
             List<State> states = stateDao.getAllStates();
             String rootPath=System.getProperty("user.home") + File.separator + "Documents/CumulativeCourseCompletionCSVs";
@@ -1100,7 +1098,7 @@ public class AdminServiceImpl implements AdminService {
                 int stateId = state.getStateId();
                 List<FrontLineWorkers> candidatesFromThisState=new ArrayList<>();
                 for (FrontLineWorkers asha:successFullcandidates){
-                    if(asha.getState()==stateId){
+                    if(asha.getState().getStateId()==stateId){
                         candidatesFromThisState.add(asha);
                     }
                 }
@@ -1118,7 +1116,7 @@ public class AdminServiceImpl implements AdminService {
                     int districtId = district.getDistrictId();
                     List<FrontLineWorkers> candidatesFromThisDistrict=new ArrayList<>();
                     for (FrontLineWorkers asha:candidatesFromThisState){
-                        if(asha.getDistrict()==districtId){
+                        if(asha.getDistrict().getDistrictId()==districtId){
                             candidatesFromThisDistrict.add(asha);
                         }
                     }
@@ -1135,7 +1133,7 @@ public class AdminServiceImpl implements AdminService {
                         int blockId=block.getBlockId();
                         List<FrontLineWorkers> candidatesFromThisBlock=new ArrayList<>();
                         for (FrontLineWorkers asha:candidatesFromThisDistrict){
-                            if(asha.getBlock()==blockId){
+                            if(asha.getBlock().getBlockId()==blockId){
                                 candidatesFromThisBlock.add(asha);
                             }
                         }
@@ -1146,88 +1144,8 @@ public class AdminServiceImpl implements AdminService {
                 }
 
             }
-        }
-        else if (Parent=="STATE") {
 
-            List<District> Districts = stateDao.getChildLocations(LocationId);
-            String statename=stateDao.findByStateId(LocationId).getStateName();
-            String rootPath=System.getProperty("user.home") + File.separator + "Documents/CumulativeCourseCompletionCSVs";
-            List<FrontLineWorkers> successFullcandidates=maCourseAttemptDao.getSuccessFulFirstCompletion(fromDate,toDate);
-            List<FrontLineWorkers> candidatesFromThisState=new ArrayList<>();
-            for (FrontLineWorkers asha:successFullcandidates){
-                if(asha.getState()==LocationId){
-                    candidatesFromThisState.add(asha);
-                }
-            }
 
-            getCumulativeCourseCompletionCSV(candidatesFromThisState,rootPath,statename);
-            for (District district : Districts) {
-                String districtName = district.getDistrictName();
-
-                String rootPathDistrict = System.getProperty("user.home") + File.separator + "Documents/CumulativeCourseCompletionCSVs/" + districtName;
-                File dirDistrict = new File(rootPathDistrict);
-                if (!dirDistrict.exists())
-                    dirDistrict.mkdirs();
-                int districtId = district.getDistrictId();
-
-                List<FrontLineWorkers> candidatesFromThisDistrict=new ArrayList<>();
-                for (FrontLineWorkers asha:candidatesFromThisState){
-                    if(asha.getDistrict()==districtId){
-                        candidatesFromThisDistrict.add(asha);
-                    }
-                }
-
-                getCumulativeCourseCompletionCSV(candidatesFromThisDistrict,rootPathDistrict,districtName);
-                List<Block> Blocks = districtDao.getBlocks(districtId);
-                for (Block block : Blocks) {
-                    String blockName = block.getBlockName();
-                    String rootPathblock = rootPathDistrict + "/" + blockName;
-                    File dirBlock = new File(rootPathblock);
-                    if (!dirBlock.exists())
-                        dirBlock.mkdirs();
-                    int blockId=block.getBlockId();
-                    List<FrontLineWorkers> candidatesFromThisBlock=new ArrayList<>();
-                    for (FrontLineWorkers asha:candidatesFromThisDistrict){
-                        if(asha.getBlock()==blockId){
-                            candidatesFromThisBlock.add(asha);
-                        }
-                    }
-
-                    getCumulativeCourseCompletionCSV(candidatesFromThisBlock,rootPathblock,blockName);
-
-                }
-            }
-        }
-        else {
-            List<Block> Blocks = districtDao.getBlocks(LocationId);
-            String districtName=districtDao.findByDistrictId(LocationId).getDistrictName();
-            String rootPath=System.getProperty("user.home") + File.separator + "Documents/CumulativeCourseCompletionCSVs";
-            List<FrontLineWorkers> successFullcandidates=maCourseAttemptDao.getSuccessFulFirstCompletion(fromDate,toDate);
-            List<FrontLineWorkers> candidatesFromThisDistrict=new ArrayList<>();
-            for (FrontLineWorkers asha:successFullcandidates){
-                if(asha.getDistrict()==LocationId){
-                    candidatesFromThisDistrict.add(asha);
-                }
-            }
-            getCumulativeCourseCompletionCSV(candidatesFromThisDistrict,rootPath,districtName);
-            for (Block block : Blocks) {
-                String blockName = block.getBlockName();
-                String rootPathblock = System.getProperty("user.home") + File.separator + "Documents/CumulativeCourseCompletionCSVs/" + blockName;
-                File dirBlock = new File(rootPathblock);
-                if (!dirBlock.exists())
-                    dirBlock.mkdirs();
-                int blockId=block.getBlockId();
-                List<FrontLineWorkers> candidatesFromThisBlock=new ArrayList<>();
-                for (FrontLineWorkers asha:candidatesFromThisDistrict){
-                    if(asha.getBlock()==blockId){
-                        candidatesFromThisBlock.add(asha);
-                    }
-                }
-
-                getCumulativeCourseCompletionCSV(candidatesFromThisBlock,rootPathblock,blockName);
-
-            }
-        }
 
     }
 
