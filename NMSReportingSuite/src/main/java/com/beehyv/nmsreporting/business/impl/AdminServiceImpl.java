@@ -1128,7 +1128,7 @@ public class AdminServiceImpl implements AdminService {
        XSSFWorkbook workbook = new XSSFWorkbook();
        //Create a blank sheet
        XSSFSheet spreadsheet = workbook.createSheet(
-               " MA Course Completion Report ");
+               "Cumulative Inactive Users Report ");
        //Create row object
        XSSFRow row;
        //This data needs to be written (Object[])
@@ -1159,7 +1159,7 @@ public class AdminServiceImpl implements AdminService {
        //Write the workbook in file system
        FileOutputStream out = null;
        try {
-           out = new FileOutputStream(new File(rootPath + "/" + "MACourseCompletionreport" + "_" + place + "_" + toDate + ".xlsx"));
+           out = new FileOutputStream(new File(rootPath + "/" + "MAInactiveUsersReport" + "_" + place + "_" + toDate + ".xlsx"));
        } catch (FileNotFoundException e) {
            e.printStackTrace();
        }
