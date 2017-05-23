@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 /**
  * Created by beehyv on 23/5/17.
  */
-@Repository("healthFacilityDao")
+@Repository("healthSubFacilityDao")
 public class HealthSubFacilityDaoImpl extends AbstractDao<Integer, HealthSubFacility> implements HealthSubFacilityDao{
     @Override
     public HealthSubFacility findByHealthSubFacilityId(Integer healthSubFacilityid) {
