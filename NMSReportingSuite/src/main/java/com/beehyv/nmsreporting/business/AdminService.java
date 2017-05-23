@@ -1,6 +1,8 @@
 package com.beehyv.nmsreporting.business;
 
+import com.beehyv.nmsreporting.model.AnonymousUsers;
 import com.beehyv.nmsreporting.model.FrontLineWorkers;
+import com.beehyv.nmsreporting.model.KilkariSixWeeksNoAnswer;
 import com.beehyv.nmsreporting.model.User;
 import org.apache.poi.ss.formula.functions.T;
 
@@ -13,12 +15,22 @@ import java.util.List;
  */
 public interface AdminService {
 
-  public HashMap startBulkDataImport(User user);
+  HashMap startBulkDataImport(User user);
 
-  public void getBulkDataImportCSV();
+  void getBulkDataImportCSV();
 
-  public void getCumulativeCourseCompletionCSV(List<FrontLineWorkers> successFulcandidates, String rootPath,String place);
+  void getCumulativeCourseCompletionFiles(Date fromDate, Date toDate);
 
-  public void getCumulativeCourseCompletionFiles(Date fromDate, Date toDate);
+  void getCircleWiseAnonymousFiles(Date fromDate, Date toDate);
+
+  void getCumulativeInactiveFiles(Date fromDate, Date toDate);
+
+  void getKilkariSixWeekNoAnswerFiles(Date fromDate, Date toDate);
+
+  void getKilkariLowUsageFiles(Date fromDate, Date toDate);
+
+  void getKilkariSelfDeactvationFiles(Date fromDate, Date toDate);
+
+  void createFiles(String fileName);
 
 }

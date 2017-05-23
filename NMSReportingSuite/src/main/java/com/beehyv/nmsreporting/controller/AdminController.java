@@ -81,11 +81,26 @@ public class AdminController {
 
    /* @RequestMapping(value = "/getCumulativeCourseCompCSV", method = RequestMethod.GET)
     @ResponseBody
-    public String getCumulativeCourseCompletionCSV(@PathVariable("state") String State,@PathVariable("district") String District,@PathVariable("block") String Block) throws ParseException, java.text.ParseException{
-        adminService.getCumulativeCourseCompletionCSV(State,District,Block);
+    public String getCumulativeCourseCompletion(@PathVariable("state") String State,@PathVariable("district") String District,@PathVariable("block") String Block) throws ParseException, java.text.ParseException{
+        adminService.getCumulativeCourseCompletion(State,District,Block);
         return "Bulkimport";
     }*/
 
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
+    @ResponseBody
+    public String createFolders() throws ParseException, java.text.ParseException{
+        createAllFiles();
+        return "Created Folders";
+    }
+
+    public void createAllFiles(){
+        adminService.createFiles("CumulativeCourseCompletion");
+//        adminService.createFiles("CumulativeAnonymousUsers");
+//        adminService.createFiles("CumulativeInactiveUsers");
+        adminService.createFiles("KilkariLowUsage");
+        adminService.createFiles("KilkariSelfDeactivated");
+        adminService.createFiles("KilkariSixWeeksNoAnswer");
+    }
     @RequestMapping(value = "/getCumulativeCourseCompCSV1/{fromDate}/{toDate}", method = RequestMethod.GET)
     @ResponseBody
     public String getCumulativeCourseCompletionExcels(@PathVariable("fromDate") Date fromDate, @PathVariable("toDate") Date toDate) throws ParseException, java.text.ParseException{

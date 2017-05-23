@@ -29,6 +29,9 @@ public class KilkariSixWeeksNoAnswer {
     @Column(name="name", columnDefinition = "VARCHAR(100)")
     private String name;
 
+    @Column(name="state_id", columnDefinition = "TINYINT")
+    private Integer stateId;
+
     @Column(name="district_id", columnDefinition = "SMALLINT(6)")
     private Integer districtId;
 
@@ -87,6 +90,14 @@ public class KilkariSixWeeksNoAnswer {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getStateId() {
+        return stateId;
+    }
+
+    public void setStateId(Integer stateId) {
+        this.stateId = stateId;
     }
 
     public Integer getDistrictId() {
