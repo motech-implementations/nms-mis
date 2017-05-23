@@ -96,7 +96,7 @@ public class AdminController {
     public void createAllFiles(){
         adminService.createFiles("CumulativeCourseCompletion");
 //        adminService.createFiles("CumulativeAnonymousUsers");
-//        adminService.createFiles("CumulativeInactiveUsers");
+       adminService.createFiles("CumulativeInactiveUsers");
         adminService.createFiles("KilkariLowUsage");
         adminService.createFiles("KilkariSelfDeactivated");
         adminService.createFiles("KilkariSixWeeksNoAnswer");
