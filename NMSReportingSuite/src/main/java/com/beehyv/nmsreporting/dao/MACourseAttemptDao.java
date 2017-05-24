@@ -13,4 +13,6 @@ public interface MACourseAttemptDao {
    List<FrontLineWorkers> getSuccessFulFirstCompletion(Date fromDate, Date toDate);
 
     Date getFirstCompletionDate(Integer flwId);
+
+    List<FrontLineWorkers> getSuccessFulCompletion(Date toDate);
 }

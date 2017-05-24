@@ -2,7 +2,7 @@ package com.beehyv.nmsreporting.controller;
 
 import com.beehyv.nmsreporting.business.AdminService;
 import com.beehyv.nmsreporting.business.UserService;
-import com.beehyv.nmsreporting.enums.AccessLevel;
+import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.ws.Response;
 import java.io.*;
 import java.util.Date;
 import java.util.HashMap;
@@ -114,12 +113,12 @@ public class AdminController {
     }
 
     public void createAllFiles(){
-        adminService.createFiles("CumulativeCourseCompletion");
-       adminService.createFolders("CumulativeAnonymousUsers");
-       adminService.createFiles("CumulativeInactiveUsers");
-        adminService.createFiles("KilkariLowUsage");
-        adminService.createFiles("KilkariSelfDeactivated");
-        adminService.createFiles("KilkariSixWeeksNoAnswer");
+        adminService.createFiles(ReportType.maCourse.getReportType());
+       adminService.createFolders(ReportType.maAnonymous.getReportType());
+       adminService.createFiles(ReportType.maInactive.getReportType());
+        adminService.createFiles(ReportType.lowUsage.getReportType());
+        adminService.createFiles(ReportType.selfDeactivated.getReportType());
+        adminService.createFiles(ReportType.sixWeeks.getReportType());
     }
     @RequestMapping(value = "/getCumulativeCourseCompCSV1/{fromDate}/{toDate}", method = RequestMethod.GET)
     @ResponseBody

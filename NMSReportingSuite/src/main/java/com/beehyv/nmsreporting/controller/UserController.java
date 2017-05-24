@@ -1,19 +1,29 @@
 package com.beehyv.nmsreporting.controller;
 
-import com.beehyv.nmsreporting.business.LocationService;
-import com.beehyv.nmsreporting.business.ModificationTrackerService;
-import com.beehyv.nmsreporting.business.RoleService;
-import com.beehyv.nmsreporting.business.UserService;
+import com.beehyv.nmsreporting.business.*;
+import com.beehyv.nmsreporting.dao.BlockDao;
+import com.beehyv.nmsreporting.dao.DistrictDao;
+import com.beehyv.nmsreporting.dao.StateDao;
 import com.beehyv.nmsreporting.dto.UserDto;
+import com.beehyv.nmsreporting.entity.ReportRequest;
+import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.Role;
 import com.beehyv.nmsreporting.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.expression.ParseException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +44,13 @@ public class UserController {
 
     @Autowired
     private ModificationTrackerService modificationTrackerService;
+
+    @Autowired
+    private AdminService adminService;
+
+    final Date bigBang = new Date(0);
+    final String documents = System.getProperty("user.home") +File.separator+ "Documents/";
+    final String reports = documents+"Reports/";
 
     @RequestMapping(value = {"/", "/list"}, method = RequestMethod.GET)
     public @ResponseBody List<User> getAllUsers() {
@@ -239,6 +256,54 @@ public class UserController {
         return userName;
     }
 
-//    @RequestMapping(value = "/getReport", method = RequestMethod.GET,produces = "application/vnd.ms-excel")
-//    @ResponseBody
+   @RequestMapping(value = "/getReport", method = RequestMethod.POST,produces = "application/vnd.ms-excel")
+   @ResponseBody
+   public void getReports(@RequestBody ReportRequest reportRequest,HttpServletResponse response) throws ParseException, java.text.ParseException{
+       String rootPath = "";
+       String place = "NATIONAL";
+       if(reportRequest.getStateId() != 0){
+           place = locationService.findStateById(reportRequest.getStateId()).getStateName();
+           rootPath += place+"/";
+       }
+
+       if(reportRequest.getDistrictId() != 0){
+           place = locationService.findDistrictById(reportRequest.getDistrictId()).getDistrictName();
+           rootPath += place+"/";
+       }
+
+       if(reportRequest.getBlockId() != 0){
+           place = locationService.findBlockById(reportRequest.getBlockId()).getBlockName();
+           rootPath += place+"/";
+       }
+       String filename= reportRequest.getReportType()+"_"+place+"_"+reportRequest.getToDate()+".xlsx";
+       rootPath = reports+reportRequest.getReportType()+"/"+rootPath+filename;
+
+       response.setContentType("APPLICATION/OCTECT-STREAM");
+       try {
+           PrintWriter out=response.getWriter();
+           response.setHeader("Content-Disposition","attachment;filename=\""+filename+"\"");
+           FileInputStream fl=new FileInputStream(rootPath);
+           int i;
+           while ((i=fl.read())!=-1){
+               out.write(i);
+           }
+           fl.close();
+           out.close();
+       } catch (IOException e) {
+           e.printStackTrace();
+       }
+
+//       if(reportRequest.getStateId()==0){
+//           rootPath = "";
+//       }else if(reportRequest.getDistrictId()==0){
+//           rootPath = locationService.findStateById(reportRequest.getStateId()).getStateName();
+//       }else if(reportRequest.getBlockId()==0){
+//           rootPath = locationService.findStateById(reportRequest.getStateId()).getStateName()+"/"+locationService.findDistrictById(reportRequest.getDistrictId()).getDistrictName();
+//       }
+//       if (reportRequest.getReportType().equals(ReportType.maCourse)) {
+//
+//           adminService.getCumulativeCourseCompletionFiles(bigBang,reportRequest.getToDate());
+//       }
+
+   }
 }

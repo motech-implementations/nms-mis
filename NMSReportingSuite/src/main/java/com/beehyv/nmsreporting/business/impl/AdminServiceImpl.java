@@ -4,6 +4,7 @@ import com.beehyv.nmsreporting.business.AdminService;
 import com.beehyv.nmsreporting.dao.*;
 import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.AccessType;
+import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.*;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -79,6 +80,9 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private CircleDao circleDao;
 
+    final String documents = System.getProperty("user.home") +File.separator+ "Documents/";
+    final String reports = documents+"Reports/";
+
     @Override
     public HashMap startBulkDataImport(User loggedInUser) {
         Pattern pattern;
@@ -88,8 +92,7 @@ public class AdminServiceImpl implements AdminService {
         String fileName = null;
         fileName = retrievePropertiesFromFileLocationProperties();
         if (fileName == null) {
-            fileName = System.getProperty("user.home")
-                    + "/Documents/BulkImportDatacr7ms10.csv";
+            fileName = documents+"BulkImportDatacr7ms10.csv";
             System.out.println("fileLocationproperties not working");
         }
         XSSFRow row;
@@ -420,7 +423,7 @@ public class AdminServiceImpl implements AdminService {
         String FILE_HEADER = "Full Name, STATE, DISTRICT, BLOCK, Phone number, Email ID, UserName, Creation Date, Access Level,Role";
         FileWriter fileWriter = null;
         try {
-            fileWriter = new FileWriter(System.getProperty("user.home")+"/Documents/BulkImportData.csv");
+            fileWriter = new FileWriter(documents+"BulkImportData.csv");
 
             //Write the CSV file header
             fileWriter.append(FILE_HEADER.toString());
@@ -445,13 +448,13 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void createFiles(String fileName) {
         List<State> states = stateDao.getAllStates();
-        String rootPath = System.getProperty("user.home") + File.separator + "Documents/Reports";
-        File dir = new File(rootPath + "/" + fileName);
+        String rootPath = reports;
+        File dir = new File(rootPath + fileName);
         if (!dir.exists())
             dir.mkdirs();
         for (State state : states) {
             String stateName = state.getStateName();
-            String rootPathState = System.getProperty("user.home") + File.separator + "Documents/Reports/" + fileName + "/" + stateName;
+            String rootPathState = rootPath + fileName + "/" + stateName;
             File dirState = new File(rootPathState);
             if (!dirState.exists())
                 dirState.mkdirs();
@@ -480,13 +483,13 @@ public class AdminServiceImpl implements AdminService {
     public void createFolders(String reportType) {
 
         List<Circle> circleList = circleDao.getAllCircles();
-        String rootPath = System.getProperty("user.home") + File.separator + "Documents/Reports";
-        File dir = new File(rootPath + "/" + reportType);
+        String rootPath = reports;
+        File dir = new File(rootPath + reportType);
         if (!dir.exists())
             dir.mkdirs();
         for (Circle circle : circleList) {
             String circleName = circle.getCircleName();
-            String rootPathCircle = rootPath + "/" + reportType + "/" + circleName;
+            String rootPathCircle = rootPath + reportType + "/" + circleName;
             File dirCircle = new File(rootPathCircle);
             if (!dirCircle.exists())
                 dirCircle.mkdirs();
@@ -552,7 +555,7 @@ public class AdminServiceImpl implements AdminService {
         //Write the workbook in file system
         FileOutputStream out = null;
         try {
-            out = new FileOutputStream(new File(rootPath + "/" + "MACourseCompletionreport" + "_" + place + "_" + toDate + ".xlsx"));
+            out = new FileOutputStream(new File(rootPath + ReportType.maCourse.getReportType() + "_" + place + "_" + toDate + ".xlsx"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -606,7 +609,7 @@ public class AdminServiceImpl implements AdminService {
         //Write the workbook in file system
         FileOutputStream out = null;
         try {
-            out = new FileOutputStream(new File(rootPath + "/" + "MA_AnonymousUsersReport" + "_" + place + "_" + toDate + ".xlsx"));
+            out = new FileOutputStream(new File(rootPath + ReportType.maAnonymous.getReportType() + "_" + place + "_" + toDate + ".xlsx"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -679,7 +682,7 @@ public class AdminServiceImpl implements AdminService {
         //Write the workbook in file system
         FileOutputStream out = null;
         try {
-            out = new FileOutputStream(new File(rootPath + "/" + "MAInactiveUsersReport" + "_" + place + "_" + toDate + ".xlsx"));
+            out = new FileOutputStream(new File(rootPath + ReportType.maInactive.getReportType() + "_" + place + "_" + toDate + ".xlsx"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -749,7 +752,7 @@ public class AdminServiceImpl implements AdminService {
         //Write the workbook in file system
         FileOutputStream out = null;
         try {
-            out = new FileOutputStream(new File(rootPath + "/" + "KilkariNonAnsweringBeneficiariesReport" + "_" + place + "_" + toDate + ".xlsx"));
+            out = new FileOutputStream(new File(rootPath + ReportType.sixWeeks.getReportType() + "_" + place + "_" + toDate + ".xlsx"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -826,7 +829,7 @@ public class AdminServiceImpl implements AdminService {
         //Write the workbook in file system
         FileOutputStream out = null;
         try {
-            out = new FileOutputStream(new File(rootPath + "/" + "KilkariSelfDeactivatorsReport" + "_" + place + "_" + toDate + ".xlsx"));
+            out = new FileOutputStream(new File(rootPath + ReportType.selfDeactivated.getReportType() + "_" + place + "_" + toDate + ".xlsx"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -896,7 +899,7 @@ public class AdminServiceImpl implements AdminService {
         //Write the workbook in file system
         FileOutputStream out = null;
         try {
-            out = new FileOutputStream(new File(rootPath + "/" + "KilkariLowUsageBeneficiariesReport" + "_" + place + "_" + toDate + ".xlsx"));
+            out = new FileOutputStream(new File(rootPath + ReportType.lowUsage.getReportType() + "_" + place + "_" + toDate + ".xlsx"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -916,12 +919,12 @@ public class AdminServiceImpl implements AdminService {
     public void getCumulativeCourseCompletionFiles(Date fromDate, Date toDate) {
 
         List<State> states = stateDao.getAllStates();
-        String rootPath = System.getProperty("user.home") + File.separator + "Documents/Reports/CumulativeCourseCompletion";
-        List<FrontLineWorkers> successFullcandidates = maCourseAttemptDao.getSuccessFulFirstCompletion(fromDate, toDate);
+        String rootPath = reports+ReportType.maCourse.getReportType()+ "/";
+        List<FrontLineWorkers> successFullcandidates = maCourseAttemptDao.getSuccessFulCompletion(toDate);
         getCumulativeCourseCompletion(successFullcandidates, rootPath, "National", toDate);
         for (State state : states) {
             String stateName = state.getStateName();
-            String rootPathState = System.getProperty("user.home") + File.separator + "Documents/Reports/CumulativeCourseCompletion/" + stateName;
+            String rootPathState = rootPath+ stateName+ "/";
             int stateId = state.getStateId();
             List<FrontLineWorkers> candidatesFromThisState = new ArrayList<>();
             for (FrontLineWorkers asha : successFullcandidates) {
@@ -933,7 +936,7 @@ public class AdminServiceImpl implements AdminService {
             List<District> districts = stateDao.getChildLocations(stateId);
             for (District district : districts) {
                 String districtName = district.getDistrictName();
-                String rootPathDistrict = rootPathState + "/" + districtName;
+                String rootPathDistrict = rootPathState + districtName+ "/";
                 int districtId = district.getDistrictId();
                 List<FrontLineWorkers> candidatesFromThisDistrict = new ArrayList<>();
                 for (FrontLineWorkers asha : candidatesFromThisState) {
@@ -945,7 +948,7 @@ public class AdminServiceImpl implements AdminService {
                 List<Block> Blocks = districtDao.getBlocks(districtId);
                 for (Block block : Blocks) {
                     String blockName = block.getBlockName();
-                    String rootPathblock = rootPathDistrict + "/" + blockName;
+                    String rootPathblock = rootPathDistrict + blockName+ "/";
                     int blockId = block.getBlockId();
                     List<FrontLineWorkers> candidatesFromThisBlock = new ArrayList<>();
                     for (FrontLineWorkers asha : candidatesFromThisDistrict) {
@@ -962,7 +965,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void getCircleWiseAnonymousFiles(Date toDate) {
         List<Circle> circleList = circleDao.getAllCircles();
-        String rootPath = System.getProperty("user.home") + File.separator + "Documents/Reports/CumulativeAnonymousUsers";
+        String rootPath = reports+ReportType.maAnonymous.getReportType()+ "/";
         for (Circle circle : circleList) {
             String circleName = circle.getCircleName();
             List<AnonymousUsers> anonymousUsersList = anonymousUsersDao.getAnonymousUsersCircle(toDate, circle.getCircleIdId());
@@ -973,12 +976,12 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void getCumulativeInactiveFiles(Date fromDate, Date toDate) {
         List<State> states = stateDao.getAllStates();
-        String rootPath = System.getProperty("user.home") + File.separator + "Documents/Reports/CumulativeInactiveUsers";
+        String rootPath = reports+ReportType.maInactive.getReportType()+ "/";
         List<FrontLineWorkers> inactiveFrontLineWorkers = frontLineWorkersDao.getInactiveFrontLineWorkers();
         getCumulativeInactiveUsers(inactiveFrontLineWorkers, rootPath, "National", toDate);
         for (State state : states) {
             String stateName = state.getStateName();
-            String rootPathState = System.getProperty("user.home") + File.separator + "Documents/Reports/CumulativeInactiveUsers/" + stateName;
+            String rootPathState = rootPath + stateName+ "/";
             int stateId = state.getStateId();
             List<FrontLineWorkers> candidatesFromThisState = new ArrayList<>();
             for (FrontLineWorkers asha : inactiveFrontLineWorkers) {
@@ -990,7 +993,7 @@ public class AdminServiceImpl implements AdminService {
             List<District> districts = stateDao.getChildLocations(stateId);
             for (District district : districts) {
                 String districtName = district.getDistrictName();
-                String rootPathDistrict = rootPathState + "/" + districtName;
+                String rootPathDistrict = rootPathState  + districtName+ "/";
                 int districtId = district.getDistrictId();
                 List<FrontLineWorkers> candidatesFromThisDistrict = new ArrayList<>();
                 for (FrontLineWorkers asha : candidatesFromThisState) {
@@ -1002,7 +1005,7 @@ public class AdminServiceImpl implements AdminService {
                 List<Block> Blocks = districtDao.getBlocks(districtId);
                 for (Block block : Blocks) {
                     String blockName = block.getBlockName();
-                    String rootPathblock = rootPathDistrict + "/" + blockName;
+                    String rootPathblock = rootPathDistrict  + blockName+ "/";
 
                     int blockId = block.getBlockId();
                     List<FrontLineWorkers> candidatesFromThisBlock = new ArrayList<>();
@@ -1020,12 +1023,12 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void getKilkariSixWeekNoAnswerFiles(Date fromDate, Date toDate) {
         List<State> states = stateDao.getAllStates();
-        String rootPath = System.getProperty("user.home") + File.separator + "Documents/Reports/KilkariSixWeeksNoAnswer";
+        String rootPath = reports +ReportType.sixWeeks.getReportType()+ "/";
         List<KilkariSixWeeksNoAnswer> kilkariSixWeeksNoAnswers = kilkariSixWeeksNoAnswerDao.getKilkariUsers(fromDate, toDate);
         getKilkariSixWeekNoAnswer(kilkariSixWeeksNoAnswers, rootPath, "National", toDate);
         for (State state : states) {
             String stateName = state.getStateName();
-            String rootPathState = System.getProperty("user.home") + File.separator + "Documents/Reports/KilkariSixWeeksNoAnswer/" + stateName;
+            String rootPathState = rootPath + stateName+ "/";
             int stateId = state.getStateId();
             List<KilkariSixWeeksNoAnswer> candidatesFromThisState = new ArrayList<>();
             for (KilkariSixWeeksNoAnswer kilkari : kilkariSixWeeksNoAnswers) {
@@ -1038,7 +1041,7 @@ public class AdminServiceImpl implements AdminService {
 
             for (District district : districts) {
                 String districtName = district.getDistrictName();
-                String rootPathDistrict = rootPathState + "/" + districtName;
+                String rootPathDistrict = rootPathState + districtName+ "/";
                 int districtId = district.getDistrictId();
                 List<KilkariSixWeeksNoAnswer> candidatesFromThisDistrict = new ArrayList<>();
                 for (KilkariSixWeeksNoAnswer kilkari : candidatesFromThisState) {
@@ -1050,7 +1053,7 @@ public class AdminServiceImpl implements AdminService {
                 List<Block> Blocks = districtDao.getBlocks(districtId);
                 for (Block block : Blocks) {
                     String blockName = block.getBlockName();
-                    String rootPathblock = rootPathDistrict + "/" + blockName;
+                    String rootPathblock = rootPathDistrict + blockName+ "/";
 
                     int blockId = block.getBlockId();
                     List<KilkariSixWeeksNoAnswer> candidatesFromThisBlock = new ArrayList<>();
@@ -1068,12 +1071,12 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void getKilkariLowUsageFiles(Date fromDate, Date toDate) {
         List<State> states = stateDao.getAllStates();
-        String rootPath = System.getProperty("user.home") + File.separator + "Documents/Reports/KilkariLowUsage";
+        String rootPath = reports+ReportType.lowUsage.getReportType() + "/";
         List<KilkariLowUsage> kilkariLowUsageList = kilkariLowUsageDao.getKilkariLowUsageUsers(fromDate, toDate);
         getKilkariLowUsage(kilkariLowUsageList, rootPath, "National", toDate);
         for (State state : states) {
             String stateName = state.getStateName();
-            String rootPathState = System.getProperty("user.home") + File.separator + "Documents/Reports/KilkariLowUsage/" + stateName;
+            String rootPathState = rootPath + stateName+ "/";
             int stateId = state.getStateId();
             List<KilkariLowUsage> candidatesFromThisState = new ArrayList<>();
             for (KilkariLowUsage kilkari : kilkariLowUsageList) {
@@ -1085,7 +1088,7 @@ public class AdminServiceImpl implements AdminService {
             List<District> districts = stateDao.getChildLocations(stateId);
             for (District district : districts) {
                 String districtName = district.getDistrictName();
-                String rootPathDistrict = rootPathState + "/" + districtName;
+                String rootPathDistrict = rootPathState + districtName+ "/";
                 int districtId = district.getDistrictId();
                 List<KilkariLowUsage> candidatesFromThisDistrict = new ArrayList<>();
                 for (KilkariLowUsage kilkari : candidatesFromThisState) {
@@ -1097,7 +1100,7 @@ public class AdminServiceImpl implements AdminService {
                 List<Block> Blocks = districtDao.getBlocks(districtId);
                 for (Block block : Blocks) {
                     String blockName = block.getBlockName();
-                    String rootPathblock = rootPathDistrict + "/" + blockName;
+                    String rootPathblock = rootPathDistrict + blockName+ "/";
                     int blockId = block.getBlockId();
                     List<KilkariLowUsage> candidatesFromThisBlock = new ArrayList<>();
                     for (KilkariLowUsage kilkari : candidatesFromThisDistrict) {
@@ -1114,12 +1117,12 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void getKilkariSelfDeactivationFiles(Date fromDate, Date toDate) {
         List<State> states = stateDao.getAllStates();
-        String rootPath = System.getProperty("user.home") + File.separator + "Documents/Reports/KilkariSelfDeactivated";
+        String rootPath = reports+ReportType.selfDeactivated.getReportType() + "/";
         List<KilkariSelfDeactivated> kilkariSelfDeactivatedList = kilkariSelfDeactivatedDao.getSelfDeactivatedUsers(fromDate, toDate);
         getKilkariSelfDeactivation(kilkariSelfDeactivatedList, rootPath, "National", toDate);
         for (State state : states) {
             String stateName = state.getStateName();
-            String rootPathState = System.getProperty("user.home") + File.separator + "Documents/Reports/KilkariSelfDeactivated/" + stateName;
+            String rootPathState = rootPath + stateName+ "/";
             int stateId = state.getStateId();
             List<KilkariSelfDeactivated> candidatesFromThisState = new ArrayList<>();
             for (KilkariSelfDeactivated kilkari : kilkariSelfDeactivatedList) {
@@ -1132,7 +1135,7 @@ public class AdminServiceImpl implements AdminService {
 
             for (District district : districts) {
                 String districtName = district.getDistrictName();
-                String rootPathDistrict = rootPathState + "/" + districtName;
+                String rootPathDistrict = rootPathState + districtName+ "/";
                 int districtId = district.getDistrictId();
                 List<KilkariSelfDeactivated> candidatesFromThisDistrict = new ArrayList<>();
                 for (KilkariSelfDeactivated kilkari : candidatesFromThisState) {
@@ -1144,7 +1147,7 @@ public class AdminServiceImpl implements AdminService {
                 List<Block> Blocks = districtDao.getBlocks(districtId);
                 for (Block block : Blocks) {
                     String blockName = block.getBlockName();
-                    String rootPathblock = rootPathDistrict + "/" + blockName;
+                    String rootPathblock = rootPathDistrict + blockName+ "/";
                     int blockId = block.getBlockId();
                     List<KilkariSelfDeactivated> candidatesFromThisBlock = new ArrayList<>();
                     for (KilkariSelfDeactivated kilkari : candidatesFromThisDistrict) {

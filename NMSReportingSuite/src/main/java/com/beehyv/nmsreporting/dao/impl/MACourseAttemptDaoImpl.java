@@ -55,4 +55,26 @@ public class MACourseAttemptDaoImpl extends AbstractDao<Integer, User> implement
 
 
     }
+
+    @Override
+    public List<FrontLineWorkers> getSuccessFulCompletion(Date toDate) {
+        Criteria criteria = getSession().createCriteria(MACourseCompletion.class);
+        criteria.add(Restrictions.and(Restrictions.le("lastModifiedDate",toDate),
+                Restrictions.eq("passed",true)));
+        List<FrontLineWorkers> successFullFlws=new ArrayList<>();
+        List<MACourseCompletion> successFullCompletion=(List<MACourseCompletion>)criteria.list();
+        for(MACourseCompletion maCourseCompletion:successFullCompletion){
+            Criteria criteria1 = getSession().createCriteria(MACourseCompletion.class).addOrder(Order.asc("lastModifiedDate"));
+            criteria1.add(Restrictions.and(Restrictions.eq("flwId",maCourseCompletion.getFlwId()),
+                    Restrictions.eq("passed",true)));
+            MACourseCompletion firstCompletion=(MACourseCompletion)criteria.list().get(0);
+            if((firstCompletion.getLastModifiedDate().before(toDate))||(firstCompletion.getLastModifiedDate().equals(toDate))) {
+                Criteria criteria2 = getSession().createCriteria(FrontLineWorkers.class);
+                criteria2.add(Restrictions.eq("id", firstCompletion.getFlwId()));
+
+                successFullFlws.add((FrontLineWorkers) criteria2.list().get(0));
+            }
+        }
+        return successFullFlws;
+    }
 }

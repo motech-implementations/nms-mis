@@ -10,7 +10,6 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -134,7 +133,7 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
     public boolean isAdminCreated(District districtId) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.and(Restrictions.eq("district", districtId),
-                Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus()),Restrictions.eq("access_level", AccessLevel.DISTRICT.getAccessLevel()),Restrictions.eq("access_type", AccessType.ADMIN.getAccesType())));
+                Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus()),Restrictions.eq("access_level", AccessLevel.DISTRICT.getAccessLevel()),Restrictions.eq("access_type", AccessType.ADMIN.getAccessType())));
         List<User> Admins=(List<User>) criteria.list();
         if(Admins==null||Admins.size()==0){
             return true;
