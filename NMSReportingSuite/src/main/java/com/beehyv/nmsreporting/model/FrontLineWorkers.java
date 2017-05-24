@@ -52,10 +52,10 @@ public class FrontLineWorkers {
     @JoinColumn(name="block_id", columnDefinition = "INT(11)")
     private Block block;
 
-    @Column(name="facility_id", columnDefinition = "INT(11)")
+    @Column(name="healthfacility_id", columnDefinition = "INT(11)")
     private Integer facility;
 
-    @Column(name="subfacility_id", columnDefinition = "INT(11)")
+    @Column(name="healthsubfacility_id", columnDefinition = "INT(11)")
     private Integer subfacility;
 
     @Column(name="creation_date", columnDefinition = "DATE")
