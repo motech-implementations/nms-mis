@@ -5,8 +5,6 @@ import com.beehyv.nmsreporting.business.ModificationTrackerService;
 import com.beehyv.nmsreporting.business.RoleService;
 import com.beehyv.nmsreporting.business.UserService;
 import com.beehyv.nmsreporting.dto.UserDto;
-import com.beehyv.nmsreporting.enums.AccessLevel;
-import com.beehyv.nmsreporting.enums.AccountStatus;
 import com.beehyv.nmsreporting.model.Role;
 import com.beehyv.nmsreporting.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by beehyv on 15/3/17.
@@ -142,34 +142,7 @@ public class UserController {
     }
 
     @RequestMapping(value = {"/createUser"}, method = RequestMethod.POST)
-    public String createNewUser(@RequestBody User user) {
-
-        if(userService.findUserByUsername(user.getUsername()) != null){
-            System.out.println("user exists");
-            return "redirect:http://localhost:8080/app/#!/#fail";
-        }
-
-        user.setPassword(user.getPhoneNumber());
-        user.setCreationDate(new Date());
-        user.setCreatedByUser(userService.getCurrentUser());
-        user.setAccountStatus(AccountStatus.ACTIVE.getAccountStatus());
-
-        if(userService.getCurrentUser().getStateId().getStateId() != null &&
-                userService.getCurrentUser().getStateId().getStateId() != user.getStateId().getStateId()){
-            return "redirect:http://localhost:8080/app/#!/#unauthorised";
-        }
-        if(userService.getCurrentUser().getDistrictId().getDistrictId() != null &&
-                userService.getCurrentUser().getDistrictId().getDistrictId() != user.getDistrictId().getDistrictId()){
-            return "redirect:http://localhost:8080/app/#!/#unauthorised";
-        }
-
-        if(user.getRoleId().getRoleId() == 2 && user.getAccessLevel().equals(AccessLevel.BLOCK.getAccessLevel())){
-            return "redirect:http://localhost:8080/app/#!/#unauthorised";
-        }
-
-        userService.createNewUser(user);
-
-        return "redirect:http://localhost:8080/app/#!/#success";
+    @ResponseBody public Map<Integer, String> createNewUser(@RequestBody User user) {
 
 //        ModificationTracker modification = new ModificationTracker();
 //        modification.setModificationDate(new Date(System.currentTimeMillis()));
@@ -178,14 +151,12 @@ public class UserController {
 //        modification.setModifiedUserId(user);
 //        modification.setModifiedByUserId(userService.findUserByUsername(getPrincipal()));
 //        modificationTrackerService.saveModification(modification);
+
+        return userService.createNewUser(user);
     }
 
     @RequestMapping(value = {"/updateUser"}, method = RequestMethod.POST)
-    public String updateExistingUser(@RequestBody User user) {
-        user.setCreatedByUser(userService.getCurrentUser());
-        userService.updateExistingUser(user);
-        System.out.println("******************saved***************");
-
+    @ResponseBody public Map updateExistingUser(@RequestBody User user) {
 
 //        String trackModification = mapper.convertValue(node.get("modification"), String.class);
 //
@@ -197,7 +168,8 @@ public class UserController {
 //        modification.setModificationDescription(trackModification);
 //        modificationTrackerService.saveModification(modification);
 
-        return "redirect:http://localhost:8080/app/#!/";
+//        return "redirect:http://localhost:8080/app/#!/";
+        return userService.updateExistingUser(user);
     }
 
     @RequestMapping(value = {"/updateUser2"}, method = RequestMethod.POST)

@@ -85,18 +85,17 @@ public class AdminServiceImpl implements AdminService {
         Matcher matcher;
         Map<Integer, String> errorCreatingUsers = new HashMap<Integer, String>();
         createPropertiesFileForFileLocation();
-        String fjilename = null;
-        fjilename = retrievePropertiesFromFileLocationProties();
-
-        if (fjilename == null) {
-            fjilename = System.getProperty("user.home")
+        String fileName = null;
+        fileName = retrievePropertiesFromFileLocationProperties();
+        if (fileName == null) {
+            fileName = System.getProperty("user.home")
                     + "/Documents/BulkImportDatacr7ms10.csv";
             System.out.println("fileLocationproperties not working");
         }
         XSSFRow row;
         BufferedReader fis = null;
         try {
-            fis = new BufferedReader(new FileReader(fjilename));
+            fis = new BufferedReader(new FileReader(fileName));
         } catch (IOException ex) {
             ex.printStackTrace();
         } finally {
@@ -104,14 +103,11 @@ public class AdminServiceImpl implements AdminService {
                 String line = "";
                 String cvsSplitBy = ",";
                 try {
-
-                    int linNumber = 1;
+                    int lineNumber = 1;
                     if ((line = fis.readLine()) != null) {
-
                     }
                     while ((line = fis.readLine()) != null) {
-                        linNumber++;
-
+                        lineNumber++;
                         // use comma as separator
                         String[] Line = line.split(cvsSplitBy);
 
@@ -119,11 +115,9 @@ public class AdminServiceImpl implements AdminService {
                         Role role;
                         Location locaation;
                         State state;
-
-
                         String userName = Line[6];
                         if (userName == "") {
-                            Integer rowNum = linNumber;
+                            Integer rowNum = lineNumber;
                             String userNameError = "Please specify the username for user";
                             errorCreatingUsers.put(rowNum, userNameError);
                             continue;
@@ -133,44 +127,35 @@ public class AdminServiceImpl implements AdminService {
                         if (UsernameExist == null) {
                             user.setUsername(Line[6]);
                         } else {
-                            Integer rowNum = linNumber;
+                            Integer rowNum = lineNumber;
                             String userNameError = "Username already exists.";
                             errorCreatingUsers.put(rowNum, userNameError);
                             continue;
                         }
-
-
                         int loggedUserRole = loggedInUser.getRoleId().getRoleId();
-
                         String loggedUserAccess = loggedInUser.getAccessLevel();
                         AccessLevel loggedUserAccessLevel = AccessLevel.getLevel(loggedUserAccess);
                         String userPhone = Line[4];
                         if (userPhone == "") {
-                            Integer rowNum = linNumber;
+                            Integer rowNum = lineNumber;
                             String userNameError = "Please specify the phone number for user";
                             errorCreatingUsers.put(rowNum, userNameError);
                             continue;
                         }
-
                         String regexStr1 = "^[0-9]*$";
                         String regexStr2 = "^[0-9]{10}$";
                         if (!(userPhone.matches(regexStr1)) || !(userPhone.matches(regexStr2))) {
-                            Integer rowNum = linNumber;
+                            Integer rowNum = lineNumber;
                             String userNameError = "Please check the format of phone number for user";
                             errorCreatingUsers.put(rowNum, userNameError);
                             continue;
                         }
                         user.setPassword(Line[4]);
-
-
                         user.setFullName(Line[0]);
-
-
                         user.setPhoneNumber(Line[4]);
-
                         String userEmail = Line[5];
                         if (userEmail == "") {
-                            Integer rowNum = linNumber;
+                            Integer rowNum = lineNumber;
                             String userNameError = "Please specify the Email for user";
                             errorCreatingUsers.put(rowNum, userNameError);
                             continue;
@@ -183,7 +168,7 @@ public class AdminServiceImpl implements AdminService {
                         if (validate) {
                             user.setEmailId(Line[5]);
                         } else {
-                            Integer rowNum = linNumber;
+                            Integer rowNum = lineNumber;
                             String userNameError = "Please enter the valid Email for user";
                             errorCreatingUsers.put(rowNum, userNameError);
                             continue;
@@ -196,58 +181,43 @@ public class AdminServiceImpl implements AdminService {
                             e.printStackTrace();
                         }
                         java.sql.Date sqlStartDate = new java.sql.Date(date.getTime());
-
                         user.setCreationDate((sqlStartDate));
-
                         /*user.setCreatedByUser(loggedInUser);*/
-
                         List<Role> userRole = roleDao.findByRoleDescription(Line[8]);
-
                         String State = Line[1];
                         String District = Line[2];
                         String Block = Line[3];
-
-
                         boolean isLevel = AccessLevel.isLevel(Line[8]);
-
                         if (!(isLevel)) {
-                            Integer rowNum = linNumber;
+                            Integer rowNum = lineNumber;
                             String userNameError = "Please specify the access level for user";
                             errorCreatingUsers.put(rowNum, userNameError);
                             continue;
                         }
-
                         boolean isType = AccessType.isType(Line[9]);
-
                         if (!(isType)) {
-                            Integer rowNum = linNumber;
+                            Integer rowNum = lineNumber;
                             String userNameError = "Please specify the role for user";
                             errorCreatingUsers.put(rowNum, userNameError);
                             continue;
                         }
-
-
                         if (userRole == null || userRole.size() == 0) {
-                            Integer rowNum = linNumber;
+                            Integer rowNum = lineNumber;
                             String userNameError = "Please specify the role of user";
                             errorCreatingUsers.put(rowNum, userNameError);
                             continue;
                         }
-
                         int userRoleId = userRole.get(0).getRoleId();
-
                         String UserRole = AccessType.getType(Line[9]);
-
                         AccessLevel accessLevel = AccessLevel.getLevel(Line[8]);
-
                         if (UserRole.equalsIgnoreCase("ADMIN")) {
                             if ((accessLevel == AccessLevel.NATIONAL) || (accessLevel == AccessLevel.STATE)) {
-                                Integer rowNum = linNumber;
+                                Integer rowNum = lineNumber;
                                 String authorityError = "You don't have authority to create this user.";
                                 errorCreatingUsers.put(rowNum, authorityError);
                                 continue;
                             } else if (loggedUserAccessLevel == AccessLevel.DISTRICT) {
-                                Integer rowNum = linNumber;
+                                Integer rowNum = lineNumber;
                                 String authorityError = "You don't have authority to create this user.";
                                 errorCreatingUsers.put(rowNum, authorityError);
                                 continue;
@@ -270,17 +240,16 @@ public class AdminServiceImpl implements AdminService {
                                                 break;
                                             }
                                         }
-
                                     }
                                 }
                                 if (userDistrict == null) {
-                                    Integer rowNum = linNumber;
+                                    Integer rowNum = lineNumber;
                                     String authorityError = "Please enter the valid district for this user.";
                                     errorCreatingUsers.put(rowNum, authorityError);
                                     continue;
                                 } else {
                                     if (loggedInUser.getStateId().getStateId() != userState.getStateId()) {
-                                        Integer rowNum = linNumber;
+                                        Integer rowNum = lineNumber;
                                         String authorityError = "You don't have authority to create this user.";
                                         errorCreatingUsers.put(rowNum, authorityError);
                                         continue;
@@ -291,7 +260,7 @@ public class AdminServiceImpl implements AdminService {
                                             user.setDistrictId(userDistrict);
                                             user.setStateId(userState);
                                         } else {
-                                            Integer rowNum = linNumber;
+                                            Integer rowNum = lineNumber;
                                             String authorityError = "Admin is available for this district.";
                                             errorCreatingUsers.put(rowNum, authorityError);
                                             continue;
@@ -302,7 +271,7 @@ public class AdminServiceImpl implements AdminService {
                         }
                         if (UserRole.equalsIgnoreCase("USER")) {
                             if (loggedUserAccessLevel.ordinal() > accessLevel.ordinal()) {
-                                Integer rowNum = linNumber;
+                                Integer rowNum = lineNumber;
                                 String authorityError = "You don't have authority to create this user.";
                                 errorCreatingUsers.put(rowNum, authorityError);
                                 continue;
@@ -313,14 +282,14 @@ public class AdminServiceImpl implements AdminService {
                                     user.setAccessLevel(accessLevel.getAccessLevel());
                                     List<State> userStateList = stateDao.findByName(State);
                                     if ((userStateList == null) || (userStateList.size() == 0)) {
-                                        Integer rowNum = linNumber;
+                                        Integer rowNum = lineNumber;
                                         String authorityError = "Please enter the valid State for this user.";
                                         errorCreatingUsers.put(rowNum, authorityError);
                                         continue;
                                     } else {
                                         if (loggedUserAccessLevel == AccessLevel.STATE) {
                                             if (loggedInUser.getStateId().getStateId() != userStateList.get(0).getStateId()) {
-                                                Integer rowNum = linNumber;
+                                                Integer rowNum = lineNumber;
                                                 String authorityError = "You don't have authority to create this user.";
                                                 errorCreatingUsers.put(rowNum, authorityError);
                                                 continue;
@@ -345,17 +314,16 @@ public class AdminServiceImpl implements AdminService {
                                                     break;
                                                 }
                                             }
-
                                         }
                                     }
                                     if (userDistrict == null) {
-                                        Integer rowNum = linNumber;
+                                        Integer rowNum = lineNumber;
                                         String authorityError = "Please enter the valid district for this user.";
                                         errorCreatingUsers.put(rowNum, authorityError);
                                         continue;
                                     } else {
                                         if (((loggedUserAccessLevel == AccessLevel.STATE) && (loggedInUser.getStateId().getStateId() != userState.getStateId())) || ((loggedUserAccessLevel == AccessLevel.DISTRICT) && (loggedInUser.getDistrictId().getDistrictId() != userDistrict.getDistrictId()))) {
-                                            Integer rowNum = linNumber;
+                                            Integer rowNum = lineNumber;
                                             String authorityError = "You don't have authority to create this user.";
                                             errorCreatingUsers.put(rowNum, authorityError);
                                             continue;
@@ -363,11 +331,8 @@ public class AdminServiceImpl implements AdminService {
                                             user.setAccessLevel(AccessLevel.DISTRICT.getAccessLevel());
                                             user.setDistrictId(userDistrict);
                                             user.setStateId(userState);
-
                                         }
                                     }
-
-
                                 } else {
                                     user.setAccessLevel(AccessLevel.BLOCK.getAccessLevel());
                                     List<State> userStateList = stateDao.findByName(State);
@@ -380,9 +345,8 @@ public class AdminServiceImpl implements AdminService {
                                         userBlock = userBlockList.get(0);
                                         userDistrict = userBlock.getDistrictOfBlock();
                                         userState = userDistrict.getStateOfDistrict();
-
                                     } else if ((userBlockList.size() == 0) || userBlockList == null) {
-                                        Integer rowNum = linNumber;
+                                        Integer rowNum = lineNumber;
                                         String authorityError = "Please enter the valid Block for this user.";
                                         errorCreatingUsers.put(rowNum, authorityError);
                                     } else {
@@ -395,7 +359,6 @@ public class AdminServiceImpl implements AdminService {
                                                         commonDistrict.add(block);
                                                     }
                                                 }
-
                                             }
                                         }
                                         for (Block block : commonDistrict) {
@@ -407,17 +370,16 @@ public class AdminServiceImpl implements AdminService {
                                                     userState = userBlock.getStateOfBlock();
                                                     break;
                                                 }
-
                                             }
                                         }
                                         if (userBlock == null) {
-                                            Integer rowNum = linNumber;
+                                            Integer rowNum = lineNumber;
                                             String authorityError = "Please enter the valid location for this user.";
                                             errorCreatingUsers.put(rowNum, authorityError);
                                             continue;
                                         } else {
                                             if (((loggedUserAccessLevel == AccessLevel.STATE) && (loggedInUser.getStateId().getStateId() != userState.getStateId())) || ((loggedUserAccessLevel == AccessLevel.DISTRICT) && (loggedInUser.getDistrictId().getDistrictId() != userDistrict.getDistrictId()))) {
-                                                Integer rowNum = linNumber;
+                                                Integer rowNum = lineNumber;
                                                 String authorityError = "You don't have authority to create this user.";
                                                 errorCreatingUsers.put(rowNum, authorityError);
                                                 continue;
@@ -447,7 +409,6 @@ public class AdminServiceImpl implements AdminService {
                     }
                 }
             }
-
         }
         return (HashMap) errorCreatingUsers;
     }
@@ -463,10 +424,8 @@ public class AdminServiceImpl implements AdminService {
 
             //Write the CSV file header
             fileWriter.append(FILE_HEADER.toString());
-
             //Add a new line separator after the header
             fileWriter.append(NEW_LINE_SEPARATOR);
-
             //Write a new student object list to the CSV file
             System.out.println("CSV file was created successfully !!!");
         } catch (Exception e) {
@@ -498,10 +457,8 @@ public class AdminServiceImpl implements AdminService {
                 dirState.mkdirs();
             int stateId = state.getStateId();
             List<District> districts = stateDao.getChildLocations(stateId);
-
             for (District district : districts) {
                 String districtName = district.getDistrictName();
-
                 String rootPathDistrict = rootPathState + "/" + districtName;
                 File dirDistrict = new File(rootPathDistrict);
                 if (!dirDistrict.exists())
@@ -534,8 +491,6 @@ public class AdminServiceImpl implements AdminService {
             if (!dirCircle.exists())
                 dirCircle.mkdirs();
         }
-
-
     }
 
     public void getCumulativeCourseCompletion(List<FrontLineWorkers> successfulCandidates, String rootPath, String place, Date toDate) {
@@ -550,13 +505,36 @@ public class AdminServiceImpl implements AdminService {
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
         empinfo.put("1", new Object[]{
-                "Full Name", "Mobile Number", "STATE", "DISTRICT", "BLOCK", "Taluka", "Health Facility", "Health Sub Facility", "First Completion Date", "Role"});
+                "Mobile Number",
+                "State",
+                "District",
+                "Health Block",
+                "Taluka",
+                "Health Facility",
+                "Health Sub Facility",
+                "Village",
+                "ASHA Name",
+                "ASHA MCTS/RCH ID",
+                "ASHA Creation Date",
+                "ASHA Job Status",
+                "First Completion Date"
+        });
         Integer counter = 2;
         for (FrontLineWorkers frontLineWorker : successfulCandidates) {
             empinfo.put((counter.toString()), new Object[]{
-                    frontLineWorker.getFullName(), frontLineWorker.getMobileNumber(), frontLineWorker.getState().getStateName(), frontLineWorker.getDistrict().getDistrictName(), frontLineWorker.getBlock().getBlockName(),
+                    frontLineWorker.getMobileNumber(),
+                    frontLineWorker.getState().getStateName(),
+                    frontLineWorker.getDistrict().getDistrictName(),
+                    frontLineWorker.getBlock().getBlockName(),
+                    frontLineWorker.getTaluka().getTalukaName(),
+                    healthFacilityDao.findByHealthFacilityId(frontLineWorker.getFacility()).getHealthFacilityName(),
+                    healthSubFacilityDao.findByHealthSubFacilityId(frontLineWorker.getSubfacility()).getHealthSubFacilityName(),
+                    villageDao.findByVillageId(frontLineWorker.getVillage()).getVillageName(),
+                    frontLineWorker.getFullName(),
+                    frontLineWorker.getExternalFlwId(),
+                    frontLineWorker.getCreationDate(),
+                    frontLineWorker.getDesignation(),
                     maCourseAttemptDao.getFirstCompletionDate(frontLineWorker.getFlwId())
-
             });
             counter++;
         }
@@ -591,7 +569,6 @@ public class AdminServiceImpl implements AdminService {
     }
 
     public void getCircleWiseAnonymousUsers(List<AnonymousUsers> anonymousUsersList, String rootPath, String place, Date toDate) {
-
         XSSFWorkbook workbook = new XSSFWorkbook();
         //Create a blank sheet
         XSSFSheet spreadsheet = workbook.createSheet(
@@ -602,13 +579,16 @@ public class AdminServiceImpl implements AdminService {
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
         empinfo.put("1", new Object[]{
-                "Circle Name", "Mobile Number", "Last Called Date"});
+                "Circle Name",
+                "Mobile Number",
+                "Last Called Date"
+        });
         Integer counter = 2;
         for (AnonymousUsers anonymousUser : anonymousUsersList) {
             empinfo.put((counter.toString()), new Object[]{
-                    place, anonymousUser.getMsisdn(), anonymousUser.getLastCalledDate()
-
-
+                    place,
+                    anonymousUser.getMsisdn(),
+                    anonymousUser.getLastCalledDate()
             });
             counter++;
         }
@@ -654,13 +634,34 @@ public class AdminServiceImpl implements AdminService {
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
         empinfo.put("1", new Object[]{
-                "Full Name", "Mobile Number", "STATE", "DISTRICT", "BLOCK", "Taluka", "Health Facility", "Health Sub Facility", "Creation Date", "Job Status"});
+                "Mobile Number",
+                "State",
+                "District",
+                "Health Block",
+                "Taluka",
+                "Health Facility",
+                "Health Sub Facility",
+                "Village",
+                "ASHA Name",
+                "ASHA MCTS/RCH ID",
+                "ASHA Creation Date",
+                "ASHA Job Status"
+        });
         Integer counter = 2;
         for (FrontLineWorkers frontLineWorker : inactiveCandidates) {
             empinfo.put((counter.toString()), new Object[]{
-                    frontLineWorker.getFullName(), frontLineWorker.getMobileNumber(), frontLineWorker.getState().getStateName(), frontLineWorker.getDistrict().getDistrictName(), frontLineWorker.getBlock().getBlockName(),
-
-
+                    frontLineWorker.getMobileNumber(),
+                    frontLineWorker.getState().getStateName(),
+                    frontLineWorker.getDistrict().getDistrictName(),
+                    frontLineWorker.getBlock().getBlockName(),
+                    frontLineWorker.getTaluka().getTalukaName(),
+                    healthFacilityDao.findByHealthFacilityId(frontLineWorker.getFacility()).getHealthFacilityName(),
+                    healthSubFacilityDao.findByHealthSubFacilityId(frontLineWorker.getSubfacility()).getHealthSubFacilityName(),
+                    villageDao.findByVillageId(frontLineWorker.getVillage()).getVillageName(),
+                    frontLineWorker.getFullName(),
+                    frontLineWorker.getExternalFlwId(),
+                    frontLineWorker.getCreationDate(),
+                    frontLineWorker.getDesignation()
             });
             counter++;
         }
@@ -705,7 +706,17 @@ public class AdminServiceImpl implements AdminService {
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
         empinfo.put("1", new Object[]{
-                "State", "District", "Health block", "Taluka", "Health Facility", "Health SubFacility", "Village", "Beneficiary MCTS/RCH Id", "Benificiary Name", "Mobile Number", "Age On Service In Weeks"});
+                "State",
+                "District",
+                "Health block",
+                "Taluka",
+                "Health Facility",
+                "Health SubFacility",
+                "Village",
+                "Beneficiary MCTS/RCH Id",
+                "Benificiary Name",
+                "Mobile Number",
+                "Age On Service In Weeks"});
         Integer counter = 2;
         for (KilkariSixWeeksNoAnswer kilkari : kilkariSixWeeksNoAnswersList) {
             empinfo.put((counter.toString()), new Object[]{
@@ -765,7 +776,21 @@ public class AdminServiceImpl implements AdminService {
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
         empinfo.put("1", new Object[]{
-                "State", "District", "Health block", "Taluka", "Health Facility", "Health SubFacility", "Village", "Beneficiary MCTS/RCH Id", "Benificiary Name", "Mobile Number", "Age On Service In Weeks", "Date of activation", "Date when beneficiary self-deactivated", "Number of calls answered when subscribed to Kilkari"});
+                "State",
+                "District",
+                "Health block",
+                "Taluka",
+                "Health Facility",
+                "Health SubFacility",
+                "Village",
+                "Beneficiary MCTS/RCH Id",
+                "Benificiary Name",
+                "Mobile Number",
+                "Age On Service In Weeks",
+                "Date of activation",
+                "Date when beneficiary self-deactivated",
+                "Number of calls answered when subscribed to Kilkari"
+        });
         Integer counter = 2;
         for (KilkariSelfDeactivated kilkari : kilkariSelfDeactivatedList) {
             empinfo.put((counter.toString()), new Object[]{
@@ -828,7 +853,18 @@ public class AdminServiceImpl implements AdminService {
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
         empinfo.put("1", new Object[]{
-                "State", "District", "Health block", "Taluka", "Health Facility", "Health SubFacility", "Village", "Beneficiary MCTS/RCH Id", "Benificiary Name", "Mobile Number", "Age On Service In Weeks"});
+                "State",
+                "District",
+                "Health block",
+                "Taluka",
+                "Health Facility",
+                "Health SubFacility",
+                "Village",
+                "Beneficiary MCTS/RCH Id",
+                "Benificiary Name",
+                "Mobile Number",
+                "Age On Service In Weeks"
+        });
         Integer counter = 2;
         for (KilkariLowUsage kilkari : kilkariLowUsageList) {
             empinfo.put((counter.toString()), new Object[]{
@@ -843,7 +879,6 @@ public class AdminServiceImpl implements AdminService {
                     kilkari.getName(),
                     kilkari.getMsisdn(),
                     kilkari.getAgeOnService()
-
             });
             counter++;
         }
@@ -894,10 +929,8 @@ public class AdminServiceImpl implements AdminService {
                     candidatesFromThisState.add(asha);
                 }
             }
-
             getCumulativeCourseCompletion(candidatesFromThisState, rootPathState, stateName, toDate);
             List<District> districts = stateDao.getChildLocations(stateId);
-
             for (District district : districts) {
                 String districtName = district.getDistrictName();
                 String rootPathDistrict = rootPathState + "/" + districtName;
@@ -908,13 +941,11 @@ public class AdminServiceImpl implements AdminService {
                         candidatesFromThisDistrict.add(asha);
                     }
                 }
-
                 getCumulativeCourseCompletion(candidatesFromThisDistrict, rootPathDistrict, districtName, toDate);
                 List<Block> Blocks = districtDao.getBlocks(districtId);
                 for (Block block : Blocks) {
                     String blockName = block.getBlockName();
                     String rootPathblock = rootPathDistrict + "/" + blockName;
-
                     int blockId = block.getBlockId();
                     List<FrontLineWorkers> candidatesFromThisBlock = new ArrayList<>();
                     for (FrontLineWorkers asha : candidatesFromThisDistrict) {
@@ -932,7 +963,6 @@ public class AdminServiceImpl implements AdminService {
     public void getCircleWiseAnonymousFiles(Date toDate) {
         List<Circle> circleList = circleDao.getAllCircles();
         String rootPath = System.getProperty("user.home") + File.separator + "Documents/Reports/CumulativeAnonymousUsers";
-
         for (Circle circle : circleList) {
             String circleName = circle.getCircleName();
             List<AnonymousUsers> anonymousUsersList = anonymousUsersDao.getAnonymousUsersCircle(toDate, circle.getCircleIdId());
@@ -956,10 +986,8 @@ public class AdminServiceImpl implements AdminService {
                     candidatesFromThisState.add(asha);
                 }
             }
-
             getCumulativeInactiveUsers(candidatesFromThisState, rootPathState, stateName, toDate);
             List<District> districts = stateDao.getChildLocations(stateId);
-
             for (District district : districts) {
                 String districtName = district.getDistrictName();
                 String rootPathDistrict = rootPathState + "/" + districtName;
@@ -970,7 +998,6 @@ public class AdminServiceImpl implements AdminService {
                         candidatesFromThisDistrict.add(asha);
                     }
                 }
-
                 getCumulativeInactiveUsers(candidatesFromThisDistrict, rootPathDistrict, districtName, toDate);
                 List<Block> Blocks = districtDao.getBlocks(districtId);
                 for (Block block : Blocks) {
@@ -1006,7 +1033,6 @@ public class AdminServiceImpl implements AdminService {
                     candidatesFromThisState.add(kilkari);
                 }
             }
-
             getKilkariSixWeekNoAnswer(candidatesFromThisState, rootPathState, stateName, toDate);
             List<District> districts = stateDao.getChildLocations(stateId);
 
@@ -1020,7 +1046,6 @@ public class AdminServiceImpl implements AdminService {
                         candidatesFromThisDistrict.add(kilkari);
                     }
                 }
-
                 getKilkariSixWeekNoAnswer(candidatesFromThisDistrict, rootPathDistrict, districtName, toDate);
                 List<Block> Blocks = districtDao.getBlocks(districtId);
                 for (Block block : Blocks) {
@@ -1056,10 +1081,8 @@ public class AdminServiceImpl implements AdminService {
                     candidatesFromThisState.add(kilkari);
                 }
             }
-
             getKilkariLowUsage(candidatesFromThisState, rootPathState, stateName, toDate);
             List<District> districts = stateDao.getChildLocations(stateId);
-
             for (District district : districts) {
                 String districtName = district.getDistrictName();
                 String rootPathDistrict = rootPathState + "/" + districtName;
@@ -1070,13 +1093,11 @@ public class AdminServiceImpl implements AdminService {
                         candidatesFromThisDistrict.add(kilkari);
                     }
                 }
-
                 getKilkariLowUsage(candidatesFromThisDistrict, rootPathDistrict, districtName, toDate);
                 List<Block> Blocks = districtDao.getBlocks(districtId);
                 for (Block block : Blocks) {
                     String blockName = block.getBlockName();
                     String rootPathblock = rootPathDistrict + "/" + blockName;
-
                     int blockId = block.getBlockId();
                     List<KilkariLowUsage> candidatesFromThisBlock = new ArrayList<>();
                     for (KilkariLowUsage kilkari : candidatesFromThisDistrict) {
@@ -1106,7 +1127,6 @@ public class AdminServiceImpl implements AdminService {
                     candidatesFromThisState.add(kilkari);
                 }
             }
-
             getKilkariSelfDeactivation(candidatesFromThisState, rootPathState, stateName, toDate);
             List<District> districts = stateDao.getChildLocations(stateId);
 
@@ -1120,13 +1140,11 @@ public class AdminServiceImpl implements AdminService {
                         candidatesFromThisDistrict.add(kilkari);
                     }
                 }
-
                 getKilkariSelfDeactivation(candidatesFromThisDistrict, rootPathDistrict, districtName, toDate);
                 List<Block> Blocks = districtDao.getBlocks(districtId);
                 for (Block block : Blocks) {
                     String blockName = block.getBlockName();
                     String rootPathblock = rootPathDistrict + "/" + blockName;
-
                     int blockId = block.getBlockId();
                     List<KilkariSelfDeactivated> candidatesFromThisBlock = new ArrayList<>();
                     for (KilkariSelfDeactivated kilkari : candidatesFromThisDistrict) {
@@ -1140,19 +1158,15 @@ public class AdminServiceImpl implements AdminService {
         }
     }
 
-    private String retrievePropertiesFromFileLocationProties() {
+    private String retrievePropertiesFromFileLocationProperties() {
         Properties prop = new Properties();
         InputStream input = null;
         String fileLocation = null;
-
         try {
-
             input = new FileInputStream("fileLocation.properties");
-
             // load a properties file
             prop.load(input);
             fileLocation = prop.getProperty("fileLocation");
-
         } catch (IOException ex) {
             ex.printStackTrace();
         } finally {
@@ -1170,18 +1184,12 @@ public class AdminServiceImpl implements AdminService {
     private void createPropertiesFileForFileLocation() {
         Properties prop = new Properties();
         OutputStream output = null;
-
         try {
-
             output = new FileOutputStream("fileLocation.properties");
-
-
             prop.setProperty("fileLocation", System.getProperty("user.home")
                     + "/Documents/BulkImportDatacr7ms10.csv");
-
             // save properties to project root folder
             prop.store(output, null);
-
         } catch (IOException io) {
             io.printStackTrace();
         } finally {
@@ -1195,6 +1203,4 @@ public class AdminServiceImpl implements AdminService {
 
         }
     }
-
-
 }

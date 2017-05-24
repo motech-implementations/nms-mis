@@ -5,7 +5,6 @@
 			
 			UserFormFactory.downloadCurrentUser()
 			.then(function(result){
-				console.log(result.data);
 				UserFormFactory.setCurrentUser(result.data);
 			})
 
@@ -14,11 +13,6 @@
 			.then(function(result){
 				$scope.accessTypeList = result.data;
 			});
-
-			// UserFormFactory.getAccessLevels()
-			// .then(function(result){
-			// 	$scope.accessLevelList = result.data;
-			// })
 
 			$scope.accessLevelList = ["NATIONAL", "STATE", "DISTRICT", "BLOCK"]
 
@@ -56,9 +50,6 @@
 
 			$scope.newUser = {};
 			
-
-
-
 			$scope.clearForm = function(){
 				$scope.newUser = {};
 				$scope.createUserForm.$setPristine();
@@ -69,7 +60,6 @@
 
 			$scope.createUserSubmit = function() {
 				if ($scope.createUserForm.$valid && !$scope.createUserForm.$pristine) {
-					console.log(JSON.stringify($scope.newUser));
 
 					delete $scope.newUser.$$hashKey;
 
@@ -79,7 +69,7 @@
 						data    : $scope.newUser, //forms user object
 						headers : {'Content-Type': 'application/json'} 
 					}).then(function(result){
-						alert(result.data);
+						alert(result.data['0']);
 					})
 
 				}

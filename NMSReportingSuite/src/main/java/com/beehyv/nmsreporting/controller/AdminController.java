@@ -16,6 +16,7 @@ import javax.xml.ws.Response;
 import java.io.*;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -33,8 +34,10 @@ public class AdminController {
 
     @RequestMapping(value = "/uploadFile",headers=("content-type=multipart/*"), method = RequestMethod.POST)
     @ResponseBody
-    public String uploadFileHandler(@RequestParam("bulkCsv") MultipartFile file) {
+    public Map uploadFileHandler(@RequestParam("bulkCsv") MultipartFile file) {
         String name = "BulkImportDatacr7ms10.csv";
+
+        Map<Integer, String> responseMap = new HashMap<>();
         if (!file.isEmpty()) {
             try {
                 byte[] bytes = file.getBytes();
@@ -53,25 +56,23 @@ public class AdminController {
                 stream.write(bytes);
                 stream.close();
 
-                return "redirect:/nms/admin/startBulkDataImportProcess";
+                User user = userService.getCurrentUser();
+                HashMap object= adminService.startBulkDataImport(user);
+                return object;
+
                 /*return "You successfully uploaded file=" + name;*/
             } catch (Exception e) {
                 System.out.println(e);
-                return "You failed to upload " + name + " => " + e.getMessage();
+                responseMap.put(0, "fail");
+                responseMap.put(1, "You failed to upload " + name);
+                return responseMap;
             }
         } else {
-            return "You failed to upload " + name
-                    + " because the file was empty.";
+            responseMap.put(0, "fail");
+            responseMap.put(1, "You failed to upload " + name + " because the file was empty.");
+            return responseMap;
         }
 
-    }
-
-    @RequestMapping(value = "/startBulkDataImportProcess", method = RequestMethod.GET)
-    @ResponseBody
-    public HashMap startBulkDataImportProcess() throws ParseException, java.text.ParseException{
-        User user = userService.getCurrentUser();
-        HashMap object= adminService.startBulkDataImport(user);
-       return object;
     }
 
     @RequestMapping(value = "/getBulkDataImportCSV", method = RequestMethod.GET,produces = "application/vnd.ms-excel")

@@ -91,6 +91,41 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
     }
 
     @Override
+    public boolean roleExistsNational(Role adminRole) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.and(
+                Restrictions.eq("accessLevel", AccessLevel.NATIONAL.getAccessLevel()),
+                Restrictions.eq("roleId", adminRole)));
+        return criteria.list() != null && criteria.list().size() > 0;
+    }
+
+    @Override
+    public boolean roleExistsState(Role adminRole, State state) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.and(
+                Restrictions.eq("accessLevel", AccessLevel.NATIONAL.getAccessLevel()),
+                Restrictions.and(
+                        Restrictions.eq("roleId", adminRole),
+                        Restrictions.eq("stateId", state)
+                )
+        ));
+        return criteria.list() != null && criteria.list().size() > 0;
+    }
+
+    @Override
+    public boolean roleExistsDistrict(Role adminRole, District district) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.and(
+                Restrictions.eq("accessLevel", AccessLevel.NATIONAL.getAccessLevel()),
+                Restrictions.and(
+                        Restrictions.eq("roleId", adminRole),
+                        Restrictions.eq("districtId", district)
+                )
+        ));
+        return criteria.list() != null && criteria.list().size() > 0;
+    }
+
+    @Override
     public void saveUser(User user) {
         persist(user);
     }

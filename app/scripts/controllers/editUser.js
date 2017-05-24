@@ -5,15 +5,12 @@
 
 			UserFormFactory.downloadCurrentUser()
 			.then(function(result){
-				console.log(result.data);
 				UserFormFactory.setCurrentUser(result.data);
 			})
 
 
 			UserFormFactory.getUser($stateParams.id)
 			.then(function(result){
-				console.log(result.data);
-				console.log(JSON.stringify(result.data));
 				$scope.editUser = result.data;
 
 				$scope.states = [$scope.editUser.stateId];
@@ -21,12 +18,6 @@
 				$scope.blocks = [$scope.editUser.blockId];
 			});
 			
-			// UserFormFactory.getAccessLevels()
-			// .then(function(result){
-			// 	$scope.accessLevelList = result.data;
-
-			
-			// })
 
 			$scope.accessLevelList = ["NATIONAL", "STATE", "DISTRICT", "BLOCK"];
 
@@ -113,16 +104,16 @@
 
 					delete $scope.editUser.$$hashKey;
 
-					console.log($scope.editUser);
 					$http({
 						method  : 'POST',
 						url     : backend_root + 'nms/user/updateUser',
 						data    : $scope.editUser, //forms user object
 						headers : {'Content-Type': 'application/json'} 
+					}).then(function(result){
+						alert(result.data['0']);
 					})
 				}
 				else{
-					console.log("error")
 					angular.forEach($scope.editUserForm.$error, function (field) {
 						angular.forEach(field, function(errorField){
 							errorField.$setDirty();
