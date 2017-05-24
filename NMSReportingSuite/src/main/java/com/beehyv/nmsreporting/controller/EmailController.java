@@ -9,8 +9,11 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.servlet.ServletContext;
+import javax.xml.ws.RequestWrapper;
 
+import com.beehyv.nmsreporting.dao.UserDao;
 import com.beehyv.nmsreporting.entity.EmailInfo;
+import com.beehyv.nmsreporting.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -21,6 +24,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -33,11 +37,28 @@ public class EmailController {
     ServletContext context;
     @Autowired
     JavaMailSender mailSender;
+    @Autowired
+    UserDao userDao;
 
     @RequestMapping(value = "/input", method = RequestMethod.GET)
     public @ResponseBody String showForm(ModelMap model) {
         model.addAttribute("mail", new EmailInfo());
         return "AttachEmailInput";
+    }
+
+    @RequestMapping(value = "/sendAll", method = RequestMethod.GET)
+    public @ResponseBody String sendAllMails(){
+        List<User> users = userDao.getAllUsers();
+        for(User user: users){
+            EmailInfo newMail = new EmailInfo();
+            newMail.setFrom("Beehyv");
+            newMail.setTo(user.getEmailId());
+            String accessLevel = user.getAccessLevel();
+            if(accessLevel.equalsIgnoreCase("NATIONAL")){
+                //??????????
+            }
+        }
+        return "Successfully sent all mails";
     }
 
     @RequestMapping(value = "/send", method = RequestMethod.POST)
@@ -67,7 +88,7 @@ public class EmailController {
             String filename = System.getProperty("user.home") + File.separator + mailInfo.getAttachment();
             DataSource source = new FileDataSource(filename);
             messageBodyPart.setDataHandler(new DataHandler(source));
-            messageBodyPart.setFileName("abc.jpg");
+            messageBodyPart.setFileName(mailInfo.getAttachment());
             multipart.addBodyPart(messageBodyPart);
             message.setContent(multipart);
             Transport.send(message);
