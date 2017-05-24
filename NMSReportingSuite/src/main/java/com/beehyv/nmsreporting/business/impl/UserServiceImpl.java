@@ -5,15 +5,13 @@ import com.beehyv.nmsreporting.dao.*;
 import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.AccessType;
 import com.beehyv.nmsreporting.enums.AccountStatus;
-import com.beehyv.nmsreporting.model.*;
+import com.beehyv.nmsreporting.model.User;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -166,7 +164,7 @@ public class UserServiceImpl implements UserService{
             return responseMap;
         }
 
-        if(currentUser.getRoleId().getRoleDescription().equalsIgnoreCase(AccessType.USER.getAccesType())) {
+        if(currentUser.getRoleId().getRoleDescription().equalsIgnoreCase(AccessType.USER.getAccessType())) {
             String authorityError = "No authority";
             responseMap.put(rowNum, authorityError);
             return responseMap;
@@ -180,8 +178,8 @@ public class UserServiceImpl implements UserService{
 
 
         if (user.getAccessLevel().equalsIgnoreCase(AccessLevel.NATIONAL.getAccessLevel())) {
-            if (user.getRoleId().getRoleDescription().equalsIgnoreCase(AccessType.ADMIN.getAccesType())) {
-                if (userDao.roleExistsNational(roleDao.findByRoleDescription(AccessType.ADMIN.getAccesType()).get(0))) {
+            if (user.getRoleId().getRoleDescription().equalsIgnoreCase(AccessType.ADMIN.getAccessType())) {
+                if (userDao.roleExistsNational(roleDao.findByRoleDescription(AccessType.ADMIN.getAccessType()).get(0))) {
                     String authorityError = "Admin exists at this level and location";
                     responseMap.put(rowNum, authorityError);
                     return responseMap;
@@ -192,8 +190,8 @@ public class UserServiceImpl implements UserService{
             user.setBlockId(null);
         }
         else if (user.getAccessLevel().equalsIgnoreCase(AccessLevel.STATE.getAccessLevel())) {
-            if (user.getRoleId().getRoleDescription().equalsIgnoreCase(AccessType.ADMIN.getAccesType())) {
-                if (userDao.roleExistsState(roleDao.findByRoleDescription(AccessType.ADMIN.getAccesType()).get(0), user.getStateId())) {
+            if (user.getRoleId().getRoleDescription().equalsIgnoreCase(AccessType.ADMIN.getAccessType())) {
+                if (userDao.roleExistsState(roleDao.findByRoleDescription(AccessType.ADMIN.getAccessType()).get(0), user.getStateId())) {
                     String authorityError = "Admin exists at this level and location";
                     responseMap.put(rowNum, authorityError);
                     return responseMap;
@@ -214,8 +212,8 @@ public class UserServiceImpl implements UserService{
             user.setBlockId(null);
         }
         else if (user.getAccessLevel().equalsIgnoreCase(AccessLevel.DISTRICT.getAccessLevel())) {
-            if (user.getRoleId().getRoleDescription().equalsIgnoreCase(AccessType.ADMIN.getAccesType())) {
-                if (userDao.roleExistsDistrict(roleDao.findByRoleDescription(AccessType.ADMIN.getAccesType()).get(0), user.getDistrictId())) {
+            if (user.getRoleId().getRoleDescription().equalsIgnoreCase(AccessType.ADMIN.getAccessType())) {
+                if (userDao.roleExistsDistrict(roleDao.findByRoleDescription(AccessType.ADMIN.getAccessType()).get(0), user.getDistrictId())) {
                     String authorityError = "Admin exists at this level and location";
                     responseMap.put(rowNum, authorityError);
                     return responseMap;
@@ -249,7 +247,7 @@ public class UserServiceImpl implements UserService{
             user.setBlockId(null);
         }
         else {
-            if (user.getRoleId().getRoleDescription().equalsIgnoreCase(AccessType.ADMIN.getAccesType())) {
+            if (user.getRoleId().getRoleDescription().equalsIgnoreCase(AccessType.ADMIN.getAccessType())) {
                 String authorityError = "Cannot create admin here";
                 responseMap.put(rowNum, authorityError);
                 return responseMap;
@@ -311,7 +309,7 @@ public class UserServiceImpl implements UserService{
         Map<Integer, String> responseMap = new HashMap<Integer, String>();
 
         User currentUser = getCurrentUser();
-        if(currentUser.getRoleId().getRoleDescription().equalsIgnoreCase(AccessType.USER.getAccesType())) {
+        if(currentUser.getRoleId().getRoleDescription().equalsIgnoreCase(AccessType.USER.getAccessType())) {
             String authorityError = "No authority";
             responseMap.put(rowNum, authorityError);
             return responseMap;
@@ -377,8 +375,8 @@ public class UserServiceImpl implements UserService{
         entity.setAccessLevel(user.getAccessLevel());
 
         if (user.getAccessLevel().equalsIgnoreCase(AccessLevel.NATIONAL.getAccessLevel())) {
-            if (user.getRoleId().getRoleDescription().equalsIgnoreCase(AccessType.ADMIN.getAccesType())) {
-                if (userDao.roleExistsNational(roleDao.findByRoleDescription(AccessType.ADMIN.getAccesType()).get(0))) {
+            if (user.getRoleId().getRoleDescription().equalsIgnoreCase(AccessType.ADMIN.getAccessType())) {
+                if (userDao.roleExistsNational(roleDao.findByRoleDescription(AccessType.ADMIN.getAccessType()).get(0))) {
                     String authorityError = "Admin exists at this level and location";
                     responseMap.put(rowNum, authorityError);
                     return responseMap;
@@ -389,8 +387,8 @@ public class UserServiceImpl implements UserService{
             user.setBlockId(null);
         }
         else if (user.getAccessLevel().equalsIgnoreCase(AccessLevel.STATE.getAccessLevel())) {
-            if (user.getRoleId().getRoleDescription().equalsIgnoreCase(AccessType.ADMIN.getAccesType())) {
-                if (userDao.roleExistsState(roleDao.findByRoleDescription(AccessType.ADMIN.getAccesType()).get(0), user.getStateId())) {
+            if (user.getRoleId().getRoleDescription().equalsIgnoreCase(AccessType.ADMIN.getAccessType())) {
+                if (userDao.roleExistsState(roleDao.findByRoleDescription(AccessType.ADMIN.getAccessType()).get(0), user.getStateId())) {
                     String authorityError = "Admin exists at this level and location";
                     responseMap.put(rowNum, authorityError);
                     return responseMap;
@@ -411,8 +409,8 @@ public class UserServiceImpl implements UserService{
             user.setBlockId(null);
         }
         else if (user.getAccessLevel().equalsIgnoreCase(AccessLevel.DISTRICT.getAccessLevel())) {
-            if (user.getRoleId().getRoleDescription().equalsIgnoreCase(AccessType.ADMIN.getAccesType())) {
-                if (userDao.roleExistsDistrict(roleDao.findByRoleDescription(AccessType.ADMIN.getAccesType()).get(0), user.getDistrictId())) {
+            if (user.getRoleId().getRoleDescription().equalsIgnoreCase(AccessType.ADMIN.getAccessType())) {
+                if (userDao.roleExistsDistrict(roleDao.findByRoleDescription(AccessType.ADMIN.getAccessType()).get(0), user.getDistrictId())) {
                     String authorityError = "Admin exists at this level and location";
                     responseMap.put(rowNum, authorityError);
                     return responseMap;
@@ -446,7 +444,7 @@ public class UserServiceImpl implements UserService{
             user.setBlockId(null);
         }
         else {
-            if (user.getRoleId().getRoleDescription().equalsIgnoreCase(AccessType.ADMIN.getAccesType())) {
+            if (user.getRoleId().getRoleDescription().equalsIgnoreCase(AccessType.ADMIN.getAccessType())) {
                 String authorityError = "Cannot create admin here";
                 responseMap.put(rowNum, authorityError);
                 return responseMap;
