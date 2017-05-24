@@ -29,6 +29,7 @@
 			$scope.selectReportType = function(item){
 				$scope.reportType = item.name;
 				$scope.reportNames = item.options;
+				$scope.reportName = 'Select';
 			}
 
 			$scope.reportName="Select";
@@ -130,8 +131,8 @@
 				$scope.dt = new Date(year, month, day);
 			};
 
-			  $scope.format = 'yyyy-MM-dd'
-			  $scope.altInputFormats = ['yyyy/M!/d!'];
+			  $scope.format = 'yyyy-MM'
+			  $scope.altInputFormats = ['yyyy-M!'];
 
 			$scope.popup1 = {
 				opened: false

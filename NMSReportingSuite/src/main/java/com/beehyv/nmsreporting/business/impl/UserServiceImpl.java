@@ -164,7 +164,7 @@ public class UserServiceImpl implements UserService{
             return responseMap;
         }
 
-        if(currentUser.getRoleId().getRoleDescription().equalsIgnoreCase(AccessType.USER.getAccessType())) {
+        if(currentUser.getRoleId().getRoleDescription().equalsIgnoreCase(AccessType.USER.getAccesType())) {
             String authorityError = "No authority";
             responseMap.put(rowNum, authorityError);
             return responseMap;
@@ -309,7 +309,14 @@ public class UserServiceImpl implements UserService{
         Map<Integer, String> responseMap = new HashMap<Integer, String>();
 
         User currentUser = getCurrentUser();
-        if(currentUser.getRoleId().getRoleDescription().equalsIgnoreCase(AccessType.USER.getAccessType())) {
+
+        if(user.getCreatedByUser().getUserId() == currentUser.getUserId()){
+            String authorityError = "No authority";
+            responseMap.put(rowNum, authorityError);
+            return responseMap;
+        }
+
+        if(currentUser.getRoleId().getRoleDescription().equalsIgnoreCase(AccessType.USER.getAccesType())) {
             String authorityError = "No authority";
             responseMap.put(rowNum, authorityError);
             return responseMap;
