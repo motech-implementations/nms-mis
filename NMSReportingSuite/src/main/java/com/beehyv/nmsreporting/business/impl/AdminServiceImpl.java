@@ -644,8 +644,7 @@ public class AdminServiceImpl implements AdminService {
                 "ASHA Name",
                 "ASHA MCTS/RCH ID",
                 "ASHA Creation Date",
-                "ASHA Job Status",
-                "First Completion Date"
+                "ASHA Job Status"
         });
         Integer counter = 2;
         for (FrontLineWorkers frontLineWorker : inactiveCandidates) {
@@ -661,8 +660,7 @@ public class AdminServiceImpl implements AdminService {
                     frontLineWorker.getFullName(),
                     frontLineWorker.getExternalFlwId(),
                     frontLineWorker.getCreationDate(),
-                    frontLineWorker.getDesignation(),
-                    maCourseAttemptDao.getFirstCompletionDate(frontLineWorker.getFlwId())
+                    frontLineWorker.getDesignation()
             });
             counter++;
         }
