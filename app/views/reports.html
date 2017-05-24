@@ -14,11 +14,11 @@
 						<label>Select Reports Category</label>
 						<div class="btn-group" uib-dropdown dropdown-append-to-body>
 							<button id="btn-append-to-body" type="button" class="btn btn-default" uib-dropdown-toggle style="width: 200px;">
+								{{reportType}}
 								<span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" style="width: 200px;">
-								<li role="menuitem"><a>Mobile Academy</a></li>
-								<li role="menuitem"><a>Kilkari Reports</a></li>
+								<li role="menuitem" ng-repeat="item in reports"><a ng-click='selectReportType(item)'>{{item.name}}</a></li>
 							</ul>
 						</div>
 					</div>
@@ -26,20 +26,18 @@
 						<label>Select Reports</label>
 						<div class="btn-group" uib-dropdown dropdown-append-to-body>
 							<button id="btn-append-to-body" type="button" class="btn btn-default" uib-dropdown-toggle style="width: 200px;">
+								{{reportName}}
 								<span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" style="width: 200px;">
-								<li role="menuitem"><a>Report 1</a></li>
-								<li role="menuitem"><a>Report 2</a></li>
-								<li role="menuitem"><a>Report 3</a></li>
-								<li role="menuitem"><a>Report 4</a></li>
+								<li role="menuitem" ng-repeat="item in reportNames"><a ng-click="selectReport(item)">{{item}}</a></li>
 							</ul>
 						</div>
 					</div>
 					<div class="form-group col-xs-4">
 						<label>Select Date Range</label>
 						<p class="input-group" style="width: 200px;">
-							<input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+							<input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" datepicker-mode="'month'" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
 							<span class="input-group-btn">
 							<button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
 							</span>
@@ -50,30 +48,57 @@
 				<div class="col-xs-5">
 					<div class="form-group col-xs-4">
 						<label for="name">Select State</label>
-						<select class="form-control" id="sel1">
+						<div class="btn-group" uib-dropdown dropdown-append-to-body>
+							<button id="btn-append-to-body" type="button" class="btn btn-default" uib-dropdown-toggle style="width: 150px;">
+								{{state.stateName}}
+								<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" style="width: 200px;">
+								<li role="menuitem" ng-repeat="item in states"><a ng-click='selectState(item)'>{{item.stateName}}</a></li>
+							</ul>
+						</div>
+						<!-- <select class="form-control" id="sel1">
 							<option>1</option>
 							<option>2</option>
 							<option>3</option>
 							<option>4</option>
-						</select>
+						</select> -->
 					</div>
 					<div class="form-group col-xs-4">
 						<label for="email">Select District</label>
-						<select class="form-control" id="sel1">
+						<div class="btn-group" uib-dropdown dropdown-append-to-body>
+							<button id="btn-append-to-body" type="button" class="btn btn-default" uib-dropdown-toggle style="width: 150px;">
+								{{district.districtName}}
+								<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" style="width: 200px;">
+								<li role="menuitem" ng-repeat="item in districts"><a ng-click='selectDistrict(item)'>{{item.districtName}}</a></li>
+							</ul>
+						</div>
+						<!-- <select class="form-control" id="sel1">
 							<option>1</option>
 							<option>2</option>
 							<option>3</option>
 							<option>4</option>
-						</select>
+						</select> -->
 					</div>
 					<div class="form-group col-xs-4">
 						<label for="pwd">Select Block</label>
-						<select class="form-control" id="sel1">
+						<div class="btn-group" uib-dropdown dropdown-append-to-body>
+							<button id="btn-append-to-body" type="button" class="btn btn-default" uib-dropdown-toggle style="width: 150px;">
+								{{block.blockName}}
+								<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" style="width: 200px;">
+								<li role="menuitem" ng-repeat="item in blocks"><a ng-click='selectBlock(item)'>{{item.blockName}}</a></li>
+							</ul>
+						</div>
+						<!-- <select class="form-control" id="sel1">
 							<option>1</option>
 							<option>2</option>
 							<option>3</option>
 							<option>4</option>
-						</select>
+						</select> -->
 					</div>
 				</div>	
 				

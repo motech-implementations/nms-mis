@@ -103,7 +103,7 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
     public boolean roleExistsState(Role adminRole, State state) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.and(
-                Restrictions.eq("accessLevel", AccessLevel.NATIONAL.getAccessLevel()),
+                Restrictions.eq("accessLevel", AccessLevel.STATE.getAccessLevel()),
                 Restrictions.and(
                         Restrictions.eq("roleId", adminRole),
                         Restrictions.eq("stateId", state)
@@ -116,7 +116,7 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
     public boolean roleExistsDistrict(Role adminRole, District district) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.and(
-                Restrictions.eq("accessLevel", AccessLevel.NATIONAL.getAccessLevel()),
+                Restrictions.eq("accessLevel", AccessLevel.DISTRICT.getAccessLevel()),
                 Restrictions.and(
                         Restrictions.eq("roleId", adminRole),
                         Restrictions.eq("districtId", district)

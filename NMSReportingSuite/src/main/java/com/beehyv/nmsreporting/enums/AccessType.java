@@ -4,6 +4,7 @@ package com.beehyv.nmsreporting.enums;
  * Created by beehyv on 5/5/17.
  */
 public enum AccessType {
+    MASTER_ADMIN("MASTER ADMIN"),
     ADMIN("ADMIN"),
     USER("USER");
 

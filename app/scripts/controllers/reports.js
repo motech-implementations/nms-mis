@@ -1,8 +1,96 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("ReportsController", ['$scope', function($scope){
+		.controller("ReportsController", ['$scope', 'UserFormFactory', function($scope, UserFormFactory){
+
+			$scope.reports = [
+				{
+					'name': 'Mobile Academy Reports',
+					'icon': '',
+					'options': [
+						'Cumulative Completion Reports',
+						'Circle wise Anonymous Reports',
+						'Cumulative Inactive Users'
+					], 
+				},
+				{
+					'name': 'Kilkari Reports',
+					'icon': '',
+					'options': [
+						'Deactivation for not answering',
+						'Listen to < 25% this month',
+						'Self Deactivations'
+					]
+				}
+			];
+
+			$scope.reportType="Select";
+
+			$scope.selectReportType = function(item){
+				$scope.reportType = item.name;
+				$scope.reportNames = item.options;
+			}
+
+			$scope.reportName="Select";
+
+			$scope.selectReport = function(item){
+				$scope.reportName = item;
+			}
+
+			$scope.getStates = function(){
+				return UserFormFactory.getStates()
+				.then(function(result){
+					$scope.states = result.data;
+					$scope.districts = [];
+					$scope.blocks = [];
+				});
+			}
 			
+			$scope.getDistricts = function(stateId){
+				return UserFormFactory.getDistricts(stateId)
+				.then(function(result){
+					$scope.districts = result.data;
+					$scope.blocks = [];
+				});
+			}
+
+			$scope.getBlocks =function(districtId){
+				return UserFormFactory.getBlocks(districtId)
+				.then(function(result){
+					$scope.blocks = result.data;
+				});
+			}
+
+			$scope.selectState = function(state){
+				if(state != null){
+					$scope.getDistricts(state.stateId);
+
+					$scope.state = state;
+					$scope.district = null;
+					$scope.block = null;
+				}
+				
+			}
+			$scope.selectDistrict = function(district){
+				if(district != null){
+					$scope.getBlocks(district.districtId);
+
+					$scope.district = district;
+					$scope.block = null;
+				}
+				
+			}
+			$scope.selectBlock = function(block){
+				if(block != null){
+					$scope.block = block;
+				}
+				
+			}
+
+			$scope.getStates();
+
+
+
 			$scope.today = function() {
 				$scope.dt = new Date();
 			};
@@ -19,10 +107,11 @@
 			};
 
 			$scope.dateOptions = {
+				minMode: 'month',
 				dateDisabled: disabled,
 				formatYear: 'yy',
-				maxDate: new Date(2020, 5, 22),
-				minDate: new Date(),
+				maxDate: new Date(),
+				minDate: new Date(2010, 01, 01),
 				startingDay: 1
 			};
 
@@ -32,13 +121,6 @@
 				mode = data.mode;
 				return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
 			}
-
-			$scope.toggleMin = function() {
-				$scope.inlineOptions.minDate = $scope.inlineOptions.minDate ? null : new Date();
-				$scope.dateOptions.minDate = $scope.inlineOptions.minDate;
-			};
-
-			$scope.toggleMin();
 
 			$scope.open1 = function() {
 				$scope.popup1.opened = true;
