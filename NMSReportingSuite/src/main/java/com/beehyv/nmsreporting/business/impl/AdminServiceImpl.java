@@ -459,7 +459,7 @@ public class AdminServiceImpl implements AdminService {
         String FILE_HEADER = "Full Name, STATE, DISTRICT, BLOCK, Phone number, Email ID, UserName, Creation Date, Access Level,Role";
         FileWriter fileWriter = null;
         try {
-            fileWriter = new FileWriter("BulkImportData.csv");
+            fileWriter = new FileWriter(System.getProperty("user.home")+"/Documents/BulkImportData.csv");
 
             //Write the CSV file header
             fileWriter.append(FILE_HEADER.toString());

@@ -4,17 +4,19 @@ import com.beehyv.nmsreporting.business.AdminService;
 import com.beehyv.nmsreporting.business.UserService;
 import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.model.User;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.ParseException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.ws.Response;
+import java.io.*;
 import java.util.Date;
 import java.util.HashMap;
+
 
 /**
  * Created by beehyv on 15/3/17.
@@ -72,10 +74,27 @@ public class AdminController {
        return object;
     }
 
-    @RequestMapping(value = "/getBulkDataImportCSV", method = RequestMethod.GET)
+    @RequestMapping(value = "/getBulkDataImportCSV", method = RequestMethod.GET,produces = "application/vnd.ms-excel")
     @ResponseBody
-    public String getBulkDataImportCSV() throws ParseException, java.text.ParseException{
+    public String getBulkDataImportCSV(HttpServletResponse response) throws ParseException, java.text.ParseException{
         adminService.getBulkDataImportCSV();
+       response.setContentType("APPLICATION/OCTECT-STREAM");
+        try {
+            PrintWriter out=response.getWriter();
+            String filename="BulkImportData.csv";
+            response.setHeader("Content-Disposition","attachment;filename=\""+filename+"\"");
+            FileInputStream fl=new FileInputStream(System.getProperty("user.home")+"/Documents/BulkImportData.csv");
+            int i;
+            while ((i=fl.read())!=-1){
+                out.write(i);
+            }
+            fl.close();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
         return "Bulkimport";
     }
 
