@@ -115,18 +115,20 @@
 
     <!-- Spring Mail Sender -->
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-        <property name="host" value="smtp.gmail.com" />
-        <property name="port" value="465" />
-        <property name="username" value="sree21.test@gmail.com" />
-        <property name="password" value="password1995" />
-        <property name="defaultEncoding" value="UTF-8" />
+        <property name="username" value="nsp-reports@beehyv.com" />
+        <property name="password" value="Beehyv@123" />
         <property name="javaMailProperties">
             <props>
+                <prop key="mail.smtp.host">smtp.bizmail.yahoo.com</prop>
+                <prop key="mail.smtp.port">465</prop>
+                <prop key="mail.smtp.email">nsp-reports@beehyv.com</prop>
                 <prop key="mail.smtp.auth">true</prop>
-                <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
-                <prop key="mail.smtp.socketFactory.port">465</prop>
                 <prop key="mail.debug">true</prop>
                 <prop key="mail.smtp.starttls.enable">true</prop>
+                <prop key="mail.smtp.ssl.enable">true</prop>
+                <prop key="mail.smtp.ssl.required">true</prop>
+                <!--for server using email SSL -->
+                <prop key="mail.smtp.ssl.trust">smtp.bizmail.yahoo.com</prop>
             </props>
         </property>
     </bean>
