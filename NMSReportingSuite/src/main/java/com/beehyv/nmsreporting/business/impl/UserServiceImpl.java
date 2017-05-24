@@ -2,17 +2,21 @@ package com.beehyv.nmsreporting.business.impl;
 
 import com.beehyv.nmsreporting.business.UserService;
 import com.beehyv.nmsreporting.dao.*;
+import com.beehyv.nmsreporting.enums.AccessLevel;
+import com.beehyv.nmsreporting.enums.AccessType;
 import com.beehyv.nmsreporting.enums.AccountStatus;
-import com.beehyv.nmsreporting.model.User;
+import com.beehyv.nmsreporting.model.*;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by beehyv on 15/3/17.
@@ -109,27 +113,390 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void createNewUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+    public Map<Integer, String> createNewUser(User user) {
+        User currentUser = getCurrentUser();
+        Integer rowNum = 0;
+        Map<Integer, String> responseMap = new HashMap<Integer, String>();
+
+        if (user.getUsername().isEmpty()) {
+            String userNameError = "Please specify the username for user";
+            responseMap.put(rowNum, userNameError);
+            return responseMap;
+        }
+        if (userDao.findByUserName(user.getUsername()) != null) {
+            String userNameError = "Username already exists.";
+            responseMap.put(rowNum, userNameError);
+            return responseMap;
+        }
+
+        String userPhone = user.getPhoneNumber();
+        String regexStr1 = "^[0-9]*$";
+        String regexStr2 = "^[0-9]{10}$";
+        if (userPhone.isEmpty()) {
+            String userNameError = "Please specify the phone number for user";
+            responseMap.put(rowNum, userNameError);
+            return responseMap;
+        }
+        else if (!(userPhone.matches(regexStr1)) || !(userPhone.matches(regexStr2))) {
+            String userNameError = "Please check the format of phone number for user";
+            responseMap.put(rowNum, userNameError);
+            return responseMap;
+        }
+
+        if (user.getEmailId().isEmpty()) {
+            String userNameError = "Please specify the Email for user";
+            responseMap.put(rowNum, userNameError);
+            return responseMap;
+        }
+        String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+        Matcher matcher = pattern.matcher(user.getEmailId());
+        if (!matcher.matches()){
+            String userNameError = "Please enter the valid Email for user";
+            responseMap.put(rowNum, userNameError);
+            return responseMap;
+        }
+
+//        System.out.println(user.getAccessLevel());
+//        System.out.println(AccessLevel.BLOCK.name());
+        if (!AccessLevel.isLevel(user.getAccessLevel())) {
+            String userNameError = "Please specify the access level for user";
+            responseMap.put(rowNum, userNameError);
+            return responseMap;
+        }
+
+        if(currentUser.getRoleId().getRoleDescription().equals(AccessType.USER.getAccesType())) {
+            String authorityError = "No authority";
+            responseMap.put(rowNum, authorityError);
+            return responseMap;
+        }
+
+        if(AccessLevel.getLevel(currentUser.getAccessLevel()).ordinal() > AccessLevel.getLevel(user.getAccessLevel()).ordinal()){
+            String authorityError = "No authority";
+            responseMap.put(rowNum, authorityError);
+            return responseMap;
+        }
+
+
+        if (currentUser.getAccessLevel().equals(AccessLevel.NATIONAL.getAccessLevel())) {
+            if (user.getRoleId().getRoleDescription().equals(AccessType.ADMIN.getAccesType())) {
+                if (userDao.roleExistsNational(currentUser.getRoleId())) {
+                    String authorityError = "Admin exists at this level and location";
+                    responseMap.put(rowNum, authorityError);
+                    return responseMap;
+                }
+            }
+            user.setStateId(null);
+            user.setDistrictId(null);
+            user.setBlockId(null);
+        }
+        else if (currentUser.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel())) {
+            if (user.getRoleId().getRoleDescription().equals(AccessType.ADMIN.getAccesType())) {
+                if (userDao.roleExistsNational(currentUser.getRoleId())) {
+                    String authorityError = "Admin exists at this level and location";
+                    responseMap.put(rowNum, authorityError);
+                    return responseMap;
+                }
+            }
+            if(user.getStateId() == null) {
+                String authorityError = "missing property: state";
+                responseMap.put(rowNum, authorityError);
+                return responseMap;
+            }
+            if(currentUser.getStateId() != null && !user.getStateId().equals(currentUser.getStateId())) {
+                String authorityError = "invalid property: state";
+                responseMap.put(rowNum, authorityError);
+                return responseMap;
+            }
+
+            user.setDistrictId(null);
+            user.setBlockId(null);
+        }
+        else if (currentUser.getAccessLevel().equals(AccessLevel.DISTRICT.getAccessLevel())) {
+            if (user.getRoleId().getRoleDescription().equals(AccessType.ADMIN.getAccesType())) {
+                if (userDao.roleExistsNational(currentUser.getRoleId())) {
+                    String authorityError = "Admin exists at this level and location";
+                    responseMap.put(rowNum, authorityError);
+                    return responseMap;
+                }
+            }
+            if(user.getStateId() == null) {
+                String authorityError = "missing property: state";
+                responseMap.put(rowNum, authorityError);
+                return responseMap;
+            }
+            if(user.getDistrictId() == null) {
+                String authorityError = "missing property: district";
+                responseMap.put(rowNum, authorityError);
+                return responseMap;
+            }
+            if(currentUser.getStateId() != null && !user.getStateId().equals(currentUser.getStateId())) {
+                String authorityError = "invalid property: state";
+                responseMap.put(rowNum, authorityError);
+                return responseMap;
+            }
+            if(currentUser.getDistrictId() != null && !user.getDistrictId().equals(currentUser.getDistrictId())) {
+                String authorityError = "invalid property: state";
+                responseMap.put(rowNum, authorityError);
+                return responseMap;
+            }
+//            if(!user.getDistrictId().getStateOfDistrict().equals(user.getStateId())) {
+//                String authorityError = "invalid property: district";
+//                responseMap.put(rowNum, authorityError);
+//                return responseMap;
+//            }
+            user.setBlockId(null);
+        }
+        else {
+            if (user.getRoleId().getRoleDescription().equals(AccessType.ADMIN.getAccesType())) {
+                String authorityError = "Cannot create admin here";
+                responseMap.put(rowNum, authorityError);
+                return responseMap;
+            }
+            if(user.getStateId() == null) {
+                String authorityError = "missing property: state";
+                responseMap.put(rowNum, authorityError);
+                return responseMap;
+            }
+            if(currentUser.getStateId() != null && !user.getStateId().equals(currentUser.getStateId())) {
+                String authorityError = "invalid property: state";
+                responseMap.put(rowNum, authorityError);
+                return responseMap;
+            }
+            if(user.getDistrictId() == null) {
+                String authorityError = "missing property: district";
+                responseMap.put(rowNum, authorityError);
+                return responseMap;
+            }
+            if(currentUser.getDistrictId() != null && !user.getDistrictId().equals(currentUser.getDistrictId())) {
+                String authorityError = "invalid property: state";
+                responseMap.put(rowNum, authorityError);
+                return responseMap;
+            }
+            if(user.getBlockId() == null) {
+                String authorityError = "missing property: block";
+                responseMap.put(rowNum, authorityError);
+                return responseMap;
+            }
+//
+//            if(!user.getDistrictId().getStateOfDistrict().equals(user.getStateId())) {
+//                String authorityError = "invalid property: district";
+//                responseMap.put(rowNum, authorityError);
+//                return responseMap;
+//            }
+//            if(!user.getBlockId().getStateOfBlock().equals(user.getStateId())) {
+//                String authorityError = "invalid property: block";
+//                responseMap.put(rowNum, authorityError);
+//                return responseMap;
+//            }
+        }
+
+        user.setPassword(passwordEncoder.encode(user.getPhoneNumber()));
+        user.setCreationDate(new Date());
+        user.setCreatedByUser(currentUser);
+        user.setAccountStatus(AccountStatus.ACTIVE.getAccountStatus());
+
         userDao.saveUser(user);
+
+        String authorityError = "user created";
+        responseMap.put(rowNum, authorityError);
+        return responseMap;
     }
 
     @Override
-    public void updateExistingUser(User user) {
+    public Map<Integer, String> updateExistingUser(User user) {
         User entity = userDao.findByUserId(user.getUserId());
-        if(entity != null) {
-            entity.setUsername(user.getUsername());
-            if(!entity.getPassword().equals(user.getPassword()))
-                entity.setPassword(passwordEncoder.encode(user.getPassword()));
-            entity.setFullName(user.getFullName());
-            entity.setEmailId(user.getEmailId());
-            entity.setStateId(user.getStateId());
-            entity.setDistrictId(user.getDistrictId());
-            entity.setBlockId(user.getBlockId());
-            entity.setAccountStatus(user.getAccountStatus());
-            entity.setPhoneNumber(user.getPhoneNumber());
-            entity.setRoleId(user.getRoleId());
+        Integer rowNum = 0;
+        Map<Integer, String> responseMap = new HashMap<Integer, String>();
+
+        User currentUser = getCurrentUser();
+        if(currentUser.getRoleId().getRoleDescription().equals(AccessType.USER.getAccesType())) {
+            String authorityError = "No authority";
+            responseMap.put(rowNum, authorityError);
+            return responseMap;
         }
+
+        if(entity == null) {
+            responseMap.put(rowNum, "invalid user");
+            return responseMap;
+        }
+//
+//        if(!entity.getPassword().equals(user.getPassword()))
+//            entity.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (user.getFullName().isEmpty()) {
+            String userNameError = "Please specify the Full name for user";
+            responseMap.put(rowNum, userNameError);
+            return responseMap;
+        }
+
+        String userPhone = user.getPhoneNumber();
+        String regexStr1 = "^[0-9]*$";
+        String regexStr2 = "^[0-9]{10}$";
+        if (userPhone.isEmpty()) {
+            String userNameError = "Please specify the phone number for user";
+            responseMap.put(rowNum, userNameError);
+            return responseMap;
+        }
+        else if (!(userPhone.matches(regexStr1)) || !(userPhone.matches(regexStr2))) {
+            String userNameError = "Please check the format of phone number for user";
+            responseMap.put(rowNum, userNameError);
+            return responseMap;
+        }
+
+        if (user.getEmailId().isEmpty()) {
+            String userNameError = "Please specify the Email for user";
+            responseMap.put(rowNum, userNameError);
+            return responseMap;
+        }
+        String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+        Matcher matcher = pattern.matcher(user.getEmailId());
+        if (!matcher.matches()){
+            String userNameError = "Please enter the valid Email for user";
+            responseMap.put(rowNum, userNameError);
+            return responseMap;
+        }
+
+        entity.setFullName(user.getFullName());
+        entity.setEmailId(user.getEmailId());
+        entity.setPhoneNumber(user.getPhoneNumber());
+
+        if (!AccessLevel.isLevel(user.getAccessLevel())) {
+            String userNameError = "Please specify the access level for user";
+            responseMap.put(rowNum, userNameError);
+            return responseMap;
+        }
+
+        if(AccessLevel.getLevel(currentUser.getAccessLevel()).ordinal() > AccessLevel.getLevel(user.getAccessLevel()).ordinal()){
+            String authorityError = "No authority";
+            responseMap.put(rowNum, authorityError);
+            return responseMap;
+        }
+
+        entity.setRoleId(user.getRoleId());
+        entity.setAccessLevel(user.getAccessLevel());
+
+        if (currentUser.getAccessLevel().equals(AccessLevel.NATIONAL.getAccessLevel())) {
+            if (user.getRoleId().getRoleDescription().equals(AccessType.ADMIN.getAccesType())) {
+                if (userDao.roleExistsNational(currentUser.getRoleId())) {
+                    String authorityError = "Admin exists at this level and location";
+                    responseMap.put(rowNum, authorityError);
+                    return responseMap;
+                }
+            }
+            user.setStateId(null);
+            user.setDistrictId(null);
+            user.setBlockId(null);
+        }
+        else if (currentUser.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel())) {
+            if (user.getRoleId().getRoleDescription().equals(AccessType.ADMIN.getAccesType())) {
+                if (userDao.roleExistsNational(currentUser.getRoleId())) {
+                    String authorityError = "Admin exists at this level and location";
+                    responseMap.put(rowNum, authorityError);
+                    return responseMap;
+                }
+            }
+            if(user.getStateId() == null) {
+                String authorityError = "missing property: state";
+                responseMap.put(rowNum, authorityError);
+                return responseMap;
+            }
+            if(currentUser.getStateId() != null && !user.getStateId().equals(currentUser.getStateId())) {
+                String authorityError = "invalid property: state";
+                responseMap.put(rowNum, authorityError);
+                return responseMap;
+            }
+
+            user.setDistrictId(null);
+            user.setBlockId(null);
+        }
+        else if (currentUser.getAccessLevel().equals(AccessLevel.DISTRICT.getAccessLevel())) {
+            if (user.getRoleId().getRoleDescription().equals(AccessType.ADMIN.getAccesType())) {
+                if (userDao.roleExistsNational(currentUser.getRoleId())) {
+                    String authorityError = "Admin exists at this level and location";
+                    responseMap.put(rowNum, authorityError);
+                    return responseMap;
+                }
+            }
+            if(user.getStateId() == null) {
+                String authorityError = "missing property: state";
+                responseMap.put(rowNum, authorityError);
+                return responseMap;
+            }
+            if(user.getDistrictId() == null) {
+                String authorityError = "missing property: district";
+                responseMap.put(rowNum, authorityError);
+                return responseMap;
+            }
+            if(currentUser.getStateId() != null && !user.getStateId().equals(currentUser.getStateId())) {
+                String authorityError = "invalid property: state";
+                responseMap.put(rowNum, authorityError);
+                return responseMap;
+            }
+            if(currentUser.getDistrictId() != null && !user.getDistrictId().equals(currentUser.getDistrictId())) {
+                String authorityError = "invalid property: state";
+                responseMap.put(rowNum, authorityError);
+                return responseMap;
+            }
+//            if(!user.getDistrictId().getStateOfDistrict().equals(user.getStateId())) {
+//                String authorityError = "invalid property: district";
+//                responseMap.put(rowNum, authorityError);
+//                return responseMap;
+//            }
+            user.setBlockId(null);
+        }
+        else {
+            if (user.getRoleId().getRoleDescription().equals(AccessType.ADMIN.getAccesType())) {
+                String authorityError = "Cannot create admin here";
+                responseMap.put(rowNum, authorityError);
+                return responseMap;
+            }
+            if(user.getStateId() == null) {
+                String authorityError = "missing property: state";
+                responseMap.put(rowNum, authorityError);
+                return responseMap;
+            }
+            if(currentUser.getStateId() != null && !user.getStateId().equals(currentUser.getStateId())) {
+                String authorityError = "invalid property: state";
+                responseMap.put(rowNum, authorityError);
+                return responseMap;
+            }
+            if(user.getDistrictId() == null) {
+                String authorityError = "missing property: district";
+                responseMap.put(rowNum, authorityError);
+                return responseMap;
+            }
+            if(currentUser.getDistrictId() != null && !user.getDistrictId().equals(currentUser.getDistrictId())) {
+                String authorityError = "invalid property: state";
+                responseMap.put(rowNum, authorityError);
+                return responseMap;
+            }
+            if(user.getBlockId() == null) {
+                String authorityError = "missing property: block";
+                responseMap.put(rowNum, authorityError);
+                return responseMap;
+            }
+//
+//            if(!user.getDistrictId().getStateOfDistrict().equals(user.getStateId())) {
+//                String authorityError = "invalid property: district";
+//                responseMap.put(rowNum, authorityError);
+//                return responseMap;
+//            }
+//            if(!user.getBlockId().getStateOfBlock().equals(user.getStateId())) {
+//                String authorityError = "invalid property: block";
+//                responseMap.put(rowNum, authorityError);
+//                return responseMap;
+//            }
+        }
+
+        entity.setStateId(user.getStateId());
+        entity.setDistrictId(user.getDistrictId());
+        entity.setBlockId(user.getBlockId());
+
+        responseMap.put(rowNum, "user updated");
+        return responseMap;
     }
 
     @Override
