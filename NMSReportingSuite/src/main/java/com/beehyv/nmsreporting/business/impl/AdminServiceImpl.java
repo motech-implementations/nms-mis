@@ -1189,8 +1189,7 @@ public class AdminServiceImpl implements AdminService {
         OutputStream output = null;
         try {
             output = new FileOutputStream("fileLocation.properties");
-            prop.setProperty("fileLocation", System.getProperty("user.home")
-                    + "/Documents/BulkImportDatacr7ms10.csv");
+            prop.setProperty("fileLocation", documents+"BulkImportDatacr7ms10.csv");
             // save properties to project root folder
             prop.store(output, null);
         } catch (IOException io) {
