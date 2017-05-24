@@ -5,12 +5,19 @@ package com.beehyv.nmsreporting.enums;
  */
 public enum ReportType {
 
-    maCourse("maCourse"),
-    maAnonymous("maAnonymous"),
-    maInactive("maInactive"),
-    lowUsage("lowUsage"),
-    selfDeactivated("selfDeactivated"),
-    sixWeeks("sixWeeks");
+//    maCourse("CumulativeCourseCompletion"),
+//    maAnonymous("Circle wise Anonymous Users"),
+//    maInactive("maInactive"),
+//    lowUsage("KillowUsage"),
+//    selfDeactivated("selfDeactivated"),
+//    sixWeeks("sixWeeks");
+
+    maCourse("CumulativeCourseCompletion"),
+    maAnonymous("CumulativeAnonymousUsers"),
+    maInactive("CumulativeInactiveUsers"),
+    lowUsage("KilkariLowUsage"),
+    selfDeactivated("KilkariSelfDeactivated"),
+    sixWeeks("KilkariSixWeeksNoAnswer");
 
     private String reportType;
 
