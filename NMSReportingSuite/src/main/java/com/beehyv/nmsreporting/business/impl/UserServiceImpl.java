@@ -2,6 +2,7 @@ package com.beehyv.nmsreporting.business.impl;
 
 import com.beehyv.nmsreporting.business.UserService;
 import com.beehyv.nmsreporting.dao.*;
+import com.beehyv.nmsreporting.dto.PasswordDto;
 import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.AccessType;
 import com.beehyv.nmsreporting.enums.AccountStatus;
@@ -499,6 +500,37 @@ public class UserServiceImpl implements UserService{
         entity.setBlockId(user.getBlockId());
 
         responseMap.put(rowNum, "user updated");
+        return responseMap;
+    }
+
+    @Override
+    public Map<Integer, String> updatePassword(PasswordDto passwordDto) {
+        User currentUser = getCurrentUser();
+        User entity = userDao.findByUserId(passwordDto.getUserId());
+
+        Integer rowNum = 0;
+        Map<Integer, String> responseMap = new HashMap<>();
+
+        if(currentUser.getRoleId().getRoleDescription().equalsIgnoreCase(AccessType.USER.getAccessType())) {
+            String authorityError = "No authority";
+            responseMap.put(rowNum, authorityError);
+            return responseMap;
+        }
+
+        if(entity == null) {
+            responseMap.put(rowNum, "invalid user");
+            return responseMap;
+        }
+
+        if(entity.getCreatedByUser().getUserId() == currentUser.getUserId()){
+            String authorityError = "No authority";
+            responseMap.put(rowNum, authorityError);
+            return responseMap;
+        }
+
+        entity.setPassword(passwordEncoder.encode(passwordDto.getNewPassword()));
+
+        responseMap.put(rowNum, "password changed");
         return responseMap;
     }
 
