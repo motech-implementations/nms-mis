@@ -59,6 +59,11 @@ public class DistrictDaoImpl extends AbstractDao<Integer, District> implements D
     }
 
     @Override
+    public Circle getCircleOfDistrict(District district) {
+        return district.getCircleOfDistrict();
+    }
+
+    @Override
     public void saveLocation(District district) {
         persist(district);
     }

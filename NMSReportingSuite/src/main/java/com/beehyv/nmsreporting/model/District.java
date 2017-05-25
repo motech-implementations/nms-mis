@@ -42,28 +42,10 @@ public class District {
     @JoinColumn(name="state_id", columnDefinition = "TINYINT")
     private State stateOfDistrict;
 
-    public Set<Taluka> getTalukas() {
-        return talukas;
-    }
-
-    public void setTalukas(Set<Taluka> talukas) {
-        this.talukas = talukas;
-    }
-
-    public Date getLastModified() {
-        return lastModified;
-    }
-
-    public void setLastModified(Date lastModified) {
-        this.lastModified = lastModified;
-    }
-    public Long getLocationId() {
-        return locationId;
-    }
-
-    public void setLocationId(Long locationId) {
-        this.locationId = locationId;
-    }
+    @JsonIgnore
+    @OneToOne
+    @JoinColumn(name="circle_id",columnDefinition = "TINYINT")
+    private Circle circleOfDistrict;
 
     public Integer getDistrictId() {
         return districtId;
@@ -81,6 +63,22 @@ public class District {
         this.districtName = districtName;
     }
 
+    public Date getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
+    }
+
+    public Long getLocationId() {
+        return locationId;
+    }
+
+    public void setLocationId(Long locationId) {
+        this.locationId = locationId;
+    }
+
     public Set<Block> getBlocks() {
         return blocks;
     }
@@ -89,11 +87,27 @@ public class District {
         this.blocks = blocks;
     }
 
+    public Set<Taluka> getTalukas() {
+        return talukas;
+    }
+
+    public void setTalukas(Set<Taluka> talukas) {
+        this.talukas = talukas;
+    }
+
     public State getStateOfDistrict() {
         return stateOfDistrict;
     }
 
     public void setStateOfDistrict(State stateOfDistrict) {
         this.stateOfDistrict = stateOfDistrict;
+    }
+
+    public Circle getCircleOfDistrict() {
+        return circleOfDistrict;
+    }
+
+    public void setCircleOfDistrict(Circle circleOfDistrict) {
+        this.circleOfDistrict = circleOfDistrict;
     }
 }

@@ -1,12 +1,10 @@
 package com.beehyv.nmsreporting.business.impl;
 
 import com.beehyv.nmsreporting.business.ReportService;
-import com.beehyv.nmsreporting.dao.BlockDao;
-import com.beehyv.nmsreporting.dao.CircleDao;
-import com.beehyv.nmsreporting.dao.DistrictDao;
-import com.beehyv.nmsreporting.dao.StateDao;
+import com.beehyv.nmsreporting.dao.*;
 import com.beehyv.nmsreporting.entity.ReportRequest;
 import com.beehyv.nmsreporting.enums.ReportType;
+import com.beehyv.nmsreporting.model.StateCircle;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +32,9 @@ public class ReportServiceImpl implements ReportService{
 
     @Autowired
     private CircleDao circleDao;
+
+    @Autowired
+    private StateCircleDao stateCircleDao;
 
     private final String documents = System.getProperty("user.home") + File.separator+ "Documents/";
     private final String reports = documents+"Reports/";
@@ -71,5 +72,10 @@ public class ReportServiceImpl implements ReportService{
         extras.add(filename);
         extras.add(rootPath);
         return extras;
+    }
+
+    @Override
+    public List<StateCircle> getCirclesByState(Integer stateId) {
+        return stateCircleDao.getCirclesByState(stateId);
     }
 }

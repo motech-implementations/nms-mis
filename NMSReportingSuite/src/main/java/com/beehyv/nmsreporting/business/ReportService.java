@@ -1,6 +1,7 @@
 package com.beehyv.nmsreporting.business;
 
 import com.beehyv.nmsreporting.entity.ReportRequest;
+import com.beehyv.nmsreporting.model.StateCircle;
 
 import java.util.List;
 
@@ -10,5 +11,7 @@ import java.util.List;
 public interface ReportService {
 
     public List<String> getReportPathName(ReportRequest reportRequest);
+
+    public List<StateCircle> getCirclesByState(Integer stateId);
 
 }

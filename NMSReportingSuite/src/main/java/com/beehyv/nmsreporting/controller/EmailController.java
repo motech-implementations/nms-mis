@@ -19,6 +19,7 @@ import com.beehyv.nmsreporting.entity.EmailInfo;
 import com.beehyv.nmsreporting.entity.ReportRequest;
 import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.ReportType;
+import com.beehyv.nmsreporting.model.StateCircle;
 import com.beehyv.nmsreporting.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -70,30 +71,50 @@ public class EmailController {
                     reportRequest.setToDate(c.getTime());
                     reportRequest.setReportType(reportType.getReportType());
                     String pathName = "",fileName = "",errorMessage = "";
+                    List<StateCircle> stateCircleList = new ArrayList<>();
                     if(reportType.getReportType().equalsIgnoreCase(ReportType.maAnonymous.getReportType())){
-
+//
+//                        if (user.getStateId() == null) {
+//                            reportRequest.setStateId(0);
+//                            reportRequest.setCircleId(0);
+//                        }
+//                        else
+//                            reportRequest.setStateId(user.getStateId().getStateId());
+//                        if (user.getDistrictId() == null) {
+//                            reportRequest.setDistrictId(0);
+//                        }
+//                        else
+//                            reportRequest.setDistrictId(user.getDistrictId().getDistrictId());
+//                        if (user.getBlockId() == null)
+//                            reportRequest.setBlockId(0);
+//                        else
+//                            reportRequest.setBlockId(user.getBlockId().getBlockId());
+//
+////                        stateCircleList = reportService.getCirclesByState(user.getStateId().getStateId());
+//
                     }else {
-                        if(user.getStateId()==null)
+                        if (user.getStateId() == null)
                             reportRequest.setStateId(0);
                         else
                             reportRequest.setStateId(user.getStateId().getStateId());
-                        if(user.getDistrictId()==null)
+                        if (user.getDistrictId() == null)
                             reportRequest.setDistrictId(0);
                         else
                             reportRequest.setDistrictId(user.getDistrictId().getDistrictId());
-                        if(user.getBlockId()==null)
+                        if (user.getBlockId() == null)
                             reportRequest.setBlockId(0);
                         else
                             reportRequest.setBlockId(user.getBlockId().getBlockId());
                         pathName = reportService.getReportPathName(reportRequest).get(1);
                         fileName = reportService.getReportPathName(reportRequest).get(0);
+
+                        newMail.setSubject(fileName);
+                        newMail.setFileName(fileName);
+                        newMail.setRootPath(pathName);
+                        errorMessage = emailService.sendMail(newMail);
+                        if (errorMessage.equalsIgnoreCase("failure"))
+                            errorSendingMail.add(user.getFullName() + "_" + fileName);
                     }
-                    newMail.setSubject(fileName);
-                    newMail.setFileName(fileName);
-                    newMail.setRootPath(pathName);
-                    errorMessage = emailService.sendMail(newMail);
-                    if(errorMessage.equalsIgnoreCase("failure"))
-                        errorSendingMail.add(user.getFullName()+"_"+fileName);
             }
         }
         return errorSendingMail;
