@@ -2,6 +2,7 @@ package com.beehyv.nmsreporting.business.impl;
 
 import com.beehyv.nmsreporting.business.AdminService;
 import com.beehyv.nmsreporting.dao.*;
+import com.beehyv.nmsreporting.entity.ReportRequest;
 import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.AccessType;
 import com.beehyv.nmsreporting.enums.ReportType;
@@ -496,6 +497,11 @@ public class AdminServiceImpl implements AdminService {
         }
     }
 
+    @Override
+    public void createSpecificReport(ReportRequest reportRequest) {
+
+    }
+
     public void getCumulativeCourseCompletion(List<FrontLineWorkers> successfulCandidates, String rootPath, String place, Date toDate) {
         //Create blank workbook
         XSSFWorkbook workbook = new XSSFWorkbook();
@@ -963,13 +969,16 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void getCircleWiseAnonymousFiles(Date toDate) {
+    public void getCircleWiseAnonymousFiles(Date startDate, Date toDate) {
         List<Circle> circleList = circleDao.getAllCircles();
         String rootPath = reports+ReportType.maAnonymous.getReportType()+ "/";
+        List<AnonymousUsers> anonymousUsersList = anonymousUsersDao.getAnonymousUsers(startDate,toDate);
+        getCircleWiseAnonymousUsers(anonymousUsersList, rootPath, "National", toDate);
         for (Circle circle : circleList) {
             String circleName = circle.getCircleName();
-            List<AnonymousUsers> anonymousUsersList = anonymousUsersDao.getAnonymousUsersCircle(toDate, circle.getCircleIdId());
-            getCircleWiseAnonymousUsers(anonymousUsersList, rootPath, circleName, toDate);
+            String rootPathCircle=rootPath+circleName+"/";
+            List<AnonymousUsers> anonymousUsersListCircle = anonymousUsersDao.getAnonymousUsersCircle(startDate,toDate, circle.getCircleIdId());
+            getCircleWiseAnonymousUsers(anonymousUsersListCircle, rootPathCircle, circleName, toDate);
         }
     }
 
@@ -977,7 +986,7 @@ public class AdminServiceImpl implements AdminService {
     public void getCumulativeInactiveFiles(Date fromDate, Date toDate) {
         List<State> states = stateDao.getAllStates();
         String rootPath = reports+ReportType.maInactive.getReportType()+ "/";
-        List<FrontLineWorkers> inactiveFrontLineWorkers = frontLineWorkersDao.getInactiveFrontLineWorkers();
+        List<FrontLineWorkers> inactiveFrontLineWorkers = frontLineWorkersDao.getInactiveFrontLineWorkers(toDate);
         getCumulativeInactiveUsers(inactiveFrontLineWorkers, rootPath, "National", toDate);
         for (State state : states) {
             String stateName = state.getStateName();
@@ -1160,6 +1169,7 @@ public class AdminServiceImpl implements AdminService {
             }
         }
     }
+
 
     private String retrievePropertiesFromFileLocationProperties() {
         Properties prop = new Properties();

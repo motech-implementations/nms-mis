@@ -10,8 +10,8 @@ import java.util.List;
  */
 public interface AnonymousUsersDao {
 
-    List<AnonymousUsers> getAnonymousUsers(Date toDate);
+    List<AnonymousUsers> getAnonymousUsers(Date fromDate,Date toDate);
 
-    List<AnonymousUsers> getAnonymousUsersCircle(Date toDate,Integer circleId);
+    List<AnonymousUsers> getAnonymousUsersCircle(Date fromDate,Date toDate,Integer circleId);
 
 }

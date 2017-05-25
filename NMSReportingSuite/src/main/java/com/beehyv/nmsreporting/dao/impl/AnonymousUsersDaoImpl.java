@@ -18,16 +18,16 @@ import java.util.List;
 public class AnonymousUsersDaoImpl extends AbstractDao<Integer,AnonymousUsers> implements AnonymousUsersDao{
 
     @Override
-    public List<AnonymousUsers> getAnonymousUsers(Date toDate) {
+    public List<AnonymousUsers> getAnonymousUsers(Date fromDate,Date toDate) {
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("lastCalledDate"));
-        criteria.add(Restrictions.le("lastCalledDate",toDate));
+        criteria.add(Restrictions.and(Restrictions.le("lastCalledDate",toDate),Restrictions.ge("lastCalledDate",fromDate)));
         return (List<AnonymousUsers>)criteria.list();
     }
 
     @Override
-    public List<AnonymousUsers> getAnonymousUsersCircle(Date toDate,Integer circleId) {
+    public List<AnonymousUsers> getAnonymousUsersCircle(Date fromDate,Date toDate,Integer circleId) {
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("lastCalledDate"));
-        criteria.add(Restrictions.and(Restrictions.le("lastCalledDate",toDate),Restrictions.eq("circleId",circleId)));
+        criteria.add(Restrictions.and(Restrictions.le("lastCalledDate",toDate),Restrictions.ge("lastCalledDate",fromDate),Restrictions.eq("circleId",circleId)));
         return (List<AnonymousUsers>)criteria.list();
     }
 }

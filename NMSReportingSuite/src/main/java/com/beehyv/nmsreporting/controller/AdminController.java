@@ -137,6 +137,7 @@ public class AdminController {
             Locationid=loggedInUser.getDistrictId().getDistrictId();
         }*/
         adminService.getCumulativeCourseCompletionFiles(fromDate,toDate);
+
         return "Bulkimport";
     }
 }
