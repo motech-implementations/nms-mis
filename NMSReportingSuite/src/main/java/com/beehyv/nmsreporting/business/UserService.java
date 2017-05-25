@@ -1,5 +1,6 @@
 package com.beehyv.nmsreporting.business;
 
+import com.beehyv.nmsreporting.dto.PasswordDto;
 import com.beehyv.nmsreporting.model.User;
 
 import java.util.Date;
@@ -33,6 +34,8 @@ public interface UserService {
     Map<Integer, String> createNewUser(User user);
 
     Map<Integer, String> updateExistingUser(User user);
+
+    Map<Integer, String> updatePassword(PasswordDto passwordDto);
 
     void deleteExistingUser(User user);
 

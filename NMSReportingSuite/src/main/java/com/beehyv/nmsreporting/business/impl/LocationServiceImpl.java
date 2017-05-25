@@ -30,6 +30,9 @@ public class LocationServiceImpl implements LocationService {
     @Autowired
     private LocationDao locationDao;
 
+    @Autowired
+    private CircleDao circleDao;
+
     public Location findLocationById(Integer locationId) {
         return locationDao.findByLocationId(locationId);
     }
@@ -135,5 +138,10 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public District getDistrictOfBlock(Integer blockId) {
         return blockDao.getDistrictOfBlock(blockDao.findByblockId(blockId));
+    }
+
+    @Override
+    public Circle findCircleById(Integer circleId) {
+        return circleDao.getByCircleId(circleId);
     }
 }

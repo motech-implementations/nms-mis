@@ -10,6 +10,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,9 +20,9 @@ import java.util.List;
 public class FrontLineWorkersDaoImpl extends AbstractDao<Integer,FrontLineWorkers> implements FrontLineWorkersDao {
 
     @Override
-    public List<FrontLineWorkers> getInactiveFrontLineWorkers() {
+    public List<FrontLineWorkers> getInactiveFrontLineWorkers(Date toDate) {
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("creationDate"));
-        criteria.add(Restrictions.eq("status","INACTIVE").ignoreCase());
+        criteria.add(Restrictions.and(Restrictions.eq("status","INACTIVE").ignoreCase(),Restrictions.le("creationDate",toDate)));
         return (List<FrontLineWorkers>) criteria.list();
     }
 }

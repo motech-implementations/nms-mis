@@ -4,6 +4,7 @@ import com.beehyv.nmsreporting.business.*;
 import com.beehyv.nmsreporting.dao.BlockDao;
 import com.beehyv.nmsreporting.dao.DistrictDao;
 import com.beehyv.nmsreporting.dao.StateDao;
+import com.beehyv.nmsreporting.dto.PasswordDto;
 import com.beehyv.nmsreporting.dto.UserDto;
 import com.beehyv.nmsreporting.entity.ReportRequest;
 import com.beehyv.nmsreporting.enums.ReportType;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.ParseException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -142,7 +144,6 @@ public class UserController {
         } catch(NullPointerException e){
             user1.setState("");
         }
-        System.out.println("state = " + user1.getState().toString());
         try {
             user1.setDistrict(user.getDistrictId().getDistrictId().toString());
         } catch(NullPointerException e){
@@ -189,38 +190,9 @@ public class UserController {
         return userService.updateExistingUser(user);
     }
 
-    @RequestMapping(value = {"/updateUser2"}, method = RequestMethod.POST)
-    public String updateExistingUser2(@RequestBody UserDto userDto) {
-        System.out.println(userDto.getName() + "**********************");
-        User user = userService.findUserByUserId(userDto.getId());
-        user.setFullName(userDto.getName());
-        user.setPhoneNumber(userDto.getPhoneNumber());
-        user.setEmailId(userDto.getEmail());
-        user.setAccessLevel(userDto.getAccessLevel());
-        user.setRoleId(roleService.findRoleByRoleId(Integer.parseInt(userDto.getAccessType())));
-
-        try{
-            user.setStateId(locationService.findStateById(Integer.parseInt(userDto.getState())));
-        }catch (Exception e){
-            user.setStateId(null);
-        }
-
-        try{
-            user.setDistrictId(locationService.findDistrictById(Integer.parseInt(userDto.getDistrict())));
-        }catch (Exception e){
-            user.setDistrictId(null);
-        }
-
-        try{
-            user.setBlockId(locationService.findBlockById(Integer.parseInt(userDto.getBlock())));
-        }catch (Exception e){
-            user.setDistrictId(null);
-        }
-
-        userService.updateExistingUser(user);
-
-
-//        String trackModification = mapper.convertValue(node.get("modification"), String.class);
+    @RequestMapping(value = {"/resetPassword"}, method = RequestMethod.POST)
+    @ResponseBody public Map resetPassword(@RequestBody PasswordDto passwordDto){
+        //        String trackModification = mapper.convertValue(node.get("modification"), String.class);
 //
 //        ModificationTracker modification = new ModificationTracker();
 //        modification.setModificationDate(new Date(System.currentTimeMillis()));
@@ -230,10 +202,11 @@ public class UserController {
 //        modification.setModificationDescription(trackModification);
 //        modificationTrackerService.saveModification(modification);
 
-        return "redirect:http://localhost:8080/app/#!/";
+//        return "redirect:http://localhost:8080/app/#!/";
+        return userService.updatePassword(passwordDto);
     }
 
-    @RequestMapping(value = {"/delete-user"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/deleteUser"}, method = RequestMethod.POST)
     public void deleteExistingUser(@RequestBody User user) {
         userService.deleteExistingUser(user);
 //        ModificationTracker modification = new ModificationTracker();
@@ -259,21 +232,31 @@ public class UserController {
    @RequestMapping(value = "/getReport", method = RequestMethod.POST,produces = "application/vnd.ms-excel")
    @ResponseBody
    public void getReports(@RequestBody ReportRequest reportRequest,HttpServletResponse response) throws ParseException, java.text.ParseException{
+
        String rootPath = "";
        String place = "NATIONAL";
-       if(reportRequest.getStateId() != 0){
-           place = locationService.findStateById(reportRequest.getStateId()).getStateName();
-           rootPath += place+"/";
-       }
 
-       if(reportRequest.getDistrictId() != 0){
-           place = locationService.findDistrictById(reportRequest.getDistrictId()).getDistrictName();
-           rootPath += place+"/";
+       if(reportRequest.getReportType().equals(ReportType.maAnonymous.getReportType())){
+            if(reportRequest.getCircleId()!=0){
+                place=locationService.findCircleById(reportRequest.getCircleId()).getCircleName();
+                rootPath+=place+"/";
+            }
        }
+       else {
+           if (reportRequest.getStateId() != 0) {
+               place = locationService.findStateById(reportRequest.getStateId()).getStateName();
+               rootPath += place + "/";
+           }
 
-       if(reportRequest.getBlockId() != 0){
-           place = locationService.findBlockById(reportRequest.getBlockId()).getBlockName();
-           rootPath += place+"/";
+           if (reportRequest.getDistrictId() != 0) {
+               place = locationService.findDistrictById(reportRequest.getDistrictId()).getDistrictName();
+               rootPath += place + "/";
+           }
+
+           if (reportRequest.getBlockId() != 0) {
+               place = locationService.findBlockById(reportRequest.getBlockId()).getBlockName();
+               rootPath += place + "/";
+           }
        }
        String filename= reportRequest.getReportType()+"_"+place+"_"+reportRequest.getToDate()+".xlsx";
        rootPath = reports+reportRequest.getReportType()+"/"+rootPath+filename;
