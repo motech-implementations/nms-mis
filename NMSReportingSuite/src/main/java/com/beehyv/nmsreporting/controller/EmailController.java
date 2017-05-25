@@ -76,7 +76,6 @@ public class EmailController {
                         }
                     });
             MimeMessage message = new MimeMessage(session);
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
             message.setFrom(new InternetAddress(mailInfo.getFrom()));
             message.setRecipients(Message.RecipientType.TO,	InternetAddress.parse(mailInfo.getTo()));
             message.setSubject(mailInfo.getSubject(),"UTF-8");

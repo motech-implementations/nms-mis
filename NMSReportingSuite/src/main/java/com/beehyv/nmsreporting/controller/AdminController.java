@@ -31,8 +31,8 @@ public class AdminController {
     @Autowired
     private UserService userService;
 
-    final String documents = System.getProperty("user.home") +File.separator+ "Documents/";
-    final String reports = documents+"Reports/";
+    private final String documents = System.getProperty("user.home") +File.separator+ "Documents/";
+    private final String reports = documents+"Reports/";
 
     @RequestMapping(value = "/uploadFile",headers=("content-type=multipart/*"), method = RequestMethod.POST)
     @ResponseBody

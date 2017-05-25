@@ -80,8 +80,8 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private CircleDao circleDao;
 
-    final String documents = System.getProperty("user.home") +File.separator+ "Documents/";
-    final String reports = documents+"Reports/";
+    private final String documents = System.getProperty("user.home") +File.separator+ "Documents/";
+    private final String reports = documents+"Reports/";
 
     @Override
     public HashMap startBulkDataImport(User loggedInUser) {
@@ -446,15 +446,15 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void createFiles(String fileName) {
+    public void createFiles(String reportType) {
         List<State> states = stateDao.getAllStates();
         String rootPath = reports;
-        File dir = new File(rootPath + fileName);
+        File dir = new File(rootPath + reportType);
         if (!dir.exists())
             dir.mkdirs();
         for (State state : states) {
             String stateName = state.getStateName();
-            String rootPathState = rootPath + fileName + "/" + stateName;
+            String rootPathState = rootPath + reportType + "/" + stateName;
             File dirState = new File(rootPathState);
             if (!dirState.exists())
                 dirState.mkdirs();

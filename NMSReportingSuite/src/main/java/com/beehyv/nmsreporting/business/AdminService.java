@@ -31,7 +31,7 @@ public interface AdminService {
 
   void getKilkariSelfDeactivationFiles(Date fromDate, Date toDate);
 
-  void createFiles(String fileName);
+  void createFiles(String reportType);
 
   void createFolders(String reportType);
 

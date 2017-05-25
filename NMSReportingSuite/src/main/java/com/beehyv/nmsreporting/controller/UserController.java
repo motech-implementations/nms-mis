@@ -48,9 +48,9 @@ public class UserController {
     @Autowired
     private AdminService adminService;
 
-    final Date bigBang = new Date(0);
-    final String documents = System.getProperty("user.home") +File.separator+ "Documents/";
-    final String reports = documents+"Reports/";
+    private final Date bigBang = new Date(0);
+    private final String documents = System.getProperty("user.home") +File.separator+ "Documents/";
+    private final String reports = documents+"Reports/";
 
     @RequestMapping(value = {"/", "/list"}, method = RequestMethod.GET)
     public @ResponseBody List<User> getAllUsers() {
