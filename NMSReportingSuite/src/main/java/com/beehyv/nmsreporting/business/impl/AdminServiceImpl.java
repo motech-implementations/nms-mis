@@ -500,6 +500,260 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void createSpecificReport(ReportRequest reportRequest) {
 
+        String rootPath = reports+reportRequest.getReportType()+ "/";
+        Date toDate=reportRequest.getToDate();
+        Date startDate=reportRequest.getFromDate();
+        Integer stateId=reportRequest.getStateId();
+        Integer districtId=reportRequest.getDistrictId();
+        Integer blockId=reportRequest.getBlockId();
+        Integer circleId=reportRequest.getCircleId();
+
+        if(reportRequest.getReportType().equals(ReportType.maCourse.getReportType())){
+
+            List<FrontLineWorkers> successFullcandidates = maCourseAttemptDao.getSuccessFulCompletion(toDate);
+
+            if(stateId==0){
+                getCumulativeCourseCompletion(successFullcandidates, rootPath,AccessLevel.NATIONAL.getAccessLevel(), toDate);
+            }
+            else{
+                String stateName=stateDao.findByStateId(stateId).getStateName();
+                String rootPathState = rootPath+ stateName+ "/";
+                if(districtId==0){
+                    List<FrontLineWorkers> candidatesFromThisState = new ArrayList<>();
+                    for (FrontLineWorkers asha : successFullcandidates) {
+                        if (asha.getState().getStateId() == stateId) {
+                            candidatesFromThisState.add(asha);
+                        }
+                    }
+                    getCumulativeCourseCompletion(candidatesFromThisState, rootPathState, stateName, toDate);
+                }
+                else{
+                    String districtName=districtDao.findByDistrictId(districtId).getDistrictName();
+                    String rootPathDistrict = rootPathState+ districtName+ "/";
+                    if(blockId==0){
+                        List<FrontLineWorkers> candidatesFromThisDistrict = new ArrayList<>();
+                        for (FrontLineWorkers asha : successFullcandidates) {
+                            if (asha.getDistrict().getDistrictId() == districtId) {
+                                candidatesFromThisDistrict.add(asha);
+                            }
+                        }
+                        getCumulativeCourseCompletion(candidatesFromThisDistrict, rootPathDistrict, districtName, toDate);
+                    }
+                    else{
+                        String blockName=blockDao.findByblockId(blockId).getBlockName();
+                        String rootPathblock = rootPathDistrict + blockName+ "/";
+
+                        List<FrontLineWorkers> candidatesFromThisBlock = new ArrayList<>();
+                        for (FrontLineWorkers asha : successFullcandidates) {
+                            if (asha.getBlock().getBlockId() == blockId) {
+                                candidatesFromThisBlock.add(asha);
+                            }
+                        }
+                        getCumulativeCourseCompletion(candidatesFromThisBlock, rootPathblock, blockName, toDate);
+                    }
+                }
+            }
+        }
+        if(reportRequest.getReportType().equals(ReportType.maInactive.getReportType())){
+
+            List<FrontLineWorkers> inactiveFrontLineWorkers = frontLineWorkersDao.getInactiveFrontLineWorkers(toDate);
+
+            if(stateId==0){
+                getCumulativeInactiveUsers(inactiveFrontLineWorkers, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
+            }
+            else{
+                String stateName=stateDao.findByStateId(stateId).getStateName();
+                String rootPathState = rootPath+ stateName+ "/";
+                if(districtId==0){
+                    List<FrontLineWorkers> candidatesFromThisState = new ArrayList<>();
+                    for (FrontLineWorkers asha : inactiveFrontLineWorkers) {
+                        if (asha.getState().getStateId() == stateId) {
+                            candidatesFromThisState.add(asha);
+                        }
+                    }
+                    getCumulativeInactiveUsers(candidatesFromThisState,rootPathState, stateName, toDate);
+                }
+                else{
+                    String districtName=districtDao.findByDistrictId(districtId).getDistrictName();
+                    String rootPathDistrict = rootPathState+ districtName+ "/";
+                    if(blockId==0){
+                        List<FrontLineWorkers> candidatesFromThisDistrict = new ArrayList<>();
+                        for (FrontLineWorkers asha : inactiveFrontLineWorkers) {
+                            if (asha.getDistrict().getDistrictId() == districtId) {
+                                candidatesFromThisDistrict.add(asha);
+                            }
+                        }
+                        getCumulativeInactiveUsers(candidatesFromThisDistrict,rootPathDistrict, districtName, toDate);
+                    }
+                    else{
+                        String blockName=blockDao.findByblockId(blockId).getBlockName();
+                        String rootPathblock = rootPathDistrict + blockName+ "/";
+
+                        List<FrontLineWorkers> candidatesFromThisBlock = new ArrayList<>();
+                        for (FrontLineWorkers asha : inactiveFrontLineWorkers) {
+                            if (asha.getBlock().getBlockId() == blockId) {
+                                candidatesFromThisBlock.add(asha);
+                            }
+                        }
+                        getCumulativeInactiveUsers(candidatesFromThisBlock, rootPathblock, blockName, toDate);
+                    }
+                }
+            }
+        }
+        if(reportRequest.getReportType().equals(ReportType.maAnonymous.getReportType())){
+
+            List<AnonymousUsers> anonymousUsersList = anonymousUsersDao.getAnonymousUsers(startDate,toDate);
+
+            if(stateId==0){
+                getCircleWiseAnonymousUsers(anonymousUsersList,  rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
+            }
+            else{
+                String circleName=circleDao.getByCircleId(circleId).getCircleName();
+                String rootPathCircle=rootPath+circleName+"/";
+                List<AnonymousUsers> anonymousUsersListCircle = anonymousUsersDao.getAnonymousUsersCircle(startDate,toDate,circleId);
+                getCircleWiseAnonymousUsers(anonymousUsersListCircle, rootPathCircle, circleName, toDate);
+            }
+        }
+        if(reportRequest.getReportType().equals(ReportType.lowUsage.getReportType())){
+
+            List<KilkariLowUsage> kilkariLowUsageList = kilkariLowUsageDao.getKilkariLowUsageUsers(startDate, toDate);
+
+
+            if(stateId==0){
+                getKilkariLowUsage(kilkariLowUsageList, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
+            }
+            else{
+                String stateName=stateDao.findByStateId(stateId).getStateName();
+                String rootPathState = rootPath+ stateName+ "/";
+                if(districtId==0){
+                    List<KilkariLowUsage> candidatesFromThisState = new ArrayList<>();
+                    for (KilkariLowUsage kilkari : kilkariLowUsageList) {
+                        if (kilkari.getStateId() == stateId) {
+                            candidatesFromThisState.add(kilkari);
+                        }
+                    }
+                    getKilkariLowUsage(candidatesFromThisState,rootPathState, stateName, toDate);
+                }
+                else{
+                    String districtName=districtDao.findByDistrictId(districtId).getDistrictName();
+                    String rootPathDistrict = rootPathState+ districtName+ "/";
+                    if(blockId==0){
+                        List<KilkariLowUsage> candidatesFromThisDistrict = new ArrayList<>();
+                        for (KilkariLowUsage kilkari : kilkariLowUsageList) {
+                            if (kilkari.getDistrictId() == districtId) {
+                                candidatesFromThisDistrict.add(kilkari);
+                            }
+                        }
+                        getKilkariLowUsage(candidatesFromThisDistrict,rootPathDistrict, districtName, toDate);
+                    }
+                    else{
+                        String blockName=blockDao.findByblockId(blockId).getBlockName();
+                        String rootPathblock = rootPathDistrict + blockName+ "/";
+
+                        List<KilkariLowUsage> candidatesFromThisBlock = new ArrayList<>();
+                        for (KilkariLowUsage kilkari : kilkariLowUsageList) {
+                            if (kilkari.getBlockId() == blockId) {
+                                candidatesFromThisBlock.add(kilkari);
+                            }
+                        }
+                        getKilkariLowUsage(candidatesFromThisBlock, rootPathblock, blockName, toDate);
+                    }
+                }
+            }
+        }
+        if(reportRequest.getReportType().equals(ReportType.sixWeeks.getReportType())){
+
+            List<KilkariSixWeeksNoAnswer> kilkariSixWeeksNoAnswers = kilkariSixWeeksNoAnswerDao.getKilkariUsers(startDate, toDate);
+
+            if(stateId==0){
+                getKilkariSixWeekNoAnswer(kilkariSixWeeksNoAnswers, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
+            }
+            else{
+                String stateName=stateDao.findByStateId(stateId).getStateName();
+                String rootPathState = rootPath+ stateName+ "/";
+                if(districtId==0){
+                    List<KilkariSixWeeksNoAnswer> candidatesFromThisState = new ArrayList<>();
+                    for (KilkariSixWeeksNoAnswer kilkari : kilkariSixWeeksNoAnswers) {
+                        if (kilkari.getStateId() == stateId) {
+                            candidatesFromThisState.add(kilkari);
+                        }
+                    }
+                    getKilkariSixWeekNoAnswer(candidatesFromThisState,rootPathState, stateName, toDate);
+                }
+                else{
+                    String districtName=districtDao.findByDistrictId(districtId).getDistrictName();
+                    String rootPathDistrict = rootPathState+ districtName+ "/";
+                    if(blockId==0){
+                        List<KilkariSixWeeksNoAnswer> candidatesFromThisDistrict = new ArrayList<>();
+                        for (KilkariSixWeeksNoAnswer kilkari : kilkariSixWeeksNoAnswers) {
+                            if (kilkari.getDistrictId() == districtId) {
+                                candidatesFromThisDistrict.add(kilkari);
+                            }
+                        }
+                        getKilkariSixWeekNoAnswer(candidatesFromThisDistrict,rootPathDistrict, districtName, toDate);
+                    }
+                    else{
+                        String blockName=blockDao.findByblockId(blockId).getBlockName();
+                        String rootPathblock = rootPathDistrict + blockName+ "/";
+
+                        List<KilkariSixWeeksNoAnswer> candidatesFromThisBlock = new ArrayList<>();
+                        for (KilkariSixWeeksNoAnswer kilkari : kilkariSixWeeksNoAnswers) {
+                            if (kilkari.getBlockId() == blockId) {
+                                candidatesFromThisBlock.add(kilkari);
+                            }
+                        }
+                        getKilkariSixWeekNoAnswer(candidatesFromThisBlock, rootPathblock, blockName, toDate);
+                    }
+                }
+            }
+        }
+
+        if(reportRequest.getReportType().equals(ReportType.selfDeactivated.getReportType())){
+
+            List<KilkariSelfDeactivated> kilkariSelfDeactivatedList = kilkariSelfDeactivatedDao.getSelfDeactivatedUsers(startDate, toDate);
+
+            if(stateId==0){
+                getKilkariSelfDeactivation(kilkariSelfDeactivatedList, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
+            }
+            else{
+                String stateName=stateDao.findByStateId(stateId).getStateName();
+                String rootPathState = rootPath+ stateName+ "/";
+                if(districtId==0){
+                    List<KilkariSelfDeactivated> candidatesFromThisState = new ArrayList<>();
+                    for (KilkariSelfDeactivated kilkari : kilkariSelfDeactivatedList) {
+                        if (kilkari.getStateId() == stateId) {
+                            candidatesFromThisState.add(kilkari);
+                        }
+                    }
+                    getKilkariSelfDeactivation(candidatesFromThisState,rootPathState, stateName, toDate);
+                }
+                else{
+                    String districtName=districtDao.findByDistrictId(districtId).getDistrictName();
+                    String rootPathDistrict = rootPathState+ districtName+ "/";
+                    if(blockId==0){
+                        List<KilkariSelfDeactivated> candidatesFromThisDistrict = new ArrayList<>();
+                        for (KilkariSelfDeactivated kilkari : kilkariSelfDeactivatedList) {
+                            if (kilkari.getDistrictId() == districtId) {
+                                candidatesFromThisDistrict.add(kilkari);
+                            }
+                        }
+                        getKilkariSelfDeactivation(candidatesFromThisDistrict,rootPathDistrict, districtName, toDate);
+                    }
+                    else{
+                        String blockName=blockDao.findByblockId(blockId).getBlockName();
+                        String rootPathblock = rootPathDistrict + blockName+ "/";
+
+                        List<KilkariSelfDeactivated> candidatesFromThisBlock = new ArrayList<>();
+                        for (KilkariSelfDeactivated kilkari : kilkariSelfDeactivatedList) {
+                            if (kilkari.getBlockId() == blockId) {
+                                candidatesFromThisBlock.add(kilkari);
+                            }
+                        }
+                        getKilkariSelfDeactivation(candidatesFromThisBlock, rootPathblock, blockName, toDate);
+                    }
+                }
+            }
+        }
     }
 
     public void getCumulativeCourseCompletion(List<FrontLineWorkers> successfulCandidates, String rootPath, String place, Date toDate) {
