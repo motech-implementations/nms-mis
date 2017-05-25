@@ -11,6 +11,8 @@ public class ReportRequest {
 
     private Date toDate;
 
+    private Date fromDate;
+
     private Integer stateId;
 
     private Integer districtId;
@@ -25,6 +27,14 @@ public class ReportRequest {
 
     public void setReportType(String reportType) {
         this.reportType = reportType;
+    }
+
+    public Date getFromDate() {
+        return fromDate;
+    }
+
+    public void setFromDate(Date fromDate) {
+        this.fromDate = fromDate;
     }
 
     public Date getToDate() {

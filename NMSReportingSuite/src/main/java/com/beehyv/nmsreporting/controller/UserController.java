@@ -265,7 +265,12 @@ public class UserController {
        try {
            PrintWriter out=response.getWriter();
            response.setHeader("Content-Disposition","attachment;filename=\""+filename+"\"");
+           File file=new File(rootPath);
+           if(!(file.exists())){
+               adminService.createSpecificReport(reportRequest);
+           }
            FileInputStream fl=new FileInputStream(rootPath);
+
            int i;
            while ((i=fl.read())!=-1){
                out.write(i);
