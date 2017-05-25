@@ -232,21 +232,31 @@ public class UserController {
    @RequestMapping(value = "/getReport", method = RequestMethod.POST,produces = "application/vnd.ms-excel")
    @ResponseBody
    public void getReports(@RequestBody ReportRequest reportRequest,HttpServletResponse response) throws ParseException, java.text.ParseException{
+
        String rootPath = "";
        String place = "NATIONAL";
-       if(reportRequest.getStateId() != 0){
-           place = locationService.findStateById(reportRequest.getStateId()).getStateName();
-           rootPath += place+"/";
-       }
 
-       if(reportRequest.getDistrictId() != 0){
-           place = locationService.findDistrictById(reportRequest.getDistrictId()).getDistrictName();
-           rootPath += place+"/";
+       if(reportRequest.getReportType().equals(ReportType.maAnonymous.getReportType())){
+            if(reportRequest.getCircleId()!=0){
+                place=locationService.findCircleById(reportRequest.getCircleId()).getCircleName();
+                rootPath+=place+"/";
+            }
        }
+       else {
+           if (reportRequest.getStateId() != 0) {
+               place = locationService.findStateById(reportRequest.getStateId()).getStateName();
+               rootPath += place + "/";
+           }
 
-       if(reportRequest.getBlockId() != 0){
-           place = locationService.findBlockById(reportRequest.getBlockId()).getBlockName();
-           rootPath += place+"/";
+           if (reportRequest.getDistrictId() != 0) {
+               place = locationService.findDistrictById(reportRequest.getDistrictId()).getDistrictName();
+               rootPath += place + "/";
+           }
+
+           if (reportRequest.getBlockId() != 0) {
+               place = locationService.findBlockById(reportRequest.getBlockId()).getBlockName();
+               rootPath += place + "/";
+           }
        }
        String filename= reportRequest.getReportType()+"_"+place+"_"+reportRequest.getToDate()+".xlsx";
        rootPath = reports+reportRequest.getReportType()+"/"+rootPath+filename;

@@ -1,5 +1,7 @@
 package com.beehyv.nmsreporting.business;
 
+import com.beehyv.nmsreporting.entity.ReportRequest;
+import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.AnonymousUsers;
 import com.beehyv.nmsreporting.model.FrontLineWorkers;
 import com.beehyv.nmsreporting.model.KilkariSixWeeksNoAnswer;
@@ -21,7 +23,7 @@ public interface AdminService {
 
   void getCumulativeCourseCompletionFiles(Date fromDate, Date toDate);
 
-  void getCircleWiseAnonymousFiles(Date toDate);
+  void getCircleWiseAnonymousFiles(Date fromDate,Date toDate);
 
   void getCumulativeInactiveFiles(Date fromDate, Date toDate);
 
@@ -34,5 +36,7 @@ public interface AdminService {
   void createFiles(String fileName);
 
   void createFolders(String reportType);
+
+  void createSpecificReport(ReportRequest reportRequest);
 
 }

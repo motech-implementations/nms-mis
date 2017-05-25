@@ -31,6 +31,9 @@ public class AdminController {
     @Autowired
     private UserService userService;
 
+    final String documents = System.getProperty("user.home") +File.separator+ "Documents/";
+    final String reports = documents+"Reports/";
+
     @RequestMapping(value = "/uploadFile",headers=("content-type=multipart/*"), method = RequestMethod.POST)
     @ResponseBody
     public Map uploadFileHandler(@RequestParam("bulkCsv") MultipartFile file) {
@@ -42,7 +45,7 @@ public class AdminController {
                 byte[] bytes = file.getBytes();
 
                 // Creating the directory to store file
-                String rootPath = System.getProperty("user.home") + File.separator + "Documents";
+                String rootPath = documents;
                 File dir = new File(rootPath);
                 if (!dir.exists())
                     dir.mkdirs();
@@ -83,7 +86,7 @@ public class AdminController {
             PrintWriter out=response.getWriter();
             String filename="BulkImportData.csv";
             response.setHeader("Content-Disposition","attachment;filename=\""+filename+"\"");
-            FileInputStream fl=new FileInputStream(System.getProperty("user.home")+"/Documents/BulkImportData.csv");
+            FileInputStream fl=new FileInputStream(documents+"BulkImportData.csv");
             int i;
             while ((i=fl.read())!=-1){
                 out.write(i);
@@ -114,8 +117,8 @@ public class AdminController {
 
     public void createAllFiles(){
         adminService.createFiles(ReportType.maCourse.getReportType());
-       adminService.createFolders(ReportType.maAnonymous.getReportType());
-       adminService.createFiles(ReportType.maInactive.getReportType());
+        adminService.createFolders(ReportType.maAnonymous.getReportType());
+        adminService.createFiles(ReportType.maInactive.getReportType());
         adminService.createFiles(ReportType.lowUsage.getReportType());
         adminService.createFiles(ReportType.selfDeactivated.getReportType());
         adminService.createFiles(ReportType.sixWeeks.getReportType());
@@ -134,6 +137,7 @@ public class AdminController {
             Locationid=loggedInUser.getDistrictId().getDistrictId();
         }*/
         adminService.getCumulativeCourseCompletionFiles(fromDate,toDate);
+
         return "Bulkimport";
     }
 }

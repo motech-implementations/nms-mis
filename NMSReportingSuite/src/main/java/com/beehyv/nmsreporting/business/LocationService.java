@@ -58,4 +58,7 @@ public interface LocationService {
 
     District getDistrictOfBlock(Integer blockId);
 
+     /*----------------------Circle-------------------------*/
+    Circle findCircleById(Integer circleId);
+
 }
