@@ -21,11 +21,11 @@ public class Circle {
     @Column(name = "last_modified",columnDefinition = "TIMESTAMP")
     private Date lastModifiedDate;
 
-    public Integer getCircleIdId() {
+    public Integer getCircleId() {
         return circleId;
     }
 
-    public void setCircleIdId(Integer circleId) {
+    public void setCircleId(Integer circleId) {
         this.circleId = circleId;
     }
 

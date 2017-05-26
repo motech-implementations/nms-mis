@@ -3,8 +3,11 @@ package com.beehyv.nmsreporting.business.impl;
 import com.beehyv.nmsreporting.business.ReportService;
 import com.beehyv.nmsreporting.dao.*;
 import com.beehyv.nmsreporting.entity.ReportRequest;
+import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.ReportType;
+import com.beehyv.nmsreporting.model.Circle;
 import com.beehyv.nmsreporting.model.StateCircle;
+import com.beehyv.nmsreporting.model.User;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -74,8 +77,20 @@ public class ReportServiceImpl implements ReportService{
         return extras;
     }
 
+//    @Override
+//    public List<StateCircle> getCirclesByState(Integer stateId) {
+//        return stateCircleDao.getCirclesByState(stateId);
+//    }
+
+
     @Override
-    public List<StateCircle> getCirclesByState(Integer stateId) {
-        return stateCircleDao.getCirclesByState(stateId);
+    public List<Circle> getUserCircles(User user){
+
+            List<StateCircle> list = stateCircleDao.getCirclesByState(user.getStateId().getStateId());
+            List<Circle> circleList = new ArrayList<>();
+            for(StateCircle item : list){
+                circleList.add(circleDao.getByCircleId(item.getCircleId()));
+            }
+            return circleList;
     }
 }

@@ -1,7 +1,9 @@
 package com.beehyv.nmsreporting.business;
 
 import com.beehyv.nmsreporting.entity.ReportRequest;
+import com.beehyv.nmsreporting.model.Circle;
 import com.beehyv.nmsreporting.model.StateCircle;
+import com.beehyv.nmsreporting.model.User;
 
 import java.util.List;
 
@@ -10,8 +12,10 @@ import java.util.List;
  */
 public interface ReportService {
 
-    public List<String> getReportPathName(ReportRequest reportRequest);
+    List<String> getReportPathName(ReportRequest reportRequest);
 
-    public List<StateCircle> getCirclesByState(Integer stateId);
+//    List<StateCircle> getCirclesByState(Integer stateId);
+
+    List<Circle> getUserCircles(User user);
 
 }

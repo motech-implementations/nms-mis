@@ -1231,7 +1231,7 @@ public class AdminServiceImpl implements AdminService {
         for (Circle circle : circleList) {
             String circleName = circle.getCircleName();
             String rootPathCircle=rootPath+circleName+"/";
-            List<AnonymousUsers> anonymousUsersListCircle = anonymousUsersDao.getAnonymousUsersCircle(startDate,toDate, circle.getCircleIdId());
+            List<AnonymousUsers> anonymousUsersListCircle = anonymousUsersDao.getAnonymousUsersCircle(startDate,toDate, circle.getCircleId());
             getCircleWiseAnonymousUsers(anonymousUsersListCircle, rootPathCircle, circleName, toDate);
         }
     }

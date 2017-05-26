@@ -1,36 +1,22 @@
 package com.beehyv.nmsreporting.controller;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.activation.FileDataSource;
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
 import javax.servlet.ServletContext;
-import javax.xml.ws.RequestWrapper;
 
 import com.beehyv.nmsreporting.business.EmailService;
+import com.beehyv.nmsreporting.business.LocationService;
 import com.beehyv.nmsreporting.business.ReportService;
 import com.beehyv.nmsreporting.business.UserService;
-import com.beehyv.nmsreporting.dao.UserDao;
 import com.beehyv.nmsreporting.entity.EmailInfo;
 import com.beehyv.nmsreporting.entity.ReportRequest;
 import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.ReportType;
-import com.beehyv.nmsreporting.model.StateCircle;
+import com.beehyv.nmsreporting.model.Circle;
 import com.beehyv.nmsreporting.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
 import java.util.*;
 
 /**
@@ -49,6 +35,8 @@ public class EmailController {
     ReportService reportService;
     @Autowired
     EmailService emailService;
+    @Autowired
+    LocationService locationService;
 
 //    @RequestMapping(value = "/input", method = RequestMethod.GET)
 //    public @ResponseBody String showForm(ModelMap model) {
@@ -57,9 +45,9 @@ public class EmailController {
 //    }
 
     @RequestMapping(value = "/sendAll", method = RequestMethod.GET)
-    public @ResponseBody List<String> sendAllMails(){
+    public @ResponseBody HashMap sendAllMails(){
         List<User> users = userService.findAllActiveUsers();
-        List<String> errorSendingMail = new ArrayList<>();
+        HashMap<String,String> errorSendingMail = new HashMap<>();
         for(User user: users){
             EmailInfo newMail = new EmailInfo();
             newMail.setFrom("Beehyv");
@@ -71,27 +59,42 @@ public class EmailController {
                     reportRequest.setToDate(c.getTime());
                     reportRequest.setReportType(reportType.getReportType());
                     String pathName = "",fileName = "",errorMessage = "";
-                    List<StateCircle> stateCircleList = new ArrayList<>();
+                    List<Circle> stateCircleList = new ArrayList<>();
                     if(reportType.getReportType().equalsIgnoreCase(ReportType.maAnonymous.getReportType())){
-//
-//                        if (user.getStateId() == null) {
-//                            reportRequest.setStateId(0);
-//                            reportRequest.setCircleId(0);
-//                        }
-//                        else
-//                            reportRequest.setStateId(user.getStateId().getStateId());
-//                        if (user.getDistrictId() == null) {
-//                            reportRequest.setDistrictId(0);
-//                        }
-//                        else
-//                            reportRequest.setDistrictId(user.getDistrictId().getDistrictId());
-//                        if (user.getBlockId() == null)
-//                            reportRequest.setBlockId(0);
-//                        else
-//                            reportRequest.setBlockId(user.getBlockId().getBlockId());
-//
-////                        stateCircleList = reportService.getCirclesByState(user.getStateId().getStateId());
-//
+                        if(user.getAccessLevel().equalsIgnoreCase(AccessLevel.STATE.getAccessLevel())){
+                            stateCircleList = reportService.getUserCircles(user);
+                            for(Circle circle: stateCircleList){
+                                reportRequest.setCircleId(circle.getCircleId());
+                                pathName = reportService.getReportPathName(reportRequest).get(1);
+                                fileName = reportService.getReportPathName(reportRequest).get(0);
+                                newMail.setSubject(fileName);
+                                newMail.setFileName(fileName);
+                                newMail.setRootPath(pathName);
+                                errorMessage = emailService.sendMail(newMail);
+                                if (errorMessage.equalsIgnoreCase("failure"))
+                                    errorSendingMail.put(user.getEmailId(),fileName);
+                            }
+                        }else if(user.getAccessLevel().equalsIgnoreCase(AccessLevel.NATIONAL.getAccessLevel())){
+                            reportRequest.setCircleId(0);
+                            pathName = reportService.getReportPathName(reportRequest).get(1);
+                            fileName = reportService.getReportPathName(reportRequest).get(0);
+                            newMail.setSubject(fileName);
+                            newMail.setFileName(fileName);
+                            newMail.setRootPath(pathName);
+                            errorMessage = emailService.sendMail(newMail);
+                            if (errorMessage.equalsIgnoreCase("failure"))
+                                errorSendingMail.put(user.getEmailId(),fileName);
+                        } else {
+                            reportRequest.setCircleId(user.getDistrictId().getCircleOfDistrict().getCircleId());
+                            pathName = reportService.getReportPathName(reportRequest).get(1);
+                            fileName = reportService.getReportPathName(reportRequest).get(0);
+                            newMail.setSubject(fileName);
+                            newMail.setFileName(fileName);
+                            newMail.setRootPath(pathName);
+                            errorMessage = emailService.sendMail(newMail);
+                            if (errorMessage.equalsIgnoreCase("failure"))
+                                errorSendingMail.put(user.getEmailId(),fileName);
+                        }
                     }else {
                         if (user.getStateId() == null)
                             reportRequest.setStateId(0);
@@ -113,7 +116,7 @@ public class EmailController {
                         newMail.setRootPath(pathName);
                         errorMessage = emailService.sendMail(newMail);
                         if (errorMessage.equalsIgnoreCase("failure"))
-                            errorSendingMail.add(user.getFullName() + "_" + fileName);
+                            errorSendingMail.put(user.getEmailId(),fileName);
                     }
             }
         }
