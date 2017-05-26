@@ -83,7 +83,7 @@ public class AdminServiceImpl implements AdminService {
 
     private final String documents = System.getProperty("user.home") +File.separator+ "Documents/";
     private final String reports = documents+"Reports/";
-
+    private Calendar c =Calendar.getInstance();
     @Override
     public HashMap startBulkDataImport(User loggedInUser) {
         Pattern pattern;
@@ -501,8 +501,18 @@ public class AdminServiceImpl implements AdminService {
     public void createSpecificReport(ReportRequest reportRequest) {
 
         String rootPath = reports+reportRequest.getReportType()+ "/";
-        Date toDate=reportRequest.getToDate();
-        Date startDate=reportRequest.getFromDate();
+//        Date toDate=reportRequest.getToDate();
+        Date startDate=new Date(0);
+        Calendar aCalendar = Calendar.getInstance();
+        aCalendar.setTime(reportRequest.getToDate());
+//        aCalendar.add(Calendar.MONTH, -1);
+        aCalendar.set(Calendar.DATE, 1);
+
+        Date fromDate = aCalendar.getTime();
+
+        aCalendar.set(Calendar.DATE,aCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+
+        Date toDate = aCalendar.getTime();
         Integer stateId=reportRequest.getStateId();
         Integer districtId=reportRequest.getDistrictId();
         Integer blockId=reportRequest.getBlockId();
@@ -602,7 +612,7 @@ public class AdminServiceImpl implements AdminService {
         }
         if(reportRequest.getReportType().equals(ReportType.maAnonymous.getReportType())){
 
-            List<AnonymousUsers> anonymousUsersList = anonymousUsersDao.getAnonymousUsers(startDate,toDate);
+            List<AnonymousUsers> anonymousUsersList = anonymousUsersDao.getAnonymousUsers(fromDate,toDate);
 
             if(stateId==0){
                 getCircleWiseAnonymousUsers(anonymousUsersList,  rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
@@ -610,13 +620,13 @@ public class AdminServiceImpl implements AdminService {
             else{
                 String circleName=circleDao.getByCircleId(circleId).getCircleName();
                 String rootPathCircle=rootPath+circleName+"/";
-                List<AnonymousUsers> anonymousUsersListCircle = anonymousUsersDao.getAnonymousUsersCircle(startDate,toDate,circleId);
+                List<AnonymousUsers> anonymousUsersListCircle = anonymousUsersDao.getAnonymousUsersCircle(fromDate,toDate,circleId);
                 getCircleWiseAnonymousUsers(anonymousUsersListCircle, rootPathCircle, circleName, toDate);
             }
         }
         if(reportRequest.getReportType().equals(ReportType.lowUsage.getReportType())){
 
-            List<KilkariLowUsage> kilkariLowUsageList = kilkariLowUsageDao.getKilkariLowUsageUsers(startDate, toDate);
+            List<KilkariLowUsage> kilkariLowUsageList = kilkariLowUsageDao.getKilkariLowUsageUsers(fromDate, toDate);
 
 
             if(stateId==0){
@@ -663,7 +673,7 @@ public class AdminServiceImpl implements AdminService {
         }
         if(reportRequest.getReportType().equals(ReportType.sixWeeks.getReportType())){
 
-            List<KilkariSixWeeksNoAnswer> kilkariSixWeeksNoAnswers = kilkariSixWeeksNoAnswerDao.getKilkariUsers(startDate, toDate);
+            List<KilkariSixWeeksNoAnswer> kilkariSixWeeksNoAnswers = kilkariSixWeeksNoAnswerDao.getKilkariUsers(fromDate, toDate);
 
             if(stateId==0){
                 getKilkariSixWeekNoAnswer(kilkariSixWeeksNoAnswers, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
@@ -710,7 +720,7 @@ public class AdminServiceImpl implements AdminService {
 
         if(reportRequest.getReportType().equals(ReportType.selfDeactivated.getReportType())){
 
-            List<KilkariSelfDeactivated> kilkariSelfDeactivatedList = kilkariSelfDeactivatedDao.getSelfDeactivatedUsers(startDate, toDate);
+            List<KilkariSelfDeactivated> kilkariSelfDeactivatedList = kilkariSelfDeactivatedDao.getSelfDeactivatedUsers(fromDate, toDate);
 
             if(stateId==0){
                 getKilkariSelfDeactivation(kilkariSelfDeactivatedList, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
@@ -758,6 +768,8 @@ public class AdminServiceImpl implements AdminService {
 
     public void getCumulativeCourseCompletion(List<FrontLineWorkers> successfulCandidates, String rootPath, String place, Date toDate) {
         //Create blank workbook
+
+
         XSSFWorkbook workbook = new XSSFWorkbook();
         //Create a blank sheet
         XSSFSheet spreadsheet = workbook.createSheet(
@@ -815,7 +827,7 @@ public class AdminServiceImpl implements AdminService {
         //Write the workbook in file system
         FileOutputStream out = null;
         try {
-            out = new FileOutputStream(new File(rootPath + ReportType.maCourse.getReportType() + "_" + place + "_" + toDate + ".xlsx"));
+            out = new FileOutputStream(new File(rootPath + ReportType.maCourse.getReportType() + "_" + place + "_" + getMonthYear(toDate) + ".xlsx"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -869,7 +881,7 @@ public class AdminServiceImpl implements AdminService {
         //Write the workbook in file system
         FileOutputStream out = null;
         try {
-            out = new FileOutputStream(new File(rootPath + ReportType.maAnonymous.getReportType() + "_" + place + "_" + toDate + ".xlsx"));
+            out = new FileOutputStream(new File(rootPath + ReportType.maAnonymous.getReportType() + "_" + place + "_" + getMonthYear(toDate) + ".xlsx"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -942,7 +954,7 @@ public class AdminServiceImpl implements AdminService {
         //Write the workbook in file system
         FileOutputStream out = null;
         try {
-            out = new FileOutputStream(new File(rootPath + ReportType.maInactive.getReportType() + "_" + place + "_" + toDate + ".xlsx"));
+            out = new FileOutputStream(new File(rootPath + ReportType.maInactive.getReportType() + "_" + place + "_" + getMonthYear(toDate) + ".xlsx"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -1012,7 +1024,7 @@ public class AdminServiceImpl implements AdminService {
         //Write the workbook in file system
         FileOutputStream out = null;
         try {
-            out = new FileOutputStream(new File(rootPath + ReportType.sixWeeks.getReportType() + "_" + place + "_" + toDate + ".xlsx"));
+            out = new FileOutputStream(new File(rootPath + ReportType.sixWeeks.getReportType() + "_" + place + "_" + getMonthYear(toDate) + ".xlsx"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -1089,7 +1101,7 @@ public class AdminServiceImpl implements AdminService {
         //Write the workbook in file system
         FileOutputStream out = null;
         try {
-            out = new FileOutputStream(new File(rootPath + ReportType.selfDeactivated.getReportType() + "_" + place + "_" + toDate + ".xlsx"));
+            out = new FileOutputStream(new File(rootPath + ReportType.selfDeactivated.getReportType() + "_" + place + "_" + getMonthYear(toDate) + ".xlsx"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -1159,7 +1171,7 @@ public class AdminServiceImpl implements AdminService {
         //Write the workbook in file system
         FileOutputStream out = null;
         try {
-            out = new FileOutputStream(new File(rootPath + ReportType.lowUsage.getReportType() + "_" + place + "_" + toDate + ".xlsx"));
+            out = new FileOutputStream(new File(rootPath + ReportType.lowUsage.getReportType() + "_" + place + "_" + getMonthYear(toDate) + ".xlsx"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -1468,5 +1480,20 @@ public class AdminServiceImpl implements AdminService {
             }
 
         }
+    }
+
+    private String getMonthYear(Date toDate){
+        c.setTime(toDate);
+        int month=c.get(Calendar.MONTH)+1;
+        int year=(c.get(Calendar.YEAR))%100;
+        String monthString;
+        if(month<10){
+            monthString="0"+String.valueOf(month);
+        }
+       else monthString=String.valueOf(month);
+
+        String yearString=String.valueOf(year);
+
+        return monthString+"_"+yearString;
     }
 }

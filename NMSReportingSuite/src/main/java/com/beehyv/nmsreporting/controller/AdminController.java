@@ -18,6 +18,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.beehyv.nmsreporting.enums.ReportType.maCourse;
+
 
 /**
  * Created by beehyv on 15/3/17.
@@ -117,7 +119,7 @@ public class AdminController {
     }
 
     public void createAllFiles(){
-        adminService.createFiles(ReportType.maCourse.getReportType());
+        adminService.createFiles(maCourse.getReportType());
         adminService.createFolders(ReportType.maAnonymous.getReportType());
         adminService.createFiles(ReportType.maInactive.getReportType());
         adminService.createFiles(ReportType.lowUsage.getReportType());
@@ -126,7 +128,7 @@ public class AdminController {
     }
     @RequestMapping(value = "/generateReports/{reportType}", method = RequestMethod.GET)
     @ResponseBody
-    public String getCumulativeCourseCompletionExcels() throws ParseException, java.text.ParseException{
+    public String getCumulativeCourseCompletionExcels(@PathVariable("reportType") String reportType) throws ParseException, java.text.ParseException{
 
         Calendar aCalendar = Calendar.getInstance();
         aCalendar.add(Calendar.MONTH, -1);
@@ -138,8 +140,29 @@ public class AdminController {
 
         Date toDate = aCalendar.getTime();
 
-        adminService.getCumulativeCourseCompletionFiles(toDate);
-        
+        Date startDate=new Date(0);
+        ReportType tempReportType = ReportType.valueOf(reportType);
+        switch (tempReportType) {
+            case maCourse: {
+                adminService.getCumulativeCourseCompletionFiles(toDate);
+                break;
+            }
+            case maAnonymous: {
+                adminService.getCircleWiseAnonymousFiles(fromDate, toDate);
+            }
+            case maInactive:{
+                adminService.getCumulativeInactiveFiles(toDate);
+            }
+            case lowUsage:{
+                adminService.getKilkariLowUsageFiles(fromDate, toDate);
+            }
+            case selfDeactivated:{
+                adminService.getKilkariSelfDeactivationFiles(fromDate, toDate);
+            }
+            case sixWeeks:{
+                adminService.getKilkariSixWeekNoAnswerFiles(fromDate, toDate);
+            }
+        }
         return "Bulkimport";
     }
 }
