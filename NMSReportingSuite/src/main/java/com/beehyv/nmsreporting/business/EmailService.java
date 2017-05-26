@@ -10,4 +10,6 @@ public interface EmailService {
 
     public String sendMail(EmailInfo emailInfo);
 
+    public String getBody(String reportName, String monthAndYear,String name);
+
 }

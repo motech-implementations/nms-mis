@@ -70,6 +70,8 @@ public class EmailController {
                                 fileName = reportService.getReportPathName(reportRequest).get(0);
                                 newMail.setSubject(fileName);
                                 newMail.setFileName(fileName);
+                                //Change c.gettime to monthAndYear
+                                newMail.setBody(emailService.getBody(reportName,c.getTime().toString(),user.getFullName()));
                                 newMail.setRootPath(pathName);
                                 errorMessage = emailService.sendMail(newMail);
                                 if (errorMessage.equalsIgnoreCase("failure"))
