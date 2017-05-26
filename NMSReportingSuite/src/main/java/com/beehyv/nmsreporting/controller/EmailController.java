@@ -11,8 +11,15 @@ import javax.mail.internet.MimeMultipart;
 import javax.servlet.ServletContext;
 import javax.xml.ws.RequestWrapper;
 
+import com.beehyv.nmsreporting.business.EmailService;
+import com.beehyv.nmsreporting.business.ReportService;
+import com.beehyv.nmsreporting.business.UserService;
 import com.beehyv.nmsreporting.dao.UserDao;
 import com.beehyv.nmsreporting.entity.EmailInfo;
+import com.beehyv.nmsreporting.entity.ReportRequest;
+import com.beehyv.nmsreporting.enums.AccessLevel;
+import com.beehyv.nmsreporting.enums.ReportType;
+import com.beehyv.nmsreporting.model.StateCircle;
 import com.beehyv.nmsreporting.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -24,8 +31,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Created by beehyv on 16/5/17.
@@ -38,68 +44,86 @@ public class EmailController {
     @Autowired
     JavaMailSender mailSender;
     @Autowired
-    UserDao userDao;
+    UserService userService;
+    @Autowired
+    ReportService reportService;
+    @Autowired
+    EmailService emailService;
 
-    @RequestMapping(value = "/input", method = RequestMethod.GET)
-    public @ResponseBody String showForm(ModelMap model) {
-        model.addAttribute("mail", new EmailInfo());
-        return "AttachEmailInput";
-    }
+//    @RequestMapping(value = "/input", method = RequestMethod.GET)
+//    public @ResponseBody String showForm(ModelMap model) {
+//        model.addAttribute("mail", new EmailInfo());
+//        return "AttachEmailInput";
+//    }
 
     @RequestMapping(value = "/sendAll", method = RequestMethod.GET)
-    public @ResponseBody String sendAllMails(){
-        List<User> users = userDao.getAllUsers();
+    public @ResponseBody List<String> sendAllMails(){
+        List<User> users = userService.findAllActiveUsers();
+        List<String> errorSendingMail = new ArrayList<>();
         for(User user: users){
             EmailInfo newMail = new EmailInfo();
             newMail.setFrom("Beehyv");
             newMail.setTo(user.getEmailId());
-            String accessLevel = user.getAccessLevel();
-            if(accessLevel.equalsIgnoreCase("NATIONAL")){
-                //??????????
+                for(ReportType reportType: ReportType.values()){
+                    ReportRequest reportRequest = new ReportRequest();
+                    Calendar c = Calendar.getInstance();   // this takes current date
+                    c.set(Calendar.DAY_OF_MONTH, 1);
+                    reportRequest.setToDate(c.getTime());
+                    reportRequest.setReportType(reportType.getReportType());
+                    String pathName = "",fileName = "",errorMessage = "";
+                    List<StateCircle> stateCircleList = new ArrayList<>();
+                    if(reportType.getReportType().equalsIgnoreCase(ReportType.maAnonymous.getReportType())){
+//
+//                        if (user.getStateId() == null) {
+//                            reportRequest.setStateId(0);
+//                            reportRequest.setCircleId(0);
+//                        }
+//                        else
+//                            reportRequest.setStateId(user.getStateId().getStateId());
+//                        if (user.getDistrictId() == null) {
+//                            reportRequest.setDistrictId(0);
+//                        }
+//                        else
+//                            reportRequest.setDistrictId(user.getDistrictId().getDistrictId());
+//                        if (user.getBlockId() == null)
+//                            reportRequest.setBlockId(0);
+//                        else
+//                            reportRequest.setBlockId(user.getBlockId().getBlockId());
+//
+////                        stateCircleList = reportService.getCirclesByState(user.getStateId().getStateId());
+//
+                    }else {
+                        if (user.getStateId() == null)
+                            reportRequest.setStateId(0);
+                        else
+                            reportRequest.setStateId(user.getStateId().getStateId());
+                        if (user.getDistrictId() == null)
+                            reportRequest.setDistrictId(0);
+                        else
+                            reportRequest.setDistrictId(user.getDistrictId().getDistrictId());
+                        if (user.getBlockId() == null)
+                            reportRequest.setBlockId(0);
+                        else
+                            reportRequest.setBlockId(user.getBlockId().getBlockId());
+                        pathName = reportService.getReportPathName(reportRequest).get(1);
+                        fileName = reportService.getReportPathName(reportRequest).get(0);
+
+                        newMail.setSubject(fileName);
+                        newMail.setFileName(fileName);
+                        newMail.setRootPath(pathName);
+                        errorMessage = emailService.sendMail(newMail);
+                        if (errorMessage.equalsIgnoreCase("failure"))
+                            errorSendingMail.add(user.getFullName() + "_" + fileName);
+                    }
             }
         }
-        return "Successfully sent all mails";
+        return errorSendingMail;
     }
 
-    @RequestMapping(value = "/send", method = RequestMethod.POST)
-    public @ResponseBody String sendWithAttach(@RequestBody EmailInfo mailInfo) {
-        try {
-            final JavaMailSenderImpl ms = (JavaMailSenderImpl) mailSender;
-            Properties props = ms.getJavaMailProperties();
-            final String username = ms.getUsername();
-            final String password = ms.getPassword();
-            //need authenticate to server
-            Session session = Session.getInstance(props,
-                    new javax.mail.Authenticator() {
-                        protected PasswordAuthentication getPasswordAuthentication() {
-                            return new PasswordAuthentication(username, password);
-                        }
-                    });
-            MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(mailInfo.getFrom()));
-            message.setRecipients(Message.RecipientType.TO,	InternetAddress.parse(mailInfo.getTo()));
-            message.setSubject(mailInfo.getSubject(),"UTF-8");
-            BodyPart messageBodyPart = new MimeBodyPart();
-            messageBodyPart.setText(mailInfo.getBody());
-            Multipart multipart = new MimeMultipart();
-            multipart.addBodyPart(messageBodyPart);
-            messageBodyPart = new MimeBodyPart();
-            String filename = System.getProperty("user.home") + File.separator + mailInfo.getAttachment();
-            DataSource source = new FileDataSource(filename);
-            messageBodyPart.setDataHandler(new DataHandler(source));
-            messageBodyPart.setFileName(mailInfo.getAttachment());
-            multipart.addBodyPart(messageBodyPart);
-            message.setContent(multipart);
-            Transport.send(message);
-            return "success";
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            return "failure";
-        }
-    }
 
-    @RequestMapping(value = "/dummy", method = RequestMethod.GET)
-    public @ResponseBody EmailInfo dummy(){
-        return new EmailInfo();
-    }
+
+//    @RequestMapping(value = "/dummy", method = RequestMethod.GET)
+//    public @ResponseBody EmailInfo dummy(){
+//        return new EmailInfo();
+//    }
 }
