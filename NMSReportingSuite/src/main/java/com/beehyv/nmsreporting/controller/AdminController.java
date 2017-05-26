@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -123,21 +124,22 @@ public class AdminController {
         adminService.createFiles(ReportType.selfDeactivated.getReportType());
         adminService.createFiles(ReportType.sixWeeks.getReportType());
     }
-    @RequestMapping(value = "/getCumulativeCourseCompCSV1/{fromDate}/{toDate}", method = RequestMethod.GET)
+    @RequestMapping(value = "/generateReports/{reportType}", method = RequestMethod.GET)
     @ResponseBody
-    public String getCumulativeCourseCompletionExcels(@PathVariable("fromDate") Date fromDate, @PathVariable("toDate") Date toDate) throws ParseException, java.text.ParseException{
-        /*User loggedInUser = userService.getCurrentUser();
-        String loggedUserAccess=loggedInUser.getAccessLevel();
-        AccessLevel loggedUserAccessLevel=AccessLevel.getLevel(loggedUserAccess);
-        int Locationid=0;
-        if(loggedUserAccess=="STATE"){
-            Locationid=loggedInUser.getStateId().getStateId();
-        }
-        else if(loggedUserAccess=="DISTRICT"){
-            Locationid=loggedInUser.getDistrictId().getDistrictId();
-        }*/
-        adminService.getCumulativeCourseCompletionFiles(fromDate,toDate);
+    public String getCumulativeCourseCompletionExcels() throws ParseException, java.text.ParseException{
 
+        Calendar aCalendar = Calendar.getInstance();
+        aCalendar.add(Calendar.MONTH, -1);
+        aCalendar.set(Calendar.DATE, 1);
+
+        Date fromDate = aCalendar.getTime();
+
+        aCalendar.set(Calendar.DATE,aCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+
+        Date toDate = aCalendar.getTime();
+
+        adminService.getCumulativeCourseCompletionFiles(toDate);
+        
         return "Bulkimport";
     }
 }

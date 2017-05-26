@@ -1176,7 +1176,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void getCumulativeCourseCompletionFiles(Date fromDate, Date toDate) {
+    public void getCumulativeCourseCompletionFiles(Date toDate) {
 
         List<State> states = stateDao.getAllStates();
         String rootPath = reports+ReportType.maCourse.getReportType()+ "/";
@@ -1237,7 +1237,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void getCumulativeInactiveFiles(Date fromDate, Date toDate) {
+    public void getCumulativeInactiveFiles(Date toDate) {
         List<State> states = stateDao.getAllStates();
         String rootPath = reports+ReportType.maInactive.getReportType()+ "/";
         List<FrontLineWorkers> inactiveFrontLineWorkers = frontLineWorkersDao.getInactiveFrontLineWorkers(toDate);

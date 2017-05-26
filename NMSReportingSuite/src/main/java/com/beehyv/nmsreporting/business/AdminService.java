@@ -21,11 +21,11 @@ public interface AdminService {
 
   void getBulkDataImportCSV();
 
-  void getCumulativeCourseCompletionFiles(Date fromDate, Date toDate);
+  void getCumulativeCourseCompletionFiles( Date toDate);
 
   void getCircleWiseAnonymousFiles(Date fromDate,Date toDate);
 
-  void getCumulativeInactiveFiles(Date fromDate, Date toDate);
+  void getCumulativeInactiveFiles(Date toDate);
 
   void getKilkariSixWeekNoAnswerFiles(Date fromDate, Date toDate);
 
