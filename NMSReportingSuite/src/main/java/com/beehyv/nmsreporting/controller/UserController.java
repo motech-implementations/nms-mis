@@ -7,6 +7,7 @@ import com.beehyv.nmsreporting.dao.StateDao;
 import com.beehyv.nmsreporting.dto.PasswordDto;
 import com.beehyv.nmsreporting.dto.UserDto;
 import com.beehyv.nmsreporting.entity.ReportRequest;
+import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.Role;
 import com.beehyv.nmsreporting.model.User;
@@ -24,10 +25,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by beehyv on 15/3/17.
@@ -53,7 +51,7 @@ public class UserController {
     private final Date bigBang = new Date(0);
     private final String documents = System.getProperty("user.home") +File.separator+ "Documents/";
     private final String reports = documents+"Reports/";
-
+    private Calendar c =Calendar.getInstance();
     @RequestMapping(value = {"/", "/list"}, method = RequestMethod.GET)
     public @ResponseBody List<User> getAllUsers() {
         return userService.findAllActiveUsers();
@@ -234,7 +232,7 @@ public class UserController {
    public void getReports(@RequestBody ReportRequest reportRequest,HttpServletResponse response) throws ParseException, java.text.ParseException{
 
        String rootPath = "";
-       String place = "NATIONAL";
+       String place = AccessLevel.NATIONAL.getAccessLevel();
 
        if(reportRequest.getReportType().equals(ReportType.maAnonymous.getReportType())){
             if(reportRequest.getCircleId()!=0){
@@ -258,7 +256,7 @@ public class UserController {
                rootPath += place + "/";
            }
        }
-       String filename= reportRequest.getReportType()+"_"+place+"_"+reportRequest.getToDate()+".xlsx";
+       String filename= reportRequest.getReportType()+"_"+place+"_"+getMonthYear(reportRequest.getToDate())+".xlsx";
        rootPath = reports+reportRequest.getReportType()+"/"+rootPath+filename;
 
        response.setContentType("APPLICATION/OCTECT-STREAM");
@@ -294,4 +292,18 @@ public class UserController {
 //       }
 
    }
+    private String getMonthYear(Date toDate){
+        c.setTime(toDate);
+        int month=c.get(Calendar.MONTH)+1;
+        int year=(c.get(Calendar.YEAR))%100;
+        String monthString;
+        if(month<10){
+            monthString="0"+String.valueOf(month);
+        }
+        else monthString=String.valueOf(month);
+
+        String yearString=String.valueOf(year);
+
+        return monthString+"_"+yearString;
+    }
 }

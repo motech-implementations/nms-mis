@@ -13,7 +13,7 @@ public enum ReportType {
 //    sixWeeks("sixWeeks");
 
     maCourse("CumulativeCourseCompletion"),
-    maAnonymous("CumulativeAnonymousUsers"),
+    maAnonymous("AnonymousUsers"),
     maInactive("CumulativeInactiveUsers"),
     lowUsage("KilkariLowUsage"),
     selfDeactivated("KilkariSelfDeactivated"),
