@@ -1181,7 +1181,7 @@ public class AdminServiceImpl implements AdminService {
         List<State> states = stateDao.getAllStates();
         String rootPath = reports+ReportType.maCourse.getReportType()+ "/";
         List<FrontLineWorkers> successFullcandidates = maCourseAttemptDao.getSuccessFulCompletion(toDate);
-        getCumulativeCourseCompletion(successFullcandidates, rootPath, "National", toDate);
+        getCumulativeCourseCompletion(successFullcandidates, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
         for (State state : states) {
             String stateName = state.getStateName();
             String rootPathState = rootPath+ stateName+ "/";
@@ -1227,7 +1227,7 @@ public class AdminServiceImpl implements AdminService {
         List<Circle> circleList = circleDao.getAllCircles();
         String rootPath = reports+ReportType.maAnonymous.getReportType()+ "/";
         List<AnonymousUsers> anonymousUsersList = anonymousUsersDao.getAnonymousUsers(startDate,toDate);
-        getCircleWiseAnonymousUsers(anonymousUsersList, rootPath, "National", toDate);
+        getCircleWiseAnonymousUsers(anonymousUsersList, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
         for (Circle circle : circleList) {
             String circleName = circle.getCircleName();
             String rootPathCircle=rootPath+circleName+"/";
@@ -1241,7 +1241,7 @@ public class AdminServiceImpl implements AdminService {
         List<State> states = stateDao.getAllStates();
         String rootPath = reports+ReportType.maInactive.getReportType()+ "/";
         List<FrontLineWorkers> inactiveFrontLineWorkers = frontLineWorkersDao.getInactiveFrontLineWorkers(toDate);
-        getCumulativeInactiveUsers(inactiveFrontLineWorkers, rootPath, "National", toDate);
+        getCumulativeInactiveUsers(inactiveFrontLineWorkers, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
         for (State state : states) {
             String stateName = state.getStateName();
             String rootPathState = rootPath + stateName+ "/";
@@ -1288,7 +1288,7 @@ public class AdminServiceImpl implements AdminService {
         List<State> states = stateDao.getAllStates();
         String rootPath = reports +ReportType.sixWeeks.getReportType()+ "/";
         List<KilkariSixWeeksNoAnswer> kilkariSixWeeksNoAnswers = kilkariSixWeeksNoAnswerDao.getKilkariUsers(fromDate, toDate);
-        getKilkariSixWeekNoAnswer(kilkariSixWeeksNoAnswers, rootPath, "National", toDate);
+        getKilkariSixWeekNoAnswer(kilkariSixWeeksNoAnswers, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
         for (State state : states) {
             String stateName = state.getStateName();
             String rootPathState = rootPath + stateName+ "/";
@@ -1336,7 +1336,7 @@ public class AdminServiceImpl implements AdminService {
         List<State> states = stateDao.getAllStates();
         String rootPath = reports+ReportType.lowUsage.getReportType() + "/";
         List<KilkariLowUsage> kilkariLowUsageList = kilkariLowUsageDao.getKilkariLowUsageUsers(fromDate, toDate);
-        getKilkariLowUsage(kilkariLowUsageList, rootPath, "National", toDate);
+        getKilkariLowUsage(kilkariLowUsageList, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
         for (State state : states) {
             String stateName = state.getStateName();
             String rootPathState = rootPath + stateName+ "/";
@@ -1382,7 +1382,7 @@ public class AdminServiceImpl implements AdminService {
         List<State> states = stateDao.getAllStates();
         String rootPath = reports+ReportType.selfDeactivated.getReportType() + "/";
         List<KilkariSelfDeactivated> kilkariSelfDeactivatedList = kilkariSelfDeactivatedDao.getSelfDeactivatedUsers(fromDate, toDate);
-        getKilkariSelfDeactivation(kilkariSelfDeactivatedList, rootPath, "National", toDate);
+        getKilkariSelfDeactivation(kilkariSelfDeactivatedList, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
         for (State state : states) {
             String stateName = state.getStateName();
             String rootPathState = rootPath + stateName+ "/";
