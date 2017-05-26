@@ -6,6 +6,7 @@ import com.beehyv.nmsreporting.model.Circle;
 import com.beehyv.nmsreporting.model.StateCircle;
 import com.beehyv.nmsreporting.model.User;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,4 +21,6 @@ public interface ReportService {
     List<Circle> getUserCircles(User user);
 
     ReportType getReportTypeByName(String reportName);
+
+    String getMonthYear(Date toDate);
 }

@@ -48,6 +48,9 @@ public class UserController {
     @Autowired
     private AdminService adminService;
 
+    @Autowired
+    private ReportService reportService;
+
     private final Date bigBang = new Date(0);
     private final String documents = System.getProperty("user.home") +File.separator+ "Documents/";
     private final String reports = documents+"Reports/";
@@ -256,7 +259,7 @@ public class UserController {
                rootPath += place + "/";
            }
        }
-       String filename= reportRequest.getReportType()+"_"+place+"_"+getMonthYear(reportRequest.getToDate())+".xlsx";
+       String filename= reportRequest.getReportType()+"_"+place+"_"+reportService.getMonthYear(reportRequest.getToDate())+".xlsx";
        rootPath = reports+reportRequest.getReportType()+"/"+rootPath+filename;
 
        response.setContentType("APPLICATION/OCTECT-STREAM");
@@ -284,7 +287,7 @@ public class UserController {
 //       }else if(reportRequest.getDistrictId()==0){
 //           rootPath = locationService.findStateById(reportRequest.getStateId()).getStateName();
 //       }else if(reportRequest.getBlockId()==0){
-//           rootPath = locationService.findStateById(reportRequest.getStateId()).getStateName()+"/"+locationService.findDistrictById(reportRequest.getDistrictId()).getDistrictName();
+//           rootPath = locationService.findStateById(reportRequest.getgetMonthYearStateId()).getStateName()+"/"+locationService.findDistrictById(reportRequest.getDistrictId()).getDistrictName();
 //       }
 //       if (reportRequest.getReportType().equals(ReportType.maCourse)) {
 //
@@ -292,18 +295,4 @@ public class UserController {
 //       }
 
    }
-    private String getMonthYear(Date toDate){
-        c.setTime(toDate);
-        int month=c.get(Calendar.MONTH)+1;
-        int year=(c.get(Calendar.YEAR))%100;
-        String monthString;
-        if(month<10){
-            monthString="0"+String.valueOf(month);
-        }
-        else monthString=String.valueOf(month);
-
-        String yearString=String.valueOf(year);
-
-        return monthString+"_"+yearString;
-    }
 }

@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService{
             return userDao.getUsersByLocation("blockId", currentUser.getBlockId());
         }
         else if(accessLevel.equalsIgnoreCase(AccessLevel.NATIONAL.getAccessLevel())){
-            return userDao.getAllUsers();
+            return userDao.getActiveUsers();
         }
         else
             return new ArrayList<User>();

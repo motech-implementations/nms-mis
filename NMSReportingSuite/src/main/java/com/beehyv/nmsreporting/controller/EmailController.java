@@ -25,10 +25,7 @@ import java.util.*;
 @Controller
 @RequestMapping("/nms/mail")
 public class EmailController {
-    @Autowired
-    ServletContext context;
-    @Autowired
-    JavaMailSender mailSender;
+
     @Autowired
     UserService userService;
     @Autowired
@@ -56,22 +53,21 @@ public class EmailController {
                     ReportType reportType = reportService.getReportTypeByName(reportName);
                     ReportRequest reportRequest = new ReportRequest();
                     Calendar c = Calendar.getInstance();   // this takes current date
-                    c.set(Calendar.DAY_OF_MONTH, 1);
+                    c.add(Calendar.MONTH, -1);
+                    c.set(Calendar.DATE, 1);
                     reportRequest.setToDate(c.getTime());
                     reportRequest.setReportType(reportType.getReportType());
                     String pathName = "",fileName = "",errorMessage = "";
-                    List<Circle> stateCircleList = new ArrayList<>();
                     if(reportType.getReportType().equalsIgnoreCase(ReportType.maAnonymous.getReportType())){
                         if(user.getAccessLevel().equalsIgnoreCase(AccessLevel.STATE.getAccessLevel())){
-                            stateCircleList = reportService.getUserCircles(user);
+                            List<Circle> stateCircleList = reportService.getUserCircles(user);
                             for(Circle circle: stateCircleList){
                                 reportRequest.setCircleId(circle.getCircleId());
                                 pathName = reportService.getReportPathName(reportRequest).get(1);
                                 fileName = reportService.getReportPathName(reportRequest).get(0);
                                 newMail.setSubject(fileName);
                                 newMail.setFileName(fileName);
-                                //Change c.gettime to monthAndYear
-                                newMail.setBody(emailService.getBody(reportName,c.getTime().toString(),user.getFullName()));
+                                newMail.setBody(emailService.getBody(reportName,reportService.getMonthYear(c.getTime()),user.getFullName()));
                                 newMail.setRootPath(pathName);
                                 errorMessage = emailService.sendMail(newMail);
                                 if (errorMessage.equalsIgnoreCase("failure"))

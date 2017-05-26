@@ -57,7 +57,10 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
     @Override
     public List<User> getActiveUsers() {
         Criteria criteria = createEntityCriteria();
-        criteria.add(Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus()));
+        criteria.add(Restrictions.and(
+                Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus()),
+                Restrictions.ne("userId",1)
+        ));
         return (List<User>) criteria.list();
     }
 
@@ -94,7 +97,9 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.and(
                 Restrictions.eq("accessLevel", AccessLevel.NATIONAL.getAccessLevel()),
-                Restrictions.eq("roleId", adminRole)));
+                Restrictions.eq("roleId", adminRole),
+                Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus())
+        ));
         return criteria.list() != null && criteria.list().size() > 0;
     }
 
@@ -103,10 +108,9 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.and(
                 Restrictions.eq("accessLevel", AccessLevel.STATE.getAccessLevel()),
-                Restrictions.and(
-                        Restrictions.eq("roleId", adminRole),
-                        Restrictions.eq("stateId", state)
-                )
+                Restrictions.eq("roleId", adminRole),
+                Restrictions.eq("stateId", state),
+                Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus())
         ));
         return criteria.list() != null && criteria.list().size() > 0;
     }
@@ -116,10 +120,9 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.and(
                 Restrictions.eq("accessLevel", AccessLevel.DISTRICT.getAccessLevel()),
-                Restrictions.and(
-                        Restrictions.eq("roleId", adminRole),
-                        Restrictions.eq("districtId", district)
-                )
+                Restrictions.eq("roleId", adminRole),
+                Restrictions.eq("districtId", district),
+                Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus())
         ));
         return criteria.list() != null && criteria.list().size() > 0;
     }
@@ -132,8 +135,12 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
     @Override
     public boolean isAdminCreated(District districtId) {
         Criteria criteria = createEntityCriteria();
-        criteria.add(Restrictions.and(Restrictions.eq("district", districtId),
-                Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus()),Restrictions.eq("access_level", AccessLevel.DISTRICT.getAccessLevel()),Restrictions.eq("access_type", AccessType.ADMIN.getAccessType())));
+        criteria.add(Restrictions.and(
+                Restrictions.eq("district", districtId),
+                Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus()),
+                Restrictions.eq("access_level", AccessLevel.DISTRICT.getAccessLevel()),
+                Restrictions.eq("access_type", AccessType.ADMIN.getAccessType())
+        ));
         List<User> Admins=(List<User>) criteria.list();
         if(Admins==null||Admins.size()==0){
             return true;
