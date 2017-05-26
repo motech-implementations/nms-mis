@@ -1,6 +1,7 @@
 package com.beehyv.nmsreporting.business;
 
 import com.beehyv.nmsreporting.entity.ReportRequest;
+import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.Circle;
 import com.beehyv.nmsreporting.model.StateCircle;
 import com.beehyv.nmsreporting.model.User;
@@ -18,4 +19,5 @@ public interface ReportService {
 
     List<Circle> getUserCircles(User user);
 
+    ReportType getReportTypeByName(String reportName);
 }

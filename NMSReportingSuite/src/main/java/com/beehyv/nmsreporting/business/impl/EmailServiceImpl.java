@@ -23,7 +23,7 @@ import java.util.Properties;
 /**
  * Created by beehyv on 25/5/17.
  */
-@Service("reportService")
+@Service("emailService")
 @Transactional
 public class EmailServiceImpl implements EmailService{
 

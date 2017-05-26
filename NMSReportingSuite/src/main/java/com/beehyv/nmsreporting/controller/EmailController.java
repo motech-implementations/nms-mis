@@ -44,15 +44,16 @@ public class EmailController {
 //        return "AttachEmailInput";
 //    }
 
-    @RequestMapping(value = "/sendAll", method = RequestMethod.GET)
-    public @ResponseBody HashMap sendAllMails(){
+    @RequestMapping(value = "/sendAll/{reportType}", method = RequestMethod.GET)
+    public @ResponseBody HashMap sendAllMails(@PathVariable String reportName){
         List<User> users = userService.findAllActiveUsers();
         HashMap<String,String> errorSendingMail = new HashMap<>();
         for(User user: users){
             EmailInfo newMail = new EmailInfo();
             newMail.setFrom("Beehyv");
             newMail.setTo(user.getEmailId());
-                for(ReportType reportType: ReportType.values()){
+//                for(ReportType reportType: ReportType.values()){
+                    ReportType reportType = reportService.getReportTypeByName(reportName);
                     ReportRequest reportRequest = new ReportRequest();
                     Calendar c = Calendar.getInstance();   // this takes current date
                     c.set(Calendar.DAY_OF_MONTH, 1);
@@ -118,7 +119,7 @@ public class EmailController {
                         if (errorMessage.equalsIgnoreCase("failure"))
                             errorSendingMail.put(user.getEmailId(),fileName);
                     }
-            }
+//            }
         }
         return errorSendingMail;
     }
