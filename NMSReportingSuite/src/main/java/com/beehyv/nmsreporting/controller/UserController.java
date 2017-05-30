@@ -95,17 +95,17 @@ public class UserController {
             user1.setPhoneNumber(user.getPhoneNumber());
             user1.setAccessLevel(user.getAccessLevel());
             try {
-                user1.setState(user.getStateId().getStateName());
+                user1.setState(locationService.findStateById(user.getStateId()).getStateName());
             } catch(NullPointerException e){
                 user1.setState("");
             }
             try {
-                user1.setDistrict(user.getDistrictId().getDistrictName());
+                user1.setDistrict(locationService.findDistrictById(user.getDistrictId()).getDistrictName());
             } catch(NullPointerException e){
                 user1.setDistrict("");
             }
             try {
-                user1.setBlock(user.getBlockId().getBlockName());
+                user1.setBlock(locationService.findBlockById(user.getBlockId()).getBlockName());
             } catch(NullPointerException e){
                 user1.setBlock("");
             }
@@ -141,17 +141,17 @@ public class UserController {
         user1.setPhoneNumber(user.getPhoneNumber());
         user1.setAccessLevel(user.getAccessLevel());
         try {
-            user1.setState(user.getStateId().getStateId() + "");
+            user1.setState(locationService.findStateById(user.getStateId()).getStateName());
         } catch(NullPointerException e){
             user1.setState("");
         }
         try {
-            user1.setDistrict(user.getDistrictId().getDistrictId().toString());
+            user1.setDistrict(locationService.findDistrictById(user.getDistrictId()).getDistrictName());
         } catch(NullPointerException e){
             user1.setDistrict("");
         }
         try {
-            user1.setBlock(user.getBlockId().getBlockId().toString());
+            user1.setBlock(locationService.findBlockById(user.getBlockId()).getBlockName());
         } catch(NullPointerException e){
             user1.setBlock("");
         }

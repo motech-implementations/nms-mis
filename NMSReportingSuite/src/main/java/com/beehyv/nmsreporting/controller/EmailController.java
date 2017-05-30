@@ -84,7 +84,7 @@ public class EmailController {
                             if (errorMessage.equalsIgnoreCase("failure"))
                                 errorSendingMail.put(user.getEmailId(),fileName);
                         } else {
-                            reportRequest.setCircleId(user.getDistrictId().getCircleOfDistrict().getCircleId());
+                            reportRequest.setCircleId(locationService.findDistrictById(user.getDistrictId()).getCircleOfDistrict());
                             pathName = reportService.getReportPathName(reportRequest).get(1);
                             fileName = reportService.getReportPathName(reportRequest).get(0);
                             newMail.setSubject(fileName);
@@ -98,15 +98,15 @@ public class EmailController {
                         if (user.getStateId() == null)
                             reportRequest.setStateId(0);
                         else
-                            reportRequest.setStateId(user.getStateId().getStateId());
+                            reportRequest.setStateId(user.getStateId());
                         if (user.getDistrictId() == null)
                             reportRequest.setDistrictId(0);
                         else
-                            reportRequest.setDistrictId(user.getDistrictId().getDistrictId());
+                            reportRequest.setDistrictId(user.getDistrictId());
                         if (user.getBlockId() == null)
                             reportRequest.setBlockId(0);
                         else
-                            reportRequest.setBlockId(user.getBlockId().getBlockId());
+                            reportRequest.setBlockId(user.getBlockId());
                         pathName = reportService.getReportPathName(reportRequest).get(1);
                         fileName = reportService.getReportPathName(reportRequest).get(0);
 

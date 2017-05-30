@@ -95,7 +95,7 @@ public class ReportServiceImpl implements ReportService{
             list = stateCircleDao.getCirclesByState(null);
         }
         else{
-            list = stateCircleDao.getCirclesByState(user.getStateId().getStateId());
+            list = stateCircleDao.getCirclesByState(user.getStateId());
         }
         List<Circle> circleList = new ArrayList<>();
         for(StateCircle item : list){

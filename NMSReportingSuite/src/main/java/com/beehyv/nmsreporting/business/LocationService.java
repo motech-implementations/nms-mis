@@ -8,15 +8,6 @@ import java.util.List;
  * Created by beehyv on 15/3/17.
  */
 public interface LocationService {
-    Location findLocationById(Integer locationId);
-
-    Location findLocationByName(String locationName);
-
-    List<Location> getAllLocations();
-
-    List<Location> getAllSubLocations(Integer locationId);
-
-    List<Location> getChildLocations(int locationId);
 
 //    public void createNewLocation(Location location);
 //
