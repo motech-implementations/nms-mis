@@ -802,11 +802,11 @@ public class AdminServiceImpl implements AdminService {
                     frontLineWorker.getMobileNumber(),
                     stateDao.findByStateId(frontLineWorker.getState()).getStateName(),
                     districtDao.findByDistrictId(frontLineWorker.getDistrict()).getDistrictName(),
-                    blockDao.findByblockId(frontLineWorker.getBlock()).getBlockName(),
-                    talukaDao.findByTalukaId(frontLineWorker.getTaluka()).getTalukaName(),
-                    healthFacilityDao.findByHealthFacilityId(frontLineWorker.getFacility()).getHealthFacilityName(),
-                    healthSubFacilityDao.findByHealthSubFacilityId(frontLineWorker.getSubfacility()).getHealthSubFacilityName(),
-                    villageDao.findByVillageId(frontLineWorker.getVillage()).getVillageName(),
+                    (frontLineWorker.getBlock() == null) ? "No Block" : blockDao.findByblockId(frontLineWorker.getBlock()).getBlockName(),
+                    (frontLineWorker.getTaluka() == null) ? "No Taluka" : talukaDao.findByTalukaId(frontLineWorker.getTaluka()).getTalukaName(),
+                    (frontLineWorker.getFacility() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(frontLineWorker.getFacility()).getHealthFacilityName(),
+                    (frontLineWorker.getSubfacility() == null) ? "No Health Subfacility" : healthSubFacilityDao.findByHealthSubFacilityId(frontLineWorker.getSubfacility()).getHealthSubFacilityName(),
+                    (frontLineWorker.getVillage() == null) ? "No Village" : villageDao.findByVillageId(frontLineWorker.getVillage()).getVillageName(),
                     frontLineWorker.getFullName(),
                     frontLineWorker.getExternalFlwId(),
                     frontLineWorker.getCreationDate(),
@@ -930,11 +930,11 @@ public class AdminServiceImpl implements AdminService {
                     frontLineWorker.getMobileNumber(),
                     stateDao.findByStateId(frontLineWorker.getState()).getStateName(),
                     districtDao.findByDistrictId(frontLineWorker.getDistrict()).getDistrictName(),
-                    blockDao.findByblockId(frontLineWorker.getBlock()).getBlockName(),
-                    talukaDao.findByTalukaId(frontLineWorker.getTaluka()).getTalukaName(),
-                    healthFacilityDao.findByHealthFacilityId(frontLineWorker.getFacility()).getHealthFacilityName(),
-                    healthSubFacilityDao.findByHealthSubFacilityId(frontLineWorker.getSubfacility()).getHealthSubFacilityName(),
-                    villageDao.findByVillageId(frontLineWorker.getVillage()).getVillageName(),
+                    (frontLineWorker.getBlock() == null) ? "No Block" : blockDao.findByblockId(frontLineWorker.getBlock()).getBlockName(),
+                    (frontLineWorker.getTaluka() == null) ? "No Taluka" : talukaDao.findByTalukaId(frontLineWorker.getTaluka()).getTalukaName(),
+                    (frontLineWorker.getFacility() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(frontLineWorker.getFacility()).getHealthFacilityName(),
+                    (frontLineWorker.getSubfacility() == null) ? "No Health SUbfacility" : healthSubFacilityDao.findByHealthSubFacilityId(frontLineWorker.getSubfacility()).getHealthSubFacilityName(),
+                    (frontLineWorker.getVillage() == null) ? "No Village" : villageDao.findByVillageId(frontLineWorker.getVillage()).getVillageName(),
                     frontLineWorker.getFullName(),
                     frontLineWorker.getExternalFlwId(),
                     frontLineWorker.getCreationDate(),
@@ -997,17 +997,17 @@ public class AdminServiceImpl implements AdminService {
         Integer counter = 2;
         for (KilkariSixWeeksNoAnswer kilkari : kilkariSixWeeksNoAnswersList) {
             empinfo.put((counter.toString()), new Object[]{
-                    stateDao.findByStateId(kilkari.getStateId()).getStateName(),
-                    districtDao.findByDistrictId(kilkari.getDistrictId()).getDistrictName(),
-                    blockDao.findByblockId(kilkari.getBlockId()).getBlockName(),
-                    talukaDao.findByTalukaId(villageDao.findByVillageId(kilkari.getVillageId()).getTalukaOfVillage()).getTalukaName(),
-                    healthFacilityDao.findByHealthFacilityId(healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthFacilityOfHealthSubFacility()).getHealthFacilityName(),
-                    healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthSubFacilityName(),
-                    villageDao.findByVillageId(kilkari.getVillageId()),
-                    kilkari.getMctsId(),
-                    kilkari.getName(),
-                    kilkari.getMsisdn(),
-                    kilkari.getAgeOnService()
+                    (kilkari.getStateId() == null) ? "No State" : stateDao.findByStateId(kilkari.getStateId()).getStateName(),
+                    (kilkari.getDistrictId() == null) ? "No District" : districtDao.findByDistrictId(kilkari.getDistrictId()).getDistrictName(),
+                    (kilkari.getBlockId() == null) ? "No Block" : blockDao.findByblockId(kilkari.getBlockId()).getBlockName(),
+                    (kilkari.getVillageId() == null) ? "No Taluka" : talukaDao.findByTalukaId(villageDao.findByVillageId(kilkari.getVillageId()).getTalukaOfVillage()).getTalukaName(),
+                    (kilkari.getHsubcenterId() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthFacilityOfHealthSubFacility()).getHealthFacilityName(),
+                    (kilkari.getHsubcenterId() == null) ? "No Health Subfacility" : healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthSubFacilityName(),
+                    (kilkari.getVillageId() == null) ? "No Village" : villageDao.findByVillageId(kilkari.getVillageId()),
+                    (kilkari.getMctsId() == null) ? "No MCTS Id" : kilkari.getMctsId(),
+                    (kilkari.getName() == null) ? "No Name" : kilkari.getName(),
+                    (kilkari.getMsisdn() == null) ? "No MSISDN" : kilkari.getMsisdn(),
+                    (kilkari.getAgeOnService() == null) ? "Ageless" : kilkari.getAgeOnService()
 
             });
             counter++;
@@ -1071,17 +1071,17 @@ public class AdminServiceImpl implements AdminService {
         Integer counter = 2;
         for (KilkariSelfDeactivated kilkari : kilkariSelfDeactivatedList) {
             empinfo.put((counter.toString()), new Object[]{
-                    stateDao.findByStateId(kilkari.getStateId()).getStateName(),
-                    districtDao.findByDistrictId(kilkari.getDistrictId()).getDistrictName(),
-                    blockDao.findByblockId(kilkari.getBlockId()).getBlockName(),
-                    talukaDao.findByTalukaId(villageDao.findByVillageId(kilkari.getVillageId()).getTalukaOfVillage()).getTalukaName(),
-                    healthFacilityDao.findByHealthFacilityId(healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthFacilityOfHealthSubFacility()).getHealthFacilityName(),
-                    healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthSubFacilityName(),
-                    villageDao.findByVillageId(kilkari.getVillageId()),
-                    kilkari.getMctsId(),
-                    kilkari.getName(),
-                    kilkari.getMsisdn(),
-                    kilkari.getAgeOnService(),
+                    (kilkari.getStateId() == null) ? "No State" : stateDao.findByStateId(kilkari.getStateId()).getStateName(),
+                    (kilkari.getDistrictId() == null) ? "No District" : districtDao.findByDistrictId(kilkari.getDistrictId()).getDistrictName(),
+                    (kilkari.getBlockId() == null) ? "No Block" : blockDao.findByblockId(kilkari.getBlockId()).getBlockName(),
+                    (kilkari.getVillageId() == null) ? "No Taluka" : talukaDao.findByTalukaId(villageDao.findByVillageId(kilkari.getVillageId()).getTalukaOfVillage()).getTalukaName(),
+                    (kilkari.getHsubcenterId() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthFacilityOfHealthSubFacility()).getHealthFacilityName(),
+                    (kilkari.getHsubcenterId() == null) ? "No Health Subfacility" : healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthSubFacilityName(),
+                    (kilkari.getVillageId() == null) ? "No Village" : villageDao.findByVillageId(kilkari.getVillageId()),
+                    (kilkari.getMctsId() == null) ? "No MCTS Id" : kilkari.getMctsId(),
+                    (kilkari.getName() == null) ? "No Name" : kilkari.getName(),
+                    (kilkari.getMsisdn() == null) ? "No MSISDN" : kilkari.getMsisdn(),
+                    (kilkari.getAgeOnService() == null) ? "Ageless" : kilkari.getAgeOnService(),
                     kilkari.getPackActivationDate(),
                     kilkari.getDeactivationDate(),
                     kilkari.getCallsAnswered()
@@ -1145,17 +1145,17 @@ public class AdminServiceImpl implements AdminService {
         Integer counter = 2;
         for (KilkariLowUsage kilkari : kilkariLowUsageList) {
             empinfo.put((counter.toString()), new Object[]{
-                    stateDao.findByStateId(kilkari.getStateId()).getStateName(),
-                    districtDao.findByDistrictId(kilkari.getDistrictId()).getDistrictName(),
-                    blockDao.findByblockId(kilkari.getBlockId()).getBlockName(),
-                    talukaDao.findByTalukaId(villageDao.findByVillageId(kilkari.getVillageId()).getTalukaOfVillage()).getTalukaName(),
-                    healthFacilityDao.findByHealthFacilityId(healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthFacilityOfHealthSubFacility()).getHealthFacilityName(),
-                    healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthSubFacilityName(),
-                    villageDao.findByVillageId(kilkari.getVillageId()),
-                    kilkari.getMctsId(),
-                    kilkari.getName(),
-                    kilkari.getMsisdn(),
-                    kilkari.getAgeOnService()
+                    (kilkari.getStateId() == null) ? "No State" : stateDao.findByStateId(kilkari.getStateId()).getStateName(),
+                    (kilkari.getDistrictId() == null) ? "No District" : districtDao.findByDistrictId(kilkari.getDistrictId()).getDistrictName(),
+                    (kilkari.getBlockId() == null) ? "No Block" : blockDao.findByblockId(kilkari.getBlockId()).getBlockName(),
+                    (kilkari.getVillageId() == null) ? "No Taluka" : talukaDao.findByTalukaId(villageDao.findByVillageId(kilkari.getVillageId()).getTalukaOfVillage()).getTalukaName(),
+                    (kilkari.getHsubcenterId() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthFacilityOfHealthSubFacility()).getHealthFacilityName(),
+                    (kilkari.getHsubcenterId() == null) ? "No Health Subfacility" : healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthSubFacilityName(),
+                    (kilkari.getVillageId() == null) ? "No Village" : villageDao.findByVillageId(kilkari.getVillageId()),
+                    (kilkari.getMctsId() == null) ? "No MCTS Id" : kilkari.getMctsId(),
+                    (kilkari.getName() == null) ? "No Name" : kilkari.getName(),
+                    (kilkari.getMsisdn() == null) ? "No MSISDN" : kilkari.getMsisdn(),
+                    (kilkari.getAgeOnService() == null) ? "Ageless" : kilkari.getAgeOnService(),
             });
             counter++;
         }

@@ -72,7 +72,7 @@ public class LocationServiceImpl implements LocationService {
     /*----------------------District-------------------------*/
 
     @Override
-    public District findDistrictById(Integer districtId) {
+    public District findDistrictById(Integer districtId) throws NullPointerException{
         return districtDao.findByDistrictId(districtId);
     }
 

@@ -30,11 +30,12 @@
 
     <!-- Sample RDBMS data source that would exist in any application.  Sample is just using an in-memory HSQLDB
          instance.  Change to your application's settings for a real app. -->
+    <context:property-placeholder location="classpath:app.properties" />
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://192.168.200.67:3306/Reporting"/>
-        <property name="username" value="etluser"/>
-        <property name="password" value="etl@2015!"/>
+        <property name="url" value="${mysql.url}"/>
+        <property name="username" value="${mysql.username}"/>
+        <property name="password" value="${mysql.password}"/>
     </bean>
 
     <!-- Hibernate SessionFactory -->
@@ -115,8 +116,8 @@
 
     <!-- Spring Mail Sender -->
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-        <property name="username" value="nsp-reports@beehyv.com" />
-        <property name="password" value="Beehyv@123" />
+        <property name="username" value="${mail.username}" />
+        <property name="password" value="${mail.password}" />
         <property name="javaMailProperties">
             <props>
                 <prop key="mail.smtp.host">smtp.bizmail.yahoo.com</prop>

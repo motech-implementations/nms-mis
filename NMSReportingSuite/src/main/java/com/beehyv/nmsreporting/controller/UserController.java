@@ -94,20 +94,20 @@ public class UserController {
             user1.setEmail(user.getEmailId());
             user1.setPhoneNumber(user.getPhoneNumber());
             user1.setAccessLevel(user.getAccessLevel());
-            try {
-                user1.setState(locationService.findStateById(user.getStateId()).getStateName());
-            } catch(NullPointerException e){
+            if(user.getStateId() == null){
                 user1.setState("");
+            } else{
+                user1.setState(locationService.findStateById(user.getStateId()).getStateName());
             }
-            try {
-                user1.setDistrict(locationService.findDistrictById(user.getDistrictId()).getDistrictName());
-            } catch(NullPointerException e){
+            if(user.getDistrictId() == null){
                 user1.setDistrict("");
+            } else{
+                user1.setDistrict(locationService.findDistrictById(user.getDistrictId()).getDistrictName());
             }
-            try {
-                user1.setBlock(locationService.findBlockById(user.getBlockId()).getBlockName());
-            } catch(NullPointerException e){
+            if(user.getBlockId() == null){
                 user1.setBlock("");
+            } else{
+                user1.setBlock(locationService.findBlockById(user.getBlockId()).getBlockName());
             }
             user1.setAccessType(user.getRoleId().getRoleDescription());
             int a;

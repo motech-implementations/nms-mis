@@ -16,7 +16,7 @@ import java.util.List;
 @Repository("districtDao")
 public class DistrictDaoImpl extends AbstractDao<Integer, District> implements DistrictDao {
     @Override
-    public District findByDistrictId(Integer districtId) {
+    public District findByDistrictId(Integer districtId) throws NullPointerException{
         return getByKey(districtId);
     }
 
