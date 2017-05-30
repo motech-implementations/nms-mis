@@ -5,38 +5,43 @@
 		<li class="active">{{currentPageTitle}}</li>
 	</ul>
 
-	<div class="well">
+	<div class="block reports-header">
 		<form class="form container-fluid" role="form">
 			<div class="row">
-
 				<div class="col-xs-7">
 					<div class="form-group col-xs-4">
-						<label>Select Reports Category</label>
+						<label>Select Reports Category</label><br>
 						<div class="btn-group" uib-dropdown dropdown-append-to-body>
-							<button id="btn-append-to-body" type="button" class="btn btn-default" uib-dropdown-toggle style="width: 200px;">
+							<button id="btn-append-to-body" type="button" class="btn btn-default" uib-dropdown-toggle style="min-width: 200px;">
 								{{reportType}}
 								<span class="caret"></span>
 							</button>
-							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" style="width: 200px;">
-								<li role="menuitem" ng-repeat="item in reports"><a ng-click='selectReportType(item)'>{{item.name}}</a></li>
+							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
+								<li role="menuitem" ng-repeat="item in reports"><a ng-click='selectReportType(item)'>
+									<img class='block' src="{{item.icon}}">
+									<span class="block">{{item.name}}</span></a>
+								</li>
 							</ul>
 						</div>
 					</div>
 					<div class="form-group col-xs-4">
-						<label>Select Reports</label>
+						<label>Select Reports</label><br>
 						<div class="btn-group" uib-dropdown dropdown-append-to-body>
-							<button id="btn-append-to-body" type="button" class="btn btn-default" ng-disabled='reportType=="Select"' uib-dropdown-toggle style="width: 200px;">
+							<button id="btn-append-to-body" type="button" class="btn btn-default" ng-disabled='reportType=="Select"' uib-dropdown-toggle style="min-width: 200px;">
 								{{reportName}}
 								<span class="caret"></span>
 							</button>
-							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" style="width: 200px;">
-								<li role="menuitem" ng-repeat="item in reportNames"><a ng-click="selectReport(item)">{{item}}</a></li>
+							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
+								<li role="menuitem" ng-repeat="item in reportNames"><a ng-click="selectReport(item)">
+									<img class='block' src="{{item.icon}}">
+									<span class="block">{{item.name}}</span></a>
+								</li>
 							</ul>
 						</div>
 					</div>
 					<div class="form-group col-xs-4">
-						<label>Select Date Range</label>
-						<p class="input-group" style="width: 200px;">
+						<label>Select Date Range</label><br>
+						<p class="input-group" style="min-width: 200px;">
 							<input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" datepicker-mode="'month'" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
 							<span class="input-group-btn">
 							<button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
@@ -47,58 +52,56 @@
 
 				<div class="col-xs-5">
 					<div class="form-group col-xs-4">
-						<label for="name">Select State</label>
+						<label for="name">Select State</label><br>
 						<div class="btn-group" uib-dropdown dropdown-append-to-body>
-							<button id="btn-append-to-body" type="button" class="btn btn-default" uib-dropdown-toggle style="width: 150px;">
-								{{state.stateName}}
-								<span class="caret"></span>
+							<button id="btn-append-to-body" type="button" class="btn btn-default" uib-dropdown-toggle style="min-width: 130px;">
+								<span class="block">{{state.stateName}}
+								<span class="caret"></span></span>
 							</button>
-							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" style="width: 150px;">
+							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" style="min-width: 130px;">
 								<li role="menuitem" ng-repeat="item in states"><a ng-click='selectState(item)'>{{item.stateName}}</a></li>
 							</ul>
 						</div>
-						<!-- <select class="form-control" id="sel1">
-							<option>1</option>
-							<option>2</option>
-							<option>3</option>
-							<option>4</option>
-						</select> -->
 					</div>
 					<div class="form-group col-xs-4">
-						<label for="email">Select District</label>
+					<!-- <div> -->
+						<label for="email">Select District</label><br>
 						<div class="btn-group" uib-dropdown dropdown-append-to-body>
-							<button id="btn-append-to-body" type="button" class="btn btn-default" ng-disabled='state==null' uib-dropdown-toggle style="width: 150px;">
-								{{district.districtName}}
-								<span class="caret"></span>
+							<button id="btn-append-to-body" type="button" class="btn btn-default col-xs-4" ng-disabled='state==null' uib-dropdown-toggle style="min-width: 130px;">
+								<span class="block">{{district.districtName}}
+								<span class="caret"></span></span>
 							</button>
-							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" style="width: 150px;">
+							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" style="min-width: 130px;">
 								<li role="menuitem" ng-repeat="item in districts"><a ng-click='selectDistrict(item)'>{{item.districtName}}</a></li>
 							</ul>
 						</div>
-						<!-- <select class="form-control" id="sel1">
-							<option>1</option>
-							<option>2</option>
-							<option>3</option>
-							<option>4</option>
-						</select> -->
 					</div>
 					<div class="form-group col-xs-4">
-						<label for="pwd">Select Block</label>
+						<label for="pwd">Select Block</label><br>
 						<div class="btn-group" uib-dropdown dropdown-append-to-body>
-							<button id="btn-append-to-body" type="button" class="btn btn-default" ng-disabled='district==null' uib-dropdown-toggle style="width: 150px;">
-								{{block.blockName}}
-								<span class="caret"></span>
+							<button id="btn-append-to-body" type="button" class="btn btn-default" ng-disabled='district==null' uib-dropdown-toggle style="min-width: 130px;">
+								<span class="block">{{block.blockName}}
+								<span class="caret"></span></span>
 							</button>
-							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" style="width: 150px;">
+							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" style="min-width: 130px;">
 								<li role="menuitem" ng-repeat="item in blocks"><a ng-click='selectBlock(item)'>{{item.blockName}}</a></li>
 							</ul>
 						</div>
-						<!-- <select class="form-control" id="sel1">
-							<option>1</option>
-							<option>2</option>
-							<option>3</option>
-							<option>4</option>
-						</select> -->
+					</div>
+				</div>	
+
+				<div class="col-xs-5">
+					<div class="form-group col-xs-4">
+						<label for="name">Select Circle</label><br>
+						<div class="btn-group" uib-dropdown dropdown-append-to-body>
+							<button id="btn-append-to-body" type="button" class="btn btn-default" uib-dropdown-toggle style="min-width: 130px;">
+								<span class="block">{{state.stateName}}
+								<span class="caret"></span></span>
+							</button>
+							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body" style="min-width: 130px;">
+								<li role="menuitem" ng-repeat="item in states"><a ng-click='selectState(item)'>{{item.stateName}}</a></li>
+							</ul>
+						</div>
 					</div>
 				</div>	
 				
@@ -117,8 +120,8 @@
 	<div style="background-color: #aaa; height: 34px;">
 		<p style="display: inline-block; float: left; left: 100px;">{{radioModel}}</p>
 		<div class="btn-group" style="display: inline-block; float: right; right: 100px; ">
-			<label class="btn btn-primary" ng-model="radioModel" uib-btn-radio="'table'">Table</label>
-			<label class="btn btn-primary" ng-model="radioModel" uib-btn-radio="'chart'">Chart</label>
+			<label class="btn btn-primary" ng-model="radioModel" uib-btn-radio="'table'">Table</label><br>
+			<label class="btn btn-primary" ng-model="radioModel" uib-btn-radio="'chart'">Chart</label><br>
 		</div>
 	</div> -->
 </div>

@@ -144,4 +144,9 @@ public class LocationServiceImpl implements LocationService {
     public Circle findCircleById(Integer circleId) {
         return circleDao.getByCircleId(circleId);
     }
+
+    @Override
+    public List<Circle> getAllCirles() {
+        return circleDao.getAllCircles();
+    }
 }

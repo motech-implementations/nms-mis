@@ -20,75 +20,90 @@
 				$scope.currentPageNo = 1;
 			}
 			$scope.resetDistrict = function(){
-            	$scope.districtName = "";
-            }
+				$scope.districtName = "";
+			}
 			$scope.resetBlock = function(){
-            	$scope.blockName = "";
-            }
+				$scope.blockName = "";
+			}
 
 			$scope.getAllUsers = function(){
 				return UserTableFactory.getAllUsers();
 			}
 
-            $scope.getUniqueAccessTypes = function(){
-                var aT = [];
-                var users = UserTableFactory.getAllUsers();
-                for(var i=0;i<users.length;i++){
-                    if(aT.indexOf(users[i].accessType)==-1) {
-                        aT.push(users[i].accessType);
-                    }
-                }
-                return aT;
+			$scope.getUniqueAccessTypes = function(){
+				var aT = [];
+				var users = UserTableFactory.getAllUsers();
+				for(var i=0;i<users.length;i++){
+					if(aT.indexOf(users[i].accessType)==-1) {
+						aT.push(users[i].accessType);
+					}
+				}
+				return aT;
+			}
+			$scope.setUniqueAccessTypes = function(accessType){
+                $scope.accType = accessType;
             }
-            $scope.getUniqueAccessLevels = function(){
-                var aL = [];
-                var users = UserTableFactory.getAllUsers();
-                for(var i=0;i<users.length;i++){
-                    if(aL.indexOf(users[i].accessLevel)==-1) {
-                        aL.push(users[i].accessLevel);
-                    }
-                }
-                return aL;
-            }
-            $scope.getUniqueStates = function(){
+			$scope.getUniqueAccessLevels = function(){
+				var aL = [];
+				var users = UserTableFactory.getAllUsers();
+				for(var i=0;i<users.length;i++){
+					if(aL.indexOf(users[i].accessLevel)==-1) {
+						aL.push(users[i].accessLevel);
+					}
+				}
+				return aL;
+			}
+			$scope.setUniqueAccessLevels = function(accessLevel){
+				$scope.accLevel = accessLevel;
+			}
+			$scope.getUniqueStates = function(){
 //                $scope.districtName = "";
 //                $scope.blockName = "";
-                var states = [];
-                var users = UserTableFactory.getAllUsers();
-                for(var i=0;i<users.length;i++){
-                    if((users[i].state!="")&&(states.indexOf(users[i].state)==-1)) {
-                        states.push(users[i].state);
-                    }
-                }
-            return states;
-            }
-            $scope.$watch('stateName', $scope.resetDistrict);
-            $scope.$watch('stateName', $scope.resetBlock);
-            $scope.getUniqueDistricts = function(){
-                var districts = [];
-                var users = UserTableFactory.getAllUsers();
-                for(var i=0;i<users.length;i++){
-                    if((angular.lowercase(users[i].state).includes(angular.lowercase($scope.stateName)||''))&&
-                    (angular.lowercase(users[i].block).includes(angular.lowercase($scope.blockName)||''))&&
-                    ((users[i].district!="")&&(districts.indexOf(users[i].district)==-1))) {
-                        districts.push(users[i].district);
-                    }
-                }
-            return districts;
-            }
-            $scope.$watch('districtName', $scope.resetBlock);
-            $scope.getUniqueBlocks = function(){
-                var blocks = [];
-                var users = UserTableFactory.getAllUsers();
-                for(var i=0;i<users.length;i++){
-                    if((angular.lowercase(users[i].state).includes(angular.lowercase($scope.stateName)||'')) &&
-                    (angular.lowercase(users[i].district).includes(angular.lowercase($scope.districtName)||''))&&
-                    ((users[i].block!="")&&(blocks.indexOf(users[i].block)==-1))) {
-                        blocks.push(users[i].block);
-                    }
-                }
-            return blocks;
-            }
+				var states = [];
+				var users = UserTableFactory.getAllUsers();
+				for(var i=0;i<users.length;i++){
+					if((users[i].state!="")&&(states.indexOf(users[i].state)==-1)) {
+						states.push(users[i].state);
+					}
+				}
+			return states;
+			}
+			$scope.setUniqueStates = function(state){
+				$scope.stateName = state;
+			}
+			$scope.$watch('stateName', $scope.resetDistrict);
+			$scope.$watch('stateName', $scope.resetBlock);
+			$scope.getUniqueDistricts = function(){
+				var districts = [];
+				var users = UserTableFactory.getAllUsers();
+				for(var i=0;i<users.length;i++){
+					if((angular.lowercase(users[i].state).includes(angular.lowercase($scope.stateName)||''))&&
+					(angular.lowercase(users[i].block).includes(angular.lowercase($scope.blockName)||''))&&
+					((users[i].district!="")&&(districts.indexOf(users[i].district)==-1))) {
+						districts.push(users[i].district);
+					}
+				}
+			return districts;
+			}
+			$scope.setUniqueDistricts = function(district){
+				$scope.districtName = district;
+			}
+			$scope.$watch('districtName', $scope.resetBlock);
+			$scope.getUniqueBlocks = function(){
+				var blocks = [];
+				var users = UserTableFactory.getAllUsers();
+				for(var i=0;i<users.length;i++){
+					if((angular.lowercase(users[i].state).includes(angular.lowercase($scope.stateName)||'')) &&
+					(angular.lowercase(users[i].district).includes(angular.lowercase($scope.districtName)||''))&&
+					((users[i].block!="")&&(blocks.indexOf(users[i].block)==-1))) {
+						blocks.push(users[i].block);
+					}
+				}
+			return blocks;
+			}
+			$scope.setUniqueBlocks = function(block){
+				$scope.blockName = block;
+			}
 
 			$scope.$watch('numPerPage', $scope.resetPage);
 //            $scope.$watch('filterData', function(value){
@@ -110,13 +125,13 @@
 						angular.lowercase(row.block).includes(angular.lowercase($scope.blockName)||'')
 						);
 			};
-            $scope.sorter = 'id';
-            $scope.sort_by = function(newSortingOrder) {
-                    if ($scope.sorter == newSortingOrder)
-                        $scope.reverse = !$scope.reverse;
+			$scope.sorter = 'id';
+			$scope.sort_by = function(newSortingOrder) {
+					if ($scope.sorter == newSortingOrder)
+						$scope.reverse = !$scope.reverse;
 
-                    $scope.sorter = newSortingOrder;
-            }
+					$scope.sorter = newSortingOrder;
+			}
 			
 
 			$scope.editUser = function(userId){
