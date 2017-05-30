@@ -61,4 +61,5 @@ public interface LocationService {
      /*----------------------Circle-------------------------*/
     Circle findCircleById(Integer circleId);
 
+    List<Circle> getAllCirles();
 }

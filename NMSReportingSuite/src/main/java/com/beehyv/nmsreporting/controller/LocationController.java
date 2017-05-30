@@ -1,6 +1,7 @@
 package com.beehyv.nmsreporting.controller;
 
 import com.beehyv.nmsreporting.business.LocationService;
+import com.beehyv.nmsreporting.business.ReportService;
 import com.beehyv.nmsreporting.business.UserService;
 import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.model.*;
@@ -26,6 +27,9 @@ public class LocationController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ReportService reportService;
 
     @RequestMapping(value = {"/", "list"}, method = RequestMethod.GET)
     public @ResponseBody List<Location> getAllLocations() {
@@ -109,6 +113,14 @@ public class LocationController {
     @RequestMapping(value = {"/DoB/{blockId}"}, method = RequestMethod.GET)
     public @ResponseBody District getDistrictOfBlock(@PathVariable("blockId") Integer blockId) {
         return locationService.getDistrictOfBlock(blockId);
+    }
+
+    /*--------------------------Circle-----------------------------*/
+
+    @RequestMapping(value = {"/circles"}, method = RequestMethod.GET)
+    @ResponseBody List<Circle> getCircles() {
+        User currentUser = userService.getCurrentUser();
+        return reportService.getUserCircles(currentUser);
     }
 
     /*--------------------------Extra-----------------------------*/
