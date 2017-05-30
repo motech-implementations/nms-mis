@@ -16,7 +16,7 @@ import java.util.List;
 @Repository("districtDao")
 public class DistrictDaoImpl extends AbstractDao<Integer, District> implements DistrictDao {
     @Override
-    public District findByDistrictId(Integer districtId) {
+    public District findByDistrictId(Integer districtId) throws NullPointerException{
         return getByKey(districtId);
     }
 
@@ -28,48 +28,10 @@ public class DistrictDaoImpl extends AbstractDao<Integer, District> implements D
 
     }
 
-    @Override
-    public List<Block> getBlocks(int districtId) {
-        District district=getByKey(districtId);
-        List<Block> childDistricts=new ArrayList<>();
-        childDistricts.addAll(district.getBlocks());
-        return childDistricts;
-    }
-
-    @Override
-    public List<Taluka> getTalukas(int districtId) {
-        return null;
-    }
-
-    public List<District> getDistrictsOfState(State state) {
+    public List<District> getDistrictsOfState(Integer stateId) {
         Criteria criteria = createEntityCriteria();
-        criteria.add(Restrictions.eq("stateOfDistrict", state));
+        criteria.add(Restrictions.eq("stateOfDistrict", stateId));
         return (List<District>) criteria.list();
     }
 
-    @Override
-    public List<District> getAllDistricts() {
-        Criteria criteria = createEntityCriteria();
-        return (List<District>) criteria.list();
-    }
-
-    @Override
-    public State getStateOfDistrict(District district) {
-        return district.getStateOfDistrict();
-    }
-
-    @Override
-    public Circle getCircleOfDistrict(District district) {
-        return district.getCircleOfDistrict();
-    }
-
-    @Override
-    public void saveLocation(District district) {
-        persist(district);
-    }
-
-    @Override
-    public void deleteLocation(District district) {
-        delete(district);
-    }
 }

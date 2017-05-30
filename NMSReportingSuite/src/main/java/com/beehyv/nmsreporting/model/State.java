@@ -31,49 +31,6 @@ public class State {
     @Column(name="last_modified", columnDefinition = "TIMESTAMP")
     private Date lastModified;
 
-    @JsonIgnore
-    @OneToMany(cascade=CascadeType.PERSIST, fetch=FetchType.LAZY, mappedBy="stateOfDistrict")
-    private Set<District> districts = new HashSet<>();
-
-    @JsonIgnore
-    @OneToMany(cascade=CascadeType.PERSIST, fetch=FetchType.LAZY, mappedBy="stateOfBlock")
-    private Set<Block> blocks = new HashSet<>();
-
-    @JsonIgnore
-    @OneToMany(cascade=CascadeType.PERSIST, fetch=FetchType.LAZY, mappedBy="stateOfTaluka")
-    private Set<Taluka> talukas = new HashSet<>();
-
-    public Long getLocationId() {
-        return locationId;
-    }
-
-    public void setLocationId(Long locationId) {
-        this.locationId = locationId;
-    }
-
-    public Date getLastModified() {
-        return lastModified;
-    }
-
-    public void setLastModified(Date lastModified) {
-        this.lastModified = lastModified;
-    }
-    public Set<Block> getBlocks() {
-        return blocks;
-    }
-
-    public void setBlocks(Set<Block> blocks) {
-        this.blocks = blocks;
-    }
-
-    public Set<Taluka> getTalukas() {
-        return talukas;
-    }
-
-    public void setTalukas(Set<Taluka> talukas) {
-        this.talukas = talukas;
-    }
-
     public Integer getStateId() {
         return stateId;
     }
@@ -90,11 +47,19 @@ public class State {
         this.stateName = stateName;
     }
 
-    public Set<District> getDistricts() {
-        return districts;
+    public Long getLocationId() {
+        return locationId;
     }
 
-    public void setDistricts(Set<District> districts) {
-        this.districts = districts;
+    public void setLocationId(Long locationId) {
+        this.locationId = locationId;
+    }
+
+    public Date getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
     }
 }

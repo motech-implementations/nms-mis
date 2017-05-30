@@ -1,8 +1,7 @@
 <div ng-controller="UserTableController" class='userTable'>
 
-	<div class="well header">
-		
-		<div class='inputs row'>
+	<div class="block header">
+		<div class='block inputs row'>
 			<h1 class='col-sm-6'>User Management</h1>
 			<input  class="col-sm-2 form-control" ng-model="filterText" type="text" name="tableSearch" placeholder="Search">
 			<button class="col-sm-2 btn btn-primary" name="bulkUpload" ui-sref="userManagement.bulkUpload">Upload Bulk Users</button>
@@ -10,8 +9,8 @@
 		</div>
 	</div>
 
-	<div class="well">
-		<table class="table table-bordered table-striped">
+	<div class="block">
+		<table class="table table-bordered">
 			<tr>
 				<!-- <th ng-repeat="header in headers" ng-if="header != '$$hashKey'">{{header}}</th> -->
 				<th ng-click="sort_by('id')"><a>Id</a></th>
@@ -20,51 +19,66 @@
 				<th ng-click="sort_by('phoneNumber')"><a>Phone no.</a></th>
 				<th ng-click="sort_by('email')"><a>Email id</a></th>
 				<th class="th-dropdown">
-					<select ng-model="accType">
-						<option value="">Access Type</option>
-						<option ng-repeat="aType in uniqueAT = (getUniqueAccessTypes())"
-								value="{{aType}}">{{aType}}
-						</option>
-					</select>
+					<span uib-dropdown>
+						<a href id="simple-dropdown" uib-dropdown-toggle>Access Type<span class="caret"></span></a>
+						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown">
+							<li><a ng-click="setUniqueAccessTypes('')">Access Type</a></li>
+							<li ng-repeat="aType in uniqueAT = (getUniqueAccessTypes())">
+								<a ng-click="setUniqueAccessTypes(aType)" >{{aType}}</a>
+							</li>
+						</ul>
+					</span>
 				</th>
 				<!--<th>Access Type</th>-->
 				<th class="th-dropdown">
-					<select ng-model="accLevel">
-						<option value="">Access Level</option>
-						<option ng-repeat="aLevel in uniqueAL = (getUniqueAccessLevels())"
-								value="{{aLevel}}">{{aLevel}}
-						</option>
-					</select>
+					<span uib-dropdown>
+						<a href id="simple-dropdown" uib-dropdown-toggle>Access Level<span class="caret"></span></a>
+						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown">
+							<li><a ng-click="setUniqueAccessLevels('')">Access Level</a></li>
+							<li ng-repeat="aLevel in uniqueAL = (getUniqueAccessLevels())">
+								<a ng-click="setUniqueAccessLevels(aLevel)" >{{aLevel}}</a>
+							</li>
+						</ul>
+					</span>
 				</th>
 				<th class="th-dropdown">
-					<select ng-model="stateName">
-						<option value="">State</option>
-						<option ng-repeat="sName in sNames = (getUniqueStates())"
-								value="{{sName}}">{{sName}}
-						</option>
-					</select>
+					<span uib-dropdown>
+						<a href id="simple-dropdown" uib-dropdown-toggle>State<span class="caret"></span></a>
+						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown">
+							<li><a ng-click="setUniqueStates('')">State</a></li>
+							<li ng-repeat="sName in sNames = (getUniqueStates())">
+								<a ng-click="setUniqueStates(sName)" >{{sName}}</a>
+							</li>
+						</ul>
+					</span>
 				</th>
 				<th class="th-dropdown">
-					<select ng-model="districtName">
-						<option value="">District</option>
-						<option ng-repeat="dName in dNames = (getUniqueDistricts())"
-								value="{{dName}}">{{dName}}
-						</option>
-					</select>
+					<span uib-dropdown>
+						<a href id="simple-dropdown" uib-dropdown-toggle>District<span class="caret"></span></a>
+						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown">
+							<li><a ng-click="setUniqueDistricts('')">District</a></li>
+							<li ng-repeat="dName in dNames = (getUniqueDistricts())">
+								<a ng-click="setUniqueDistricts(dName)" >{{dName}}</a>
+							</li>
+						</ul>
+					</span>
 				</th>
 				<th class="th-dropdown">
-					<select ng-model="blockName">
-						<option value="">Block</option>
-						<option ng-repeat="bName in bNames = (getUniqueBlocks())"
-								value="{{bName}}">{{bName}}
-						</option>
-					</select>
+					<span uib-dropdown>
+						<a href id="simple-dropdown" uib-dropdown-toggle>Block<span class="caret"></span></a>
+						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown">
+							<li><a ng-click="setUniqueBlocks('')">Block</a></li>
+							<li ng-repeat="bName in bNames = (getUniqueBlocks())">
+								<a ng-click="setUniqueBlocks(bName)" >{{bName}}</a>
+							</li>
+						</ul>
+					</span>
 				</th>
 				<!--<th>Access Level</th>-->
 				<!--<th>State</th>-->
 				<!--<th>District</th>-->
 				<!--<th>Block</th>-->
-				<th>Edit</th>
+				<th><a>Edit</a></th>
 			</tr>
 			<!-- <tr ng-repeat="item in data"> -->
 			<tr ng-repeat="item in filterData = (getAllUsers() | filter : search ) | orderBy : sorter : reverse  | limitTo : numPerPage : numPerPage*(currentPageNo-1)">
@@ -79,7 +93,7 @@
 				<td>{{item.state}}</td>
 				<td>{{item.district}}</td>
 				<td>{{item.block}}</td>
-				<td ng-if="item.createdBy"><a ui-sref="userManagement.editUser({ id: '{{item.id}}' })">Edit</a></td>
+				<td><span ng-if="item.createdBy"><a ui-sref="userManagement.editUser({ id: '{{item.id}}' })">Edit</a></span></td>
 			</tr>
 		</table>
 

@@ -6,20 +6,38 @@
 			$scope.reports = [
 				{
 					'name': 'Mobile Academy Reports',
-					'icon': '',
+					'icon': 'images/drop-down-1.png',
 					'options': [
-						'Cumulative Completion Reports',
-						'Circle wise Anonymous Reports',
-						'Cumulative Inactive Users'
-					], 
+						{
+							'name': 'Cumulative Completion Reports',
+							'icon': 'images/drop-down-3.png',
+						},
+						{
+							'name': 'Circle wise Anonymous Reports',
+							'icon': 'images/drop-down-3.png',
+						},
+						{
+							'name': 'Cumulative Inactive Users',
+							'icon': 'images/drop-down-3.png',
+						}
+					]
 				},
 				{
 					'name': 'Kilkari Reports',
-					'icon': '',
+					'icon': 'images/drop-down-1.png',
 					'options': [
-						'Deactivation for not answering',
-						'Listen to < 25% this month',
-						'Self Deactivations'
+						{
+							'name': 'Deactivation for not answering',
+							'icon': 'images/drop-down-3.png',
+						},
+						{
+							'name': 'Listen to < 25% this month',
+							'icon': 'images/drop-down-3.png',
+						},
+						{
+							'name': 'Self Deactivations',
+							'icon': 'images/drop-down-3.png',
+						},
 					]
 				}
 			];
@@ -35,7 +53,7 @@
 			$scope.reportName="Select";
 
 			$scope.selectReport = function(item){
-				$scope.reportName = item;
+				$scope.reportName = item.name;
 			}
 
 			$scope.getStates = function(){

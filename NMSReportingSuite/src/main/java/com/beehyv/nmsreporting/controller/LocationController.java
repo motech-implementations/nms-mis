@@ -1,6 +1,7 @@
 package com.beehyv.nmsreporting.controller;
 
 import com.beehyv.nmsreporting.business.LocationService;
+import com.beehyv.nmsreporting.business.ReportService;
 import com.beehyv.nmsreporting.business.UserService;
 import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.model.*;
@@ -27,20 +28,8 @@ public class LocationController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = {"/", "list"}, method = RequestMethod.GET)
-    public @ResponseBody List<Location> getAllLocations() {
-        return locationService.getAllLocations();
-    }
-
-    @RequestMapping(value = {"/list/{locationId}"}, method = RequestMethod.GET)
-    public @ResponseBody List<Location> getLocationsByLocationId(@PathVariable("locationId") Integer locationId) {
-        return locationService.getAllSubLocations(locationId);
-    }
-
-    @RequestMapping(value = {"/subLocations/{locationId}"}, method = RequestMethod.GET)
-    public @ResponseBody List<Location> getChildLocations(@PathVariable("locationId") Integer locationId) {
-        return locationService.getAllSubLocations(locationId);
-    }
+    @Autowired
+    private ReportService reportService;
 
     /*--------------------------State-----------------------------*/
 
@@ -53,7 +42,7 @@ public class LocationController {
         }
         else{
             states = new ArrayList<>();
-            states.add(user.getStateId());
+            states.add(locationService.findStateById(user.getStateId()));
         }
         return states;
     }
@@ -68,11 +57,11 @@ public class LocationController {
             districts = locationService.getChildDistricts(stateId);
         }
         else if(user.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel())) {
-            districts = locationService.getChildDistricts(user.getStateId().getStateId());
+            districts = locationService.getChildDistricts(user.getStateId());
         }
         else{
             districts = new ArrayList<>();
-            districts.add(user.getDistrictId());
+            districts.add(locationService.findDistrictById(user.getDistrictId()));
         }
         return districts;
     }
@@ -92,7 +81,7 @@ public class LocationController {
             blocks = locationService.getChildBlocks(districtId);
         }
         else if(user.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel())) {
-            if(locationService.findDistrictById(districtId).getStateOfDistrict().getStateId() == user.getStateId().getStateId()){
+            if(locationService.findDistrictById(districtId).getStateOfDistrict() == user.getStateId()){
                 blocks = locationService.getChildBlocks(districtId);
             }
             else{
@@ -100,7 +89,7 @@ public class LocationController {
             }
         }
         else{
-            blocks = locationService.getChildBlocks(user.getDistrictId().getDistrictId());
+            blocks = locationService.getChildBlocks(user.getDistrictId());
         }
 
         return blocks;
@@ -109,6 +98,14 @@ public class LocationController {
     @RequestMapping(value = {"/DoB/{blockId}"}, method = RequestMethod.GET)
     public @ResponseBody District getDistrictOfBlock(@PathVariable("blockId") Integer blockId) {
         return locationService.getDistrictOfBlock(blockId);
+    }
+
+    /*--------------------------Circle-----------------------------*/
+
+    @RequestMapping(value = {"/circles"}, method = RequestMethod.GET)
+    @ResponseBody List<Circle> getCircles() {
+        User currentUser = userService.getCurrentUser();
+        return reportService.getUserCircles(currentUser);
     }
 
     /*--------------------------Extra-----------------------------*/

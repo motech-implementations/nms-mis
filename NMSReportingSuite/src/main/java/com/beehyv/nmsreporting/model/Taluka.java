@@ -28,35 +28,11 @@ public class Taluka {
     @Column(name="loc_id", columnDefinition = "BIGINT(20)")
     private Long locationId;
 
-    @JsonIgnore
-    @OneToMany(cascade=CascadeType.PERSIST, fetch=FetchType.EAGER, mappedBy="talukaOfBlock")
-    private Set<Block> blocks = new HashSet<>();
+    @Column(name="state_id", columnDefinition = "TINYINT")
+    private Integer stateOfTaluka;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name="state_id", columnDefinition = "TINYINT")
-    private State stateOfTaluka;
-
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name="district_id", columnDefinition = "SMALLINT")
-    private District districtOfTaluka;
-
-    public Date getLastModified() {
-        return lastModified;
-    }
-
-    public void setLastModified(Date lastModified) {
-        this.lastModified = lastModified;
-    }
-
-    public Long getLocationId() {
-        return locationId;
-    }
-
-    public void setLocationId(Long locationId) {
-        this.locationId = locationId;
-    }
+    @Column(name="district_id", columnDefinition = "SMALLINT")
+    private Integer districtOfTaluka;
 
     public Integer getTalukaId() {
         return talukaId;
@@ -74,28 +50,35 @@ public class Taluka {
         this.talukaName = talukaName;
     }
 
-    public Set<Block> getBlocks() {
-        return blocks;
+    public Date getLastModified() {
+        return lastModified;
     }
 
-    public void setBlocks(Set<Block> blocks) {
-        this.blocks = blocks;
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
     }
 
+    public Long getLocationId() {
+        return locationId;
+    }
 
-    public State getStateOfTaluka() {
+    public void setLocationId(Long locationId) {
+        this.locationId = locationId;
+    }
+
+    public Integer getStateOfTaluka() {
         return stateOfTaluka;
     }
 
-    public void setStateOfTaluka(State stateOfTaluka) {
+    public void setStateOfTaluka(Integer stateOfTaluka) {
         this.stateOfTaluka = stateOfTaluka;
     }
 
-    public District getDistrictOfTaluka() {
+    public Integer getDistrictOfTaluka() {
         return districtOfTaluka;
     }
 
-    public void setDistrictOfTaluka(District districtOfTaluka) {
+    public void setDistrictOfTaluka(Integer districtOfTaluka) {
         this.districtOfTaluka = districtOfTaluka;
     }
 }

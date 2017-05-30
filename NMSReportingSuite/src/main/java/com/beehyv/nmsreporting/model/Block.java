@@ -30,36 +30,14 @@ public class Block {
     @Column(name="loc_id", columnDefinition = "BIGINT(20)")
     private Long locationId;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name="taluka_id", columnDefinition = "SMALLINT")
-    private Taluka talukaOfBlock;
+    @Column(name="taluka_id", columnDefinition = "SMALLINT")
+    private Integer talukaOfBlock;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name="district_id", columnDefinition = "SMALLINT")
-    private District districtOfBlock;
+    @Column(name="district_id", columnDefinition = "SMALLINT")
+    private Integer districtOfBlock;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name="state_id", columnDefinition = "TINYINT")
-    private State stateOfBlock;
-
-    public Date getLastModified() {
-        return lastModified;
-    }
-
-    public void setLastModified(Date lastModified) {
-        this.lastModified = lastModified;
-    }
-
-    public Long getLocationId() {
-        return locationId;
-    }
-
-    public void setLocationId(Long locationId) {
-        this.locationId = locationId;
-    }
+    @Column(name="state_id", columnDefinition = "TINYINT")
+    private Integer stateOfBlock;
 
     public Integer getBlockId() {
         return blockId;
@@ -77,27 +55,43 @@ public class Block {
         this.blockName = blockName;
     }
 
-    public Taluka getTalukaOfBlock() {
+    public Date getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
+    }
+
+    public Long getLocationId() {
+        return locationId;
+    }
+
+    public void setLocationId(Long locationId) {
+        this.locationId = locationId;
+    }
+
+    public Integer getTalukaOfBlock() {
         return talukaOfBlock;
     }
 
-    public void setTalukaOfBlock(Taluka talukaOfBlock) {
+    public void setTalukaOfBlock(Integer talukaOfBlock) {
         this.talukaOfBlock = talukaOfBlock;
     }
 
-    public District getDistrictOfBlock() {
+    public Integer getDistrictOfBlock() {
         return districtOfBlock;
     }
 
-    public void setDistrictOfBlock(District districtOfBlock) {
+    public void setDistrictOfBlock(Integer districtOfBlock) {
         this.districtOfBlock = districtOfBlock;
     }
 
-    public State getStateOfBlock() {
+    public Integer getStateOfBlock() {
         return stateOfBlock;
     }
 
-    public void setStateOfBlock(State stateOfBlock) {
+    public void setStateOfBlock(Integer stateOfBlock) {
         this.stateOfBlock = stateOfBlock;
     }
 }

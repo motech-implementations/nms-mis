@@ -4,6 +4,7 @@ import com.beehyv.nmsreporting.business.ReportService;
 import com.beehyv.nmsreporting.dao.*;
 import com.beehyv.nmsreporting.dao.ReportTypeDao;
 import com.beehyv.nmsreporting.entity.ReportRequest;
+import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.Circle;
 import com.beehyv.nmsreporting.model.StateCircle;
@@ -89,13 +90,18 @@ public class ReportServiceImpl implements ReportService{
 
     @Override
     public List<Circle> getUserCircles(User user){
-
-            List<StateCircle> list = stateCircleDao.getCirclesByState(user.getStateId().getStateId());
-            List<Circle> circleList = new ArrayList<>();
-            for(StateCircle item : list){
-                circleList.add(circleDao.getByCircleId(item.getCircleId()));
-            }
-            return circleList;
+        List<StateCircle> list;
+        if(user.getAccessLevel().equalsIgnoreCase(AccessLevel.NATIONAL.getAccessLevel())){
+            list = stateCircleDao.getCirclesByState(null);
+        }
+        else{
+            list = stateCircleDao.getCirclesByState(user.getStateId());
+        }
+        List<Circle> circleList = new ArrayList<>();
+        for(StateCircle item : list){
+            circleList.add(circleDao.getByCircleId(item.getCircleId()));
+        }
+        return circleList;
     }
 
     @Override

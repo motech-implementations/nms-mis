@@ -13,19 +13,6 @@ public interface DistrictDao {
 
     List<District> findByName(String districtName);
 
-    List<District> getDistrictsOfState(State state);
+    List<District> getDistrictsOfState(Integer state);
 
-    List<Block> getBlocks(int districtId);
-
-    List<Taluka> getTalukas(int districtId);
-
-    List<District> getAllDistricts();
-
-    State getStateOfDistrict(District district);
-
-    Circle getCircleOfDistrict(District district);
-
-    void saveLocation(District district);
-
-    void deleteLocation(District district);
 }

@@ -163,6 +163,6 @@ public class AdminController {
                 adminService.getKilkariSixWeekNoAnswerFiles(fromDate, toDate);
             }
         }
-        return "Bulkimport";
+        return "Reports Generated";
     }
 }

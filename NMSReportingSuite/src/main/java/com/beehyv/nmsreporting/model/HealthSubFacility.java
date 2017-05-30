@@ -20,10 +20,8 @@ public class HealthSubFacility {
     @Column(name="healthsubFacility_name")
     private String healthSubFacilityName;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name="healthFacility_id", columnDefinition = "INT")
-    private HealthFacility healthFacilityOfHealthSubFacility;
+    @Column(name="healthFacility_id", columnDefinition = "INT")
+    private Integer healthFacilityOfHealthSubFacility;
 
     @Column(name="last_modified", columnDefinition = "TIMESTAMP")
     private Date lastModified;
@@ -44,11 +42,11 @@ public class HealthSubFacility {
         this.healthSubFacilityName = healthSubFacilityName;
     }
 
-    public HealthFacility getHealthFacilityOfHealthSubFacility() {
+    public Integer getHealthFacilityOfHealthSubFacility() {
         return healthFacilityOfHealthSubFacility;
     }
 
-    public void setHealthFacilityOfHealthSubFacility(HealthFacility healthFacilityOfHealthSubFacility) {
+    public void setHealthFacilityOfHealthSubFacility(Integer healthFacilityOfHealthSubFacility) {
         this.healthFacilityOfHealthSubFacility = healthFacilityOfHealthSubFacility;
     }
 

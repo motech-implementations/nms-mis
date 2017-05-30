@@ -3,7 +3,6 @@ package com.beehyv.nmsreporting.dao.impl;
 import com.beehyv.nmsreporting.dao.AbstractDao;
 import com.beehyv.nmsreporting.dao.CircleDao;
 import com.beehyv.nmsreporting.model.Circle;
-import com.beehyv.nmsreporting.model.Location;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.springframework.stereotype.Repository;

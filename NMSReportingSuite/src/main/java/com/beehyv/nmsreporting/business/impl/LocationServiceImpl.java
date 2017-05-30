@@ -28,32 +28,7 @@ public class LocationServiceImpl implements LocationService {
     private BlockDao blockDao;
 
     @Autowired
-    private LocationDao locationDao;
-
-    @Autowired
     private CircleDao circleDao;
-
-    public Location findLocationById(Integer locationId) {
-        return locationDao.findByLocationId(locationId);
-    }
-
-    public Location findLocationByName(String locationName){
-        return locationDao.findByLocation(locationName).get(0);
-    }
-
-    public List<Location> getAllLocations() {
-        return locationDao.getAllLocations();
-    }
-
-    public List<Location> getAllSubLocations(Integer locationId) {
-        Location location = locationDao.findByLocationId(locationId);
-
-        return locationDao.getAllSubLocations(location);
-    }
-
-    public List<Location> getChildLocations(int locationId){
-        return locationDao.getChildLocations(locationId);
-    }
 
 //    public void createNewLocation(Location location) {
 //        locationDao.saveLocation(location);
@@ -91,13 +66,13 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public List<District> getChildDistricts(Integer stateId) {
-        return districtDao.getDistrictsOfState(stateDao.findByStateId(stateId));
+        return districtDao.getDistrictsOfState(stateDao.findByStateId(stateId).getStateId());
     }
 
     /*----------------------District-------------------------*/
 
     @Override
-    public District findDistrictById(Integer districtId) {
+    public District findDistrictById(Integer districtId) throws NullPointerException{
         return districtDao.findByDistrictId(districtId);
     }
 
@@ -108,12 +83,12 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public List<Block> getChildBlocks(Integer districtId) {
-        return blockDao.getBlocksOfDistrict(districtDao.findByDistrictId(districtId));
+        return blockDao.getBlocksOfDistrict(districtDao.findByDistrictId(districtId).getDistrictId());
     }
 
     @Override
     public State getStateOfDistrict(Integer districtId) {
-        return districtDao.getStateOfDistrict(districtDao.findByDistrictId(districtId));
+        return stateDao.findByStateId(districtDao.findByDistrictId(districtId).getStateOfDistrict());
     }
 
     /*----------------------Taluka-------------------------*/
@@ -137,11 +112,16 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public District getDistrictOfBlock(Integer blockId) {
-        return blockDao.getDistrictOfBlock(blockDao.findByblockId(blockId));
+        return districtDao.findByDistrictId(blockDao.findByblockId(blockId).getDistrictOfBlock());
     }
 
     @Override
     public Circle findCircleById(Integer circleId) {
         return circleDao.getByCircleId(circleId);
+    }
+
+    @Override
+    public List<Circle> getAllCirles() {
+        return circleDao.getAllCircles();
     }
 }

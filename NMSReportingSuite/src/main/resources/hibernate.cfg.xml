@@ -16,6 +16,17 @@
         <mapping class="com.beehyv.nmsreporting.model.District"/>
         <mapping class="com.beehyv.nmsreporting.model.Block"/>
         <mapping class="com.beehyv.nmsreporting.model.Taluka"/>
+        <mapping class="com.beehyv.nmsreporting.model.Village"/>
+        <mapping class="com.beehyv.nmsreporting.model.Circle"/>
+        <mapping class="com.beehyv.nmsreporting.model.HealthFacility"/>
+        <mapping class="com.beehyv.nmsreporting.model.HealthSubFacility"/>
+        <mapping class="com.beehyv.nmsreporting.model.AnonymousUsers"/>
+        <mapping class="com.beehyv.nmsreporting.model.FrontLineWorkers"/>
+        <mapping class="com.beehyv.nmsreporting.model.MACourseCompletion"/>
+        <mapping class="com.beehyv.nmsreporting.model.KilkariLowUsage"/>
+        <mapping class="com.beehyv.nmsreporting.model.KilkariSelfDeactivated"/>
+        <mapping class="com.beehyv.nmsreporting.model.KilkariSixWeeksNoAnswer"/>
+        <mapping class="com.beehyv.nmsreporting.model.StateCircle"/>
 
 
 
