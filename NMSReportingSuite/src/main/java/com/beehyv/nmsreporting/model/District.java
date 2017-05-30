@@ -43,7 +43,7 @@ public class District {
     private State stateOfDistrict;
 
     @JsonIgnore
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="circle_id",columnDefinition = "TINYINT")
     private Circle circleOfDistrict;
 

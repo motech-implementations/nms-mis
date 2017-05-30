@@ -32,9 +32,9 @@
          instance.  Change to your application's settings for a real app. -->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://127.0.0.1:3306/NMSReporting"/>
-        <property name="username" value="root"/>
-        <property name="password" value="beehyv123"/>
+        <property name="url" value="jdbc:mysql://192.168.200.67:3306/Reporting"/>
+        <property name="username" value="etluser"/>
+        <property name="password" value="etl@2015!"/>
     </bean>
 
     <!-- Hibernate SessionFactory -->
