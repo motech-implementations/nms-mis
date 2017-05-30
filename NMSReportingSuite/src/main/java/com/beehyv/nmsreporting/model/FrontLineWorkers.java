@@ -27,30 +27,29 @@ public class FrontLineWorkers {
     @Column(name="flw_designation", columnDefinition = "BOOLEAN")
     private String designation;
 
-    @Column(name="language", columnDefinition = "TINYINT(4)")
+    @Column(name="language", columnDefinition = "VARCHAR(255)")
     private String language;
 
-    @Column(name="flw_status", columnDefinition = "TINYINT(4)")
+    @Column(name="flw_status", columnDefinition = "VARCHAR(255)")
     private String status;
 
-    @ManyToOne
-    @JoinColumn(name="state_id", columnDefinition = "TINYINT")
-    private State state;
+    @Column(name="job_status", columnDefinition = "VARCHAR(255)")
+    private String jobStatus;
 
-    @ManyToOne
-    @JoinColumn(name="district_id", columnDefinition = "SMALLINT(6)")
-    private District district;
+    @Column(name="state_id", columnDefinition = "TINYINT")
+    private Integer state;
 
-    @ManyToOne
-    @JoinColumn(name="taluka_id", columnDefinition = "SMALLINT(6)")
-    private Taluka taluka;
+    @Column(name="district_id", columnDefinition = "SMALLINT(6)")
+    private Integer district;
+
+    @Column(name="taluka_id", columnDefinition = "SMALLINT(6)")
+    private Integer taluka;
 
     @Column(name="village_id", columnDefinition = "INT(11)")
     private Integer village;
 
-    @ManyToOne
-    @JoinColumn(name="block_id", columnDefinition = "INT(11)")
-    private Block block;
+    @Column(name="block_id", columnDefinition = "INT(11)")
+    private Integer block;
 
     @Column(name="healthfacility_id", columnDefinition = "INT(11)")
     private Integer facility;
@@ -70,14 +69,6 @@ public class FrontLineWorkers {
 
     public void setFlwId(Integer flwId) {
         this.flwId = flwId;
-    }
-
-    public String getDesignation() {
-        return designation;
-    }
-
-    public void setDesignation(String designation) {
-        this.designation = designation;
     }
 
     public String getFullName() {
@@ -104,6 +95,14 @@ public class FrontLineWorkers {
         this.externalFlwId = externalFlwId;
     }
 
+    public String getDesignation() {
+        return designation;
+    }
+
+    public void setDesignation(String designation) {
+        this.designation = designation;
+    }
+
     public String getLanguage() {
         return language;
     }
@@ -120,36 +119,36 @@ public class FrontLineWorkers {
         this.status = status;
     }
 
-    public State getState() {
+    public String getJobStatus() {
+        return jobStatus;
+    }
+
+    public void setJobStatus(String jobStatus) {
+        this.jobStatus = jobStatus;
+    }
+
+    public Integer getState() {
         return state;
     }
 
-    public void setState(State state) {
+    public void setState(Integer state) {
         this.state = state;
     }
 
-    public District getDistrict() {
+    public Integer getDistrict() {
         return district;
     }
 
-    public void setDistrict(District district) {
+    public void setDistrict(Integer district) {
         this.district = district;
     }
 
-    public Taluka getTaluka() {
+    public Integer getTaluka() {
         return taluka;
     }
 
-    public void setTaluka(Taluka taluka) {
+    public void setTaluka(Integer taluka) {
         this.taluka = taluka;
-    }
-
-    public Block getBlock() {
-        return block;
-    }
-
-    public void setBlock(Block block) {
-        this.block = block;
     }
 
     public Integer getVillage() {
@@ -158,6 +157,14 @@ public class FrontLineWorkers {
 
     public void setVillage(Integer village) {
         this.village = village;
+    }
+
+    public Integer getBlock() {
+        return block;
+    }
+
+    public void setBlock(Integer block) {
+        this.block = block;
     }
 
     public Integer getFacility() {

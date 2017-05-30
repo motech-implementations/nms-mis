@@ -29,23 +29,11 @@ public class District {
     @Column(name="loc_id", columnDefinition = "BIGINT(20)")
     private Long locationId;
 
-    @JsonIgnore
-    @OneToMany(cascade=CascadeType.PERSIST, fetch=FetchType.LAZY, mappedBy="districtOfBlock")
-    private Set<Block> blocks = new HashSet<>();
+    @Column(name="state_id", columnDefinition = "TINYINT")
+    private Integer stateOfDistrict;
 
-    @JsonIgnore
-    @OneToMany(cascade=CascadeType.PERSIST, fetch=FetchType.LAZY, mappedBy="districtOfTaluka")
-    private Set<Taluka> talukas = new HashSet<>();
-
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name="state_id", columnDefinition = "TINYINT")
-    private State stateOfDistrict;
-
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name="circle_id",columnDefinition = "TINYINT")
-    private Circle circleOfDistrict;
+    @Column(name="circle_id",columnDefinition = "TINYINT")
+    private Integer circleOfDistrict;
 
     public Integer getDistrictId() {
         return districtId;
@@ -79,35 +67,19 @@ public class District {
         this.locationId = locationId;
     }
 
-    public Set<Block> getBlocks() {
-        return blocks;
-    }
-
-    public void setBlocks(Set<Block> blocks) {
-        this.blocks = blocks;
-    }
-
-    public Set<Taluka> getTalukas() {
-        return talukas;
-    }
-
-    public void setTalukas(Set<Taluka> talukas) {
-        this.talukas = talukas;
-    }
-
-    public State getStateOfDistrict() {
+    public Integer getStateOfDistrict() {
         return stateOfDistrict;
     }
 
-    public void setStateOfDistrict(State stateOfDistrict) {
+    public void setStateOfDistrict(Integer stateOfDistrict) {
         this.stateOfDistrict = stateOfDistrict;
     }
 
-    public Circle getCircleOfDistrict() {
+    public Integer getCircleOfDistrict() {
         return circleOfDistrict;
     }
 
-    public void setCircleOfDistrict(Circle circleOfDistrict) {
+    public void setCircleOfDistrict(Integer circleOfDistrict) {
         this.circleOfDistrict = circleOfDistrict;
     }
 }

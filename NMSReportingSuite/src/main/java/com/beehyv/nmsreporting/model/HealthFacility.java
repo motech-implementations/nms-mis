@@ -19,10 +19,8 @@ public class HealthFacility {
     @Column(name="healthfacility_name")
     private String healthFacilityName;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name="healthBlock_id", columnDefinition = "INT")
-    private Block blockOfHealthFacility;
+    @Column(name="healthBlock_id", columnDefinition = "INT")
+    private Integer blockOfHealthFacility;
 
     @Column(name="last_modified", columnDefinition = "TIMESTAMP")
     private Date lastModified;
@@ -43,11 +41,11 @@ public class HealthFacility {
         this.healthFacilityName = healthFacilityName;
     }
 
-    public Block getBlockOfHealthFacility() {
+    public Integer getBlockOfHealthFacility() {
         return blockOfHealthFacility;
     }
 
-    public void setBlockOfHealthFacility(Block blockOfHealthFacility) {
+    public void setBlockOfHealthFacility(Integer blockOfHealthFacility) {
         this.blockOfHealthFacility = blockOfHealthFacility;
     }
 

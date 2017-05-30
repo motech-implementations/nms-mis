@@ -30,44 +30,14 @@ public class BlockDaoImpl extends AbstractDao<Integer, Block> implements BlockDa
     }
 
     @Override
-    public List<Block> getBlocksOfTaluka(Taluka taluka) {
+    public List<Block> getBlocksOfDistrict(Integer districtId) {
         Criteria criteria = createEntityCriteria();
-        criteria.add(Restrictions.eq("talukaOfBlock", taluka));
+        criteria.add(Restrictions.eq("districtOfBlock", districtId));
         return (List<Block>) criteria.list();
     }
 
     @Override
-    public List<Block> getBlocksOfDistrict(District district) {
-        Criteria criteria = createEntityCriteria();
-        criteria.add(Restrictions.eq("districtOfBlock", district));
-        return (List<Block>) criteria.list();
-    }
-
-    @Override
-    public List<Block> getBlocksOfState(State state) {
-        Criteria criteria = createEntityCriteria();
-        criteria.add(Restrictions.eq("stateOfBlock", state));
-        return (List<Block>) criteria.list();
-    }
-
-    @Override
-    public List<Block> getAllBlocks() {
-        Criteria criteria = createEntityCriteria();
-        return (List<Block>) criteria.list();
-    }
-
-    @Override
-    public District getDistrictOfBlock(Block block) {
+    public Integer getDistrictOfBlock(Block block) {
         return block.getDistrictOfBlock();
-    }
-
-    @Override
-    public void saveBlock(Block block) {
-        persist(block);
-    }
-
-    @Override
-    public void deleteBlock(Block block) {
-        delete(block);
     }
 }

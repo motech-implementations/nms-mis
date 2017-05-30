@@ -23,25 +23,17 @@ public class Village {
     @Column(name="last_modified", columnDefinition = "TIMESTAMP")
     private Date lastModified;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name="hblock_id", columnDefinition = "INT")
-    private Block blockOfVillage;
+    @Column(name="hblock_id", columnDefinition = "INT")
+    private Integer blockOfVillage;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name="taluka_id", columnDefinition = "SMALLINT")
-    private Taluka talukaOfVillage;
+    @Column(name="taluka_id", columnDefinition = "SMALLINT")
+    private Integer talukaOfVillage;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name="district_id", columnDefinition = "SMALLINT")
-    private District districtOfVillage;
+    @Column(name="district_id", columnDefinition = "SMALLINT")
+    private Integer districtOfVillage;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name="state_id", columnDefinition = "TINYINT")
-    private State stateOfVillage;
+    @Column(name="state_id", columnDefinition = "TINYINT")
+    private Integer stateOfVillage;
 
     public Integer getVillageId() {
         return villageId;
@@ -67,35 +59,35 @@ public class Village {
         this.lastModified = lastModified;
     }
 
-    public Block getBlockOfVillage() {
+    public Integer getBlockOfVillage() {
         return blockOfVillage;
     }
 
-    public void setBlockOfVillage(Block blockOfVillage) {
+    public void setBlockOfVillage(Integer blockOfVillage) {
         this.blockOfVillage = blockOfVillage;
     }
 
-    public Taluka getTalukaOfVillage() {
+    public Integer getTalukaOfVillage() {
         return talukaOfVillage;
     }
 
-    public void setTalukaOfVillage(Taluka talukaOfVillage) {
+    public void setTalukaOfVillage(Integer talukaOfVillage) {
         this.talukaOfVillage = talukaOfVillage;
     }
 
-    public District getDistrictOfVillage() {
+    public Integer getDistrictOfVillage() {
         return districtOfVillage;
     }
 
-    public void setDistrictOfVillage(District districtOfVillage) {
+    public void setDistrictOfVillage(Integer districtOfVillage) {
         this.districtOfVillage = districtOfVillage;
     }
 
-    public State getStateOfVillage() {
+    public Integer getStateOfVillage() {
         return stateOfVillage;
     }
 
-    public void setStateOfVillage(State stateOfVillage) {
+    public void setStateOfVillage(Integer stateOfVillage) {
         this.stateOfVillage = stateOfVillage;
     }
 }

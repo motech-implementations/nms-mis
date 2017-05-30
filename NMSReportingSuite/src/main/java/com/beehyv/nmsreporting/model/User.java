@@ -35,21 +35,18 @@ public class User {
 	@Column(name="email_id")
 	private String emailId;
 
-	@ManyToOne
-	@JoinColumn(name="location",insertable = false,updatable = false)
-	private Location locationId;
+//	@ManyToOne
+//	@JoinColumn(name="location",insertable = false,updatable = false)
+//	private Location locationId;
 
-	@ManyToOne
-	@JoinColumn(name="state",columnDefinition = "TINYINT")
-	private State stateId;
+	@Column(name="state",columnDefinition = "TINYINT")
+	private Integer stateId;
 
-	@ManyToOne
-	@JoinColumn(name="district", columnDefinition = "SMALLINT")
-	private District districtId;
+	@Column(name="district", columnDefinition = "SMALLINT")
+	private Integer districtId;
 
-	@ManyToOne
-	@JoinColumn(name="healthblock", columnDefinition = "INT")
-	private Block blockId;
+	@Column(name="healthblock", columnDefinition = "INT")
+	private Integer blockId;
 
 	@Column(name="creation_date")
 	private Date creationDate;
@@ -71,54 +68,8 @@ public class User {
 	@Column(name="account_status")
 	private String accountStatus = AccountStatus.PENDING.getAccountStatus();
 
-////	@Enumerated(EnumType.STRING)
-//	@Column(name="access_type")
-//	private String accessType;
-
-//	@Enumerated(EnumType.STRING)
 	@Column(name="access_level")
 	private  String accessLevel;
-
-	public State getStateId() {
-		return stateId;
-	}
-
-	public void setStateId(State stateId) {
-		this.stateId = stateId;
-	}
-
-	public District getDistrictId() {
-		return districtId;
-	}
-
-	public void setDistrictId(District districtId) {
-		this.districtId = districtId;
-	}
-
-
-	public String getAccessLevel() {
-		return accessLevel;
-	}
-
-	public void setAccessLevel(String accessLevel) {
-		this.accessLevel = accessLevel;
-	}
-
-//	public String getAccessType() {
-//		return accessType;
-//	}
-//
-//	public void setAccessType(String accessType) {
-//		this.accessType = accessType;
-//	}
-
-	public Block getBlockId() {
-		return blockId;
-	}
-
-	public void setBlockId(Block blockId) {
-		this.blockId = blockId;
-	}
 
 	public Integer getUserId() {
 		return userId;
@@ -168,12 +119,28 @@ public class User {
 		this.emailId = emailId;
 	}
 
-	public Location getLocationId() {
-		return locationId;
+	public Integer getStateId() {
+		return stateId;
 	}
 
-	public void setLocationId(Location locationId) {
-		this.locationId = locationId;
+	public void setStateId(Integer stateId) {
+		this.stateId = stateId;
+	}
+
+	public Integer getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(Integer districtId) {
+		this.districtId = districtId;
+	}
+
+	public Integer getBlockId() {
+		return blockId;
+	}
+
+	public void setBlockId(Integer blockId) {
+		this.blockId = blockId;
 	}
 
 	public Date getCreationDate() {
@@ -214,5 +181,13 @@ public class User {
 
 	public void setAccountStatus(String accountStatus) {
 		this.accountStatus = accountStatus;
+	}
+
+	public String getAccessLevel() {
+		return accessLevel;
+	}
+
+	public void setAccessLevel(String accessLevel) {
+		this.accessLevel = accessLevel;
 	}
 }

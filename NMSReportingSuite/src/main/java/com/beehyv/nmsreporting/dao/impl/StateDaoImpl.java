@@ -33,34 +33,9 @@ public class StateDaoImpl extends AbstractDao<Integer, State> implements StateDa
     }
 
     @Override
-    public List<District> getChildLocations(Integer stateId) {
-        State staet=getByKey(stateId);
-        List<District> childDistricts=new ArrayList<>();
-        childDistricts.addAll(staet.getDistricts());
-        return childDistricts;
-    }
-
-    @Override
     public List<State> getAllStates() {
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("stateId"));
         return (List<State>) criteria.list();
     }
 
-    @Override
-    public List<District> getDistricts(int stateId) {
-        State staet=getByKey(stateId);
-        List<District> childDistricts=new ArrayList<>();
-        childDistricts.addAll(staet.getDistricts());
-        return childDistricts;
-    }
-
-    @Override
-    public void saveLocation(State state) {
-        persist(state);
-    }
-
-    @Override
-    public void deleteLocation(State state) {
-        delete(state);
-    }
 }

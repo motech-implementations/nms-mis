@@ -16,13 +16,4 @@ public interface TalukaDao {
 
     List<Taluka> findByName(String talukaName);
 
-    List<Taluka> getTalukasOfDistrict(District district);
-
-    List<Taluka> getTalukasOfState(State state);
-
-    List<Taluka> getAllTalukas();
-
-    void saveTaluka(Taluka taluka);
-
-    void deleteTaluka(Taluka taluka);
 }
