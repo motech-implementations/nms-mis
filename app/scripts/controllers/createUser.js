@@ -107,7 +107,7 @@
 					$scope.newUser.district = null;
 					$scope.newUser.block = null;
 
-					$scope.getDistricts(value.stateId)
+					$scope.getDistricts(value)
 				}
 			});
 
@@ -115,7 +115,7 @@
 				if(value != null){
 					$scope.newUser.block = null;
 
-					$scope.getBlocks(value.districtId);
+					$scope.getBlocks(value);
 				}
 			});
 

@@ -33,11 +33,11 @@ public interface UserDao {
 
     <E> List<User> getUsersByLocation(String propertyName, E location);
 
-    boolean roleExistsNational(Role adminRole);
+    User getNationalAdmin(Role adminRole);
 
-    boolean roleExistsState(Role adminRole, State state);
+    User getStateAdmin(Role adminRole, State state);
 
-    boolean roleExistsDistrict(Role adminRole, District district);
+    User getDistrictAdmin(Role adminRole, District district);
 
     void saveUser(User user);
 

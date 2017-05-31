@@ -9,10 +9,6 @@ h1{
 	background-color: #2164b2;
 }
 
-body .nav-bar{
-	padding-bottom: 15px;
-}
-
 body .nav-bar .nav-header{
 	padding: 15px;
 	background-image: url("../images/header.png");
@@ -22,34 +18,35 @@ body .nav-bar .nav-header{
 
 div.nav-bar .nav{
 	background-color: #1cb1d2;
+	height: 41px;
 }
 
 div.nav-bar ul.breadcrumb {
 	display: inline-block;
 	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	padding-left: 50px;
+	margin: 0px;
+	padding: 0px 0px 0px 50px;
 	overflow: hidden;
 	background-color: inherit;
 	color: #ffffff;
 }
 div.nav-bar ul.breadcrumb > li + li:before {
-    content: " >";
-    color: #000000;
-    padding: 0 5px;
+	content: ">";
+	color: #000000;
 }
 
 div.nav-bar .breadcrumb li {
 	float:left;
 	text-align: center;
-	padding: 10px 0px;
 	text-decoration: none;
 }
 div.nav-bar .breadcrumb li a{
 	text-decoration: none;
-	font-size: 14px;
 	color: #ffffff;
+	display: inline-block;
+	text-align: center;
+	padding: 12px 16px;
+	font-size: 12px;
 }
 div.nav-bar .breadcrumb li a.active{
 	color: #000000;
@@ -58,8 +55,8 @@ div.nav-bar .breadcrumb li a.active{
 div.nav-bar ul.nav-menu {
 	display: inline-block;
 	list-style-type: none;
-	margin: 0;
-	padding: 0;
+	margin: 0px;
+	padding: 0px;
 	overflow: hidden;
 	background-color: #1cb1d2;
 	float: right;
@@ -80,7 +77,7 @@ div.nav-bar .nav-menu li a {
 	text-align: center;
 	padding: 12px 16px;
 	text-decoration: none;
-	font-size: 14px;
+	font-size: 12px;
 }
 div.nav-bar .nav-menu li.active a,
 div.nav-bar .nav-menu li:hover a{
@@ -95,44 +92,46 @@ div.userTable > .header > .inputs > *{
 	padding-left: 10px;
 }
 div.userTable > .header > .inputs > h1{
-	width: 50%;
+	padding: 5px;
+	margin: 0px;
+	width: 54%;
 }
 
 div.userTable table th{
 	background-color: #2164b2;
 }
 div.userTable table th:nth-child(1) {
-    width: 3%;
+	width: 3%;
 }
 div.userTable table th:nth-child(2) {
-    width: 14%;
+	width: 14%;
 }
 div.userTable table th:nth-child(3) {
-    width: 10%;
+	width: 10%;
 }
 div.userTable table th:nth-child(4) {
-    width: 8%;
+	width: 8%;
 }
 div.userTable table th:nth-child(5) {
-    width: 15%;
+	width: 15%;
 }
 div.userTable table th:nth-child(6) {
-    width: 9%;
+	width: 9%;
 }
 div.userTable table th:nth-child(7) {
-    width: 9%;
+	width: 9%;
 }
 div.userTable table th:nth-child(8) {
-    width: 9%;
+	width: 9%;
 }
 div.userTable table th:nth-child(9) {
-    width: 9%;
+	width: 9%;
 }
 div.userTable table th:nth-child(10) {
-    width: 9%;
+	width: 9%;
 }
 div.userTable table th:nth-child(11) {
-    width: 5%;
+	width: 5%;
 }
 div.userTable table th a{
 	text-decoration: none;
@@ -155,10 +154,26 @@ div.userTable table td *{
 	color: #000000;
 }
 
+div.reports-header *,
+div.reports-header input,
+div.reports-header select{
+	text-overflow: ellipsis;
+}
+
+div.reports-header ul li a,
 div.reports-header label{
 	font-size: 12px;
 }
 
+
+div.editUser label{
+	font-size: 12px;
+}
+
+
+div.createUser label{
+	font-size: 12px;
+}
 
 body *{
 	/*border: 1px solid black;*/
