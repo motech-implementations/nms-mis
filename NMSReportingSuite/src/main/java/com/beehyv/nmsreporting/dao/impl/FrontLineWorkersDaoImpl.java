@@ -22,9 +22,10 @@ public class FrontLineWorkersDaoImpl extends AbstractDao<Integer,FrontLineWorker
     public List<FrontLineWorkers> getInactiveFrontLineWorkers(Date toDate) {
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("creationDate"));
         criteria.add(Restrictions.and(
-//                Restrictions.eq("status","INACTIVE").ignoreCase(),
-//                Restrictions.le("creationDate",toDate),
-                Restrictions.ne("jobStatus","INACTIVE").ignoreCase()
+                Restrictions.eq("status","INACTIVE").ignoreCase(),
+                Restrictions.le("creationDate",toDate),
+                Restrictions.ne("jobStatus","INACTIVE").ignoreCase(),
+                Restrictions.eq("designation","ASHA").ignoreCase()
         ));
         return (List<FrontLineWorkers>) criteria.list();
     }

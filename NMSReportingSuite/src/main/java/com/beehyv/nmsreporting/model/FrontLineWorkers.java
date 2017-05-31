@@ -11,20 +11,19 @@ import java.util.Date;
 public class FrontLineWorkers {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name="id", columnDefinition = "BIGINT(20)")
-    private Integer flwId;
+    @Column(name="flw_id", columnDefinition = "BIGINT(20)")
+    private Long flwId;
 
     @Column(name="flw_name", columnDefinition = "VARCHAR(255)")
     private String fullName;
 
     @Column(name="flw_msisdn", columnDefinition = "BIGINT(10)")
-    private String mobileNumber;
+    private Long mobileNumber;
 
     @Column(name="external_flw_id", columnDefinition = "BIGINT(20)")
     private String externalFlwId;
 
-    @Column(name="flw_designation", columnDefinition = "BOOLEAN")
+    @Column(name="flw_designation", columnDefinition = "VARCHAR(255)")
     private String designation;
 
     @Column(name="language", columnDefinition = "VARCHAR(255)")
@@ -63,11 +62,11 @@ public class FrontLineWorkers {
     @Column(name="last_modified", columnDefinition = "DATE")
     private Date lastModifiedDate;
 
-    public Integer getFlwId() {
+    public Long getFlwId() {
         return flwId;
     }
 
-    public void setFlwId(Integer flwId) {
+    public void setFlwId(Long flwId) {
         this.flwId = flwId;
     }
 
@@ -79,11 +78,11 @@ public class FrontLineWorkers {
         this.fullName = fullName;
     }
 
-    public String getMobileNumber() {
+    public Long getMobileNumber() {
         return mobileNumber;
     }
 
-    public void setMobileNumber(String mobileNumber) {
+    public void setMobileNumber(Long mobileNumber) {
         this.mobileNumber = mobileNumber;
     }
 

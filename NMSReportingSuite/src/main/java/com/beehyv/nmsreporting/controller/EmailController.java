@@ -17,6 +17,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
 import java.util.*;
 
 /**
@@ -122,10 +123,27 @@ public class EmailController {
         return errorSendingMail;
     }
 
+    @RequestMapping(value = "/send", method = RequestMethod.POST)
+    public @ResponseBody String send(@RequestBody EmailInfo mailInfo){
+        EmailInfo newMail = new EmailInfo();
+        newMail.setFrom(mailInfo.getFrom());
+        newMail.setTo(mailInfo.getTo());
+        Calendar c = Calendar.getInstance();   // this takes current date
+        c.add(Calendar.MONTH, -1);
+        c.set(Calendar.DATE, 1);
+        String fileName = "cgi.png";
+        String pathName = System.getProperty("user.home") + File.separator;
+        newMail.setSubject(fileName);
+        newMail.setFileName(fileName);
+        newMail.setBody(emailService.getBody("Random",reportService.getMonthYear(c.getTime()),"Sreekanth"));
+        newMail.setRootPath(pathName+fileName);
+        return emailService.sendMail(newMail);
+    }
 
 
-//    @RequestMapping(value = "/dummy", method = RequestMethod.GET)
-//    public @ResponseBody EmailInfo dummy(){
-//        return new EmailInfo();
-//    }
+
+    @RequestMapping(value = "/dummy", method = RequestMethod.GET)
+    public @ResponseBody EmailInfo dummy(){
+        return new EmailInfo();
+    }
 }

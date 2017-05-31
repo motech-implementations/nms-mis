@@ -14,10 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by beehyv on 25/5/17.
@@ -113,13 +110,13 @@ public class ReportServiceImpl implements ReportService{
     public String getMonthYear(Date toDate) {
         Calendar c =Calendar.getInstance();
         c.setTime(toDate);
-        int month=c.get(Calendar.MONTH)+1;
+//        int month=c.get(Calendar.MONTH)+1;
         int year=(c.get(Calendar.YEAR))%100;
-        String monthString;
-        if(month<10){
-            monthString="0"+String.valueOf(month);
-        }
-        else monthString=String.valueOf(month);
+        String monthString = c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH );
+//        if(month<10){
+//            monthString="0"+String.valueOf(month);
+//        }
+//        else monthString=String.valueOf(month);
 
         String yearString=String.valueOf(year);
 

@@ -799,21 +799,22 @@ public class AdminServiceImpl implements AdminService {
         Integer counter = 2;
         for (FrontLineWorkers frontLineWorker : successfulCandidates) {
             empinfo.put((counter.toString()), new Object[]{
-                    frontLineWorker.getMobileNumber(),
-                    stateDao.findByStateId(frontLineWorker.getState()).getStateName(),
-                    districtDao.findByDistrictId(frontLineWorker.getDistrict()).getDistrictName(),
+                    (frontLineWorker.getMobileNumber() == null) ? "No Phone":frontLineWorker.getMobileNumber(),
+                    (frontLineWorker.getState() == null) ? "No State":stateDao.findByStateId(frontLineWorker.getState()).getStateName(),
+                    (frontLineWorker.getDistrict() == null) ? "No District":districtDao.findByDistrictId(frontLineWorker.getDistrict()).getDistrictName(),
                     (frontLineWorker.getBlock() == null) ? "No Block" : blockDao.findByblockId(frontLineWorker.getBlock()).getBlockName(),
                     (frontLineWorker.getTaluka() == null) ? "No Taluka" : talukaDao.findByTalukaId(frontLineWorker.getTaluka()).getTalukaName(),
                     (frontLineWorker.getFacility() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(frontLineWorker.getFacility()).getHealthFacilityName(),
                     (frontLineWorker.getSubfacility() == null) ? "No Health Subfacility" : healthSubFacilityDao.findByHealthSubFacilityId(frontLineWorker.getSubfacility()).getHealthSubFacilityName(),
                     (frontLineWorker.getVillage() == null) ? "No Village" : villageDao.findByVillageId(frontLineWorker.getVillage()).getVillageName(),
-                    frontLineWorker.getFullName(),
-                    frontLineWorker.getExternalFlwId(),
-                    frontLineWorker.getCreationDate(),
-                    frontLineWorker.getDesignation(),
-                    maCourseAttemptDao.getFirstCompletionDate(frontLineWorker.getFlwId())
+                    (frontLineWorker.getFullName() == null) ? "No Name":frontLineWorker.getFullName(),
+                    (frontLineWorker.getExternalFlwId() == null) ? "No FLW_ID":frontLineWorker.getExternalFlwId(),
+                    (frontLineWorker.getCreationDate() == null) ? "No Creation_date":frontLineWorker.getCreationDate(),
+                    (frontLineWorker.getDesignation() == null) ? "No Designation":frontLineWorker.getDesignation(),
+                    (frontLineWorker.getFlwId() == null) ? "No Phone":maCourseAttemptDao.getFirstCompletionDate(frontLineWorker.getFlwId())
             });
             counter++;
+            System.out.println("Added "+counter);
         }
         Set<String> keyid = empinfo.keySet();
         int rowid = 0;
@@ -904,7 +905,7 @@ public class AdminServiceImpl implements AdminService {
         XSSFWorkbook workbook = new XSSFWorkbook();
         //Create a blank sheet
         XSSFSheet spreadsheet = workbook.createSheet(
-                "Cumulative Inactive Users Report ");
+                "Cumulative Inactive Users Report "+place+"_"+getMonthYear(toDate));
         //Create row object
         XSSFRow row;
         //This data needs to be written (Object[])
@@ -927,18 +928,18 @@ public class AdminServiceImpl implements AdminService {
         Integer counter = 2;
         for (FrontLineWorkers frontLineWorker : inactiveCandidates) {
             empinfo.put((counter.toString()), new Object[]{
-                    frontLineWorker.getMobileNumber(),
-                    stateDao.findByStateId(frontLineWorker.getState()).getStateName(),
-                    districtDao.findByDistrictId(frontLineWorker.getDistrict()).getDistrictName(),
+                    (frontLineWorker.getMobileNumber() == null) ? "No Phone":frontLineWorker.getMobileNumber(),
+                    (frontLineWorker.getState() == null) ? "No State":stateDao.findByStateId(frontLineWorker.getState()).getStateName(),
+                    (frontLineWorker.getDistrict() == null) ? "No District":districtDao.findByDistrictId(frontLineWorker.getDistrict()).getDistrictName(),
                     (frontLineWorker.getBlock() == null) ? "No Block" : blockDao.findByblockId(frontLineWorker.getBlock()).getBlockName(),
                     (frontLineWorker.getTaluka() == null) ? "No Taluka" : talukaDao.findByTalukaId(frontLineWorker.getTaluka()).getTalukaName(),
                     (frontLineWorker.getFacility() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(frontLineWorker.getFacility()).getHealthFacilityName(),
-                    (frontLineWorker.getSubfacility() == null) ? "No Health SUbfacility" : healthSubFacilityDao.findByHealthSubFacilityId(frontLineWorker.getSubfacility()).getHealthSubFacilityName(),
+                    (frontLineWorker.getSubfacility() == null) ? "No Health Subfacility" : healthSubFacilityDao.findByHealthSubFacilityId(frontLineWorker.getSubfacility()).getHealthSubFacilityName(),
                     (frontLineWorker.getVillage() == null) ? "No Village" : villageDao.findByVillageId(frontLineWorker.getVillage()).getVillageName(),
-                    frontLineWorker.getFullName(),
-                    frontLineWorker.getExternalFlwId(),
-                    frontLineWorker.getCreationDate(),
-                    frontLineWorker.getDesignation()
+                    (frontLineWorker.getFullName() == null) ? "No Name":frontLineWorker.getFullName(),
+                    (frontLineWorker.getExternalFlwId() == null) ? "No FLW_ID":frontLineWorker.getExternalFlwId(),
+                    (frontLineWorker.getCreationDate() == null) ? "No Creation_date":frontLineWorker.getCreationDate(),
+                    (frontLineWorker.getDesignation() == null) ? "No Designation":frontLineWorker.getDesignation()
             });
             counter++;
         }
@@ -1082,9 +1083,9 @@ public class AdminServiceImpl implements AdminService {
                     (kilkari.getName() == null) ? "No Name" : kilkari.getName(),
                     (kilkari.getMsisdn() == null) ? "No MSISDN" : kilkari.getMsisdn(),
                     (kilkari.getAgeOnService() == null) ? "Ageless" : kilkari.getAgeOnService(),
-                    kilkari.getPackActivationDate(),
-                    kilkari.getDeactivationDate(),
-                    kilkari.getCallsAnswered()
+                    (kilkari.getPackActivationDate() == null) ? "No Activation_date" :kilkari.getPackActivationDate(),
+                    (kilkari.getDeactivationDate() == null) ? "No Deactivation_date" :kilkari.getDeactivationDate(),
+                    (kilkari.getAgeOnService() == null) ? "No Call_Data" :kilkari.getCallsAnswered()
 
             });
             counter++;
@@ -1195,7 +1196,7 @@ public class AdminServiceImpl implements AdminService {
         List<State> states = stateDao.getAllStates();
         String rootPath = reports+ReportType.maCourse.getReportType()+ "/";
         List<FrontLineWorkers> successFullcandidates = maCourseAttemptDao.getSuccessFulCompletion(toDate);
-        getCumulativeCourseCompletion(successFullcandidates, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
+//        getCumulativeCourseCompletion(successFullcandidates, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
         for (State state : states) {
             String stateName = state.getStateName();
             String rootPathState = rootPath+ stateName+ "/";
@@ -1255,7 +1256,7 @@ public class AdminServiceImpl implements AdminService {
         List<State> states = stateDao.getAllStates();
         String rootPath = reports+ReportType.maInactive.getReportType()+ "/";
         List<FrontLineWorkers> inactiveFrontLineWorkers = frontLineWorkersDao.getInactiveFrontLineWorkers(toDate);
-        getCumulativeInactiveUsers(inactiveFrontLineWorkers, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
+//        getCumulativeInactiveUsers(inactiveFrontLineWorkers, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
         for (State state : states) {
             String stateName = state.getStateName();
             String rootPathState = rootPath + stateName+ "/";

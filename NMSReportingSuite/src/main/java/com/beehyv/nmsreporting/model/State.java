@@ -31,6 +31,9 @@ public class State {
     @Column(name="last_modified", columnDefinition = "TIMESTAMP")
     private Date lastModified;
 
+    @Column(name="serviceType",columnDefinition = "VARCHAR(10)")
+    private String serviceType;
+
     public Integer getStateId() {
         return stateId;
     }
@@ -61,5 +64,13 @@ public class State {
 
     public void setLastModified(Date lastModified) {
         this.lastModified = lastModified;
+    }
+
+    public String getServiceType() {
+        return serviceType;
+    }
+
+    public void setServiceType(String serviceType) {
+        this.serviceType = serviceType;
     }
 }
