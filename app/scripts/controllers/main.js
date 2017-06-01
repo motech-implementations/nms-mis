@@ -64,7 +64,13 @@
 				return $state.current.name.includes(tabName);
 			}
 
-			$scope.breadCrumb = ['User Management', 'Create User'];
+			// $scope.breadCrumb = ['User Management', 'Create User'];
+			UserFormFactory.downloadCurrentUser()
+			.then(function(result){
+				UserFormFactory.setCurrentUser(result.data);
+				$scope.currentUser = UserFormFactory.getCurrentUser();
+			})
+
 		}
 	])}
 )()

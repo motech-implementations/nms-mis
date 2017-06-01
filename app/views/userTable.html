@@ -3,13 +3,13 @@
 	<div class="block header">
 		<div class='block inputs row'>
 			<h1 class='col-sm-6'>User Management</h1>
-			<input  class="col-sm-2 form-control" ng-model="filterText" type="text" name="tableSearch" placeholder="Search">
-			<button class="col-sm-2 btn btn-primary" name="bulkUpload" ui-sref="userManagement.bulkUpload">Upload Bulk Users</button>
-			<button class="col-sm-2 btn btn-primary" name="newUser" ui-sref="userManagement.createUser">Create new User</button>
+			<input  class="form-control input input-sm" ng-model="filterText" type="text" name="tableSearch" placeholder="Search">
+			<button class="btn btn-sm btn-primary" name="bulkUpload" ui-sref="userManagement.bulkUpload">Upload Bulk Users</button>
+			<button class="btn btn-sm btn-primary" name="newUser" ui-sref="userManagement.createUser">Create new User</button>
 		</div>
 	</div>
 
-	<div class="block">
+	<div>
 		<table class="table table-bordered">
 			<tr>
 				<!-- <th ng-repeat="header in headers" ng-if="header != '$$hashKey'">{{header}}</th> -->

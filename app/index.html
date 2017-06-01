@@ -37,16 +37,8 @@
 	<script type="text/javascript" src="scripts/controllers/reports.js"></script>
 	<script type="text/javascript" src="scripts/controllers/login.js"></script>
 	
-
 	<!-- Directives -->
 	<script type="text/javascript" src="scripts/directives/pagination.js"></script>
-	<!-- <script type="text/javascript" src="scripts/directives/userManagement.js"></script>
-	<script type="text/javascript" src="scripts/directives/userTable.js"></script>
-	<script type="text/javascript" src="scripts/directives/editUser.js"></script>
-	<script type="text/javascript" src="scripts/directives/bulkUser.js"></script>
-	<script type="text/javascript" src="scripts/directives/createUser.js"></script>
-	<script type="text/javascript" src="scripts/directives/reports.js"></script> -->
-
 
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
@@ -57,16 +49,8 @@
 <body ng-app="nmsReports" ng-controller="MainController">
 	<div class='nav-bar' ng-hide='$state.current.name=="login"'>
 		<div class="nav-header">
-			<!-- <div>
-				<a class="navbar-brand" href="#">WebSiteName</a>
-			</div>
-			<pre>
-				$state = {{$state.current.name}}
-				$stateParams = {{$stateParams}}
-				$state full url = {{ $state.$current.url.source }}
-				$state active tab = {{ $route.current.activetab }}
-			</pre> -->
 			<img src="images/logo.png">
+			<span><b>Hello {{currentUser.fullName}}</b></span>
 		</div>
 
 		<div class="nav">
@@ -92,7 +76,11 @@
 		</div>
 	</div>
 
-	<div ui-view></div>
+	<div ui-view class="content"></div>
+
+	<div class='footer'>
+		<span>2017 all rights reserved - Mobile Academy & Kilkari Management and Information system</span>
+	</div>
 
 </body>
 </html> 

@@ -13,9 +13,9 @@
 			.then(function(result){
 				$scope.editUser = result.data;
 
-				$scope.states = [$scope.editUser.stateId];
-				$scope.districts = [$scope.editUser.districtId];
-				$scope.blocks = [$scope.editUser.blockId];
+				$scope.place.state = $scope.editUser.stateId
+				$scope.place.district = $scope.editUser.districtId
+				$scope.place.block = $scope.editUser.blockId
 			});
 			
 
@@ -29,6 +29,7 @@
 			}
 			
 			$scope.editUser = {};
+			$scope.place = {};
 
 			UserFormFactory.getRoles()
 			.then(function(result){
@@ -80,17 +81,20 @@
 
 			$scope.$watch('editUser.stateId', function(value){
 				if(value != null){
-					$scope.editUser.districtId = null;
-					$scope.editUser.blockId = null;
+					$scope.editUser.districtId = $scope.place.district;
+					$scope.editUser.blockId = $scope.place.block;
 
-					$scope.getDistricts(value.stateId)
+					$scope.place.district = null;
+
+					$scope.getDistricts(value)
 				}
 			});
 			$scope.$watch('editUser.districtId', function(value){
 				if(value != null){
-					$scope.editUser.blockId = null;
+					$scope.editUser.blockId = $scope.place.block;
 
-					$scope.getBlocks(value.districtId);
+					$scope.place.block = null;
+					$scope.getBlocks(value);
 				}
 			});
 			$scope.$watch('editUser.blockId', function(value){
@@ -101,9 +105,7 @@
 
 			$scope.editUserSubmit = function() {
 				if ($scope.editUserForm.$valid) {
-
 					delete $scope.editUser.$$hashKey;
-
 					$http({
 						method  : 'POST',
 						url     : backend_root + 'nms/user/updateUser',
@@ -111,6 +113,7 @@
 						headers : {'Content-Type': 'application/json'} 
 					}).then(function(result){
 						alert(result.data['0']);
+						// $scope.open()
 					})
 				}
 				else{
@@ -121,6 +124,22 @@
 					});
 				}
 			};
-		}]);
 
+			// $scope.open = function () {
+			// 	$modal.open({
+			// 		templateUrl: 'myModalContent.html', // loads the template
+			// 		backdrop: true, // setting backdrop allows us to close the modal window on clicking outside the modal window
+			// 		windowClass: 'modal', // windowClass - additional CSS class(es) to be added to a modal window template
+			// 		controller: function ($scope, $modalInstance) {
+			// 			$scope.submit = function () {
+			// 				$modalInstance.dismiss('cancel'); // dismiss(reason) - a method that can be used to dismiss a modal, passing a reason
+			// 			}
+			// 			$scope.cancel = function () {
+			// 				$modalInstance.dismiss('cancel'); 
+			// 			};
+			// 		},
+			// 	});//end of modal.open
+			// }; // end of scope.open function
+		
+		}]);
 })()

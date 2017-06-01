@@ -56,6 +56,10 @@
 				$scope.reportName = item.name;
 			}
 
+			$scope.isCircleReport = function(){
+				return $scope.reportName != null && $scope.reportName == 'Circle wise Anonymous Reports';
+			}
+
 			$scope.getStates = function(){
 				return UserFormFactory.getStates()
 				.then(function(result){

@@ -1,7 +1,9 @@
-<div ng-controller="CreateUserController">
-	<div class="well">
-		<h1>Create new User</h1>
-
+<div ng-controller="CreateUserController" class="createUser">
+	<div class="block">
+		<div class="block">
+			<h1>Create new User</h1>
+		</div>
+		
 		<!-- <form name="createUserForm" class="form-horizontal" novalidate action="http://localhost:8080/NMSReportingSuite/nms/user/createFromDto" method="post"> -->
 
 		<form name="createUserForm" class="form-horizontal" novalidate>
@@ -9,7 +11,7 @@
 			<div class="form-group" ng-class="{'has-error':createUserForm.fullName.$invalid && !createUserForm.fullName.$pristine}">
 				<label class="control-label col-xs-2">Full Name</label>
 				<div class="col-xs-10">
-					<input name="fullName" id="fullName" type="text" class="form-control" placeholder="Full Name" ng-model="newUser.fullName" required 
+					<input name="fullName" id="fullName" type="text" class="form-control input input-sm" placeholder="Full Name" ng-model="newUser.fullName" required 
 					ng-pattern="/^[A-Za-z ]*$/" ng-minlength="3"
 					tooltip-placement="top" uib-tooltip="Errors: {{createUserForm.fullName.$error|json}}" >
 
@@ -24,7 +26,7 @@
 			<div class="form-group" ng-class="{'has-error':createUserForm.username.$invalid && !createUserForm.username.$pristine}">
 				<label class="control-label col-xs-2">Username</label>
 				<div class="col-xs-10">
-					<input name="username" id="username" type="text" class="form-control" placeholder="Username" ng-model="newUser.username" required 
+					<input name="username" id="username" type="text" class="form-control input input-sm" placeholder="Username" ng-model="newUser.username" required 
 					ng-pattern="/^[A-Za-z0-9]*$/" ng-minlength="5"
 					tooltip-placement="top" uib-tooltip="Errors: {{createUserForm.username.$error|json}}" >
 
@@ -39,9 +41,8 @@
 			<div class="form-group" ng-class="{'has-error':createUserForm.accessType.$invalid && !createUserForm.accessType.$pristine}">
 				<label class="control-label col-xs-2">Access Type</label>
 				<div class="col-xs-10">
-					<select name="accessType" id="accessType" class="form-control"  ng-model="newUser.roleId" ng-options="item as item.roleDescription for item in accessTypeList track by item.roleId" required
-					tooltip-placement="top" uib-tooltip="Errors: {{createUserForm.accessType.$error|json}}"
-					style="width: 200px;">
+					<select name="accessType" id="accessType" class="form-control input input-sm"  ng-model="newUser.roleId" ng-options="item as item.roleDescription for item in accessTypeList track by item.roleId" required
+					tooltip-placement="top" uib-tooltip="Errors: {{createUserForm.accessType.$error|json}}" >
 					</select>
 
 					<div ng-messages="createUserForm.accessType.$error" role="alert" ng-show="!createUserForm.accessType.$pristine">
@@ -53,7 +54,7 @@
 			<div class="form-group" ng-class="{'has-error':createUserForm.accessLevel.$invalid && !createUserForm.accessLevel.$pristine}">
 				<label class="control-label col-xs-2">Access Level</label>
 				<div class="col-xs-10">
-					<select name="accessLevel" id="accessLevel" class="form-control"  ng-model="newUser.accessLevel" ng-options="item for item in accessLevelList" required
+					<select name="accessLevel" id="accessLevel" class="form-control input input-sm"  ng-model="newUser.accessLevel" ng-options="item for item in accessLevelList" required
 					tooltip-placement="top" uib-tooltip="Errors: {{createUserForm.accessLevel.$error|json}}">
 					</select>
 
@@ -68,7 +69,7 @@
 			<div class="form-group" ng-class="{'has-error':createUserForm.state.$invalid && !createUserForm.state.$pristine}">
 				<label class="control-label col-xs-2">State</label>
 				<div class="col-xs-10">
-					<select name="state" id="state" class="form-control" ng-model="newUser.stateId" ng-options="item as item.stateName for item in states track by item.stateId" ng-disabled="getAccessLevel(1)" ng-required="!getAccessLevel(1)">
+					<select name="state" id="state" class="form-control input input-sm" ng-model="newUser.stateId" ng-options="item.stateId as item.stateName for item in states track by item.stateId" ng-disabled="getAccessLevel(1)" ng-required="!getAccessLevel(1)">
 					</select>
 				</div>
 			</div>
@@ -76,7 +77,7 @@
 			<div class="form-group" ng-class="{'has-error':createUserForm.district.$invalid && !createUserForm.district.$pristine}">
 				<label class="control-label col-xs-2">District</label>
 				<div class="col-xs-10">
-					<select name="district" id="district" class="form-control" ng-model="newUser.districtId" ng-options="item as item.districtName for item in districts track by item.districtId" ng-disabled="getAccessLevel(2)" ng-required="!getAccessLevel(2)">
+					<select name="district" id="district" class="form-control input input-sm" ng-model="newUser.districtId" ng-options="item.districtId as item.districtName for item in districts track by item.districtId" ng-disabled="getAccessLevel(2)" ng-required="!getAccessLevel(2)">
 					</select>
 				</div>
 			</div>
@@ -84,8 +85,8 @@
 			<div class="form-group" ng-class="{'has-error':createUserForm.block.$invalid && !createUserForm.block.$pristine}">
 				<label class="control-label col-xs-2">Block</label>
 				<div class="col-xs-10">
-					<select name="block" id="block" class="form-control" ng-model="newUser.blockId"
-						ng-options="item as item.blockName for item in blocks track by item.blockId" ng-disabled="getAccessLevel(3)" ng-required="!getAccessLevel(3)">
+					<select name="block" id="block" class="form-control input input-sm" ng-model="newUser.blockId"
+						ng-options="item.blockId as item.blockName for item in blocks track by item.blockId" ng-disabled="getAccessLevel(3)" ng-required="!getAccessLevel(3)">
 					</select>
 				</div>
 			</div>
@@ -95,7 +96,7 @@
 			<div class="form-group" ng-class="{'has-error':createUserForm.emailId.$invalid && !createUserForm.emailId.$pristine}">
 				<label class="control-label col-xs-2">Email</label>
 				<div class="col-xs-10">
-					<input name="emailId" id="emailId" type="email" class="form-control" class="form-control" ng-model="newUser.emailId" placeholder="Email" required
+					<input name="emailId" id="emailId" type="email" class="form-control input input-sm" class="form-control input input-sm" ng-model="newUser.emailId" placeholder="Email" required
 					tooltip-placement="top" uib-tooltip="Errors: {{createUserForm.emailId.$error|json}}">
 
 					<div ng-messages="createUserForm.emailId.$error" role="alert" ng-show="!createUserForm.emailId.$pristine">
@@ -108,7 +109,7 @@
 			<div class="form-group" ng-class="{'has-error':createUserForm.phoneNumber.$invalid && !createUserForm.phoneNumber.$pristine}">
 				<label class="control-label col-xs-2">Contact no.</label>
 				<div class="col-xs-10">
-					<input name="phoneNumber" id="phoneNumber" type="text" class="form-control" ng-model="newUser.phoneNumber" placeholder="Contact no." required
+					<input name="phoneNumber" id="phoneNumber" type="text" class="form-control input input-sm" ng-model="newUser.phoneNumber" placeholder="Contact no." required
 					ng-pattern="/^[0-9]*$/" ng-minlength="10" ng-maxlength="10"
 					tooltip-placement="top" uib-tooltip="Errors: {{createUserForm.phoneNumber.$error|json}}">
 
@@ -125,7 +126,7 @@
 			<div class="form-group" ng-class="{'has-error':createUserForm.newPassword.$invalid && !createUserForm.newPassword.$pristine}">
 				<label class="control-label col-xs-2">New Password</label>
 				<div class="col-xs-10">
-					<input name="newPassword" id="newPassword" type="password" class="form-control" ng-model="newUser.newPassword" placeholder="New Password" required
+					<input name="newPassword" id="newPassword" type="password" class="form-control input input-sm" ng-model="newUser.newPassword" placeholder="New Password" required
 					tooltip-placement="top" uib-tooltip="Errors: {{createUserForm.newPassword.$error|json}}">
 				</div>
 			</div>
@@ -133,7 +134,7 @@
 			<div class="form-group" ng-class="{'has-error':createUserForm.confirmPassword.$invalid && !createUserForm.confirmPassword.$pristine && (createUserForm.newPassword != createUserForm.confirmPassword)}">
 				<label class="control-label col-xs-2">Confirm Password</label>
 				<div class="col-xs-10">
-					<input name="confirmPassword" id="confirmPassword" type="password" class="form-control" ng-model="confirmPassword" placeholder="Confirm Password" required 
+					<input name="confirmPassword" id="confirmPassword" type="password" class="form-control input input-sm" ng-model="confirmPassword" placeholder="Confirm Password" required 
 					ui-validate="'$value==newUser.newPassword'" ui-validate-watch=" 'newPassword'"
 					tooltip-placement="top" uib-tooltip="Errors: {{createUserForm.confirmPassword.$error|json}}">
 				</div>
@@ -141,11 +142,10 @@
  -->
 			<div class="form-group">
 				<div class="col-xs-offset-2 col-xs-10">
-					<button class="btn btn-primary" ng-click="clearForm()">Cancel</button>
-					<button type="submit" ng-click="createUserSubmit()" ng-disabled="createUserForm.fullName.$invalid && !createUserForm.fullName.$pristine" class="btn btn-primary" tooltip-placement="top" uib-tooltip="User: {{newUser|json}}">Create New User</button>
+					<button class="btn btn-sm btn-default" ui-sref="userManagement.userTable">Cancel</button>
+					<button type="submit" ng-click="createUserSubmit()" ng-disabled="createUserForm.fullName.$invalid && !createUserForm.fullName.$pristine" class="btn btn-sm btn-primary" tooltip-placement="top" uib-tooltip="User: {{newUser|json}}">Create New User</button>
 				</div>
 			</div>
-
 		</form>
 	</div>
 </div>

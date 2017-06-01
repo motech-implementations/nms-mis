@@ -93,38 +93,38 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
     }
 
     @Override
-    public boolean roleExistsNational(Role adminRole) {
+    public User getNationalAdmin(Role adminRole) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.and(
                 Restrictions.eq("accessLevel", AccessLevel.NATIONAL.getAccessLevel()),
                 Restrictions.eq("roleId", adminRole),
                 Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus())
         ));
-        return criteria.list() != null && criteria.list().size() > 0;
+        return (criteria.list().size() == 0 ? null : (User) criteria.list().get(0));
     }
 
     @Override
-    public boolean roleExistsState(Role adminRole, State state) {
+    public User getStateAdmin(Role adminRole, State state) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.and(
                 Restrictions.eq("accessLevel", AccessLevel.STATE.getAccessLevel()),
                 Restrictions.eq("roleId", adminRole),
-                Restrictions.eq("stateId", state),
+                Restrictions.eq("stateId", state.getStateId()),
                 Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus())
         ));
-        return criteria.list() != null && criteria.list().size() > 0;
+        return (criteria.list().size() == 0 ? null : (User) criteria.list().get(0));
     }
 
     @Override
-    public boolean roleExistsDistrict(Role adminRole, District district) {
+    public User getDistrictAdmin(Role adminRole, District district) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.and(
                 Restrictions.eq("accessLevel", AccessLevel.DISTRICT.getAccessLevel()),
                 Restrictions.eq("roleId", adminRole),
-                Restrictions.eq("districtId", district),
+                Restrictions.eq("districtId", district.getDistrictId()),
                 Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus())
         ));
-        return criteria.list() != null && criteria.list().size() > 0;
+        return (criteria.list().size() == 0 ? null : (User) criteria.list().get(0));
     }
 
     @Override
