@@ -30,7 +30,7 @@
 							</button>
 							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
 								<li role="menuitem" ng-repeat="item in reportNames">
-									<a ng-click='selectReportType(item)'>
+									<a ng-click='selectReport(item)'>
 										<img class='block' src="{{item.icon}}">
 										{{item.name}}
 									</a>
@@ -112,9 +112,7 @@
 		</form>
 	</div>
 
-	<div class="well">
-		<p>Your download is in progress</p>
-	</div>
+	
 <!-- 
 	<div style="background-color: #aaa; height: 34px;">
 		<p style="display: inline-block; float: left; left: 100px;">{{radioModel}}</p>
@@ -123,4 +121,8 @@
 			<label class="btn btn-primary" ng-model="radioModel" uib-btn-radio="'chart'">Chart</label><br>
 		</div>
 	</div> -->
+
+	<div class="block">
+		<p>Your download is in progress</p>
+	</div>
 </div>

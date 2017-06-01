@@ -13,6 +13,11 @@ body .nav-bar .nav-header{
 	padding: 15px;
 	background-image: url("../images/header.png");
 }
+body .nav-bar .nav-header span{
+	color: #ffffff;
+	float: right;
+	padding: 25px;
+}
 
 /*navbar*/
 
@@ -175,6 +180,59 @@ div.createUser label{
 	font-size: 12px;
 }
 
+div.bulkUpload-header{
+	text-align: center;
+}
+div.bulkUpload-header > *{
+	display: inline-block;
+	width: 270px;
+}
+div.bulkUpload-header > input{
+	padding-top: 4px;
+}
+div.bulkUpload-header > p{
+	padding-top: 10px;
+}
+
+div.bulkUpload p{
+	font-size: 12px;
+}
+div.bulkUpload p.grey{
+	color: #4d4d4d;
+}
+div.bulkUpload p.red{
+	color: #ff0000;
+}
+div.bulkUpload table th{
+	background-color: #2164b2;
+	color: #ffffff;
+	font-size: 13px;
+}
+div.bulkUpload table th:nth-child(1) {
+	width: 20%;
+}
+div.bulkUpload table th:nth-child(2) {
+	width: 80%;
+}
+div.bulkUpload table td{
+	font-size: 12px;
+}
+div.bulkUpload table td:nth-child(1) {
+	color: #ff0000;
+}
+
+div.content{
+	min-height: 470px;
+}
+
+div.footer{
+	background-color: #b3b3b3;
+	text-align: center;
+	font-size: 13px;
+	color: #4d4d4d;
+	padding: 5px;
+	margin: 10px 0px;
+}
 body *{
 	/*border: 1px solid black;*/
 	font-family: 'Roboto', sans-serif;
