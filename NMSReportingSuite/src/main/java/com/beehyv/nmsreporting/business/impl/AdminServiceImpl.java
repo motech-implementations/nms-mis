@@ -7,6 +7,7 @@ import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.AccessType;
 import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.*;
+import com.beehyv.nmsreporting.utils.*;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -21,6 +22,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.beehyv.nmsreporting.utils.ServiceFunctions.StReplace;
 
 /**
  * Created by beehyv on 19/4/17.
@@ -456,7 +459,7 @@ public class AdminServiceImpl implements AdminService {
         if (!dir.exists())
             dir.mkdirs();
         for (State state : states) {
-            String stateName = state.getStateName();
+            String stateName = StReplace(state.getStateName());
             String rootPathState = rootPath + reportType + "/" + stateName;
             File dirState = new File(rootPathState);
             if (!dirState.exists())
@@ -464,7 +467,7 @@ public class AdminServiceImpl implements AdminService {
             int stateId = state.getStateId();
             List<District> districts = districtDao.getDistrictsOfState(stateId);
             for (District district : districts) {
-                String districtName = district.getDistrictName();
+                String districtName = StReplace(district.getDistrictName());
                 String rootPathDistrict = rootPathState + "/" + districtName;
                 File dirDistrict = new File(rootPathDistrict);
                 if (!dirDistrict.exists())
@@ -472,7 +475,7 @@ public class AdminServiceImpl implements AdminService {
                 int districtId = district.getDistrictId();
                 List<Block> Blocks = blockDao.getBlocksOfDistrict(districtId);
                 for (Block block : Blocks) {
-                    String blockName = block.getBlockName();
+                    String blockName = StReplace(block.getBlockName());
                     String rootPathblock = rootPathDistrict + "/" + blockName;
                     File dirBlock = new File(rootPathblock);
                     if (!dirBlock.exists())
@@ -491,7 +494,7 @@ public class AdminServiceImpl implements AdminService {
         if (!dir.exists())
             dir.mkdirs();
         for (Circle circle : circleList) {
-            String circleName = circle.getCircleName();
+            String circleName = StReplace(circle.getCircleName());
             String rootPathCircle = rootPath + reportType + "/" + circleName;
             File dirCircle = new File(rootPathCircle);
             if (!dirCircle.exists())
@@ -528,7 +531,7 @@ public class AdminServiceImpl implements AdminService {
                 getCumulativeCourseCompletion(successFullcandidates, rootPath,AccessLevel.NATIONAL.getAccessLevel(), toDate);
             }
             else{
-                String stateName=stateDao.findByStateId(stateId).getStateName();
+                String stateName=StReplace(stateDao.findByStateId(stateId).getStateName());
                 String rootPathState = rootPath+ stateName+ "/";
                 if(districtId==0){
                     List<FrontLineWorkers> candidatesFromThisState = new ArrayList<>();
@@ -540,7 +543,7 @@ public class AdminServiceImpl implements AdminService {
                     getCumulativeCourseCompletion(candidatesFromThisState, rootPathState, stateName, toDate);
                 }
                 else{
-                    String districtName=districtDao.findByDistrictId(districtId).getDistrictName();
+                    String districtName=StReplace(districtDao.findByDistrictId(districtId).getDistrictName());
                     String rootPathDistrict = rootPathState+ districtName+ "/";
                     if(blockId==0){
                         List<FrontLineWorkers> candidatesFromThisDistrict = new ArrayList<>();
@@ -552,7 +555,7 @@ public class AdminServiceImpl implements AdminService {
                         getCumulativeCourseCompletion(candidatesFromThisDistrict, rootPathDistrict, districtName, toDate);
                     }
                     else{
-                        String blockName=blockDao.findByblockId(blockId).getBlockName();
+                        String blockName=StReplace(blockDao.findByblockId(blockId).getBlockName());
                         String rootPathblock = rootPathDistrict + blockName+ "/";
 
                         List<FrontLineWorkers> candidatesFromThisBlock = new ArrayList<>();
@@ -574,7 +577,7 @@ public class AdminServiceImpl implements AdminService {
                 getCumulativeInactiveUsers(inactiveFrontLineWorkers, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
             }
             else{
-                String stateName=stateDao.findByStateId(stateId).getStateName();
+                String stateName=StReplace(stateDao.findByStateId(stateId).getStateName());
                 String rootPathState = rootPath+ stateName+ "/";
                 if(districtId==0){
                     List<FrontLineWorkers> candidatesFromThisState = new ArrayList<>();
@@ -586,7 +589,7 @@ public class AdminServiceImpl implements AdminService {
                     getCumulativeInactiveUsers(candidatesFromThisState,rootPathState, stateName, toDate);
                 }
                 else{
-                    String districtName=districtDao.findByDistrictId(districtId).getDistrictName();
+                    String districtName=StReplace(districtDao.findByDistrictId(districtId).getDistrictName());
                     String rootPathDistrict = rootPathState+ districtName+ "/";
                     if(blockId==0){
                         List<FrontLineWorkers> candidatesFromThisDistrict = new ArrayList<>();
@@ -598,7 +601,7 @@ public class AdminServiceImpl implements AdminService {
                         getCumulativeInactiveUsers(candidatesFromThisDistrict,rootPathDistrict, districtName, toDate);
                     }
                     else{
-                        String blockName=blockDao.findByblockId(blockId).getBlockName();
+                        String blockName=StReplace(blockDao.findByblockId(blockId).getBlockName());
                         String rootPathblock = rootPathDistrict + blockName+ "/";
 
                         List<FrontLineWorkers> candidatesFromThisBlock = new ArrayList<>();
@@ -620,7 +623,7 @@ public class AdminServiceImpl implements AdminService {
                 getCircleWiseAnonymousUsers(anonymousUsersList,  rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
             }
             else{
-                String circleName=circleDao.getByCircleId(circleId).getCircleName();
+                String circleName=StReplace(circleDao.getByCircleId(circleId).getCircleName());
                 String rootPathCircle=rootPath+circleName+"/";
                 List<AnonymousUsers> anonymousUsersListCircle = anonymousUsersDao.getAnonymousUsersCircle(fromDate,toDate,circleId);
                 getCircleWiseAnonymousUsers(anonymousUsersListCircle, rootPathCircle, circleName, toDate);
@@ -635,7 +638,7 @@ public class AdminServiceImpl implements AdminService {
                 getKilkariLowUsage(kilkariLowUsageList, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
             }
             else{
-                String stateName=stateDao.findByStateId(stateId).getStateName();
+                String stateName=StReplace(stateDao.findByStateId(stateId).getStateName());
                 String rootPathState = rootPath+ stateName+ "/";
                 if(districtId==0){
                     List<KilkariLowUsage> candidatesFromThisState = new ArrayList<>();
@@ -647,7 +650,7 @@ public class AdminServiceImpl implements AdminService {
                     getKilkariLowUsage(candidatesFromThisState,rootPathState, stateName, toDate);
                 }
                 else{
-                    String districtName=districtDao.findByDistrictId(districtId).getDistrictName();
+                    String districtName=StReplace(districtDao.findByDistrictId(districtId).getDistrictName());
                     String rootPathDistrict = rootPathState+ districtName+ "/";
                     if(blockId==0){
                         List<KilkariLowUsage> candidatesFromThisDistrict = new ArrayList<>();
@@ -659,7 +662,7 @@ public class AdminServiceImpl implements AdminService {
                         getKilkariLowUsage(candidatesFromThisDistrict,rootPathDistrict, districtName, toDate);
                     }
                     else{
-                        String blockName=blockDao.findByblockId(blockId).getBlockName();
+                        String blockName=StReplace(blockDao.findByblockId(blockId).getBlockName());
                         String rootPathblock = rootPathDistrict + blockName+ "/";
 
                         List<KilkariLowUsage> candidatesFromThisBlock = new ArrayList<>();
@@ -681,7 +684,7 @@ public class AdminServiceImpl implements AdminService {
                 getKilkariSixWeekNoAnswer(kilkariSixWeeksNoAnswers, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
             }
             else{
-                String stateName=stateDao.findByStateId(stateId).getStateName();
+                String stateName=StReplace(stateDao.findByStateId(stateId).getStateName());
                 String rootPathState = rootPath+ stateName+ "/";
                 if(districtId==0){
                     List<KilkariSixWeeksNoAnswer> candidatesFromThisState = new ArrayList<>();
@@ -693,7 +696,7 @@ public class AdminServiceImpl implements AdminService {
                     getKilkariSixWeekNoAnswer(candidatesFromThisState,rootPathState, stateName, toDate);
                 }
                 else{
-                    String districtName=districtDao.findByDistrictId(districtId).getDistrictName();
+                    String districtName=StReplace(districtDao.findByDistrictId(districtId).getDistrictName());
                     String rootPathDistrict = rootPathState+ districtName+ "/";
                     if(blockId==0){
                         List<KilkariSixWeeksNoAnswer> candidatesFromThisDistrict = new ArrayList<>();
@@ -705,7 +708,7 @@ public class AdminServiceImpl implements AdminService {
                         getKilkariSixWeekNoAnswer(candidatesFromThisDistrict,rootPathDistrict, districtName, toDate);
                     }
                     else{
-                        String blockName=blockDao.findByblockId(blockId).getBlockName();
+                        String blockName=StReplace(blockDao.findByblockId(blockId).getBlockName());
                         String rootPathblock = rootPathDistrict + blockName+ "/";
 
                         List<KilkariSixWeeksNoAnswer> candidatesFromThisBlock = new ArrayList<>();
@@ -728,7 +731,7 @@ public class AdminServiceImpl implements AdminService {
                 getKilkariSelfDeactivation(kilkariSelfDeactivatedList, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
             }
             else{
-                String stateName=stateDao.findByStateId(stateId).getStateName();
+                String stateName=StReplace(stateDao.findByStateId(stateId).getStateName());
                 String rootPathState = rootPath+ stateName+ "/";
                 if(districtId==0){
                     List<KilkariSelfDeactivated> candidatesFromThisState = new ArrayList<>();
@@ -740,7 +743,7 @@ public class AdminServiceImpl implements AdminService {
                     getKilkariSelfDeactivation(candidatesFromThisState,rootPathState, stateName, toDate);
                 }
                 else{
-                    String districtName=districtDao.findByDistrictId(districtId).getDistrictName();
+                    String districtName=StReplace(districtDao.findByDistrictId(districtId).getDistrictName());
                     String rootPathDistrict = rootPathState+ districtName+ "/";
                     if(blockId==0){
                         List<KilkariSelfDeactivated> candidatesFromThisDistrict = new ArrayList<>();
@@ -752,7 +755,7 @@ public class AdminServiceImpl implements AdminService {
                         getKilkariSelfDeactivation(candidatesFromThisDistrict,rootPathDistrict, districtName, toDate);
                     }
                     else{
-                        String blockName=blockDao.findByblockId(blockId).getBlockName();
+                        String blockName=StReplace(blockDao.findByblockId(blockId).getBlockName());
                         String rootPathblock = rootPathDistrict + blockName+ "/";
 
                         List<KilkariSelfDeactivated> candidatesFromThisBlock = new ArrayList<>();
@@ -810,7 +813,7 @@ public class AdminServiceImpl implements AdminService {
                     (frontLineWorker.getFullName() == null) ? "No Name":frontLineWorker.getFullName(),
                     (frontLineWorker.getExternalFlwId() == null) ? "No FLW_ID":frontLineWorker.getExternalFlwId(),
                     (frontLineWorker.getCreationDate() == null) ? "No Creation_date":frontLineWorker.getCreationDate(),
-                    (frontLineWorker.getDesignation() == null) ? "No Designation":frontLineWorker.getDesignation(),
+                    (frontLineWorker.getJobStatus() == null) ? "No Designation":frontLineWorker.getJobStatus(),
                     (frontLineWorker.getFlwId() == null) ? "No Phone":maCourseAttemptDao.getFirstCompletionDate(frontLineWorker.getFlwId())
             });
             counter++;
@@ -824,7 +827,7 @@ public class AdminServiceImpl implements AdminService {
             int cellid = 0;
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
-                cell.setCellValue((String) obj);
+                cell.setCellValue(obj.toString());
             }
         }
         //Write the workbook in file system
@@ -878,7 +881,7 @@ public class AdminServiceImpl implements AdminService {
             int cellid = 0;
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
-                cell.setCellValue((String) obj);
+                cell.setCellValue(obj.toString());
             }
         }
         //Write the workbook in file system
@@ -939,7 +942,7 @@ public class AdminServiceImpl implements AdminService {
                     (frontLineWorker.getFullName() == null) ? "No Name":frontLineWorker.getFullName(),
                     (frontLineWorker.getExternalFlwId() == null) ? "No FLW_ID":frontLineWorker.getExternalFlwId(),
                     (frontLineWorker.getCreationDate() == null) ? "No Creation_date":frontLineWorker.getCreationDate(),
-                    (frontLineWorker.getDesignation() == null) ? "No Designation":frontLineWorker.getDesignation()
+                    (frontLineWorker.getJobStatus() == null) ? "No Designation":frontLineWorker.getJobStatus()
             });
             counter++;
         }
@@ -951,7 +954,7 @@ public class AdminServiceImpl implements AdminService {
             int cellid = 0;
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
-                cell.setCellValue((String) obj);
+                cell.setCellValue(obj.toString());
             }
         }
         //Write the workbook in file system
@@ -1004,7 +1007,7 @@ public class AdminServiceImpl implements AdminService {
                     (kilkari.getVillageId() == null) ? "No Taluka" : talukaDao.findByTalukaId(villageDao.findByVillageId(kilkari.getVillageId()).getTalukaOfVillage()).getTalukaName(),
                     (kilkari.getHsubcenterId() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthFacilityOfHealthSubFacility()).getHealthFacilityName(),
                     (kilkari.getHsubcenterId() == null) ? "No Health Subfacility" : healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthSubFacilityName(),
-                    (kilkari.getVillageId() == null) ? "No Village" : villageDao.findByVillageId(kilkari.getVillageId()),
+                    (kilkari.getVillageId() == null) ? "No Village" : villageDao.findByVillageId(kilkari.getVillageId()).getVillageName(),
                     (kilkari.getMctsId() == null) ? "No MCTS Id" : kilkari.getMctsId(),
                     (kilkari.getName() == null) ? "No Name" : kilkari.getName(),
                     (kilkari.getMsisdn() == null) ? "No MSISDN" : kilkari.getMsisdn(),
@@ -1021,7 +1024,7 @@ public class AdminServiceImpl implements AdminService {
             int cellid = 0;
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
-                cell.setCellValue((String) obj);
+                cell.setCellValue(obj.toString());
             }
         }
         //Write the workbook in file system
@@ -1078,7 +1081,7 @@ public class AdminServiceImpl implements AdminService {
                     (kilkari.getVillageId() == null) ? "No Taluka" : talukaDao.findByTalukaId(villageDao.findByVillageId(kilkari.getVillageId()).getTalukaOfVillage()).getTalukaName(),
                     (kilkari.getHsubcenterId() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthFacilityOfHealthSubFacility()).getHealthFacilityName(),
                     (kilkari.getHsubcenterId() == null) ? "No Health Subfacility" : healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthSubFacilityName(),
-                    (kilkari.getVillageId() == null) ? "No Village" : villageDao.findByVillageId(kilkari.getVillageId()),
+                    (kilkari.getVillageId() == null) ? "No Village" : villageDao.findByVillageId(kilkari.getVillageId()).getVillageName(),
                     (kilkari.getMctsId() == null) ? "No MCTS Id" : kilkari.getMctsId(),
                     (kilkari.getName() == null) ? "No Name" : kilkari.getName(),
                     (kilkari.getMsisdn() == null) ? "No MSISDN" : kilkari.getMsisdn(),
@@ -1098,7 +1101,7 @@ public class AdminServiceImpl implements AdminService {
             int cellid = 0;
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
-                cell.setCellValue((String) obj);
+                cell.setCellValue(obj.toString());
             }
         }
         //Write the workbook in file system
@@ -1152,7 +1155,7 @@ public class AdminServiceImpl implements AdminService {
                     (kilkari.getVillageId() == null) ? "No Taluka" : talukaDao.findByTalukaId(villageDao.findByVillageId(kilkari.getVillageId()).getTalukaOfVillage()).getTalukaName(),
                     (kilkari.getHsubcenterId() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthFacilityOfHealthSubFacility()).getHealthFacilityName(),
                     (kilkari.getHsubcenterId() == null) ? "No Health Subfacility" : healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthSubFacilityName(),
-                    (kilkari.getVillageId() == null) ? "No Village" : villageDao.findByVillageId(kilkari.getVillageId()),
+                    (kilkari.getVillageId() == null) ? "No Village" : villageDao.findByVillageId(kilkari.getVillageId()).getVillageName(),
                     (kilkari.getMctsId() == null) ? "No MCTS Id" : kilkari.getMctsId(),
                     (kilkari.getName() == null) ? "No Name" : kilkari.getName(),
                     (kilkari.getMsisdn() == null) ? "No MSISDN" : kilkari.getMsisdn(),
@@ -1168,7 +1171,7 @@ public class AdminServiceImpl implements AdminService {
             int cellid = 0;
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
-                cell.setCellValue((String) obj);
+                cell.setCellValue(obj.toString());
             }
         }
         //Write the workbook in file system
@@ -1198,7 +1201,7 @@ public class AdminServiceImpl implements AdminService {
         List<FrontLineWorkers> successFullcandidates = maCourseAttemptDao.getSuccessFulCompletion(toDate);
 //        getCumulativeCourseCompletion(successFullcandidates, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
         for (State state : states) {
-            String stateName = state.getStateName();
+            String stateName = StReplace(state.getStateName());
             String rootPathState = rootPath+ stateName+ "/";
             int stateId = state.getStateId();
             List<FrontLineWorkers> candidatesFromThisState = new ArrayList<>();
@@ -1210,7 +1213,7 @@ public class AdminServiceImpl implements AdminService {
             getCumulativeCourseCompletion(candidatesFromThisState, rootPathState, stateName, toDate);
             List<District> districts = districtDao.getDistrictsOfState(stateId);
             for (District district : districts) {
-                String districtName = district.getDistrictName();
+                String districtName = StReplace(district.getDistrictName());
                 String rootPathDistrict = rootPathState + districtName+ "/";
                 int districtId = district.getDistrictId();
                 List<FrontLineWorkers> candidatesFromThisDistrict = new ArrayList<>();
@@ -1222,7 +1225,7 @@ public class AdminServiceImpl implements AdminService {
                 getCumulativeCourseCompletion(candidatesFromThisDistrict, rootPathDistrict, districtName, toDate);
                 List<Block> Blocks = blockDao.getBlocksOfDistrict(districtId);
                 for (Block block : Blocks) {
-                    String blockName = block.getBlockName();
+                    String blockName = StReplace(block.getBlockName());
                     String rootPathblock = rootPathDistrict + blockName+ "/";
                     int blockId = block.getBlockId();
                     List<FrontLineWorkers> candidatesFromThisBlock = new ArrayList<>();
@@ -1244,7 +1247,7 @@ public class AdminServiceImpl implements AdminService {
         List<AnonymousUsers> anonymousUsersList = anonymousUsersDao.getAnonymousUsers(startDate,toDate);
         getCircleWiseAnonymousUsers(anonymousUsersList, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
         for (Circle circle : circleList) {
-            String circleName = circle.getCircleName();
+            String circleName = StReplace(circle.getCircleName());
             String rootPathCircle=rootPath+circleName+"/";
             List<AnonymousUsers> anonymousUsersListCircle = anonymousUsersDao.getAnonymousUsersCircle(startDate,toDate, circle.getCircleId());
             getCircleWiseAnonymousUsers(anonymousUsersListCircle, rootPathCircle, circleName, toDate);
@@ -1256,9 +1259,9 @@ public class AdminServiceImpl implements AdminService {
         List<State> states = stateDao.getAllStates();
         String rootPath = reports+ReportType.maInactive.getReportType()+ "/";
         List<FrontLineWorkers> inactiveFrontLineWorkers = frontLineWorkersDao.getInactiveFrontLineWorkers(toDate);
-//        getCumulativeInactiveUsers(inactiveFrontLineWorkers, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
+        getCumulativeInactiveUsers(inactiveFrontLineWorkers, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
         for (State state : states) {
-            String stateName = state.getStateName();
+            String stateName = StReplace(state.getStateName());
             String rootPathState = rootPath + stateName+ "/";
             int stateId = state.getStateId();
             List<FrontLineWorkers> candidatesFromThisState = new ArrayList<>();
@@ -1270,7 +1273,7 @@ public class AdminServiceImpl implements AdminService {
             getCumulativeInactiveUsers(candidatesFromThisState, rootPathState, stateName, toDate);
             List<District> districts = districtDao.getDistrictsOfState(stateId);
             for (District district : districts) {
-                String districtName = district.getDistrictName();
+                String districtName = StReplace(district.getDistrictName());
                 String rootPathDistrict = rootPathState  + districtName+ "/";
                 int districtId = district.getDistrictId();
                 List<FrontLineWorkers> candidatesFromThisDistrict = new ArrayList<>();
@@ -1282,13 +1285,13 @@ public class AdminServiceImpl implements AdminService {
                 getCumulativeInactiveUsers(candidatesFromThisDistrict, rootPathDistrict, districtName, toDate);
                 List<Block> Blocks = blockDao.getBlocksOfDistrict(districtId);
                 for (Block block : Blocks) {
-                    String blockName = block.getBlockName();
+                    String blockName = StReplace(block.getBlockName());
                     String rootPathblock = rootPathDistrict  + blockName+ "/";
 
                     int blockId = block.getBlockId();
                     List<FrontLineWorkers> candidatesFromThisBlock = new ArrayList<>();
                     for (FrontLineWorkers asha : candidatesFromThisDistrict) {
-                        if (asha.getBlock() == blockId) {
+                        if ((asha.getBlock()!=null)&&(asha.getBlock() == blockId)) {
                             candidatesFromThisBlock.add(asha);
                         }
                     }
@@ -1305,7 +1308,7 @@ public class AdminServiceImpl implements AdminService {
         List<KilkariSixWeeksNoAnswer> kilkariSixWeeksNoAnswers = kilkariSixWeeksNoAnswerDao.getKilkariUsers(fromDate, toDate);
         getKilkariSixWeekNoAnswer(kilkariSixWeeksNoAnswers, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
         for (State state : states) {
-            String stateName = state.getStateName();
+            String stateName = StReplace(state.getStateName());
             String rootPathState = rootPath + stateName+ "/";
             int stateId = state.getStateId();
             List<KilkariSixWeeksNoAnswer> candidatesFromThisState = new ArrayList<>();
@@ -1318,7 +1321,7 @@ public class AdminServiceImpl implements AdminService {
             List<District> districts = districtDao.getDistrictsOfState(stateId);
 
             for (District district : districts) {
-                String districtName = district.getDistrictName();
+                String districtName = StReplace(district.getDistrictName());
                 String rootPathDistrict = rootPathState + districtName+ "/";
                 int districtId = district.getDistrictId();
                 List<KilkariSixWeeksNoAnswer> candidatesFromThisDistrict = new ArrayList<>();
@@ -1330,7 +1333,7 @@ public class AdminServiceImpl implements AdminService {
                 getKilkariSixWeekNoAnswer(candidatesFromThisDistrict, rootPathDistrict, districtName, toDate);
                 List<Block> Blocks = blockDao.getBlocksOfDistrict(districtId);
                 for (Block block : Blocks) {
-                    String blockName = block.getBlockName();
+                    String blockName = StReplace(block.getBlockName());
                     String rootPathblock = rootPathDistrict + blockName+ "/";
 
                     int blockId = block.getBlockId();
@@ -1353,7 +1356,7 @@ public class AdminServiceImpl implements AdminService {
         List<KilkariLowUsage> kilkariLowUsageList = kilkariLowUsageDao.getKilkariLowUsageUsers(fromDate, toDate);
         getKilkariLowUsage(kilkariLowUsageList, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
         for (State state : states) {
-            String stateName = state.getStateName();
+            String stateName = StReplace(state.getStateName());
             String rootPathState = rootPath + stateName+ "/";
             int stateId = state.getStateId();
             List<KilkariLowUsage> candidatesFromThisState = new ArrayList<>();
@@ -1365,7 +1368,7 @@ public class AdminServiceImpl implements AdminService {
             getKilkariLowUsage(candidatesFromThisState, rootPathState, stateName, toDate);
             List<District> districts = districtDao.getDistrictsOfState(stateId);
             for (District district : districts) {
-                String districtName = district.getDistrictName();
+                String districtName = StReplace(district.getDistrictName());
                 String rootPathDistrict = rootPathState + districtName+ "/";
                 int districtId = district.getDistrictId();
                 List<KilkariLowUsage> candidatesFromThisDistrict = new ArrayList<>();
@@ -1377,7 +1380,7 @@ public class AdminServiceImpl implements AdminService {
                 getKilkariLowUsage(candidatesFromThisDistrict, rootPathDistrict, districtName, toDate);
                 List<Block> Blocks = blockDao.getBlocksOfDistrict(districtId);
                 for (Block block : Blocks) {
-                    String blockName = block.getBlockName();
+                    String blockName = StReplace(block.getBlockName());
                     String rootPathblock = rootPathDistrict + blockName+ "/";
                     int blockId = block.getBlockId();
                     List<KilkariLowUsage> candidatesFromThisBlock = new ArrayList<>();
@@ -1399,7 +1402,7 @@ public class AdminServiceImpl implements AdminService {
         List<KilkariSelfDeactivated> kilkariSelfDeactivatedList = kilkariSelfDeactivatedDao.getSelfDeactivatedUsers(fromDate, toDate);
         getKilkariSelfDeactivation(kilkariSelfDeactivatedList, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
         for (State state : states) {
-            String stateName = state.getStateName();
+            String stateName = StReplace(state.getStateName());
             String rootPathState = rootPath + stateName+ "/";
             int stateId = state.getStateId();
             List<KilkariSelfDeactivated> candidatesFromThisState = new ArrayList<>();
@@ -1412,7 +1415,7 @@ public class AdminServiceImpl implements AdminService {
             List<District> districts = districtDao.getDistrictsOfState(stateId);
 
             for (District district : districts) {
-                String districtName = district.getDistrictName();
+                String districtName = StReplace(district.getDistrictName());
                 String rootPathDistrict = rootPathState + districtName+ "/";
                 int districtId = district.getDistrictId();
                 List<KilkariSelfDeactivated> candidatesFromThisDistrict = new ArrayList<>();
@@ -1424,7 +1427,7 @@ public class AdminServiceImpl implements AdminService {
                 getKilkariSelfDeactivation(candidatesFromThisDistrict, rootPathDistrict, districtName, toDate);
                 List<Block> Blocks = blockDao.getBlocksOfDistrict(districtId);
                 for (Block block : Blocks) {
-                    String blockName = block.getBlockName();
+                    String blockName = StReplace(block.getBlockName());
                     String rootPathblock = rootPathDistrict + blockName+ "/";
                     int blockId = block.getBlockId();
                     List<KilkariSelfDeactivated> candidatesFromThisBlock = new ArrayList<>();

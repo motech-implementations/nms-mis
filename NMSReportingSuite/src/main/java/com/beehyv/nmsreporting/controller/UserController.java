@@ -27,6 +27,8 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static com.beehyv.nmsreporting.utils.ServiceFunctions.StReplace;
+
 /**
  * Created by beehyv on 15/3/17.
  */
@@ -239,23 +241,23 @@ public class UserController {
 
        if(reportRequest.getReportType().equals(ReportType.maAnonymous.getReportType())){
             if(reportRequest.getCircleId()!=0){
-                place=locationService.findCircleById(reportRequest.getCircleId()).getCircleName();
+                place=StReplace(locationService.findCircleById(reportRequest.getCircleId()).getCircleName());
                 rootPath+=place+"/";
             }
        }
        else {
            if (reportRequest.getStateId() != 0) {
-               place = locationService.findStateById(reportRequest.getStateId()).getStateName();
+               place = StReplace(locationService.findStateById(reportRequest.getStateId()).getStateName());
                rootPath += place + "/";
            }
 
            if (reportRequest.getDistrictId() != 0) {
-               place = locationService.findDistrictById(reportRequest.getDistrictId()).getDistrictName();
+               place = StReplace(locationService.findDistrictById(reportRequest.getDistrictId()).getDistrictName());
                rootPath += place + "/";
            }
 
            if (reportRequest.getBlockId() != 0) {
-               place = locationService.findBlockById(reportRequest.getBlockId()).getBlockName();
+               place = StReplace(locationService.findBlockById(reportRequest.getBlockId()).getBlockName());
                rootPath += place + "/";
            }
        }

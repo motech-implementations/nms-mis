@@ -131,7 +131,7 @@ public class EmailController {
         Calendar c = Calendar.getInstance();   // this takes current date
         c.add(Calendar.MONTH, -1);
         c.set(Calendar.DATE, 1);
-        String fileName = "cgi.png";
+        String fileName = mailInfo.getFileName();
         String pathName = System.getProperty("user.home") + File.separator;
         newMail.setSubject(fileName);
         newMail.setFileName(fileName);
