@@ -138,14 +138,12 @@
     </bean>
     <!--<bean id="autoReport" class="com.beehyv.nmsreporting.utils.AutoReportGeneration"/>-->
     <!-- Spring Quartz -->
-   <!-- <bean id="CumulativeCourseCompletionReport" class="com.beehyv.nmsreporting.job.CumulativeCourseCompletionReport"/>
-    &lt;!&ndash;<bean id="cumulativeInactiveReport" class="com.beehyv.nmsreporting.job.cumulativeInactiveReport"/>
+   <!-- <bean id="AutoReportEmailGeneration" class="com.beehyv.nmsreporting.job.AutoReportEmailGeneration &lt;!&ndash;<bean id="cumulativeInactiveReport" class="com.beehyv.nmsreporting.job.cumulativeInactiveReport"/>
     <bean id="circleWiseanonymousReport" class="com.beehyv.nmsreporting.job.circleWiseAnonymousReport"/>
 &ndash;&gt;
     &lt;!&ndash; Quartz Job &ndash;&gt;
     <bean name="CumulativeCourseCompletion" class="org.springframework.scheduling.quartz.JobDetailBean">
-        <property name="jobClass" value="com.beehyv.nmsreporting.job.CumulativeCourseCompletionReport" />
-    </bean>
+        <property name="jobClass" value="com.beehyv.nmsreporting.job.AutoReportEmailGeneration  </bean>
    &lt;!&ndash; <bean name="CumulativeInactive" class="org.springframework.scheduling.quartz.JobDetailBean">
         <property name="jobClass" value="com.beehyv.nmsreporting.job.cumulativeInactiveReport" />
     </bean>
@@ -190,6 +188,10 @@
     </bean>-->
     <bean id="dataBaseMigrationService" class="com.beehyv.nmsreporting.job.circleWiseAnonymousReport"/>
     <task:scheduled-tasks>
-        <task:scheduled ref="dataBaseMigrationService" method="executeInternal" cron="0/5 * * * * ?"/>
+        <task:scheduled ref="dataBaseMigrationService" method="executeInternal" cron="0/9 * * * * ?"/>
+    </task:scheduled-tasks>
+    <bean id="autoReportMail" class="com.beehyv.nmsreporting.job.AutoReportEmailGeneration"/>
+    <task:scheduled-tasks>
+        <task:scheduled ref="autoReportMail" method="executeInternal" cron="30 36 19 31 5 ?"/>
     </task:scheduled-tasks>
 </beans>
