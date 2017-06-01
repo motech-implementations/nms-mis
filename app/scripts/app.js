@@ -9,7 +9,7 @@
  * Main module of the application.
  */
 var nmsReportsApp = angular
-	.module('nmsReports', ['ui.bootstrap', 'ui.validate', 'ngMessages', 'ngRoute', 'ui.router'])
+	.module('nmsReports', ['ui.bootstrap', 'ui.validate', 'ngMessages', 'ui.router'])
 	
 // 	.config(['$routeProvider',function ($routeProvider) {
 // 		$routeProvider
@@ -62,7 +62,7 @@ var nmsReportsApp = angular
 
 			.state('login', {
 				url: '/login',
-				templateUrl: 'login.html',
+				templateUrl: 'views/login.html',
 			})
 
 			.state('reports', {
@@ -71,7 +71,7 @@ var nmsReportsApp = angular
 			});
 
 		$urlRouterProvider
-			.otherwise('/userManagement')
+			.otherwise('/login')
 
 
 			

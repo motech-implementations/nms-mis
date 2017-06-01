@@ -10,6 +10,7 @@
 	</div>
 
 	<div>
+		<button class="btn btn-sm btn-primary resetButton" ng-click="resetFilters()">Reset Filters</button>
 		<table class="table table-bordered">
 			<tr>
 				<!-- <th ng-repeat="header in headers" ng-if="header != '$$hashKey'">{{header}}</th> -->
@@ -20,7 +21,12 @@
 				<th ng-click="sort_by('email')"><a>Email id</a></th>
 				<th class="th-dropdown">
 					<span uib-dropdown>
-						<a href id="simple-dropdown" uib-dropdown-toggle>Access Type<span class="caret"></span></a>
+						<a href id="simple-dropdown" uib-dropdown-toggle ng-if="!exists(accType)">Access Type
+							<span class="caret" ng-if="!exists(accType)"></span>
+						</a>
+						<a href id="simple-dropdown" uib-dropdown-toggle ng-if="exists(accType)">{{accType}}
+							<span class="caret" ng-if="exists(accType)"></span>
+						</a>
 						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown">
 							<li><a ng-click="setUniqueAccessTypes('')">Access Type</a></li>
 							<li ng-repeat="aType in uniqueAT = (getUniqueAccessTypes())">
@@ -32,9 +38,16 @@
 				<!--<th>Access Type</th>-->
 				<th class="th-dropdown">
 					<span uib-dropdown>
-						<a href id="simple-dropdown" uib-dropdown-toggle>Access Level<span class="caret"></span></a>
+						<a href id="simple-dropdown" uib-dropdown-toggle ng-if="!exists(accLevel)">Access Level
+							<span class="caret" ng-if="!exists(accLevel)"></span>
+						</a>
+						<a href id="simple-dropdown" uib-dropdown-toggle ng-if="exists(accLevel)">{{accLevel}}
+							<span class="caret" ng-if="exists(accLevel)"></span>
+						</a>
 						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown">
-							<li><a ng-click="setUniqueAccessLevels('')">Access Level</a></li>
+							<li>
+								<a ng-click="setUniqueAccessLevels('')">Access Level</a>
+							</li>
 							<li ng-repeat="aLevel in uniqueAL = (getUniqueAccessLevels())">
 								<a ng-click="setUniqueAccessLevels(aLevel)" >{{aLevel}}</a>
 							</li>
@@ -43,7 +56,12 @@
 				</th>
 				<th class="th-dropdown">
 					<span uib-dropdown>
-						<a href id="simple-dropdown" uib-dropdown-toggle>State<span class="caret"></span></a>
+						<a href id="simple-dropdown" uib-dropdown-toggle ng-if="!exists(stateName)">State
+							<span class="caret" ng-if="!exists(stateName)"></span>
+						</a>
+						<a href id="simple-dropdown" uib-dropdown-toggle ng-if="exists(stateName)">{{stateName}}
+							<span class="caret" ng-if="exists(stateName)"></span>
+						</a>
 						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown">
 							<li><a ng-click="setUniqueStates('')">State</a></li>
 							<li ng-repeat="sName in sNames = (getUniqueStates())">
@@ -54,7 +72,12 @@
 				</th>
 				<th class="th-dropdown">
 					<span uib-dropdown>
-						<a href id="simple-dropdown" uib-dropdown-toggle>District<span class="caret"></span></a>
+						<a href id="simple-dropdown" uib-dropdown-toggle ng-if="!exists(districtName)">District
+							<span class="caret" ng-if="!exists(districtName)"></span>
+						</a>
+						<a href id="simple-dropdown" uib-dropdown-toggle ng-if="exists(districtName)">{{districtName}}
+							<span class="caret" ng-if="exists(districtName)"></span>
+						</a>
 						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown">
 							<li><a ng-click="setUniqueDistricts('')">District</a></li>
 							<li ng-repeat="dName in dNames = (getUniqueDistricts())">
@@ -65,7 +88,12 @@
 				</th>
 				<th class="th-dropdown">
 					<span uib-dropdown>
-						<a href id="simple-dropdown" uib-dropdown-toggle>Block<span class="caret"></span></a>
+						<a href id="simple-dropdown" uib-dropdown-toggle ng-if="!exists(blockName)">Block
+							<span class="caret" ng-if="!exists(blockName)"></span>
+						</a>
+						<a href id="simple-dropdown" uib-dropdown-toggle ng-if="exists(blockName)">{{blockName}}
+							<span class="caret" ng-if="exists(blockName)"></span>
+						</a>
 						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown">
 							<li><a ng-click="setUniqueBlocks('')">Block</a></li>
 							<li ng-repeat="bName in bNames = (getUniqueBlocks())">
@@ -96,12 +124,26 @@
 				<td><span ng-if="item.createdBy"><a ui-sref="userManagement.editUser({ id: '{{item.id}}' })">Edit</a></span></td>
 			</tr>
 		</table>
-
-		<pagination
+<!-- 
+		<pagination style="float: right;"
 			total-items=filterData.length
 			items-per-page="numPerPage"
 			current-page="currentPageNo"
 			class="pagination-small">
-		</pagination>
+		</pagination> -->
+
+		<div class="block pagination">
+
+		<!-- 	<ul uib-pagination boundary-links="true" total-items="totalItems" items-per-page="itemsPerPage"	ng-model="currentPage" class="pagination-small" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul> -->
+
+			<pagination style="float: right;"
+				total-items=filterData.length
+				items-per-page="numPerPage"
+				current-page="currentPageNo"
+				class="pagination-small">
+			</pagination> 
+		</div>
+		
+
 	</div>
 </div>

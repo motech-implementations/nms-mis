@@ -105,6 +105,18 @@
 				$scope.blockName = block;
 			}
 
+			$scope.exists = function(value){
+				return !(value == null || value == '');
+			}
+
+			$scope.resetFilters = function(){
+				$scope.stateName = '';
+				$scope.districtName = '';
+				$scope.blockName = '';
+				$scope.accType = '';
+				$scope.accLevel = '';
+			}
+
 			$scope.$watch('numPerPage', $scope.resetPage);
 //            $scope.$watch('filterData', function(value){
 //            console.log(value);

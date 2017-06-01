@@ -6,7 +6,6 @@
 
 		<form name="editUserForm" class="form-horizontal" novalidate>
 
-		<div>
 			<div class="form-group" ng-class="{'has-error':editUserForm.fullName.$invalid && !editUserForm.fullName.$pristine}">
 				<label class="control-label col-xs-2">Full Name</label>
 				<div class="col-xs-10">
@@ -14,7 +13,7 @@
 					ng-pattern="/^[A-Za-z ]*$/" ng-minlength="3"
 					tooltip-placement="top" uib-tooltip="Errors: {{editUserForm.fullName.$error|json}}" >
 
-					<div ng-messages="editUserForm.fullName.$error" role="alert" ng-show="!editUserForm.fullName.$pristine">
+					<div class="errorMessage" ng-messages="editUserForm.fullName.$error" role="alert" ng-show="!editUserForm.fullName.$pristine">
 						<div ng-message="required">This field cannot be empty</div>
 						<div ng-message="pattern">Name should only contain alphabetical characters</div>
 						<div ng-message="minlength">Name is too short</div>
@@ -29,15 +28,13 @@
 					ng-pattern="/^[0-9]*$/"
 					tooltip-placement="top" uib-tooltip="Errors: {{editUserForm.id.$error|json}}" >
 
-					<div ng-messages="editUserForm.id.$error" role="alert" ng-show="!editUserForm.id.$pristine">
+					<div class="errorMessage" ng-messages="editUserForm.id.$error" role="alert" ng-show="!editUserForm.id.$pristine">
 						<div ng-message="required">This field cannot be empty</div>
 						<div ng-message="pattern">Input contains non-numeric characters</div>
 					</div>
 				</div>
 			</div>
  -->
-		</div>
-		<div>
 			<div class="form-group" ng-class="{'has-error':editUserForm.accessType.$invalid && !editUserForm.accessType.$pristine}">
 				<label class="control-label col-xs-2">Access Type</label>
 				<div class="col-xs-10">
@@ -45,7 +42,7 @@
 					tooltip-placement="top" uib-tooltip="Errors: {{editUserForm.accessType.$error|json}}">
 					</select>
 
-					<div ng-messages="editUserForm.accessType.$error" role="alert" ng-show="!editUserForm.accessType.$pristine">
+					<div class="errorMessage" ng-messages="editUserForm.accessType.$error" role="alert" ng-show="!editUserForm.accessType.$pristine">
 						<div ng-message="required">Select an option</div>
 					</div>
 				</div>
@@ -58,15 +55,12 @@
 					tooltip-placement="top" uib-tooltip="Errors: {{editUserForm.accessLevel.$error|json}}">
 					</select>
 
-					<div ng-messages="editUserForm.accessLevel.$error" role="alert" ng-show="!editUserForm.accessLevel.$pristine">
+					<div class="errorMessage" ng-messages="editUserForm.accessLevel.$error" role="alert" ng-show="!editUserForm.accessLevel.$pristine">
 						<div ng-message="required">Select an option</div>
 					</div>
 				</div>
 			</div>
-		</div>
-
 			<hr>
-		<div>
 			<div class="form-group" ng-class="{'has-error':editUserForm.state.$invalid && !editUserForm.state.$pristine}">
 				<label class="control-label col-xs-2">State</label>
 				<div class="col-xs-10">
@@ -91,16 +85,14 @@
 					</select>
 				</div>
 			</div>
-		</div>
 			<hr>
-		<div>
 			<div class="form-group" ng-class="{'has-error':editUserForm.emailId.$invalid && !editUserForm.emailId.$pristine}">
 				<label class="control-label col-xs-2">Email Id</label>
 				<div class="col-xs-10">
 					<input name="emailId" id="emailId" type="email" class="form-control input input-sm" ng-model="editUser.emailId" placeholder="Email" required
 					tooltip-placement="top" uib-tooltip="Errors: {{editUserForm.emailId.$error|json}}">
 
-					<div ng-messages="editUserForm.emailId.$error" role="alert" ng-show="!editUserForm.emailId.$pristine">
+					<div class="errorMessage" ng-messages="editUserForm.emailId.$error" role="alert" ng-show="!editUserForm.emailId.$pristine">
 						<div ng-message="required">This field cannot be empty</div>
 						<div ng-message="emailId">Enter a valid emailId</div>
 					</div>
@@ -114,7 +106,7 @@
 					ng-pattern="/^[0-9]*$/" ng-minlength="10" ng-maxlength="10"
 					tooltip-placement="top" uib-tooltip="Errors: {{editUserForm.phoneNumber.$error|json}}">
 
-					<div ng-messages="editUserForm.phoneNumber.$error" role="alert" ng-show="!editUserForm.phoneNumber.$pristine">
+					<div class="errorMessage" ng-messages="editUserForm.phoneNumber.$error" role="alert" ng-show="!editUserForm.phoneNumber.$pristine">
 						<div ng-message="required">This field cannot be empty</div>
 						<div ng-message="pattern">Input contains non-numeric characters</div>
 						<div ng-message="minlength">Number is too short</div>
@@ -123,7 +115,6 @@
 				</div>
 
 			</div>
-		</div>
 <!-- 
 			<div class="form-group" ng-class="{'has-error':editUserForm.newPassword.$invalid && !editUserForm.newPassword.$pristine}">
 				<label class="control-label col-xs-2">New Password</label>
@@ -142,6 +133,13 @@
 				</div>
 			</div>
  -->
+ 			<div class="form-group">
+				<div class="col-xs-offset-2 col-xs-10">
+					<button class="btn btn-sm btn-primary">Reset Password</button>
+				</div>
+			</div>
+			<hr>
+
 			<div class="form-group">
 				<div class="col-xs-offset-2 col-xs-10">
 					<button class="btn btn-sm btn-default" ui-sref="userManagement.userTable">Cancel</button>
