@@ -10,33 +10,13 @@
 				});
 			};
 
-			// NOW UPLOAD THE FILES.
-			// $scope.uploadFiles = function () {
-
-			// 	var request = {
-			// 		method: 'POST',
-			// 		url: 'http://localhost:8080/NMSReportingSuite/nms/admin/uploadFile',
-			// 		data: formdata,
-			// 		headers: {
-			// 			'Content-Type': "multipart/form-data"
-			// 		}
-			// 	};
-
-			// 	// SEND THE FILES.
-			// 	$http(request)
-			// 		.success(function (d) {
-			// 			alert(d);
-			// 		})
-			// 		.error(function () {
-			// 		});
-			// }
 			$scope.uploadFile = function(){
                 var file = $scope.myFile;
                 var fd = new FormData();
                 fd.append('bulkCsv', file);
     //We can send anything in name parameter, 
 //it is hard coded to abc as it is irrelavant in this case.
-                var uploadUrl = "http://localhost:8080/NMSReportingSuite/nms/admin/uploadFile";
+                var uploadUrl = backend_root + "nms/admin/uploadFile";
                 $http.post(uploadUrl, fd, {
                     transformRequest: angular.identity,
                     headers: {'Content-Type': undefined}
