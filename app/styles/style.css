@@ -282,6 +282,10 @@ div.footer{
 	padding: 5px;
 	margin: 10px 0px;
 }
+html, 
+body{
+	min-height: 100%;
+}
 body *{
 	/*border: 1px solid black;*/
 	font-family: 'Roboto', sans-serif;

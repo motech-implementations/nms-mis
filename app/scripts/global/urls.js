@@ -1,1 +1,1 @@
-backend_root = 'http://192.168.200.65:8080/NMSReportingSuite/'
+backend_root = 'http://localhost:8080/NMSReportingSuite/'

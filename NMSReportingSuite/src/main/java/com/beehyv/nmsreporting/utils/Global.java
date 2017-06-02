@@ -5,6 +5,6 @@ package com.beehyv.nmsreporting.utils;
  */
 public class Global {
 
-    public static final String uiAddress = "http://192.168.200.65:8080/app/#!/";
+    public static final String uiAddress = "http://localhost:8080/app/#!/";
 
 }
