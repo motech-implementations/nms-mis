@@ -1,7 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("MainController", ['$scope', '$state', '$http', 'UserFormFactory', function($scope, $state, $http, UserFormFactory,){
+		.controller("MainController", ['$scope', '$state', '$http', 'UserFormFactory', function($scope, $state, $http, UserFormFactory){
 			
 			$scope.breadCrumbDict = {
 				'userManagement.userTable': [
@@ -70,6 +70,8 @@
 				UserFormFactory.setCurrentUser(result.data);
 				$scope.currentUser = UserFormFactory.getCurrentUser();
 			})
+
+			$scope.logoutUrl = backend_root + "nms/logout";
 
 		}
 	])}
