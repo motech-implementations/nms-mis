@@ -40,4 +40,6 @@ public interface UserService {
     void deleteExistingUser(User user);
 
     boolean isUsernameUnique(String username, Integer userId);
+
+    String createMaster();
 }

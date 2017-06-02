@@ -559,4 +559,26 @@ public class UserServiceImpl implements UserService{
         User user = userDao.findByUserName(username);
         return (user == null || ((userId != null) && (user.getUserId() == userId)));
     }
+
+    @Override
+    public String createMaster() {
+        User user = new User();
+        user.setUsername("master");
+        user.setPassword(passwordEncoder.encode("beehyv123"));
+        user.setFullName("MasterNHM");
+        user.setRoleId(roleDao.findByRoleDescription(AccessType.MASTER_ADMIN.getAccessType()).get(0));
+        user.setAccessLevel(AccessLevel.NATIONAL.getAccessLevel());
+        user.setPhoneNumber("9885200112");
+        user.setEmailId("sairahul@beehyv.com");
+        user.setAccountStatus(AccountStatus.ACTIVE.getAccountStatus());
+        user.setCreationDate(new Date());
+        user.setCreatedByUser(null);
+        user.setStateId(null);
+        user.setDistrictId(null);
+        user.setBlockId(null);
+
+        userDao.saveUser(user);
+
+        return "master created";
+    }
 }

@@ -1,7 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("ReportsController", ['$scope', 'UserFormFactory', function($scope, UserFormFactory){
+		.controller("ReportsController", ['$scope', '$http', 'UserFormFactory', function($scope, $http, UserFormFactory){
 
 			$scope.reports = [
 				{
@@ -10,14 +10,17 @@
 					'options': [
 						{
 							'name': 'Cumulative Completion Reports',
+							'reportEnum': "CumulativeCourseCompletion",
 							'icon': 'images/drop-down-3.png',
 						},
 						{
 							'name': 'Circle wise Anonymous Reports',
+							'reportEnum': "AnonymousUsers",
 							'icon': 'images/drop-down-3.png',
 						},
 						{
 							'name': 'Cumulative Inactive Users',
+							'reportEnum': "CumulativeInactiveUsers",
 							'icon': 'images/drop-down-3.png',
 						}
 					]
@@ -28,24 +31,27 @@
 					'options': [
 						{
 							'name': 'Deactivation for not answering',
+							'reportEnum': "KilkariLowUsage",
 							'icon': 'images/drop-down-3.png',
 						},
 						{
 							'name': 'Listen to < 25% this month',
+							'reportEnum': "KilkariSelfDeactivated",
 							'icon': 'images/drop-down-3.png',
 						},
 						{
 							'name': 'Self Deactivations',
+							'reportEnum': "KilkariSixWeeksNoAnswer",
 							'icon': 'images/drop-down-3.png',
 						},
 					]
 				}
 			];
 
-			$scope.reportType="Select";
+			$scope.reportCategory="Select";
 
-			$scope.selectReportType = function(item){
-				$scope.reportType = item.name;
+			$scope.selectReportCategory = function(item){
+				$scope.reportCategory = item.name;
 				$scope.reportNames = item.options;
 				$scope.reportName = 'Select';
 			}
@@ -54,6 +60,8 @@
 
 			$scope.selectReport = function(item){
 				$scope.reportName = item.name;
+				$scope.reportEnum = item.reportEnum;
+				console.log(item);
 			}
 
 			$scope.isCircleReport = function(){
@@ -112,7 +120,31 @@
 
 			$scope.getStates();
 
+			$scope.getReport = function(){
+				var reportRequest = {};
 
+			    reportRequest.reportType = $scope.reportEnum;
+			    reportRequest.toDate = $scope.dt,
+			    reportRequest.fromDate = "",
+			    reportRequest.stateId = 1;
+			    reportRequest.districtId = 1,
+			    reportRequest.blockId = 1
+				
+				console.log(reportRequest)
+
+				$http({
+					method  : 'POST',
+					url     : backend_root + 'nms/user/getReport',
+					data    : reportRequest, //forms user object
+					headers : {'Content-Type': 'application/json'} 
+				})/*.then(function(result){
+					alert(result.data);
+					// $scope.open()
+				})*/
+			}
+
+
+			// datepicker stuff
 
 			$scope.today = function() {
 				$scope.dt = new Date();

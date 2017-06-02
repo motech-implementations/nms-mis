@@ -8,12 +8,12 @@
 						<label>Select Reports Category</label><br>
 						<div class="btn-group" uib-dropdown dropdown-append-to-body>
 							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" uib-dropdown-toggle style="min-width: 200px;">
-								{{reportType}}
+								{{reportCategory}}
 								<span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
 								<li role="menuitem" ng-repeat="item in reports">
-									<a ng-click='selectReportType(item)'>
+									<a ng-click='selectReportCategory(item)'>
 										<img class='block' src="{{item.icon}}">
 										{{item.name}}
 									</a>
@@ -24,7 +24,7 @@
 					<div class="form-group col-xs-4">
 						<label>Select Reports</label><br>
 						<div class="btn-group" uib-dropdown dropdown-append-to-body>
-							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" ng-disabled='reportType=="Select"' uib-dropdown-toggle style="min-width: 200px;">
+							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" ng-disabled='reportCategory=="Select"' uib-dropdown-toggle style="min-width: 200px;">
 								{{reportName}}
 								<span class="caret"></span>
 							</button>
@@ -106,7 +106,7 @@
 				
 			</div>
 			<div class="form-group col-xs-4">
-				<button type="submit" class="btn btn-sm btn-primary">Submit</button>
+				<button class="btn btn-sm btn-primary" ng-click="getReport()">Submit</button>
 				<button class="btn btn-sm btn-primary">Reset</button>
 			</div>
 		</form>
