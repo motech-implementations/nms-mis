@@ -60,7 +60,7 @@ public class MACourseAttemptDaoImpl extends AbstractDao<Integer, User> implement
     @Override
     public List<MACourseFirstCompletion> getSuccessFulCompletion(Date toDate) {
         Criteria criteria = getSession().createCriteria(MACourseFirstCompletion.class);
-        criteria.add(Restrictions.le("firstCompletionDate",toDate));
+        criteria.add(Restrictions.lt("firstCompletionDate",toDate));
         return criteria.list();
     }
 

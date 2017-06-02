@@ -1497,6 +1497,7 @@ public class AdminServiceImpl implements AdminService {
 
     private String getMonthYear(Date toDate){
         c.setTime(toDate);
+        c.add(Calendar.MONTH,-1);
         int month=c.get(Calendar.MONTH)+1;
         int year=(c.get(Calendar.YEAR))%100;
         String monthString;

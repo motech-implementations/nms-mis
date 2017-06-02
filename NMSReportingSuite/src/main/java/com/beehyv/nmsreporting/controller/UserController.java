@@ -298,17 +298,17 @@ public class UserController {
 
    }
 
-    @RequestMapping(value = {"/createMaster"}, method = RequestMethod.POST)
-    @ResponseBody String createNewUser() {
-
-//        ModificationTracker modification = new ModificationTracker();
-//        modification.setModificationDate(new Date(System.currentTimeMillis()));
-//        modification.setModificationDescription("Account creation");
-//        modification.setModificationType(ModificationType.CREATE.getModificationType());
-//        modification.setModifiedUserId(user);
-//        modification.setModifiedByUserId(userService.findUserByUsername(getPrincipal()));
-//        modificationTrackerService.saveModification(modification);
-
-        return userService.createMaster();
-    }
+//    @RequestMapping(value = {"/createMaster"}, method = RequestMethod.GET)
+//    @ResponseBody String createNewUser() {
+//
+////        ModificationTracker modification = new ModificationTracker();
+////        modification.setModificationDate(new Date(System.currentTimeMillis()));
+////        modification.setModificationDescription("Account creation");
+////        modification.setModificationType(ModificationType.CREATE.getModificationType());
+////        modification.setModifiedUserId(user);
+////        modification.setModifiedByUserId(userService.findUserByUsername(getPrincipal()));
+////        modificationTrackerService.saveModification(modification);
+//
+//        return userService.createMaster();
+//    }
 }

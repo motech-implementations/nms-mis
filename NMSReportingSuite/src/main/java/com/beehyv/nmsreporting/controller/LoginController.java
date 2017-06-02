@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import static com.beehyv.nmsreporting.utils.Global.uiAddress;
+
 /**
  * Created by beehyv on 15/3/17.
  */
@@ -27,7 +29,7 @@ public class LoginController {
     protected String returnLoginView(Model model, @ModelAttribute LoginUser loginUser) {
 //        System.out.println("\n\n" + SecurityUtils.getSubject().getSession()+ "!!!!!!!!!!!\n\n");
         ensureUserIsLoggedOut();
-        return "redirect:http://localhost:8080/app/#!/login";
+        return "redirect:"+ uiAddress +"login";
     }
 
     @RequestMapping(value={"/nms/login"}, method= RequestMethod.POST)
@@ -51,14 +53,14 @@ public class LoginController {
         if( errors.hasErrors() ) {
             return returnLoginView(model, loginUser);
         } else {
-            return "redirect:http://localhost:8080/app/#!/userManagement";
+            return "redirect:"+ uiAddress +"userManagement";
         }
     }
 
     @RequestMapping(value = {"/nms/index"}, method = RequestMethod.GET)
     protected String returnHomeView(Model model) {
 //        System.out.println("\n\n" + SecurityUtils.getSubject().getSession()+ "!!!!!!!!!!!\n\n");
-        return "redirect:http://localhost:8080/app/#!/userManagement";
+        return "redirect:"+ uiAddress +"userManagement";
     }
 
     @RequestMapping(value = {"/nms/loginDummy"}, method = RequestMethod.GET)
