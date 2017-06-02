@@ -65,7 +65,7 @@
 
 					$http({
 						method  : 'post',
-						url     : 'http://localhost:8080/NMSReportingSuite/nms/user/createUser',
+						url     : backend_root + 'nms/user/createUser',
 						data    : $scope.newUser, //forms user object
 						headers : {'Content-Type': 'application/json'} 
 					}).then(function(result){
