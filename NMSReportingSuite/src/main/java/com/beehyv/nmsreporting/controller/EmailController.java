@@ -58,7 +58,7 @@ public class EmailController {
                     c.set(Calendar.DATE, 1);
                     reportRequest.setToDate(c.getTime());
                     reportRequest.setReportType(reportType.getReportType());
-                    String pathName = "",fileName = "",errorMessage = "";
+                    String pathName = "",fileName = "",errorMessage = "",place = "";
                     if(reportType.getReportType().equalsIgnoreCase(ReportType.maAnonymous.getReportType())){
                         if(user.getAccessLevel().equalsIgnoreCase(AccessLevel.STATE.getAccessLevel())){
                             List<Circle> stateCircleList = reportService.getUserCircles(user);
@@ -68,7 +68,8 @@ public class EmailController {
                                 fileName = reportService.getReportPathName(reportRequest).get(0);
                                 newMail.setSubject(fileName);
                                 newMail.setFileName(fileName);
-                                newMail.setBody(emailService.getBody(reportName,reportService.getMonthYear(c.getTime()),user.getFullName()));
+                                place = circle.getCircleName()+" Circle";
+                                newMail.setBody(emailService.getBody(reportName,place,reportService.getMonthYear(c.getTime()),user.getFullName()));
                                 newMail.setRootPath(pathName);
                                 errorMessage = emailService.sendMail(newMail);
                                 if (errorMessage.equalsIgnoreCase("failure"))
@@ -80,6 +81,8 @@ public class EmailController {
                             fileName = reportService.getReportPathName(reportRequest).get(0);
                             newMail.setSubject(fileName);
                             newMail.setFileName(fileName);
+                            place = "NATIONAL";
+                            newMail.setBody(emailService.getBody(reportName,place,reportService.getMonthYear(c.getTime()),user.getFullName()));
                             newMail.setRootPath(pathName);
                             errorMessage = emailService.sendMail(newMail);
                             if (errorMessage.equalsIgnoreCase("failure"))
@@ -90,29 +93,39 @@ public class EmailController {
                             fileName = reportService.getReportPathName(reportRequest).get(0);
                             newMail.setSubject(fileName);
                             newMail.setFileName(fileName);
+                            Circle circle = reportService.getUserCircles(user).get(0);
+                            place = circle.getCircleName()+" Circle";
+                            newMail.setBody(emailService.getBody(reportName,place,reportService.getMonthYear(c.getTime()),user.getFullName()));
                             newMail.setRootPath(pathName);
                             errorMessage = emailService.sendMail(newMail);
                             if (errorMessage.equalsIgnoreCase("failure"))
                                 errorSendingMail.put(user.getEmailId(),fileName);
                         }
                     }else {
+                        place = "NATIONAL";
                         if (user.getStateId() == null)
                             reportRequest.setStateId(0);
-                        else
+                        else {
                             reportRequest.setStateId(user.getStateId());
+                            place = locationService.findStateById(user.getStateId()).getStateName()+" State";
+                        }
                         if (user.getDistrictId() == null)
                             reportRequest.setDistrictId(0);
-                        else
+                        else {
                             reportRequest.setDistrictId(user.getDistrictId());
+                            place = locationService.findDistrictById(user.getDistrictId()).getDistrictName()+" District";
+                        }
                         if (user.getBlockId() == null)
                             reportRequest.setBlockId(0);
-                        else
+                        else {
                             reportRequest.setBlockId(user.getBlockId());
+                            place = locationService.findBlockById(user.getBlockId()).getBlockName()+" Block";
+                        }
                         pathName = reportService.getReportPathName(reportRequest).get(1);
                         fileName = reportService.getReportPathName(reportRequest).get(0);
-
                         newMail.setSubject(fileName);
                         newMail.setFileName(fileName);
+                        newMail.setBody(emailService.getBody(reportName,place,reportService.getMonthYear(c.getTime()),user.getFullName()));
                         newMail.setRootPath(pathName);
                         errorMessage = emailService.sendMail(newMail);
                         if (errorMessage.equalsIgnoreCase("failure"))
@@ -133,9 +146,9 @@ public class EmailController {
         c.set(Calendar.DATE, 1);
         String fileName = mailInfo.getFileName();
         String pathName = System.getProperty("user.home") + File.separator;
-        newMail.setSubject(fileName);
+        newMail.setSubject("Mobile Academy "+fileName);
         newMail.setFileName(fileName);
-        newMail.setBody(emailService.getBody("Random",reportService.getMonthYear(c.getTime()),"Sreekanth"));
+        newMail.setBody(emailService.getBody("Mobile Academy CumulativeInactiveUsers","ODISHA",reportService.getMonthYear(c.getTime()),"OdishaNHM"));
         newMail.setRootPath(pathName+fileName);
         return emailService.sendMail(newMail);
     }

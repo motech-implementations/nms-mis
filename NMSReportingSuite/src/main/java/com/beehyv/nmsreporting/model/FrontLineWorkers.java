@@ -48,7 +48,7 @@ public class FrontLineWorkers {
     private Integer village;
 
     @Column(name="block_id", columnDefinition = "INT(11)")
-    private Integer block = -1;
+    private Integer block;
 
     @Column(name="healthfacility_id", columnDefinition = "INT(11)")
     private Integer facility;

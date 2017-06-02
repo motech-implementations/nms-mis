@@ -71,12 +71,13 @@ public class EmailServiceImpl implements EmailService{
     }
 
     @Override
-    public String getBody(String reportName, String monthAndYear, String name) {
+    public String getBody(String reportName,String place, String monthAndYear, String name) {
         String body = "";
-        body+= "Dear "+name+ "\n";
-        body+= "This is the "+reportName+" Report for the month "+monthAndYear+ "\n";
-        body+= "Thank You \n";
-        body+= "This an auto-generated email. Please do not reply";
+        body+= "Dear "+name+ ",\n \n";
+        body+= "This is the "+reportName+" Report of "+place+" for the month "+monthAndYear+ ".\n";
+        body+= "Thank You.\n";
+        body+= "NSP Support Team \n \n \n";
+        body+= "P.S: This an auto-generated email. Please do not reply";
         return body;
     }
 }

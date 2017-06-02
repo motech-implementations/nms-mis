@@ -525,7 +525,7 @@ public class AdminServiceImpl implements AdminService {
 
         if(reportRequest.getReportType().equals(ReportType.maCourse.getReportType())){
 
-            List<FrontLineWorkers> successFullcandidates = maCourseAttemptDao.getSuccessFulCompletion(toDate);
+            List<MACourseFirstCompletion> successFullcandidates = maCourseAttemptDao.getSuccessFulCompletion(toDate);
 
             if(stateId==0){
                 getCumulativeCourseCompletion(successFullcandidates, rootPath,AccessLevel.NATIONAL.getAccessLevel(), toDate);
@@ -534,9 +534,9 @@ public class AdminServiceImpl implements AdminService {
                 String stateName=StReplace(stateDao.findByStateId(stateId).getStateName());
                 String rootPathState = rootPath+ stateName+ "/";
                 if(districtId==0){
-                    List<FrontLineWorkers> candidatesFromThisState = new ArrayList<>();
-                    for (FrontLineWorkers asha : successFullcandidates) {
-                        if (asha.getState() == stateId) {
+                    List<MACourseFirstCompletion> candidatesFromThisState = new ArrayList<>();
+                    for (MACourseFirstCompletion asha : successFullcandidates) {
+                        if (asha.getStateId() == stateId) {
                             candidatesFromThisState.add(asha);
                         }
                     }
@@ -546,9 +546,9 @@ public class AdminServiceImpl implements AdminService {
                     String districtName=StReplace(districtDao.findByDistrictId(districtId).getDistrictName());
                     String rootPathDistrict = rootPathState+ districtName+ "/";
                     if(blockId==0){
-                        List<FrontLineWorkers> candidatesFromThisDistrict = new ArrayList<>();
-                        for (FrontLineWorkers asha : successFullcandidates) {
-                            if (asha.getDistrict() == districtId) {
+                        List<MACourseFirstCompletion> candidatesFromThisDistrict = new ArrayList<>();
+                        for (MACourseFirstCompletion asha : successFullcandidates) {
+                            if (asha.getDistrictId() == districtId) {
                                 candidatesFromThisDistrict.add(asha);
                             }
                         }
@@ -558,9 +558,9 @@ public class AdminServiceImpl implements AdminService {
                         String blockName=StReplace(blockDao.findByblockId(blockId).getBlockName());
                         String rootPathblock = rootPathDistrict + blockName+ "/";
 
-                        List<FrontLineWorkers> candidatesFromThisBlock = new ArrayList<>();
-                        for (FrontLineWorkers asha : successFullcandidates) {
-                            if (asha.getBlock() == blockId) {
+                        List<MACourseFirstCompletion> candidatesFromThisBlock = new ArrayList<>();
+                        for (MACourseFirstCompletion asha : successFullcandidates) {
+                            if ((asha.getBlockId()!=null)&&(asha.getBlockId() == blockId)) {
                                 candidatesFromThisBlock.add(asha);
                             }
                         }
@@ -606,7 +606,7 @@ public class AdminServiceImpl implements AdminService {
 
                         List<FrontLineWorkers> candidatesFromThisBlock = new ArrayList<>();
                         for (FrontLineWorkers asha : inactiveFrontLineWorkers) {
-                            if (asha.getBlock() == blockId) {
+                            if ((asha.getBlock()!=null)&&(asha.getBlock() == blockId)) {
                                 candidatesFromThisBlock.add(asha);
                             }
                         }
@@ -625,7 +625,7 @@ public class AdminServiceImpl implements AdminService {
             else{
                 String circleName=StReplace(circleDao.getByCircleId(circleId).getCircleName());
                 String rootPathCircle=rootPath+circleName+"/";
-                List<AnonymousUsers> anonymousUsersListCircle = anonymousUsersDao.getAnonymousUsersCircle(fromDate,toDate,circleId);
+                List<AnonymousUsers> anonymousUsersListCircle = anonymousUsersDao.getAnonymousUsersCircle(fromDate,toDate,StReplace(circleDao.getByCircleId(circleId).getCircleName()));
                 getCircleWiseAnonymousUsers(anonymousUsersListCircle, rootPathCircle, circleName, toDate);
             }
         }
@@ -771,7 +771,7 @@ public class AdminServiceImpl implements AdminService {
         }
     }
 
-    public void getCumulativeCourseCompletion(List<FrontLineWorkers> successfulCandidates, String rootPath, String place, Date toDate) {
+    public void getCumulativeCourseCompletion(List<MACourseFirstCompletion> successfulCandidates, String rootPath, String place, Date toDate) {
         //Create blank workbook
 
 
@@ -797,27 +797,29 @@ public class AdminServiceImpl implements AdminService {
                 "ASHA MCTS/RCH ID",
                 "ASHA Creation Date",
                 "ASHA Job Status",
-                "First Completion Date"
+                "First Completion Date",
+                "Sent Notification"
         });
         Integer counter = 2;
-        for (FrontLineWorkers frontLineWorker : successfulCandidates) {
+        for (MACourseFirstCompletion maCourseFirstCompletion : successfulCandidates) {
             empinfo.put((counter.toString()), new Object[]{
-                    (frontLineWorker.getMobileNumber() == null) ? "No Phone":frontLineWorker.getMobileNumber(),
-                    (frontLineWorker.getState() == null) ? "No State":stateDao.findByStateId(frontLineWorker.getState()).getStateName(),
-                    (frontLineWorker.getDistrict() == null) ? "No District":districtDao.findByDistrictId(frontLineWorker.getDistrict()).getDistrictName(),
-                    (frontLineWorker.getBlock() == null) ? "No Block" : blockDao.findByblockId(frontLineWorker.getBlock()).getBlockName(),
-                    (frontLineWorker.getTaluka() == null) ? "No Taluka" : talukaDao.findByTalukaId(frontLineWorker.getTaluka()).getTalukaName(),
-                    (frontLineWorker.getFacility() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(frontLineWorker.getFacility()).getHealthFacilityName(),
-                    (frontLineWorker.getSubfacility() == null) ? "No Health Subfacility" : healthSubFacilityDao.findByHealthSubFacilityId(frontLineWorker.getSubfacility()).getHealthSubFacilityName(),
-                    (frontLineWorker.getVillage() == null) ? "No Village" : villageDao.findByVillageId(frontLineWorker.getVillage()).getVillageName(),
-                    (frontLineWorker.getFullName() == null) ? "No Name":frontLineWorker.getFullName(),
-                    (frontLineWorker.getExternalFlwId() == null) ? "No FLW_ID":frontLineWorker.getExternalFlwId(),
-                    (frontLineWorker.getCreationDate() == null) ? "No Creation_date":frontLineWorker.getCreationDate(),
-                    (frontLineWorker.getJobStatus() == null) ? "No Designation":frontLineWorker.getJobStatus(),
-                    (frontLineWorker.getFlwId() == null) ? "No Phone":maCourseAttemptDao.getFirstCompletionDate(frontLineWorker.getFlwId())
+                    (maCourseFirstCompletion.getMsisdn() == null) ? "No Phone":maCourseFirstCompletion.getMsisdn(),
+                    (maCourseFirstCompletion.getStateId() == null) ? "No State":stateDao.findByStateId(maCourseFirstCompletion.getStateId()).getStateName(),
+                    (maCourseFirstCompletion.getDistrictId() == null) ? "No District":districtDao.findByDistrictId(maCourseFirstCompletion.getDistrictId()).getDistrictName(),
+                    (maCourseFirstCompletion.getBlockId() == null) ? "No Block" : blockDao.findByblockId(maCourseFirstCompletion.getBlockId()).getBlockName(),
+                    (maCourseFirstCompletion.getTalukaId() == null) ? "No Taluka" : talukaDao.findByTalukaId(maCourseFirstCompletion.getTalukaId()).getTalukaName(),
+                    (maCourseFirstCompletion.getHealthFacilityId() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(maCourseFirstCompletion.getHealthFacilityId()).getHealthFacilityName(),
+                    (maCourseFirstCompletion.getHealthSubFacilityId() == null) ? "No Health Subfacility" : healthSubFacilityDao.findByHealthSubFacilityId(maCourseFirstCompletion.getHealthSubFacilityId()).getHealthSubFacilityName(),
+                    (maCourseFirstCompletion.getVillageId() == null) ? "No Village" : villageDao.findByVillageId(maCourseFirstCompletion.getVillageId()).getVillageName(),
+                    (maCourseFirstCompletion.getFullName() == null) ? "No Name":maCourseFirstCompletion.getFullName(),
+                    (maCourseFirstCompletion.getExternalFlwId() == null) ? "No FLW_ID":maCourseFirstCompletion.getExternalFlwId(),
+                    (maCourseFirstCompletion.getCreationDate() == null) ? "No Creation_date":maCourseFirstCompletion.getCreationDate(),
+                    (maCourseFirstCompletion.getJobStatus() == null) ? "No Designation":maCourseFirstCompletion.getJobStatus(),
+                    (maCourseFirstCompletion.getFirstCompletionDate() == null) ? "No Phone":maCourseFirstCompletion.getFirstCompletionDate(),
+                    (maCourseFirstCompletion.getSentNotification() == null) ? "No Details": maCourseFirstCompletion.getSentNotification()
             });
             counter++;
-            System.out.println("Added "+counter);
+//            System.out.println("Added "+counter);
         }
         Set<String> keyid = empinfo.keySet();
         int rowid = 0;
@@ -1198,15 +1200,15 @@ public class AdminServiceImpl implements AdminService {
 
         List<State> states = stateDao.getAllStates();
         String rootPath = reports+ReportType.maCourse.getReportType()+ "/";
-        List<FrontLineWorkers> successFullcandidates = maCourseAttemptDao.getSuccessFulCompletion(toDate);
-//        getCumulativeCourseCompletion(successFullcandidates, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
+        List<MACourseFirstCompletion> successFullcandidates = maCourseAttemptDao.getSuccessFulCompletion(toDate);
+        getCumulativeCourseCompletion(successFullcandidates, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
         for (State state : states) {
             String stateName = StReplace(state.getStateName());
             String rootPathState = rootPath+ stateName+ "/";
             int stateId = state.getStateId();
-            List<FrontLineWorkers> candidatesFromThisState = new ArrayList<>();
-            for (FrontLineWorkers asha : successFullcandidates) {
-                if (asha.getState() == stateId) {
+            List<MACourseFirstCompletion> candidatesFromThisState = new ArrayList<>();
+            for (MACourseFirstCompletion asha : successFullcandidates) {
+                if (asha.getStateId() == stateId) {
                     candidatesFromThisState.add(asha);
                 }
             }
@@ -1216,9 +1218,9 @@ public class AdminServiceImpl implements AdminService {
                 String districtName = StReplace(district.getDistrictName());
                 String rootPathDistrict = rootPathState + districtName+ "/";
                 int districtId = district.getDistrictId();
-                List<FrontLineWorkers> candidatesFromThisDistrict = new ArrayList<>();
-                for (FrontLineWorkers asha : candidatesFromThisState) {
-                    if (asha.getDistrict() == districtId) {
+                List<MACourseFirstCompletion> candidatesFromThisDistrict = new ArrayList<>();
+                for (MACourseFirstCompletion asha : candidatesFromThisState) {
+                    if (asha.getDistrictId() == districtId) {
                         candidatesFromThisDistrict.add(asha);
                     }
                 }
@@ -1228,9 +1230,9 @@ public class AdminServiceImpl implements AdminService {
                     String blockName = StReplace(block.getBlockName());
                     String rootPathblock = rootPathDistrict + blockName+ "/";
                     int blockId = block.getBlockId();
-                    List<FrontLineWorkers> candidatesFromThisBlock = new ArrayList<>();
-                    for (FrontLineWorkers asha : candidatesFromThisDistrict) {
-                        if (asha.getBlock() == blockId) {
+                    List<MACourseFirstCompletion> candidatesFromThisBlock = new ArrayList<>();
+                    for (MACourseFirstCompletion asha : candidatesFromThisDistrict) {
+                        if ((asha.getBlockId()!=null)&&(asha.getBlockId() == blockId)) {
                             candidatesFromThisBlock.add(asha);
                         }
                     }
@@ -1249,7 +1251,12 @@ public class AdminServiceImpl implements AdminService {
         for (Circle circle : circleList) {
             String circleName = StReplace(circle.getCircleName());
             String rootPathCircle=rootPath+circleName+"/";
-            List<AnonymousUsers> anonymousUsersListCircle = anonymousUsersDao.getAnonymousUsersCircle(startDate,toDate, circle.getCircleId());
+            List<AnonymousUsers> anonymousUsersListCircle = new ArrayList<>();
+            for(AnonymousUsers anonymousUser : anonymousUsersList){
+                if(anonymousUser.getCircleName().equalsIgnoreCase(circleName)){
+                    anonymousUsersListCircle.add(anonymousUser);
+                }
+            }
             getCircleWiseAnonymousUsers(anonymousUsersListCircle, rootPathCircle, circleName, toDate);
         }
     }

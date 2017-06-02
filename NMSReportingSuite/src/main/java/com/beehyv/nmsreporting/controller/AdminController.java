@@ -126,12 +126,12 @@ public class AdminController {
         adminService.createFiles(ReportType.selfDeactivated.getReportType());
         adminService.createFiles(ReportType.sixWeeks.getReportType());
     }
-    @RequestMapping(value = "/generateReports/{reportType}", method = RequestMethod.GET)
+    @RequestMapping(value = "/generateReports/{reportType}/{relativeMonth}", method = RequestMethod.GET)
     @ResponseBody
-    public String getCumulativeCourseCompletionExcels(@PathVariable("reportType") String reportType) throws ParseException, java.text.ParseException{
+    public String getCumulativeCourseCompletionExcels(@PathVariable("reportType") String reportType,@PathVariable("relativeMonth") Integer relativeMonth) throws ParseException, java.text.ParseException{
 
         Calendar aCalendar = Calendar.getInstance();
-        aCalendar.add(Calendar.MONTH, -1);
+        aCalendar.add(Calendar.MONTH, (-1)*relativeMonth);
         aCalendar.set(Calendar.DATE, 1);
 
         Date fromDate = aCalendar.getTime();
@@ -149,18 +149,23 @@ public class AdminController {
             }
             case maAnonymous: {
                 adminService.getCircleWiseAnonymousFiles(fromDate, toDate);
+                break;
             }
             case maInactive:{
                 adminService.getCumulativeInactiveFiles(toDate);
+                break;
             }
             case lowUsage:{
                 adminService.getKilkariLowUsageFiles(fromDate, toDate);
+                break;
             }
             case selfDeactivated:{
                 adminService.getKilkariSelfDeactivationFiles(fromDate, toDate);
+                break;
             }
             case sixWeeks:{
                 adminService.getKilkariSixWeekNoAnswerFiles(fromDate, toDate);
+                break;
             }
         }
         return "Reports Generated";

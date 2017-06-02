@@ -2,6 +2,7 @@ package com.beehyv.nmsreporting.dao;
 
 import com.beehyv.nmsreporting.model.FrontLineWorkers;
 import com.beehyv.nmsreporting.model.MACourseCompletion;
+import com.beehyv.nmsreporting.model.MACourseFirstCompletion;
 
 import java.util.Date;
 import java.util.List;
@@ -14,5 +15,5 @@ public interface MACourseAttemptDao {
 
     Date getFirstCompletionDate(Long flwId);
 
-    List<FrontLineWorkers> getSuccessFulCompletion(Date toDate);
+    List<MACourseFirstCompletion> getSuccessFulCompletion(Date toDate);
 }
