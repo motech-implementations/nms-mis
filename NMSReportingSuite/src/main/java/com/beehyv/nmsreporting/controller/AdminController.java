@@ -128,7 +128,7 @@ public class AdminController {
     }
     @RequestMapping(value = "/generateReports/{reportType}/{relativeMonth}", method = RequestMethod.GET)
     @ResponseBody
-    public String getCumulativeCourseCompletionExcels(@PathVariable("reportType") String reportType,@PathVariable("relativeMonth") Integer relativeMonth) throws ParseException, java.text.ParseException{
+    public String getReportsByNameAndMonth(@PathVariable("reportType") String reportType, @PathVariable("relativeMonth") Integer relativeMonth) throws ParseException, java.text.ParseException{
 
         Calendar aCalendar = Calendar.getInstance();
         aCalendar.add(Calendar.MONTH, (-1)*relativeMonth);

@@ -19,7 +19,10 @@ public class KilkariLowUsageDaoImpl extends AbstractDao<Integer, KilkariLowUsage
     @Override
     public List<KilkariLowUsage> getKilkariLowUsageUsers(Date fromDate, Date toDate) {
         Criteria criteria = getSession().createCriteria(KilkariLowUsage.class);
-        criteria.add(Restrictions.between("modificationDate",fromDate,toDate));
+        criteria.add(Restrictions.and(
+                Restrictions.lt("modificationDate",toDate),
+                Restrictions.ge("modificationDate",fromDate)
+        ));
         criteria.addOrder(Order.asc("modificationDate"));
         return (List<KilkariLowUsage>) criteria.list();
     }

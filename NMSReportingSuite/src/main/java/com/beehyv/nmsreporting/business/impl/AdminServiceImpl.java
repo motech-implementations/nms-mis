@@ -426,7 +426,7 @@ public class AdminServiceImpl implements AdminService {
         String NEW_LINE_SEPARATOR = "\n";
 
         //CSV file header
-        String FILE_HEADER = "Full Name, STATE, DISTRICT, BLOCK, Phone number, Email ID, UserName, Creation Date, Access Level,Role";
+        String FILE_HEADER = "Full Name, State, District, Block, Phone number, Email ID, UserName, Creation Date, Access Level,Role";
         FileWriter fileWriter = null;
         try {
             fileWriter = new FileWriter(documents+"BulkImportData.csv");
@@ -632,8 +632,6 @@ public class AdminServiceImpl implements AdminService {
         if(reportRequest.getReportType().equals(ReportType.lowUsage.getReportType())){
 
             List<KilkariLowUsage> kilkariLowUsageList = kilkariLowUsageDao.getKilkariLowUsageUsers(fromDate, toDate);
-
-
             if(stateId==0){
                 getKilkariLowUsage(kilkariLowUsageList, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
             }
@@ -667,7 +665,7 @@ public class AdminServiceImpl implements AdminService {
 
                         List<KilkariLowUsage> candidatesFromThisBlock = new ArrayList<>();
                         for (KilkariLowUsage kilkari : kilkariLowUsageList) {
-                            if (kilkari.getBlockId() == blockId) {
+                            if ((kilkari.getBlockId()!=null)&&(kilkari.getBlockId() == blockId)) {
                                 candidatesFromThisBlock.add(kilkari);
                             }
                         }
@@ -713,7 +711,7 @@ public class AdminServiceImpl implements AdminService {
 
                         List<KilkariSixWeeksNoAnswer> candidatesFromThisBlock = new ArrayList<>();
                         for (KilkariSixWeeksNoAnswer kilkari : kilkariSixWeeksNoAnswers) {
-                            if (kilkari.getBlockId() == blockId) {
+                            if ((kilkari.getBlockId()!=null)&&(kilkari.getBlockId() == blockId)) {
                                 candidatesFromThisBlock.add(kilkari);
                             }
                         }
@@ -760,7 +758,7 @@ public class AdminServiceImpl implements AdminService {
 
                         List<KilkariSelfDeactivated> candidatesFromThisBlock = new ArrayList<>();
                         for (KilkariSelfDeactivated kilkari : kilkariSelfDeactivatedList) {
-                            if (kilkari.getBlockId() == blockId) {
+                            if ((kilkari.getBlockId()!=null)&&(kilkari.getBlockId() == blockId)) {
                                 candidatesFromThisBlock.add(kilkari);
                             }
                         }
@@ -1346,7 +1344,7 @@ public class AdminServiceImpl implements AdminService {
                     int blockId = block.getBlockId();
                     List<KilkariSixWeeksNoAnswer> candidatesFromThisBlock = new ArrayList<>();
                     for (KilkariSixWeeksNoAnswer kilkari : candidatesFromThisDistrict) {
-                        if (kilkari.getBlockId() == blockId) {
+                        if ((kilkari.getBlockId()!=null)&&(kilkari.getBlockId() == blockId)) {
                             candidatesFromThisBlock.add(kilkari);
                         }
                     }
@@ -1392,7 +1390,7 @@ public class AdminServiceImpl implements AdminService {
                     int blockId = block.getBlockId();
                     List<KilkariLowUsage> candidatesFromThisBlock = new ArrayList<>();
                     for (KilkariLowUsage kilkari : candidatesFromThisDistrict) {
-                        if (kilkari.getBlockId() == blockId) {
+                        if ((kilkari.getBlockId()!=null)&&(kilkari.getBlockId() == blockId)) {
                             candidatesFromThisBlock.add(kilkari);
                         }
                     }
@@ -1439,7 +1437,7 @@ public class AdminServiceImpl implements AdminService {
                     int blockId = block.getBlockId();
                     List<KilkariSelfDeactivated> candidatesFromThisBlock = new ArrayList<>();
                     for (KilkariSelfDeactivated kilkari : candidatesFromThisDistrict) {
-                        if (kilkari.getBlockId() == blockId) {
+                        if ((kilkari.getBlockId()!=null)&&(kilkari.getBlockId() == blockId)) {
                             candidatesFromThisBlock.add(kilkari);
                         }
                     }

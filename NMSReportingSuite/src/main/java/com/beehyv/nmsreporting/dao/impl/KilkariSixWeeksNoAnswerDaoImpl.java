@@ -19,7 +19,10 @@ public class KilkariSixWeeksNoAnswerDaoImpl extends AbstractDao<Integer, Kilkari
     @Override
     public List<KilkariSixWeeksNoAnswer> getKilkariUsers(Date fromDate, Date toDate) {
         Criteria criteria = getSession().createCriteria(KilkariSixWeeksNoAnswer.class);
-        criteria.add(Restrictions.between("deactivationDate",fromDate,toDate));
+        criteria.add(Restrictions.and(
+                Restrictions.lt("deactivationDate",toDate),
+                Restrictions.ge("deactivationDate",fromDate)
+        ));
         criteria.addOrder(Order.asc("deactivationDate"));
         return (List<KilkariSixWeeksNoAnswer>) criteria.list();
     }
