@@ -232,9 +232,9 @@ public class UserController {
         return userName;
     }
 
-   @RequestMapping(value = "/getReport", method = RequestMethod.POST,produces = "application/vnd.ms-excel")
+   @RequestMapping(value = "/getReport", method = RequestMethod.POST/*,produces = "application/vnd.ms-excel"*/)
    @ResponseBody
-   public void getReports(@RequestBody ReportRequest reportRequest,HttpServletResponse response) throws ParseException, java.text.ParseException{
+   public Map<String, String> getReport(@RequestBody ReportRequest reportRequest/*,HttpServletResponse response*/) throws ParseException, java.text.ParseException{
 
        String rootPath = "";
        String place = AccessLevel.NATIONAL.getAccessLevel();
@@ -262,41 +262,53 @@ public class UserController {
            }
        }
        String filename= reportRequest.getReportType()+"_"+place+"_"+reportService.getMonthYear(reportRequest.getToDate())+".xlsx";
-       rootPath = reports+reportRequest.getReportType()+"/"+rootPath+filename;
 
-       response.setContentType("APPLICATION/OCTECT-STREAM");
-       try {
-           PrintWriter out=response.getWriter();
-           response.setHeader("Content-Disposition","attachment;filename=\""+filename+"\"");
-           File file=new File(rootPath);
-           if(!(file.exists())){
-               adminService.createSpecificReport(reportRequest);
-           }
-           FileInputStream fl=new FileInputStream(rootPath);
+       reportPath = reports+reportRequest.getReportType()+"/"+rootPath;
+       reportName = filename;
 
-           int i;
-           while ((i=fl.read())!=-1){
-               out.write(i);
-           }
-           fl.close();
-           out.close();
-       } catch (IOException e) {
-           e.printStackTrace();
+       rootPath = reportPath + reportName;
+
+       File file=new File(rootPath);
+       if(!(file.exists())){
+           adminService.createSpecificReport(reportRequest);
        }
 
-//       if(reportRequest.getStateId()==0){
-//           rootPath = "";
-//       }else if(reportRequest.getDistrictId()==0){
-//           rootPath = locationService.findStateById(reportRequest.getStateId()).getStateName();
-//       }else if(reportRequest.getBlockId()==0){
-//           rootPath = locationService.findStateById(reportRequest.getgetMonthYearStateId()).getStateName()+"/"+locationService.findDistrictById(reportRequest.getDistrictId()).getDistrictName();
-//       }
-//       if (reportRequest.getReportType().equals(ReportType.maCourse)) {
-//
-//           adminService.getCumulativeCourseCompletionFiles(bigBang,reportRequest.getToDate());
-//       }
+       Map<String, String> m = new HashMap();
+       m.put("file", reportName);
+       return m;
+    }
 
-   }
+    private String reportPath = "";
+    private String reportName = "";
+
+    @RequestMapping(value = "/downloadReport", method = RequestMethod.GET,produces = "application/vnd.ms-excel")
+    @ResponseBody
+    public String getBulkDataImportCSV(HttpServletResponse response) throws ParseException, java.text.ParseException {
+        adminService.getBulkDataImportCSV();
+        response.setContentType("APPLICATION/OCTECT-STREAM");
+        if (reportPath.length() == 0 || reportName.length() == 0) {
+            reportName = "";
+            reportPath = "";
+            return "fail";
+        }
+        try {
+            PrintWriter out = response.getWriter();
+            String filename = reportName;
+            response.setHeader("Content-Disposition", "attachment;filename=\"" + filename + "\"");
+            FileInputStream fl = new FileInputStream(reportPath + reportName);
+            int i;
+            while ((i = fl.read()) != -1) {
+                out.write(i);
+            }
+            fl.close();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        reportName = "";
+        reportPath = "";
+        return "success";
+    }
 
 //    @RequestMapping(value = {"/createMaster"}, method = RequestMethod.GET)
 //    @ResponseBody String createNewUser() {

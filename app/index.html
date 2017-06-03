@@ -46,36 +46,38 @@
 
 </head>
 <body ng-app="nmsReports" ng-controller="MainController">
-	<div class='nav-bar' ng-hide='$state.current.name=="login"'>
-		<div class="nav-header">
-			<img src="images/logo.png">
-			<span><b>Hello {{currentUser.fullName}}</b></span>
+	<div class="non-footer">
+		<div class='nav-bar' ng-hide='$state.current.name=="login"'>
+			<div class="nav-header">
+				<img src="images/logo.png">
+				<span><b>Hello {{currentUser.fullName}}</b></span>
+			</div>
+
+			<div class="nav">
+				<ul class="breadcrumb">
+					<li ng-repeat="item in getBreadCrumb($state.current.name)">
+						<a u ui-sref='{{item.sref}}' ng-class="{'active': {{item.active}} }" >{{item.name}}</a>
+					</li>
+				</ul>
+				<ul class="nav-menu">
+					<li>
+						<a href={{logoutUrl}}>Logout</a>
+					</li>
+					<li>
+						<a>My Profile</a>
+					</li>
+					<li ng-class="{active: activeTab('userManagement')}">
+						<a ui-sref="userManagement.userTable">User Management</a>
+					</li>
+					<li ng-class="{active: activeTab('reports')}">
+						<a ui-sref="reports">Reports</a>
+					</li>
+				</ul>
+			</div>
 		</div>
 
-		<div class="nav">
-			<ul class="breadcrumb">
-				<li ng-repeat="item in getBreadCrumb($state.current.name)">
-					<a u ui-sref='{{item.sref}}' ng-class="{'active': {{item.active}} }" >{{item.name}}</a>
-				</li>
-			</ul>
-			<ul class="nav-menu">
-				<li>
-					<a href={{logoutUrl}}>Logout</a>
-				</li>
-				<li>
-					<a>My Profile</a>
-				</li>
-				<li ng-class="{active: activeTab('userManagement')}">
-					<a ui-sref="userManagement.userTable">User Management</a>
-				</li>
-				<li ng-class="{active: activeTab('reports')}">
-					<a ui-sref="reports">Reports</a>
-				</li>
-			</ul>
-		</div>
+		<div ui-view class="content"></div>
 	</div>
-
-	<div ui-view class="content"></div>
 
 	<div class='footer'>
 		<span>2017 all rights reserved - Mobile Academy & Kilkari Management and Information system</span>

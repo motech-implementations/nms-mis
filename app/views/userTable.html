@@ -21,13 +21,13 @@
 				<th ng-click="sort_by('email')"><a>Email id</a></th>
 				<th class="th-dropdown">
 					<span uib-dropdown>
-						<a href id="simple-dropdown" uib-dropdown-toggle ng-if="!exists(accType)">Access Type
+						<a href id="accessTypeDropdown" uib-dropdown-toggle ng-if="!exists(accType)">Access Type
 							<span class="caret" ng-if="!exists(accType)"></span>
 						</a>
-						<a href id="simple-dropdown" uib-dropdown-toggle ng-if="exists(accType)">{{accType}}
+						<a href id="accessTypeDropdown" uib-dropdown-toggle ng-if="exists(accType)">{{accType}}
 							<span class="caret" ng-if="exists(accType)"></span>
 						</a>
-						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown">
+						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="accessTypeDropdown">
 							<li><a ng-click="setUniqueAccessTypes('')">Access Type</a></li>
 							<li ng-repeat="aType in uniqueAT = (getUniqueAccessTypes())">
 								<a ng-click="setUniqueAccessTypes(aType)" >{{aType}}</a>
@@ -38,13 +38,13 @@
 				<!--<th>Access Type</th>-->
 				<th class="th-dropdown">
 					<span uib-dropdown>
-						<a href id="simple-dropdown" uib-dropdown-toggle ng-if="!exists(accLevel)">Access Level
+						<a href id="accessLevelDropdown" uib-dropdown-toggle ng-if="!exists(accLevel)">Access Level
 							<span class="caret" ng-if="!exists(accLevel)"></span>
 						</a>
-						<a href id="simple-dropdown" uib-dropdown-toggle ng-if="exists(accLevel)">{{accLevel}}
+						<a href id="accessLevelDropdown" uib-dropdown-toggle ng-if="exists(accLevel)">{{accLevel}}
 							<span class="caret" ng-if="exists(accLevel)"></span>
 						</a>
-						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown">
+						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="accessLevelDropdown">
 							<li>
 								<a ng-click="setUniqueAccessLevels('')">Access Level</a>
 							</li>
@@ -56,13 +56,13 @@
 				</th>
 				<th class="th-dropdown">
 					<span uib-dropdown>
-						<a href id="simple-dropdown" uib-dropdown-toggle ng-if="!exists(stateName)">State
+						<a href id="stateDropdown" uib-dropdown-toggle ng-if="!exists(stateName)">State
 							<span class="caret" ng-if="!exists(stateName)"></span>
 						</a>
-						<a href id="simple-dropdown" uib-dropdown-toggle ng-if="exists(stateName)">{{stateName}}
+						<a href id="stateDropdown" uib-dropdown-toggle ng-if="exists(stateName)">{{stateName}}
 							<span class="caret" ng-if="exists(stateName)"></span>
 						</a>
-						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown">
+						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="stateDropdown">
 							<li><a ng-click="setUniqueStates('')">State</a></li>
 							<li ng-repeat="sName in sNames = (getUniqueStates())">
 								<a ng-click="setUniqueStates(sName)" >{{sName}}</a>
@@ -72,13 +72,13 @@
 				</th>
 				<th class="th-dropdown">
 					<span uib-dropdown>
-						<a href id="simple-dropdown" uib-dropdown-toggle ng-if="!exists(districtName)">District
+						<a href id="districtDropdown" uib-dropdown-toggle ng-if="!exists(districtName)">District
 							<span class="caret" ng-if="!exists(districtName)"></span>
 						</a>
-						<a href id="simple-dropdown" uib-dropdown-toggle ng-if="exists(districtName)">{{districtName}}
+						<a href id="districtDropdown" uib-dropdown-toggle ng-if="exists(districtName)">{{districtName}}
 							<span class="caret" ng-if="exists(districtName)"></span>
 						</a>
-						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown">
+						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="districtDropdown">
 							<li><a ng-click="setUniqueDistricts('')">District</a></li>
 							<li ng-repeat="dName in dNames = (getUniqueDistricts())">
 								<a ng-click="setUniqueDistricts(dName)" >{{dName}}</a>
@@ -88,13 +88,13 @@
 				</th>
 				<th class="th-dropdown">
 					<span uib-dropdown>
-						<a href id="simple-dropdown" uib-dropdown-toggle ng-if="!exists(blockName)">Block
+						<a href id="blockDropdown" uib-dropdown-toggle ng-if="!exists(blockName)">Block
 							<span class="caret" ng-if="!exists(blockName)"></span>
 						</a>
-						<a href id="simple-dropdown" uib-dropdown-toggle ng-if="exists(blockName)">{{blockName}}
+						<a href id="blockDropdown" uib-dropdown-toggle ng-if="exists(blockName)">{{blockName}}
 							<span class="caret" ng-if="exists(blockName)"></span>
 						</a>
-						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown">
+						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="blockDropdown">
 							<li><a ng-click="setUniqueBlocks('')">Block</a></li>
 							<li ng-repeat="bName in bNames = (getUniqueBlocks())">
 								<a ng-click="setUniqueBlocks(bName)" >{{bName}}</a>

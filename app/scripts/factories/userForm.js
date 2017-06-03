@@ -42,6 +42,10 @@
 					return $http.get(backend_root + 'nms/location/blocks/' + districtId);
 				},
 
+				getCircles: function(){
+					return $http.get(backend_root + 'nms/location/circles');
+				},
+
 				getUser: function(id){
 					return $http.get(backend_root + 'nms/user/user/' + id);
 				},

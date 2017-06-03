@@ -11,24 +11,32 @@
 			};
 
 			$scope.uploadFile = function(){
-                var file = $scope.myFile;
-                var fd = new FormData();
-                fd.append('bulkCsv', file);
-    //We can send anything in name parameter, 
+				var file = $scope.myFile;
+				var fd = new FormData();
+				fd.append('bulkCsv', file);
+	//We can send anything in name parameter, 
 //it is hard coded to abc as it is irrelavant in this case.
-                var uploadUrl = backend_root + "nms/admin/uploadFile";
-                $http.post(uploadUrl, fd, {
-                    transformRequest: angular.identity,
-                    headers: {'Content-Type': undefined}
-                })
-                .then(function(result){
-                	$scope.listErrors(result.data)
-                })
-                // .error(function(){
-                // });
-            }
+				var uploadUrl = backend_root + "nms/admin/uploadFile";
+				$http.post(uploadUrl, fd, {
+					transformRequest: angular.identity,
+					headers: {'Content-Type': undefined}
+				})
+				.then(function(result){
+					$scope.listErrors(result.data)
+				})
+				// .error(function(){
+				// });
+			}
 
-            $scope.errorsObj = [];
+			$scope.downloadTemplateUrl = backend_root + 'nms/admin/getBulkDataImportCSV'
+			$scope.downloadTemplate = function(){
+				$http({
+					url: $scope.downloadTemplateUrl, 
+					method: "GET",
+				});
+			}
+
+			$scope.errorsObj = [];
 
 			$scope.listErrors = function(errors){
 				$scope.errorsObj = [];
@@ -55,18 +63,18 @@
 		// 	}
 		// } ])
 		.directive('fileModel', ['$parse', function ($parse) {
-            return {
-                restrict: 'A',
-                link: function(scope, element, attrs) {
-                    var model = $parse(attrs.fileModel);
-                    var modelSetter = model.assign;
+			return {
+				restrict: 'A',
+				link: function(scope, element, attrs) {
+					var model = $parse(attrs.fileModel);
+					var modelSetter = model.assign;
 
-                    element.bind('change', function(){
-                        scope.$apply(function(){
-                            modelSetter(scope, element[0].files[0]);
-                        });
-                    });
-                }
-            };
-        }])
+					element.bind('change', function(){
+						scope.$apply(function(){
+							modelSetter(scope, element[0].files[0]);
+						});
+					});
+				}
+			};
+		}])
 })()

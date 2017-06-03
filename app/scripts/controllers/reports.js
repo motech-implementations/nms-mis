@@ -31,17 +31,17 @@
 					'options': [
 						{
 							'name': 'Deactivation for not answering',
-							'reportEnum': "KilkariLowUsage",
+							'reportEnum': "KilkariSixWeeksNoAnswer",
 							'icon': 'images/drop-down-3.png',
 						},
 						{
 							'name': 'Listen to < 25% this month',
-							'reportEnum': "KilkariSelfDeactivated",
+							'reportEnum': "KilkariLowUsage",
 							'icon': 'images/drop-down-3.png',
 						},
 						{
 							'name': 'Self Deactivations',
-							'reportEnum': "KilkariSixWeeksNoAnswer",
+							'reportEnum': "KilkariSelfDeactivated",
 							'icon': 'images/drop-down-3.png',
 						},
 					]
@@ -61,7 +61,6 @@
 			$scope.selectReport = function(item){
 				$scope.reportName = item.name;
 				$scope.reportEnum = item.reportEnum;
-				console.log(item);
 			}
 
 			$scope.isCircleReport = function(){
@@ -92,6 +91,13 @@
 				});
 			}
 
+			$scope.getCircles =function(){
+				return UserFormFactory.getCircles()
+				.then(function(result){
+					$scope.circles = result.data;
+				});
+			}
+
 			$scope.selectState = function(state){
 				if(state != null){
 					$scope.getDistricts(state.stateId);
@@ -117,32 +123,84 @@
 				}
 				
 			}
+			$scope.selectCircle = function(circle){
+				if(circle != null){
+					$scope.circle = circle;
+				}
+				
+			}
 
 			$scope.getStates();
+			$scope.getCircles();
+
+			$scope.fileName = "";
 
 			$scope.getReport = function(){
+
+				if($scope.reportEnum == "" || $scope.reportEnum == null){
+					return;
+				}
+				if($scope.dt == null){
+					return;
+				}
+
 				var reportRequest = {};
 
 			    reportRequest.reportType = $scope.reportEnum;
-			    reportRequest.toDate = $scope.dt,
-			    reportRequest.fromDate = "",
-			    reportRequest.stateId = 1;
-			    reportRequest.districtId = 1,
-			    reportRequest.blockId = 1
-				
-				console.log(reportRequest)
+			    reportRequest.toDate = $scope.dt;
+			    reportRequest.fromDate = "";
+			    if($scope.state != null){
+			    	reportRequest.stateId = $scope.state.stateId;
+			    }
+			    else{
+			    	reportRequest.stateId = 0;
+			    }
+			    if($scope.district != null){
+			    	reportRequest.districtId = $scope.district.districtId;
+			    }
+			    else{
+			    	reportRequest.districtId = 0;
+			    }
+			    if($scope.block != null){
+			    	reportRequest.blockId = $scope.block.blockId;
+			    }
+			    else{
+			    	reportRequest.blockId = 0;
+			    }
+			    if($scope.circle != null){
+			    	reportRequest.circleId = $scope.circle.circleId;
+			    }
+			    else{
+			    	reportRequest.circleId = 0;
+			    }
 
 				$http({
 					method  : 'POST',
 					url     : backend_root + 'nms/user/getReport',
 					data    : reportRequest, //forms user object
 					headers : {'Content-Type': 'application/json'} 
-				})/*.then(function(result){
-					alert(result.data);
-					// $scope.open()
-				})*/
+				})
+				.then(function(result){
+					$scope.fileName = result.data.file;
+				})
 			}
 
+			$scope.downloadReportUrl = backend_root + 'nms/user/downloadReport',
+
+			$scope.clearFile = function(){
+				$scope.fileName = "";
+			}
+
+			$scope.reset =function(){
+				$scope.state = null;
+				$scope.district = null;
+				$scope.block = null;
+				$scope.circle = null;
+				$scope.reportName = 'Select';
+				$scope.reportCategory = 'Select';
+				$scope.reportEnum = null;
+				$scope.dt = $scope.today();
+			}
 
 			// datepicker stuff
 
