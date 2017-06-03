@@ -38,4 +38,11 @@ public class StateDaoImpl extends AbstractDao<Integer, State> implements StateDa
         return (List<State>) criteria.list();
     }
 
+    @Override
+    public List<State> getStatesForReport(String report) {
+        Criteria criteria = createEntityCriteria().addOrder(Order.asc("stateId"));
+        criteria.add(Restrictions.eq("serviceType", report).ignoreCase());
+        return (List<State>) criteria.list();
+    }
+
 }

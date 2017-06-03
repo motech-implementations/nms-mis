@@ -15,4 +15,6 @@ public interface StateDao {
     List<State> findByName(String stateName);
 
     List<State> getAllStates();
+
+    List<State> getStatesForReport(String report);
 }

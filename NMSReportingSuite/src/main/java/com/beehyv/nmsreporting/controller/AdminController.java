@@ -83,13 +83,18 @@ public class AdminController {
     @RequestMapping(value = "/getBulkDataImportCSV", method = RequestMethod.GET,produces = "application/vnd.ms-excel")
     @ResponseBody
     public String getBulkDataImportCSV(HttpServletResponse response) throws ParseException, java.text.ParseException{
-        adminService.getBulkDataImportCSV();
+
        response.setContentType("APPLICATION/OCTECT-STREAM");
         try {
             PrintWriter out=response.getWriter();
             String filename="BulkImportData.csv";
             response.setHeader("Content-Disposition","attachment;filename=\""+filename+"\"");
-            FileInputStream fl=new FileInputStream(documents+"BulkImportData.csv");
+            String rootPath=documents+"BulkImportData.csv";
+            File file=new File(rootPath);
+            if(!(file.exists())){
+                adminService.getBulkDataImportCSV();
+            }
+            FileInputStream fl=new FileInputStream(rootPath);
             int i;
             while ((i=fl.read())!=-1){
                 out.write(i);

@@ -29,6 +29,14 @@ public enum ReportType {
         this.reportType = reportType;
     }
 
+    public static String getType(String test){
+        for (ReportType type: ReportType.values()) {
+            if(type.name().equalsIgnoreCase(test)){
+                return type.name();
+            };
+        }
+        return "not valid";
+    }
 
 
 }
