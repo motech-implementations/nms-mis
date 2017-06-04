@@ -20,7 +20,7 @@ public class StateCircleDaoImpl extends AbstractDao<Integer,StateCircle> impleme
     public List<StateCircle> getCirclesByState(Integer stateId) {
         Criteria criteria = createEntityCriteria();
         if(stateId!=null)
-        criteria.add(Restrictions.eq("stateId", stateId).ignoreCase());
+        criteria.add(Restrictions.eq("stateId", stateId));
         return criteria.list();
     }
 }

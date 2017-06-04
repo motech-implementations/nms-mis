@@ -620,7 +620,7 @@ public class AdminServiceImpl implements AdminService {
 
             List<AnonymousUsers> anonymousUsersList = anonymousUsersDao.getAnonymousUsers(fromDate,toDate);
 
-            if(stateId==0){
+            if(circleId==0){
                 getCircleWiseAnonymousUsers(anonymousUsersList,  rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
             }
             else{

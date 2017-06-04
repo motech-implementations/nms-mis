@@ -6,10 +6,12 @@ import com.beehyv.nmsreporting.dao.DistrictDao;
 import com.beehyv.nmsreporting.dao.StateDao;
 import com.beehyv.nmsreporting.dto.PasswordDto;
 import com.beehyv.nmsreporting.dto.UserDto;
+import com.beehyv.nmsreporting.entity.Report;
 import com.beehyv.nmsreporting.entity.ReportRequest;
 import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.Role;
+import com.beehyv.nmsreporting.model.State;
 import com.beehyv.nmsreporting.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.ParseException;
@@ -232,12 +234,28 @@ public class UserController {
         return userName;
     }
 
-   @RequestMapping(value = "/getReport", method = RequestMethod.POST/*,produces = "application/vnd.ms-excel"*/)
-   @ResponseBody
-   public Map<String, String> getReport(@RequestBody ReportRequest reportRequest/*,HttpServletResponse response*/) throws ParseException, java.text.ParseException{
+    @RequestMapping(value = "/getReport", method = RequestMethod.POST/*,produces = "application/vnd.ms-excel"*/)
+    @ResponseBody
+    public Map<String, String> getReport(@RequestBody ReportRequest reportRequest/*,HttpServletResponse response*/) throws ParseException, java.text.ParseException{
 
-       String rootPath = "";
-       String place = AccessLevel.NATIONAL.getAccessLevel();
+        String rootPath = "";
+        String place = AccessLevel.NATIONAL.getAccessLevel();
+
+        Map<String, String> m = new HashMap<>();
+
+        User currentUser = userService.getCurrentUser();
+        if(currentUser.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel()) && currentUser.getStateId() != reportRequest.getStateId()){
+            m.put("status", "fail");
+            return m;
+        }
+        if(currentUser.getAccessLevel().equals(AccessLevel.DISTRICT.getAccessLevel()) && currentUser.getDistrictId() != reportRequest.getDistrictId()){
+            m.put("status", "fail");
+            return m;
+        }
+        if(currentUser.getAccessLevel().equals(AccessLevel.BLOCK.getAccessLevel()) && currentUser.getBlockId() != reportRequest.getBlockId()){
+            m.put("status", "fail");
+            return m;
+        }
 
        if(reportRequest.getReportType().equals(ReportType.maAnonymous.getReportType())){
             if(reportRequest.getCircleId()!=0){
@@ -273,7 +291,8 @@ public class UserController {
            adminService.createSpecificReport(reportRequest);
        }
 
-       Map<String, String> m = new HashMap();
+
+       m.put("status", "success");
        m.put("file", reportName);
        return m;
     }
@@ -308,6 +327,80 @@ public class UserController {
         reportName = "";
         reportPath = "";
         return "success";
+    }
+
+    @RequestMapping(value={"/reportsMenu"})
+    public @ResponseBody List<Map<String, Object>> getReportsMenu() {
+        User currentUser = userService.getCurrentUser();
+        Map<String, Object> maMenu = new HashMap<>();
+        maMenu.put("name", "Mobile Academy Reports");
+        maMenu.put("icon", "images/drop-down-3.png");
+
+        List<Report> maList = new ArrayList<>();
+        maList.add(new Report(
+                ReportType.maCourse.getReportName(),
+                ReportType.maCourse.getReportType(),
+                "images/drop-down-3.png",
+                ReportType.maCourse.getServiceType())
+        );
+        maList.add(new Report(
+                ReportType.maAnonymous.getReportName(),
+                ReportType.maAnonymous.getReportType(),
+                "images/drop-down-3.png",
+                ReportType.maAnonymous.getServiceType())
+        );
+        maList.add(new Report(
+                ReportType.maInactive.getReportName(),
+                ReportType.maInactive.getReportType(),
+                "images/drop-down-3.png",
+                ReportType.maInactive.getServiceType())
+        );
+        maMenu.put("service", maList.get(0).getService());
+        maMenu.put("options", maList);
+
+        Map<String, Object> kMenu = new HashMap<>();
+
+        kMenu.put("name", "Kilkari Reports");
+        kMenu.put("icon", "images/drop-down-3.png");
+
+        List<Report> kList = new ArrayList<>();
+        kList.add(new Report(
+                ReportType.sixWeeks.getReportName(),
+                ReportType.sixWeeks.getReportType(),
+                "images/drop-down-3.png",
+                ReportType.sixWeeks.getServiceType())
+        );
+        kList.add(new Report(
+                ReportType.lowUsage.getReportName(),
+                ReportType.lowUsage.getReportType(),
+                "images/drop-down-3.png",
+                ReportType.lowUsage.getServiceType())
+        );
+        kList.add(new Report(
+                ReportType.selfDeactivated.getReportName(),
+                ReportType.selfDeactivated.getReportType(),
+                "images/drop-down-3.png",
+                ReportType.selfDeactivated.getServiceType())
+        );
+        maMenu.put("service", kList.get(0).getService());
+        kMenu.put("options", kList);
+
+        List<Map<String, Object>> l = new ArrayList<>();
+
+        if(currentUser.getAccessLevel().equals(AccessLevel.NATIONAL.getAccessLevel())){
+            l.add(maMenu);
+            l.add(kMenu);
+        }
+        else{
+            State state = locationService.findStateById(currentUser.getStateId());
+            if(state.getServiceType().equals("M") || state.getServiceType().equals("ALL")){
+                l.add(maMenu);
+            }
+            if(state.getServiceType().equals("K") || state.getServiceType().equals("ALL")){
+                l.add(maMenu);
+            }
+        }
+        return l;
     }
 
 //    @RequestMapping(value = {"/createMaster"}, method = RequestMethod.GET)
