@@ -244,26 +244,33 @@ public class UserController {
         Map<String, String> m = new HashMap<>();
 
         User currentUser = userService.getCurrentUser();
-        if(currentUser.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel()) && currentUser.getStateId() != reportRequest.getStateId()){
-            m.put("status", "fail");
-            return m;
-        }
-        if(currentUser.getAccessLevel().equals(AccessLevel.DISTRICT.getAccessLevel()) && currentUser.getDistrictId() != reportRequest.getDistrictId()){
-            m.put("status", "fail");
-            return m;
-        }
-        if(currentUser.getAccessLevel().equals(AccessLevel.BLOCK.getAccessLevel()) && currentUser.getBlockId() != reportRequest.getBlockId()){
-            m.put("status", "fail");
-            return m;
-        }
+
 
        if(reportRequest.getReportType().equals(ReportType.maAnonymous.getReportType())){
+           if(!currentUser.getAccessLevel().equals(AccessLevel.NATIONAL.getAccessLevel()) && reportRequest.getCircleId() == 0){
+               m.put("status", "fail");
+               return m;
+           }
+
             if(reportRequest.getCircleId()!=0){
                 place=StReplace(locationService.findCircleById(reportRequest.getCircleId()).getCircleName());
                 rootPath+=place+"/";
             }
        }
        else {
+           if(currentUser.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel()) && currentUser.getStateId() != reportRequest.getStateId()){
+               m.put("status", "fail");
+               return m;
+           }
+           if(currentUser.getAccessLevel().equals(AccessLevel.DISTRICT.getAccessLevel()) && currentUser.getDistrictId() != reportRequest.getDistrictId()){
+               m.put("status", "fail");
+               return m;
+           }
+           if(currentUser.getAccessLevel().equals(AccessLevel.BLOCK.getAccessLevel()) && currentUser.getBlockId() != reportRequest.getBlockId()){
+               m.put("status", "fail");
+               return m;
+           }
+
            if (reportRequest.getStateId() != 0) {
                place = StReplace(locationService.findStateById(reportRequest.getStateId()).getStateName());
                rootPath += place + "/";
