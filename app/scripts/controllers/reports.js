@@ -84,6 +84,28 @@
 				$scope.state = null;
 				$scope.district = null;
 				$scope.block = null;
+
+
+				if($scope.reportEnum == 'CumulativeInactiveUsers'){
+					$scope.dateOptions = {
+						minMode: 'month',
+						dateDisabled: disabled,
+						formatYear: 'yy',
+						maxDate: new Date(),
+						minDate: new Date(2017, 06, 01),
+						startingDay: 1
+					};
+				}
+				else{
+					$scope.dateOptions = {
+						minMode: 'month',
+						dateDisabled: disabled,
+						formatYear: 'yy',
+						maxDate: new Date(),
+						minDate: new Date(2010, 01, 01),
+						startingDay: 1
+					};
+				}
 			}
 
 			$scope.isCircleReport = function(){
@@ -217,6 +239,7 @@
 			$scope.downloadReportUrl = backend_root + 'nms/user/downloadReport',
 
 			$scope.clearFile = function(){
+				$scope.status = "";
 				$scope.fileName = "";
 			}
 

@@ -521,7 +521,7 @@ public class AdminServiceImpl implements AdminService {
 
         Date fromDate = aCalendar.getTime();
 
-        aCalendar.set(Calendar.MONTH,1);
+        aCalendar.add(Calendar.MONTH, 1);
 
         Date toDate = aCalendar.getTime();
         Integer stateId=reportRequest.getStateId();
