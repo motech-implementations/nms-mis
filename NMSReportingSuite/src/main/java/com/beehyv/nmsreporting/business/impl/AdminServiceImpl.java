@@ -873,7 +873,7 @@ public class AdminServiceImpl implements AdminService {
         Integer counter = 2;
         for (AnonymousUsers anonymousUser : anonymousUsersList) {
             empinfo.put((counter.toString()), new Object[]{
-                    place,
+                    anonymousUser.getCircleName(),
                     anonymousUser.getMsisdn(),
                     anonymousUser.getLastCalledDate()
             });
