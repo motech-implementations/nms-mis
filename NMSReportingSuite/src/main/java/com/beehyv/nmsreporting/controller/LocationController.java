@@ -47,6 +47,22 @@ public class LocationController {
         return states;
     }
 
+    @RequestMapping(value = {"/state/{serviceType}"}, method = RequestMethod.GET)
+    public @ResponseBody List<State> getStatesByServiceType(@PathVariable("serviceType") String serviceType) {
+        User user = userService.getCurrentUser();
+        List<State> states;
+        if(user.getAccessLevel().equals(AccessLevel.NATIONAL.getAccessLevel())) {
+            states = locationService.getStatesByServiceType(serviceType);
+        }
+        else{
+            states = new ArrayList<>();
+            if(locationService.findStateById(user.getStateId()).getServiceType().equals(serviceType)) {
+                states.add(locationService.findStateById(user.getStateId()));
+            }
+        }
+        return states;
+    }
+
     /*--------------------------District-----------------------------*/
 
     @RequestMapping(value = {"/districts/{stateId}"}, method = RequestMethod.GET)

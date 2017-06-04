@@ -12,30 +12,35 @@ public enum ReportType {
 //    selfDeactivated("selfDeactivated"),
 //    sixWeeks("sixWeeks");
 
-    maCourse("CumulativeCourseCompletion"),
-    maAnonymous("AnonymousUsers"),
-    maInactive("CumulativeInactiveUsers"),
-    lowUsage("KilkariLowUsage"),
-    selfDeactivated("KilkariSelfDeactivated"),
-    sixWeeks("KilkariSixWeeksNoAnswer");
+    maCourse("CumulativeCourseCompletion","M"),
+    maAnonymous("AnonymousUsers", "M"),
+    maInactive("CumulativeInactiveUsers", "M"),
+    lowUsage("KilkariLowUsage", "K"),
+    selfDeactivated("KilkariSelfDeactivated", "K"),
+    sixWeeks("KilkariSixWeeksNoAnswer", "K");
 
     private String reportType;
+
+    private String serviceType;
 
     public String getReportType() {
         return reportType;
     }
 
-    ReportType(String reportType) {
+    public String getServiceType(){ return serviceType;}
+
+    ReportType(String reportType, String serviceType) {
         this.reportType = reportType;
+        this.serviceType = serviceType;
     }
 
-    public static String getType(String test){
+    public static ReportType getType(String test){
         for (ReportType type: ReportType.values()) {
-            if(type.name().equalsIgnoreCase(test)){
-                return type.name();
+            if(type.reportType.equalsIgnoreCase(test)){
+                return type;
             };
         }
-        return "not valid";
+        return null;
     }
 
 

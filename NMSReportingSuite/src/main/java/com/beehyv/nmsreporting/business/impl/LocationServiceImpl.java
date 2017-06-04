@@ -65,6 +65,11 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
+    public List<State> getStatesByServiceType(String serviceType) {
+        return stateDao.getStatesByServiceType(serviceType);
+    }
+
+    @Override
     public List<District> getChildDistricts(Integer stateId) {
         return districtDao.getDistrictsOfState(stateDao.findByStateId(stateId).getStateId());
     }

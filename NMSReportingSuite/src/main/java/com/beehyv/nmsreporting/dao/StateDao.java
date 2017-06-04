@@ -16,5 +16,5 @@ public interface StateDao {
 
     List<State> getAllStates();
 
-    List<State> getStatesForReport(String report);
+    List<State> getStatesByServiceType(String type);
 }

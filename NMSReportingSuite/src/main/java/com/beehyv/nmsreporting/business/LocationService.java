@@ -25,6 +25,8 @@ public interface LocationService {
 
     State findStateByName(String stateName);
 
+    List<State> getStatesByServiceType(String serviceType);
+
     List<District> getChildDistricts(Integer stateId);
 
     /*----------------------District-------------------------*/

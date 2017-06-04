@@ -453,7 +453,8 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void createFiles(String reportType) {
-        List<State> states = stateDao.getAllStates();
+        String serviceType=ReportType.getType(reportType).getServiceType();
+        List<State> states = stateDao.getStatesByServiceType(serviceType);
         String rootPath = reports;
         File dir = new File(rootPath + reportType);
         if (!dir.exists())
@@ -1196,7 +1197,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void getCumulativeCourseCompletionFiles(Date toDate) {
 
-        List<State> states = stateDao.getAllStates();
+        List<State> states = stateDao.getStatesByServiceType(ReportType.maCourse.getServiceType());
         String rootPath = reports+ReportType.maCourse.getReportType()+ "/";
         List<MACourseFirstCompletion> successFullcandidates = maCourseAttemptDao.getSuccessFulCompletion(toDate);
         getCumulativeCourseCompletion(successFullcandidates, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
@@ -1261,7 +1262,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void getCumulativeInactiveFiles(Date toDate) {
-        List<State> states = stateDao.getAllStates();
+        List<State> states = stateDao.getStatesByServiceType(ReportType.maInactive.getServiceType());
         String rootPath = reports+ReportType.maInactive.getReportType()+ "/";
         List<FrontLineWorkers> inactiveFrontLineWorkers = frontLineWorkersDao.getInactiveFrontLineWorkers(toDate);
         getCumulativeInactiveUsers(inactiveFrontLineWorkers, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
@@ -1308,7 +1309,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void getKilkariSixWeekNoAnswerFiles(Date fromDate, Date toDate) {
-        List<State> states = stateDao.getAllStates();
+        List<State> states = stateDao.getStatesByServiceType(ReportType.sixWeeks.getServiceType());
         String rootPath = reports +ReportType.sixWeeks.getReportType()+ "/";
         List<KilkariSixWeeksNoAnswer> kilkariSixWeeksNoAnswers = kilkariSixWeeksNoAnswerDao.getKilkariUsers(fromDate, toDate);
         getKilkariSixWeekNoAnswer(kilkariSixWeeksNoAnswers, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
@@ -1356,7 +1357,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void getKilkariLowUsageFiles(Date fromDate, Date toDate) {
-        List<State> states = stateDao.getAllStates();
+        List<State> states = stateDao.getStatesByServiceType(ReportType.lowUsage.getServiceType());
         String rootPath = reports+ReportType.lowUsage.getReportType() + "/";
         List<KilkariLowUsage> kilkariLowUsageList = kilkariLowUsageDao.getKilkariLowUsageUsers(fromDate, toDate);
         getKilkariLowUsage(kilkariLowUsageList, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
@@ -1402,7 +1403,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void getKilkariSelfDeactivationFiles(Date fromDate, Date toDate) {
-        List<State> states = stateDao.getAllStates();
+        List<State> states = stateDao.getStatesByServiceType(ReportType.selfDeactivated.getServiceType());
         String rootPath = reports+ReportType.selfDeactivated.getReportType() + "/";
         List<KilkariSelfDeactivated> kilkariSelfDeactivatedList = kilkariSelfDeactivatedDao.getSelfDeactivatedUsers(fromDate, toDate);
         getKilkariSelfDeactivation(kilkariSelfDeactivatedList, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
@@ -1508,4 +1509,5 @@ public class AdminServiceImpl implements AdminService {
 
         return monthString+"_"+yearString;
     }
+
 }
