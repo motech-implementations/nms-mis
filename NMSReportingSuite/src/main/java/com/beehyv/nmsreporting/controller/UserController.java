@@ -261,7 +261,7 @@ public class UserController {
                rootPath += place + "/";
            }
        }
-       String filename= reportRequest.getReportType()+"_"+place+"_"+reportService.getMonthYear(reportRequest.getToDate())+".xlsx";
+       String filename= reportRequest.getReportType()+"_"+place+"_"+reportService.getMonthYear(reportRequest.getFromDate())+".xlsx";
 
        reportPath = reports+reportRequest.getReportType()+"/"+rootPath;
        reportName = filename;

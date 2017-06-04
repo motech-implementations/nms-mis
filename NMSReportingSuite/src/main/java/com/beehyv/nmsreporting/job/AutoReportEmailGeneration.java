@@ -27,7 +27,7 @@ public class AutoReportEmailGeneration {
 
         Date fromDate = aCalendar.getTime();
 
-        aCalendar.set(Calendar.DATE,aCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        aCalendar.add(Calendar.MONTH, 1);
 
         Date toDate = aCalendar.getTime();
 
