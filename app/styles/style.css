@@ -5,14 +5,9 @@
 h1{
 	font-size: 1.5em;
 }
-.btn-primary,
-.btn-info, 
-.btn-success,{
-	background-color: #2164b2;
-}
 
 .non-footer{
-	min-height: 93%;
+	min-height: 94%;
 }
 
 body .login .login-header{
@@ -218,8 +213,8 @@ div.reports-header select{
 	text-overflow: ellipsis;
 }
 
-div.reports-header .left .btn-group>button,
-div.reports-header .left .input-group>p{
+div.reports-header .left > * > .btn-group>button,
+div.reports-header .left > * > .input-group>p{
 	min-width: 200px;
 }
 div.reports-header .right button,
@@ -302,13 +297,17 @@ div.footer{
 	font-size: 13px;
 	color: #4d4d4d;
 	padding: 5px;
-	margin: 10px 0px;
 }
 
 .dropdown-menu{
    max-height: 300px; /*Provide height in pixels or in other units as per your layout*/
    overflow-y: auto; /*Provide an auto overflow to diaply scroll*/
-  }
+}
+.btn-primary,
+.btn-info, 
+.btn-success,{
+	background-color: #2164b2;
+}
 html, 
 body{
 	height: 100%;

@@ -3,50 +3,64 @@
 		.module('nmsReports')
 		.controller("ReportsController", ['$scope', '$http', 'UserFormFactory', function($scope, $http, UserFormFactory){
 
-			$scope.reports = [
-				{
-					'name': 'Mobile Academy Reports',
-					'icon': 'images/drop-down-1.png',
-					'options': [
-						{
-							'name': 'Cumulative Completion Reports',
-							'reportEnum': "CumulativeCourseCompletion",
-							'icon': 'images/drop-down-3.png',
-						},
-						{
-							'name': 'Circle wise Anonymous Reports',
-							'reportEnum': "AnonymousUsers",
-							'icon': 'images/drop-down-3.png',
-						},
-						{
-							'name': 'Cumulative Inactive Users',
-							'reportEnum': "CumulativeInactiveUsers",
-							'icon': 'images/drop-down-3.png',
-						}
-					]
-				},
-				{
-					'name': 'Kilkari Reports',
-					'icon': 'images/drop-down-1.png',
-					'options': [
-						{
-							'name': 'Deactivation for not answering',
-							'reportEnum': "KilkariSixWeeksNoAnswer",
-							'icon': 'images/drop-down-3.png',
-						},
-						{
-							'name': 'Listen to < 25% this month',
-							'reportEnum': "KilkariLowUsage",
-							'icon': 'images/drop-down-3.png',
-						},
-						{
-							'name': 'Self Deactivations',
-							'reportEnum': "KilkariSelfDeactivated",
-							'icon': 'images/drop-down-3.png',
-						},
-					]
-				}
-			];
+			// $scope.reports = [];
+			// $scope.maReports = {
+			// 	'name': 'Mobile Academy Reports',
+			// 	'icon': 'images/drop-down-1.png',
+			// 	'options': [
+			// 		{
+			// 			'name': 'Cumulative Completion Reports',
+			// 			'reportEnum': "CumulativeCourseCompletion",
+			// 			'icon': 'images/drop-down-3.png',
+			// 			'service': 'M',
+			// 		},
+			// 		{
+			// 			'name': 'Circle wise Anonymous Reports',
+			// 			'reportEnum': "AnonymousUsers",
+			// 			'icon': 'images/drop-down-3.png',
+			// 			'service': 'M',
+			// 		},
+			// 		{
+			// 			'name': 'Cumulative Inactive Users',
+			// 			'reportEnum': "CumulativeInactiveUsers",
+			// 			'icon': 'images/drop-down-3.png',
+			// 			'service': 'M',
+			// 		}
+			// 	]
+			// };
+			// $scope.kReports = {
+			// 	'name': 'Kilkari Reports',
+			// 	'icon': 'images/drop-down-1.png',
+				
+			// 	'options': [
+			// 		{
+			// 			'name': 'Deactivation for not answering',
+			// 			'reportEnum': "KilkariSixWeeksNoAnswer",
+			// 			'icon': 'images/drop-down-3.png',
+			// 			'service': 'K',
+			// 		},
+			// 		{
+			// 			'name': 'Listen to < 25% this month',
+			// 			'reportEnum': "KilkariLowUsage",
+			// 			'icon': 'images/drop-down-3.png',
+			// 			'service': 'K',
+			// 		},
+			// 		{
+			// 			'name': 'Self Deactivations',
+			// 			'reportEnum': "KilkariSelfDeactivated",
+			// 			'icon': 'images/drop-down-3.png',
+			// 			'service': 'K',
+			// 		},
+			// 	]
+			// }
+
+			// $scope.reports.push($scope.maReports);
+			// $scope.reports.push($scope.kReports);
+
+			UserFormFactory.getReportsMenu()
+			.then(function(result){
+				$scope.reports = result.data;
+			})
 
 			$scope.reportCategory="Select";
 
@@ -54,6 +68,10 @@
 				$scope.reportCategory = item.name;
 				$scope.reportNames = item.options;
 				$scope.reportName = 'Select';
+				
+				$scope.state = null;
+				$scope.district = null;
+				$scope.block = null;
 			}
 
 			$scope.reportName="Select";
@@ -61,14 +79,19 @@
 			$scope.selectReport = function(item){
 				$scope.reportName = item.name;
 				$scope.reportEnum = item.reportEnum;
+				$scope.getStatesByService(item.service);
+
+				$scope.state = null;
+				$scope.district = null;
+				$scope.block = null;
 			}
 
 			$scope.isCircleReport = function(){
 				return $scope.reportName != null && $scope.reportName == 'Circle wise Anonymous Reports';
 			}
 
-			$scope.getStates = function(){
-				return UserFormFactory.getStates()
+			$scope.getStatesByService = function(service){
+				return UserFormFactory.getStatesByService(service)
 				.then(function(result){
 					$scope.states = result.data;
 					$scope.districts = [];
@@ -129,8 +152,7 @@
 				}
 				
 			}
-
-			$scope.getStates();
+			
 			$scope.getCircles();
 
 			$scope.fileName = "";
@@ -147,8 +169,8 @@
 				var reportRequest = {};
 
 			    reportRequest.reportType = $scope.reportEnum;
-			    reportRequest.toDate = $scope.dt;
-			    reportRequest.fromDate = "";
+
+			    reportRequest.fromDate = $scope.dt;
 			    if($scope.state != null){
 			    	reportRequest.stateId = $scope.state.stateId;
 			    }
@@ -176,15 +198,22 @@
 
 				$http({
 					method  : 'POST',
-					url     : backend_root + 'nms/user/getReport',
+					url     : $scope.getReportUrl,
 					data    : reportRequest, //forms user object
 					headers : {'Content-Type': 'application/json'} 
 				})
 				.then(function(result){
-					$scope.fileName = result.data.file;
+					$scope.status = result.data.status;
+					if($scope.status == 'success'){
+						$scope.fileName = result.data.file;
+					}
+					if($scope.status == 'fail'){
+
+					}
 				})
 			}
 
+			$scope.getReportUrl = backend_root + 'nms/user/getReport';
 			$scope.downloadReportUrl = backend_root + 'nms/user/downloadReport',
 
 			$scope.clearFile = function(){

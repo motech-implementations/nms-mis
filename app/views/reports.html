@@ -1,7 +1,7 @@
 <div  class="container-fluid" ng-controller="ReportsController">
 
 	<div class="block reports-header">
-		<form class="form container-fluid block" role="form" novalidate="novalidate">
+		<form name="reportsForm" class="form container-fluid block" role="form" novalidate="novalidate">
 			<div class="row">
 				<div class="col-xs-7 left">
 					<div class="form-group col-xs-4">
@@ -53,7 +53,7 @@
 					<div class="form-group col-xs-4">
 						<label for="name">Select State</label><br>
 						<div class="btn-group" uib-dropdown dropdown-append-to-body>
-							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" ng-disabled='reportCategory=="Select"'uib-dropdown-toggle>
+							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" ng-disabled='reportName=="Select"'uib-dropdown-toggle>
 								<span class="block">{{state.stateName}}
 								<span class="caret"></span></span>
 							</button>
@@ -113,12 +113,18 @@
 
 	</div>
 
-	<div class="block reports-body" ng-if="fileName != ''">
+	<div class="block reports-body" ng-if="status == 'success'">
 		<p>The following report has been generated: </p>
 		<p>{{fileName}}</p>
 		<span ng-click="clearFile()">
 			<a href="{{downloadReportUrl}}">Click here to download. <img src="images/export3.png"></a>
 		</span>
+
+	</div>
+
+	<div class="block reports-body" ng-if="status == 'fail'">
+		<p>You do not have access to this report.</p>
+		<p>{{fileName}}</p>
 
 	</div>
 </div>
