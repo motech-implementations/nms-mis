@@ -8,6 +8,8 @@
 				UserFormFactory.setCurrentUser(result.data);
 			})
 
+			$scope.editUser = {};
+			$scope.place = {};
 
 			UserFormFactory.getUser($stateParams.id)
 			.then(function(result){
@@ -28,9 +30,6 @@
 				return list.indexOf(item) + off < level;
 			}
 			
-			$scope.editUser = {};
-			$scope.place = {};
-
 			UserFormFactory.getRoles()
 			.then(function(result){
 				$scope.accessTypeList = result.data;
@@ -39,14 +38,12 @@
 			$scope.getStates = function(){
 				return UserFormFactory.getStates()
 				.then(function(result){
-					if(UserFormFactory.getCurrentUser.stateId != null){
-						$scope.states = [];
-						$scope.states.push(UserFormFactory.getCurrentUser.stateId);
-					}else{
-						$scope.states = result.data;
-					}
+					$scope.states = result.data;
 					$scope.districts = [];
 					$scope.blocks = [];
+
+					$scope.editUser.stateId = $scope.place.state;
+					$scope.place.state = null;
 				});
 			}
 			
@@ -55,6 +52,9 @@
 				.then(function(result){
 					$scope.districts = result.data;
 					$scope.blocks = [];
+
+					$scope.editUser.districtId = $scope.place.district;
+					$scope.place.district = null;
 				});
 			}
 
@@ -62,6 +62,9 @@
 				return UserFormFactory.getBlocks(districtId)
 				.then(function(result){
 					$scope.blocks = result.data;
+
+					$scope.editUser.blockId = $scope.place.block;
+					$scope.place.block = null;
 				});
 			}
 
@@ -79,26 +82,25 @@
 				}
 			});
 
+			$scope.stateRes = false;
+			$scope.districtRes = false;
+
 			$scope.$watch('editUser.stateId', function(value){
 				if(value != null){
-					$scope.editUser.districtId = $scope.place.district;
-					$scope.editUser.blockId = $scope.place.block;
-
-					$scope.place.district = null;
-
 					$scope.getDistricts(value)
+					$scope.stateRes = true;
 				}
 			});
 			$scope.$watch('editUser.districtId', function(value){
-				if(value != null){
-					$scope.editUser.blockId = $scope.place.block;
-
-					$scope.place.block = null;
-					$scope.getBlocks(value);
+				if(value != null && $scope.stateRes == true){
+					if($scope.editUser.stateId != null){
+						$scope.getBlocks(value);
+						$scope.districtRes = true;
+					}
 				}
 			});
 			$scope.$watch('editUser.blockId', function(value){
-				if(value != null){
+				if(value != null && $scope.stateRes == true && $scope.districtRes == true){
 
 				}
 			});
