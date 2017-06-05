@@ -9,6 +9,8 @@
 		</div>
 	</div>
 
+	
+
 	<div>
 		<button class="btn btn-sm btn-primary resetButton" ng-click="resetFilters()">Reset Filters</button>
 		<table class="table table-bordered">
@@ -111,7 +113,7 @@
 			<!-- <tr ng-repeat="item in data"> -->
 			<tr ng-repeat="item in filterData = (getAllUsers() | filter : search ) | orderBy : sorter : reverse  | limitTo : numPerPage : numPerPage*(currentPageNo-1)">
 				<!-- <td class ="{{header}}" ng-repeat="header in headers" ng-if="header != '$$hashKey'">{{item[header]}}</td> -->
-				<td>{{item.id}}</td>
+				<td>{{item.id - 1}}</td>
 				<td>{{item.name}}</td>
 				<td>{{item.username}}</td>
 				<td>{{item.phoneNumber}}</td>
@@ -124,6 +126,10 @@
 				<td><span ng-if="item.createdBy"><a ui-sref="userManagement.editUser({ id: '{{item.id}}' })">Edit</a></span></td>
 			</tr>
 		</table>
+
+		<div ng-if="waiting" class="loading">
+			<img src="images/pageloader.gif">
+		</div>
 <!-- 
 		<pagination style="float: right;"
 			total-items=filterData.length
@@ -136,7 +142,7 @@
 
 		<!-- 	<ul uib-pagination boundary-links="true" total-items="totalItems" items-per-page="itemsPerPage"	ng-model="currentPage" class="pagination-small" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul> -->
 
-			<pagination style="float: right;"
+			<pagination
 				total-items=filterData.length
 				items-per-page="numPerPage"
 				current-page="currentPageNo"

@@ -10,8 +10,7 @@
 				<label class="control-label col-xs-2">Full Name</label>
 				<div class="col-xs-10">
 					<input name="fullName" id="fullName" type="text" class="form-control input input-sm" placeholder="Name" ng-model="editUser.fullName" required 
-					ng-pattern="/^[A-Za-z ]*$/" ng-minlength="3"
-					tooltip-placement="top" uib-tooltip="Errors: {{editUserForm.fullName.$error|json}}" >
+					ng-pattern="/^[A-Za-z ]*$/" ng-minlength="3">
 
 					<div class="errorMessage" ng-messages="editUserForm.fullName.$error" role="alert" ng-show="!editUserForm.fullName.$pristine">
 						<div ng-message="required">This field cannot be empty</div>
@@ -38,8 +37,7 @@
 			<div class="form-group" ng-class="{'has-error':editUserForm.accessType.$invalid && !editUserForm.accessType.$pristine}">
 				<label class="control-label col-xs-2">Access Type</label>
 				<div class="col-xs-10">
-					<select name="accessType" id="accessType" class="form-control input input-sm"  ng-model="editUser.roleId" ng-options="item as item.roleDescription for item in accessTypeList track by item.roleId" required
-					tooltip-placement="top" uib-tooltip="Errors: {{editUserForm.accessType.$error|json}}">
+					<select name="accessType" id="accessType" class="form-control input input-sm"  ng-model="editUser.roleId" ng-options="item as item.roleDescription for item in accessTypeList track by item.roleId" required>
 					</select>
 
 					<div class="errorMessage" ng-messages="editUserForm.accessType.$error" role="alert" ng-show="!editUserForm.accessType.$pristine">
@@ -51,8 +49,7 @@
 			<div class="form-group" ng-class="{'has-error':editUserForm.accessLevel.$invalid && !editUserForm.accessLevel.$pristine}">
 				<label class="control-label col-xs-2">Access Level</label>
 				<div class="col-xs-10">
-					<select name="accessLevel" id="accessLevel" class="form-control input input-sm"  ng-model="editUser.accessLevel" ng-options="item for item in accessLevelList" required
-					tooltip-placement="top" uib-tooltip="Errors: {{editUserForm.accessLevel.$error|json}}">
+					<select name="accessLevel" id="accessLevel" class="form-control input input-sm"  ng-model="editUser.accessLevel" ng-options="item for item in accessLevelList" required>
 					</select>
 
 					<div class="errorMessage" ng-messages="editUserForm.accessLevel.$error" role="alert" ng-show="!editUserForm.accessLevel.$pristine">
@@ -89,8 +86,7 @@
 			<div class="form-group" ng-class="{'has-error':editUserForm.emailId.$invalid && !editUserForm.emailId.$pristine}">
 				<label class="control-label col-xs-2">Email Id</label>
 				<div class="col-xs-10">
-					<input name="emailId" id="emailId" type="email" class="form-control input input-sm" ng-model="editUser.emailId" placeholder="Email" required
-					tooltip-placement="top" uib-tooltip="Errors: {{editUserForm.emailId.$error|json}}">
+					<input name="emailId" id="emailId" type="email" class="form-control input input-sm" ng-model="editUser.emailId" placeholder="Email" required>
 
 					<div class="errorMessage" ng-messages="editUserForm.emailId.$error" role="alert" ng-show="!editUserForm.emailId.$pristine">
 						<div ng-message="required">This field cannot be empty</div>
@@ -103,8 +99,7 @@
 				<label class="control-label col-xs-2">Contact no.</label>
 				<div class="col-xs-10">
 					<input name="phoneNumber" id="phoneNumber" type="text" class="form-control input input-sm" ng-model="editUser.phoneNumber" placeholder="Contact no." required
-					ng-pattern="/^[0-9]*$/" ng-minlength="10" ng-maxlength="10"
-					tooltip-placement="top" uib-tooltip="Errors: {{editUserForm.phoneNumber.$error|json}}">
+					ng-pattern="/^[0-9]*$/" ng-minlength="10" ng-maxlength="10">
 
 					<div class="errorMessage" ng-messages="editUserForm.phoneNumber.$error" role="alert" ng-show="!editUserForm.phoneNumber.$pristine">
 						<div ng-message="required">This field cannot be empty</div>
@@ -143,7 +138,7 @@
 			<div class="form-group">
 				<div class="col-xs-offset-2 col-xs-10">
 					<button class="btn btn-sm btn-default" ui-sref="userManagement.userTable">Cancel</button>
-					<button ng-click="editUserSubmit()" class="btn btn-sm btn-primary" tooltip-placement="top" uib-tooltip="User: {{editUser|json}}">Update User</button>
+					<button ng-click="editUserSubmit()" class="btn btn-sm btn-primary">Update User</button>
 				</div>
 			</div>
 
