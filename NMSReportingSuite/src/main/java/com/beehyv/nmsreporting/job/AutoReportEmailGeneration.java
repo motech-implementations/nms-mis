@@ -17,8 +17,8 @@ public class AutoReportEmailGeneration {
     @Autowired
     AdminService adminService;
 
-    @Autowired
-    EmailController emailController;
+//    @Autowired
+//    EmailController emailController;
     public boolean executeInternal() {
 
         Calendar aCalendar = Calendar.getInstance();

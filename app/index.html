@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="nmsReports" ng-controller="MainController">
 <head>
-	<title>User Management</title>
+	<title>{{getBreadCrumb($state.current.name).slice(-1).pop().name}}</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	
@@ -45,7 +45,7 @@
 	<link rel="stylesheet" href="styles/style.css">
 
 </head>
-<body ng-app="nmsReports" ng-controller="MainController">
+<body>
 	<div class="non-footer">
 		<div class='nav-bar' ng-hide='$state.current.name=="login"'>
 			<div class="nav-header">
