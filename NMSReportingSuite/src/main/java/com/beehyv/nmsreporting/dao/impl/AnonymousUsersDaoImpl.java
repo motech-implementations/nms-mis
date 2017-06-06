@@ -15,7 +15,7 @@ import java.util.List;
  * Created by beehyv on 23/5/17.
  */
 @Repository("anonymousUsersDao")
-public class AnonymousUsersDaoImpl extends AbstractDao<Integer,AnonymousUsers> implements AnonymousUsersDao{
+public class  AnonymousUsersDaoImpl extends AbstractDao<Integer,AnonymousUsers> implements AnonymousUsersDao{
 
     @Override
     public List<AnonymousUsers> getAnonymousUsers(Date fromDate,Date toDate) {
