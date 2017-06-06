@@ -222,6 +222,10 @@ div.reports-header .right p{
 	min-width: 130px;
 }
 
+.dropdown-menu > li > a{
+	min-width: 200px;
+}
+
 div.reports-header ul li a,
 div.reports-header label{
 	font-size: 12px;

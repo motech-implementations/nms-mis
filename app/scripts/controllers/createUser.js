@@ -50,16 +50,23 @@
 
 			$scope.newUser = {};
 			
-			$scope.clearForm = function(){
-				$scope.newUser = {};
-				$scope.createUserForm.$setPristine();
+			// $scope.clearForm = function(){
+			// 	$scope.newUser = {};
+			// 	$scope.createUserForm.$setPristine();
 
-				$scope.$parent.currentPage = "user-table";
-				delete $scope.$parent.currentPageTitle;
-			}
+			// 	$scope.$parent.currentPage = "user-table";
+			// 	delete $scope.$parent.currentPageTitle;
+			// }
 
 			$scope.createUserSubmit = function() {
-				if ($scope.createUserForm.$valid && !$scope.createUserForm.$pristine) {
+				if(!$scope.createUserForm.$pristine || $scope.createUserForm.$valid){
+					angular.forEach($scope.createUserForm.$error, function (field) {
+						angular.forEach(field, function(errorField){
+							errorField.$setDirty();
+						})
+					});
+				}
+				else if ($scope.createUserForm.$valid) {
 
 					delete $scope.newUser.$$hashKey;
 
@@ -70,6 +77,9 @@
 						headers : {'Content-Type': 'application/json'} 
 					}).then(function(result){
 						alert(result.data['0']);
+						if(result.data['0'] == 'User Created'){
+							$state.go('userManagement.userTable', {});
+						}
 					})
 
 				}

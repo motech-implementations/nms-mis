@@ -65,7 +65,7 @@
 					<li>
 						<a>My Profile</a>
 					</li>
-					<li ng-class="{active: activeTab('userManagement')}">
+					<li ng-class="{active: activeTab('userManagement')}" ng-if="currentUser.roleId.roleDescription != 'USER'">
 						<a ui-sref="userManagement.userTable">User Management</a>
 					</li>
 					<li ng-class="{active: activeTab('reports')}">

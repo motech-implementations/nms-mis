@@ -306,7 +306,7 @@ public class UserServiceImpl implements UserService{
 
         userDao.saveUser(user);
 
-        String authorityError = "user created";
+        String authorityError = "User Created";
         responseMap.put(rowNum, authorityError);
         return responseMap;
     }
@@ -511,7 +511,7 @@ public class UserServiceImpl implements UserService{
         entity.setDistrictId(user.getDistrictId());
         entity.setBlockId(user.getBlockId());
 
-        responseMap.put(rowNum, "user updated");
+        responseMap.put(rowNum, "User Updated");
         return responseMap;
     }
 
