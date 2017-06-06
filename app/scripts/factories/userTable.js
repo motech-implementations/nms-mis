@@ -17,6 +17,9 @@
 				},
 				getAllUsers: function() {   
 					return users;
+				},
+				clearAllUsers: function(){
+					users = [];
 				}
 			};
 		}]);

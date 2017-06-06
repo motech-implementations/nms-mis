@@ -3,6 +3,13 @@
 		.module('nmsReports')
 		.controller("ReportsController", ['$scope', '$state', '$http', 'UserFormFactory', function($scope, $state, $http, UserFormFactory){
 
+			UserFormFactory.isLoggedIn()
+			.then(function(result){
+				if(!result.data){
+					$state.go('login', {});
+				}
+			})
+			
 			UserFormFactory.getReportsMenu()
 			.then(function(result){
 				$scope.reports = result.data;
@@ -98,7 +105,11 @@
 					$scope.district = null;
 					$scope.block = null;
 				}
-				
+			}
+			$scope.clearState = function(){
+				$scope.state = null;
+				$scope.district = null;
+				$scope.block = null;
 			}
 			$scope.selectDistrict = function(district){
 				if(district != null){
@@ -109,17 +120,26 @@
 				}
 				
 			}
+			$scope.clearDistrict = function(){
+				$scope.district = null;
+				$scope.block = null;
+			}
 			$scope.selectBlock = function(block){
 				if(block != null){
 					$scope.block = block;
 				}
 				
 			}
+			$scope.clearBlock = function(){
+				$scope.block = null;
+			}
 			$scope.selectCircle = function(circle){
 				if(circle != null){
 					$scope.circle = circle;
-				}
-				
+				}	
+			}
+			$scope.clearCircle = function(){
+				$scope.circle = null;
 			}
 
 			$scope.waiting = false;
