@@ -63,6 +63,7 @@
 				]
 			}
 
+
 			$scope.getBreadCrumb = function(state){
 				return $scope.breadCrumbDict[state];
 			}

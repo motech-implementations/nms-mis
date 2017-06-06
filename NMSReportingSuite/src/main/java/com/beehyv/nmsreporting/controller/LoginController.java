@@ -53,7 +53,7 @@ public class LoginController {
         if( errors.hasErrors() ) {
             return returnLoginView(model, loginUser);
         } else {
-            return "redirect:"+ uiAddress +"userManagement";
+            return "redirect:"+ uiAddress +"reports";
         }
     }
 

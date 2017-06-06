@@ -1,8 +1,15 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("EditUserController", ['$scope', 'UserFormFactory', '$http', '$stateParams', function($scope, UserFormFactory, $http, $stateParams){
+		.controller("EditUserController", ['$scope', 'UserFormFactory', '$http', '$state', '$stateParams', function($scope, UserFormFactory, $http, $state, $stateParams){
 
+			UserFormFactory.isLoggedIn()
+			.then(function(result){
+				if(!result.data){
+					$state.go('login', {});
+				}
+			})
+			
 			UserFormFactory.downloadCurrentUser()
 			.then(function(result){
 				UserFormFactory.setCurrentUser(result.data);
@@ -22,6 +29,17 @@
 			
 
 			$scope.accessLevelList = ["NATIONAL", "STATE", "DISTRICT", "BLOCK"];
+
+			$scope.accessLevelOptions = function(accessLevel){
+				var dict = {
+					"NATIONAL": ["NATIONAL", "STATE", "DISTRICT", "BLOCK"],
+					"STATE": ["STATE", "DISTRICT", "BLOCK"],
+					"DISTRICT": ["DISTRICT", "BLOCK"],
+					"BLOCK": ["BLOCK"],
+				}
+				// return dict[accessLevel].indexOf(UserFormFactory.getCurrentUser.getAccessLevel) >= 0;
+				return true;
+			}
 
 			$scope.getAccessLevel = function(level){
 				var list = $scope.accessLevelList;
@@ -116,6 +134,9 @@
 					}).then(function(result){
 						alert(result.data['0']);
 						// $scope.open()
+						if(result.data['0'] == 'User Updated'){
+							$state.go('userManagement.userTable', {});
+						}
 					})
 				}
 				else{

@@ -13,18 +13,18 @@
 
 			
 
-			if(UserTableFactory.getAllUsers().length == 0){
+			// if(UserTableFactory.getAllUsers().length == 0){
 				$scope.waiting = true;
 				UserTableFactory.getUsers()
 				.then(function(result){
 					UserTableFactory.setUsers(result.data)
 					$scope.init();
 				});
-			}
-			else{
-				// return UserTableFactory.getAllUsers();
-				$scope.init();
-			}
+			// }
+			// else{
+			// 	// return UserTableFactory.getAllUsers();
+			// 	$scope.init();
+			// }
 
 			$scope.resetPage = function(){
 				$scope.currentPageNo = 1;

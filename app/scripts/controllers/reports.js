@@ -1,61 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("ReportsController", ['$scope', '$http', 'UserFormFactory', function($scope, $http, UserFormFactory){
-
-			// $scope.reports = [];
-			// $scope.maReports = {
-			// 	'name': 'Mobile Academy Reports',
-			// 	'icon': 'images/drop-down-1.png',
-			// 	'options': [
-			// 		{
-			// 			'name': 'Cumulative Completion Reports',
-			// 			'reportEnum': "CumulativeCourseCompletion",
-			// 			'icon': 'images/drop-down-3.png',
-			// 			'service': 'M',
-			// 		},
-			// 		{
-			// 			'name': 'Circle wise Anonymous Reports',
-			// 			'reportEnum': "AnonymousUsers",
-			// 			'icon': 'images/drop-down-3.png',
-			// 			'service': 'M',
-			// 		},
-			// 		{
-			// 			'name': 'Cumulative Inactive Users',
-			// 			'reportEnum': "CumulativeInactiveUsers",
-			// 			'icon': 'images/drop-down-3.png',
-			// 			'service': 'M',
-			// 		}
-			// 	]
-			// };
-			// $scope.kReports = {
-			// 	'name': 'Kilkari Reports',
-			// 	'icon': 'images/drop-down-1.png',
-				
-			// 	'options': [
-			// 		{
-			// 			'name': 'Deactivation for not answering',
-			// 			'reportEnum': "KilkariSixWeeksNoAnswer",
-			// 			'icon': 'images/drop-down-3.png',
-			// 			'service': 'K',
-			// 		},
-			// 		{
-			// 			'name': 'Listen to < 25% this month',
-			// 			'reportEnum': "KilkariLowUsage",
-			// 			'icon': 'images/drop-down-3.png',
-			// 			'service': 'K',
-			// 		},
-			// 		{
-			// 			'name': 'Self Deactivations',
-			// 			'reportEnum': "KilkariSelfDeactivated",
-			// 			'icon': 'images/drop-down-3.png',
-			// 			'service': 'K',
-			// 		},
-			// 	]
-			// }
-
-			// $scope.reports.push($scope.maReports);
-			// $scope.reports.push($scope.kReports);
+		.controller("ReportsController", ['$scope', '$state', '$http', 'UserFormFactory', function($scope, $state, $http, UserFormFactory){
 
 			UserFormFactory.getReportsMenu()
 			.then(function(result){

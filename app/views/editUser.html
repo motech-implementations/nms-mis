@@ -49,7 +49,7 @@
 			<div class="form-group" ng-class="{'has-error':editUserForm.accessLevel.$invalid && !editUserForm.accessLevel.$pristine}">
 				<label class="control-label col-xs-2">Access Level</label>
 				<div class="col-xs-10">
-					<select name="accessLevel" id="accessLevel" class="form-control input input-sm"  ng-model="editUser.accessLevel" ng-options="item for item in accessLevelList" required>
+					<select name="accessLevel" id="accessLevel" class="form-control input input-sm"  ng-model="editUser.accessLevel" ng-options="item for item in accessLevelList | filter:accessLevelOptions" required>
 					</select>
 
 					<div class="errorMessage" ng-messages="editUserForm.accessLevel.$error" role="alert" ng-show="!editUserForm.accessLevel.$pristine">
@@ -130,15 +130,15 @@
  -->
  			<div class="form-group">
 				<div class="col-xs-offset-2 col-xs-10">
-					<button class="btn btn-sm btn-primary">Reset Password</button>
+					<button type="button" class="btn btn-sm btn-primary">Reset Password</button>
 				</div>
 			</div>
 			<hr>
 
 			<div class="form-group">
 				<div class="col-xs-offset-2 col-xs-10">
-					<button class="btn btn-sm btn-default" ui-sref="userManagement.userTable">Cancel</button>
-					<button ng-click="editUserSubmit()" class="btn btn-sm btn-primary">Update User</button>
+					<button type="button" class="btn btn-sm btn-default" ui-sref="userManagement.userTable">Cancel</button>
+					<button type="button" ng-click="editUserSubmit()" class="btn btn-sm btn-primary">Update User</button>
 				</div>
 			</div>
 
