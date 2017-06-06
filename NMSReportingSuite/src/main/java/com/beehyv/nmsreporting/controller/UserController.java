@@ -84,6 +84,11 @@ public class UserController {
         return userService.getCurrentUser();
     }
 
+    @RequestMapping(value={"/isLoggedIn"})
+    public @ResponseBody Boolean isLoggedIn() {
+        return userService.getCurrentUser() != null;
+    }
+
     //To be changed
     @RequestMapping(value={"/tableList"})
     public @ResponseBody List<UserDto> getTableList() {

@@ -3,6 +3,13 @@
 		.module('nmsReports')
 		.controller("EditUserController", ['$scope', 'UserFormFactory', '$http', '$state', '$stateParams', function($scope, UserFormFactory, $http, $state, $stateParams){
 
+			UserFormFactory.isLoggedIn()
+			.then(function(result){
+				if(!result.data){
+					$state.go('login', {});
+				}
+			})
+			
 			UserFormFactory.downloadCurrentUser()
 			.then(function(result){
 				UserFormFactory.setCurrentUser(result.data);

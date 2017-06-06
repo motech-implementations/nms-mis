@@ -1,8 +1,15 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("CreateUserController", ['$scope', 'UserFormFactory', '$http', function($scope, UserFormFactory, $http){
+		.controller("CreateUserController", ['$scope', '$state' 'UserFormFactory', '$http', function($scope, $state, UserFormFactory, $http){
 			
+			UserFormFactory.isLoggedIn()
+			.then(function(result){
+				if(!result.data){
+					$state.go('login', {});
+				}
+			})
+
 			UserFormFactory.downloadCurrentUser()
 			.then(function(result){
 				UserFormFactory.setCurrentUser(result.data);

@@ -1,7 +1,14 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("BulkUserController", ['$scope', '$http', function($scope, $http){
+		.controller("BulkUserController", ['$scope', '$state', 'UserFormFactory', '$http', function($scope, $state, $UserFormFactory, $http){
+			
+			UserFormFactory.isLoggedIn()
+			.then(function(result){
+				if(!result.data){
+					$state.go('login', {});
+				}
+			})
 
 			var formdata = new FormData();
 			$scope.getTheFiles = function ($files) {

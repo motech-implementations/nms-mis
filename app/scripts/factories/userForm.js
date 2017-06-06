@@ -16,7 +16,9 @@
 					return currentUser;
 				},
 
-
+				isLoggedIn: function(){
+					return $http.get(backend_root + 'nms/user/isLoggedIn');
+				},
 
 				getRoles: function() {
 					return $http.get(backend_root + 'nms/user/roles');
