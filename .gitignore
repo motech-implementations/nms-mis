@@ -6,3 +6,4 @@ app/.idea/
 app/bower_components/
 app/scripts/global/urls.js
 NMSReportingSuite/src/main/java/com/beehyv/nmsreporting/utils/Global.java
+app.zip

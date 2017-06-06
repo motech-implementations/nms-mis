@@ -288,7 +288,7 @@ public class UserController {
                rootPath += place + "/";
            }
        }
-       String filename= reportRequest.getReportType()+"_"+place+"_"+reportService.getMonthYear(reportRequest.getFromDate())+".xlsx";
+       String filename= reportRequest.getReportType()+"_"+place+"_"+getMonthYear(reportRequest.getFromDate())+".xlsx";
 
        reportPath = reports+reportRequest.getReportType()+"/"+rootPath;
        reportName = filename;
@@ -312,7 +312,7 @@ public class UserController {
     @RequestMapping(value = "/downloadReport", method = RequestMethod.GET,produces = "application/vnd.ms-excel")
     @ResponseBody
     public String getBulkDataImportCSV(HttpServletResponse response) throws ParseException, java.text.ParseException {
-        adminService.getBulkDataImportCSV();
+//        adminService.getBulkDataImportCSV();
         response.setContentType("APPLICATION/OCTECT-STREAM");
         if (reportPath.length() == 0 || reportName.length() == 0) {
             reportName = "";
@@ -425,4 +425,20 @@ public class UserController {
 //
 //        return userService.createMaster();
 //    }
+private String getMonthYear(Date toDate) {
+    Calendar c =Calendar.getInstance();
+    c.setTime(toDate);
+    int month=c.get(Calendar.MONTH)+1;
+    String monthString = "";
+    int year=(c.get(Calendar.YEAR))%100;
+//        String monthString = c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH );
+    if(month<10){
+        monthString="0"+String.valueOf(month);
+    }
+    else monthString=String.valueOf(month);
+
+    String yearString=String.valueOf(year);
+
+    return monthString+"_"+yearString;
+}
 }

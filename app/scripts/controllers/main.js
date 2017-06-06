@@ -53,6 +53,13 @@
 						'sref': 'reports',
 						'active': false,
 					},
+				],
+				'login': [
+					{
+						'name': 'Login',
+						'sref': 'login',
+						'active': false,
+					},
 				]
 			}
 

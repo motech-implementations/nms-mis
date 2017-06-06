@@ -524,10 +524,10 @@ public class AdminServiceImpl implements AdminService {
         aCalendar.add(Calendar.MONTH, 1);
 
         Date toDate = aCalendar.getTime();
-        Integer stateId=reportRequest.getStateId();
-        Integer districtId=reportRequest.getDistrictId();
-        Integer blockId=reportRequest.getBlockId();
-        Integer circleId=reportRequest.getCircleId();
+        int stateId=reportRequest.getStateId();
+        int districtId=reportRequest.getDistrictId();
+        int blockId=reportRequest.getBlockId();
+        int circleId=reportRequest.getCircleId();
 
         if(reportRequest.getReportType().equals(ReportType.maCourse.getReportType())){
 

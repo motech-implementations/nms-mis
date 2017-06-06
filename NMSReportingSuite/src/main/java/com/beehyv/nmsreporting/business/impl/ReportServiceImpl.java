@@ -111,13 +111,13 @@ public class ReportServiceImpl implements ReportService{
         Calendar c =Calendar.getInstance();
         c.setTime(toDate);
         int month=c.get(Calendar.MONTH)+1;
-        String monthString = "";
+//        String monthString = "";
         int year=(c.get(Calendar.YEAR))%100;
-//        String monthString = c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH );
-        if(month<10){
-            monthString="0"+String.valueOf(month);
-        }
-        else monthString=String.valueOf(month);
+        String monthString = c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH );
+//        if(month<10){
+//            monthString="0"+String.valueOf(month);
+//        }
+//        else monthString=String.valueOf(month);
 
         String yearString=String.valueOf(year);
 

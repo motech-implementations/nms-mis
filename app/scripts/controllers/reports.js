@@ -85,14 +85,15 @@
 				$scope.district = null;
 				$scope.block = null;
 
+				$scope.dt = null;
 
 				if($scope.reportEnum == 'CumulativeInactiveUsers'){
 					$scope.dateOptions = {
 						minMode: 'month',
 						dateDisabled: disabled,
 						formatYear: 'yy',
-						maxDate: new Date(),
-						minDate: new Date(2017, 06, 01),
+						maxDate: new Date().setMonth(new Date().getMonth()-1),
+						minDate: new Date(2017, 04, 01),
 						startingDay: 1
 					};
 				}
@@ -101,7 +102,7 @@
 						minMode: 'month',
 						dateDisabled: disabled,
 						formatYear: 'yy',
-						maxDate: new Date(),
+						maxDate: new Date().setMonth(new Date().getMonth()-1),
 						minDate: new Date(2010, 01, 01),
 						startingDay: 1
 					};
@@ -174,6 +175,8 @@
 				}
 				
 			}
+
+			$scope.waiting = false;
 			
 			$scope.getCircles();
 
@@ -218,6 +221,8 @@
 			    	reportRequest.circleId = 0;
 			    }
 
+			    $scope.waiting = true;
+
 				$http({
 					method  : 'POST',
 					url     : $scope.getReportUrl,
@@ -225,9 +230,11 @@
 					headers : {'Content-Type': 'application/json'} 
 				})
 				.then(function(result){
+					$scope.waiting = false;
 					$scope.status = result.data.status;
 					if($scope.status == 'success'){
 						$scope.fileName = result.data.file;
+						angular.element('#downloadReportLink').trigger('click');
 					}
 					if($scope.status == 'fail'){
 
@@ -244,14 +251,14 @@
 			}
 
 			$scope.reset =function(){
+				$scope.reportName = "Select";
+				$scope.reportEnum = null;
+				$scope.reportCategory = "Select";
 				$scope.state = null;
 				$scope.district = null;
 				$scope.block = null;
 				$scope.circle = null;
-				$scope.reportName = 'Select';
-				$scope.reportCategory = 'Select';
-				$scope.reportEnum = null;
-				$scope.dt = $scope.today();
+				$scope.dt = null;
 			}
 
 			// datepicker stuff
@@ -259,7 +266,6 @@
 			$scope.today = function() {
 				$scope.dt = new Date();
 			};
-			$scope.today();
 
 			$scope.clear = function() {
 				$scope.dt = null;
@@ -275,7 +281,7 @@
 				minMode: 'month',
 				dateDisabled: disabled,
 				formatYear: 'yy',
-				maxDate: new Date(),
+				maxDate: new Date().setMonth(new Date().getMonth()-1),
 				minDate: new Date(2010, 01, 01),
 				startingDay: 1
 			};

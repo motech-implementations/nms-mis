@@ -113,16 +113,21 @@
 
 	</div>
 
-	<div class="block reports-body" ng-if="status == 'success'">
+	<div class="block reports-body loading" ng-if="waiting">
+		<img src="images/pageloader.gif">
+		<p>Report is being generated...</p>
+	</div>
+
+	<div class="block reports-body" ng-if="!waiting && status == 'success'">
 		<p>The following report has been generated: </p>
 		<p>{{fileName}}</p>
 		<span ng-click="clearFile()">
-			<a href="{{downloadReportUrl}}">Click here to download. <img src="images/export3.png"></a>
+			<a index="downloadReportLink" href="{{downloadReportUrl}}">Click here to download. <img src="images/export3.png"></a>
 		</span>
 
 	</div>
 
-	<div class="block reports-body" ng-if="status == 'fail'">
+	<div class="block reports-body" ng-if="!waiting && status == 'fail'">
 		<p>You do not have access to this report.</p>
 		<p>{{fileName}}</p>
 

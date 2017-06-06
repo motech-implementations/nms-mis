@@ -8,13 +8,23 @@
 			$scope.init = function(){
 				$scope.currentPageNo = 1;
 				$scope.numPerPage = $scope.numPerPageList[0];
+				$scope.waiting = false;
 			}
 
-			UserTableFactory.getUsers()
-			.then(function(result){
-				UserTableFactory.setUsers(result.data)
+			
+
+			if(UserTableFactory.getAllUsers().length == 0){
+				$scope.waiting = true;
+				UserTableFactory.getUsers()
+				.then(function(result){
+					UserTableFactory.setUsers(result.data)
+					$scope.init();
+				});
+			}
+			else{
+				// return UserTableFactory.getAllUsers();
 				$scope.init();
-			});
+			}
 
 			$scope.resetPage = function(){
 				$scope.currentPageNo = 1;
@@ -32,7 +42,7 @@
 
 			$scope.getUniqueAccessTypes = function(){
 				var aT = [];
-				var users = UserTableFactory.getAllUsers();
+				var users = $scope.getAllUsers();
 				for(var i=0;i<users.length;i++){
 					if(aT.indexOf(users[i].accessType)==-1) {
 						aT.push(users[i].accessType);
