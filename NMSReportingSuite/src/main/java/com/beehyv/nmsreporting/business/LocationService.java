@@ -2,6 +2,7 @@ package com.beehyv.nmsreporting.business;
 
 import com.beehyv.nmsreporting.model.*;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,6 +27,8 @@ public interface LocationService {
     State findStateByName(String stateName);
 
     List<State> getStatesByServiceType(String serviceType);
+
+    Date getServiceStartdateForState(Integer stateId,String serviceType);
 
     List<District> getChildDistricts(Integer stateId);
 

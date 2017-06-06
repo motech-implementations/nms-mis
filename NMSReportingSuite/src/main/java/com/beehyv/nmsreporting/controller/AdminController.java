@@ -1,9 +1,13 @@
 package com.beehyv.nmsreporting.controller;
 
 import com.beehyv.nmsreporting.business.AdminService;
+import com.beehyv.nmsreporting.business.LocationService;
 import com.beehyv.nmsreporting.business.UserService;
+import com.beehyv.nmsreporting.dao.StateServiceDao;
 import com.beehyv.nmsreporting.dto.PasswordDto;
+import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.ReportType;
+import com.beehyv.nmsreporting.model.State;
 import com.beehyv.nmsreporting.model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static com.beehyv.nmsreporting.enums.ReportType.maCourse;
 
@@ -34,6 +35,12 @@ public class AdminController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private LocationService locationService;
+
+    @Autowired
+    private StateServiceDao stateServiceDao;
 
     private final String documents = System.getProperty("user.home") +File.separator+ "Documents/";
     private final String reports = documents+"Reports/";
@@ -195,4 +202,23 @@ public class AdminController {
         }
         return "Reports Generated";
     }
+
+    @RequestMapping(value = {"/state/{serviceType}"}, method = RequestMethod.GET)
+    public @ResponseBody
+    List<State> getStatesByServiceType(@PathVariable("serviceType") String serviceType) {
+
+        List<State> states= locationService.getStatesByServiceType(serviceType);
+
+        return states;
+    }
+
+    @RequestMapping(value = {"/state/{serviceType}/{stateId}"}, method = RequestMethod.GET)
+    public @ResponseBody
+    Date getStateServiceStartDate(@PathVariable("serviceType") String serviceType,@PathVariable("stateId") Integer stateId) {
+
+
+        return locationService.getServiceStartdateForState(stateId, serviceType);
+    }
+
+
 }
