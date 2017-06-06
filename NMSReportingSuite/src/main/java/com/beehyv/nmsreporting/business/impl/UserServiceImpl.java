@@ -539,8 +539,7 @@ public class UserServiceImpl implements UserService{
             responseMap.put(rowNum, authorityError);
             return responseMap;
         }
-
-        entity.setPassword(passwordEncoder.encode(passwordDto.getNewPassword()));
+        entity.setPassword(passwordEncoder.encode(entity.getPhoneNumber()));
 
         responseMap.put(rowNum, "password changed");
         return responseMap;

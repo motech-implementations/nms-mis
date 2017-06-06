@@ -775,6 +775,8 @@ public class AdminServiceImpl implements AdminService {
         }
     }
 
+
+
     public void getCumulativeCourseCompletion(List<MACourseFirstCompletion> successfulCandidates, String rootPath, String place, Date toDate) {
         //Create blank workbook
 
@@ -1499,6 +1501,10 @@ public class AdminServiceImpl implements AdminService {
         }
     }
 
+    @Override
+    public Map<Integer, String> changePassword(Integer userId) {
+        return null;
+    }
     private String getMonthYear(Date toDate){
         c.setTime(toDate);
         c.add(Calendar.MONTH,-1);

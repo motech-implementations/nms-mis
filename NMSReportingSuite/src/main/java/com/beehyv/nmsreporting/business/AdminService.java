@@ -11,6 +11,7 @@ import org.apache.poi.ss.formula.functions.T;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by beehyv on 19/4/17.
@@ -39,4 +40,5 @@ public interface AdminService {
 
   void createSpecificReport(ReportRequest reportRequest);
 
+  Map<Integer,String> changePassword(Integer userId);
 }

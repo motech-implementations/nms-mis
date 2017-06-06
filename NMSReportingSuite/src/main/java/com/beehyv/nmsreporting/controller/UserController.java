@@ -211,6 +211,8 @@ public class UserController {
         return userService.updatePassword(passwordDto);
     }
 
+
+
     @RequestMapping(value = {"/deleteUser"}, method = RequestMethod.POST)
     public void deleteExistingUser(@RequestBody User user) {
         userService.deleteExistingUser(user);

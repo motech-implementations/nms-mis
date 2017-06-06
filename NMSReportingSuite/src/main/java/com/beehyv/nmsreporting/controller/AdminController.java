@@ -2,6 +2,7 @@ package com.beehyv.nmsreporting.controller;
 
 import com.beehyv.nmsreporting.business.AdminService;
 import com.beehyv.nmsreporting.business.UserService;
+import com.beehyv.nmsreporting.dto.PasswordDto;
 import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.User;
 
@@ -116,6 +117,21 @@ public class AdminController {
         return "Bulkimport";
     }*/
 
+    @RequestMapping(value = {"/changePassword"}, method = RequestMethod.POST)
+    @ResponseBody public Map resetPassword(@RequestBody PasswordDto passwordDto){
+        //        String trackModification = mapper.convertValue(node.get("modification"), String.class);
+//
+//        ModificationTracker modification = new ModificationTracker();
+//        modification.setModificationDate(new Date(System.currentTimeMillis()));
+//        modification.setModificationType(ModificationType.UPDATE.getModificationType());
+//        modification.setModifiedByUserId(userService.findUserByUsername(getPrincipal()));
+//        modification.setModifiedUserId(user);
+//        modification.setModificationDescription(trackModification);
+//        modificationTrackerService.saveModification(modification);
+
+//        return "redirect:http://localhost:8080/app/#!/";
+        return userService.updatePassword(passwordDto);
+    }
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     @ResponseBody
     public String createFolders() throws ParseException, java.text.ParseException{
