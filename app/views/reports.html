@@ -41,9 +41,9 @@
 					<div class="form-group col-xs-4">
 						<label>Select Date Range</label><br>
 						<p class="input-group" ng-disabled="reportName=='Select'">
-							<input type="text" class="form-control input input-sm" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" datepicker-mode="'month'" ng-required="true" close-text="Close" alt-input-formats="altInputFormats"  ng-disabled='reportCategory=="Select"' />
+							<input type="text" class="form-control input input-sm" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" datepicker-mode="'month'" ng-required="true" close-text="Close" alt-input-formats="altInputFormats"  ng-disabled='reportName=="Select"' />
 							<span class="input-group-btn">
-							<button type="button" class="btn btn-sm btn-default" ng-click="open1()"  ng-disabled='reportCategory=="Select"' ><i class="glyphicon glyphicon-calendar" ng-disabled="reportCategory=='Select'" ></i></button>
+							<button type="button" class="btn btn-sm btn-default" ng-click="open1()"  ng-disabled='reportName=="Select"' ><i class="glyphicon glyphicon-calendar" ng-disabled="reportName=='Select'" ></i></button>
 							</span>
 						</p>
 					</div>

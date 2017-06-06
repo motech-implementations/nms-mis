@@ -56,7 +56,7 @@
 						dateDisabled: disabled,
 						formatYear: 'yy',
 						maxDate: new Date().setMonth(new Date().getMonth()-1),
-						minDate: new Date(2010, 01, 01),
+						minDate: new Date(2015, 09, 01),
 						startingDay: 1
 					};
 				}
@@ -248,7 +248,7 @@
 				dateDisabled: disabled,
 				formatYear: 'yy',
 				maxDate: new Date().setMonth(new Date().getMonth()-1),
-				minDate: new Date(2010, 01, 01),
+				minDate: new Date(2015, 09, 01),
 				startingDay: 1
 			};
 

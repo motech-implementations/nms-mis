@@ -5,7 +5,7 @@
 		
 			UserFormFactory.isAdminLoggedIn()
 			.then(function(result){
-				if(result.data){
+				if(!result.data){
 					$state.go('login', {});
 				}
 			})
