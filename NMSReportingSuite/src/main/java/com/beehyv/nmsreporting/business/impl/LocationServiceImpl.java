@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,6 +18,9 @@ import java.util.List;
 public class LocationServiceImpl implements LocationService {
     @Autowired
     private StateDao stateDao;
+
+    @Autowired
+    private StateServiceDao stateServiceDao;
 
     @Autowired
     private DistrictDao districtDao;
@@ -66,7 +70,13 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public List<State> getStatesByServiceType(String serviceType) {
-        return stateDao.getStatesByServiceType(serviceType);
+        return stateServiceDao.getStatesByServiceType(serviceType);
+    }
+
+    @Override
+    public Date getServiceStartdateForState(Integer stateId,String serviceType) {
+        Date startDate=stateServiceDao.getServiceStartDateForState(stateId,serviceType);
+        return startDate;
     }
 
     @Override

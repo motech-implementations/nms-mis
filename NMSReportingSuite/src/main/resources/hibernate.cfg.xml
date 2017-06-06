@@ -27,7 +27,7 @@
         <mapping class="com.beehyv.nmsreporting.model.KilkariSelfDeactivated"/>
         <mapping class="com.beehyv.nmsreporting.model.KilkariSixWeeksNoAnswer"/>
         <mapping class="com.beehyv.nmsreporting.model.StateCircle"/>
-
+        <mapping class="com.beehyv.nmsreporting.model.StateService"/>
 
 
     </session-factory>
