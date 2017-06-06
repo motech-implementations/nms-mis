@@ -411,7 +411,7 @@ public class UserController {
                 l.add(maMenu);
             }
             if(state.getServiceType().equals("K") || state.getServiceType().equals("ALL")){
-                l.add(maMenu);
+                l.add(kMenu);
             }
         }
         return l;

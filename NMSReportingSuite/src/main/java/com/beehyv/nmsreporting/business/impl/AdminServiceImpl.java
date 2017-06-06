@@ -119,7 +119,7 @@ public class AdminServiceImpl implements AdminService {
                         Role role;
                         State state;
                         String userName = Line[6];
-                        if (userName == "") {
+                        if (userName.equals("")) {
                             Integer rowNum = lineNumber;
                             String userNameError = "Please specify the username for user";
                             errorCreatingUsers.put(rowNum, userNameError);
@@ -139,7 +139,7 @@ public class AdminServiceImpl implements AdminService {
                         String loggedUserAccess = loggedInUser.getAccessLevel();
                         AccessLevel loggedUserAccessLevel = AccessLevel.getLevel(loggedUserAccess);
                         String userPhone = Line[4];
-                        if (userPhone == "") {
+                        if (userPhone.equals("")) {
                             Integer rowNum = lineNumber;
                             String userNameError = "Please specify the phone number for user";
                             errorCreatingUsers.put(rowNum, userNameError);
@@ -157,7 +157,7 @@ public class AdminServiceImpl implements AdminService {
                         user.setFullName(Line[0]);
                         user.setPhoneNumber(Line[4]);
                         String userEmail = Line[5];
-                        if (userEmail == "") {
+                        if (userEmail.equals("")) {
                             Integer rowNum = lineNumber;
                             String userNameError = "Please specify the Email for user";
                             errorCreatingUsers.put(rowNum, userNameError);
@@ -237,7 +237,7 @@ public class AdminServiceImpl implements AdminService {
                                     for (District district : userDistrictList) {
                                         State parent = stateDao.findByStateId(district.getStateOfDistrict());
                                         if ((userStateList != null) && (userStateList.size() != 0)) {
-                                            if (parent.getStateId() == userStateList.get(0).getStateId()) {
+                                            if (parent.getStateId().equals(userStateList.get(0).getStateId())) {
                                                 userDistrict = district;
                                                 userState = parent;
                                                 break;
@@ -251,7 +251,7 @@ public class AdminServiceImpl implements AdminService {
                                     errorCreatingUsers.put(rowNum, authorityError);
                                     continue;
                                 } else {
-                                    if (loggedInUser.getStateId() != userState.getStateId()) {
+                                    if (!loggedInUser.getStateId().equals(userState.getStateId())) {
                                         Integer rowNum = lineNumber;
                                         String authorityError = "You don't have authority to create this user.";
                                         errorCreatingUsers.put(rowNum, authorityError);
@@ -291,7 +291,7 @@ public class AdminServiceImpl implements AdminService {
                                         continue;
                                     } else {
                                         if (loggedUserAccessLevel == AccessLevel.STATE) {
-                                            if (loggedInUser.getStateId() != userStateList.get(0).getStateId()) {
+                                            if (!loggedInUser.getStateId().equals(userStateList.get(0).getStateId())) {
                                                 Integer rowNum = lineNumber;
                                                 String authorityError = "You don't have authority to create this user.";
                                                 errorCreatingUsers.put(rowNum, authorityError);
@@ -311,7 +311,7 @@ public class AdminServiceImpl implements AdminService {
                                         for (District district : userDistrictList) {
                                             State parent = stateDao.findByStateId(district.getStateOfDistrict());
                                             if ((userStateList != null) && (userStateList.size() != 0)) {
-                                                if (parent.getStateId() == userStateList.get(0).getStateId()) {
+                                                if (parent.getStateId().equals(userStateList.get(0).getStateId())) {
                                                     userDistrict = district;
                                                     userState = parent;
                                                     break;
@@ -326,9 +326,9 @@ public class AdminServiceImpl implements AdminService {
                                         continue;
                                     } else {
                                         if (((loggedUserAccessLevel == AccessLevel.STATE) &&
-                                                (loggedInUser.getStateId() != userState.getStateId())) ||
+                                                (!loggedInUser.getStateId().equals(userState.getStateId()))) ||
                                                 ((loggedUserAccessLevel == AccessLevel.DISTRICT) &&
-                                                        (loggedInUser.getDistrictId() != userDistrict.getDistrictId()))) {
+                                                        (!loggedInUser.getDistrictId().equals(userDistrict.getDistrictId())))) {
                                             Integer rowNum = lineNumber;
                                             String authorityError = "You don't have authority to create this user.";
                                             errorCreatingUsers.put(rowNum, authorityError);
@@ -361,7 +361,7 @@ public class AdminServiceImpl implements AdminService {
                                             District parent = districtDao.findByDistrictId(block.getDistrictOfBlock());
                                             if (userDistrictList.size() > 0) {
                                                 for (District district : userDistrictList) {
-                                                    if (parent.getDistrictId() == district.getDistrictId()) {
+                                                    if (parent.getDistrictId().equals(district.getDistrictId())) {
                                                         commonDistrict.add(block);
                                                     }
                                                 }
@@ -370,7 +370,7 @@ public class AdminServiceImpl implements AdminService {
                                         for (Block block : commonDistrict) {
                                             State parent = stateDao.findByStateId(block.getStateOfBlock());
                                             if (userState != null) {
-                                                if (parent.getStateId() == userStateList.get(0).getStateId()) {
+                                                if (parent.getStateId().equals(userStateList.get(0).getStateId())) {
                                                     userBlock = block;
                                                     userDistrict = districtDao.findByDistrictId(userBlock.getDistrictOfBlock());
                                                     userState = stateDao.findByStateId(userBlock.getStateOfBlock());
@@ -385,9 +385,9 @@ public class AdminServiceImpl implements AdminService {
                                             continue;
                                         } else {
                                             if (((loggedUserAccessLevel == AccessLevel.STATE) &&
-                                                    (loggedInUser.getStateId() != userState.getStateId())) ||
+                                                    (!loggedInUser.getStateId().equals(userState.getStateId()))) ||
                                                     ((loggedUserAccessLevel == AccessLevel.DISTRICT) &&
-                                                            (loggedInUser.getDistrictId() != userDistrict.getDistrictId()))) {
+                                                            (!loggedInUser.getDistrictId().equals(userDistrict.getDistrictId())))) {
                                                 Integer rowNum = lineNumber;
                                                 String authorityError = "You don't have authority to create this user.";
                                                 errorCreatingUsers.put(rowNum, authorityError);
@@ -432,7 +432,7 @@ public class AdminServiceImpl implements AdminService {
             fileWriter = new FileWriter(documents+"BulkImportData.csv");
 
             //Write the CSV file header
-            fileWriter.append(FILE_HEADER.toString());
+            fileWriter.append(FILE_HEADER);
             //Add a new line separator after the header
             fileWriter.append(NEW_LINE_SEPARATOR);
             //Write a new student object list to the CSV file
@@ -775,9 +775,7 @@ public class AdminServiceImpl implements AdminService {
         }
     }
 
-
-
-    public void getCumulativeCourseCompletion(List<MACourseFirstCompletion> successfulCandidates, String rootPath, String place, Date toDate) {
+    private void getCumulativeCourseCompletion(List<MACourseFirstCompletion> successfulCandidates, String rootPath, String place, Date toDate) {
         //Create blank workbook
 
 
@@ -857,7 +855,7 @@ public class AdminServiceImpl implements AdminService {
         }
     }
 
-    public void getCircleWiseAnonymousUsers(List<AnonymousUsers> anonymousUsersList, String rootPath, String place, Date toDate) {
+    private void getCircleWiseAnonymousUsers(List<AnonymousUsers> anonymousUsersList, String rootPath, String place, Date toDate) {
         XSSFWorkbook workbook = new XSSFWorkbook();
         //Create a blank sheet
         XSSFSheet spreadsheet = workbook.createSheet(
@@ -911,7 +909,7 @@ public class AdminServiceImpl implements AdminService {
         }
     }
 
-    public void getCumulativeInactiveUsers(List<FrontLineWorkers> inactiveCandidates, String rootPath, String place, Date toDate) {
+    private void getCumulativeInactiveUsers(List<FrontLineWorkers> inactiveCandidates, String rootPath, String place, Date toDate) {
 
         XSSFWorkbook workbook = new XSSFWorkbook();
         //Create a blank sheet
@@ -984,7 +982,7 @@ public class AdminServiceImpl implements AdminService {
         }
     }
 
-    public void getKilkariSixWeekNoAnswer(List<KilkariSixWeeksNoAnswer> kilkariSixWeeksNoAnswersList, String rootPath, String place, Date toDate){
+    private void getKilkariSixWeekNoAnswer(List<KilkariSixWeeksNoAnswer> kilkariSixWeeksNoAnswersList, String rootPath, String place, Date toDate){
         XSSFWorkbook workbook = new XSSFWorkbook();
         //Create a blank sheet
         XSSFSheet spreadsheet = workbook.createSheet(
@@ -1054,7 +1052,7 @@ public class AdminServiceImpl implements AdminService {
         }
     }
 
-    public void getKilkariSelfDeactivation(List<KilkariSelfDeactivated> kilkariSelfDeactivatedList, String rootPath, String place, Date toDate){
+    private void getKilkariSelfDeactivation(List<KilkariSelfDeactivated> kilkariSelfDeactivatedList, String rootPath, String place, Date toDate){
         XSSFWorkbook workbook = new XSSFWorkbook();
         //Create a blank sheet
         XSSFSheet spreadsheet = workbook.createSheet(
@@ -1131,7 +1129,7 @@ public class AdminServiceImpl implements AdminService {
         }
     }
 
-    public void getKilkariLowUsage(List<KilkariLowUsage> kilkariLowUsageList, String rootPath, String place, Date toDate){
+    private void getKilkariLowUsage(List<KilkariLowUsage> kilkariLowUsageList, String rootPath, String place, Date toDate){
         XSSFWorkbook workbook = new XSSFWorkbook();
         //Create a blank sheet
         XSSFSheet spreadsheet = workbook.createSheet(
