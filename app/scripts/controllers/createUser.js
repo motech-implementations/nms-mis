@@ -1,7 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("CreateUserController", ['$scope', '$state' 'UserFormFactory', '$http', function($scope, $state, UserFormFactory, $http){
+		.controller("CreateUserController", ['$scope', '$state', 'UserFormFactory', '$http', function($scope, $state, UserFormFactory, $http){
 			
 			UserFormFactory.isLoggedIn()
 			.then(function(result){
@@ -22,6 +22,15 @@
 			});
 
 			$scope.accessLevelList = ["NATIONAL", "STATE", "DISTRICT", "BLOCK"]
+
+			$scope.showAccess = function(level){
+				var levelIndex = $scope.accessLevelList.indexOf(UserFormFactory.getCurrentUser().accessLevel);
+				if($scope.accessLevelList.indexOf(level) >= levelIndex){
+					return true;
+				}else{
+					return false;
+				}
+			}
 
 			$scope.getAccessLevel = function(level){
 			
@@ -66,17 +75,8 @@
 			// }
 
 			$scope.createUserSubmit = function() {
-				if(!$scope.createUserForm.$pristine || $scope.createUserForm.$valid){
-					angular.forEach($scope.createUserForm.$error, function (field) {
-						angular.forEach(field, function(errorField){
-							errorField.$setDirty();
-						})
-					});
-				}
-				else if ($scope.createUserForm.$valid) {
-
+				if ($scope.createUserForm.$valid) {
 					delete $scope.newUser.$$hashKey;
-
 					$http({
 						method  : 'post',
 						url     : backend_root + 'nms/user/createUser',
@@ -88,7 +88,6 @@
 							$state.go('userManagement.userTable', {});
 						}
 					})
-
 				}
 				else{
 					angular.forEach($scope.createUserForm.$error, function (field) {

@@ -1,7 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("BulkUserController", ['$scope', '$state', 'UserFormFactory', '$http', function($scope, $state, $UserFormFactory, $http){
+		.controller("BulkUserController", ['$scope', '$state', 'UserFormFactory', '$http', function($scope, $state, UserFormFactory, $http){
 			
 			UserFormFactory.isLoggedIn()
 			.then(function(result){

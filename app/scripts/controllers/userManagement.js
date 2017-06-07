@@ -3,7 +3,7 @@
 		.module('nmsReports')
 		.controller("UserManagementController", ['$scope', '$state', 'UserFormFactory', function($scope, $state, UserFormFactory){
 		
-			UserFormFactory.isLoggedIn()
+			UserFormFactory.isAdminLoggedIn()
 			.then(function(result){
 				if(!result.data){
 					$state.go('login', {});

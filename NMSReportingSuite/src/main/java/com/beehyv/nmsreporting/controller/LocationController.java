@@ -56,7 +56,8 @@ public class LocationController {
         }
         else{
             states = new ArrayList<>();
-            if(locationService.findStateById(user.getStateId()).getServiceType().equals(serviceType)) {
+            if(locationService.findStateById(user.getStateId()).getServiceType().equals(serviceType)||
+                    locationService.findStateById(user.getStateId()).getServiceType().equals("ALL")) {
                 states.add(locationService.findStateById(user.getStateId()));
             }
         }

@@ -68,6 +68,11 @@ var nmsReportsApp = angular
 			.state('reports', {
 				url: '/reports',
 				templateUrl: 'views/reports.html',
+			})
+			
+			.state('profile', {
+				url: '/profile',
+				templateUrl: 'views/profile.html',
 			});
 
 		$urlRouterProvider

@@ -20,6 +20,10 @@
 					return $http.get(backend_root + 'nms/user/isLoggedIn');
 				},
 
+				isAdminLoggedIn: function(){
+					return $http.get(backend_root + 'nms/user/isAdminLoggedIn');
+				},
+
 				getRoles: function() {
 					return $http.get(backend_root + 'nms/user/roles');
 				},

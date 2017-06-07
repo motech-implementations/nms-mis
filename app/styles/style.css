@@ -91,8 +91,7 @@ div.nav-bar .nav-menu li {
 	float:right;
 	color: #000000;
 }
-div.nav-bar .nav-menu li.active,
-div.nav-bar .nav-menu li:hover{
+div.nav-bar .nav-menu li.active{
 	background-color: #2164b2;
 	color: #ffffff;
 }
@@ -105,8 +104,7 @@ div.nav-bar .nav-menu li a {
 	text-decoration: none;
 	font-size: 12px;
 }
-div.nav-bar .nav-menu li.active a,
-div.nav-bar .nav-menu li:hover a{
+div.nav-bar .nav-menu li.active a{
 	color: #ffffff;
 }
 
@@ -175,7 +173,9 @@ div.userTable table th a{
 div.userTable table th ul a{
 	color: #000000;
 }
-
+div.userTable table th.sortable-columns{
+	cursor: pointer;
+}
 div.userTable table th a{
 	color: #ffffff;
 }
@@ -184,6 +184,10 @@ div.userTable table th > span > a{
 	display: inline-block;
 	width: 100%;
 	height: 100%;
+}
+div.userTable table th > span > a span.caret{
+	float: right;
+	margin-top: 7px;
 }
 
 div.userTable table td{
@@ -220,6 +224,14 @@ div.reports-header .left > * > .input-group>p{
 div.reports-header .right button,
 div.reports-header .right p{
 	min-width: 130px;
+}
+
+div.reports-header .right button,div.reports-header .left button{	
+	text-align: left;
+}
+div.reports-header .right button span.caret,div.reports-header .left button span.caret{
+	float: right;
+	margin-top: 7px;
 }
 
 .dropdown-menu > li > a{
@@ -311,28 +323,6 @@ div.footer{
 
 div.loading{
 	text-align: center;
-}
-.tooltip {
-    position: relative;
-    display: inline-block;
-}
-.tooltip .tooltiptext {
-    visibility: hidden;
-    width: 120px;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-    
-    /* Position the tooltip */
-    position: absolute;
-    z-index: 1;
-    bottom: 100%;
-    left: 50%;
-    margin-left: -60px;
-}
-
-.tooltip:hover .tooltiptext {
-    visibility: visible;
 }
 
 html,

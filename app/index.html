@@ -2,6 +2,10 @@
 <html ng-app="nmsReports" ng-controller="MainController">
 <head>
 	<title>{{getBreadCrumb($state.current.name).slice(-1).pop().name}}</title>
+
+	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
+
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	
@@ -27,6 +31,7 @@
 	<script type="text/javascript" src="scripts/controllers/bulkUser.js"></script>
 	<script type="text/javascript" src="scripts/controllers/createUser.js"></script>
 	<script type="text/javascript" src="scripts/controllers/reports.js"></script>
+	<script type="text/javascript" src="scripts/controllers/profile.js"></script>
 	<script type="text/javascript" src="scripts/controllers/login.js"></script>
 
 	<!-- Factory -->
@@ -55,17 +60,17 @@
 			<div class="nav">
 				<ul class="breadcrumb">
 					<li ng-repeat="item in getBreadCrumb($state.current.name)">
-						<a u ui-sref='{{item.sref}}' ng-class="{'active': {{item.active}} }" >{{item.name}}</a>
+						<a ui-sref='{{item.sref}}' ng-class="{'active': {{item.active}} }" >{{item.name}}</a>
 					</li>
 				</ul>
 				<ul class="nav-menu">
 					<li>
 						<a href={{logoutUrl}}>Logout</a>
 					</li>
-					<li>
-						<a>My Profile</a>
+					<li ng-class="{active: activeTab('profile')}">
+						<a ui-sref="profile">My Profile</a>
 					</li>
-					<li ng-class="{active: activeTab('userManagement')}" ng-if="currentUser.roleId.roleDescription != 'USER'">
+					<li ng-class="{active: activeTab('userManagement')}" ng-if="currentUser.roleId.roleDescription != null && currentUser.roleId.roleDescription != 'USER'">
 						<a ui-sref="userManagement.userTable">User Management</a>
 					</li>
 					<li ng-class="{active: activeTab('reports')}">

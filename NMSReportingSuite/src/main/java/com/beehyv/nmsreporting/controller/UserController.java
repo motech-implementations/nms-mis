@@ -10,9 +10,8 @@ import com.beehyv.nmsreporting.dto.UserDto;
 import com.beehyv.nmsreporting.entity.Report;
 import com.beehyv.nmsreporting.entity.ReportRequest;
 import com.beehyv.nmsreporting.enums.AccessLevel;
-import com.beehyv.nmsreporting.enums.ModificationType;
+import com.beehyv.nmsreporting.enums.AccessType;
 import com.beehyv.nmsreporting.enums.ReportType;
-import com.beehyv.nmsreporting.model.ModificationTracker;
 import com.beehyv.nmsreporting.model.Role;
 import com.beehyv.nmsreporting.model.State;
 import com.beehyv.nmsreporting.model.User;
@@ -87,9 +86,53 @@ public class UserController {
         return userService.getCurrentUser();
     }
 
+    @RequestMapping(value={"/profile"})
+    public @ResponseBody UserDto profile() {
+        User currentUser = userService.getCurrentUser();
+        if(currentUser != null){
+            UserDto user1 = new UserDto();
+            user1.setId(currentUser.getUserId());
+            user1.setName(currentUser.getFullName());
+            user1.setUsername(currentUser.getUsername());
+            user1.setEmail(currentUser.getEmailId());
+            user1.setPhoneNumber(currentUser.getPhoneNumber());
+            user1.setAccessLevel(currentUser.getAccessLevel());
+            if(currentUser.getStateId() != null){
+                user1.setState(locationService.findStateById(currentUser.getStateId()).getStateName());
+            }
+            else{
+                user1.setState("");
+            }
+            if(currentUser.getDistrictId() != null) {
+                user1.setDistrict(locationService.findDistrictById(currentUser.getDistrictId()).getDistrictName());
+            }
+            else{
+                user1.setDistrict("");
+            }
+            if(currentUser.getBlockId() != null) {
+                user1.setBlock(locationService.findBlockById(currentUser.getBlockId()).getBlockName());
+            }
+            else{
+                user1.setBlock("");
+            }
+            user1.setAccessType(currentUser.getRoleId().getRoleId().toString());
+            user1.setCreatedBy(true);
+            return user1;
+        }
+        return null;
+    }
+
     @RequestMapping(value={"/isLoggedIn"})
     public @ResponseBody Boolean isLoggedIn() {
         return userService.getCurrentUser() != null;
+    }
+    @RequestMapping(value={"/isAdminLoggedIn"})
+    public @ResponseBody Boolean isAdminLoggedIn() {
+        User currentUser = userService.getCurrentUser();
+        if(currentUser == null || currentUser.getRoleId().getRoleDescription().equals(AccessType.USER.getAccessType())){
+            return false;
+        }
+        return true;
     }
 
     //To be changed
@@ -421,19 +464,19 @@ public class UserController {
         return l;
     }
 
-   /*@RequestMapping(value = {"/createMaster"}, method = RequestMethod.GET)
-   @ResponseBody String createNewUser() {
-
-       ModificationTracker modification = new ModificationTracker();
-       modification.setModificationDate(new Date(System.currentTimeMillis()));
-       modification.setModificationDescription("Account creation");
-        modification.setModificationType(ModificationType.CREATE.getModificationType());
-       modification.setModifiedUserId(user);
-       modification.setModifiedByUserId(userService.findUserByUsername(getPrincipal()));
-       modificationTrackerService.saveModification(modification);
-
-        return userService.createMaster();
-  }*/
+//    @RequestMapping(value = {"/createMaster"}, method = RequestMethod.GET)
+//    @ResponseBody String createNewUser() {
+//
+////        ModificationTracker modification = new ModificationTracker();
+////        modification.setModificationDate(new Date(System.currentTimeMillis()));
+////        modification.setModificationDescription("Account creation");
+////        modification.setModificationType(ModificationType.CREATE.getModificationType());
+////        modification.setModifiedUserId(user);
+////        modification.setModifiedByUserId(userService.findUserByUsername(getPrincipal()));
+////        modificationTrackerService.saveModification(modification);
+//
+//        return userService.createMaster();
+//    }
 private String getMonthYear(Date toDate) {
     Calendar c =Calendar.getInstance();
     c.setTime(toDate);
