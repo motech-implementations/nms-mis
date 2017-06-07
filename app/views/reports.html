@@ -3,8 +3,8 @@
 	<div class="block reports-header">
 		<form name="reportsForm" class="form container-fluid block" role="form" novalidate="novalidate">
 			<div class="row">
-				<div class="col-xs-7 left">
-					<div class="form-group col-xs-4">
+				<div class="col-xs-5 left">
+					<div class="form-group col-xs-6">
 						<label>Select Reports Category</label><br>
 						<div class="btn-group" uib-dropdown dropdown-append-to-body>
 							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" uib-dropdown-toggle>
@@ -21,7 +21,7 @@
 							</ul>
 						</div>
 					</div>
-					<div class="form-group col-xs-4">
+					<div class="form-group col-xs-6">
 						<label>Select Reports</label><br>
 						<div class="btn-group" uib-dropdown dropdown-append-to-body>
 							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" ng-disabled='reportCategory=="Select"' uib-dropdown-toggle>
@@ -38,7 +38,7 @@
 							</ul>
 						</div>
 					</div>
-					<div class="form-group col-xs-4">
+					<!-- <div class="form-group col-xs-4">
 						<label>Select Date Range</label><br>
 						<p class="input-group" ng-disabled="reportName=='Select'">
 							<input type="text" class="form-control input input-sm" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" datepicker-mode="'month'" ng-required="true" close-text="Close" alt-input-formats="altInputFormats"  ng-disabled='reportName=="Select"' />
@@ -46,15 +46,15 @@
 							<button type="button" class="btn btn-sm btn-default" ng-click="open1()"  ng-disabled='reportName=="Select"' ><i class="glyphicon glyphicon-calendar" ng-disabled="reportName=='Select'" ></i></button>
 							</span>
 						</p>
-					</div>
+					</div> -->
 				</div>
 
-				<div class="col-xs-5 right" ng-if="!isCircleReport()">
-					<div class="form-group col-xs-4">
+				<div class="col-xs-7 right" ng-if="!isCircleReport()">
+					<div class="form-group col-xs-3">
 						<label for="name">Select State</label><br>
 						<div class="btn-group" uib-dropdown dropdown-append-to-body>
 							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" ng-disabled='reportName=="Select"' uib-dropdown-toggle>
-								<span class="block">{{state.stateName}}
+								<span class="block">{{crop(state.stateName)}}
 								<span class="caret"></span></span>
 							</button>
 							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
@@ -63,12 +63,12 @@
 							</ul>
 						</div>
 					</div>
-					<div class="form-group col-xs-4">
+					<div class="form-group col-xs-3">
 					<!-- <div> -->
 						<label for="email">Select District</label><br>
 						<div class="btn-group" uib-dropdown dropdown-append-to-body>
 							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" ng-disabled='state==null' uib-dropdown-toggle>
-								<span class="block">{{district.districtName}}
+								<span class="block">{{crop(district.districtName)}}
 								<span class="caret"></span></span>
 							</button>
 							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
@@ -77,11 +77,11 @@
 							</ul>
 						</div>
 					</div>
-					<div class="form-group col-xs-4">
+					<div class="form-group col-xs-3">
 						<label for="pwd">Select Block</label><br>
 						<div class="btn-group" uib-dropdown dropdown-append-to-body>
 							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" ng-disabled='district==null' uib-dropdown-toggle>
-								<span class="block">{{block.blockName}}
+								<span class="block">{{crop(block.blockName)}}
 								<span class="caret"></span></span>
 							</button>
 							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
@@ -90,9 +90,18 @@
 							</ul>
 						</div>
 					</div>
+					<div class="form-group col-xs-3">
+						<label>Select Date Range</label><br>
+						<p class="input-group" ng-disabled="reportName=='Select'">
+							<input type="text" class="form-control input input-sm" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" datepicker-mode="'month'" ng-required="true" close-text="Close" alt-input-formats="altInputFormats"  ng-disabled='reportName=="Select"' />
+							<span class="input-group-btn">
+							<button type="button" class="btn btn-sm btn-default" ng-click="open1()"  ng-disabled='reportName=="Select"' ><i class="glyphicon glyphicon-calendar" ng-disabled="reportName=='Select'" ></i></button>
+							</span>
+						</p>
+					</div>
 				</div>	
 
-				<div class="col-xs-5 right" ng-if="isCircleReport()">
+				<div class="col-xs-7 right" ng-if="isCircleReport()">
 					<div class="form-group col-xs-4">
 						<label for="name">Select Circle</label><br>
 						<div class="btn-group" uib-dropdown dropdown-append-to-body>
@@ -105,6 +114,15 @@
 								<li role="menuitem" ng-repeat="item in circles"><a ng-click='selectCircle(item)'>{{item.circleName}}</a></li>
 							</ul>
 						</div>
+					</div>
+					<div class="form-group col-xs-4">
+						<label>Select Date Range</label><br>
+						<p class="input-group" ng-disabled="reportName=='Select'">
+							<input type="text" class="form-control input input-sm" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" datepicker-mode="'month'" ng-required="true" close-text="Close" alt-input-formats="altInputFormats"  ng-disabled='reportName=="Select"' />
+							<span class="input-group-btn">
+							<button type="button" class="btn btn-sm btn-default" ng-click="open1()"  ng-disabled='reportName=="Select"' ><i class="glyphicon glyphicon-calendar" ng-disabled="reportName=='Select'" ></i></button>
+							</span>
+						</p>
 					</div>
 				</div>	
 				

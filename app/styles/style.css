@@ -323,10 +323,11 @@ div.footer{
    max-height: 300px; /*Provide height in pixels or in other units as per your layout*/
    overflow-y: auto; /*Provide an auto overflow to diaply scroll*/
 }
-.btn-primary,
+
 .btn-info, 
-.btn-success,{
-	background-color: #2164b2;
+.btn-success,
+.btn-danger,{
+	display: none;
 }
 
 div.loading{
