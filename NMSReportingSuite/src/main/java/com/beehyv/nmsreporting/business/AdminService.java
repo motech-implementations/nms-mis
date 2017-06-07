@@ -40,5 +40,5 @@ public interface AdminService {
 
   void createSpecificReport(ReportRequest reportRequest);
 
-  Map<Integer,String> changePassword(Integer userId);
+
 }

@@ -1,4 +1,4 @@
-(function(){
+ (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
 		.controller("MainController", ['$scope', '$state', '$http', 'UserFormFactory', function($scope, $state, $http, UserFormFactory){

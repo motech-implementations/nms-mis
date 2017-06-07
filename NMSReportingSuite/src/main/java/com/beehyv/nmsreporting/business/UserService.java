@@ -1,5 +1,6 @@
 package com.beehyv.nmsreporting.business;
 
+import com.beehyv.nmsreporting.dto.ChangePasswordDTO;
 import com.beehyv.nmsreporting.dto.PasswordDto;
 import com.beehyv.nmsreporting.model.User;
 
@@ -42,4 +43,6 @@ public interface UserService {
     boolean isUsernameUnique(String username, Integer userId);
 
     String createMaster();
+
+    Map<Integer, String> changePassword(ChangePasswordDTO changePasswordDTO);
 }

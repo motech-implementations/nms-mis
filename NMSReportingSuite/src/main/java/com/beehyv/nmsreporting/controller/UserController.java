@@ -4,12 +4,15 @@ import com.beehyv.nmsreporting.business.*;
 import com.beehyv.nmsreporting.dao.BlockDao;
 import com.beehyv.nmsreporting.dao.DistrictDao;
 import com.beehyv.nmsreporting.dao.StateDao;
+import com.beehyv.nmsreporting.dto.ChangePasswordDTO;
 import com.beehyv.nmsreporting.dto.PasswordDto;
 import com.beehyv.nmsreporting.dto.UserDto;
 import com.beehyv.nmsreporting.entity.Report;
 import com.beehyv.nmsreporting.entity.ReportRequest;
 import com.beehyv.nmsreporting.enums.AccessLevel;
+import com.beehyv.nmsreporting.enums.ModificationType;
 import com.beehyv.nmsreporting.enums.ReportType;
+import com.beehyv.nmsreporting.model.ModificationTracker;
 import com.beehyv.nmsreporting.model.Role;
 import com.beehyv.nmsreporting.model.State;
 import com.beehyv.nmsreporting.model.User;
@@ -201,7 +204,7 @@ public class UserController {
     }
 
     @RequestMapping(value = {"/resetPassword"}, method = RequestMethod.POST)
-    @ResponseBody public Map resetPassword(@RequestBody PasswordDto passwordDto){
+    @ResponseBody public Map resetPassword(@RequestBody ChangePasswordDTO changePasswordDTO){
         //        String trackModification = mapper.convertValue(node.get("modification"), String.class);
 //
 //        ModificationTracker modification = new ModificationTracker();
@@ -213,7 +216,8 @@ public class UserController {
 //        modificationTrackerService.saveModification(modification);
 
 //        return "redirect:http://localhost:8080/app/#!/";
-        return userService.updatePassword(passwordDto);
+        /*return userService.updatePassword(passwordDto);*/
+        return  userService.changePassword(changePasswordDTO);
     }
 
 
@@ -417,19 +421,19 @@ public class UserController {
         return l;
     }
 
-//    @RequestMapping(value = {"/createMaster"}, method = RequestMethod.GET)
-//    @ResponseBody String createNewUser() {
-//
-////        ModificationTracker modification = new ModificationTracker();
-////        modification.setModificationDate(new Date(System.currentTimeMillis()));
-////        modification.setModificationDescription("Account creation");
-////        modification.setModificationType(ModificationType.CREATE.getModificationType());
-////        modification.setModifiedUserId(user);
-////        modification.setModifiedByUserId(userService.findUserByUsername(getPrincipal()));
-////        modificationTrackerService.saveModification(modification);
-//
-//        return userService.createMaster();
-//    }
+   /*@RequestMapping(value = {"/createMaster"}, method = RequestMethod.GET)
+   @ResponseBody String createNewUser() {
+
+       ModificationTracker modification = new ModificationTracker();
+       modification.setModificationDate(new Date(System.currentTimeMillis()));
+       modification.setModificationDescription("Account creation");
+        modification.setModificationType(ModificationType.CREATE.getModificationType());
+       modification.setModifiedUserId(user);
+       modification.setModifiedByUserId(userService.findUserByUsername(getPrincipal()));
+       modificationTrackerService.saveModification(modification);
+
+        return userService.createMaster();
+  }*/
 private String getMonthYear(Date toDate) {
     Calendar c =Calendar.getInstance();
     c.setTime(toDate);

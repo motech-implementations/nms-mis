@@ -1499,10 +1499,7 @@ public class AdminServiceImpl implements AdminService {
         }
     }
 
-    @Override
-    public Map<Integer, String> changePassword(Integer userId) {
-        return null;
-    }
+
     private String getMonthYear(Date toDate){
         c.setTime(toDate);
         c.add(Calendar.MONTH,-1);

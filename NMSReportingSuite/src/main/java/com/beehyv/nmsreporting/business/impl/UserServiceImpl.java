@@ -2,6 +2,7 @@ package com.beehyv.nmsreporting.business.impl;
 
 import com.beehyv.nmsreporting.business.UserService;
 import com.beehyv.nmsreporting.dao.*;
+import com.beehyv.nmsreporting.dto.ChangePasswordDTO;
 import com.beehyv.nmsreporting.dto.PasswordDto;
 import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.AccessType;
@@ -578,5 +579,25 @@ public class UserServiceImpl implements UserService{
         userDao.saveUser(user);
 
         return "master created";
+    }
+
+    @Override
+    public Map<Integer, String> changePassword(ChangePasswordDTO changePasswordDTO) {
+
+        User currentUser = getCurrentUser();
+
+        Integer rowNum = 0;
+        Map<Integer, String> responseMap = new HashMap<>();
+
+        String userpassword=passwordEncoder.encode(changePasswordDTO.getOldPassword());
+        if(!(currentUser.getPassword().equals(userpassword))){
+            String authorityError = "Current Password is incorrect.";
+            responseMap.put(rowNum, authorityError);
+            return responseMap;
+        }
+        currentUser.setPassword(userpassword);
+        String success="Password changed successfully.";
+        responseMap.put(rowNum,success);
+        return responseMap;
     }
 }
