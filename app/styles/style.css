@@ -217,12 +217,20 @@ div.reports-header select{
 	text-overflow: ellipsis;
 }
 
-div.reports-header .left > * > .btn-group>button,
-div.reports-header .left > * > .input-group>p{
+div.reports-header .left > * > .btn-group,
+div.reports-header .right > * > .btn-group,
+div.reports-header .left > * > .btn-group >button,
+div.reports-header .right > * > .btn-group >button{
+	width: 100%;
+}
+
+
+div.reports-header .left > * > .btn-group >button,
+div.reports-header .left > * > .input-group> p{
 	min-width: 200px;
 }
-div.reports-header .right button,
-div.reports-header .right p{
+div.reports-header .right * > .btn-group > button,
+div.reports-header .right * > .input-group > p{
 	min-width: 130px;
 }
 
