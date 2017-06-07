@@ -534,7 +534,7 @@ public class UserServiceImpl implements UserService{
             return responseMap;
         }
 
-        if(entity.getCreatedByUser().getUserId().equals(currentUser.getUserId())){
+        if(!(entity.getCreatedByUser().getUserId().equals(currentUser.getUserId()))){
             String authorityError = "No authority";
             responseMap.put(rowNum, authorityError);
             return responseMap;

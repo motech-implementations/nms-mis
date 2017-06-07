@@ -147,6 +147,21 @@
 				}
 			};
 
+			$scope.resetPasswordSubmit = function() {
+			    var password = {};
+			    password.userId = $scope.editUser.userId;
+			    password.newPassword = "";
+                $http({
+                    method  : 'POST',
+                    url     : backend_root + 'nms/admin/changePassword',
+                    data    : password, //forms user object
+                    headers : {'Content-Type': 'application/json'}
+                }).then(function(result){
+                    alert(result.data['0']);
+                })
+
+            };
+
 			// $scope.open = function () {
 			// 	$modal.open({
 			// 		templateUrl: 'myModalContent.html', // loads the template

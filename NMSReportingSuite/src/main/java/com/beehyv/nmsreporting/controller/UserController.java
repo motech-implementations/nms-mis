@@ -464,8 +464,8 @@ public class UserController {
         return l;
     }
 
-//    @RequestMapping(value = {"/createMaster"}, method = RequestMethod.GET)
-//    @ResponseBody String createNewUser() {
+  @RequestMapping(value = {"/createMaster"}, method = RequestMethod.GET)
+   @ResponseBody String createNewUser() {
 //
 ////        ModificationTracker modification = new ModificationTracker();
 ////        modification.setModificationDate(new Date(System.currentTimeMillis()));
@@ -475,8 +475,8 @@ public class UserController {
 ////        modification.setModifiedByUserId(userService.findUserByUsername(getPrincipal()));
 ////        modificationTrackerService.saveModification(modification);
 //
-//        return userService.createMaster();
-//    }
+        return userService.createMaster();
+    }
 private String getMonthYear(Date toDate) {
     Calendar c =Calendar.getInstance();
     c.setTime(toDate);
