@@ -217,6 +217,10 @@ div.reports-header select{
 	text-overflow: ellipsis;
 }
 
+div.reports-header .left,
+div.reports-header .right{
+	padding: 0px;
+}
 div.reports-header .left > * > .btn-group,
 div.reports-header .right > * > .btn-group,
 div.reports-header .left > * > .btn-group >button,
