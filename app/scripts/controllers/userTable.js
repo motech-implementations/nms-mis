@@ -8,10 +8,11 @@
 			$scope.init = function(){
 				$scope.currentPageNo = 1;
 				$scope.numPerPage = $scope.numPerPageList[0];
-				$scope.waiting = false;
 			}
 
-			
+			$scope.init();
+
+			UserTableFactory.clearAllUsers();
 
 			// if(UserTableFactory.getAllUsers().length == 0){
 				$scope.waiting = true;
@@ -19,11 +20,16 @@
 				.then(function(result){
 					UserTableFactory.setUsers(result.data)
 					$scope.init();
+					$scope.waiting = false;
 				});
 			// }
 			// else{
-			// 	// return UserTableFactory.getAllUsers();
 			// 	$scope.init();
+			// 	UserTableFactory.getUsers()
+			// 	.then(function(result){
+			// 		UserTableFactory.setUsers(result.data)
+			// 		$scope.init();
+			// 	});
 			// }
 
 			$scope.resetPage = function(){
@@ -38,6 +44,13 @@
 
 			$scope.getAllUsers = function(){
 				return UserTableFactory.getAllUsers();
+			}
+
+			$scope.crop = function(name){
+				if(name.length > 13){
+					return name.substring(0, 10) + "..."
+				}
+				return name;
 			}
 
 			$scope.getUniqueAccessTypes = function(){
