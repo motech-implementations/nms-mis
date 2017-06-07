@@ -66,17 +66,8 @@
 			// }
 
 			$scope.createUserSubmit = function() {
-				if(!$scope.createUserForm.$pristine || $scope.createUserForm.$valid){
-					angular.forEach($scope.createUserForm.$error, function (field) {
-						angular.forEach(field, function(errorField){
-							errorField.$setDirty();
-						})
-					});
-				}
-				else if ($scope.createUserForm.$valid) {
-
+				if ($scope.createUserForm.$valid) {
 					delete $scope.newUser.$$hashKey;
-
 					$http({
 						method  : 'post',
 						url     : backend_root + 'nms/user/createUser',
@@ -88,7 +79,6 @@
 							$state.go('userManagement.userTable', {});
 						}
 					})
-
 				}
 				else{
 					angular.forEach($scope.createUserForm.$error, function (field) {
