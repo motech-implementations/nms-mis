@@ -15,13 +15,13 @@
 			UserTableFactory.clearAllUsers();
 
 			// if(UserTableFactory.getAllUsers().length == 0){
-				$scope.waiting = true;
-				UserTableFactory.getUsers()
-				.then(function(result){
-					UserTableFactory.setUsers(result.data)
-					$scope.init();
-					$scope.waiting = false;
-				});
+			$scope.waiting = UserTableFactory.getAllUsers().length == 0;
+			UserTableFactory.getUsers()
+			.then(function(result){
+				UserTableFactory.setUsers(result.data)
+				$scope.init();
+				$scope.waiting = false;
+			});
 			// }
 			// else{
 			// 	$scope.init();

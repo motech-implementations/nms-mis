@@ -3,6 +3,7 @@ package com.beehyv.nmsreporting.controller;
 import com.beehyv.nmsreporting.business.LocationService;
 import com.beehyv.nmsreporting.business.ReportService;
 import com.beehyv.nmsreporting.business.UserService;
+import com.beehyv.nmsreporting.entity.ServiceState;
 import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,7 @@ public class LocationController {
     }
 
     @RequestMapping(value = {"/state/{serviceType}"}, method = RequestMethod.GET)
-    public @ResponseBody List<State> getStatesByServiceType(@PathVariable("serviceType") String serviceType) {
+    public @ResponseBody List<ServiceState> getStatesByServiceType(@PathVariable("serviceType") String serviceType) {
         User user = userService.getCurrentUser();
         List<State> states;
         if(user.getAccessLevel().equals(AccessLevel.NATIONAL.getAccessLevel())) {
@@ -61,7 +62,14 @@ public class LocationController {
                 states.add(locationService.findStateById(user.getStateId()));
             }
         }
-        return states;
+        List<ServiceState> serviceStates = new ArrayList<>();
+        for(State s : states){
+            ServiceState serviceState = new ServiceState(s);
+            serviceState.setServiceType(serviceType);
+            serviceState.setServiceStartDate(locationService.getServiceStartdateForState(s.getStateId(), serviceType));
+            serviceStates.add(serviceState);
+        }
+        return serviceStates;
     }
 
     /*--------------------------District-----------------------------*/

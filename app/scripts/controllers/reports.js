@@ -62,6 +62,16 @@
 				}
 			}
 
+			$scope.crop = function(name){
+				if(name == null){
+					return "";
+				}
+				if(name.length > 18){
+					return name.substring(0, 15) + "..."
+				}
+				return name;
+			}
+
 			$scope.isCircleReport = function(){
 				return $scope.reportName != null && $scope.reportName == 'Circle wise Anonymous Reports';
 			}
@@ -104,6 +114,37 @@
 					$scope.state = state;
 					$scope.district = null;
 					$scope.block = null;
+
+					if($scope.reportEnum == 'CumulativeInactiveUsers'){
+						$scope.dateOptions = {
+							minMode: 'month',
+							dateDisabled: disabled,
+							formatYear: 'yy',
+							maxDate: new Date().setMonth(new Date().getMonth()-1),
+							minDate: new Date(2017, 04, 01),
+							startingDay: 1
+						};
+					}
+					else{
+						$scope.dateOptions = {
+							minMode: 'month',
+							dateDisabled: disabled,
+							formatYear: 'yy',
+							maxDate: new Date().setMonth(new Date().getMonth()-1),
+							minDate: new Date($scope.state.serviceStartDate),
+							startingDay: 1
+						};
+					}
+				}
+				else{
+					$scope.dateOptions = {
+						minMode: 'month',
+						dateDisabled: disabled,
+						formatYear: 'yy',
+						maxDate: new Date().setMonth(new Date().getMonth()-1),
+						minDate: new Date(2015, 09, 01),
+						startingDay: 1
+					};
 				}
 			}
 			$scope.clearState = function(){
