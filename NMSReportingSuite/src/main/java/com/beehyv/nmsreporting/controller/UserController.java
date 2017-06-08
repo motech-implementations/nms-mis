@@ -1,12 +1,9 @@
 package com.beehyv.nmsreporting.controller;
 
 import com.beehyv.nmsreporting.business.*;
-import com.beehyv.nmsreporting.dao.BlockDao;
-import com.beehyv.nmsreporting.dao.DistrictDao;
-import com.beehyv.nmsreporting.dao.StateDao;
-import com.beehyv.nmsreporting.dto.ChangePasswordDTO;
 import com.beehyv.nmsreporting.dto.PasswordDto;
 import com.beehyv.nmsreporting.dto.UserDto;
+import com.beehyv.nmsreporting.entity.ContactInfo;
 import com.beehyv.nmsreporting.entity.Report;
 import com.beehyv.nmsreporting.entity.ReportRequest;
 import com.beehyv.nmsreporting.enums.AccessLevel;
@@ -19,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.ParseException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +24,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.beehyv.nmsreporting.utils.ServiceFunctions.StReplace;
@@ -115,7 +110,7 @@ public class UserController {
             else{
                 user1.setBlock("");
             }
-            user1.setAccessType(currentUser.getRoleId().getRoleId().toString());
+            user1.setAccessType(currentUser.getRoleId().getRoleDescription());
             user1.setCreatedBy(true);
             return user1;
         }
@@ -246,8 +241,26 @@ public class UserController {
         return userService.updateExistingUser(user);
     }
 
+    @RequestMapping(value = {"/updateContacts"}, method = RequestMethod.POST)
+    @ResponseBody public Map updateContacts(@RequestBody ContactInfo contactInfo) {
+
+//        String trackModification = mapper.convertValue(node.get("modification"), String.class);
+//
+//        ModificationTracker modification = new ModificationTracker();
+//        modification.setModificationDate(new Date(System.currentTimeMillis()));
+//        modification.setModificationType(ModificationType.UPDATE.getModificationType());
+//        modification.setModifiedByUserId(userService.findUserByUsername(getPrincipal()));
+//        modification.setModifiedUserId(user);
+//        modification.setModificationDescription(trackModification);
+//        modificationTrackerService.saveModification(modification);
+
+//        return "redirect:http://localhost:8080/app/#!/";
+
+        return userService.updateContacts(contactInfo);
+    }
+
     @RequestMapping(value = {"/resetPassword"}, method = RequestMethod.POST)
-    @ResponseBody public Map resetPassword(@RequestBody ChangePasswordDTO changePasswordDTO){
+    @ResponseBody public Map resetPassword(@RequestBody PasswordDto passwordDto){
         //        String trackModification = mapper.convertValue(node.get("modification"), String.class);
 //
 //        ModificationTracker modification = new ModificationTracker();
@@ -260,7 +273,7 @@ public class UserController {
 
 //        return "redirect:http://localhost:8080/app/#!/";
         /*return userService.updatePassword(passwordDto);*/
-        return  userService.changePassword(changePasswordDTO);
+        return  userService.changePassword(passwordDto);
     }
 
 

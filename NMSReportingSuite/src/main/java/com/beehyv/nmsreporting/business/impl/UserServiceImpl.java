@@ -2,8 +2,8 @@ package com.beehyv.nmsreporting.business.impl;
 
 import com.beehyv.nmsreporting.business.UserService;
 import com.beehyv.nmsreporting.dao.*;
-import com.beehyv.nmsreporting.dto.ChangePasswordDTO;
 import com.beehyv.nmsreporting.dto.PasswordDto;
+import com.beehyv.nmsreporting.entity.ContactInfo;
 import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.AccessType;
 import com.beehyv.nmsreporting.enums.AccountStatus;
@@ -313,6 +313,65 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public Map<Integer, String> updateContacts(ContactInfo contactInfo) {
+        User user = userDao.findByUserId(contactInfo.getUserId());
+        Integer rowNum = 0;
+        Map<Integer, String> responseMap = new HashMap<Integer, String>();
+
+        User currentUser = getCurrentUser();
+
+        if(user == null){
+            responseMap.put(rowNum, "User does not exist");
+            return responseMap;
+        }
+        if(currentUser == null || !(currentUser.getUserId().equals(user.getUserId()))){
+            responseMap.put(rowNum, "Unauthorised");
+            return responseMap;
+        }
+
+        String userPhone = contactInfo.getPhoneNumber();
+
+        String regexStr1 = "^[0-9]*$";
+        String regexStr2 = "^[0-9]{10}$";
+        if (userPhone.isEmpty()) {
+            String userNameError = "Please specify the phone number for user";
+            responseMap.put(rowNum, userNameError);
+            return responseMap;
+        }
+        else if (!(userPhone.matches(regexStr1)) || !(userPhone.matches(regexStr2))) {
+            String userNameError = "Please check the format of phone number for user";
+            responseMap.put(rowNum, userNameError);
+            return responseMap;
+        }
+
+
+        String emailId = contactInfo.getEmail();
+
+        if (emailId.isEmpty()) {
+            String userNameError = "Please specify the Email for user";
+            responseMap.put(rowNum, userNameError);
+            return responseMap;
+        }
+        String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+        Matcher matcher = pattern.matcher(emailId);
+        if (!matcher.matches()){
+            String userNameError = "Please enter the valid Email for user";
+            responseMap.put(rowNum, userNameError);
+            return responseMap;
+        }
+
+        user.setPhoneNumber(contactInfo.getPhoneNumber());
+        user.setEmailId(contactInfo.getEmail());
+
+        userDao.saveUser(user);
+
+        responseMap.put(rowNum, "Contacts Updated");
+        return responseMap;
+    }
+
+    @Override
     public Map<Integer, String> updateExistingUser(User user) {
         User entity = userDao.findByUserId(user.getUserId());
         Integer rowNum = 0;
@@ -320,7 +379,7 @@ public class UserServiceImpl implements UserService{
 
         User currentUser = getCurrentUser();
 
-        if(!(currentUser.getUserId() == 1 || entity.getCreatedByUser().getUserId().equals(currentUser.getUserId()))){
+        if(!(currentUser.getRoleId().getRoleId() == 1 || entity.getCreatedByUser().getUserId().equals(currentUser.getUserId()))){
             String authorityError = "No authority : this user was created by someone else";
             responseMap.put(rowNum, authorityError);
             return responseMap;
@@ -530,18 +589,57 @@ public class UserServiceImpl implements UserService{
         }
 
         if(entity == null) {
-            responseMap.put(rowNum, "invalid user");
+            responseMap.put(rowNum, "User not found");
             return responseMap;
         }
 
-        if(!(entity.getCreatedByUser().getUserId().equals(currentUser.getUserId()))){
-            String authorityError = "No authority";
+        if(!(entity.getCreatedByUser().getUserId().equals(currentUser.getUserId())) &&
+                !currentUser.getRoleId().getRoleDescription().equals(AccessType.MASTER_ADMIN.getAccessType())){
+            String authorityError = "Reset not allowed";
             responseMap.put(rowNum, authorityError);
             return responseMap;
         }
         entity.setPassword(passwordEncoder.encode(entity.getPhoneNumber()));
 
         responseMap.put(rowNum, "password changed");
+        return responseMap;
+    }
+
+    @Override
+    public Map<Integer, String> changePassword(PasswordDto passwordDto) {
+
+        Integer rowNum = 0;
+        Map<Integer, String> responseMap = new HashMap<>();
+
+        User currentUser = getCurrentUser();
+
+        if(currentUser == null){
+            responseMap.put(rowNum, "Not logged in");
+            return responseMap;
+        }
+
+        User entity = userDao.findByUserId(passwordDto.getUserId());
+
+        if(entity == null){
+            responseMap.put(rowNum, "User not found");
+            return responseMap;
+        }
+
+        if(!entity.getUserId().equals(currentUser.getUserId())){
+            responseMap.put(rowNum, "Unauthorised");
+            return responseMap;
+        }
+
+        System.out.println(passwordDto.getNewPassword());
+        System.out.println(currentUser.getPassword());
+        if(!passwordEncoder.matches(passwordDto.getOldPassword(), currentUser.getPassword())){
+            String authorityError = "Current Password is incorrect";
+            responseMap.put(rowNum, authorityError);
+            return responseMap;
+        }
+        currentUser.setPassword(passwordEncoder.encode(passwordDto.getNewPassword()));
+        String success="Password changed successfully";
+        responseMap.put(rowNum, success);
         return responseMap;
     }
 
@@ -581,23 +679,5 @@ public class UserServiceImpl implements UserService{
         return "master created";
     }
 
-    @Override
-    public Map<Integer, String> changePassword(ChangePasswordDTO changePasswordDTO) {
 
-        User currentUser = getCurrentUser();
-
-        Integer rowNum = 0;
-        Map<Integer, String> responseMap = new HashMap<>();
-
-        String userpassword=passwordEncoder.encode(changePasswordDTO.getOldPassword());
-        if(!(currentUser.getPassword().equals(userpassword))){
-            String authorityError = "Current Password is incorrect.";
-            responseMap.put(rowNum, authorityError);
-            return responseMap;
-        }
-        currentUser.setPassword(userpassword);
-        String success="Password changed successfully.";
-        responseMap.put(rowNum,success);
-        return responseMap;
-    }
 }

@@ -221,6 +221,10 @@ div.reports-header .left,
 div.reports-header .right{
 	padding: 0px;
 }
+div.reports-header .left > * > .btn-group > button,
+div.reports-header .right > * > .btn-group > button{
+	white-space: inherit;
+}
 div.reports-header .left > * > .btn-group,
 div.reports-header .right > * > .btn-group,
 div.reports-header .left > * > .btn-group > button,
@@ -263,16 +267,19 @@ div.reports-body{
 }
 
 
-div.editUser label{
+div.editUser label,
+div.createUser label,
+div.profile label{
 	font-size: 12px;
 }
-
-
-div.createUser label{
-	font-size: 12px;
+div.editUser button,
+div.createUser button,
+div.profile button{
+	margin-right: 12px;
 }
 div.createUser .errorMessage,
-div.editUser .errorMessage{
+div.editUser .errorMessage,
+div.profile .errorMessage{
 	color: #a94442;
 }
 

@@ -1,7 +1,7 @@
 package com.beehyv.nmsreporting.business;
 
-import com.beehyv.nmsreporting.dto.ChangePasswordDTO;
 import com.beehyv.nmsreporting.dto.PasswordDto;
+import com.beehyv.nmsreporting.entity.ContactInfo;
 import com.beehyv.nmsreporting.model.User;
 
 import java.util.Date;
@@ -38,11 +38,13 @@ public interface UserService {
 
     Map<Integer, String> updatePassword(PasswordDto passwordDto);
 
+    Map<Integer, String> updateContacts(ContactInfo contactInfo);
+
     void deleteExistingUser(User user);
 
     boolean isUsernameUnique(String username, Integer userId);
 
     String createMaster();
 
-    Map<Integer, String> changePassword(ChangePasswordDTO changePasswordDTO);
+    Map<Integer, String> changePassword(PasswordDto changePasswordDTO);
 }

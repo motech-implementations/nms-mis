@@ -150,6 +150,7 @@
 			$scope.resetPasswordSubmit = function() {
 			    var password = {};
 			    password.userId = $scope.editUser.userId;
+			    password.oldPassword = "";
 			    password.newPassword = "";
                 $http({
                     method  : 'POST',
