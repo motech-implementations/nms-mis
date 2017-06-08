@@ -29,6 +29,15 @@
 
 			$scope.reportName="Select";
 
+			$scope.dateOptions = {
+				minMode: 'month',
+				dateDisabled: disabled,
+				formatYear: 'yy',
+				maxDate: new Date().setMonth(new Date().getMonth()-1),
+				minDate: new Date(2015, 09, 01),
+				startingDay: 1
+			};
+
 			$scope.selectReport = function(item){
 				$scope.reportName = item.name;
 				$scope.reportEnum = item.reportEnum;
@@ -37,8 +46,6 @@
 				$scope.state = null;
 				$scope.district = null;
 				$scope.block = null;
-
-				$scope.dt = null;
 
 				if($scope.reportEnum == 'CumulativeInactiveUsers'){
 					$scope.dateOptions = {
@@ -189,20 +196,29 @@
 
 			$scope.fileName = "";
 
+			$scope.serviceStarted = function(state){
+				if($scope.dt == null){
+					return true;
+				}
+				return new Date(state.serviceStartDate) > $scope.dt ;
+			}
+
 			$scope.getReport = function(){
 
 				if($scope.reportEnum == "" || $scope.reportEnum == null){
+					alert("Please select a report")
 					return;
 				}
 				if($scope.dt == null){
+					alert("Please select a month")
 					return;
 				}
 
 				var reportRequest = {};
 
 			    reportRequest.reportType = $scope.reportEnum;
+			    
 
-			    reportRequest.fromDate = $scope.dt;
 			    if($scope.state != null){
 			    	reportRequest.stateId = $scope.state.stateId;
 			    }
@@ -227,6 +243,8 @@
 			    else{
 			    	reportRequest.circleId = 0;
 			    }
+
+			    reportRequest.fromDate = $scope.dt;
 
 			    $scope.waiting = true;
 
@@ -270,9 +288,13 @@
 
 			// datepicker stuff
 
-			$scope.today = function() {
-				$scope.dt = new Date();
-			};
+			$scope.select = function(date) {
+				$scope.dt = date;
+			}
+
+			// $scope.today = function() {
+			// 	$scope.dt = new Date();
+			// };
 
 			$scope.clear = function() {
 				$scope.dt = null;
