@@ -65,31 +65,56 @@
 		</div>
 
 		<hr>
-<!-- 
+
 		<form name="changePasswordForm" class="form-horizontal" novalidate>
 
-			<div class="form-group" ng-class="{'has-error':createUserForm.newPassword.$invalid && !createUserForm.newPassword.$pristine}">
-				<label class="control-label col-xs-2">New Password</label>
+			<div class="form-group" ng-class="{'has-error':changePasswordForm.oldPassword.$invalid && !changePasswordForm.oldPassword.$pristine}">
+				<label class="control-label col-xs-2">Old Password</label>
 				<div class="col-xs-10">
-					<input name="newPassword" id="newPassword" type="password" class="form-control input input-sm" ng-model="newPassword.newPassword" placeholder="New Password" required
-					tooltip-placement="top" uib-tooltip="Errors: {{createUserForm.newPassword.$error|json}}">
+					<input name="oldPassword" id="oldPassword" type="password" class="form-control input input-sm" ng-model="password.oldPassword" placeholder="Old Password" required
+					tooltip-placement="top" uib-tooltip="Errors: {{changePasswordForm.oldPassword.$error|json}}">
+
+					<div class="errorMessage" ng-messages="changePasswordForm.oldPassword.$error" role="alert" ng-show="!changePasswordForm.oldPassword.$pristine">
+						<div ng-message="required">This field cannot be empty</div>
+					</div>
 				</div>
 			</div>
 
-			<div class="form-group" ng-class="{'has-error':createUserForm.confirmPassword.$invalid && !createUserForm.confirmPassword.$pristine && (createUserForm.newPassword != createUserForm.confirmPassword)}">
+
+			<div class="form-group" ng-class="{'has-error':changePasswordForm.newPassword.$invalid && !changePasswordForm.newPassword.$pristine}">
+				<label class="control-label col-xs-2">New Password</label>
+				<div class="col-xs-10">
+					<input name="newPassword" id="newPassword" type="password" class="form-control input input-sm" ng-model="password.newPassword" placeholder="New Password" ng-minlength="6" required
+					tooltip-placement="top" uib-tooltip="Errors: {{changePasswordForm.newPassword.$error|json}}">
+
+					<div class="errorMessage" ng-messages="changePasswordForm.newPassword.$error" role="alert" ng-show="!changePasswordForm.newPassword.$pristine">
+						<div ng-message="required">This field cannot be empty</div>
+						<div ng-message="minlength">Password has to be atleast 6 characters long</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group" ng-class="{'has-error':changePasswordForm.confirmPassword.$invalid && !changePasswordForm.confirmPassword.$pristine && (changePasswordForm.newPassword != changePasswordForm.confirmPassword)}">
 				<label class="control-label col-xs-2">Confirm Password</label>
 				<div class="col-xs-10">
 					<input name="confirmPassword" id="confirmPassword" type="password" class="form-control input input-sm" ng-model="confirmPassword" placeholder="Confirm Password" required 
-					ui-validate="'$value==newPassword.newPassword'" ui-validate-watch=" 'newPassword'"
-					tooltip-placement="top" uib-tooltip="Errors: {{createUserForm.confirmPassword.$error|json}}">
+					ui-validate="'$value==password.newPassword'" ui-validate-watch=" 'password.newPassword'"
+					tooltip-placement="top" uib-tooltip="Errors: {{changePasswordForm.confirmPassword.$error|json}}">
+
+					<div class="errorMessage" ng-messages="changePasswordForm.confirmPassword.$error" role="alert" ng-show="!changePasswordForm.confirmPassword.$pristine">
+						<div ng-message="required">This field cannot be empty</div>
+						<div ng-message="validator">Password does not match</div>
+					</div>
 				</div>
 			</div>
 
-			<div class="container">
+			<div class="form-group">
 				<div class="col-xs-offset-2 col-xs-10">
-					<button  type="button" ng-click="changePassword()" class="btn btn-sm btn-primary">Change Password</button>
+					<button type="button" ng-click="clearForm()" class="btn btn-sm btn-default"
+					tooltip-placement="top" uib-tooltip="Errors: {{password|json}}">Clear</button>
+					<button type="button" ng-click="changePassword()" class="btn btn-sm btn-primary">Change Password</button>
 				</div>
-			</div> -->
+			</div>
 <!-- 
 			<div class="container">
 				<div class="col-xs-offset-2 col-xs-9">

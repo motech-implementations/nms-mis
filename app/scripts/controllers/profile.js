@@ -9,6 +9,12 @@
 				}
 			})
 
+			$scope.clearForm = function(){
+				$scope.password.newPassword = null;
+				$scope.confirmPassword = null;
+				$scope.password = {};
+				$scope.changePasswordForm.$setPristine();
+			}
 
 			$http.get(backend_root + 'nms/user/profile')
 			.then(function(result){
