@@ -223,14 +223,23 @@ div.reports-header .right{
 }
 div.reports-header .left > * > .btn-group,
 div.reports-header .right > * > .btn-group,
-div.reports-header .left > * > .btn-group >button,
-div.reports-header .right > * > .btn-group >button{
+div.reports-header .left > * > .btn-group > button,
+div.reports-header .right > * > .btn-group > button{
 	width: 100%;
 }
 
+div.reports-header .right button,
+div.reports-header .left button{	
+	text-align: left;
+}
+div.reports-header .right button span.caret,
+div.reports-header .left button span.caret{
+	float: right;
+	margin-top: 7px;
+}
 
 div.reports-header .left > * > .btn-group >button,
-div.reports-header .left > * > .input-group> p{
+div.reports-header .left > * > .input-group > p{
 	min-width: 200px;
 }
 div.reports-header .right * > .btn-group > button,
@@ -238,13 +247,7 @@ div.reports-header .right * > .input-group > p{
 	min-width: 130px;
 }
 
-div.reports-header .right button,div.reports-header .left button{	
-	text-align: left;
-}
-div.reports-header .right button span.caret,div.reports-header .left button span.caret{
-	float: right;
-	margin-top: 7px;
-}
+
 
 .dropdown-menu > li > a{
 	min-width: 200px;
