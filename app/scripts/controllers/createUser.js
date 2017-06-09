@@ -15,10 +15,11 @@
 				UserFormFactory.setCurrentUser(result.data);
 			})
 
-
+			$scope.roleLoading = true;
 			UserFormFactory.getRoles()
 			.then(function(result){
 				$scope.accessTypeList = result.data;
+				$scope.roleLoading = false;
 			});
 
 			$scope.accessLevelList = ["NATIONAL", "STATE", "DISTRICT", "BLOCK"]
@@ -41,8 +42,10 @@
 			}
 
 			$scope.getStates = function(){
+				$scope.stateLoading = true;
 				return UserFormFactory.getStates()
 				.then(function(result){
+					$scope.stateLoading = false;
 					$scope.states = result.data;
 					$scope.districts = [];
 					$scope.blocks = [];
@@ -50,16 +53,20 @@
 			}
 			
 			$scope.getDistricts = function(stateId){
+				$scope.districtLoading = true;
 				return UserFormFactory.getDistricts(stateId)
 				.then(function(result){
+					$scope.districtLoading = false;
 					$scope.districts = result.data;
 					$scope.blocks = [];
 				});
 			}
 
 			$scope.getBlocks =function(districtId){
+				$scope.blockLoading = true;
 				return UserFormFactory.getBlocks(districtId)
 				.then(function(result){
+					$scope.blockLoading = false;
 					$scope.blocks = result.data;
 				});
 			}

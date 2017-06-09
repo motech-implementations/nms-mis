@@ -21,10 +21,6 @@
 			UserFormFactory.getUser($stateParams.id)
 			.then(function(result){
 				$scope.editUser = result.data;
-
-				$scope.place.state = $scope.editUser.stateId
-				$scope.place.district = $scope.editUser.districtId
-				$scope.place.block = $scope.editUser.blockId
 			});
 			
 
@@ -47,47 +43,57 @@
 				return list.indexOf(item) + off < level;
 			}
 			
+			$scope.roleLoading = true;
 			UserFormFactory.getRoles()
 			.then(function(result){
 				$scope.accessTypeList = result.data;
+				$scope.roleLoading = false;
 			});
 
 			$scope.getStates = function(){
+				$scope.stateLoading = true;
 				return UserFormFactory.getStates()
 				.then(function(result){
+					$scope.stateLoading = false;
 					$scope.states = result.data;
 					$scope.districts = [];
 					$scope.blocks = [];
-
-					$scope.editUser.stateId = $scope.place.state;
-					$scope.place.state = null;
+					if($scope.editUser.stateId != null){
+						$scope.place.stateId = $scope.editUser.stateId;
+						$scope.editUser.stateId = null;
+					}
 				});
 			}
 			
 			$scope.getDistricts = function(stateId){
+				$scope.districtLoading = true;
 				return UserFormFactory.getDistricts(stateId)
 				.then(function(result){
+					$scope.districtLoading = false;
 					$scope.districts = result.data;
 					$scope.blocks = [];
-
-					$scope.editUser.districtId = $scope.place.district;
-					$scope.place.district = null;
+					if($scope.editUser.districtId != null){
+						$scope.place.districtId = $scope.editUser.districtId;
+						$scope.editUser.districtId = null;
+					}
 				});
 			}
 
 			$scope.getBlocks =function(districtId){
+				$scope.blockLoading = true;
 				return UserFormFactory.getBlocks(districtId)
 				.then(function(result){
+					$scope.blockLoading = false;
 					$scope.blocks = result.data;
-
-					$scope.editUser.blockId = $scope.place.block;
-					$scope.place.block = null;
+					if($scope.editUser.blockId != null){
+						$scope.place.blockId = $scope.editUser.blockId;
+						$scope.editUser.blockId = null;
+					}
 				});
 			}
 
 			$scope.onAccessLevelChanged = function(){
 				$scope.getStates()
-
 				$scope.editUserForm.state.$setPristine(false);
 				$scope.editUserForm.district.$setPristine(false);
 				$scope.editUserForm.block.$setPristine(false);
@@ -99,31 +105,27 @@
 				}
 			});
 
-			$scope.stateRes = false;
-			$scope.districtRes = false;
-
-			$scope.$watch('editUser.stateId', function(value){
+			$scope.$watch('place.stateId', function(value){
 				if(value != null){
 					$scope.getDistricts(value)
-					$scope.stateRes = true;
 				}
 			});
-			$scope.$watch('editUser.districtId', function(value){
-				if(value != null && $scope.stateRes == true){
-					if($scope.editUser.stateId != null){
-						$scope.getBlocks(value);
-						$scope.districtRes = true;
-					}
+			$scope.$watch('place.districtId', function(value){
+				if(value != null){
+					$scope.getBlocks(value);
 				}
 			});
-			$scope.$watch('editUser.blockId', function(value){
-				if(value != null && $scope.stateRes == true && $scope.districtRes == true){
+			$scope.$watch('place.blockId', function(value){
+				if(value != null){
 
 				}
 			});
 
 			$scope.editUserSubmit = function() {
 				if ($scope.editUserForm.$valid) {
+					$scope.editUser.stateId = $scope.place.stateId;
+					$scope.editUser.districtId = $scope.place.districtId;
+					$scope.editUser.blockId = $scope.place.blockId;
 					delete $scope.editUser.$$hashKey;
 					$http({
 						method  : 'POST',

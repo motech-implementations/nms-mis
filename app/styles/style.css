@@ -271,7 +271,11 @@ div.reports-body{
 	text-align: center;
 }
 
-
+div.editUser .loading,
+div.createUser .loading,
+div.profile .loading{
+	cursor: wait;
+}
 div.editUser label,
 div.createUser label,
 div.profile label{
