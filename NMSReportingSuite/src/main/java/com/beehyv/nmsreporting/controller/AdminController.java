@@ -4,7 +4,7 @@ import com.beehyv.nmsreporting.business.AdminService;
 import com.beehyv.nmsreporting.business.LocationService;
 import com.beehyv.nmsreporting.business.UserService;
 import com.beehyv.nmsreporting.dao.StateServiceDao;
-import com.beehyv.nmsreporting.dto.PasswordDto;
+import com.beehyv.nmsreporting.entity.PasswordDto;
 import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.State;
