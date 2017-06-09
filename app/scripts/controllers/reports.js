@@ -10,9 +10,11 @@
 				}
 			})
 			
+			$scope.reportsLoading = true;
 			UserFormFactory.getReportsMenu()
 			.then(function(result){
 				$scope.reports = result.data;
+				$scope.reportsLoading = false;
 			})
 
 			$scope.reportCategory="Select";
@@ -21,60 +23,31 @@
 				$scope.reportCategory = item.name;
 				$scope.reportNames = item.options;
 				$scope.reportName = 'Select';
+				$scope.service = null;
 				
-				$scope.state = null;
-				$scope.district = null;
-				$scope.block = null;
-
-				$scope.circle = null;
+				$scope.states = [];
+				$scope.clearState();
+				$scope.clearCircle();
 
 				$scope.dt == null;
 			}
 
 			$scope.reportName="Select";
 
-			$scope.dateOptions = {
-				minMode: 'month',
-				dateDisabled: disabled,
-				formatYear: 'yy',
-				maxDate: new Date().setMonth(new Date().getMonth()-1),
-				minDate: new Date(2015, 09, 01),
-				startingDay: 1
-			};
-
 			$scope.selectReport = function(item){
 				$scope.reportName = item.name;
 				$scope.reportEnum = item.reportEnum;
+
 				$scope.getStatesByService(item.service);
 
-				$scope.state = null;
-				$scope.district = null;
-				$scope.block = null;
+				$scope.service = item.service;
 
-				$scope.circle = null;
+				$scope.states = [];
+				$scope.clearState();
+				$scope.clearCircle();
 
 				$scope.dt = null;
-
-				if($scope.reportEnum == 'CumulativeInactiveUsers'){
-					$scope.dateOptions = {
-						minMode: 'month',
-						dateDisabled: disabled,
-						formatYear: 'yy',
-						maxDate: new Date().setMonth(new Date().getMonth()-1),
-						minDate: new Date(2017, 04, 01),
-						startingDay: 1
-					};
-				}
-				else{
-					$scope.dateOptions = {
-						minMode: 'month',
-						dateDisabled: disabled,
-						formatYear: 'yy',
-						maxDate: new Date().setMonth(new Date().getMonth()-1),
-						minDate: new Date(2015, 09, 01),
-						startingDay: 1
-					};
-				}
+				$scope.setDateOptions();
 			}
 
 			$scope.crop = function(name){
@@ -91,106 +64,111 @@
 				return $scope.reportName != null && $scope.reportName == 'Circle wise Anonymous Reports';
 			}
 
+			$scope.states = [];
+			$scope.districts = [];
+			$scope.blocks = [];
+			$scope.circles = [];
+
 			$scope.getStatesByService = function(service){
+				$scope.statesLoading = true;
 				return UserFormFactory.getStatesByService(service)
 				.then(function(result){
 					$scope.states = result.data;
 					$scope.districts = [];
 					$scope.blocks = [];
+					$scope.statesLoading = false;
 				});
 			}
 			
 			$scope.getDistricts = function(stateId){
+				$scope.districtsLoading = true;
 				return UserFormFactory.getDistricts(stateId)
 				.then(function(result){
 					$scope.districts = result.data;
 					$scope.blocks = [];
+					$scope.districtsLoading = false;
 				});
 			}
 
 			$scope.getBlocks =function(districtId){
+				$scope.blocksLoading = true;
 				return UserFormFactory.getBlocks(districtId)
 				.then(function(result){
 					$scope.blocks = result.data;
+					$scope.blocksLoading = false;
 				});
 			}
 
 			$scope.getCircles =function(){
+				$scope.circlesLoading = true;
 				return UserFormFactory.getCircles()
 				.then(function(result){
 					$scope.circles = result.data;
+					$scope.circlesLoading = false;
 				});
+			}
+
+			$scope.setDateOptions =function(){
+				var minDate = new Date(2015, 09, 01);
+				if($scope.service == 'M'){
+					minDate = new Date(2015, 10, 01);
+				}
+				if($scope.state != null){
+					minDate = $scope.state.serviceStartDate;
+				}
+
+				if($scope.reportEnum == 'MACumulativeInactiveUsers'){
+					minDate = new Date(2017, 04, 30);
+				}
+
+				$scope.dateOptions = {
+					minMode: 'month',
+					dateDisabled: disabled,
+					formatYear: 'yy',
+					maxDate: new Date().setMonth(new Date().getMonth()-1),
+					minDate: minDate,
+					startingDay: 1
+				};
 			}
 
 			$scope.selectState = function(state){
 				if(state != null){
 					$scope.getDistricts(state.stateId);
-
+					$scope.clearState();
 					$scope.state = state;
-					$scope.district = null;
-					$scope.block = null;
-
-					if($scope.reportEnum == 'CumulativeInactiveUsers'){
-						$scope.dateOptions = {
-							minMode: 'month',
-							dateDisabled: disabled,
-							formatYear: 'yy',
-							maxDate: new Date().setMonth(new Date().getMonth()-1),
-							minDate: new Date(2017, 04, 30),
-							startingDay: 1
-						};
-					}
-					else{
-						$scope.dateOptions = {
-							minMode: 'month',
-							dateDisabled: disabled,
-							formatYear: 'yy',
-							maxDate: new Date().setMonth(new Date().getMonth()-1),
-							minDate: new Date($scope.state.serviceStartDate),
-							startingDay: 1
-						};
-					}
 				}
-				else{
-					$scope.dateOptions = {
-						minMode: 'month',
-						dateDisabled: disabled,
-						formatYear: 'yy',
-						maxDate: new Date().setMonth(new Date().getMonth()-1),
-						minDate: new Date(2015, 09, 01),
-						startingDay: 1
-					};
-				}
+				$scope.setDateOptions();
 			}
 			$scope.clearState = function(){
 				$scope.state = null;
-				$scope.district = null;
-				$scope.block = null;
+				$scope.clearDistrict();
+				$scope.districts = [];
 			}
 			$scope.selectDistrict = function(district){
 				if(district != null){
 					$scope.getBlocks(district.districtId);
-
+					$scope.clearDistrict()
 					$scope.district = district;
-					$scope.block = null;
 				}
 				
 			}
 			$scope.clearDistrict = function(){
 				$scope.district = null;
-				$scope.block = null;
+				$scope.clearBlock();
+				$scope.blocks = [];
 			}
 			$scope.selectBlock = function(block){
 				if(block != null){
+					$scope.clearBlock();
 					$scope.block = block;
 				}
-				
 			}
 			$scope.clearBlock = function(){
 				$scope.block = null;
 			}
 			$scope.selectCircle = function(circle){
 				if(circle != null){
+					$scope.clearBlock();
 					$scope.circle = circle;
 				}	
 			}
@@ -293,10 +271,8 @@
 				$scope.reportName = "Select";
 				$scope.reportEnum = null;
 				$scope.reportCategory = "Select";
-				$scope.state = null;
-				$scope.district = null;
-				$scope.block = null;
-				$scope.circle = null;
+				$scope.clearState();
+				$scope.clearCircle();
 				$scope.dt = null;
 			}
 
@@ -318,15 +294,6 @@
 				customClass: getDayClass,
 				minDate: new Date(),
 				showWeeks: true
-			};
-
-			$scope.dateOptions = {
-				minMode: 'month',
-				dateDisabled: disabled,
-				formatYear: 'yy',
-				maxDate: new Date().setMonth(new Date().getMonth()-1),
-				minDate: new Date(2015, 09, 01),
-				startingDay: 1
 			};
 
 			// Disable weekend selection
