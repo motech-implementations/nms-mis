@@ -14,8 +14,8 @@ public class KilkariSixWeeksNoAnswer {
     @Column(name="id", columnDefinition = "INT(11)")
     private Integer kilkariId;
 
-    @Column(name="mcts_id", columnDefinition = "BIGINT(20)")
-    private Long mctsId;
+    @Column(name="mcts_id", columnDefinition = "VARCHAR(45)")
+    private String mctsId;
 
     @Column(name="msisdn", columnDefinition = "BIGINT(20)")
     private Long msisdn;
@@ -52,11 +52,11 @@ public class KilkariSixWeeksNoAnswer {
         this.kilkariId = kilkariId;
     }
 
-    public Long getMctsId() {
+    public String getMctsId() {
         return mctsId;
     }
 
-    public void setMctsId(Long mctsId) {
+    public void setMctsId(String mctsId) {
         this.mctsId = mctsId;
     }
 
