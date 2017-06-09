@@ -236,6 +236,10 @@ div.reports-header .right button,
 div.reports-header .left button{	
 	text-align: left;
 }
+div.reports-header .right button.loading,
+div.reports-header .left button.loading{	
+	cursor: wait;
+}
 div.reports-header .right button span.caret,
 div.reports-header .left button span.caret{
 	float: right;
@@ -251,10 +255,11 @@ div.reports-header .right * > .input-group > p{
 	min-width: 130px;
 }
 
-
-
 .dropdown-menu > li > a{
 	min-width: 200px;
+}
+.dropdown-menu.small > li > a{
+	max-width: 150px;
 }
 
 div.reports-header ul li a,
