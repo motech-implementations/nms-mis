@@ -647,7 +647,7 @@ public class AdminServiceImpl implements AdminService {
                 if(districtId==0){
                     List<KilkariLowUsage> candidatesFromThisState = new ArrayList<>();
                     for (KilkariLowUsage kilkari : kilkariLowUsageList) {
-                        if (kilkari.getStateId() == stateId) {
+                        if ((kilkari.getStateId()!=null)&&(kilkari.getStateId() == stateId)) {
                             candidatesFromThisState.add(kilkari);
                         }
                     }
@@ -659,7 +659,7 @@ public class AdminServiceImpl implements AdminService {
                     if(blockId==0){
                         List<KilkariLowUsage> candidatesFromThisDistrict = new ArrayList<>();
                         for (KilkariLowUsage kilkari : kilkariLowUsageList) {
-                            if (kilkari.getDistrictId() == districtId) {
+                            if ((kilkari.getDistrictId()!=null)&&(kilkari.getDistrictId() == districtId)) {
                                 candidatesFromThisDistrict.add(kilkari);
                             }
                         }
@@ -693,7 +693,7 @@ public class AdminServiceImpl implements AdminService {
                 if(districtId==0){
                     List<KilkariSixWeeksNoAnswer> candidatesFromThisState = new ArrayList<>();
                     for (KilkariSixWeeksNoAnswer kilkari : kilkariSixWeeksNoAnswers) {
-                        if (kilkari.getStateId() == stateId) {
+                        if ((kilkari.getStateId()!=null)&&(kilkari.getStateId() == stateId)) {
                             candidatesFromThisState.add(kilkari);
                         }
                     }
@@ -705,7 +705,7 @@ public class AdminServiceImpl implements AdminService {
                     if(blockId==0){
                         List<KilkariSixWeeksNoAnswer> candidatesFromThisDistrict = new ArrayList<>();
                         for (KilkariSixWeeksNoAnswer kilkari : kilkariSixWeeksNoAnswers) {
-                            if (kilkari.getDistrictId() == districtId) {
+                            if ((kilkari.getDistrictId()!=null)&&(kilkari.getDistrictId() == districtId)) {
                                 candidatesFromThisDistrict.add(kilkari);
                             }
                         }
@@ -740,7 +740,7 @@ public class AdminServiceImpl implements AdminService {
                 if(districtId==0){
                     List<KilkariSelfDeactivated> candidatesFromThisState = new ArrayList<>();
                     for (KilkariSelfDeactivated kilkari : kilkariSelfDeactivatedList) {
-                        if (kilkari.getStateId() == stateId) {
+                        if ((kilkari.getStateId()!=null)&&(kilkari.getStateId() == stateId)) {
                             candidatesFromThisState.add(kilkari);
                         }
                     }
@@ -752,7 +752,7 @@ public class AdminServiceImpl implements AdminService {
                     if(blockId==0){
                         List<KilkariSelfDeactivated> candidatesFromThisDistrict = new ArrayList<>();
                         for (KilkariSelfDeactivated kilkari : kilkariSelfDeactivatedList) {
-                            if (kilkari.getDistrictId() == districtId) {
+                            if ((kilkari.getDistrictId()!=null)&&(kilkari.getDistrictId() == districtId)) {
                                 candidatesFromThisDistrict.add(kilkari);
                             }
                         }
@@ -1000,7 +1000,8 @@ public class AdminServiceImpl implements AdminService {
                 "Health Facility",
                 "Health SubFacility",
                 "Village",
-                "Beneficiary MCTS/RCH Id",
+                "Beneficiary MCTS Id",
+                "Beneficiary RCH Id",
                 "Benificiary Name",
                 "Mobile Number",
                 "Age On Service In Weeks"});
@@ -1015,6 +1016,7 @@ public class AdminServiceImpl implements AdminService {
                     (kilkari.getHsubcenterId() == null) ? "No Health Subfacility" : healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthSubFacilityName(),
                     (kilkari.getVillageId() == null) ? "No Village" : villageDao.findByVillageId(kilkari.getVillageId()).getVillageName(),
                     (kilkari.getMctsId() == null) ? "No MCTS Id" : kilkari.getMctsId(),
+                    (kilkari.getRchId() == null) ? "No RCH Id" : kilkari.getRchId(),
                     (kilkari.getName() == null) ? "No Name" : kilkari.getName(),
                     (kilkari.getMsisdn() == null) ? "No MSISDN" : kilkari.getMsisdn(),
                     (kilkari.getAgeOnService() == null) ? "Ageless" : kilkari.getAgeOnService()
@@ -1070,7 +1072,8 @@ public class AdminServiceImpl implements AdminService {
                 "Health Facility",
                 "Health SubFacility",
                 "Village",
-                "Beneficiary MCTS/RCH Id",
+                "Beneficiary MCTS Id",
+                "Beneficiary RCH Id",
                 "Benificiary Name",
                 "Mobile Number",
                 "Age On Service In Weeks",
@@ -1089,6 +1092,7 @@ public class AdminServiceImpl implements AdminService {
                     (kilkari.getHsubcenterId() == null) ? "No Health Subfacility" : healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthSubFacilityName(),
                     (kilkari.getVillageId() == null) ? "No Village" : villageDao.findByVillageId(kilkari.getVillageId()).getVillageName(),
                     (kilkari.getMctsId() == null) ? "No MCTS Id" : kilkari.getMctsId(),
+                    (kilkari.getRchId() == null) ? "No RCH Id" : kilkari.getRchId(),
                     (kilkari.getName() == null) ? "No Name" : kilkari.getName(),
                     (kilkari.getMsisdn() == null) ? "No MSISDN" : kilkari.getMsisdn(),
                     (kilkari.getAgeOnService() == null) ? "Ageless" : kilkari.getAgeOnService(),
@@ -1147,7 +1151,8 @@ public class AdminServiceImpl implements AdminService {
                 "Health Facility",
                 "Health SubFacility",
                 "Village",
-                "Beneficiary MCTS/RCH Id",
+                "Beneficiary MCTS Id",
+                "Beneficiary RCH Id",
                 "Benificiary Name",
                 "Mobile Number",
                 "Age On Service In Weeks"
@@ -1163,6 +1168,7 @@ public class AdminServiceImpl implements AdminService {
                     (kilkari.getHsubcenterId() == null) ? "No Health Subfacility" : healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthSubFacilityName(),
                     (kilkari.getVillageId() == null) ? "No Village" : villageDao.findByVillageId(kilkari.getVillageId()).getVillageName(),
                     (kilkari.getMctsId() == null) ? "No MCTS Id" : kilkari.getMctsId(),
+                    (kilkari.getRchId() == null) ? "No RCH Id" : kilkari.getRchId(),
                     (kilkari.getName() == null) ? "No Name" : kilkari.getName(),
                     (kilkari.getMsisdn() == null) ? "No MSISDN" : kilkari.getMsisdn(),
                     (kilkari.getAgeOnService() == null) ? "Ageless" : kilkari.getAgeOnService(),
@@ -1324,7 +1330,7 @@ public class AdminServiceImpl implements AdminService {
             int stateId = state.getStateId();
             List<KilkariSixWeeksNoAnswer> candidatesFromThisState = new ArrayList<>();
             for (KilkariSixWeeksNoAnswer kilkari : kilkariSixWeeksNoAnswers) {
-                if (kilkari.getStateId() == stateId) {
+                if ((kilkari.getStateId()!=null)&&(kilkari.getStateId() == stateId)) {
                     candidatesFromThisState.add(kilkari);
                 }
             }
@@ -1337,7 +1343,7 @@ public class AdminServiceImpl implements AdminService {
                 int districtId = district.getDistrictId();
                 List<KilkariSixWeeksNoAnswer> candidatesFromThisDistrict = new ArrayList<>();
                 for (KilkariSixWeeksNoAnswer kilkari : candidatesFromThisState) {
-                    if (kilkari.getDistrictId() == districtId) {
+                    if ((kilkari.getDistrictId()!=null)&&(kilkari.getDistrictId() == districtId)) {
                         candidatesFromThisDistrict.add(kilkari);
                     }
                 }
@@ -1372,7 +1378,7 @@ public class AdminServiceImpl implements AdminService {
             int stateId = state.getStateId();
             List<KilkariLowUsage> candidatesFromThisState = new ArrayList<>();
             for (KilkariLowUsage kilkari : kilkariLowUsageList) {
-                if (kilkari.getStateId() == stateId) {
+                if ((kilkari.getStateId()!=null)&&(kilkari.getStateId() == stateId)) {
                     candidatesFromThisState.add(kilkari);
                 }
             }
@@ -1384,7 +1390,7 @@ public class AdminServiceImpl implements AdminService {
                 int districtId = district.getDistrictId();
                 List<KilkariLowUsage> candidatesFromThisDistrict = new ArrayList<>();
                 for (KilkariLowUsage kilkari : candidatesFromThisState) {
-                    if (kilkari.getDistrictId() == districtId) {
+                    if ((kilkari.getDistrictId()!=null)&&(kilkari.getDistrictId() == districtId)) {
                         candidatesFromThisDistrict.add(kilkari);
                     }
                 }
@@ -1418,7 +1424,7 @@ public class AdminServiceImpl implements AdminService {
             int stateId = state.getStateId();
             List<KilkariSelfDeactivated> candidatesFromThisState = new ArrayList<>();
             for (KilkariSelfDeactivated kilkari : kilkariSelfDeactivatedList) {
-                if (kilkari.getStateId() == stateId) {
+                if ((kilkari.getStateId()!=null)&&(kilkari.getStateId() == stateId)) {
                     candidatesFromThisState.add(kilkari);
                 }
             }
@@ -1431,7 +1437,7 @@ public class AdminServiceImpl implements AdminService {
                 int districtId = district.getDistrictId();
                 List<KilkariSelfDeactivated> candidatesFromThisDistrict = new ArrayList<>();
                 for (KilkariSelfDeactivated kilkari : candidatesFromThisState) {
-                    if (kilkari.getDistrictId() == districtId) {
+                    if ((kilkari.getDistrictId()!=null)&&(kilkari.getDistrictId() == districtId)) {
                         candidatesFromThisDistrict.add(kilkari);
                     }
                 }

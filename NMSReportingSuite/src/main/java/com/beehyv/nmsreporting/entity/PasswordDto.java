@@ -1,4 +1,4 @@
-package com.beehyv.nmsreporting.dto;
+package com.beehyv.nmsreporting.entity;
 
 /**
  * Created by beehyv on 25/5/17.

@@ -15,8 +15,11 @@ public class KilkariLowUsage {
     @Column(name="id", columnDefinition = "INT(11)")
     private Integer kilkariId;
 
-    @Column(name="mcts_id", columnDefinition = "BIGINT(20)")
-    private Long mctsId;
+    @Column(name="mcts_id", columnDefinition = "VARCHAR(45)")
+    private String mctsId;
+
+    @Column(name="rch_id", columnDefinition = "VARCHAR(45)")
+    private String rchId;
 
     @Column(name="name", columnDefinition = "VARCHAR(100)")
     private String name;
@@ -56,12 +59,20 @@ public class KilkariLowUsage {
         this.kilkariId = kilkariId;
     }
 
-    public Long getMctsId() {
+    public String getMctsId() {
         return mctsId;
     }
 
-    public void setMctsId(Long mctsId) {
+    public void setMctsId(String mctsId) {
         this.mctsId = mctsId;
+    }
+
+    public String getRchId() {
+        return rchId;
+    }
+
+    public void setRchId(String rchId) {
+        this.rchId = rchId;
     }
 
     public String getName() {

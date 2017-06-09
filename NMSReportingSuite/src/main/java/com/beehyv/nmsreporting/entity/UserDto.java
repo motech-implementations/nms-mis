@@ -1,4 +1,4 @@
-package com.beehyv.nmsreporting.dto;
+package com.beehyv.nmsreporting.entity;
 
 import com.beehyv.nmsreporting.model.User;
 

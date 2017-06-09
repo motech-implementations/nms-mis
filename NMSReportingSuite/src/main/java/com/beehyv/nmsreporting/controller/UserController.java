@@ -1,8 +1,8 @@
 package com.beehyv.nmsreporting.controller;
 
 import com.beehyv.nmsreporting.business.*;
-import com.beehyv.nmsreporting.dto.PasswordDto;
-import com.beehyv.nmsreporting.dto.UserDto;
+import com.beehyv.nmsreporting.entity.PasswordDto;
+import com.beehyv.nmsreporting.entity.UserDto;
 import com.beehyv.nmsreporting.entity.ContactInfo;
 import com.beehyv.nmsreporting.entity.Report;
 import com.beehyv.nmsreporting.entity.ReportRequest;
