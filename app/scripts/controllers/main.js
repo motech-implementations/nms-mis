@@ -47,6 +47,13 @@
 						'active': false,
 					},
 				],
+				'profile': [
+					{
+						'name': 'Profile',
+						'sref': 'profile',
+						'active': false,
+					},
+				],
 				'reports': [
 					{
 						'name': 'Reports',
@@ -66,6 +73,11 @@
 
 			$scope.getBreadCrumb = function(state){
 				return $scope.breadCrumbDict[state];
+			}
+
+			$scope.title = function(state){
+				var states = $scope.getBreadCrumb(state)
+				return states[states.length - 1].name
 			}
 
 			$scope.activeTab = function(tabName){
