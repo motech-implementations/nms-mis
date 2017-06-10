@@ -9,7 +9,6 @@
 			$scope.loginUrl = backend_root + 'nms/login';
 
 			$scope.login = function(){
-				console.log($scope.user)
 				$http.post($scope.loginUrl,
 					angular.toJson($scope.user),
 					{

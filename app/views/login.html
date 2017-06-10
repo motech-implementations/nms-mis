@@ -1,11 +1,11 @@
 <div class="block login" ng-controller="LoginController">
 	
 	<div class='login-header'>
-		<img src="images/NHM_Logo.png">
+		<!-- <img src="images/NHM_Logo.png"> -->
 	</div>
 
 	<div class="container-fluid login-body">
-		<div id="div-login" class="form-horizontal col-xs-offset-4 col-xs-4">
+		<div class="form-horizontal col-xs-offset-4 col-xs-4">
 			<h1>Login</h1>
 			<p class="error"></p>
 			<form action={{loginUrl}} method="post">
@@ -16,13 +16,14 @@
 				<div class="form-group">
 					<input type="password" class="form-control input input-sm" ng-model="user.password" name="password" placeholder="Password">
 				</div>
+				<!-- 
 				<div class="form-group checkbox">
 					<label>
 						<input type="checkbox" ng-model="user.rememberMe">
 						Remember me
 					</label>
 				</div>
-				<!-- <button id="btn-login" class="btn btn-default" ng-click="login()">Login</button> -->
+				-->
 				<div class="form-group">
 					<button id="btn-login" class="btn btn-sm btn-primary">Login</button>
 				</div>

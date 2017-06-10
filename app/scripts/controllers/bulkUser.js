@@ -20,6 +20,12 @@
 			$scope.uploadFile = function(){
 				var file = $scope.myFile;
 				var fd = new FormData();
+
+				if(file == null){
+					alert("Please select a CSV file")
+					return;
+				}
+
 				fd.append('bulkCsv', file);
 	//We can send anything in name parameter, 
 //it is hard coded to abc as it is irrelavant in this case.

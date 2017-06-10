@@ -23,6 +23,7 @@
 				$scope.reportCategory = item.name;
 				$scope.reportNames = item.options;
 				$scope.reportName = 'Select';
+				$scope.reportEnum = null;
 				$scope.service = null;
 				
 				$scope.states = [];

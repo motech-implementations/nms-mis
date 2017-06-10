@@ -3,9 +3,11 @@
 	<div class="block header">
 		<div class='block inputs row'>
 			<h1 class='col-sm-6'>User Management</h1>
-			<input  class="form-control input input-sm" ng-model="filterText" type="text" name="tableSearch" placeholder="Search">
-			<button class="btn btn-sm btn-primary" name="bulkUpload" ui-sref="userManagement.bulkUpload">Upload Bulk Users</button>
-			<button class="btn btn-sm btn-primary" name="newUser" ui-sref="userManagement.createUser">Create new User</button>
+
+			<input type="text" class="form-control input input-sm" ng-model="filterText" name="tableSearch" placeholder="Search">
+			<input type="button" class="btn btn-sm btn-primary" name="bulkUpload" ui-sref="userManagement.bulkUpload" value="Upload Bulk User">
+			<input type="button" class="btn btn-sm btn-primary" name="newUser" ui-sref="userManagement.createUser" value="Create new User">
+
 		</div>
 	</div>
 
@@ -23,11 +25,15 @@
 				<th class="sortable-columns" ng-click="sort_by('email')"><a>Email id</a></th>
 				<th class="th-dropdown">
 					<span uib-dropdown>
-						<a href id="accessTypeDropdown" uib-dropdown-toggle ng-if="true">Access Type
-							<span class="caret"></span>
-						</a>
-						<a href id="accessTypeDropdown" ng-if="exists(accType)">({{crop(accType)}})
-						</a>
+						<div uib-dropdown-toggle id="accessTypeDropdown">
+							<a href>
+								Access Type
+								<span class="caret"></span>
+							</a>
+							<a href ng-if="exists(accType)">
+								({{crop(accType)}})
+							</a>
+						</div>
 						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="accessTypeDropdown">
 							<li><a ng-click="setUniqueAccessTypes('')">ALL</a></li>
 							<li ng-repeat="aType in uniqueAT = (getUniqueAccessTypes())">
@@ -39,11 +45,15 @@
 				<!--<th>Access Type</th>-->
 				<th class="th-dropdown">
 					<span uib-dropdown>
-						<a href id="accessLevelDropdown" uib-dropdown-toggle>Access Level
-							<span class="caret"></span>
-						</a>
-						<a href id="accessLevelDropdown" ng-if="exists(accLevel)">({{crop(accLevel)}})
-						</a>
+						<div uib-dropdown-toggle id="accessLevelDropdown">
+							<a href>
+								Access Level
+								<span class="caret"></span>
+							</a>
+							<a href ng-if="exists(accLevel)">
+								({{crop(accLevel)}})
+							</a>
+						</div>
 						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="accessLevelDropdown">
 							<li>
 								<a ng-click="setUniqueAccessLevels('')">ALL</a>
@@ -56,13 +66,19 @@
 				</th>
 				<th class="th-dropdown">
 					<span uib-dropdown>
-						<a href id="stateDropdown" uib-dropdown-toggle >State
-							<span class="caret"></span>
-						</a>
-						<a href id="stateDropdown"  ng-if="exists(stateName)">({{crop(stateName)}})
-						</a>
+						<div uib-dropdown-toggle id="stateDropdown">
+							<a href>
+								State
+								<span class="caret"></span>
+							</a>
+							<a href ng-if="exists(stateName)">
+								({{crop(stateName)}})
+							</a>
+						</div>
 						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="stateDropdown">
-							<li><a ng-click="setUniqueStates('')">ALL</a></li>
+							<li>
+								<a ng-click="setUniqueStates('')">ALL</a>
+							</li>
 							<li ng-repeat="sName in sNames = (getUniqueStates())">
 								<a ng-click="setUniqueStates(sName)" >{{sName}}</a>
 							</li>
@@ -71,13 +87,18 @@
 				</th>
 				<th class="th-dropdown">
 					<span uib-dropdown>
-						<a href id="districtDropdown" uib-dropdown-toggle>District
-							<span class="caret"></span>
-						</a>
-						<a href id="districtDropdown" ng-if="exists(districtName)">({{crop(districtName)}})
-						</a>
+						<div uib-dropdown-toggle id="districtDropdown">
+							<a href>
+								District
+								<span class="caret"></span>
+							</a>
+							<a href ng-if="exists(districtName)">({{crop(districtName)}})
+							</a>
+						</div>
 						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="districtDropdown">
-							<li><a ng-click="setUniqueDistricts('')">ALL</a></li>
+							<li>
+								<a ng-click="setUniqueDistricts('')">ALL</a>
+							</li>
 							<li ng-repeat="dName in dNames = (getUniqueDistricts())">
 								<a ng-click="setUniqueDistricts(dName)" >{{dName}}</a>
 							</li>
@@ -86,11 +107,14 @@
 				</th>
 				<th class="th-dropdown">
 					<span uib-dropdown>
-						<a href id="blockDropdown" uib-dropdown-toggle>Block
-							<span class="caret"></span>
-						</a>
-						<a href id="blockDropdown" ng-if="exists(blockName)">({{crop(blockName)}})
-						</a>
+						<div uib-dropdown-toggle id="blockDropdown">
+							<a href>Block
+								<span class="caret"></span>
+							</a>
+							<a href ng-if="exists(blockName)">
+								({{crop(blockName)}})
+							</a>
+						</div>
 						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="blockDropdown">
 							<li><a ng-click="setUniqueBlocks('')">ALL</a></li>
 							<li ng-repeat="bName in bNames = (getUniqueBlocks())">
@@ -99,10 +123,6 @@
 						</ul>
 					</span>
 				</th>
-				<!--<th>Access Level</th>-->
-				<!--<th>State</th>-->
-				<!--<th>District</th>-->
-				<!--<th>Block</th>-->
 				<th><a>Edit</a></th>
 			</tr>
 			<!-- <tr ng-repeat="item in data"> -->
