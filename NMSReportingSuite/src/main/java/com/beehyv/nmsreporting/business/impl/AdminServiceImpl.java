@@ -1094,7 +1094,7 @@ public class AdminServiceImpl implements AdminService {
                     (kilkari.getAgeOnService() == null) ? "Ageless" : kilkari.getAgeOnService(),
                     (kilkari.getPackActivationDate() == null) ? "No Activation_date" :kilkari.getPackActivationDate(),
                     (kilkari.getDeactivationDate() == null) ? "No Deactivation_date" :kilkari.getDeactivationDate(),
-                    (kilkari.getAgeOnService() == null) ? "No Call_Data" :kilkari.getCallsAnswered()
+                    (kilkari.getCallsAnswered() == null) ? "No Call_Data" :kilkari.getCallsAnswered()
 
             });
             counter++;
