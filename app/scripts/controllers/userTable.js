@@ -129,7 +129,7 @@
 			}
 
 			$scope.exists = function(value){
-				return !(value == null || value == '');
+				return value != '';
 			}
 
 			$scope.resetFilters = function(){
@@ -138,12 +138,29 @@
 				$scope.blockName = '';
 				$scope.accType = '';
 				$scope.accLevel = '';
+
+				$scope.filterText = '';
+
+				$scope.sorter = 'id';
+				$scope.reverse = false;
 			}
+			$scope.resetFilters();
 
 			$scope.$watch('numPerPage', $scope.resetPage);
 //            $scope.$watch('filterData', function(value){
 //            console.log(value);
 //            });
+			
+			$scope.dropdownOpen =function(){
+				return (
+					$scope.exists($scope.accType) ||
+					$scope.exists($scope.accLevel) ||
+					$scope.exists($scope.stateName) ||
+					$scope.exists($scope.districtName) ||
+					$scope.exists($scope.blockName)
+				);
+			}
+
 			$scope.search = function (row) {
 				return (angular.lowercase(row.name).includes(angular.lowercase($scope.filterText) || '') || 
 						angular.lowercase(row.username).includes(angular.lowercase($scope.filterText) || '') || 

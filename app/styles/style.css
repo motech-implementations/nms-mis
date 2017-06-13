@@ -1,4 +1,3 @@
-
 .block{
 	padding: 10px;
 }
@@ -109,20 +108,23 @@ div.nav-bar .nav-menu li.active a{
 }
 
 
+div.login .login-header{
+	min-height: 60px;
+}
 
+div.userTable > .header > .inputs{
+	padding: 30px 0px 30px 10px;
+}
 div.userTable > .header > .inputs > *{
 	margin: 0px;
 	display: inline-block;
 	width: 15%;
-	padding-left: 10px;
 }
 div.userTable > .header > .inputs > h1{
-	padding: 5px;
-	margin: 15px 0px 15px;
 	width: 54%;
 }
 div.userTable > .header > .inputs > input{
-	margin-top: 15px
+
 }
 
 div.userTable .resetButton{
@@ -179,13 +181,22 @@ div.userTable table th.sortable-columns{
 div.userTable table th a{
 	color: #ffffff;
 }
+div.userTable table th.th-dropdown{
+	padding: 0px;
+}
+div.userTable table th.th-dropdown > span > div{
+	padding: 8px;
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+}
 div.userTable table th > span,
-div.userTable table th > span > a{
+div.userTable table th > span > div > a{
 	display: inline-block;
 	width: 100%;
 	height: 100%;
 }
-div.userTable table th > span > a span.caret{
+div.userTable table th > span > div > a span.caret{
 	float: right;
 	margin-top: 7px;
 }
@@ -206,6 +217,13 @@ div.userTable .pagination{
 }
 div.userTable .pagination *{
 	margin: 0px;
+}
+
+div.userTable .dropdown-menu > li > a{
+	max-width: 160px;
+}
+div.userTable .dropdown-menu.small > li > a{
+
 }
 
 div.reports-header{
@@ -255,10 +273,10 @@ div.reports-header .right * > .input-group > p{
 	min-width: 130px;
 }
 
-.dropdown-menu > li > a{
+div.reports .dropdown-menu > li > a{
 	min-width: 200px;
 }
-.dropdown-menu.small > li > a{
+div.reports .dropdown-menu.small > li > a{
 	max-width: 150px;
 }
 
@@ -300,8 +318,8 @@ div.bulkUpload-header > *{
 	display: inline-block;
 	width: 20%;
 }
-div.bulkUpload-header > input{
-	padding-top: 4px;
+div.bulkUpload-header > input[type="file"] {
+    display: none;
 }
 div.bulkUpload-header > p{
 	padding-top: 10px;
@@ -345,6 +363,12 @@ div.footer{
 .dropdown-menu{
    max-height: 300px; /*Provide height in pixels or in other units as per your layout*/
    overflow-y: auto; /*Provide an auto overflow to diaply scroll*/
+}
+
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active{
+	background-color: #2164b2;
 }
 
 .btn-info, 

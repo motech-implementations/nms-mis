@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="nmsReports" ng-controller="MainController">
 <head>
-	<title>{{getBreadCrumb($state.current.name).slice(-1).pop().name}}</title>
+	<title>NMS Reporting - {{title($state.current.name)}}</title>
 
 	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
@@ -51,19 +51,19 @@
 </head>
 <body>
 	<div class="main">
-		<div class='nav-bar' ng-hide='$state.current.name=="login"'>
+		<div class='nav-bar'>
 			<div class="nav-header">
 				<img src="images/logo.png">
-				<span><b>Hello {{currentUser.fullName}}</b></span>
+				<span ng-hide='$state.current.name=="login"'><b>Hello {{currentUser.fullName}}</b></span>
 			</div>
 
 			<div class="nav">
-				<ul class="breadcrumb">
+				<ul class="breadcrumb" ng-hide='$state.current.name=="login"'>
 					<li ng-repeat="item in getBreadCrumb($state.current.name)">
 						<a ui-sref='{{item.sref}}' ng-class="{'active': {{item.active}} }" >{{item.name}}</a>
 					</li>
 				</ul>
-				<ul class="nav-menu">
+				<ul class="nav-menu" ng-hide='$state.current.name=="login"'>
 					<li>
 						<a href={{logoutUrl}}>Logout</a>
 					</li>

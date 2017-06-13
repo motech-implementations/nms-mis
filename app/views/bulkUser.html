@@ -10,13 +10,24 @@
 		<br>
 		
  -->
- 		<div class="bulkUpload-header block">
- 			<input class="form-control input input-sm" type="file" name="bulkCsv" file-model="myFile" />
-	        <button class="btn btn-sm btn-primary" ng-click="uploadFile()">Upload Bulk User</button>
-	        <a class="btn btn-sm btn-primary" href="{{downloadTemplateUrl}}">Download Template</a>
-	        <br>
-	        <p>Note: Document should be in CSV format.</p>
- 		</div>
+		<div class="bulkUpload-header block">
+			
+			<label for="file-upload" class="btn btn-sm btn-default custom-file-upload">
+				<i class="fa fa-cloud-upload"></i>
+				<span ng-if="!myFile">Click here to select CSV file</span>
+				<span ng-if="myFile">{{myFile.name}}</span>
+			</label>
+			<input id="file-upload" class="input input-sm" type="file" name="bulkCsv" file-model="myFile" style="display: none;" />
+
+			<button class="btn btn-sm btn-primary" ng-click="uploadFile()">Upload Bulk User</button>
+
+			<a class="btn btn-sm btn-primary" href="{{downloadTemplateUrl}}">
+				<span class="glyphicon glyphicon-disk-save"></span>
+				Download Template
+			</a>
+			<br>
+			<p>Note: Document should be in CSV format.</p>
+		</div>
 		
 
 	</div>

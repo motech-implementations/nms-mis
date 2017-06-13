@@ -10,34 +10,15 @@
  */
 var nmsReportsApp = angular
 	.module('nmsReports', ['ui.bootstrap', 'ui.validate', 'ngMessages', 'ui.router'])
-	
-// 	.config(['$routeProvider',function ($routeProvider) {
-// 		$routeProvider
-// 		// .when('/', {
-// 		// 	templateUrl: 'login.html',
-// 		// })
-// 		.when('/login', {
-// 			templateUrl: 'login.html',
-// 		})
-// 		.when('/index',{
-// 			templateUrl: 'main.html',
-// 		})
-// /*		.otherwise({
-// 			redirectTo: 'login.html',
-// 		});*/
-// 	}])
 	.run( ['$rootScope', '$state', '$stateParams',
 		function ($rootScope, $state, $stateParams) {
 			$rootScope.$state = $state;
 			$rootScope.$stateParams = $stateParams;
 		}
 	])
-
 	.config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
-
 		$stateProvider
-			
-
+		
 			.state('userManagement', {
 				url: '/userManagement',
 				abstract: true,
