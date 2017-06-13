@@ -4,6 +4,7 @@ import com.beehyv.nmsreporting.dao.AbstractDao;
 import com.beehyv.nmsreporting.dao.KilkariLowUsageDao;
 import com.beehyv.nmsreporting.model.KilkariLowUsage;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
@@ -17,12 +18,11 @@ import java.util.List;
 @Repository("kilkariLowUsageDao")
 public class KilkariLowUsageDaoImpl extends AbstractDao<Integer, KilkariLowUsage> implements KilkariLowUsageDao {
     @Override
-    public List<KilkariLowUsage> getKilkariLowUsageUsers(Date fromDate, Date toDate) {
+    public List<KilkariLowUsage> getKilkariLowUsageUsers(String forMonth) {
         Criteria criteria = getSession().createCriteria(KilkariLowUsage.class);
-        criteria.add(Restrictions.and(
-                Restrictions.lt("modificationDate",toDate),
-                Restrictions.ge("modificationDate",fromDate)
-        ));
+        criteria.add(
+                Restrictions.like("forMonth",forMonth)
+        );
         criteria.addOrder(Order.asc("modificationDate"));
         return (List<KilkariLowUsage>) criteria.list();
     }

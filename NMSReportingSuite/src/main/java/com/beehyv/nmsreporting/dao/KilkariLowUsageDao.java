@@ -10,5 +10,5 @@ import java.util.List;
  */
 public interface KilkariLowUsageDao {
 
-    public List<KilkariLowUsage> getKilkariLowUsageUsers(Date fromDate, Date toDate);
+    public List<KilkariLowUsage> getKilkariLowUsageUsers(String forMonth);
 }

@@ -48,8 +48,11 @@ public class KilkariLowUsage {
     @Column(name="village_id", columnDefinition = "INT(11)")
     private Integer villageId;
 
-    @Column(name="modification_date", columnDefinition = "DATE")
+    @Column(name="modificationDate", columnDefinition = "DATETIME")
     private Date modificationDate;
+
+    @Column(name="for_month", columnDefinition = "VARCHAR(20)")
+    private String forMonth;
 
     public Integer getKilkariId() {
         return kilkariId;
@@ -153,5 +156,13 @@ public class KilkariLowUsage {
 
     public void setModificationDate(Date modificationDate) {
         this.modificationDate = modificationDate;
+    }
+
+    public String getForMonth() {
+        return forMonth;
+    }
+
+    public void setForMonth(String forMonth) {
+        this.forMonth = forMonth;
     }
 }

@@ -1,7 +1,5 @@
 package com.beehyv.nmsreporting.controller;
 
-import javax.servlet.ServletContext;
-
 import com.beehyv.nmsreporting.business.EmailService;
 import com.beehyv.nmsreporting.business.LocationService;
 import com.beehyv.nmsreporting.business.ReportService;
@@ -13,7 +11,6 @@ import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.Circle;
 import com.beehyv.nmsreporting.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -69,7 +66,7 @@ public class EmailController {
                                 newMail.setSubject(fileName);
                                 newMail.setFileName(fileName);
                                 place = circle.getCircleName()+" Circle";
-                                newMail.setBody(emailService.getBody(reportName,place,reportService.getMonthYear(c.getTime()),user.getFullName()));
+                                newMail.setBody(emailService.getBody(reportName,place,reportService.getMonthName(c.getTime()),user.getFullName()));
                                 newMail.setRootPath(pathName);
                                 errorMessage = emailService.sendMail(newMail);
                                 if (errorMessage.equalsIgnoreCase("failure"))
@@ -82,7 +79,7 @@ public class EmailController {
                             newMail.setSubject(fileName);
                             newMail.setFileName(fileName);
                             place = "NATIONAL";
-                            newMail.setBody(emailService.getBody(reportName,place,reportService.getMonthYear(c.getTime()),user.getFullName()));
+                            newMail.setBody(emailService.getBody(reportName,place,reportService.getMonthName(c.getTime()),user.getFullName()));
                             newMail.setRootPath(pathName);
                             errorMessage = emailService.sendMail(newMail);
                             if (errorMessage.equalsIgnoreCase("failure"))
@@ -95,7 +92,7 @@ public class EmailController {
                             newMail.setFileName(fileName);
                             Circle circle = reportService.getUserCircles(user).get(0);
                             place = circle.getCircleName()+" Circle";
-                            newMail.setBody(emailService.getBody(reportName,place,reportService.getMonthYear(c.getTime()),user.getFullName()));
+                            newMail.setBody(emailService.getBody(reportName,place,reportService.getMonthName(c.getTime()),user.getFullName()));
                             newMail.setRootPath(pathName);
                             errorMessage = emailService.sendMail(newMail);
                             if (errorMessage.equalsIgnoreCase("failure"))
@@ -125,7 +122,7 @@ public class EmailController {
                         fileName = reportService.getReportPathName(reportRequest).get(0);
                         newMail.setSubject(fileName);
                         newMail.setFileName(fileName);
-                        newMail.setBody(emailService.getBody(reportName,place,reportService.getMonthYear(c.getTime()),user.getFullName()));
+                        newMail.setBody(emailService.getBody(reportName,place,reportService.getMonthName(c.getTime()),user.getFullName()));
                         newMail.setRootPath(pathName);
                         errorMessage = emailService.sendMail(newMail);
                         if (errorMessage.equalsIgnoreCase("failure"))
@@ -148,7 +145,7 @@ public class EmailController {
         String pathName = System.getProperty("user.home") + File.separator;
         newMail.setSubject("Mobile Academy "+fileName);
         newMail.setFileName(fileName);
-        newMail.setBody(emailService.getBody("Mobile Academy CumulativeInactiveUsers","ODISHA",reportService.getMonthYear(c.getTime()),"OdishaNHM"));
+        newMail.setBody(emailService.getBody("Mobile Academy CumulativeInactiveUsers","ODISHA",reportService.getMonthName(c.getTime()),"OdishaNHM"));
         newMail.setRootPath(pathName+fileName);
         return emailService.sendMail(newMail);
     }

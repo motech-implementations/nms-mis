@@ -107,7 +107,7 @@ public class ReportServiceImpl implements ReportService{
     }
 
     @Override
-    public String getMonthYear(Date toDate) {
+    public String getMonthName(Date toDate) {
         Calendar c =Calendar.getInstance();
         c.setTime(toDate);
         int month=c.get(Calendar.MONTH)+1;

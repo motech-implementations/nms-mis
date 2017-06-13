@@ -16,8 +16,8 @@ public enum ReportType {
     maAnonymous("MAAnonymousUsers", "Circle wise Anonymous Reports", "M"),
     maInactive("MACumulativeInactiveUsers", "Cumulative Inactive Users", "M"),
     lowUsage("KilkariLowUsage", "Listen to < 25% this month", "K"),
-    selfDeactivated("KilkariSelfDeactivated", "Deactivation for not answering", "K"),
-    sixWeeks("KilkariSixWeeksNoAnswer", "Self Deactivations", "K");
+    selfDeactivated("KilkariSelfDeactivated", "Self Deactivations", "K"),
+    sixWeeks("KilkariSixWeeksNoAnswer", "Deactivation for not answering", "K");
 
     private String reportType;
     private String reportName;

@@ -637,7 +637,7 @@ public class AdminServiceImpl implements AdminService {
         }
         if(reportRequest.getReportType().equals(ReportType.lowUsage.getReportType())){
 
-            List<KilkariLowUsage> kilkariLowUsageList = kilkariLowUsageDao.getKilkariLowUsageUsers(fromDate, toDate);
+            List<KilkariLowUsage> kilkariLowUsageList = kilkariLowUsageDao.getKilkariLowUsageUsers(getMonthYear(toDate));
             if(stateId==0){
                 getKilkariLowUsage(kilkariLowUsageList, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
             }
@@ -1019,7 +1019,7 @@ public class AdminServiceImpl implements AdminService {
                     (kilkari.getRchId() == null) ? "No RCH Id" : kilkari.getRchId(),
                     (kilkari.getName() == null) ? "No Name" : kilkari.getName(),
                     (kilkari.getMsisdn() == null) ? "No MSISDN" : kilkari.getMsisdn(),
-                    (kilkari.getAgeOnService() == null) ? "Ageless" : kilkari.getAgeOnService()
+                    (kilkari.getAgeOnService() == null) ? "No Age_Data" : kilkari.getAgeOnService()
 
             });
             counter++;
@@ -1095,10 +1095,10 @@ public class AdminServiceImpl implements AdminService {
                     (kilkari.getRchId() == null) ? "No RCH Id" : kilkari.getRchId(),
                     (kilkari.getName() == null) ? "No Name" : kilkari.getName(),
                     (kilkari.getMsisdn() == null) ? "No MSISDN" : kilkari.getMsisdn(),
-                    (kilkari.getAgeOnService() == null) ? "Ageless" : kilkari.getAgeOnService(),
+                    (kilkari.getAgeOnService() == null) ? "No Age_Data" : kilkari.getAgeOnService(),
                     (kilkari.getPackActivationDate() == null) ? "No Activation_date" :kilkari.getPackActivationDate(),
                     (kilkari.getDeactivationDate() == null) ? "No Deactivation_date" :kilkari.getDeactivationDate(),
-                    (kilkari.getAgeOnService() == null) ? "No Call_Data" :kilkari.getCallsAnswered()
+                    (kilkari.getCallsAnswered() == null) ? "No Call_Data" :kilkari.getCallsAnswered()
 
             });
             counter++;
@@ -1171,7 +1171,7 @@ public class AdminServiceImpl implements AdminService {
                     (kilkari.getRchId() == null) ? "No RCH Id" : kilkari.getRchId(),
                     (kilkari.getName() == null) ? "No Name" : kilkari.getName(),
                     (kilkari.getMsisdn() == null) ? "No MSISDN" : kilkari.getMsisdn(),
-                    (kilkari.getAgeOnService() == null) ? "Ageless" : kilkari.getAgeOnService(),
+                    (kilkari.getAgeOnService() == null) ? "No Age_Data" : kilkari.getAgeOnService(),
             });
             counter++;
         }
@@ -1370,7 +1370,7 @@ public class AdminServiceImpl implements AdminService {
     public void getKilkariLowUsageFiles(Date fromDate, Date toDate) {
         List<State> states = stateDao.getStatesByServiceType(ReportType.lowUsage.getServiceType());
         String rootPath = reports+ReportType.lowUsage.getReportType() + "/";
-        List<KilkariLowUsage> kilkariLowUsageList = kilkariLowUsageDao.getKilkariLowUsageUsers(fromDate, toDate);
+        List<KilkariLowUsage> kilkariLowUsageList = kilkariLowUsageDao.getKilkariLowUsageUsers(getMonthYear(toDate));
         getKilkariLowUsage(kilkariLowUsageList, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
         for (State state : states) {
             String stateName = StReplace(state.getStateName());
