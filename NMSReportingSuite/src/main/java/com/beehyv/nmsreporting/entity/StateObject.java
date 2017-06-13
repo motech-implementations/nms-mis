@@ -7,7 +7,8 @@ import java.util.Date;
 /**
  * Created by beehyv on 7/6/17.
  */
-public class ServiceState {
+public class StateObject {
+
     private Integer stateId;
 
     private String stateName;
@@ -20,7 +21,7 @@ public class ServiceState {
 
     private Date serviceStartDate;
 
-    public ServiceState(State state){
+    public StateObject(State state){
         this.stateId = state.getStateId();
         this.stateName = state.getStateName();
         this.locationId = state.getLocationId();

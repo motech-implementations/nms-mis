@@ -8,7 +8,26 @@
 				if(!result.data){
 					$state.go('login', {});
 				}
+				else{
+					UserFormFactory.downloadCurrentUser()
+					.then(function(result){
+						UserFormFactory.setCurrentUser(result.data);
+					})
+				}
 			})
+
+			$scope.hasState = function(){
+				return UserFormFactory.getCurrentUser().stateId != null;
+			}
+			$scope.hasDistrict = function(){
+				return UserFormFactory.getCurrentUser().districtId != null;
+			}
+			$scope.hasBlock = function(){
+				return UserFormFactory.getCurrentUser().blockId != null;
+			}
+			$scope.hasOneCircle = function(){
+				return $scope.circles.length == 1;
+			}
 			
 			$scope.reportsLoading = true;
 			UserFormFactory.getReportsMenu()
@@ -39,13 +58,14 @@
 				$scope.reportName = item.name;
 				$scope.reportEnum = item.reportEnum;
 
-				$scope.getStatesByService(item.service);
-
-				$scope.service = item.service;
-
 				$scope.states = [];
 				$scope.clearState();
 				$scope.clearCircle();
+
+				$scope.getStatesByService(item.service);
+				$scope.getCirclesByService(item.service);
+
+				$scope.service = item.service;
 
 				$scope.dt = null;
 				$scope.setDateOptions();
@@ -78,6 +98,10 @@
 					$scope.districts = [];
 					$scope.blocks = [];
 					$scope.statesLoading = false;
+
+					if($scope.hasState()){
+						$scope.selectState($scope.states[0]);
+					}
 				});
 			}
 			
@@ -88,6 +112,10 @@
 					$scope.districts = result.data;
 					$scope.blocks = [];
 					$scope.districtsLoading = false;
+
+					if($scope.hasDistrict()){
+						$scope.selectDistrict($scope.districts[0]);
+					}
 				});
 			}
 
@@ -97,15 +125,24 @@
 				.then(function(result){
 					$scope.blocks = result.data;
 					$scope.blocksLoading = false;
+
+					if($scope.hasBlock()){
+						$scope.selectBlock($scope.blocks[0]);
+					}
 				});
 			}
 
-			$scope.getCircles =function(){
+			$scope.getCirclesByService = function(service){
 				$scope.circlesLoading = true;
-				return UserFormFactory.getCircles()
+				return UserFormFactory.getCirclesByService(service)
 				.then(function(result){
 					$scope.circles = result.data;
+
 					$scope.circlesLoading = false;
+
+					if($scope.hasOneCircle()){
+						$scope.selectCircle($scope.circles[0]);
+					}
 				});
 			}
 
@@ -116,6 +153,9 @@
 				}
 				if($scope.state != null){
 					minDate = $scope.state.serviceStartDate;
+				}
+				if($scope.circle != null){
+					minDate = $scope.circle.serviceStartDate;
 				}
 
 				if($scope.reportEnum == 'MACumulativeInactiveUsers'){
@@ -178,8 +218,6 @@
 			}
 
 			$scope.waiting = false;
-			
-			$scope.getCircles();
 
 			$scope.fileName = "";
 

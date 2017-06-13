@@ -3,7 +3,9 @@ package com.beehyv.nmsreporting.controller;
 import com.beehyv.nmsreporting.business.LocationService;
 import com.beehyv.nmsreporting.business.ReportService;
 import com.beehyv.nmsreporting.business.UserService;
-import com.beehyv.nmsreporting.entity.ServiceState;
+import com.beehyv.nmsreporting.dao.CircleDao;
+import com.beehyv.nmsreporting.entity.CircleDto;
+import com.beehyv.nmsreporting.entity.StateObject;
 import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by beehyv on 22/3/17.
@@ -49,7 +49,7 @@ public class LocationController {
     }
 
     @RequestMapping(value = {"/state/{serviceType}"}, method = RequestMethod.GET)
-    public @ResponseBody List<ServiceState> getStatesByServiceType(@PathVariable("serviceType") String serviceType) {
+    public @ResponseBody List<StateObject> getStatesByServiceType(@PathVariable("serviceType") String serviceType) {
         User user = userService.getCurrentUser();
         List<State> states;
         if(user.getAccessLevel().equals(AccessLevel.NATIONAL.getAccessLevel())) {
@@ -62,14 +62,14 @@ public class LocationController {
                 states.add(locationService.findStateById(user.getStateId()));
             }
         }
-        List<ServiceState> serviceStates = new ArrayList<>();
+        ArrayList<StateObject> stateObjects = new ArrayList<>();
         for(State s : states){
-            ServiceState serviceState = new ServiceState(s);
-            serviceState.setServiceType(serviceType);
-            serviceState.setServiceStartDate(locationService.getServiceStartdateForState(s.getStateId(), serviceType));
-            serviceStates.add(serviceState);
+            StateObject stateObject = new StateObject(s);
+            stateObject.setServiceType(serviceType);
+            stateObject.setServiceStartDate(locationService.getServiceStartdateForState(s.getStateId(), serviceType));
+            stateObjects.add(stateObject);
         }
-        return serviceStates;
+        return stateObjects;
     }
 
     /*--------------------------District-----------------------------*/
@@ -106,15 +106,19 @@ public class LocationController {
             blocks = locationService.getChildBlocks(districtId);
         }
         else if(user.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel())) {
-            if(locationService.findDistrictById(districtId).getStateOfDistrict() == user.getStateId()){
+            if(locationService.findDistrictById(districtId).getStateOfDistrict().equals(user.getStateId())){
                 blocks = locationService.getChildBlocks(districtId);
             }
             else{
                 blocks = new ArrayList<>();
             }
         }
-        else{
+        else if(user.getAccessLevel().equals(AccessLevel.DISTRICT.getAccessLevel())){
             blocks = locationService.getChildBlocks(user.getDistrictId());
+        }
+        else{
+            blocks = new ArrayList<>();
+            blocks.add(locationService.findBlockById(user.getBlockId()));
         }
 
         return blocks;
@@ -132,6 +136,25 @@ public class LocationController {
         User currentUser = userService.getCurrentUser();
         return reportService.getUserCircles(currentUser);
     }
+
+    @RequestMapping(value = {"/circle/{serviceType}"}, method = RequestMethod.GET)
+    public @ResponseBody List<CircleDto> getCirclesByServiceType(@PathVariable("serviceType") String serviceType) {
+        User user = userService.getCurrentUser();
+        List<CircleDto> finalCircleDtoList = new ArrayList<>();
+        List<CircleDto> circleDtoList = locationService.getCircleObjectList(user, serviceType);
+        Map<Integer, CircleDto> map = new HashMap<>();
+        for(CircleDto circleDto:circleDtoList){
+            if(map.get(circleDto.getCircleId()) == null || map.get(circleDto.getCircleId()).getServiceStartDate().after(circleDto.getServiceStartDate())){
+                map.put(circleDto.getCircleId(), circleDto);
+            }
+        }
+        for(Integer key : map.keySet()){
+            finalCircleDtoList.add(map.get(key));
+        }
+        return finalCircleDtoList;
+    }
+
+
 
     /*--------------------------Extra-----------------------------*/
 }

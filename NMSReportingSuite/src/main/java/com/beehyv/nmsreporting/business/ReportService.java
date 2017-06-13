@@ -16,7 +16,7 @@ public interface ReportService {
 
     List<String> getReportPathName(ReportRequest reportRequest);
 
-//    List<StateCircle> getCirclesByState(Integer stateId);
+//    List<StateCircle> getRelByStateId(Integer stateId);
 
     List<Circle> getUserCircles(User user);
 

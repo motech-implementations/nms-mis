@@ -2,11 +2,14 @@ package com.beehyv.nmsreporting.business.impl;
 
 import com.beehyv.nmsreporting.business.LocationService;
 import com.beehyv.nmsreporting.dao.*;
+import com.beehyv.nmsreporting.entity.CircleDto;
+import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +36,9 @@ public class LocationServiceImpl implements LocationService {
 
     @Autowired
     private CircleDao circleDao;
+
+    @Autowired
+    private StateCircleDao stateCircleDao;
 
 //    public void createNewLocation(Location location) {
 //        locationDao.saveLocation(location);
@@ -70,7 +76,12 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public List<State> getStatesByServiceType(String serviceType) {
-        return stateServiceDao.getStatesByServiceType(serviceType);
+        List<StateService> list = stateServiceDao.getStatesByServiceType(serviceType);
+        List<State> stateList = new ArrayList<>();
+        for(StateService stateService : list){
+            stateList.add(stateDao.findByStateId(stateService.getStateId()));
+        }
+        return stateList;
     }
 
     @Override
@@ -139,4 +150,48 @@ public class LocationServiceImpl implements LocationService {
     public List<Circle> getAllCirles() {
         return circleDao.getAllCircles();
     }
+
+    @Override
+    public List<CircleDto> getCircleObjectList(User user, String serviceType){
+        List<StateCircle> list = new ArrayList<>();
+        if(user.getAccessLevel().equalsIgnoreCase(AccessLevel.NATIONAL.getAccessLevel())){
+            list = stateCircleDao.getRelByStateId(null);
+        }
+        else if(user.getAccessLevel().equalsIgnoreCase(AccessLevel.STATE.getAccessLevel())){
+            list = stateCircleDao.getRelByStateId(user.getStateId());
+        }else{
+            StateCircle stateCircle = new StateCircle();
+            stateCircle.setCircleId(districtDao.findByDistrictId(user.getDistrictId()).getCircleOfDistrict());
+            stateCircle.setStateId(user.getStateId());
+            list.add(stateCircle);
+        }
+
+        List<CircleDto> circleList = new ArrayList<>();
+
+        for(StateCircle stateCircle : list){
+            CircleDto circleDto = new CircleDto(circleDao.getByCircleId(stateCircle.getCircleId()));
+            circleDto.setStateId(stateCircle.getStateId());
+            circleDto.setServiceStartDate(stateServiceDao.getServiceStartDateForState(stateCircle.getStateId(), serviceType));
+            circleDto.setServiceType(serviceType);
+            if(circleDto.getServiceStartDate() != null)
+                circleList.add(circleDto);
+        }
+        return circleList;
+    }
+
+//    @Override
+//    public List<CircleDto> getCircleObjectList(List<Circle> circleList) {
+//        List<CircleDto> circleDtoList = new ArrayList<>();
+//        /*for(Circle circle : circleList){
+//            CircleDto circleObject = new CircleDto(circle);
+//            List<StateCircle> list = stateCircleDao.getRelByCircleId(circle.getCircleId());
+//            for(StateCircle sc : list){
+//                stateServiceDao.
+//            }
+//
+//
+//            circleDtoList.add(circleObject);
+//        }*/
+//        return circleDtoList;
+//    }
 }

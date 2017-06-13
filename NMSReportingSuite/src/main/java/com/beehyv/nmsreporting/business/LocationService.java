@@ -1,5 +1,6 @@
 package com.beehyv.nmsreporting.business;
 
+import com.beehyv.nmsreporting.entity.CircleDto;
 import com.beehyv.nmsreporting.model.*;
 
 import java.util.Date;
@@ -58,4 +59,6 @@ public interface LocationService {
     Circle findCircleById(Integer circleId);
 
     List<Circle> getAllCirles();
+
+    List<CircleDto> getCircleObjectList(User user, String serviceType);
 }

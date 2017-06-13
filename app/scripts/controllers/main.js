@@ -75,7 +75,7 @@
 				return $scope.breadCrumbDict[state];
 			}
 
-			$scope.title = function(state){
+			$scope.getTitle = function(state){
 				var states = $scope.getBreadCrumb(state)
 				return states[states.length - 1].name
 			}

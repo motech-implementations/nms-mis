@@ -9,6 +9,8 @@ import java.util.List;
  */
 public interface StateCircleDao {
 
-    List<StateCircle> getCirclesByState(Integer stateId);
+    List<StateCircle> getRelByCircleId(Integer circleId);
+
+    List<StateCircle> getRelByStateId(Integer stateId);
 
 }

@@ -10,7 +10,9 @@ import java.util.List;
  * Created by beehyv on 6/6/17.
  */
 public interface StateServiceDao {
-    List<State> getStatesByServiceType(String type);
+    List<StateService> getStatesByServiceType(String serviceType);
 
-    Date getServiceStartDateForState(Integer stateId,String type);
+    List<String> getServiceTypeOfState(Integer stateId);
+
+    Date getServiceStartDateForState(Integer stateId, String type);
 }

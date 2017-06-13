@@ -36,12 +36,10 @@
 				},
 
 				getStates: function(){
-						return $http.get(backend_root + 'nms/location/states');
-
+					return $http.get(backend_root + 'nms/location/states');
 				},
 				getStatesByService: function(service){
-						return $http.get(backend_root + 'nms/location/state/' + service);
-
+					return $http.get(backend_root + 'nms/location/state/' + service);
 				},
 
 				getDistricts: function(stateId){
@@ -54,6 +52,9 @@
 
 				getCircles: function(){
 					return $http.get(backend_root + 'nms/location/circles');
+				},
+				getCirclesByService: function(service){
+					return $http.get(backend_root + 'nms/location/circle/' + service);
 				},
 
 				getReportsMenu: function(){

@@ -17,10 +17,17 @@ import java.util.List;
 public class StateCircleDaoImpl extends AbstractDao<Integer,StateCircle> implements StateCircleDao{
 
     @Override
-    public List<StateCircle> getCirclesByState(Integer stateId) {
+    public List<StateCircle> getRelByCircleId(Integer circleId){
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.eq("circleId", circleId));
+        return criteria.list();
+    }
+
+    @Override
+    public List<StateCircle> getRelByStateId(Integer stateId) {
         Criteria criteria = createEntityCriteria();
         if(stateId!=null)
-        criteria.add(Restrictions.eq("stateId", stateId));
+            criteria.add(Restrictions.eq("stateId", stateId));
         return criteria.list();
     }
 }

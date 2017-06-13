@@ -80,19 +80,24 @@ public class ReportServiceImpl implements ReportService{
     }
 
 //    @Override
-//    public List<StateCircle> getCirclesByState(Integer stateId) {
-//        return stateCircleDao.getCirclesByState(stateId);
+//    public List<StateCircle> getRelByStateId(Integer stateId) {
+//        return stateCircleDao.getRelByStateId(stateId);
 //    }
 
 
     @Override
     public List<Circle> getUserCircles(User user){
-        List<StateCircle> list;
+        List<StateCircle> list = new ArrayList<>();
         if(user.getAccessLevel().equalsIgnoreCase(AccessLevel.NATIONAL.getAccessLevel())){
-            list = stateCircleDao.getCirclesByState(null);
+            list = stateCircleDao.getRelByStateId(null);
         }
-        else{
-            list = stateCircleDao.getCirclesByState(user.getStateId());
+        else if(user.getAccessLevel().equalsIgnoreCase(AccessLevel.STATE.getAccessLevel())){
+            list = stateCircleDao.getRelByStateId(user.getStateId());
+        }else{
+            StateCircle stateCircle = new StateCircle();
+            stateCircle.setCircleId(districtDao.findByDistrictId(user.getDistrictId()).getCircleOfDistrict());
+            stateCircle.setStateId(user.getStateId());
+            list.add(stateCircle);
         }
         List<Circle> circleList = new ArrayList<>();
         for(StateCircle item : list){
