@@ -117,7 +117,7 @@
 							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" ng-disabled="circles[0] == null || hasOneCircle()" uib-dropdown-toggle ng-class="{loading: circlesLoading}">
 								<span class="block">
 									<span>{{circle.circleName}}</span>
-									<span ng-if="circle == null && $hasState()">ALL</span>
+									<span ng-if="circle == null && !hasState()">ALL</span>
 									<span class="caret"></span>
 								</span>
 							</button>

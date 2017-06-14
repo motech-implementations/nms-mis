@@ -59,7 +59,7 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.and(
                 Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus()),
-                Restrictions.ne("userId",1)
+                Restrictions.ne("roleId",1)
         ));
         return (List<User>) criteria.list();
     }
@@ -80,15 +80,20 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
     @Override
     public List<User> getUsersByRole(Role roleId) {
         Criteria criteria = createEntityCriteria();
-        criteria.add(Restrictions.and(Restrictions.eq("roleId", roleId),
-                Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus())));
+        criteria.add(Restrictions.and(
+                Restrictions.eq("roleId", roleId),
+                Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus())
+        ));
         return (List<User>) criteria.list();
     }
 
     @Override
     public <E> List<User> getUsersByLocation(String propertyName, E location) {
         Criteria criteria = createEntityCriteria();
-        criteria.add(Restrictions.eq(propertyName, location));
+        criteria.add(Restrictions.and(
+                Restrictions.eq(propertyName, location),
+                Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus())
+        ));
         return (List<User>) criteria.list();
     }
 

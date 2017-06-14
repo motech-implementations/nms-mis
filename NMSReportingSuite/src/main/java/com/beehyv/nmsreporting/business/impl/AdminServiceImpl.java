@@ -135,7 +135,7 @@ public class AdminServiceImpl implements AdminService {
                             errorCreatingUsers.put(rowNum, userNameError);
                             continue;
                         }
-                        int loggedUserRole = loggedInUser.getRoleId().getRoleId();
+                        int loggedUserRole = loggedInUser.getRoleId();
                         String loggedUserAccess = loggedInUser.getAccessLevel();
                         AccessLevel loggedUserAccessLevel = AccessLevel.getLevel(loggedUserAccess);
                         String userPhone = Line[4];
@@ -402,6 +402,10 @@ public class AdminServiceImpl implements AdminService {
                                 }
                             }
                         }
+                        user.setStateName(user.getStateId()==null ? "" : stateDao.findByStateId(user.getStateId()).getStateName());
+                        user.setDistrictName(user.getDistrictId()==null? "" : districtDao.findByDistrictId(user.getDistrictId()).getDistrictName());
+                        user.setBlockName(user.getBlockId()==null ? "" :  blockDao.findByblockId(user.getBlockId()).getBlockName());
+                        user.setRoleName(user.getRoleId()==null ? "" : roleDao.findByRoleId(user.getRoleId()).getRoleDescription());
                         userDao.saveUser(user);
                     }
                 } catch (FileNotFoundException e) {

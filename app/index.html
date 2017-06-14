@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="nmsReports" ng-controller="MainController">
 <head>
-	<title>NMS Reporting - {{title($state.current.name)}}</title>
+	<title>NMS Reporting - {{getTitle($state.current.name)}}</title>
 
 	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
@@ -70,7 +70,7 @@
 					<li ng-class="{active: activeTab('profile')}">
 						<a ui-sref="profile">My Profile</a>
 					</li>
-					<li ng-class="{active: activeTab('userManagement')}" ng-if="currentUser.roleId.roleDescription != null && currentUser.roleId.roleDescription != 'USER'">
+					<li ng-class="{active: activeTab('userManagement')}" ng-if="currentUser.roleId!= null && currentUser.roleName != 'USER'">
 						<a ui-sref="userManagement.userTable">User Management</a>
 					</li>
 					<li ng-class="{active: activeTab('reports')}">

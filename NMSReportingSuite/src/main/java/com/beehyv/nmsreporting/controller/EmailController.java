@@ -72,40 +72,40 @@ public class EmailController {
                                 if (errorMessage.equalsIgnoreCase("failure"))
                                     errorSendingMail.put(user.getEmailId(),fileName);
                             }
-                        }else if(user.getAccessLevel().equalsIgnoreCase(AccessLevel.NATIONAL.getAccessLevel())){
-                            reportRequest.setCircleId(0);
-                            pathName = reportService.getReportPathName(reportRequest).get(1);
-                            fileName = reportService.getReportPathName(reportRequest).get(0);
-                            newMail.setSubject(fileName);
-                            newMail.setFileName(fileName);
-                            place = "NATIONAL";
-                            newMail.setBody(emailService.getBody(reportName,place,reportService.getMonthName(c.getTime()),user.getFullName()));
-                            newMail.setRootPath(pathName);
-                            errorMessage = emailService.sendMail(newMail);
-                            if (errorMessage.equalsIgnoreCase("failure"))
-                                errorSendingMail.put(user.getEmailId(),fileName);
-                        } else {
-                            reportRequest.setCircleId(locationService.findDistrictById(user.getDistrictId()).getCircleOfDistrict());
-                            pathName = reportService.getReportPathName(reportRequest).get(1);
-                            fileName = reportService.getReportPathName(reportRequest).get(0);
-                            newMail.setSubject(fileName);
-                            newMail.setFileName(fileName);
-                            Circle circle = reportService.getUserCircles(user).get(0);
-                            place = circle.getCircleName()+" Circle";
-                            newMail.setBody(emailService.getBody(reportName,place,reportService.getMonthName(c.getTime()),user.getFullName()));
-                            newMail.setRootPath(pathName);
-                            errorMessage = emailService.sendMail(newMail);
-                            if (errorMessage.equalsIgnoreCase("failure"))
-                                errorSendingMail.put(user.getEmailId(),fileName);
-                        }
+                        }//else if(user.getAccessLevel().equalsIgnoreCase(AccessLevel.NATIONAL.getAccessLevel())){
+//                            reportRequest.setCircleId(0);
+//                            pathName = reportService.getReportPathName(reportRequest).get(1);
+//                            fileName = reportService.getReportPathName(reportRequest).get(0);
+//                            newMail.setSubject(fileName);
+//                            newMail.setFileName(fileName);
+//                            place = "NATIONAL";
+//                            newMail.setBody(emailService.getBody(reportName,place,reportService.getMonthName(c.getTime()),user.getFullName()));
+//                            newMail.setRootPath(pathName);
+//                            errorMessage = emailService.sendMail(newMail);
+//                            if (errorMessage.equalsIgnoreCase("failure"))
+//                                errorSendingMail.put(user.getEmailId(),fileName);
+//                        } else {
+//                            reportRequest.setCircleId(locationService.findDistrictById(user.getDistrictId()).getCircleOfDistrict());
+//                            pathName = reportService.getReportPathName(reportRequest).get(1);
+//                            fileName = reportService.getReportPathName(reportRequest).get(0);
+//                            newMail.setSubject(fileName);
+//                            newMail.setFileName(fileName);
+//                            Circle circle = reportService.getUserCircles(user).get(0);
+//                            place = circle.getCircleName()+" Circle";
+//                            newMail.setBody(emailService.getBody(reportName,place,reportService.getMonthName(c.getTime()),user.getFullName()));
+//                            newMail.setRootPath(pathName);
+//                            errorMessage = emailService.sendMail(newMail);
+//                            if (errorMessage.equalsIgnoreCase("failure"))
+//                                errorSendingMail.put(user.getEmailId(),fileName);
+//                        }
                     }else {
-                        place = "NATIONAL";
-                        if (user.getStateId() == null)
-                            reportRequest.setStateId(0);
-                        else {
-                            reportRequest.setStateId(user.getStateId());
-                            place = locationService.findStateById(user.getStateId()).getStateName()+" State";
-                        }
+//                        place = "NATIONAL";
+//                        if (user.getStateId() == null)
+//                            reportRequest.setStateId(0);
+//                        else {
+//                            reportRequest.setStateId(user.getStateId());
+//                            place = locationService.findStateById(user.getStateId()).getStateName()+" State";
+//                        }
                         if (user.getDistrictId() == null)
                             reportRequest.setDistrictId(0);
                         else {
@@ -124,7 +124,10 @@ public class EmailController {
                         newMail.setFileName(fileName);
                         newMail.setBody(emailService.getBody(reportName,place,reportService.getMonthName(c.getTime()),user.getFullName()));
                         newMail.setRootPath(pathName);
-                        errorMessage = emailService.sendMail(newMail);
+                        if(user.getDistrictId() != null)
+                            errorMessage = emailService.sendMail(newMail);
+                        else
+                            errorMessage = "success";
                         if (errorMessage.equalsIgnoreCase("failure"))
                             errorSendingMail.put(user.getEmailId(),fileName);
                     }

@@ -61,4 +61,7 @@ public interface LocationService {
     List<Circle> getAllCirles();
 
     List<CircleDto> getCircleObjectList(User user, String serviceType);
+
+
+    public User SetLocations(User user);
 }

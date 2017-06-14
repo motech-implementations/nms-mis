@@ -110,7 +110,7 @@ public class UserController {
             else{
                 user1.setBlock("");
             }
-            user1.setAccessType(currentUser.getRoleId().getRoleDescription());
+            user1.setAccessType(currentUser.getRoleName());
             user1.setCreatedBy(true);
             return user1;
         }
@@ -124,7 +124,7 @@ public class UserController {
     @RequestMapping(value={"/isAdminLoggedIn"})
     public @ResponseBody Boolean isAdminLoggedIn() {
         User currentUser = userService.getCurrentUser();
-        if(currentUser == null || currentUser.getRoleId().getRoleDescription().equals(AccessType.USER.getAccessType())){
+        if(currentUser == null || currentUser.getRoleName().equals(AccessType.USER.getAccessType())){
             return false;
         }
         return true;
@@ -147,19 +147,19 @@ public class UserController {
             if(user.getStateId() == null){
                 user1.setState("");
             } else{
-                user1.setState(locationService.findStateById(user.getStateId()).getStateName());
+                user1.setState(user.getStateName());
             }
             if(user.getDistrictId() == null){
                 user1.setDistrict("");
             } else{
-                user1.setDistrict(locationService.findDistrictById(user.getDistrictId()).getDistrictName());
+                user1.setDistrict(user.getDistrictName());
             }
             if(user.getBlockId() == null){
                 user1.setBlock("");
             } else{
-                user1.setBlock(locationService.findBlockById(user.getBlockId()).getBlockName());
+                user1.setBlock(user.getBlockName());
             }
-            user1.setAccessType(user.getRoleId().getRoleDescription());
+            user1.setAccessType(user.getRoleName());
             int a;
             try{
                 a = user.getCreatedByUser().getUserId();
@@ -167,7 +167,7 @@ public class UserController {
                 a = 0;
             }
             int b = getCurrentUser().getUserId();
-            user1.setCreatedBy(a == b || getCurrentUser().getRoleId().getRoleId() == 1);
+            user1.setCreatedBy(a == b || getCurrentUser().getRoleId() == 1);
             tabDto.add(user1);
 
         }
@@ -179,36 +179,36 @@ public class UserController {
         return userService.findUserByUserId(userId);
     }
 
-    @RequestMapping(value={"/dto/{userId}"})
-    public @ResponseBody UserDto getUserDto(@PathVariable("userId") Integer userId) {
-        User user = userService.findUserByUserId(userId);
-        String[] levels = {"National", "State", "District", "Block"};
-        UserDto user1 = new UserDto();
-        user1.setId(user.getUserId());
-        user1.setName(user.getFullName());
-        user1.setUsername(user.getUsername());
-        user1.setEmail(user.getEmailId());
-        user1.setPhoneNumber(user.getPhoneNumber());
-        user1.setAccessLevel(user.getAccessLevel());
-        try {
-            user1.setState(locationService.findStateById(user.getStateId()).getStateName());
-        } catch(NullPointerException e){
-            user1.setState("");
-        }
-        try {
-            user1.setDistrict(locationService.findDistrictById(user.getDistrictId()).getDistrictName());
-        } catch(NullPointerException e){
-            user1.setDistrict("");
-        }
-        try {
-            user1.setBlock(locationService.findBlockById(user.getBlockId()).getBlockName());
-        } catch(NullPointerException e){
-            user1.setBlock("");
-        }
-        user1.setAccessType(user.getRoleId().getRoleId().toString());
-        user1.setCreatedBy(true);
-        return user1;
-    }
+//    @RequestMapping(value={"/dto/{userId}"})
+//    public @ResponseBody UserDto getUserDto(@PathVariable("userId") Integer userId) {
+//        User user = userService.findUserByUserId(userId);
+//        String[] levels = {"National", "State", "District", "Block"};
+//        UserDto user1 = new UserDto();
+//        user1.setId(user.getUserId());
+//        user1.setName(user.getFullName());
+//        user1.setUsername(user.getUsername());
+//        user1.setEmail(user.getEmailId());
+//        user1.setPhoneNumber(user.getPhoneNumber());
+//        user1.setAccessLevel(user.getAccessLevel());
+//        try {
+//            user1.setState(locationService.findStateById(user.getStateId()).getStateName());
+//        } catch(NullPointerException e){
+//            user1.setState("");
+//        }
+//        try {
+//            user1.setDistrict(locationService.findDistrictById(user.getDistrictId()).getDistrictName());
+//        } catch(NullPointerException e){
+//            user1.setDistrict("");
+//        }
+//        try {
+//            user1.setBlock(locationService.findBlockById(user.getBlockId()).getBlockName());
+//        } catch(NullPointerException e){
+//            user1.setBlock("");
+//        }
+//        user1.setAccessType(user.getRoleId().getRoleId().toString());
+//        user1.setCreatedBy(true);
+//        return user1;
+//    }
 
     @RequestMapping(value = {"/createUser"}, method = RequestMethod.POST)
     @ResponseBody public Map<Integer, String> createNewUser(@RequestBody User user) {
@@ -220,7 +220,7 @@ public class UserController {
 //        modification.setModifiedUserId(user);
 //        modification.setModifiedByUserId(userService.findUserByUsername(getPrincipal()));
 //        modificationTrackerService.saveModification(modification);
-
+        user = locationService.SetLocations(user);
         return userService.createNewUser(user);
     }
 
@@ -238,6 +238,7 @@ public class UserController {
 //        modificationTrackerService.saveModification(modification);
 
 //        return "redirect:http://localhost:8080/app/#!/";
+        user = locationService.SetLocations(user);
         return userService.updateExistingUser(user);
     }
 

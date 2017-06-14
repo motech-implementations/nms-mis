@@ -2,6 +2,7 @@ package com.beehyv.nmsreporting.business;
 
 import com.beehyv.nmsreporting.entity.PasswordDto;
 import com.beehyv.nmsreporting.entity.ContactInfo;
+import com.beehyv.nmsreporting.model.Role;
 import com.beehyv.nmsreporting.model.User;
 
 import java.util.Date;
@@ -47,4 +48,6 @@ public interface UserService {
     String createMaster();
 
     Map<Integer, String> changePassword(PasswordDto changePasswordDTO);
+
+    Role getRoleById(Integer roleId);
 }

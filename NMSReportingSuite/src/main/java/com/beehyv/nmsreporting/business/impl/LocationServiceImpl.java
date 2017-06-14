@@ -40,6 +40,9 @@ public class LocationServiceImpl implements LocationService {
     @Autowired
     private StateCircleDao stateCircleDao;
 
+    @Autowired
+    private RoleDao roleDao;
+
 //    public void createNewLocation(Location location) {
 //        locationDao.saveLocation(location);
 //    }
@@ -194,4 +197,13 @@ public class LocationServiceImpl implements LocationService {
 //        }*/
 //        return circleDtoList;
 //    }
+
+    @Override
+    public User SetLocations(User user){
+        user.setStateName(user.getStateId()==null ? "" : stateDao.findByStateId(user.getStateId()).getStateName());
+        user.setDistrictName(user.getDistrictId()==null? "" : districtDao.findByDistrictId(user.getDistrictId()).getDistrictName());
+        user.setBlockName(user.getBlockId()==null ? "" :  blockDao.findByblockId(user.getBlockId()).getBlockName());
+        user.setRoleName(user.getRoleId()==null ? "" : roleDao.findByRoleId(user.getRoleId()).getRoleDescription());
+        return user;
+    }
 }
