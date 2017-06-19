@@ -7,15 +7,16 @@
 					<div class="form-group col-xs-4">
 						<label>Select Reports Category</label><br>
 						<div class="btn-group" uib-dropdown dropdown-append-to-body>
-							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" uib-dropdown-toggle ng-disabled="reports[0] == null"ng-class="{loading: reportsLoading}">
+							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" uib-dropdown-toggle ng-disabled="disableReportCategory()" ng-class="{loading: reportsLoading}">
 								{{reportCategory}}
+								<span ng-if="reportCategory == null">Select</span>
 								<span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
 								<li role="menuitem" ng-repeat="item in reports">
 									<a ng-click='selectReportCategory(item)'>
 										<img class='block' src="{{item.icon}}">
-										{{item.name}}
+										<span>{{item.name}}</span>
 									</a>
 								</li>
 							</ul>
@@ -24,15 +25,16 @@
 					<div class="form-group col-xs-4">
 						<label>Select Reports</label><br>
 						<div class="btn-group" uib-dropdown dropdown-append-to-body>
-							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" ng-disabled='reportCategory=="Select"' uib-dropdown-toggle>
-								{{reportName}}
+							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" ng-disabled='disableReport()' uib-dropdown-toggle>
+								<span>{{report.name}}</span>
+								<span ng-if="report.name == null">Select</span>
 								<span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
 								<li role="menuitem" ng-repeat="item in reportNames">
 									<a ng-click='selectReport(item)'>
 										<img class='block' src="{{item.icon}}">
-										{{item.name}}
+										<span>{{item.name}}</span>
 									</a>
 								</li>
 							</ul>
@@ -40,10 +42,10 @@
 					</div>
 					<div class="form-group col-xs-4">
 						<label>Select Month</label><br>
-						<p class="input-group" ng-disabled="reportEnum == null">
-							<input type="text" class="form-control input input-sm" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" datepicker-mode="'month'" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" ng-disabled='reportEnum == null' readonly />
+						<p class="input-group" ng-disabled="disableDate()">
+							<input type="text" class="form-control input input-sm" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" datepicker-mode="'month'" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" ng-disabled='disableDate()' readonly />
 							<span class="input-group-btn">
-							<button type="button" class="btn btn-sm btn-default" ng-click="open1()"  ng-disabled='reportEnum == null' ><i class="glyphicon glyphicon-calendar" ng-disabled="reportEnum == null" ></i></button>
+							<button type="button" class="btn btn-sm btn-default" ng-click="open1()"  ng-disabled='disableDate()' ><i class="glyphicon glyphicon-calendar" ng-disabled="disableDate()" ></i></button>
 							</span>
 						</p>
 					</div>
@@ -53,7 +55,7 @@
 					<div class="form-group col-xs-4">
 						<label for="name">Select State</label><br>
 						<div class="btn-group" uib-dropdown dropdown-append-to-body>
-							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" ng-disabled="states[0]  == null || hasState()" uib-dropdown-toggle ng-class="{loading: statesLoading}">
+							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" ng-disabled="disableState()" uib-dropdown-toggle ng-class="{loading: statesLoading}">
 								<span class="block">
 									<span>{{crop(state.stateName)}}</span>
 									<span class="caret"></span>
@@ -68,7 +70,7 @@
 					<!-- <div> -->
 						<label for="email">Select District</label><br>
 						<div class="btn-group" uib-dropdown dropdown-append-to-body>
-							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" ng-disabled="districts[0] == null || hasDistrict()" uib-dropdown-toggle ng-class="{loading: districtsLoading, autoSelected}">
+							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" ng-disabled="disableDistrict()" uib-dropdown-toggle ng-class="{loading: districtsLoading, autoSelected}">
 								<span class="block">
 									<span>{{crop(district.districtName)}}</span>
 									<span ng-if="district == null">ALL</span>
@@ -84,7 +86,7 @@
 					<div class="form-group col-xs-4">
 						<label for="pwd">Select Block</label><br>
 						<div class="btn-group" uib-dropdown dropdown-append-to-body>
-							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" ng-disabled="blocks[0] == null || hasBlock()" uib-dropdown-toggle ng-class="{loading: blocksLoading}">
+							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" ng-disabled="disableBlock()" uib-dropdown-toggle ng-class="{loading: blocksLoading}">
 								<span class="block">
 									<span>{{crop(block.blockName)}}</span>
 									<span ng-if="block == null">ALL</span>
@@ -112,15 +114,13 @@
 					<div class="form-group col-xs-4">
 						<label for="name">Select Circle</label><br>
 						<div class="btn-group" uib-dropdown dropdown-append-to-body>
-							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" ng-disabled="circles[0] == null || hasOneCircle()" uib-dropdown-toggle ng-class="{loading: circlesLoading}">
+							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" ng-disabled="disableCircle()" uib-dropdown-toggle ng-class="{loading: circlesLoading}">
 								<span class="block">
 									<span>{{circle.circleName}}</span>
-									<span ng-if="circle == null && !hasState()">ALL</span>
 									<span class="caret"></span>
 								</span>
 							</button>
 							<ul class="dropdown-menu small" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
-								<li role="menuitem" ng-if="!hasState()"><a ng-click="clearCircle()">ALL</a>
 								<li role="menuitem" ng-repeat="item in circles"><a ng-click='selectCircle(item)'>{{item.circleName}}</a></li>
 							</ul>
 						</div>

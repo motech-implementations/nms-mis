@@ -16,16 +16,48 @@
 				}
 			})
 
-			$scope.hasState = function(){
+
+			$scope.reports = [];
+
+			$scope.states = [];
+			$scope.districts = [];
+			$scope.blocks = [];
+			$scope.circles = [];
+
+			$scope.disableReportCategory = function(){
+				return $scope.reports[0] == null;
+			}
+			$scope.disableReport = function(){
+				return $scope.reportCategory == null;
+			}
+
+			$scope.disableDate = function(){
+				return $scope.report == null || $scope.report.reportEnum == null;
+			}
+			$scope.disableState = function(){
+				return $scope.states[0]  == null || $scope.userHasState();
+			}
+			$scope.disableDistrict = function(){
+				return $scope.districts[0]  == null || $scope.userHasDistrict();	
+			}
+			$scope.disableBlock = function(){
+				return $scope.blocks[0]  == null || $scope.userHasBlock();
+			}
+			$scope.disableCircle = function(){
+				return $scope.circles[0]  == null || $scope.userHasOneCircle();
+			}
+
+
+			$scope.userHasState = function(){
 				return UserFormFactory.getCurrentUser().stateId != null;
 			}
-			$scope.hasDistrict = function(){
+			$scope.userHasDistrict = function(){
 				return UserFormFactory.getCurrentUser().districtId != null;
 			}
-			$scope.hasBlock = function(){
+			$scope.userHasBlock = function(){
 				return UserFormFactory.getCurrentUser().blockId != null;
 			}
-			$scope.hasOneCircle = function(){
+			$scope.userHasOneCircle = function(){
 				return $scope.circles.length == 1;
 			}
 			
@@ -36,14 +68,13 @@
 				$scope.reportsLoading = false;
 			})
 
-			$scope.reportCategory="Select";
+			$scope.reportCategory=null;
 
 			$scope.selectReportCategory = function(item){
 				$scope.reportCategory = item.name;
 				$scope.reportNames = item.options;
-				$scope.reportName = 'Select';
-				$scope.reportEnum = null;
-				$scope.service = null;
+
+				$scope.report = null;
 				
 				$scope.states = [];
 				$scope.clearState();
@@ -52,11 +83,8 @@
 				$scope.dt == null;
 			}
 
-			$scope.reportName="Select";
-
 			$scope.selectReport = function(item){
-				$scope.reportName = item.name;
-				$scope.reportEnum = item.reportEnum;
+				$scope.report = item;
 
 				$scope.states = [];
 				$scope.clearState();
@@ -64,8 +92,6 @@
 
 				$scope.getStatesByService(item.service);
 				$scope.getCirclesByService(item.service);
-
-				$scope.service = item.service;
 
 				$scope.dt = null;
 				$scope.setDateOptions();
@@ -82,13 +108,10 @@
 			}
 
 			$scope.isCircleReport = function(){
-				return $scope.reportName != null && $scope.reportName == 'Circle wise Anonymous Reports';
+				return $scope.report != null && $scope.report.name == 'Circle wise Anonymous Reports';
 			}
 
-			$scope.states = [];
-			$scope.districts = [];
-			$scope.blocks = [];
-			$scope.circles = [];
+			
 
 			$scope.getStatesByService = function(service){
 				$scope.statesLoading = true;
@@ -99,7 +122,7 @@
 					$scope.blocks = [];
 					$scope.statesLoading = false;
 
-					if($scope.hasState()){
+					if($scope.userHasState()){
 						$scope.selectState($scope.states[0]);
 					}
 				});
@@ -113,7 +136,7 @@
 					$scope.blocks = [];
 					$scope.districtsLoading = false;
 
-					if($scope.hasDistrict()){
+					if($scope.userHasDistrict()){
 						$scope.selectDistrict($scope.districts[0]);
 					}
 				});
@@ -126,7 +149,7 @@
 					$scope.blocks = result.data;
 					$scope.blocksLoading = false;
 
-					if($scope.hasBlock()){
+					if($scope.userHasBlock()){
 						$scope.selectBlock($scope.blocks[0]);
 					}
 				});
@@ -140,7 +163,7 @@
 
 					$scope.circlesLoading = false;
 
-					if($scope.hasOneCircle()){
+					if($scope.userHasOneCircle()){
 						$scope.selectCircle($scope.circles[0]);
 					}
 				});
@@ -158,7 +181,7 @@
 					minDate = $scope.circle.serviceStartDate;
 				}
 
-				if($scope.reportEnum == 'MACumulativeInactiveUsers'){
+				if($scope.report.reportEnum == 'MACumulativeInactiveUsers'){
 					minDate = new Date(2017, 04, 30);
 				}
 
@@ -236,7 +259,7 @@
 
 			$scope.getReport = function(){
 
-				if($scope.reportEnum == "" || $scope.reportEnum == null){
+				if($scope.report == null){
 					alert("Please select a report")
 					return;
 				}
@@ -247,34 +270,46 @@
 
 				var reportRequest = {};
 
-			    reportRequest.reportType = $scope.reportEnum;
+			    reportRequest.reportType = $scope.report.reportEnum;
 			    
+			    if(!$scope.isCircleReport()){
+			    	if($scope.state != null){
+				    	reportRequest.stateId = $scope.state.stateId;
+				    }
+				    else{
+			    		alert("Please select a state");
+			    		return;
+				    }
+				    if($scope.district != null){
+				    	reportRequest.districtId = $scope.district.districtId;
+				    }
+				    else{
+				    	reportRequest.districtId = 0;
+				    }
+				    if($scope.block != null){
+				    	reportRequest.blockId = $scope.block.blockId;
+				    }
+				    else{
+				    	reportRequest.blockId = 0;
+				    }
 
-			    if($scope.state != null){
-			    	reportRequest.stateId = $scope.state.stateId;
-			    }
-			    else{
-			    	alert("Please select a state");
-			    	return;
-			    }
-			    if($scope.district != null){
-			    	reportRequest.districtId = $scope.district.districtId;
-			    }
-			    else{
-			    	reportRequest.districtId = 0;
-			    }
-			    if($scope.block != null){
-			    	reportRequest.blockId = $scope.block.blockId;
-			    }
-			    else{
-			    	reportRequest.blockId = 0;
-			    }
-			    if($scope.circle != null){
-			    	reportRequest.circleId = $scope.circle.circleId;
-			    }
-			    else{
-			    	reportRequest.circleId = 0;
-			    }
+				    reportRequest.circleId = 0;
+		    	}
+		    	else{
+		    		if($scope.circle != null){
+				    	reportRequest.circleId = $scope.circle.circleId;
+				    }
+				    else{
+			    		alert("Please select a circle");
+			    		return;
+				    }
+
+				    reportRequest.stateId = 0;
+				    reportRequest.districtId = 0;
+				    reportRequest.blockId = 0;
+		    	}
+				    
+				    
 
 			    reportRequest.fromDate = $scope.dt;
 
@@ -308,9 +343,8 @@
 			}
 
 			$scope.reset =function(){
-				$scope.reportName = "Select";
-				$scope.reportEnum = null;
-				$scope.reportCategory = "Select";
+				$scope.report = null;
+				$scope.reportCategory = null;
 				$scope.clearState();
 				$scope.clearCircle();
 				$scope.dt = null;
