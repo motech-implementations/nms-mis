@@ -30,9 +30,6 @@ public class KilkariLowUsage {
     @Column(name="age_on_service", columnDefinition = "TINYINT(4)")
     private Integer ageOnService;
 
-    @Column(name="calls_answered", columnDefinition = "INT(11)")
-    private Integer callsAnswered;
-
     @Column(name="state_id", columnDefinition = "TINYINT")
     private Integer stateId;
 
@@ -101,15 +98,7 @@ public class KilkariLowUsage {
     public void setAgeOnService(Integer ageOnService) {
         this.ageOnService = ageOnService;
     }
-
-    public Integer getCallsAnswered() {
-        return callsAnswered;
-    }
-
-    public void setCallsAnswered(Integer callsAnswered) {
-        this.callsAnswered = callsAnswered;
-    }
-
+    
     public Integer getStateId() {
         return stateId;
     }
