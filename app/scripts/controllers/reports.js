@@ -254,7 +254,8 @@
 			    	reportRequest.stateId = $scope.state.stateId;
 			    }
 			    else{
-			    	reportRequest.stateId = 0;
+			    	alert("Please select a state");
+			    	return;
 			    }
 			    if($scope.district != null){
 			    	reportRequest.districtId = $scope.district.districtId;
