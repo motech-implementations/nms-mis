@@ -121,7 +121,7 @@
 								</span>
 							</button>
 							<ul class="dropdown-menu small" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
-								<li role="menuitem" ng-repeat="item in circles"><a ng-click='selectCircle(item)'>{{item.circleName}}</a></li>
+								<li role="menuitem" ng-repeat="item in circles | filter:serviceStarted"><a ng-click='selectCircle(item)'>{{item.circleName}}</a></li>
 							</ul>
 						</div>
 					</div>

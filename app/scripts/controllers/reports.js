@@ -171,18 +171,21 @@
 
 			$scope.setDateOptions =function(){
 				var minDate = new Date(2015, 09, 01);
-				if($scope.service == 'M'){
+				if($scope.report.service == 'M'){
 					minDate = new Date(2015, 10, 01);
 				}
-				if($scope.state != null){
+				if(!$scope.isCircleReport() && $scope.state != null){
 					minDate = $scope.state.serviceStartDate;
 				}
-				if($scope.circle != null){
+				if($scope.isCircleReport() && $scope.circle != null){
 					minDate = $scope.circle.serviceStartDate;
 				}
 
 				if($scope.report.reportEnum == 'MACumulativeInactiveUsers'){
 					minDate = new Date(2017, 04, 30);
+				}
+				if($scope.report.reportEnum == 'MACumulativeInactiveUsers'){
+					minDate = new Date(2015, 11, 30);
 				}
 
 				$scope.dateOptions = {
