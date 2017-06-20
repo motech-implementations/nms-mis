@@ -23,9 +23,6 @@ public class KilkariSelfDeactivated {
     @Column(name="msisdn", columnDefinition = "BIGINT(20)")
     private Long msisdn;
 
-    @Column(name="pack_id", columnDefinition = "TINYINT(4)")
-    private Integer packId;
-
     @Column(name="pack_activation_date", columnDefinition = "DATE")
     private Date packActivationDate;
 
@@ -86,14 +83,6 @@ public class KilkariSelfDeactivated {
 
     public void setMsisdn(Long msisdn) {
         this.msisdn = msisdn;
-    }
-
-    public Integer getPackId() {
-        return packId;
-    }
-
-    public void setPackId(Integer packId) {
-        this.packId = packId;
     }
 
     public Date getPackActivationDate() {
