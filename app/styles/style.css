@@ -72,9 +72,11 @@ div.nav-bar .breadcrumb li a{
 	text-align: center;
 	padding: 12px 16px;
 	font-size: 12px;
+	cursor: default;
 }
 div.nav-bar .breadcrumb li a.active{
 	color: #000000;
+	cursor:pointer;
 }
 
 div.nav-bar ul.nav-menu {
