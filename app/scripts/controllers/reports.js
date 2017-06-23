@@ -170,23 +170,27 @@
 			}
 
 			$scope.setDateOptions =function(){
-				var minDate = new Date(2015, 09, 01);
-				if($scope.report.service == 'M'){
-					minDate = new Date(2015, 10, 01);
-				}
-				if(!$scope.isCircleReport() && $scope.state != null){
+//				var minDate = new Date(2015, 09, 01);
+//				if($scope.report.service == 'M'){
+//					minDate = new Date(2015, 10, 01);
+//				}
+                var minDate = $scope.report.minDate;
+                console.log(minDate);
+				if(!$scope.isCircleReport() && $scope.state != null && $scope.state.serviceStartDate>minDate){
 					minDate = $scope.state.serviceStartDate;
+					console.log(minDate);
 				}
-				if($scope.isCircleReport() && $scope.circle != null){
+				if($scope.isCircleReport() && $scope.circle != null && $scope.circle.serviceStartDate>minDate){
 					minDate = $scope.circle.serviceStartDate;
+					console.log(minDate);
 				}
 
-				if($scope.report.reportEnum == 'MACumulativeInactiveUsers'){
-					minDate = new Date(2017, 04, 30);
-				}
-				if($scope.report.reportEnum == 'MACumulativeInactiveUsers'){
-					minDate = new Date(2015, 11, 30);
-				}
+//				if($scope.report.reportEnum == 'MACumulativeInactiveUsers'){
+//					minDate = new Date(2017, 04, 30);
+//				}
+//				if($scope.report.reportEnum == 'MAAnonymousUsers'){
+//				    minDate = new Date(2017, 04, 30);
+//				}
 
 				$scope.dateOptions = {
 					minMode: 'month',

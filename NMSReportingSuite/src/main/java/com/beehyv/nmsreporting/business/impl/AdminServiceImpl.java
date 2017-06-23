@@ -521,7 +521,7 @@ public class AdminServiceImpl implements AdminService {
         aCalendar.set(Calendar.HOUR_OF_DAY, 0);
 
 //        aCalendar.add(Calendar.MONTH, -1);
-        /*aCalendar.set(Calendar.DATE, 1);*/
+        aCalendar.set(Calendar.DATE, 1);
 
         Date fromDate = aCalendar.getTime();
 
