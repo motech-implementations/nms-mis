@@ -274,46 +274,38 @@
 				var reportRequest = {};
 
 			    reportRequest.reportType = $scope.report.reportEnum;
+
+			    reportRequest.stateId = 0;
+			    reportRequest.districtId = 0;
+			    reportRequest.blockId = 0;
+
+			    reportRequest.circleId = 0;
 			    
 			    if(!$scope.isCircleReport()){
 			    	if($scope.state != null){
 				    	reportRequest.stateId = $scope.state.stateId;
 				    }
-				    else{
-			    		alert("Please select a state");
-			    		return;
-				    }
+				    // else{
+			    	// 	alert("Please select a state");
+			    	// 	return;
+				    // }
 				    if($scope.district != null){
 				    	reportRequest.districtId = $scope.district.districtId;
-				    }
-				    else{
-				    	reportRequest.districtId = 0;
 				    }
 				    if($scope.block != null){
 				    	reportRequest.blockId = $scope.block.blockId;
 				    }
-				    else{
-				    	reportRequest.blockId = 0;
-				    }
-
-				    reportRequest.circleId = 0;
 		    	}
 		    	else{
 		    		if($scope.circle != null){
 				    	reportRequest.circleId = $scope.circle.circleId;
 				    }
-				    else{
-			    		alert("Please select a circle");
-			    		return;
-				    }
-
-				    reportRequest.stateId = 0;
-				    reportRequest.districtId = 0;
-				    reportRequest.blockId = 0;
+				    // else{
+			    	// 	alert("Please select a circle");
+			    	// 	return;
+				    // }				    
 		    	}
-				    
-				    
-
+				
 			    reportRequest.fromDate = $scope.dt;
 
 			    $scope.waiting = true;

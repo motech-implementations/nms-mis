@@ -58,10 +58,12 @@
 							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" ng-disabled="disableState()" uib-dropdown-toggle ng-class="{loading: statesLoading}">
 								<span class="block">
 									<span>{{crop(state.stateName)}}</span>
+									<span ng-if="state == null">ALL</span>
 									<span class="caret"></span>
 								</span>
 							</button>
 							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
+								<li role="menuitem"><a ng-click="clearState()">ALL</a>
 								<li role="menuitem" ng-repeat="item in states | filter:serviceStarted"><a ng-click='selectState(item)'>{{item.stateName}}</a></li>
 							</ul>
 						</div>
@@ -117,10 +119,12 @@
 							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" ng-disabled="disableCircle()" uib-dropdown-toggle ng-class="{loading: circlesLoading}">
 								<span class="block">
 									<span>{{circle.circleName}}</span>
+									<span ng-if="circle == null">ALL</span>
 									<span class="caret"></span>
 								</span>
 							</button>
 							<ul class="dropdown-menu small" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
+								<li role="menuitem"><a ng-click="clearCircle()">ALL</a>
 								<li role="menuitem" ng-repeat="item in circles | filter:serviceStarted"><a ng-click='selectCircle(item)'>{{item.circleName}}</a></li>
 							</ul>
 						</div>
