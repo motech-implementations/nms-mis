@@ -344,6 +344,7 @@
 			$scope.reset =function(){
 				$scope.report = null;
 				$scope.reportCategory = null;
+				$scope.states = [];
 				$scope.clearState();
 				$scope.clearCircle();
 				$scope.dt = null;
