@@ -4,14 +4,14 @@
     <contextParameter comment="" name="reporting_db_Port" prompt="reporting_db_Port?" promptNeeded="false" repositoryContextId="_bRF9MCpcEeed2NP7fH7gnw" type="id_String" value="null"/>
     <contextParameter comment="" name="reporting_db_Database" prompt="reporting_db_Database?" promptNeeded="false" repositoryContextId="_bRF9MCpcEeed2NP7fH7gnw" type="id_String" value="null"/>
     <contextParameter comment="" name="reporting_db_Password" prompt="reporting_db_Password?" promptNeeded="false" repositoryContextId="_bRF9MCpcEeed2NP7fH7gnw" type="id_Password" value=""/>
-    <contextParameter comment="" name="reporting_db_AdditionalParams" prompt="reporting_db_AdditionalParams?" promptNeeded="false" repositoryContextId="_bRF9MCpcEeed2NP7fH7gnw" type="id_String" value="null"/>
+    <contextParameter comment="" name="reporting_db_AdditionalParams" prompt="reporting_db_AdditionalParams?" promptNeeded="false" type="id_String" value="null"/>
     <contextParameter comment="" name="reporting_db_Login" prompt="reporting_db_Login?" promptNeeded="false" repositoryContextId="_bRF9MCpcEeed2NP7fH7gnw" type="id_String" value="null"/>
     <contextParameter comment="" name="reporting_db_Server" prompt="reporting_db_Server?" promptNeeded="false" repositoryContextId="_bRF9MCpcEeed2NP7fH7gnw" type="id_String" value="null"/>
     <contextParameter comment="" name="motech_db_Port" prompt="motech_db_Port?" promptNeeded="false" repositoryContextId="_qNdrUCpbEeed2NP7fH7gnw" type="id_String" value="null"/>
     <contextParameter comment="" name="motech_db_Login" prompt="motech_db_Login?" promptNeeded="false" repositoryContextId="_qNdrUCpbEeed2NP7fH7gnw" type="id_String" value="null"/>
     <contextParameter comment="" name="motech_db_Password" prompt="motech_db_Password?" promptNeeded="false" repositoryContextId="_qNdrUCpbEeed2NP7fH7gnw" type="id_Password" value=""/>
     <contextParameter comment="" name="motech_db_Database" prompt="motech_db_Database?" promptNeeded="false" repositoryContextId="_qNdrUCpbEeed2NP7fH7gnw" type="id_String" value="null"/>
-    <contextParameter comment="" name="motech_db_AdditionalParams" prompt="motech_db_AdditionalParams?" promptNeeded="false" repositoryContextId="_qNdrUCpbEeed2NP7fH7gnw" type="id_String" value="null"/>
+    <contextParameter comment="" name="motech_db_AdditionalParams" prompt="motech_db_AdditionalParams?" promptNeeded="false" type="id_String" value="null"/>
     <contextParameter comment="" name="motech_db_Server" prompt="motech_db_Server?" promptNeeded="false" repositoryContextId="_qNdrUCpbEeed2NP7fH7gnw" type="id_String" value="null"/>
   </context>
   <parameters>
@@ -204,7 +204,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" value="" show="false"/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select id, flwId, oldCallingNumber, newCallingNumber, modificationDate from nms_contactNumber_audit&#xA;where creationDate > '&quot; + (String)globalMap.get(&quot;lastEtlTime&quot;) + &quot;' or&#xA;modificationDate > '&quot; + (String)globalMap.get(&quot;lastEtlTime&quot;) + &quot;'&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select id, flwId, oldCallingNumber, newCallingNumber, modificationDate from nms_contactNumber_audit&#xA;where modificationDate > '&quot; + (String)globalMap.get(&quot;lastEtlTime&quot;) + &quot;'&quot;"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" value="&quot;&quot;" show="false"/>
@@ -373,7 +373,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" value="" show="false"/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select last_etl_time &#xA;from ETL_info_table &#xA;where table_id = 25&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select last_etl_time &#xA;from ETL_info_table &#xA;where table_id = 39&quot;"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" value="&quot;&quot;" show="false"/>
@@ -416,7 +416,7 @@
     <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" value="" show="false"/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;update ETL_info_table&#xA;set ETL_info_table.last_etl_time = (select max(transition_time) from flw_sim_changes),&#xA;ETL_info_table.record_count = (select count(*) from flw_sim_changes)&#xA;where ETL_info_table.table_id = 25&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;update ETL_info_table&#xA;set ETL_info_table.last_etl_time = (select max(transition_time) from flw_sim_changes),&#xA;ETL_info_table.record_count = (select count(*) from flw_sim_changes)&#xA;where ETL_info_table.table_id = 39&quot;"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" value="&quot;&quot;" show="false"/>

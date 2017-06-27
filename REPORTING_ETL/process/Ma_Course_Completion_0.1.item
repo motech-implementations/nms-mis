@@ -4,14 +4,14 @@
     <contextParameter comment="" name="reporting_db_Port" prompt="reporting_db_Port?" promptNeeded="false" repositoryContextId="_bRF9MCpcEeed2NP7fH7gnw" type="id_String" value="null"/>
     <contextParameter comment="" name="reporting_db_Database" prompt="reporting_db_Database?" promptNeeded="false" repositoryContextId="_bRF9MCpcEeed2NP7fH7gnw" type="id_String" value="null"/>
     <contextParameter comment="" name="reporting_db_Password" prompt="reporting_db_Password?" promptNeeded="false" repositoryContextId="_bRF9MCpcEeed2NP7fH7gnw" type="id_Password" value=""/>
-    <contextParameter comment="" name="reporting_db_AdditionalParams" prompt="reporting_db_AdditionalParams?" promptNeeded="false" repositoryContextId="_bRF9MCpcEeed2NP7fH7gnw" type="id_String" value="null"/>
+    <contextParameter comment="" name="reporting_db_AdditionalParams" prompt="reporting_db_AdditionalParams?" promptNeeded="false" type="id_String" value="null"/>
     <contextParameter comment="" name="reporting_db_Login" prompt="reporting_db_Login?" promptNeeded="false" repositoryContextId="_bRF9MCpcEeed2NP7fH7gnw" type="id_String" value="null"/>
     <contextParameter comment="" name="reporting_db_Server" prompt="reporting_db_Server?" promptNeeded="false" repositoryContextId="_bRF9MCpcEeed2NP7fH7gnw" type="id_String" value="null"/>
     <contextParameter comment="" name="motech_db_Port" prompt="motech_db_Port?" promptNeeded="false" repositoryContextId="_qNdrUCpbEeed2NP7fH7gnw" type="id_String" value="null"/>
     <contextParameter comment="" name="motech_db_Login" prompt="motech_db_Login?" promptNeeded="false" repositoryContextId="_qNdrUCpbEeed2NP7fH7gnw" type="id_String" value="null"/>
     <contextParameter comment="" name="motech_db_Password" prompt="motech_db_Password?" promptNeeded="false" repositoryContextId="_qNdrUCpbEeed2NP7fH7gnw" type="id_Password" value=""/>
     <contextParameter comment="" name="motech_db_Database" prompt="motech_db_Database?" promptNeeded="false" repositoryContextId="_qNdrUCpbEeed2NP7fH7gnw" type="id_String" value="null"/>
-    <contextParameter comment="" name="motech_db_AdditionalParams" prompt="motech_db_AdditionalParams?" promptNeeded="false" repositoryContextId="_qNdrUCpbEeed2NP7fH7gnw" type="id_String" value="null"/>
+    <contextParameter comment="" name="motech_db_AdditionalParams" prompt="motech_db_AdditionalParams?" promptNeeded="false" type="id_String" value="null"/>
     <contextParameter comment="" name="motech_db_Server" prompt="motech_db_Server?" promptNeeded="false" repositoryContextId="_qNdrUCpbEeed2NP7fH7gnw" type="id_String" value="null"/>
   </context>
   <parameters>
@@ -249,7 +249,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" value="" show="false"/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select flwId as 'flw_id' ,score as 'marks',&#xA;passed, chapterWiseScores, lastDeliveryStatus, sentNotification,&#xA;modificationDate as 'last_modified' from nms_ma_course_completion_records&#xA;where modificationDate >'\&quot;+(String)globalMap.get(\&quot;lastEtlTime\&quot;)+\&quot;'&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select flwId as 'flw_id' ,score as 'marks',&#xA;passed, chapterWiseScores, lastDeliveryStatus, sentNotification, creationDate,&#xA;modificationDate as 'last_modified' from nms_ma_course_completion_records&#xA;where modificationDate >'&quot;+(String)globalMap.get(&quot;lastEtlTime&quot;)+&quot;'&quot;"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" value="&quot;&quot;" show="false"/>
@@ -272,6 +272,8 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="sentNotification"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="creationDate"/>
+      <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="last_modified"/>
       <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
@@ -283,6 +285,7 @@
       <column comment="" key="false" length="-1" name="chapterWiseScores" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="lastDeliveryStatus" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="sentNotification" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="creationDate" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="last_modified" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
@@ -301,10 +304,11 @@
       <column comment="" key="true" length="-1" name="id" nullable="true" pattern="" precision="-1" sourceType="" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="flw_id" nullable="true" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="score" nullable="true" pattern="" precision="-1" sourceType="" type="id_Integer" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="passed" nullable="true" pattern="" precision="-1" sourceType="" type="id_Boolean" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="chapterWiseScores" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="lastDeliveryStatus" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="sentNotification" nullable="true" pattern="" precision="-1" sourceType="" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="has_passed" nullable="true" pattern="" precision="-1" sourceType="" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="chapter_wise_score" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="last_delivery_status" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="sent_notification" nullable="true" pattern="" precision="-1" sourceType="" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="creationDate" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="last_modified" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="MapperData">
@@ -314,10 +318,11 @@
         <mapperTableEntries name="id" type="id_Integer" nullable="true"/>
         <mapperTableEntries name="flw_id" expression="row3.flw_id " type="id_Long" nullable="true"/>
         <mapperTableEntries name="score" expression="row3.score " type="id_Integer" nullable="true"/>
-        <mapperTableEntries name="passed" expression="row3.passed " type="id_Boolean" nullable="true"/>
-        <mapperTableEntries name="chapterWiseScores" expression="row3.chapterWiseScores " type="id_String" nullable="true"/>
-        <mapperTableEntries name="lastDeliveryStatus" expression="row3.lastDeliveryStatus " type="id_String" nullable="true"/>
-        <mapperTableEntries name="sentNotification" expression="row3.sentNotification " type="id_Boolean" nullable="true"/>
+        <mapperTableEntries name="has_passed" expression="row3.passed " type="id_Boolean" nullable="true"/>
+        <mapperTableEntries name="chapter_wise_score" expression="row3.chapterWiseScores " type="id_String" nullable="true"/>
+        <mapperTableEntries name="last_delivery_status" expression="row3.lastDeliveryStatus " type="id_String" nullable="true"/>
+        <mapperTableEntries name="sent_notification" expression="row3.sentNotification " type="id_Boolean" nullable="true"/>
+        <mapperTableEntries name="creationDate" expression="row3.creationDate " type="id_String" nullable="true"/>
         <mapperTableEntries name="last_modified" expression="row3.last_modified " type="id_String" nullable="true"/>
       </outputTables>
       <inputTables sizeState="INTERMEDIATE" name="row3" matchingMode="UNIQUE_MATCH" lookupMode="LOAD_ONCE">
@@ -327,6 +332,7 @@
         <mapperTableEntries name="chapterWiseScores" type="id_String" nullable="true"/>
         <mapperTableEntries name="lastDeliveryStatus" type="id_String" nullable="true"/>
         <mapperTableEntries name="sentNotification" type="id_Boolean" nullable="true"/>
+        <mapperTableEntries name="creationDate" type="id_String" nullable="true"/>
         <mapperTableEntries name="last_modified" type="id_String" nullable="true"/>
       </inputTables>
     </nodeData>
@@ -379,22 +385,27 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="passed"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="has_passed"/>
       <elementValue elementRef="UPDATE_KEY" value="false"/>
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="chapterWiseScores"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="chapter_wise_score"/>
       <elementValue elementRef="UPDATE_KEY" value="false"/>
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="lastDeliveryStatus"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="last_delivery_status"/>
       <elementValue elementRef="UPDATE_KEY" value="false"/>
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="sentNotification"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="sent_notification"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="creationDate"/>
       <elementValue elementRef="UPDATE_KEY" value="false"/>
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
@@ -416,20 +427,22 @@
       <column comment="" key="true" length="-1" name="id" nullable="true" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="flw_id" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="score" nullable="true" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="passed" nullable="true" pattern="" precision="-1" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="chapterWiseScores" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="lastDeliveryStatus" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="sentNotification" nullable="true" pattern="" precision="-1" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="has_passed" nullable="true" pattern="" precision="-1" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="chapter_wise_score" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="last_delivery_status" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="sent_notification" nullable="true" pattern="" precision="-1" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="creationDate" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="last_modified" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="Ma_course_completion_data" name="REJECT">
       <column comment="" key="true" length="-1" name="id" nullable="true" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="flw_id" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="score" nullable="true" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="passed" nullable="true" pattern="" precision="-1" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="chapterWiseScores" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="lastDeliveryStatus" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="sentNotification" nullable="true" pattern="" precision="-1" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="has_passed" nullable="true" pattern="" precision="-1" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="chapter_wise_score" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="last_delivery_status" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="sent_notification" nullable="true" pattern="" precision="-1" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="creationDate" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="last_modified" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -500,10 +513,29 @@
     <elementParameter field="TEXT" name="UNIQUE_NAME" value="OnSubjobOk2" show="false"/>
   </connection>
   <connection connectorName="FLOW" label="row3" lineStyle="0" metaname="tMysqlInput_2" offsetLabelX="0" offsetLabelY="0" source="tMysqlInput_2" target="tMap_1">
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+      <elementValue elementRef="TRACE_COLUMN" value="creationDate"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" value="row3" show="false"/>
   </connection>
   <connection connectorName="FLOW" label="Ma_course_completion_data" lineStyle="0" metaname="Ma_course_completion_data" offsetLabelX="0" offsetLabelY="0" source="tMap_1" target="tMysqlOutput_1">
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+      <elementValue elementRef="TRACE_COLUMN" value="creationDate"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="last_delivery_status"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="sent_notification"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="chapter_wise_score"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" value="Ma_course_completion_data" show="false"/>
   </connection>
