@@ -280,6 +280,7 @@ public class UserController {
 
 
     @RequestMapping(value = {"/deleteUser/{id}"}, method = RequestMethod.GET)
+    @ResponseBody
     public Map deleteExistingUser(@PathVariable("id") Integer id) {
         return userService.deleteExistingUser(id);
 //        ModificationTracker modification = new ModificationTracker();

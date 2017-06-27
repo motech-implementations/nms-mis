@@ -428,6 +428,16 @@ public class ReportingHelper {
         return channelId;
     }
 
+    public static Integer ageOnService (java.util.Date subscription_start_date,java.util.Date last_change_of_beneficiary){
+		Integer weekdiff = null;
+		Calendar startCal = Calendar.getInstance();
+        startCal.setTime(subscription_start_date);
+        Calendar endCal = Calendar.getInstance();
+        endCal.setTime(last_change_of_beneficiary);
+        long diff = endCal.getTimeInMillis()-startCal.getTimeInMillis();
+        weekdiff = (int) (diff / (7 * 24 * 60 * 60 * 1000));
+    	return weekdiff;
+    }
     /**
      * This method add StatusMeasure And TransitionView RecordsFor New
      * Subscription.
@@ -1283,4 +1293,47 @@ public class ReportingHelper {
         }
         return 0l;
     }
+    
+	public static Long beneficiary(String mcts_id, String rch_id,Boolean mother_beneficiary,
+    		Connection reportDBConn) {
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        Long beneficiary_id = null;
+        try {
+        	if(mcts_id == null && rch_id !=null) {
+	            StringBuilder sqlQuery = new StringBuilder(
+	                    "SELECT id FROM Beneficiary");
+	            sqlQuery.append(" WHERE rch_id='"+ rch_id +"' AND mother_beneficiary='" + mother_beneficiary
+	                    + "' ");
+	            stmt = reportDBConn.prepareStatement(sqlQuery.toString());
+	            rs = stmt.executeQuery();
+	            if (rs != null && rs.next()) {
+	                beneficiary_id = rs.getLong(1);  
+            }} else if(mcts_id != null && rch_id == null) {
+            	StringBuilder sqlQuery = new StringBuilder(
+                        "SELECT id FROM Beneficiary");
+                sqlQuery.append(" WHERE mcts_id='"+ mcts_id +"' AND mother_beneficiary='" + mother_beneficiary
+                        + "' ");
+                stmt = reportDBConn.prepareStatement(sqlQuery.toString());
+                rs = stmt.executeQuery();
+                if (rs != null && rs.next()) {
+                    beneficiary_id = rs.getLong(1);
+            }
+                } else {
+                	StringBuilder sqlQuery = new StringBuilder(
+                        "SELECT id FROM Beneficiary");
+                sqlQuery.append(" WHERE rch_id='"+ rch_id +"' AND mcts_id='"+ mcts_id +"' AND mother_beneficiary='" + mother_beneficiary
+                        + "' ");
+                stmt = reportDBConn.prepareStatement(sqlQuery.toString());
+                rs = stmt.executeQuery();
+                if (rs != null && rs.next()) {
+                    beneficiary_id = rs.getLong(1);
+            }
+           }
+	            }
+        	catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+    }
+        return beneficiary_id;
+  }
 }

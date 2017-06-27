@@ -39,7 +39,7 @@
 			<div class="form-group" ng-class="{'has-error':createUserForm.accessType.$invalid && !createUserForm.accessType.$pristine}">
 				<label class="control-label col-xs-2">Access Type</label>
 				<div class="col-xs-10">
-					<select name="accessType" id="accessType" class="form-control input input-sm" ng-class="{'loading': roleLoading}" ng-model="newUser.roleId" ng-options="item as item.roleDescription for item in accessTypeList track by item.roleId" required>
+					<select name="accessType" id="accessType" class="form-control input input-sm" ng-class="{'loading': roleLoading}" ng-model="newUser.roleId" ng-options="item.roleId as item.roleDescription for item in accessTypeList | filter:filterAccessType" required>
 					</select>
 
 					<div class="errorMessage" ng-messages="createUserForm.accessType.$error" role="alert" ng-show="!createUserForm.accessType.$pristine">
@@ -51,7 +51,7 @@
 			<div class="form-group" ng-class="{'has-error':createUserForm.accessLevel.$invalid && !createUserForm.accessLevel.$pristine}">
 				<label class="control-label col-xs-2">Access Level</label>
 				<div class="col-xs-10">
-					<select name="accessLevel" id="accessLevel" class="form-control input input-sm"  ng-model="newUser.accessLevel" ng-options="item for item in accessLevelList | filter: showAccess" required>
+					<select name="accessLevel" id="accessLevel" class="form-control input input-sm"  ng-model="newUser.accessLevel" ng-options="item for item in accessLevelList | filter: filterAccessLevel" required>
 					</select>
 
 					<div class="errorMessage" ng-messages="createUserForm.accessLevel.$error" role="alert" ng-show="!createUserForm.accessLevel.$pristine">
@@ -65,7 +65,7 @@
 			<div class="form-group" ng-class="{'has-error':createUserForm.state.$invalid && !createUserForm.state.$pristine}">
 				<label class="control-label col-xs-2">State</label>
 				<div class="col-xs-10">
-					<select name="state" id="state" class="form-control input input-sm" ng-class="{'loading': stateLoading}" ng-model="newUser.stateId" ng-options="item.stateId as item.stateName for item in states track by item.stateId" ng-disabled="getAccessLevel(1)" ng-required="!getAccessLevel(1)">
+					<select name="state" id="state" class="form-control input input-sm" ng-class="{'loading': stateLoading}" ng-model="newUser.stateId" ng-options="item.stateId as item.stateName for item in states | orderBy : 'stateName'" ng-disabled="getAccessLevel(1)" ng-required="!getAccessLevel(1)">
 					</select>
 				</div>
 			</div>
@@ -73,7 +73,7 @@
 			<div class="form-group" ng-class="{'has-error':createUserForm.district.$invalid && !createUserForm.district.$pristine}">
 				<label class="control-label col-xs-2">District</label>
 				<div class="col-xs-10">
-					<select name="district" id="district" class="form-control input input-sm" ng-class="{'loading': stateLoading}" ng-model="newUser.districtId" ng-options="item.districtId as item.districtName for item in districts track by item.districtId" ng-disabled="getAccessLevel(2)" ng-required="!getAccessLevel(2)">
+					<select name="district" id="district" class="form-control input input-sm" ng-class="{'loading': stateLoading}" ng-model="newUser.districtId" ng-options="item.districtId as item.districtName for item in districts | orderBy : 'districtName'" ng-disabled="getAccessLevel(2)" ng-required="!getAccessLevel(2)">
 					</select>
 				</div>
 			</div>
@@ -81,7 +81,7 @@
 			<div class="form-group" ng-class="{'has-error':createUserForm.block.$invalid && !createUserForm.block.$pristine}">
 				<label class="control-label col-xs-2">Block</label>
 				<div class="col-xs-10">
-					<select name="block" id="block" class="form-control input input-sm" ng-class="{'loading': stateLoading}" ng-model="newUser.blockId"	ng-options="item.blockId as item.blockName for item in blocks track by item.blockId" ng-disabled="getAccessLevel(3)" ng-required="!getAccessLevel(3)">
+					<select name="block" id="block" class="form-control input input-sm" ng-class="{'loading': stateLoading}" ng-model="newUser.blockId"	ng-options="item.blockId as item.blockName for item in blocks | orderBy : 'districtName'" ng-disabled="getAccessLevel(3)" ng-required="!getAccessLevel(3)">
 					</select>
 				</div>
 			</div>

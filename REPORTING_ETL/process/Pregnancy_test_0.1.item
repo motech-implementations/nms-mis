@@ -11,13 +11,13 @@
     <contextParameter comment="" name="motech_db_Login" prompt="motech_db_Login?" promptNeeded="false" repositoryContextId="_qNdrUCpbEeed2NP7fH7gnw" type="id_String" value="null"/>
     <contextParameter comment="" name="motech_db_Password" prompt="motech_db_Password?" promptNeeded="false" repositoryContextId="_qNdrUCpbEeed2NP7fH7gnw" type="id_Password" value=""/>
     <contextParameter comment="" name="motech_db_Database" prompt="motech_db_Database?" promptNeeded="false" repositoryContextId="_qNdrUCpbEeed2NP7fH7gnw" type="id_String" value="null"/>
-    <contextParameter comment="" name="motech_db_AdditionalParams" prompt="motech_db_AdditionalParams?" promptNeeded="false" repositoryContextId="_qNdrUCpbEeed2NP7fH7gnw" type="id_String" value="null"/>
+    <contextParameter comment="" name="motech_db_AdditionalParams" prompt="motech_db_AdditionalParams?" promptNeeded="false" type="id_String" value="null"/>
     <contextParameter comment="" name="motech_db_Server" prompt="motech_db_Server?" promptNeeded="false" repositoryContextId="_qNdrUCpbEeed2NP7fH7gnw" type="id_String" value="null"/>
     <contextParameter comment="" name="reporting_db_Password" prompt="reporting_db_Password?" promptNeeded="false" repositoryContextId="_bRF9MCpcEeed2NP7fH7gnw" type="id_Password" value=""/>
     <contextParameter comment="" name="reporting_db_Server" prompt="reporting_db_Server?" promptNeeded="false" repositoryContextId="_bRF9MCpcEeed2NP7fH7gnw" type="id_String" value="null"/>
     <contextParameter comment="" name="reporting_db_Login" prompt="reporting_db_Login?" promptNeeded="false" repositoryContextId="_bRF9MCpcEeed2NP7fH7gnw" type="id_String" value="null"/>
     <contextParameter comment="" name="reporting_db_Database" prompt="reporting_db_Database?" promptNeeded="false" repositoryContextId="_bRF9MCpcEeed2NP7fH7gnw" type="id_String" value="null"/>
-    <contextParameter comment="" name="reporting_db_AdditionalParams" prompt="reporting_db_AdditionalParams?" promptNeeded="false" repositoryContextId="_bRF9MCpcEeed2NP7fH7gnw" type="id_String" value="null"/>
+    <contextParameter comment="" name="reporting_db_AdditionalParams" prompt="reporting_db_AdditionalParams?" promptNeeded="false" type="id_String" value="null"/>
     <contextParameter comment="" name="reporting_db_Port" prompt="reporting_db_Port?" promptNeeded="false" repositoryContextId="_bRF9MCpcEeed2NP7fH7gnw" type="id_String" value="null"/>
   </context>
   <parameters>
@@ -258,7 +258,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" value="" show="false"/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select mtr.beneficiaryId as mother_beneficiary_id,&#xA;cdr.beneficiaryId as child_beneficiary_id,&#xA;mtr.lastMenstrualPeriod as lmp,&#xA;cdr.dateOfBirth as dob,&#xA;max(case when scn.subscriptionPack_id_OID=1 then scn.id else null end) as mother_subscription,&#xA;max(case when scn.subscriptionPack_id_OID=2 then scn.id else null end) as child_subscription,&#xA;sbr.modificationDate as last_modified&#xA;from nms_subscribers sbr&#xA;join nms_subscriptions scn on sbr.id = scn.subscriber_id_OID&#xA;left join nms_mcts_mothers mtr on sbr.mother_id_OID = mtr.id&#xA;left join nms_mcts_children cdr on sbr.child_id_OID = cdr.id&#xA;where sbr.modificationDate>'\&quot;+(String)globalMap.get(\&quot;lastEtlTime\&quot;)+\&quot;'&#xA;group by mother_beneficiary_id,child_beneficiary_id,lmp,dob&#xA;ORDER BY sbr.modificationDate ASC&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select mtr.beneficiaryId as mother_mcts_id,mtr.rchId as mother_rch_id,1 as mother_pack,&#xA;cdr.beneficiaryId as child_mcts_id,cdr.rchId as child_rch_id,0 as child_pack,&#xA;mtr.lastMenstrualPeriod as lmp,&#xA;cdr.dateOfBirth as dob,&#xA;max(case when scn.subscriptionPack_id_OID=1 then scn.id else null end) as mother_subscription,&#xA;max(case when scn.subscriptionPack_id_OID=2 then scn.id else null end) as child_subscription,&#xA;sbr.modificationDate as last_modified&#xA;from nms_subscribers sbr&#xA;join nms_subscriptions scn on sbr.id = scn.subscriber_id_OID&#xA;left join nms_mcts_mothers mtr on sbr.mother_id_OID = mtr.id&#xA;left join nms_mcts_children cdr on sbr.child_id_OID = cdr.id&#xA;where sbr.modificationDate>'&quot;+(String)globalMap.get(&quot;lastEtlTime&quot;)+&quot;'&#xA;group by mother_mcts_id,mother_rch_id,child_mcts_id,child_rch_id,lmp,dob&#xA;ORDER BY sbr.modificationDate ASC&quot;"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" value="&quot;&quot;" show="false"/>
@@ -269,9 +269,17 @@
     <elementParameter field="CHECK" name="ENABLE_STREAM" value="false"/>
     <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
     <elementParameter field="TABLE" name="TRIM_COLUMN">
-      <elementValue elementRef="SCHEMA_COLUMN" value="mother_beneficiary_id"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="mother_mcts_id"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="child_beneficiary_id"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="mother_rch_id"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="mother_pack"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="child_mcts_id"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="child_rch_id"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="child_pack"/>
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="lmp"/>
       <elementValue elementRef="TRIM" value="false"/>
@@ -286,10 +294,14 @@
     </elementParameter>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tMysqlInput_2">
-      <column comment="" key="false" length="-1" name="mother_beneficiary_id" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="child_beneficiary_id" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="lmp" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="VARCHAR" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="dob" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="VARCHAR" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="mother_mcts_id" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="mother_rch_id" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="mother_pack" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="child_mcts_id" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="child_rch_id" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="child_pack" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="lmp" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="dob" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="mother_subscription" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="child_subscription" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="last_modified" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -308,32 +320,36 @@
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="beneficiary_data" name="beneficiary_data">
       <column comment="" key="true" length="-1" name="id" nullable="false" pattern="" precision="-1" sourceType="" type="id_Integer" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="mother_beneficiary_id" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="child_beneficiary_id" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="lmp" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="dob" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="mother_beneficiary_id" nullable="true" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="child_beneficiary_id" nullable="true" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="lmp" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="dob" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="mother_subscription" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="child_subscription" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="last_modified" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables sizeState="INTERMEDIATE" name="Var"/>
       <outputTables sizeState="INTERMEDIATE" name="beneficiary_data">
         <mapperTableEntries name="id" type="id_Integer"/>
-        <mapperTableEntries name="mother_beneficiary_id" expression="row3.mother_beneficiary_id " type="id_String" nullable="true"/>
-        <mapperTableEntries name="child_beneficiary_id" expression="row3.child_beneficiary_id " type="id_String" nullable="true"/>
-        <mapperTableEntries name="lmp" expression="row3.lmp " type="id_Date" nullable="true"/>
-        <mapperTableEntries name="dob" expression="row3.dob " type="id_Date" nullable="true"/>
+        <mapperTableEntries name="mother_beneficiary_id" expression="ReportingHelper.beneficiary(row3.mother_mcts_id, row3.mother_rch_id, row3.mother_pack, (java.sql.Connection) resourceMap.get(&quot;conn_tMysqlOutput_1&quot;)) " type="id_Long" nullable="true"/>
+        <mapperTableEntries name="child_beneficiary_id" expression="ReportingHelper.beneficiary(row3.child_mcts_id, row3.child_rch_id, row3.child_pack, (java.sql.Connection) resourceMap.get(&quot;conn_tMysqlOutput_1&quot;)) " type="id_Long" nullable="true"/>
+        <mapperTableEntries name="lmp" expression="row3.lmp " type="id_String" nullable="true"/>
+        <mapperTableEntries name="dob" expression="row3.dob " type="id_String" nullable="true"/>
         <mapperTableEntries name="mother_subscription" expression="row3.mother_subscription " type="id_String" nullable="true"/>
         <mapperTableEntries name="child_subscription" expression="row3.child_subscription " type="id_String" nullable="true"/>
         <mapperTableEntries name="last_modified" expression="row3.last_modified " type="id_String" nullable="true"/>
       </outputTables>
       <inputTables sizeState="INTERMEDIATE" name="row3" matchingMode="UNIQUE_MATCH" lookupMode="LOAD_ONCE">
-        <mapperTableEntries name="mother_beneficiary_id" type="id_String" nullable="true"/>
-        <mapperTableEntries name="child_beneficiary_id" type="id_String" nullable="true"/>
-        <mapperTableEntries name="lmp" type="id_Date" nullable="true"/>
-        <mapperTableEntries name="dob" type="id_Date" nullable="true"/>
+        <mapperTableEntries name="mother_mcts_id" type="id_String" nullable="true"/>
+        <mapperTableEntries name="mother_rch_id" type="id_String" nullable="true"/>
+        <mapperTableEntries name="mother_pack" type="id_Boolean" nullable="true"/>
+        <mapperTableEntries name="child_mcts_id" type="id_String" nullable="true"/>
+        <mapperTableEntries name="child_rch_id" type="id_String" nullable="true"/>
+        <mapperTableEntries name="child_pack" type="id_Boolean" nullable="true"/>
+        <mapperTableEntries name="lmp" type="id_String" nullable="true"/>
+        <mapperTableEntries name="dob" type="id_String" nullable="true"/>
         <mapperTableEntries name="mother_subscription" type="id_String" nullable="true"/>
         <mapperTableEntries name="child_subscription" type="id_String" nullable="true"/>
         <mapperTableEntries name="last_modified" type="id_String" nullable="true"/>
@@ -423,20 +439,20 @@
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="beneficiary_data" name="tMysqlOutput_1">
       <column comment="" key="true" length="-1" name="id" nullable="false" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="mother_beneficiary_id" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="child_beneficiary_id" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="lmp" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="dob" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="mother_beneficiary_id" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="child_beneficiary_id" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="lmp" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="dob" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="mother_subscription" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="child_subscription" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="last_modified" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="beneficiary_data" name="REJECT">
       <column comment="" key="true" length="-1" name="id" nullable="false" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="mother_beneficiary_id" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="child_beneficiary_id" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="lmp" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="dob" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="mother_beneficiary_id" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="child_beneficiary_id" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="lmp" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="dob" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="mother_subscription" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="child_subscription" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="last_modified" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -511,6 +527,24 @@
   <connection connectorName="FLOW" label="row3" lineStyle="0" metaname="tMysqlInput_2" offsetLabelX="0" offsetLabelY="0" source="tMysqlInput_2" target="tMap_1">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
       <elementValue elementRef="TRACE_COLUMN" value="last_modified"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="child_rch_id"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="mother_rch_id"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="mother_mcts_id"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="child_mcts_id"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="mother_pack"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="child_pack"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>

@@ -13,15 +13,17 @@
 			UserFormFactory.downloadCurrentUser()
 			.then(function(result){
 				UserFormFactory.setCurrentUser(result.data);
+
+				UserFormFactory.getUser($stateParams.id)
+				.then(function(result){
+					$scope.editUser = result.data;
+				});
 			})
 
 			$scope.editUser = {};
 			$scope.place = {};
 
-			UserFormFactory.getUser($stateParams.id)
-			.then(function(result){
-				$scope.editUser = result.data;
-			});
+				
 			
 
 			$scope.accessLevelList = ["NATIONAL", "STATE", "DISTRICT", "BLOCK"];
@@ -33,6 +35,28 @@
 				}else{
 					return false;
 				}
+			}
+
+			$scope.filterAccessType = function(accessType){
+				if($scope.editUser.accessLevel == 'BLOCK'){
+					return accessType.roleDescription != 'ADMIN';
+				}
+				else{
+					return true;
+				}
+			}
+
+			$scope.filterAccessLevel = function(accessLevel){
+				var temp = false;
+				if($scope.editUser.roleId == 2){ // admin
+					temp = accessLevel != "BLOCK";
+				}
+				else{
+					temp = true;
+				}
+
+				var levelIndex = $scope.accessLevelList.indexOf(UserFormFactory.getCurrentUser().accessLevel);
+				return ($scope.accessLevelList.indexOf(accessLevel) >= levelIndex) && temp;
 			}
 
 
@@ -163,6 +187,13 @@
                     alert(result.data['0']);
                 })
 
+            };
+
+            $scope.deactivateUserSubmit = function() {
+                UserFormFactory.deactivateUser($scope.editUser.userId)
+                .then(function(result){
+                	alert(result.data['0']);
+                });
             };
 
 			// $scope.open = function () {

@@ -64,7 +64,7 @@
 							</button>
 							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
 								<li role="menuitem"><a ng-click="clearState()">ALL</a>
-								<li role="menuitem" ng-repeat="item in states | filter:serviceStarted"><a ng-click='selectState(item)'>{{item.stateName}}</a></li>
+								<li role="menuitem" ng-repeat="item in states | orderBy : 'stateName' | filter:serviceStarted"><a ng-click='selectState(item)'>{{item.stateName}}</a></li>
 							</ul>
 						</div>
 					</div>
@@ -81,7 +81,7 @@
 							</button>
 							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
 								<li role="menuitem"><a ng-click="clearDistrict()">ALL</a>
-								<li role="menuitem" ng-repeat="item in districts"><a ng-click='selectDistrict(item)'>{{item.districtName}}</a></li>
+								<li role="menuitem" ng-repeat="item in districts | orderBy : 'districtName'"><a ng-click='selectDistrict(item)'>{{item.districtName}}</a></li>
 							</ul>
 						</div>
 					</div>
@@ -97,7 +97,7 @@
 							</button>
 							<ul class="dropdown-menu small" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
 								<li role="menuitem"><a ng-click="clearBlock()">ALL</a>
-								<li role="menuitem" ng-repeat="item in blocks"><a ng-click='selectBlock(item)'>{{item.blockName}}</a></li>
+								<li role="menuitem" ng-repeat="item in blocks | orderBy : 'blockName'"><a ng-click='selectBlock(item)'>{{item.blockName}}</a></li>
 							</ul>
 						</div>
 					</div>
@@ -125,7 +125,7 @@
 							</button>
 							<ul class="dropdown-menu small" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
 								<li role="menuitem"><a ng-click="clearCircle()">ALL</a>
-								<li role="menuitem" ng-repeat="item in circles | filter:serviceStarted"><a ng-click='selectCircle(item)'>{{item.circleName}}</a></li>
+								<li role="menuitem" ng-repeat="item in circles | orderBy : 'circleName' | filter:serviceStarted"><a ng-click='selectCircle(item)'>{{item.circleName}}</a></li>
 							</ul>
 						</div>
 					</div>
