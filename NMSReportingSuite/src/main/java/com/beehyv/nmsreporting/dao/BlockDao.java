@@ -17,17 +17,7 @@ public interface BlockDao {
 
     public List<Block> findByName(String blockName);
 
-    public List<Block> getBlocksOfTaluka(Taluka taluka);
+    public List<Block> getBlocksOfDistrict(Integer districtId);
 
-    public List<Block> getBlocksOfDistrict(District district);
-
-    public List<Block> getBlocksOfState(State state);
-
-    public List<Block> getAllBlocks();
-
-    public District getDistrictOfBlock(Block block);
-
-    public void saveBlock(Block block);
-
-    public void deleteBlock(Block block);
+    public Integer getDistrictOfBlock(Block block);
 }

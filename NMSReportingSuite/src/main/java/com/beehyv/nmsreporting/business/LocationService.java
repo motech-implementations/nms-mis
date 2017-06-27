@@ -1,22 +1,15 @@
 package com.beehyv.nmsreporting.business;
 
+import com.beehyv.nmsreporting.entity.CircleDto;
 import com.beehyv.nmsreporting.model.*;
 
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by beehyv on 15/3/17.
  */
 public interface LocationService {
-    Location findLocationById(Integer locationId);
-
-    Location findLocationByName(String locationName);
-
-    List<Location> getAllLocations();
-
-    List<Location> getAllSubLocations(Integer locationId);
-
-    List<Location> getChildLocations(int locationId);
 
 //    public void createNewLocation(Location location);
 //
@@ -33,6 +26,10 @@ public interface LocationService {
     State findStateById(Integer stateId);
 
     State findStateByName(String stateName);
+
+    List<State> getStatesByServiceType(String serviceType);
+
+    Date getServiceStartdateForState(Integer stateId,String serviceType);
 
     List<District> getChildDistricts(Integer stateId);
 
@@ -58,4 +55,13 @@ public interface LocationService {
 
     District getDistrictOfBlock(Integer blockId);
 
+     /*----------------------Circle-------------------------*/
+    Circle findCircleById(Integer circleId);
+
+    List<Circle> getAllCirles();
+
+    List<CircleDto> getCircleObjectList(User user, String serviceType);
+
+
+    public User SetLocations(User user);
 }

@@ -1,17 +1,51 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("CreateUserController", ['$scope', 'UserFormFactory', '$http', function($scope, UserFormFactory, $http){
+		.controller("CreateUserController", ['$scope', '$state', 'UserFormFactory', '$http', function($scope, $state, UserFormFactory, $http){
 			
-			UserFormFactory.downloadRoles()
+			UserFormFactory.isLoggedIn()
 			.then(function(result){
-				UserFormFactory.setRoles(result.data);
-				$scope.accessTypeList = UserFormFactory.getRoles();
+				if(!result.data){
+					$state.go('login', {});
+				}
+			})
+
+			UserFormFactory.downloadCurrentUser()
+			.then(function(result){
+				UserFormFactory.setCurrentUser(result.data);
+			})
+
+			$scope.roleLoading = true;
+			UserFormFactory.getRoles()
+			.then(function(result){
+				$scope.accessTypeList = result.data;
+				$scope.roleLoading = false;
 			});
 
+			$scope.accessLevelList = ["NATIONAL", "STATE", "DISTRICT", "BLOCK"]
+
+			$scope.showAccess = function(level){
+				var levelIndex = $scope.accessLevelList.indexOf(UserFormFactory.getCurrentUser().accessLevel);
+				if($scope.accessLevelList.indexOf(level) >= levelIndex){
+					return true;
+				}else{
+					return false;
+				}
+			}
+
+			$scope.getAccessLevel = function(level){
+			
+				var list = $scope.accessLevelList;
+				var item = $scope.newUser.accessLevel
+				var off = 4 - list.length;
+				return list.indexOf(item) + off < level;
+			}
+
 			$scope.getStates = function(){
+				$scope.stateLoading = true;
 				return UserFormFactory.getStates()
 				.then(function(result){
+					$scope.stateLoading = false;
 					$scope.states = result.data;
 					$scope.districts = [];
 					$scope.blocks = [];
@@ -19,63 +53,48 @@
 			}
 			
 			$scope.getDistricts = function(stateId){
+				$scope.districtLoading = true;
 				return UserFormFactory.getDistricts(stateId)
 				.then(function(result){
+					$scope.districtLoading = false;
 					$scope.districts = result.data;
 					$scope.blocks = [];
 				});
 			}
 
 			$scope.getBlocks =function(districtId){
+				$scope.blockLoading = true;
 				return UserFormFactory.getBlocks(districtId)
 				.then(function(result){
+					$scope.blockLoading = false;
 					$scope.blocks = result.data;
 				});
 			}
 
-			$scope.accessLevelList = ["National", "State", "District", "Block"];
-
 			$scope.newUser = {};
 			
+			// $scope.clearForm = function(){
+			// 	$scope.newUser = {};
+			// 	$scope.createUserForm.$setPristine();
 
-			$scope.getAccessLevel = function(level){
-				var list = $scope.accessLevelList;
-				var item = $scope.newUser.accessLevel
-				return list.indexOf(item) < level;
-			}
-
-			$scope.clearForm = function(){
-				$scope.newUser = {};
-				$scope.createUserForm.$setPristine();
-
-				$scope.$parent.currentPage = "user-table";
-				delete $scope.$parent.currentPageTitle;
-			}
+			// 	$scope.$parent.currentPage = "user-table";
+			// 	delete $scope.$parent.currentPageTitle;
+			// }
 
 			$scope.createUserSubmit = function() {
-				if ($scope.createUserForm.$valid && !$scope.createUserForm.$pristine) {
-					console.log(JSON.stringify($scope.newUser));
-
-					// UserFormFactory.createUserSubmitDto($scope.newUser);
-					// $http.post('http://localhost:8080/NMSReportingSuite/nms/user/create-new', $scope.newUser);
-
-					// $http.post('http://localhost:8080/NMSReportingSuite/nms/user/createFromDto',
-					// JSON.stringify($scope.newUser), 
-					// {'Content-Type': 'application/text'})
-					// .success(function (data, status, headers, config) {
-					// 	console.log(data);
-					// })
-					// .error(function (data, status, header, config) {
-					// 	console.log(data);
-					// });
-
-					// $http({
-					// 	method  : 'post',
-					// 	url     : 'http://localhost:8080/NMSReportingSuite/nms/user/createFromDto',
-					// 	data    : $scope.newUser, //forms user object
-					// 	headers : {'Content-Type': 'application/json'} 
-					// });
-
+				if ($scope.createUserForm.$valid) {
+					delete $scope.newUser.$$hashKey;
+					$http({
+						method  : 'post',
+						url     : backend_root + 'nms/user/createUser',
+						data    : $scope.newUser, //forms user object
+						headers : {'Content-Type': 'application/json'} 
+					}).then(function(result){
+						alert(result.data['0']);
+						if(result.data['0'] == 'User Created'){
+							$state.go('userManagement.userTable', {});
+						}
+					})
 				}
 				else{
 					angular.forEach($scope.createUserForm.$error, function (field) {
@@ -91,9 +110,9 @@
 				$scope.getStates();
 				$scope.place = {};
 
-				$scope.newUser.state = null;
-				$scope.newUser.district = null;
-				$scope.newUser.block = null;
+				$scope.newUser.stateId = null;
+				$scope.newUser.districtId = null;
+				$scope.newUser.blockId = null;
 
 				$scope.createUserForm.state.$setPristine(false);
 				$scope.createUserForm.district.$setPristine(false);
@@ -106,41 +125,26 @@
 				}
 			});
 
-			$scope.$watch('newUser.state', function(value){
+			$scope.$watch('newUser.stateId', function(value){
 				if(value != null){
+					$scope.newUser.district = null;
+					$scope.newUser.block = null;
+
 					$scope.getDistricts(value)
-					.then(function(){
-						// $scope.place.district = null;
-						// $scope.place.block = null;
-
-						// $scope.newUser.state = value.stateName;
-						$scope.newUser.district = null;
-						$scope.newUser.block = null;
-
-						// console.log($scope.place);
-					})
 				}
 			});
 
-			$scope.$watch('newUser.district', function(value){
+			$scope.$watch('newUser.districtId', function(value){
 				if(value != null){
-					$scope.getBlocks(value)
-					.then(function(){
-						// $scope.place.block = null;
+					$scope.newUser.block = null;
 
-						// $scope.newUser.district = value.districtName;
-						$scope.newUser.block = null;
-
-						// console.log($scope.place);
-					})
+					$scope.getBlocks(value);
 				}
 			});
 
-			$scope.$watch('newUser.block', function(value){
+			$scope.$watch('newUser.blockId', function(value){
 				if(value != null){
-					// $scope.newUser.block = value.blockName;
 
-					// console.log($scope.place);
 				}
 			});
 

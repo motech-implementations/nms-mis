@@ -2,11 +2,15 @@ package com.beehyv.nmsreporting.business.impl;
 
 import com.beehyv.nmsreporting.business.LocationService;
 import com.beehyv.nmsreporting.dao.*;
+import com.beehyv.nmsreporting.entity.CircleDto;
+import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,6 +23,9 @@ public class LocationServiceImpl implements LocationService {
     private StateDao stateDao;
 
     @Autowired
+    private StateServiceDao stateServiceDao;
+
+    @Autowired
     private DistrictDao districtDao;
 
     @Autowired
@@ -28,29 +35,13 @@ public class LocationServiceImpl implements LocationService {
     private BlockDao blockDao;
 
     @Autowired
-    private LocationDao locationDao;
+    private CircleDao circleDao;
 
-    public Location findLocationById(Integer locationId) {
-        return locationDao.findByLocationId(locationId);
-    }
+    @Autowired
+    private StateCircleDao stateCircleDao;
 
-    public Location findLocationByName(String locationName){
-        return locationDao.findByLocation(locationName).get(0);
-    }
-
-    public List<Location> getAllLocations() {
-        return locationDao.getAllLocations();
-    }
-
-    public List<Location> getAllSubLocations(Integer locationId) {
-        Location location = locationDao.findByLocationId(locationId);
-
-        return locationDao.getAllSubLocations(location);
-    }
-
-    public List<Location> getChildLocations(int locationId){
-        return locationDao.getChildLocations(locationId);
-    }
+    @Autowired
+    private RoleDao roleDao;
 
 //    public void createNewLocation(Location location) {
 //        locationDao.saveLocation(location);
@@ -87,14 +78,30 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
+    public List<State> getStatesByServiceType(String serviceType) {
+        List<StateService> list = stateServiceDao.getStatesByServiceType(serviceType);
+        List<State> stateList = new ArrayList<>();
+        for(StateService stateService : list){
+            stateList.add(stateDao.findByStateId(stateService.getStateId()));
+        }
+        return stateList;
+    }
+
+    @Override
+    public Date getServiceStartdateForState(Integer stateId,String serviceType) {
+        Date startDate=stateServiceDao.getServiceStartDateForState(stateId,serviceType);
+        return startDate;
+    }
+
+    @Override
     public List<District> getChildDistricts(Integer stateId) {
-        return districtDao.getDistrictsOfState(stateDao.findByStateId(stateId));
+        return districtDao.getDistrictsOfState(stateDao.findByStateId(stateId).getStateId());
     }
 
     /*----------------------District-------------------------*/
 
     @Override
-    public District findDistrictById(Integer districtId) {
+    public District findDistrictById(Integer districtId) throws NullPointerException{
         return districtDao.findByDistrictId(districtId);
     }
 
@@ -105,12 +112,12 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public List<Block> getChildBlocks(Integer districtId) {
-        return blockDao.getBlocksOfDistrict(districtDao.findByDistrictId(districtId));
+        return blockDao.getBlocksOfDistrict(districtDao.findByDistrictId(districtId).getDistrictId());
     }
 
     @Override
     public State getStateOfDistrict(Integer districtId) {
-        return districtDao.getStateOfDistrict(districtDao.findByDistrictId(districtId));
+        return stateDao.findByStateId(districtDao.findByDistrictId(districtId).getStateOfDistrict());
     }
 
     /*----------------------Taluka-------------------------*/
@@ -134,6 +141,69 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public District getDistrictOfBlock(Integer blockId) {
-        return blockDao.getDistrictOfBlock(blockDao.findByblockId(blockId));
+        return districtDao.findByDistrictId(blockDao.findByblockId(blockId).getDistrictOfBlock());
+    }
+
+    @Override
+    public Circle findCircleById(Integer circleId) {
+        return circleDao.getByCircleId(circleId);
+    }
+
+    @Override
+    public List<Circle> getAllCirles() {
+        return circleDao.getAllCircles();
+    }
+
+    @Override
+    public List<CircleDto> getCircleObjectList(User user, String serviceType){
+        List<StateCircle> list = new ArrayList<>();
+        if(user.getAccessLevel().equalsIgnoreCase(AccessLevel.NATIONAL.getAccessLevel())){
+            list = stateCircleDao.getRelByStateId(null);
+        }
+        else if(user.getAccessLevel().equalsIgnoreCase(AccessLevel.STATE.getAccessLevel())){
+            list = stateCircleDao.getRelByStateId(user.getStateId());
+        }else{
+            StateCircle stateCircle = new StateCircle();
+            stateCircle.setCircleId(districtDao.findByDistrictId(user.getDistrictId()).getCircleOfDistrict());
+            stateCircle.setStateId(user.getStateId());
+            list.add(stateCircle);
+        }
+
+        List<CircleDto> circleList = new ArrayList<>();
+
+        for(StateCircle stateCircle : list){
+            CircleDto circleDto = new CircleDto(circleDao.getByCircleId(stateCircle.getCircleId()));
+            circleDto.setStateId(stateCircle.getStateId());
+            circleDto.setServiceStartDate(stateServiceDao.getServiceStartDateForState(stateCircle.getStateId(), serviceType));
+            circleDto.setServiceType(serviceType);
+            if(circleDto.getServiceStartDate() != null)
+                circleList.add(circleDto);
+        }
+        return circleList;
+    }
+
+//    @Override
+//    public List<CircleDto> getCircleObjectList(List<Circle> circleList) {
+//        List<CircleDto> circleDtoList = new ArrayList<>();
+//        /*for(Circle circle : circleList){
+//            CircleDto circleObject = new CircleDto(circle);
+//            List<StateCircle> list = stateCircleDao.getRelByCircleId(circle.getCircleId());
+//            for(StateCircle sc : list){
+//                stateServiceDao.
+//            }
+//
+//
+//            circleDtoList.add(circleObject);
+//        }*/
+//        return circleDtoList;
+//    }
+
+    @Override
+    public User SetLocations(User user){
+        user.setStateName(user.getStateId()==null ? "" : stateDao.findByStateId(user.getStateId()).getStateName());
+        user.setDistrictName(user.getDistrictId()==null? "" : districtDao.findByDistrictId(user.getDistrictId()).getDistrictName());
+        user.setBlockName(user.getBlockId()==null ? "" :  blockDao.findByblockId(user.getBlockId()).getBlockName());
+        user.setRoleName(user.getRoleId()==null ? "" : roleDao.findByRoleId(user.getRoleId()).getRoleDescription());
+        return user;
     }
 }

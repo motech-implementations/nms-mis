@@ -1,7 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="nmsReports" ng-controller="MainController">
 <head>
-	<title>User Management</title>
+	<title>NMS Reporting - {{getTitle($state.current.name)}}</title>
+
+	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
+
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	
@@ -11,7 +15,6 @@
 	<script type="text/javascript" src="bower_components/angular-ui-validate/dist/validate.min.js"></script>
 	<script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 	<script type="text/javascript" src="bower_components/angular-messages/angular-messages.min.js"></script>
-	<script type="text/javascript" src="bower_components/angular-route/angular-route.min.js"></script>
 	<script type="text/javascript" src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
 
 	<script type="text/javascript" src="scripts/global/urls.js"></script>
@@ -19,79 +22,73 @@
 	<!-- main -->
 	<script type="text/javascript" src="scripts/app.js"></script>
 	<script type="text/javascript" src="scripts/json/user.json"></script>
-	<!--<script type="text/javascript" src="scripts/json/newUser.json"></script>-->
-
-	<!-- Factory -->
-	<script type="text/javascript" src="scripts/factories/userTable.js"></script>
-	<!-- <script type="text/javascript" src="scripts/factories/navBar.js"></script> -->
-	<script type="text/javascript" src="scripts/factories/auth.js"></script>
-	<script type="text/javascript" src="scripts/factories/userForm.js"></script>
 
 	<!-- Controllers -->
 	<script type="text/javascript" src="scripts/controllers/main.js"></script>
-	<script type="text/javascript" src="scripts/controllers/navBar.js"></script>
 	<script type="text/javascript" src="scripts/controllers/userManagement.js"></script>
 	<script type="text/javascript" src="scripts/controllers/userTable.js"></script>
 	<script type="text/javascript" src="scripts/controllers/editUser.js"></script>
 	<script type="text/javascript" src="scripts/controllers/bulkUser.js"></script>
 	<script type="text/javascript" src="scripts/controllers/createUser.js"></script>
 	<script type="text/javascript" src="scripts/controllers/reports.js"></script>
+	<script type="text/javascript" src="scripts/controllers/profile.js"></script>
+	<script type="text/javascript" src="scripts/controllers/login.js"></script>
+
+	<!-- Factory -->
+	<!-- <script type="text/javascript" src="scripts/factories/navbar.js"></script> -->
+	<script type="text/javascript" src="scripts/factories/userTable.js"></script>
+	<script type="text/javascript" src="scripts/factories/auth.js"></script>
+	<script type="text/javascript" src="scripts/factories/userForm.js"></script>
 	
-
 	<!-- Directives -->
-	<!-- <script type="text/javascript" src="scripts/directives/navBar.js"></script> -->
-	<script type="text/javascript" src="scripts/directives/userManagement.js"></script>
-	<script type="text/javascript" src="scripts/directives/userTable.js"></script>
-	<script type="text/javascript" src="scripts/directives/editUser.js"></script>
-	<script type="text/javascript" src="scripts/directives/bulkUser.js"></script>
-	<script type="text/javascript" src="scripts/directives/createUser.js"></script>
 	<script type="text/javascript" src="scripts/directives/pagination.js"></script>
-	<script type="text/javascript" src="scripts/directives/reports.js"></script>
-
 
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
 
-	<link rel="stylesheet" href="scripts/style.css">
 	<link rel="stylesheet" href="styles/style.css">
 
 </head>
-<body ng-app="nmsReports" ng-controller="MainController">
-	<div class="container">
-		<div class="navbar-header" style="padding: 20px;">
-			<a class="navbar-brand" href="#">WebSiteName</a>
+<body>
+	<div class="main">
+		<div class='nav-bar'>
+			<div class="nav-header">
+				<img src="images/logo.png">
+				<span ng-hide='$state.current.name=="login"'><b>Hello {{currentUser.fullName}}</b></span>
+			</div>
+
+			<div class="nav">
+				<ul class="breadcrumb" ng-hide='$state.current.name=="login"'>
+					<li ng-repeat="item in getBreadCrumb($state.current.name)">
+						<a ui-sref='{{item.sref}}' ng-class="{'active': {{item.active}} }" >{{item.name}}</a>
+					</li>
+				</ul>
+				<ul class="nav-menu" ng-hide='$state.current.name=="login"'>
+					<li>
+						<a href={{logoutUrl}}>Logout</a>
+					</li>
+					<li ng-class="{active: activeTab('profile')}">
+						<a ui-sref="profile">My Profile</a>
+					</li>
+					<li ng-class="{active: activeTab('userManagement')}" ng-if="currentUser.roleId!= null && currentUser.roleName != 'USER'">
+						<a ui-sref="userManagement.userTable">User Management</a>
+					</li>
+					<li ng-class="{active: activeTab('reports')}">
+						<a ui-sref="reports">Reports</a>
+					</li>
+				</ul>
+			</div>
 		</div>
-		<pre>
-      <!-- Here's some values to keep an eye on in the sample in order to understand $state and $stateParams -->
-      $state = {{$state.current.name}}
-      $stateParams = {{$stateParams}}
-      $state full url = {{ $state.$current.url.source }}
-      <!-- $state.$current is not a public api, we are using it to
-           display the full url for learning purposes-->
-    </pre>
-	</div>
-	<div ng-controller="NavBarController as navCtrl">
-		<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
-			<ul class="nav navbar-nav">
-				<li>
-					<ul class="breadcrumb list-inline" style="margin-left: 50px;">
-						<li ng-repeat="item in breadcrumbDict"></li>
-					</ul>
-				</li>
-			</ul>
 
-			<ul class="nav navbar-nav navbar-right nav-menu">
-				<li><a ui-sref="reports">Reports</a></li>
-				<li><a ui-sref="userManagement.userTable">User Management</a></li>
-				<li><a>My Profile</a></li>
-				<li><a href="http://localhost:8080/NMSReportingSuite/nms/logout">Logout</a></li>
-			</ul>
-		</nav>
+		<div ui-view class="content">
+		</div>
+
+		<div class='footer'>
+			<span>2017 all rights reserved - Mobile Academy & Kilkari Management and Information system</span>
+		</div>
 	</div>
 
-	<div class="body-body">
-		<div ui-view></div>
-	</div>
+	
 
 </body>
 </html> 

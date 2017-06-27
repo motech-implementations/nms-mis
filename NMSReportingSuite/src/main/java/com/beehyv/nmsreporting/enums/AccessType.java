@@ -4,10 +4,11 @@ package com.beehyv.nmsreporting.enums;
  * Created by beehyv on 5/5/17.
  */
 public enum AccessType {
+    MASTER_ADMIN("MASTER ADMIN"),
     ADMIN("ADMIN"),
     USER("USER");
 
-    private String accesType;
+    private String accessType;
 
     public static boolean isType(String test){
         for (AccessType type: AccessType.values()) {
@@ -26,9 +27,9 @@ public enum AccessType {
     }
 
 
-    private AccessType(String accesType){this.accesType=accesType;}
+    private AccessType(String accessType){this.accessType = accessType;}
 
-    public String getAccesType(){return accesType;}
+    public String getAccessType(){return accessType;}
 
 
 

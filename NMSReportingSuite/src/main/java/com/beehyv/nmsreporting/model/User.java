@@ -35,89 +35,52 @@ public class User {
 	@Column(name="email_id")
 	private String emailId;
 
-	@ManyToOne
-	@JoinColumn(name="location",insertable = false,updatable = false)
-	private Location locationId;
+//	@ManyToOne
+//	@JoinColumn(name="location",insertable = false,updatable = false)
+//	private Location locationId;
 
-	@ManyToOne
-	@JoinColumn(name="state",columnDefinition = "TINYINT")
-	private State stateId;
+	@Column(name="state",columnDefinition = "TINYINT")
+	private Integer stateId;
 
-	@ManyToOne
-	@JoinColumn(name="district", columnDefinition = "SMALLINT")
-	private District districtId;
+	@Column(name="district", columnDefinition = "SMALLINT")
+	private Integer districtId;
 
-	@ManyToOne
-	@JoinColumn(name="healthblock", columnDefinition = "INT")
-	private Block blockId;
+	@Column(name="healthblock", columnDefinition = "INT")
+	private Integer blockId;
 
 	@Column(name="creation_date")
 	private Date creationDate;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="created_by_user")
 	private User createdByUser;
 
-	@OneToMany(mappedBy="createdByUser")
-	@LazyCollection(LazyCollectionOption.FALSE)
-	@JsonIgnore
-	private Set<User> createdUsers = new HashSet<>();
+//	@OneToMany(mappedBy="createdByUser")
+//	@LazyCollection(LazyCollectionOption.FALSE)
+//	@JsonIgnore
+//	private Set<User> createdUsers = new HashSet<>();
 
-	@ManyToOne
-	@JoinColumn(name="role_id")
-	private Role roleId;
+	@Column(name="role_id")
+	private Integer roleId;
 
 	@Column(name="account_status")
 	private String accountStatus = AccountStatus.PENDING.getAccountStatus();
 
-////	@Enumerated(EnumType.STRING)
-//	@Column(name="access_type")
-//	private String accessType;
-
-//	@Enumerated(EnumType.STRING)
 	@Column(name="access_level")
 	private  String accessLevel;
 
-	public State getStateId() {
-		return stateId;
-	}
+	@Column(name = "state_name")
+	private  String stateName;
 
-	public void setStateId(State stateId) {
-		this.stateId = stateId;
-	}
+	@Column(name = "district_name")
+	private String districtName;
 
-	public District getDistrictId() {
-		return districtId;
-	}
+	@Column(name = "block_name")
+	private String blockName;
 
-	public void setDistrictId(District districtId) {
-		this.districtId = districtId;
-	}
-
-
-	public String getAccessLevel() {
-		return accessLevel;
-	}
-
-	public void setAccessLevel(String accessLevel) {
-		this.accessLevel = accessLevel;
-	}
-
-//	public String getAccessType() {
-//		return accessType;
-//	}
-//
-//	public void setAccessType(String accessType) {
-//		this.accessType = accessType;
-//	}
-
-	public Block getBlockId() {
-		return blockId;
-	}
-
-	public void setBlockId(Block blockId) {
-		this.blockId = blockId;
-	}
+	@Column(name = "role_name")
+	private String roleName;
 
 	public Integer getUserId() {
 		return userId;
@@ -167,12 +130,28 @@ public class User {
 		this.emailId = emailId;
 	}
 
-	public Location getLocationId() {
-		return locationId;
+	public Integer getStateId() {
+		return stateId;
 	}
 
-	public void setLocationId(Location locationId) {
-		this.locationId = locationId;
+	public void setStateId(Integer stateId) {
+		this.stateId = stateId;
+	}
+
+	public Integer getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(Integer districtId) {
+		this.districtId = districtId;
+	}
+
+	public Integer getBlockId() {
+		return blockId;
+	}
+
+	public void setBlockId(Integer blockId) {
+		this.blockId = blockId;
 	}
 
 	public Date getCreationDate() {
@@ -191,19 +170,19 @@ public class User {
 		this.createdByUser = createdByUser;
 	}
 
-	public Set<User> getCreatedUsers() {
-		return createdUsers;
-	}
+//	public Set<User> getCreatedUsers() {
+//		return createdUsers;
+//	}
+//
+//	public void setCreatedUsers(Set<User> createdUsers) {
+//		this.createdUsers = createdUsers;
+//	}
 
-	public void setCreatedUsers(Set<User> createdUsers) {
-		this.createdUsers = createdUsers;
-	}
-
-	public Role getRoleId() {
+	public Integer getRoleId() {
 		return roleId;
 	}
 
-	public void setRoleId(Role roleId) {
+	public void setRoleId(Integer roleId) {
 		this.roleId = roleId;
 	}
 
@@ -213,5 +192,45 @@ public class User {
 
 	public void setAccountStatus(String accountStatus) {
 		this.accountStatus = accountStatus;
+	}
+
+	public String getAccessLevel() {
+		return accessLevel;
+	}
+
+	public void setAccessLevel(String accessLevel) {
+		this.accessLevel = accessLevel;
+	}
+
+	public String getStateName() {
+		return stateName;
+	}
+
+	public void setStateName(String stateName) {
+		this.stateName = stateName;
+	}
+
+	public String getDistrictName() {
+		return districtName;
+	}
+
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+
+	public String getBlockName() {
+		return blockName;
+	}
+
+	public void setBlockName(String blockName) {
+		this.blockName = blockName;
+	}
+
+	public String getRoleName() {
+		return roleName;
+	}
+
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
 	}
 }

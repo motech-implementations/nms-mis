@@ -29,41 +29,11 @@ public class District {
     @Column(name="loc_id", columnDefinition = "BIGINT(20)")
     private Long locationId;
 
-    @JsonIgnore
-    @OneToMany(cascade=CascadeType.PERSIST, fetch=FetchType.LAZY, mappedBy="districtOfBlock")
-    private Set<Block> blocks = new HashSet<>();
+    @Column(name="state_id", columnDefinition = "TINYINT")
+    private Integer stateOfDistrict;
 
-    @JsonIgnore
-    @OneToMany(cascade=CascadeType.PERSIST, fetch=FetchType.LAZY, mappedBy="districtOfTaluka")
-    private Set<Taluka> talukas = new HashSet<>();
-
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name="state_id", columnDefinition = "TINYINT")
-    private State stateOfDistrict;
-
-    public Set<Taluka> getTalukas() {
-        return talukas;
-    }
-
-    public void setTalukas(Set<Taluka> talukas) {
-        this.talukas = talukas;
-    }
-
-    public Date getLastModified() {
-        return lastModified;
-    }
-
-    public void setLastModified(Date lastModified) {
-        this.lastModified = lastModified;
-    }
-    public Long getLocationId() {
-        return locationId;
-    }
-
-    public void setLocationId(Long locationId) {
-        this.locationId = locationId;
-    }
+    @Column(name="circle_id",columnDefinition = "TINYINT")
+    private Integer circleOfDistrict;
 
     public Integer getDistrictId() {
         return districtId;
@@ -81,19 +51,35 @@ public class District {
         this.districtName = districtName;
     }
 
-    public Set<Block> getBlocks() {
-        return blocks;
+    public Date getLastModified() {
+        return lastModified;
     }
 
-    public void setBlocks(Set<Block> blocks) {
-        this.blocks = blocks;
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
     }
 
-    public State getStateOfDistrict() {
+    public Long getLocationId() {
+        return locationId;
+    }
+
+    public void setLocationId(Long locationId) {
+        this.locationId = locationId;
+    }
+
+    public Integer getStateOfDistrict() {
         return stateOfDistrict;
     }
 
-    public void setStateOfDistrict(State stateOfDistrict) {
+    public void setStateOfDistrict(Integer stateOfDistrict) {
         this.stateOfDistrict = stateOfDistrict;
+    }
+
+    public Integer getCircleOfDistrict() {
+        return circleOfDistrict;
+    }
+
+    public void setCircleOfDistrict(Integer circleOfDistrict) {
+        this.circleOfDistrict = circleOfDistrict;
     }
 }

@@ -32,17 +32,19 @@ public class StateDaoImpl extends AbstractDao<Integer, State> implements StateDa
 
     @Override
     public List<State> getAllStates() {
-        Criteria criteria = createEntityCriteria();
+        Criteria criteria = createEntityCriteria().addOrder(Order.asc("stateId"));
         return (List<State>) criteria.list();
     }
 
     @Override
-    public void saveLocation(State state) {
-        persist(state);
+    public List<State> getStatesByServiceType(String type) {
+        Criteria criteria = createEntityCriteria().addOrder(Order.asc("stateId"));
+
+        criteria.add(Restrictions.or(
+                Restrictions.eq("serviceType", type).ignoreCase(),
+                Restrictions.eq("serviceType", "ALL")));
+
+        return (List<State>) criteria.list();
     }
 
-    @Override
-    public void deleteLocation(State state) {
-        delete(state);
-    }
 }

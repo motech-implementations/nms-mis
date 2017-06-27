@@ -40,8 +40,8 @@ public class NMSRepRealm extends JdbcRealm {
         User user = userService.findUserByUserId(userId);
         if(user != null) {
             SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-            info.addRole(user.getRoleId().getRoleDescription());
-            info.addStringPermission(user.getRoleId().getPermissionId().getPermission());
+            info.addRole(user.getRoleName());
+            info.addStringPermission(userService.getRoleById(user.getRoleId()).getPermissionId().getPermission());
             return info;
         } else {
             return null;

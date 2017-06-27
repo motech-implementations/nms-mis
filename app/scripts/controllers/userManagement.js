@@ -1,12 +1,14 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("UserManagementController", ['$scope', 'UserFormFactory', function($scope, UserFormFactory){
-
-			// if($scope.currentPage == null){
-			// 	currentPage = 'userTable';
-			// 	$state.go('userManagement.userTable')
-			// }
+		.controller("UserManagementController", ['$scope', '$state', 'UserFormFactory', function($scope, $state, UserFormFactory){
+		
+			UserFormFactory.isAdminLoggedIn()
+			.then(function(result){
+				if(!result.data){
+					$state.go('login', {});
+				}
+			})
 
 		}])
 })()

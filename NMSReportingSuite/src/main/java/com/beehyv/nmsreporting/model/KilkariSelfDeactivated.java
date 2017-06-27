@@ -14,14 +14,14 @@ public class KilkariSelfDeactivated {
     @Column(name="id", columnDefinition = "INT(11)")
     private Integer kilkariId;
 
-    @Column(name="mcts_id", columnDefinition = "BIGINT(20)")
-    private Long mctsId;
+    @Column(name="mcts_id", columnDefinition = "VARCHAR(45)")
+    private String mctsId;
+
+    @Column(name="rch_id", columnDefinition = "VARCHAR(45)")
+    private String rchId;
 
     @Column(name="msisdn", columnDefinition = "BIGINT(20)")
     private Long msisdn;
-
-    @Column(name="pack_id", columnDefinition = "TINYINT(4)")
-    private Integer packId;
 
     @Column(name="pack_activation_date", columnDefinition = "DATE")
     private Date packActivationDate;
@@ -37,6 +37,9 @@ public class KilkariSelfDeactivated {
 
     @Column(name="name", columnDefinition = "VARCHAR(100)")
     private String name;
+
+    @Column(name="state_id", columnDefinition = "TINYINT")
+    private Integer stateId;
 
     @Column(name="district_id", columnDefinition = "SMALLINT(6)")
     private Integer districtId;
@@ -58,12 +61,20 @@ public class KilkariSelfDeactivated {
         this.kilkariId = kilkariId;
     }
 
-    public Long getMctsId() {
+    public String getMctsId() {
         return mctsId;
     }
 
-    public void setMctsId(Long mctsId) {
+    public void setMctsId(String mctsId) {
         this.mctsId = mctsId;
+    }
+
+    public String getRchId() {
+        return rchId;
+    }
+
+    public void setRchId(String rchId) {
+        this.rchId = rchId;
     }
 
     public Long getMsisdn() {
@@ -72,14 +83,6 @@ public class KilkariSelfDeactivated {
 
     public void setMsisdn(Long msisdn) {
         this.msisdn = msisdn;
-    }
-
-    public Integer getPackId() {
-        return packId;
-    }
-
-    public void setPackId(Integer packId) {
-        this.packId = packId;
     }
 
     public Date getPackActivationDate() {
@@ -120,6 +123,14 @@ public class KilkariSelfDeactivated {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getStateId() {
+        return stateId;
+    }
+
+    public void setStateId(Integer stateId) {
+        this.stateId = stateId;
     }
 
     public Integer getDistrictId() {

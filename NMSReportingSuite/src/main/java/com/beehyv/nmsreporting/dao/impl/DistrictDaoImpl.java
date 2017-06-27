@@ -2,13 +2,12 @@ package com.beehyv.nmsreporting.dao.impl;
 
 import com.beehyv.nmsreporting.dao.AbstractDao;
 import com.beehyv.nmsreporting.dao.DistrictDao;
-import com.beehyv.nmsreporting.model.District;
-import com.beehyv.nmsreporting.model.Location;
-import com.beehyv.nmsreporting.model.State;
+import com.beehyv.nmsreporting.model.*;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,7 +16,7 @@ import java.util.List;
 @Repository("districtDao")
 public class DistrictDaoImpl extends AbstractDao<Integer, District> implements DistrictDao {
     @Override
-    public District findByDistrictId(Integer districtId) {
+    public District findByDistrictId(Integer districtId) throws NullPointerException{
         return getByKey(districtId);
     }
 
@@ -29,31 +28,10 @@ public class DistrictDaoImpl extends AbstractDao<Integer, District> implements D
 
     }
 
-    @Override
-    public List<District> getDistrictsOfState(State state) {
+    public List<District> getDistrictsOfState(Integer stateId) {
         Criteria criteria = createEntityCriteria();
-        criteria.add(Restrictions.eq("stateOfDistrict", state));
+        criteria.add(Restrictions.eq("stateOfDistrict", stateId));
         return (List<District>) criteria.list();
     }
 
-    @Override
-    public List<District> getAllDistricts() {
-        Criteria criteria = createEntityCriteria();
-        return (List<District>) criteria.list();
-    }
-
-    @Override
-    public State getStateOfDistrict(District district) {
-        return district.getStateOfDistrict();
-    }
-
-    @Override
-    public void saveLocation(District district) {
-        persist(district);
-    }
-
-    @Override
-    public void deleteLocation(District district) {
-        delete(district);
-    }
 }

@@ -1,95 +1,121 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("EditUserController", ['$scope', 'UserFormFactory', '$http', function($scope, UserFormFactory, $http){
+		.controller("EditUserController", ['$scope', 'UserFormFactory', '$http', '$state', '$stateParams', function($scope, UserFormFactory, $http, $state, $stateParams){
 
-			UserFormFactory.getUser( UserFormFactory.getUserToEdit().id )
+			UserFormFactory.isLoggedIn()
 			.then(function(result){
-				console.log(result.data);
-				$scope.user = result.data;
-				$scope.editUser = UserFormFactory.getUserToEdit()
-				$scope.editUser.accessType = $scope.user.roleId;
+				if(!result.data){
+					$state.go('login', {});
+				}
+			})
 
-				
+			UserFormFactory.downloadCurrentUser()
+			.then(function(result){
+				UserFormFactory.setCurrentUser(result.data);
+			})
+
+			$scope.editUser = {};
+			$scope.place = {};
+
+			UserFormFactory.getUser($stateParams.id)
+			.then(function(result){
+				$scope.editUser = result.data;
 			});
 			
 
-			$scope.accessLevelList = ["National", "State", "District", "Block"];
+			$scope.accessLevelList = ["NATIONAL", "STATE", "DISTRICT", "BLOCK"];
 
-			$scope.editUser = {};
+			$scope.showAccess = function(level){
+				var levelIndex = $scope.accessLevelList.indexOf(UserFormFactory.getCurrentUser().accessLevel);
+				if($scope.accessLevelList.indexOf(level) >= levelIndex){
+					return true;
+				}else{
+					return false;
+				}
+			}
 
-			UserFormFactory.downloadRoles()
+
+			$scope.getAccessLevel = function(level){
+				var list = $scope.accessLevelList;
+				var item = $scope.editUser.accessLevel
+				var off = 4 - list.length;
+				return list.indexOf(item) + off < level;
+			}
+			
+			$scope.roleLoading = true;
+			UserFormFactory.getRoles()
 			.then(function(result){
-				UserFormFactory.setRoles(result.data);
-				$scope.accessTypeList = UserFormFactory.getRoles();
+				$scope.accessTypeList = result.data;
+				$scope.roleLoading = false;
 			});
 
 			$scope.getStates = function(){
+				$scope.stateLoading = true;
 				return UserFormFactory.getStates()
 				.then(function(result){
+					$scope.stateLoading = false;
 					$scope.states = result.data;
 					$scope.districts = [];
 					$scope.blocks = [];
-
-					$scope.editUser.state = $scope.user.stateId;
+					if($scope.editUser.stateId != null){
+						$scope.place.stateId = $scope.editUser.stateId;
+						$scope.editUser.stateId = null;
+					}
 				});
 			}
 			
 			$scope.getDistricts = function(stateId){
-				return UserFormFactory.getDistricts(stateId.stateId)
+				$scope.districtLoading = true;
+				return UserFormFactory.getDistricts(stateId)
 				.then(function(result){
+					$scope.districtLoading = false;
 					$scope.districts = result.data;
 					$scope.blocks = [];
-
-					$scope.editUser.district = $scope.user.districtId;
+					if($scope.editUser.districtId != null){
+						$scope.place.districtId = $scope.editUser.districtId;
+						$scope.editUser.districtId = null;
+					}
 				});
 			}
 
 			$scope.getBlocks =function(districtId){
-				return UserFormFactory.getBlocks(districtId.districtId)
+				$scope.blockLoading = true;
+				return UserFormFactory.getBlocks(districtId)
 				.then(function(result){
+					$scope.blockLoading = false;
 					$scope.blocks = result.data;
-
-					$scope.editUser.block = $scope.user.blockId;
+					if($scope.editUser.blockId != null){
+						$scope.place.blockId = $scope.editUser.blockId;
+						$scope.editUser.blockId = null;
+					}
 				});
-			}
-
-			$scope.getAccessLevel = function(level){
-				var list = $scope.accessLevelList;
-				var item = $scope.editUser.accessLevel;
-				return list.indexOf(item) < level;
 			}
 
 			$scope.onAccessLevelChanged = function(){
 				$scope.getStates()
-
 				$scope.editUserForm.state.$setPristine(false);
 				$scope.editUserForm.district.$setPristine(false);
 				$scope.editUserForm.block.$setPristine(false);
 			}
 
 			$scope.$watch('editUser.accessLevel', function(oldValue, newValue){
-				if(oldValue !== newValue){
+				if(oldValue !== newValue && oldValue != null){
 					$scope.onAccessLevelChanged();
 				}
 			});
 
-			$scope.$watch('editUser.state', function(value){
+			$scope.$watch('place.stateId', function(value){
 				if(value != null){
-					$scope.editUser.district = null;
-					$scope.editUser.block = null;
-
 					$scope.getDistricts(value)
 				}
 			});
-			$scope.$watch('editUser.district', function(value){
+			$scope.$watch('place.districtId', function(value){
 				if(value != null){
-					$scope.editUser.block = null;
-
 					$scope.getBlocks(value);
 				}
 			});
-			$scope.$watch('editUser.block', function(value){
+			$scope.$watch('place.blockId', function(value){
 				if(value != null){
 
 				}
@@ -97,44 +123,22 @@
 
 			$scope.editUserSubmit = function() {
 				if ($scope.editUserForm.$valid) {
-
-					// $scope.editUser.accessType = $scope.editUser.accessType.roleId + '';
-					// if($scope.editUser.state != null){
-					// 	$scope.editUser.state = $scope.editUser.state.stateId + ''
-					// }else{
-					// 	delete $scope.editUser.state;
-					// }
-					// if($scope.editUser.district != null){
-					// 	$scope.editUser.district = $scope.editUser.district.districtId + ''
-					// }else{
-					// 	delete $scope.editUser.district;
-					// }
-					// if($scope.editUser.block != null){
-					// 	$scope.editUser.block = $scope.editUser.block.blockId + ''
-					// }else{
-					// 	delete $scope.editUser.block;
-					// }
+					$scope.editUser.stateId = $scope.place.stateId;
+					$scope.editUser.districtId = $scope.place.districtId;
+					$scope.editUser.blockId = $scope.place.blockId;
 					delete $scope.editUser.$$hashKey;
-
-					console.log($scope.editUser);
-					// $http({
-					// 	method  : 'POST',
-					// 	url     : backend_root + 'nms/user/update-user-2',
-					// 	data    : $scope.editUser, //forms user object
-					// 	headers : {'Content-Type': 'application/json'} 
-					// })
-
-					
-					// .then(function(data) {
-					// 	if (data.errors) {
-					// 		// Showing errors.
-					// 		$scope.errorName = data.errors.name;
-					// 		$scope.errorUserName = data.errors.username;
-					// 		$scope.errorEmail = data.errors.email;
-					// 	} else {
-					// 		$scope.message = data.message;
-					// 	}
-					// });
+					$http({
+						method  : 'POST',
+						url     : backend_root + 'nms/user/updateUser',
+						data    : $scope.editUser, //forms user object
+						headers : {'Content-Type': 'application/json'} 
+					}).then(function(result){
+						alert(result.data['0']);
+						// $scope.open()
+						if(result.data['0'] == 'User Updated'){
+							$state.go('userManagement.userTable', {});
+						}
+					})
 				}
 				else{
 					angular.forEach($scope.editUserForm.$error, function (field) {
@@ -144,6 +148,38 @@
 					});
 				}
 			};
-		}]);
 
+			$scope.resetPasswordSubmit = function() {
+			    var password = {};
+			    password.userId = $scope.editUser.userId;
+			    password.oldPassword = "";
+			    password.newPassword = "";
+                $http({
+                    method  : 'POST',
+                    url     : backend_root + 'nms/admin/changePassword',
+                    data    : password, //forms user object
+                    headers : {'Content-Type': 'application/json'}
+                }).then(function(result){
+                    alert(result.data['0']);
+                })
+
+            };
+
+			// $scope.open = function () {
+			// 	$modal.open({
+			// 		templateUrl: 'myModalContent.html', // loads the template
+			// 		backdrop: true, // setting backdrop allows us to close the modal window on clicking outside the modal window
+			// 		windowClass: 'modal', // windowClass - additional CSS class(es) to be added to a modal window template
+			// 		controller: function ($scope, $modalInstance) {
+			// 			$scope.submit = function () {
+			// 				$modalInstance.dismiss('cancel'); // dismiss(reason) - a method that can be used to dismiss a modal, passing a reason
+			// 			}
+			// 			$scope.cancel = function () {
+			// 				$modalInstance.dismiss('cancel'); 
+			// 			};
+			// 		},
+			// 	});//end of modal.open
+			// }; // end of scope.open function
+		
+		}]);
 })()

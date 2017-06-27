@@ -1,0 +1,57 @@
+[
+  {
+    "icon":"images/drop-down-3.png",
+    "name":"Mobile Academy Reports",
+    "service":"K",
+    "options":[
+      {
+        "name":"Cumulative Completion Report",
+        "reportEnum":"MACumulativeCourseCompletion",
+        "icon":"images/drop-down-3.png",
+        "service":"M",
+        "minDate":"2015-11-01"
+      },
+      {
+        "name":"Circle wise Anonymous Reports",
+        "reportEnum":"MAAnonymousUsers",
+        "icon":"images/drop-down-3.png",
+        "service":"M",
+        "minDate":"2017-05-01"
+      },
+      {
+        "name":"Cumulative Inactive Users",
+        "reportEnum":"MACumulativeInactiveUsers",
+        "icon":"images/drop-down-3.png",
+        "service":"M",
+        "minDate":"2017-05-01"
+      }
+    ]
+  },
+  {
+    "icon":"images/drop-down-3.png",
+    "name":"Kilkari Reports",
+    "options":[
+      {
+        "name":"Deactivation for not answering",
+        "reportEnum":"KilkariSixWeeksNoAnswer",
+        "icon":"images/drop-down-3.png",
+        "service":"K",
+        "minDate":"2015-10-01"
+      },
+      {
+        "name":"Listen to < 25% this month",
+        "reportEnum":"KilkariLowUsage",
+        "icon":"images/drop-down-3.png",
+        "service":"K",
+        "minDate":"2015-10-01"
+      },
+      {
+        "name":"Self Deactivations",
+        "reportEnum":"KilkariSelfDeactivated",
+        "icon":"images/drop-down-3.png",
+        "service":"K",
+        "minDate":"2015-10-01"
+      }
+    ]
+  }
+]

@@ -2,21 +2,30 @@
 	var nmsReportsApp = angular
 		.module('nmsReports')
 		.factory( 'UserFormFactory', ['$http', function($http) {
-			var roles = [];
 			var users = [];
 			var currentUser = {};
 
-			var userToEdit;
-
 			return {
-				downloadRoles: function() {
+				downloadCurrentUser: function(){
+					return $http.get(backend_root + 'nms/user/currentUser');
+				},
+				setCurrentUser: function(user){
+					currentUser = user;
+				},
+				getCurrentUser: function(){
+					return currentUser;
+				},
+
+				isLoggedIn: function(){
+					return $http.get(backend_root + 'nms/user/isLoggedIn');
+				},
+
+				isAdminLoggedIn: function(){
+					return $http.get(backend_root + 'nms/user/isAdminLoggedIn');
+				},
+
+				getRoles: function() {
 					return $http.get(backend_root + 'nms/user/roles');
-				},
-				setRoles: function(values){
-					roles = values;
-				},
-				getRoles: function() {   
-					return roles;
 				},
 
 				downloadUsers: function(id){
@@ -26,10 +35,11 @@
 					users = value;
 				},
 
-
-
 				getStates: function(){
 					return $http.get(backend_root + 'nms/location/states');
+				},
+				getStatesByService: function(service){
+					return $http.get(backend_root + 'nms/location/state/' + service);
 				},
 
 				getDistricts: function(stateId){
@@ -40,31 +50,24 @@
 					return $http.get(backend_root + 'nms/location/blocks/' + districtId);
 				},
 
-				getUserToEdit: function(){
-					return userToEdit;
+				getCircles: function(){
+					return $http.get(backend_root + 'nms/location/circles');
 				},
-				setUserToEdit: function(user){
-					userToEdit = user;
+				getCirclesByService: function(service){
+					return $http.get(backend_root + 'nms/location/circle/' + service);
+				},
+
+				getReportsMenu: function(){
+//					return $http.get(backend_root + 'nms/user/reportsMenu/');
+                    return $http.get("scripts/json/reportDetails.json");
 				},
 
 				getUser: function(id){
 					return $http.get(backend_root + 'nms/user/user/' + id);
 				},
 
-				downloadCreator: function(){
-					return $http.get(backend_root + 'nms/user/currentUser');
-				},
-
-				createUserSubmitDto: function(newUser){
-					$http({
-						method  : 'post',
-						url     : 'http://localhost:8080/NMSReportingSuite/nms/user/createFromDto',
-						data    : newUser, //forms user object
-						headers : {
-							'Content-Type': 'application/json', 
-							'Access-Control-Allow-Origin' : '*', 
-							'Access-Control-Allow-Credentials' : true} 
-					});
+				getUserDto: function(id){
+					return $http.get(backend_root + 'nms/user/dto/' + id);
 				}
 
 			};

@@ -1,25 +1,16 @@
 {
   "name": "app",
   "homepage": "https://github.com/motech-implementations/nms-mis",
-  "authors": [
-    "Sree21 <sreekanth_telukuntla@yahoo.com>"
-  ],
   "description": "frontEnd",
   "main": "",
   "license": "MIT",
   "private": true,
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
   "dependencies": {
     "angular-bootstrap": "^2.5.0",
-    "angular-route": "^1.6.4",
     "angular-messages": "^1.6.3",
+    "angular-ui-router": "0.3.1",
     "angular-ui-validate": "^1.2.2",
+    "jquery": "1.9.1 - 3",
     "bootstrap": "^3.3.7"
   }
 }

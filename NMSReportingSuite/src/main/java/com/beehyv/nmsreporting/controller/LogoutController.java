@@ -10,15 +10,18 @@ import org.springframework.web.servlet.mvc.AbstractController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static com.beehyv.nmsreporting.utils.Global.uiAddress;
+
 /**
  * Created by beehyv on 21/3/17.
  */
 @Controller
 @RequestMapping("/nms/logout")
 public class LogoutController extends AbstractController{
+
     @RequestMapping(method = RequestMethod.GET)
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
         SecurityUtils.getSubject().logout();
-        return new ModelAndView("redirect:http://localhost:8080/NMSReportingSuite/nms/login");
+        return new ModelAndView("redirect:"+ uiAddress +"login");
     }
 }

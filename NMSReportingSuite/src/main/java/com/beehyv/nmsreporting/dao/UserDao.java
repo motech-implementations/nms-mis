@@ -1,7 +1,9 @@
 package com.beehyv.nmsreporting.dao;
 
+import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.model.District;
 import com.beehyv.nmsreporting.model.Role;
+import com.beehyv.nmsreporting.model.State;
 import com.beehyv.nmsreporting.model.User;
 
 import java.util.Date;
@@ -30,6 +32,12 @@ public interface UserDao {
     List<User> getUsersByRole(Role roleId);
 
     <E> List<User> getUsersByLocation(String propertyName, E location);
+
+    User getNationalAdmin(Role adminRole);
+
+    User getStateAdmin(Role adminRole, State state);
+
+    User getDistrictAdmin(Role adminRole, District district);
 
     void saveUser(User user);
 

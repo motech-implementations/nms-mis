@@ -12,10 +12,10 @@ public class MACourseCompletion {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="id")
-    private Integer Id;
+    private Long Id;
 
     @Column(name="flw_id")
-    private Integer flwId;
+    private Long flwId;
 
     @Column(name="score")
     private Integer score;
@@ -35,19 +35,19 @@ public class MACourseCompletion {
     @Column(name="last_modified")
     private Date lastModifiedDate;
 
-    public Integer getId() {
+    public Long getId() {
         return Id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         Id = id;
     }
 
-    public Integer getFlwId() {
+    public Long getFlwId() {
         return flwId;
     }
 
-    public void setFlwId(Integer flwId) {
+    public void setFlwId(Long flwId) {
         this.flwId = flwId;
     }
 

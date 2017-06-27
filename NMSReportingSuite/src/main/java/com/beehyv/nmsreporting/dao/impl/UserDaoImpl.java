@@ -10,7 +10,6 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -58,7 +57,10 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
     @Override
     public List<User> getActiveUsers() {
         Criteria criteria = createEntityCriteria();
-        criteria.add(Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus()));
+        criteria.add(Restrictions.and(
+                Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus()),
+                Restrictions.ne("roleId",1)
+        ));
         return (List<User>) criteria.list();
     }
 
@@ -78,16 +80,56 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
     @Override
     public List<User> getUsersByRole(Role roleId) {
         Criteria criteria = createEntityCriteria();
-        criteria.add(Restrictions.and(Restrictions.eq("roleId", roleId),
-                Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus())));
+        criteria.add(Restrictions.and(
+                Restrictions.eq("roleId", roleId),
+                Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus())
+        ));
         return (List<User>) criteria.list();
     }
 
     @Override
     public <E> List<User> getUsersByLocation(String propertyName, E location) {
         Criteria criteria = createEntityCriteria();
-        criteria.add(Restrictions.eq(propertyName, location));
+        criteria.add(Restrictions.and(
+                Restrictions.eq(propertyName, location),
+                Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus())
+        ));
         return (List<User>) criteria.list();
+    }
+
+    @Override
+    public User getNationalAdmin(Role adminRole) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.and(
+                Restrictions.eq("accessLevel", AccessLevel.NATIONAL.getAccessLevel()),
+                Restrictions.eq("roleId", adminRole),
+                Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus())
+        ));
+        return (criteria.list().size() == 0 ? null : (User) criteria.list().get(0));
+    }
+
+    @Override
+    public User getStateAdmin(Role adminRole, State state) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.and(
+                Restrictions.eq("accessLevel", AccessLevel.STATE.getAccessLevel()),
+                Restrictions.eq("roleId", adminRole),
+                Restrictions.eq("stateId", state.getStateId()),
+                Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus())
+        ));
+        return (criteria.list().size() == 0 ? null : (User) criteria.list().get(0));
+    }
+
+    @Override
+    public User getDistrictAdmin(Role adminRole, District district) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.and(
+                Restrictions.eq("accessLevel", AccessLevel.DISTRICT.getAccessLevel()),
+                Restrictions.eq("roleId", adminRole),
+                Restrictions.eq("districtId", district.getDistrictId()),
+                Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus())
+        ));
+        return (criteria.list().size() == 0 ? null : (User) criteria.list().get(0));
     }
 
     @Override
@@ -98,8 +140,12 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
     @Override
     public boolean isAdminCreated(District districtId) {
         Criteria criteria = createEntityCriteria();
-        criteria.add(Restrictions.and(Restrictions.eq("district", districtId),
-                Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus()),Restrictions.eq("access_level", AccessLevel.DISTRICT.getAccessLevel()),Restrictions.eq("access_type", AccessType.ADMIN.getAccesType())));
+        criteria.add(Restrictions.and(
+                Restrictions.eq("district", districtId),
+                Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus()),
+                Restrictions.eq("access_level", AccessLevel.DISTRICT.getAccessLevel()),
+                Restrictions.eq("access_type", AccessType.ADMIN.getAccessType())
+        ));
         List<User> Admins=(List<User>) criteria.list();
         if(Admins==null||Admins.size()==0){
             return true;

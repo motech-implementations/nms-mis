@@ -1,80 +1,177 @@
 <div  class="container-fluid" ng-controller="ReportsController">
 
-	<ul class="breadcrumb" ng-if="currentPageTitle">
-		<li><a ng-click="userTable()">User Management</a></li>
-		<li class="active">{{currentPageTitle}}</li>
-	</ul>
+	<div class="block reports-header">
+		<form name="reportsForm" class="form container-fluid block" role="form" novalidate="novalidate">
+			<div class="row">
+				<div class="col-xs-7 left">
+					<div class="form-group col-xs-4">
+						<label>Select Reports Category</label><br>
+						<div class="btn-group" uib-dropdown dropdown-append-to-body>
+							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" uib-dropdown-toggle ng-disabled="disableReportCategory()" ng-class="{loading: reportsLoading}">
+								{{reportCategory}}
+								<span ng-if="reportCategory == null">Select</span>
+								<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
+								<li role="menuitem" ng-repeat="item in reports">
+									<a ng-click='selectReportCategory(item)'>
+										<img class='block' src="{{item.icon}}">
+										<span>{{item.name}}</span>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="form-group col-xs-4">
+						<label>Select Reports</label><br>
+						<div class="btn-group" uib-dropdown dropdown-append-to-body>
+							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" ng-disabled='disableReport()' uib-dropdown-toggle>
+								<span>{{report.name}}</span>
+								<span ng-if="report.name == null">Select</span>
+								<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
+								<li role="menuitem" ng-repeat="item in reportNames">
+									<a ng-click='selectReport(item)'>
+										<img class='block' src="{{item.icon}}">
+										<span>{{item.name}}</span>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="form-group col-xs-4">
+						<label>Select Month</label><br>
+						<p class="input-group" ng-disabled="disableDate()">
+							<input type="text" class="form-control input input-sm" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" datepicker-mode="'month'" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" ng-disabled='disableDate()' readonly />
+							<span class="input-group-btn">
+							<button type="button" class="btn btn-sm btn-default" ng-click="open1()"  ng-disabled='disableDate()' ><i class="glyphicon glyphicon-calendar" ng-disabled="disableDate()" ></i></button>
+							</span>
+						</p>
+					</div>
+				</div>
 
-	<form class="form container-fluid" role="form">
-		<div class="row">
-			<div class="col-xs-7">
-				<div class="form-group col-xs-4">
-					<label for="name">Select Reports Category</label>
-					<select class="form-control" id="reportCaterory" ng-model="reportCaterory">
-						<option>Mobile Academy Reports</option>
-						<option>Kilkari Reports</option>
-					</select>
-				</div>
-				<div class="form-group col-xs-4">
-					<label for="email">Select Reports</label>
-					<select class="form-control" id="reportName" ng-model="reportName">
-						<option>Report 1</option>
-						<option>Report 2</option>
-						<option>Report 3</option>
-						<option>Report 4</option>
-					</select>
-				</div>
-				<div class="form-group col-xs-4">
-					<label for="pwd">Select Date Range</label>
-					<input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
-					<span class="input-group-btn">
-						<button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
-					</span>
-				</div>
-			</div>
-			<div class="col-xs-5">
-				<div class="form-group col-xs-4">
-					<label for="name">Select State</label>
-					<select class="form-control" id="sel1">
-						<option>1</option>
-						<option>2</option>
-						<option>3</option>
-						<option>4</option>
-					</select>
-				</div>
-				<div class="form-group col-xs-4">
-					<label for="email">Select District</label>
-					<select class="form-control" id="sel1">
-						<option>1</option>
-						<option>2</option>
-						<option>3</option>
-						<option>4</option>
-					</select>
-				</div>
-				<div class="form-group col-xs-4">
-					<label for="pwd">Select Block</label>
-					<select class="form-control" id="sel1">
-						<option>1</option>
-						<option>2</option>
-						<option>3</option>
-						<option>4</option>
-					</select>
-				</div>
-			</div>	
+				<div class="col-xs-5 right" ng-if="!isCircleReport()">
+					<div class="form-group col-xs-4">
+						<label for="name">Select State</label><br>
+						<div class="btn-group" uib-dropdown dropdown-append-to-body>
+							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" ng-disabled="disableState()" uib-dropdown-toggle ng-class="{loading: statesLoading}">
+								<span class="block">
+									<span>{{crop(state.stateName)}}</span>
+									<span ng-if="state == null">ALL</span>
+									<span class="caret"></span>
+								</span>
+							</button>
+							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
+								<li role="menuitem"><a ng-click="clearState()">ALL</a>
+								<li role="menuitem" ng-repeat="item in states | filter:serviceStarted"><a ng-click='selectState(item)'>{{item.stateName}}</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="form-group col-xs-4">
+					<!-- <div> -->
+						<label for="email">Select District</label><br>
+						<div class="btn-group" uib-dropdown dropdown-append-to-body>
+							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" ng-disabled="disableDistrict()" uib-dropdown-toggle ng-class="{loading: districtsLoading, autoSelected}">
+								<span class="block">
+									<span>{{crop(district.districtName)}}</span>
+									<span ng-if="district == null">ALL</span>
+									<span class="caret"></span>
+								</span>
+							</button>
+							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
+								<li role="menuitem"><a ng-click="clearDistrict()">ALL</a>
+								<li role="menuitem" ng-repeat="item in districts"><a ng-click='selectDistrict(item)'>{{item.districtName}}</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="form-group col-xs-4">
+						<label for="pwd">Select Block</label><br>
+						<div class="btn-group" uib-dropdown dropdown-append-to-body>
+							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" ng-disabled="disableBlock()" uib-dropdown-toggle ng-class="{loading: blocksLoading}">
+								<span class="block">
+									<span>{{crop(block.blockName)}}</span>
+									<span ng-if="block == null">ALL</span>
+									<span class="caret"></span>
+								</span>
+							</button>
+							<ul class="dropdown-menu small" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
+								<li role="menuitem"><a ng-click="clearBlock()">ALL</a>
+								<li role="menuitem" ng-repeat="item in blocks"><a ng-click='selectBlock(item)'>{{item.blockName}}</a></li>
+							</ul>
+						</div>
+					</div>
+					<!-- <div class="form-group col-xs-3">
+						<label>Select Date Range</label><br>
+						<p class="input-group" ng-disabled="reportName=='Select'">
+							<input type="text" class="form-control input input-sm" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" datepicker-mode="'month'" ng-required="true" close-text="Close" alt-input-formats="altInputFormats"  ng-disabled='reportName=="Select"' />
+							<span class="input-group-btn">
+								<button type="button" class="btn btn-sm btn-default" ng-click="open1()"  ng-disabled='reportName=="Select"' ><i class="glyphicon glyphicon-calendar" ng-disabled="reportName=='Select'" ></i></button>
+							</span>
+						</p>
+					</div> -->
+				</div>	
+
+				<div class="col-xs-5 right" ng-if="isCircleReport()">
+					<div class="form-group col-xs-4">
+						<label for="name">Select Circle</label><br>
+						<div class="btn-group" uib-dropdown dropdown-append-to-body>
+							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" ng-disabled="disableCircle()" uib-dropdown-toggle ng-class="{loading: circlesLoading}">
+								<span class="block">
+									<span>{{circle.circleName}}</span>
+									<span ng-if="circle == null">ALL</span>
+									<span class="caret"></span>
+								</span>
+							</button>
+							<ul class="dropdown-menu small" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
+								<li role="menuitem"><a ng-click="clearCircle()">ALL</a>
+								<li role="menuitem" ng-repeat="item in circles | filter:serviceStarted"><a ng-click='selectCircle(item)'>{{item.circleName}}</a></li>
+							</ul>
+						</div>
+					</div>
+					<!-- <div class="form-group col-xs-3">
+					</div>
+					<div class="form-group col-xs-3">
+					</div> -->
+					<!-- <div class="form-group col-xs-3">
+						<label>Select Date Range</label><br>
+						<p class="input-group" ng-disabled="reportName=='Select'">
+							<input type="text" class="form-control input input-sm" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" datepicker-mode="'month'" ng-required="true" close-text="Close" alt-input-formats="altInputFormats"  ng-disabled='reportName=="Select"' />
+							<span class="input-group-btn">
+							<button type="button" class="btn btn-sm btn-default" ng-click="open1()"  ng-disabled='reportName=="Select"' ><i class="glyphicon glyphicon-calendar" ng-disabled="reportName=='Select'" ></i></button>
+							</span>
+						</p>
+					</div> -->
+
+				</div>	
 				
-			<div class="form-group col-xs-4">
-				<button type="submit" class="btn btn-default">Submit</button>
-				<button class="btn btn-default">Reset</button>
 			</div>
-		</div>
-	</form>
-<!-- 
-	<div style="background-color: #aaa; height: 34px;">
-		<p style="display: inline-block; float: left; left: 100px;">{{radioModel}}</p>
-		<div class="btn-group" style="display: inline-block; float: right; right: 100px; ">
-			<label class="btn btn-primary" ng-model="radioModel" uib-btn-radio="'table'">Table</label>
-			<label class="btn btn-primary" ng-model="radioModel" uib-btn-radio="'chart'">Chart</label>
-		</div>
-	</div> -->
+			<div class="row">
+				<div class="form-group col-xs-4">
+					<button class="btn btn-sm btn-primary" ng-click="getReport()">Submit</button>
+					<button class="btn btn-sm btn-primary" ng-click="reset()">Reset</button>
+				</div>
+			</div>
+		</form>
+	</div>
 
+	<div class="block reports-body loading" ng-if="waiting">
+		<img src="images/pageloader.gif">
+		<p>Report is being generated...</p>
+	</div>
+
+	<div class="block reports-body" ng-if="!waiting && status == 'success'">
+		<p>The following report has been generated: </p>
+		<p>{{fileName}}</p>
+		<span ng-click="clearFile()">
+			<a id="downloadReportLink" href="{{downloadReportUrl}}">Click here to download. <img src="images/export3.png"></a>
+		</span>
+
+	</div>
+
+	<div class="block reports-body" ng-if="!waiting && status == 'fail'">
+		<p>You do not have access to this report.</p>
+		<p>{{fileName}}</p>
+
+	</div>
 </div>

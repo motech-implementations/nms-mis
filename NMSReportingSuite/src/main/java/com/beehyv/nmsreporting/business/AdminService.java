@@ -1,20 +1,44 @@
 package com.beehyv.nmsreporting.business;
 
+import com.beehyv.nmsreporting.entity.ReportRequest;
+import com.beehyv.nmsreporting.enums.ReportType;
+import com.beehyv.nmsreporting.model.AnonymousUsers;
+import com.beehyv.nmsreporting.model.FrontLineWorkers;
+import com.beehyv.nmsreporting.model.KilkariSixWeeksNoAnswer;
 import com.beehyv.nmsreporting.model.User;
+import org.apache.poi.ss.formula.functions.T;
 
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by beehyv on 19/4/17.
  */
 public interface AdminService {
 
-  public HashMap startBulkDataImport(User user);
+  HashMap startBulkDataImport(User user);
 
-  public void getBulkDataImportCSV();
+  void getBulkDataImportCSV();
 
-  public void getCumulativeCourseCompletionCSV(String State,String District,String Block);
+  void getCumulativeCourseCompletionFiles( Date toDate);
 
-  public void getCumulativeCourseCompletionCSV1(Integer LocationId);
+  void getCircleWiseAnonymousFiles(Date fromDate,Date toDate);
+
+  void getCumulativeInactiveFiles(Date toDate);
+
+  void getKilkariSixWeekNoAnswerFiles(Date fromDate, Date toDate);
+
+  void getKilkariLowUsageFiles(Date fromDate, Date toDate);
+
+  void getKilkariSelfDeactivationFiles(Date fromDate, Date toDate);
+
+  void createFiles(String reportType);
+
+  void createFolders(String reportType);
+
+  void createSpecificReport(ReportRequest reportRequest);
+
 
 }

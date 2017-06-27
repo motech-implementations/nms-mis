@@ -1,77 +1,134 @@
-<div ng-controller="UserTableController">
+<div ng-controller="UserTableController" class='userTable'>
 
-	<div class="well userMngHeader">
-		<h1>User Management</h1>
-		<div>
-			<input  class="form-control" ng-model="filterText" type="text" name="tableSearch" placeholder="Search">
-			<button class="btn btn-primary" name="bulkUpload" ui-sref="userManagement.bulkUpload">Upload Bulk Users</button>
-            <button class="btn btn-primary" name="newUser" ui-sref="userManagement.createUser">Create new User</button>
+	<div class="block header">
+		<div class='block inputs row'>
+			<h1 class='col-sm-6'>User Management</h1>
+
+			<input type="text" class="form-control input input-sm" ng-model="filterText" name="tableSearch" placeholder="Search">
+			<input type="button" class="btn btn-sm btn-primary" name="bulkUpload" ui-sref="userManagement.bulkUpload" value="Upload Bulk User">
+			<input type="button" class="btn btn-sm btn-primary" name="newUser" ui-sref="userManagement.createUser" value="Create new User">
+
 		</div>
 	</div>
 
-	<div class="well">
-		<!-- <ul>
-			<li ng-repeat="item in data">{{item.name}}</li>
-		</ul> -->
-		<table class="table table-bordered table-striped">
+	
+
+	<div>
+		<button class="btn btn-sm btn-primary resetButton" ng-click="resetFilters()">Reset Filters</button>
+		<table class="table table-bordered">
 			<tr>
 				<!-- <th ng-repeat="header in headers" ng-if="header != '$$hashKey'">{{header}}</th> -->
-                <th ng-click="sort_by('id')"><a href="#">Id</a></th>
-                <th ng-click="sort_by('name')"><a href="#">Name</a></th>
-                <th ng-click="sort_by('username')"><a href="#">Username</a></th>
-                <th ng-click="sort_by('phoneNumber')"><a href="#">Phone no.</a></th>
-                <th ng-click="sort_by('email')"><a href="#">Email id</a></th>
-				 <th class="th-dropdown">
-                            <select ng-model="accType">
-                                <option value="">Access Type</option>
-                                <option ng-repeat="aType in uniqueAT = (getUniqueAccessTypes())"
-                                        value="{{aType}}">{{aType}}
-                                </option>
-                            </select>
-                        </th>
-                <!--<th>Access Type</th>-->
-                <th class="th-dropdown">
-                    <select ng-model="accLevel">
-                        <option value="">Access Level</option>
-                        <option ng-repeat="aLevel in uniqueAL = (getUniqueAccessLevels())"
-                                value="{{aLevel}}">{{aLevel}}
-                        </option>
-                    </select>
-                </th>
-                <th class="th-dropdown">
-                    <select ng-model="stateName">
-                        <option value="">State</option>
-                        <option ng-repeat="sName in sNames = (getUniqueStates())"
-                                value="{{sName}}">{{sName}}
-                        </option>
-                    </select>
-                </th>
-                <th class="th-dropdown">
-                    <select ng-model="districtName">
-                        <option value="">District</option>
-                        <option ng-repeat="dName in dNames = (getUniqueDistricts())"
-                                value="{{dName}}">{{dName}}
-                        </option>
-                    </select>
-                </th>
-                <th class="th-dropdown">
-                    <select ng-model="blockName">
-                        <option value="">Block</option>
-                        <option ng-repeat="bName in bNames = (getUniqueBlocks())"
-                                value="{{bName}}">{{bName}}
-                        </option>
-                    </select>
-                </th>
-                <!--<th>Access Level</th>-->
-                <!--<th>State</th>-->
-                <!--<th>District</th>-->
-                <!--<th>Block</th>-->
-				<th>Edit</th>
+				<th class="sortable-columns" ng-click="sort_by('id')"><a>Id</a></th>
+				<th class="sortable-columns" ng-click="sort_by('name')"><a>Name</a></th>
+				<th class="sortable-columns" ng-click="sort_by('username')"><a>Username</a></th>
+				<th class="sortable-columns" ng-click="sort_by('phoneNumber')"><a>Phone no.</a></th>
+				<th class="sortable-columns" ng-click="sort_by('email')"><a>Email id</a></th>
+				<th class="th-dropdown">
+					<span uib-dropdown>
+						<div uib-dropdown-toggle id="accessTypeDropdown">
+							<a href>
+								Access Type
+								<span class="caret"></span>
+							</a>
+							<a href ng-if="exists(accType)">
+								({{crop(accType)}})
+							</a>
+						</div>
+						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="accessTypeDropdown">
+							<li><a ng-click="setUniqueAccessTypes('')">ALL</a></li>
+							<li ng-repeat="aType in uniqueAT = (getUniqueAccessTypes())">
+								<a ng-click="setUniqueAccessTypes(aType)" >{{aType}}</a>
+							</li>
+						</ul>
+					</span>
+				</th>
+				<!--<th>Access Type</th>-->
+				<th class="th-dropdown">
+					<span uib-dropdown>
+						<div uib-dropdown-toggle id="accessLevelDropdown">
+							<a href>
+								Access Level
+								<span class="caret"></span>
+							</a>
+							<a href ng-if="exists(accLevel)">
+								({{crop(accLevel)}})
+							</a>
+						</div>
+						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="accessLevelDropdown">
+							<li>
+								<a ng-click="setUniqueAccessLevels('')">ALL</a>
+							</li>
+							<li ng-repeat="aLevel in uniqueAL = (getUniqueAccessLevels())">
+								<a ng-click="setUniqueAccessLevels(aLevel)" >{{aLevel}}</a>
+							</li>
+						</ul>
+					</span>
+				</th>
+				<th class="th-dropdown">
+					<span uib-dropdown>
+						<div uib-dropdown-toggle id="stateDropdown">
+							<a href>
+								State
+								<span class="caret"></span>
+							</a>
+							<a href ng-if="exists(stateName)">
+								({{crop(stateName)}})
+							</a>
+						</div>
+						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="stateDropdown">
+							<li>
+								<a ng-click="setUniqueStates('')">ALL</a>
+							</li>
+							<li ng-repeat="sName in sNames = (getUniqueStates())">
+								<a ng-click="setUniqueStates(sName)" >{{sName}}</a>
+							</li>
+						</ul>
+					</span>
+				</th>
+				<th class="th-dropdown">
+					<span uib-dropdown>
+						<div uib-dropdown-toggle id="districtDropdown">
+							<a href>
+								District
+								<span class="caret"></span>
+							</a>
+							<a href ng-if="exists(districtName)">({{crop(districtName)}})
+							</a>
+						</div>
+						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="districtDropdown">
+							<li>
+								<a ng-click="setUniqueDistricts('')">ALL</a>
+							</li>
+							<li ng-repeat="dName in dNames = (getUniqueDistricts())">
+								<a ng-click="setUniqueDistricts(dName)" >{{dName}}</a>
+							</li>
+						</ul>
+					</span>
+				</th>
+				<th class="th-dropdown">
+					<span uib-dropdown>
+						<div uib-dropdown-toggle id="blockDropdown">
+							<a href>Block
+								<span class="caret"></span>
+							</a>
+							<a href ng-if="exists(blockName)">
+								({{crop(blockName)}})
+							</a>
+						</div>
+						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="blockDropdown">
+							<li><a ng-click="setUniqueBlocks('')">ALL</a></li>
+							<li ng-repeat="bName in bNames = (getUniqueBlocks())">
+								<a ng-click="setUniqueBlocks(bName)" >{{bName}}</a>
+							</li>
+						</ul>
+					</span>
+				</th>
+				<th><a>Edit</a></th>
 			</tr>
 			<!-- <tr ng-repeat="item in data"> -->
 			<tr ng-repeat="item in filterData = (getAllUsers() | filter : search ) | orderBy : sorter : reverse  | limitTo : numPerPage : numPerPage*(currentPageNo-1)">
 				<!-- <td class ="{{header}}" ng-repeat="header in headers" ng-if="header != '$$hashKey'">{{item[header]}}</td> -->
-				<td>{{item.id}}</td>
+				<td>{{item.id - 1}}</td>
 				<td>{{item.name}}</td>
 				<td>{{item.username}}</td>
 				<td>{{item.phoneNumber}}</td>
@@ -81,18 +138,33 @@
 				<td>{{item.state}}</td>
 				<td>{{item.district}}</td>
 				<td>{{item.block}}</td>
-                <td ng-if="item.createdBy"><a ng-click="editUser(item.id)">Edit</a></td>
+				<td><span ng-if="item.createdBy"><a ui-sref="userManagement.editUser({ id: '{{item.id}}' })">Edit</a></span></td>
 			</tr>
 		</table>
 
-		<pagination
+		<div ng-if="waiting" class="loading">
+			<img src="images/pageloader.gif">
+		</div>
+<!-- 
+		<pagination style="float: right;"
 			total-items=filterData.length
 			items-per-page="numPerPage"
 			current-page="currentPageNo"
 			class="pagination-small">
-		</pagination>
+		</pagination> -->
+
+		<div class="block pagination">
+
+		<!-- 	<ul uib-pagination boundary-links="true" total-items="totalItems" items-per-page="itemsPerPage"	ng-model="currentPage" class="pagination-small" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul> -->
+
+			<pagination
+				total-items=filterData.length
+				items-per-page="numPerPage"
+				current-page="currentPageNo"
+				class="pagination-small">
+			</pagination> 
+		</div>
+		
+
 	</div>
-
-	
-
 </div>

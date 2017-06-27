@@ -11,26 +11,28 @@ import java.util.Date;
 public class FrontLineWorkers {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name="id", columnDefinition = "BIGINT(20)")
-    private Integer flwId;
+    @Column(name="flw_id", columnDefinition = "BIGINT(20)")
+    private Long flwId;
 
     @Column(name="flw_name", columnDefinition = "VARCHAR(255)")
     private String fullName;
 
     @Column(name="flw_msisdn", columnDefinition = "BIGINT(10)")
-    private String mobileNumber;
+    private Long mobileNumber;
 
     @Column(name="external_flw_id", columnDefinition = "BIGINT(20)")
     private String externalFlwId;
 
-    @Column(name="flw_designation", columnDefinition = "BOOLEAN")
+    @Column(name="flw_designation", columnDefinition = "VARCHAR(255)")
     private String designation;
 
-    @Column(name="language", columnDefinition = "TINYINT(4)")
+    @Column(name="language", columnDefinition = "VARCHAR(255)")
     private String language;
 
-    @Column(name="flw_status", columnDefinition = "TINYINT(4)")
+    @Column(name="flw_status", columnDefinition = "VARCHAR(255)")
+    private String status;
+
+    @Column(name="job_status", columnDefinition = "VARCHAR(255)")
     private String jobStatus;
 
     @Column(name="state_id", columnDefinition = "TINYINT")
@@ -48,10 +50,10 @@ public class FrontLineWorkers {
     @Column(name="block_id", columnDefinition = "INT(11)")
     private Integer block;
 
-    @Column(name="facility_id", columnDefinition = "INT(11)")
+    @Column(name="healthfacility_id", columnDefinition = "INT(11)")
     private Integer facility;
 
-    @Column(name="subfacility_id", columnDefinition = "INT(11)")
+    @Column(name="healthsubfacility_id", columnDefinition = "INT(11)")
     private Integer subfacility;
 
     @Column(name="creation_date", columnDefinition = "DATE")
@@ -60,20 +62,12 @@ public class FrontLineWorkers {
     @Column(name="last_modified", columnDefinition = "DATE")
     private Date lastModifiedDate;
 
-    public Integer getFlwId() {
+    public Long getFlwId() {
         return flwId;
     }
 
-    public void setFlwId(Integer flwId) {
+    public void setFlwId(Long flwId) {
         this.flwId = flwId;
-    }
-
-    public String getDesignation() {
-        return designation;
-    }
-
-    public void setDesignation(String designation) {
-        this.designation = designation;
     }
 
     public String getFullName() {
@@ -84,11 +78,11 @@ public class FrontLineWorkers {
         this.fullName = fullName;
     }
 
-    public String getMobileNumber() {
+    public Long getMobileNumber() {
         return mobileNumber;
     }
 
-    public void setMobileNumber(String mobileNumber) {
+    public void setMobileNumber(Long mobileNumber) {
         this.mobileNumber = mobileNumber;
     }
 
@@ -100,12 +94,28 @@ public class FrontLineWorkers {
         this.externalFlwId = externalFlwId;
     }
 
+    public String getDesignation() {
+        return designation;
+    }
+
+    public void setDesignation(String designation) {
+        this.designation = designation;
+    }
+
     public String getLanguage() {
         return language;
     }
 
     public void setLanguage(String language) {
         this.language = language;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getJobStatus() {
@@ -140,20 +150,20 @@ public class FrontLineWorkers {
         this.taluka = taluka;
     }
 
-    public Integer getBlock() {
-        return block;
-    }
-
-    public void setBlock(Integer block) {
-        this.block = block;
-    }
-
     public Integer getVillage() {
         return village;
     }
 
     public void setVillage(Integer village) {
         this.village = village;
+    }
+
+    public Integer getBlock() {
+        return block;
+    }
+
+    public void setBlock(Integer block) {
+        this.block = block;
     }
 
     public Integer getFacility() {

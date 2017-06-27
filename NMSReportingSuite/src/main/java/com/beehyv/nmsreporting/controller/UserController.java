@@ -1,22 +1,32 @@
 package com.beehyv.nmsreporting.controller;
 
-import com.beehyv.nmsreporting.business.LocationService;
-import com.beehyv.nmsreporting.business.ModificationTrackerService;
-import com.beehyv.nmsreporting.business.RoleService;
-import com.beehyv.nmsreporting.business.UserService;
-import com.beehyv.nmsreporting.dto.UserDto;
-import com.beehyv.nmsreporting.enums.AccountStatus;
+import com.beehyv.nmsreporting.business.*;
+import com.beehyv.nmsreporting.entity.PasswordDto;
+import com.beehyv.nmsreporting.entity.UserDto;
+import com.beehyv.nmsreporting.entity.ContactInfo;
+import com.beehyv.nmsreporting.entity.Report;
+import com.beehyv.nmsreporting.entity.ReportRequest;
+import com.beehyv.nmsreporting.enums.AccessLevel;
+import com.beehyv.nmsreporting.enums.AccessType;
+import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.Role;
+import com.beehyv.nmsreporting.model.State;
 import com.beehyv.nmsreporting.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.expression.ParseException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.*;
+
+import static com.beehyv.nmsreporting.utils.ServiceFunctions.StReplace;
 
 /**
  * Created by beehyv on 15/3/17.
@@ -36,6 +46,16 @@ public class UserController {
     @Autowired
     private ModificationTrackerService modificationTrackerService;
 
+    @Autowired
+    private AdminService adminService;
+
+    @Autowired
+    private ReportService reportService;
+
+    private final Date bigBang = new Date(0);
+    private final String documents = System.getProperty("user.home") +File.separator+ "Documents/";
+    private final String reports = documents+"Reports/";
+    private Calendar c =Calendar.getInstance();
     @RequestMapping(value = {"/", "/list"}, method = RequestMethod.GET)
     public @ResponseBody List<User> getAllUsers() {
         return userService.findAllActiveUsers();
@@ -61,6 +81,55 @@ public class UserController {
         return userService.getCurrentUser();
     }
 
+    @RequestMapping(value={"/profile"})
+    public @ResponseBody UserDto profile() {
+        User currentUser = userService.getCurrentUser();
+        if(currentUser != null){
+            UserDto user1 = new UserDto();
+            user1.setId(currentUser.getUserId());
+            user1.setName(currentUser.getFullName());
+            user1.setUsername(currentUser.getUsername());
+            user1.setEmail(currentUser.getEmailId());
+            user1.setPhoneNumber(currentUser.getPhoneNumber());
+            user1.setAccessLevel(currentUser.getAccessLevel());
+            if(currentUser.getStateId() != null){
+                user1.setState(locationService.findStateById(currentUser.getStateId()).getStateName());
+            }
+            else{
+                user1.setState("");
+            }
+            if(currentUser.getDistrictId() != null) {
+                user1.setDistrict(locationService.findDistrictById(currentUser.getDistrictId()).getDistrictName());
+            }
+            else{
+                user1.setDistrict("");
+            }
+            if(currentUser.getBlockId() != null) {
+                user1.setBlock(locationService.findBlockById(currentUser.getBlockId()).getBlockName());
+            }
+            else{
+                user1.setBlock("");
+            }
+            user1.setAccessType(currentUser.getRoleName());
+            user1.setCreatedBy(true);
+            return user1;
+        }
+        return null;
+    }
+
+    @RequestMapping(value={"/isLoggedIn"})
+    public @ResponseBody Boolean isLoggedIn() {
+        return userService.getCurrentUser() != null;
+    }
+    @RequestMapping(value={"/isAdminLoggedIn"})
+    public @ResponseBody Boolean isAdminLoggedIn() {
+        User currentUser = userService.getCurrentUser();
+        if(currentUser == null || currentUser.getRoleName().equals(AccessType.USER.getAccessType())){
+            return false;
+        }
+        return true;
+    }
+
     //To be changed
     @RequestMapping(value={"/tableList"})
     public @ResponseBody List<UserDto> getTableList() {
@@ -75,23 +144,30 @@ public class UserController {
             user1.setEmail(user.getEmailId());
             user1.setPhoneNumber(user.getPhoneNumber());
             user1.setAccessLevel(user.getAccessLevel());
-            try {
-                user1.setState(user.getStateId().getStateName());
-            } catch(NullPointerException e){
+            if(user.getStateId() == null){
                 user1.setState("");
+            } else{
+                user1.setState(user.getStateName());
             }
-            try {
-                user1.setDistrict(user.getDistrictId().getDistrictName());
-            } catch(NullPointerException e){
+            if(user.getDistrictId() == null){
                 user1.setDistrict("");
+            } else{
+                user1.setDistrict(user.getDistrictName());
             }
-            try {
-                user1.setBlock(user.getBlockId().getBlockName());
-            } catch(NullPointerException e){
+            if(user.getBlockId() == null){
                 user1.setBlock("");
+            } else{
+                user1.setBlock(user.getBlockName());
             }
-            user1.setAccessType(user.getRoleId().getRoleDescription());
-            user1.setCreatedBy(true);
+            user1.setAccessType(user.getRoleName());
+            int a;
+            try{
+                a = user.getCreatedByUser().getUserId();
+            } catch (NullPointerException e){
+                a = 0;
+            }
+            int b = getCurrentUser().getUserId();
+            user1.setCreatedBy(a == b || getCurrentUser().getRoleId() == 1);
             tabDto.add(user1);
 
         }
@@ -103,40 +179,40 @@ public class UserController {
         return userService.findUserByUserId(userId);
     }
 
-    @RequestMapping(value={"/dto/{userId}"})
-    public @ResponseBody UserDto getUserDto(@PathVariable("userId") Integer userId) {
-        User user = userService.findUserByUserId(userId);
-        String[] levels = {"National", "State", "District", "Block"};
-        UserDto user1 = new UserDto();
-        user1.setId(user.getUserId());
-        user1.setName(user.getFullName());
-        user1.setUsername(user.getUsername());
-        user1.setEmail(user.getEmailId());
-        user1.setPhoneNumber(user.getPhoneNumber());
-        user1.setAccessLevel(user.getAccessLevel());
-        try {
-            user1.setState(user.getStateId().getStateName());
-        } catch(NullPointerException e){
-            user1.setState("");
-        }
-        try {
-            user1.setDistrict(user.getDistrictId().getDistrictName());
-        } catch(NullPointerException e){
-            user1.setDistrict("");
-        }
-        try {
-            user1.setBlock(user.getBlockId().getBlockName());
-        } catch(NullPointerException e){
-            user1.setBlock("");
-        }
-        user1.setAccessType(user.getRoleId().getRoleDescription());
-        user1.setCreatedBy(true);
-        return user1;
-    }
+//    @RequestMapping(value={"/dto/{userId}"})
+//    public @ResponseBody UserDto getUserDto(@PathVariable("userId") Integer userId) {
+//        User user = userService.findUserByUserId(userId);
+//        String[] levels = {"National", "State", "District", "Block"};
+//        UserDto user1 = new UserDto();
+//        user1.setId(user.getUserId());
+//        user1.setName(user.getFullName());
+//        user1.setUsername(user.getUsername());
+//        user1.setEmail(user.getEmailId());
+//        user1.setPhoneNumber(user.getPhoneNumber());
+//        user1.setAccessLevel(user.getAccessLevel());
+//        try {
+//            user1.setState(locationService.findStateById(user.getStateId()).getStateName());
+//        } catch(NullPointerException e){
+//            user1.setState("");
+//        }
+//        try {
+//            user1.setDistrict(locationService.findDistrictById(user.getDistrictId()).getDistrictName());
+//        } catch(NullPointerException e){
+//            user1.setDistrict("");
+//        }
+//        try {
+//            user1.setBlock(locationService.findBlockById(user.getBlockId()).getBlockName());
+//        } catch(NullPointerException e){
+//            user1.setBlock("");
+//        }
+//        user1.setAccessType(user.getRoleId().getRoleId().toString());
+//        user1.setCreatedBy(true);
+//        return user1;
+//    }
 
-    @RequestMapping(value = {"/create-user"}, method = RequestMethod.POST)
-    public void createNewUser(@RequestBody User user) {
-        userService.createNewUser(user);
+    @RequestMapping(value = {"/createUser"}, method = RequestMethod.POST)
+    @ResponseBody public Map<Integer, String> createNewUser(@RequestBody User user) {
+
 //        ModificationTracker modification = new ModificationTracker();
 //        modification.setModificationDate(new Date(System.currentTimeMillis()));
 //        modification.setModificationDescription("Account creation");
@@ -144,120 +220,12 @@ public class UserController {
 //        modification.setModifiedUserId(user);
 //        modification.setModifiedByUserId(userService.findUserByUsername(getPrincipal()));
 //        modificationTrackerService.saveModification(modification);
+        user = locationService.SetLocations(user);
+        return userService.createNewUser(user);
     }
 
-    @RequestMapping(value={"/userNameAvailable/{username}"})
-    public @ResponseBody Boolean userNameAvailable(@PathVariable("username") String username) {
-        System.out.println(username);
-        return userService.findUserByUsername(username) != null;
-    }
-
-    @RequestMapping(value = {"/createFromDto"}, method = RequestMethod.POST)
-    public String createFromDto(@RequestBody String userDto) {
-        userDto = userDto.replace("+", " ").replace("%40", "@").replace("string%3A", "");
-        String[] attrs = userDto.split("&");
-
-        HashMap<String, String> userMap = new HashMap<>();
-        for(String attr : attrs){
-            String[] arr = attr.split("=");
-            userMap.put(arr[0], arr[1]);
-        }
-
-        if(userService.findUserByUsername(userMap.get("username")) != null){
-            System.out.println("user exists");
-            return "redirect:http://127.0.0.1:4040/index";
-        }
-
-        User newUser = new User();
-        newUser.setFullName(userMap.get("name"));
-        newUser.setUsername(userMap.get("username"));
-        newUser.setPhoneNumber(userMap.get("phoneNumber"));
-        newUser.setEmailId(userMap.get("email"));
-        newUser.setAccessLevel(userMap.get("accessLevel").toUpperCase());
-        newUser.setPassword(userMap.get("username"));
-        try{
-            newUser.setStateId(locationService.findStateById(Integer.parseInt(userMap.get("state"))));
-        }catch (Exception e){
-            newUser.setStateId(null);
-        }
-
-        try{
-            newUser.setDistrictId(locationService.findDistrictById(Integer.parseInt(userMap.get("district"))));
-        }catch (Exception e){
-            newUser.setDistrictId(null);
-        }
-
-        try{
-            newUser.setBlockId(locationService.findBlockById(Integer.parseInt(userMap.get("block"))));
-        }catch (Exception e){
-            newUser.setDistrictId(null);
-        }
-        newUser.setRoleId(roleService.findRoleByRoleId(Integer.parseInt(userMap.get("accessType"))));
-        newUser.setAccountStatus(AccountStatus.ACTIVE.getAccountStatus());
-        newUser.setCreatedByUser(userService.getCurrentUser());
-        newUser.setCreationDate(new java.util.Date());
-
-        userService.createNewUser(newUser);
-
-        return "redirect:http://127.0.0.1:4040/index";
-    }
-
-    @RequestMapping(value = {"/update-user"}, method = RequestMethod.POST)
-    public String updateExistingUser(@RequestBody String userDto) {
-//        ObjectMapper mapper = new ObjectMapper();
-//        JsonNode node = null;
-//        try {
-//            node = mapper.readTree(userDtoString);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-//        UserDto userDto = mapper.convertValue(node.get("user"), UserDto.class);
-        userDto = userDto.replace("+", " ").replace("%40", "@").replace("string%3A", "");
-        String[] attrs = userDto.split("&");
-        HashMap<String, String> userMap = new HashMap<>();
-        for(String attr : attrs){
-            String[] arr = attr.split("=");
-            userMap.put(arr[0], arr[1]);
-        }
-//
-//        for(String key : userMap.keySet()){
-//            System.out.println(key + " : " + userMap.get(key));
-//        }
-
-
-        User user = userService.findUserByUserId(Integer.parseInt(userMap.get("id")));
-
-        user.setFullName(userMap.get("name"));
-        user.setPhoneNumber(userMap.get("phoneNumber"));
-        user.setEmailId(userMap.get("email"));
-        user.setAccessLevel(userMap.get("accessLevel"));
-        user.setRoleId(roleService.findRoleByRoleId(Integer.parseInt(userMap.get("accessType"))));
-
-        try{
-            user.setStateId(locationService.findStateById(Integer.parseInt(userMap.get("state"))));
-        }catch (Exception e){
-            user.setStateId(null);
-        }
-
-        try{
-            user.setDistrictId(locationService.findDistrictById(Integer.parseInt(userMap.get("district"))));
-        }catch (Exception e){
-            user.setDistrictId(null);
-        }
-
-        try{
-            user.setBlockId(locationService.findBlockById(Integer.parseInt(userMap.get("block"))));
-        }catch (Exception e){
-            user.setDistrictId(null);
-        }
-        userService.updateExistingUser(user);
-
-        for(String key : userMap.keySet()){
-            System.out.println(key + " : " + userMap.get(key));
-        }
-
-        return "redirect:http://127.0.0.1:4040/index";
+    @RequestMapping(value = {"/updateUser"}, method = RequestMethod.POST)
+    @ResponseBody public Map updateExistingUser(@RequestBody User user) {
 
 //        String trackModification = mapper.convertValue(node.get("modification"), String.class);
 //
@@ -268,45 +236,52 @@ public class UserController {
 //        modification.setModifiedUserId(user);
 //        modification.setModificationDescription(trackModification);
 //        modificationTrackerService.saveModification(modification);
+
+//        return "redirect:http://localhost:8080/app/#!/";
+        user = locationService.SetLocations(user);
+        return userService.updateExistingUser(user);
     }
-/*
-    @CrossOrigin
-    @RequestMapping(value = {"/update-user-2"}, method = RequestMethod.POST)
-    public String updateExistingUser2(@RequestBody UserDto userDto) {
-        System.out.println(userDto.getName() + "**********************");
-        User user = userService.findUserByUserId(userDto.getId());
-        user.setFullName(userDto.getName());
-        user.setPhoneNumber(userDto.getPhoneNumber());
-        user.setEmailId(userDto.getEmail());
-        user.setAccessLevel(userDto.getAccessLevel());
-        user.setRoleId(roleService.findRoleByRoleId(Integer.parseInt(userDto.getAccessType())));
 
-        try{
-            user.setStateId(locationService.findStateById(Integer.parseInt(userDto.getState())));
-        }catch (Exception e){
-            user.setStateId(null);
-        }
+    @RequestMapping(value = {"/updateContacts"}, method = RequestMethod.POST)
+    @ResponseBody public Map updateContacts(@RequestBody ContactInfo contactInfo) {
 
-        try{
-            user.setDistrictId(locationService.findDistrictById(Integer.parseInt(userDto.getDistrict())));
-        }catch (Exception e){
-            user.setDistrictId(null);
-        }
+//        String trackModification = mapper.convertValue(node.get("modification"), String.class);
+//
+//        ModificationTracker modification = new ModificationTracker();
+//        modification.setModificationDate(new Date(System.currentTimeMillis()));
+//        modification.setModificationType(ModificationType.UPDATE.getModificationType());
+//        modification.setModifiedByUserId(userService.findUserByUsername(getPrincipal()));
+//        modification.setModifiedUserId(user);
+//        modification.setModificationDescription(trackModification);
+//        modificationTrackerService.saveModification(modification);
 
-        try{
-            user.setBlockId(locationService.findBlockById(Integer.parseInt(userDto.getBlock())));
-        }catch (Exception e){
-            user.setDistrictId(null);
-        }
+//        return "redirect:http://localhost:8080/app/#!/";
 
-        userService.updateExistingUser(user);
+        return userService.updateContacts(contactInfo);
+    }
 
-        return "redirect:/home";
-    }*/
+    @RequestMapping(value = {"/resetPassword"}, method = RequestMethod.POST)
+    @ResponseBody public Map resetPassword(@RequestBody PasswordDto passwordDto){
+        //        String trackModification = mapper.convertValue(node.get("modification"), String.class);
+//
+//        ModificationTracker modification = new ModificationTracker();
+//        modification.setModificationDate(new Date(System.currentTimeMillis()));
+//        modification.setModificationType(ModificationType.UPDATE.getModificationType());
+//        modification.setModifiedByUserId(userService.findUserByUsername(getPrincipal()));
+//        modification.setModifiedUserId(user);
+//        modification.setModificationDescription(trackModification);
+//        modificationTrackerService.saveModification(modification);
 
-    @RequestMapping(value = {"/delete-user"}, method = RequestMethod.POST)
-    public void deleteExistingUser(@RequestBody User user) {
-        userService.deleteExistingUser(user);
+//        return "redirect:http://localhost:8080/app/#!/";
+        /*return userService.updatePassword(passwordDto);*/
+        return  userService.changePassword(passwordDto);
+    }
+
+
+
+    @RequestMapping(value = {"/deleteUser/{id}"}, method = RequestMethod.GET)
+    public Map deleteExistingUser(@PathVariable("id") Integer id) {
+        return userService.deleteExistingUser(id);
 //        ModificationTracker modification = new ModificationTracker();
 //        modification.setModificationDate(new Date(System.currentTimeMillis()));
 //        modification.setModificationType(ModificationType.DELETE.getModificationType());
@@ -326,4 +301,210 @@ public class UserController {
         }
         return userName;
     }
+
+    @RequestMapping(value = "/getReport", method = RequestMethod.POST/*,produces = "application/vnd.ms-excel"*/)
+    @ResponseBody
+    public Map<String, String> getReport(@RequestBody ReportRequest reportRequest/*,HttpServletResponse response*/) throws ParseException, java.text.ParseException{
+
+        String rootPath = "";
+        String place = AccessLevel.NATIONAL.getAccessLevel();
+
+        Map<String, String> m = new HashMap<>();
+
+        User currentUser = userService.getCurrentUser();
+
+
+       if(reportRequest.getReportType().equals(ReportType.maAnonymous.getReportType())){
+           if(!currentUser.getAccessLevel().equals(AccessLevel.NATIONAL.getAccessLevel()) && reportRequest.getCircleId() == 0){
+               m.put("status", "fail");
+               return m;
+           }
+
+            if(reportRequest.getCircleId()!=0){
+                place=StReplace(locationService.findCircleById(reportRequest.getCircleId()).getCircleName());
+                rootPath+=place+"/";
+            }
+       }
+       else {
+           if(currentUser.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel()) && !currentUser.getStateId().equals(reportRequest.getStateId())){
+               m.put("status", "fail");
+               return m;
+           }
+           if(currentUser.getAccessLevel().equals(AccessLevel.DISTRICT.getAccessLevel()) && !currentUser.getDistrictId().equals(reportRequest.getDistrictId())){
+               m.put("status", "fail");
+               return m;
+           }
+           if(currentUser.getAccessLevel().equals(AccessLevel.BLOCK.getAccessLevel()) && !currentUser.getBlockId().equals(reportRequest.getBlockId())){
+               m.put("status", "fail");
+               return m;
+           }
+
+           if (reportRequest.getStateId() != 0) {
+               place = StReplace(locationService.findStateById(reportRequest.getStateId()).getStateName());
+               rootPath += place + "/";
+           }
+
+           if (reportRequest.getDistrictId() != 0) {
+               place = StReplace(locationService.findDistrictById(reportRequest.getDistrictId()).getDistrictName());
+               rootPath += place + "/";
+           }
+
+           if (reportRequest.getBlockId() != 0) {
+               place = StReplace(locationService.findBlockById(reportRequest.getBlockId()).getBlockName());
+               rootPath += place + "/";
+           }
+       }
+       String filename= reportRequest.getReportType()+"_"+place+"_"+getMonthYear(reportRequest.getFromDate())+".xlsx";
+
+       reportPath = reports+reportRequest.getReportType()+"/"+rootPath;
+       reportName = filename;
+
+       rootPath = reportPath + reportName;
+
+       File file=new File(rootPath);
+       if(!(file.exists())){
+           adminService.createSpecificReport(reportRequest);
+       }
+
+
+       m.put("status", "success");
+       m.put("file", reportName);
+       return m;
+    }
+
+    private String reportPath = "";
+    private String reportName = "";
+
+    @RequestMapping(value = "/downloadReport", method = RequestMethod.GET,produces = "application/vnd.ms-excel")
+    @ResponseBody
+    public String getBulkDataImportCSV(HttpServletResponse response) throws ParseException, java.text.ParseException {
+//        adminService.getBulkDataImportCSV();
+        response.setContentType("APPLICATION/OCTECT-STREAM");
+        if (reportPath.length() == 0 || reportName.length() == 0) {
+            reportName = "";
+            reportPath = "";
+            return "fail";
+        }
+        try {
+            PrintWriter out = response.getWriter();
+            String filename = reportName;
+            response.setHeader("Content-Disposition", "attachment;filename=\"" + filename + "\"");
+            FileInputStream fl = new FileInputStream(reportPath + reportName);
+            int i;
+            while ((i = fl.read()) != -1) {
+                out.write(i);
+            }
+            fl.close();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        reportName = "";
+        reportPath = "";
+        return "success";
+    }
+
+    @RequestMapping(value={"/reportsMenu"})
+    public @ResponseBody List<Map<String, Object>> getReportsMenu() {
+        User currentUser = userService.getCurrentUser();
+        Map<String, Object> maMenu = new HashMap<>();
+        maMenu.put("name", "Mobile Academy Reports");
+        maMenu.put("icon", "images/drop-down-3.png");
+
+        List<Report> maList = new ArrayList<>();
+        maList.add(new Report(
+                ReportType.maCourse.getReportName(),
+                ReportType.maCourse.getReportType(),
+                "images/drop-down-3.png",
+                ReportType.maCourse.getServiceType())
+        );
+        maList.add(new Report(
+                ReportType.maAnonymous.getReportName(),
+                ReportType.maAnonymous.getReportType(),
+                "images/drop-down-3.png",
+                ReportType.maAnonymous.getServiceType())
+        );
+        maList.add(new Report(
+                ReportType.maInactive.getReportName(),
+                ReportType.maInactive.getReportType(),
+                "images/drop-down-3.png",
+                ReportType.maInactive.getServiceType())
+        );
+        maMenu.put("service", maList.get(0).getService());
+        maMenu.put("options", maList);
+
+        Map<String, Object> kMenu = new HashMap<>();
+
+        kMenu.put("name", "Kilkari Reports");
+        kMenu.put("icon", "images/drop-down-3.png");
+
+        List<Report> kList = new ArrayList<>();
+        kList.add(new Report(
+                ReportType.sixWeeks.getReportName(),
+                ReportType.sixWeeks.getReportType(),
+                "images/drop-down-3.png",
+                ReportType.sixWeeks.getServiceType())
+        );
+        kList.add(new Report(
+                ReportType.lowUsage.getReportName(),
+                ReportType.lowUsage.getReportType(),
+                "images/drop-down-3.png",
+                ReportType.lowUsage.getServiceType())
+        );
+        kList.add(new Report(
+                ReportType.selfDeactivated.getReportName(),
+                ReportType.selfDeactivated.getReportType(),
+                "images/drop-down-3.png",
+                ReportType.selfDeactivated.getServiceType())
+        );
+        maMenu.put("service", kList.get(0).getService());
+        kMenu.put("options", kList);
+
+        List<Map<String, Object>> l = new ArrayList<>();
+
+        if(currentUser.getAccessLevel().equals(AccessLevel.NATIONAL.getAccessLevel())){
+            l.add(maMenu);
+            l.add(kMenu);
+        }
+        else{
+            State state = locationService.findStateById(currentUser.getStateId());
+            if(state.getServiceType().equals("M") || state.getServiceType().equals("ALL")){
+                l.add(maMenu);
+            }
+            if(state.getServiceType().equals("K") || state.getServiceType().equals("ALL")){
+                l.add(kMenu);
+            }
+        }
+        return l;
+    }
+
+  @RequestMapping(value = {"/createMaster"}, method = RequestMethod.GET)
+   @ResponseBody String createNewUser() {
+//
+////        ModificationTracker modification = new ModificationTracker();
+////        modification.setModificationDate(new Date(System.currentTimeMillis()));
+////        modification.setModificationDescription("Account creation");
+////        modification.setModificationType(ModificationType.CREATE.getModificationType());
+////        modification.setModifiedUserId(user);
+////        modification.setModifiedByUserId(userService.findUserByUsername(getPrincipal()));
+////        modificationTrackerService.saveModification(modification);
+//
+        return userService.createMaster();
+    }
+private String getMonthYear(Date toDate) {
+    Calendar c =Calendar.getInstance();
+    c.setTime(toDate);
+    int month=c.get(Calendar.MONTH)+1;
+    String monthString = "";
+    int year=(c.get(Calendar.YEAR))%100;
+//        String monthString = c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH );
+    if(month<10){
+        monthString="0"+String.valueOf(month);
+    }
+    else monthString=String.valueOf(month);
+
+    String yearString=String.valueOf(year);
+
+    return monthString+"_"+yearString;
+}
 }

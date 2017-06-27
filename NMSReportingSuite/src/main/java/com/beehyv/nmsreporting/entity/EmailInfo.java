@@ -7,15 +7,8 @@ import java.io.File;
  */
 public class EmailInfo {
     private String from = "", to = "", subject = "", body = "";
-    private String attachment = "";
-
-    public String getAttachment() {
-        return attachment;
-    }
-
-    public void setAttachment(String attachment) {
-        this.attachment = attachment;
-    }
+    private String fileName = "";
+    private String rootPath = "";
 
     public String getFrom() {
         return from;
@@ -46,8 +39,22 @@ public class EmailInfo {
     }
 
     public void setBody(String body) {
-
         this.body = body;
     }
 
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public String getRootPath() {
+        return rootPath;
+    }
+
+    public void setRootPath(String rootPath) {
+        this.rootPath = rootPath;
+    }
 }

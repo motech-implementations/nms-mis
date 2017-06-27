@@ -1,19 +1,29 @@
-$("#btn-login").click(function(){
-	var user = {};
+(function(){
+	var nmsReportsApp = angular
+		.module('nmsReports')
+		.controller("LoginController", ['$scope', '$http', function($scope, $http){
+			
+			$scope.user = {};
+			$scope.user.rememberMe = false;
 
-	user['username'] = "yash";
-	user['password'] = "beehyv123";
-	user['rememberMe'] = false;
+			$scope.loginUrl = backend_root + 'nms/login';
 
-	var error_p = $("#div-login .error");
+			$scope.login = function(){
+				$http.post($scope.loginUrl,
+					angular.toJson($scope.user),
+					{
+						headers: {
+							'Content-Type': 'application/json'
+						}
+					})
+					.success(function (data, status, headers, config) {
+						console.log(data);
+					})
+					.error(function (data, status, header, config) {
+						console.log(data);
+					});
+				}
+			}
+		])
+})()
 
-
-
-	console.log(user);
-
-	var error_p = $("#div-login .error");
-	// $.post( "http://localhost:8080/NMSReportingSuite/nms/login", user, function( data ) {
-	// 	console.log( data );
-	// }, "json");
-
-});

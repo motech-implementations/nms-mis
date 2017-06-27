@@ -8,7 +8,7 @@ import java.util.Date;
  * Created by beehyv on 16/5/17.
  */
 @Entity
-@Table(name="ma_blocked_users")
+@Table(name="ma_anonymous_users")
 public class AnonymousUsers {
 
     @Id
@@ -16,11 +16,8 @@ public class AnonymousUsers {
     @Column(name="id", columnDefinition = "INT(11)")
     private Integer anonymousId;
 
-    @Column(name="week_id", columnDefinition = "SMALLINT(6)")
-    private Integer weekId;
-
-    @Column(name="circle_id", columnDefinition = "TINYINT(4)")
-    private Integer circleId;
+    @Column(name="circle_name", columnDefinition = "VARCHAR(45)")
+    private String circleName;
 
     @Column(name="msisdn", columnDefinition = "BIGINT(20)")
     private Long msisdn;
@@ -29,7 +26,7 @@ public class AnonymousUsers {
     private Date lastCalledDate;
 
     @Column(name="last_called_time", columnDefinition = "DATETIME")
-    private Timestamp deactivationTime;
+    private Timestamp lastCalledTime;
 
     @Column(name="last_modified", columnDefinition = "DATETIME")
     private Timestamp lastModified;
@@ -42,20 +39,12 @@ public class AnonymousUsers {
         this.anonymousId = anonymousId;
     }
 
-    public Integer getWeekId() {
-        return weekId;
+    public String getCircleName() {
+        return circleName;
     }
 
-    public void setWeekId(Integer weekId) {
-        this.weekId = weekId;
-    }
-
-    public Integer getCircleId() {
-        return circleId;
-    }
-
-    public void setCircleId(Integer circleId) {
-        this.circleId = circleId;
+    public void setCircleName(String circleName) {
+        this.circleName = circleName;
     }
 
     public Long getMsisdn() {
@@ -74,12 +63,12 @@ public class AnonymousUsers {
         this.lastCalledDate = lastCalledDate;
     }
 
-    public Timestamp getDeactivationTime() {
-        return deactivationTime;
+    public Timestamp getLastCalledTime() {
+        return lastCalledTime;
     }
 
-    public void setDeactivationTime(Timestamp deactivationTime) {
-        this.deactivationTime = deactivationTime;
+    public void setLastCalledTime(Timestamp lastCalledTime) {
+        this.lastCalledTime = lastCalledTime;
     }
 
     public Timestamp getLastModified() {

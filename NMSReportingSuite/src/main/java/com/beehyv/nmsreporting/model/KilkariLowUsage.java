@@ -1,6 +1,7 @@
 package com.beehyv.nmsreporting.model;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by beehyv on 14/5/17.
@@ -14,11 +15,11 @@ public class KilkariLowUsage {
     @Column(name="id", columnDefinition = "INT(11)")
     private Integer kilkariId;
 
-    @Column(name="month_id", columnDefinition = "SMALLINT(6)")
-    private Integer monthId;
+    @Column(name="mcts_id", columnDefinition = "VARCHAR(45)")
+    private String mctsId;
 
-    @Column(name="mcts_id", columnDefinition = "BIGINT(20)")
-    private Long mctsId;
+    @Column(name="rch_id", columnDefinition = "VARCHAR(45)")
+    private String rchId;
 
     @Column(name="name", columnDefinition = "VARCHAR(100)")
     private String name;
@@ -29,8 +30,8 @@ public class KilkariLowUsage {
     @Column(name="age_on_service", columnDefinition = "TINYINT(4)")
     private Integer ageOnService;
 
-    @Column(name="calls_answered", columnDefinition = "INT(11)")
-    private Integer callsAnswered;
+    @Column(name="state_id", columnDefinition = "TINYINT")
+    private Integer stateId;
 
     @Column(name="district_id", columnDefinition = "SMALLINT(6)")
     private Integer districtId;
@@ -44,6 +45,12 @@ public class KilkariLowUsage {
     @Column(name="village_id", columnDefinition = "INT(11)")
     private Integer villageId;
 
+    @Column(name="modificationDate", columnDefinition = "DATETIME")
+    private Date modificationDate;
+
+    @Column(name="for_month", columnDefinition = "VARCHAR(20)")
+    private String forMonth;
+
     public Integer getKilkariId() {
         return kilkariId;
     }
@@ -52,20 +59,20 @@ public class KilkariLowUsage {
         this.kilkariId = kilkariId;
     }
 
-    public Integer getMonthId() {
-        return monthId;
-    }
-
-    public void setMonthId(Integer monthId) {
-        this.monthId = monthId;
-    }
-
-    public Long getMctsId() {
+    public String getMctsId() {
         return mctsId;
     }
 
-    public void setMctsId(Long mctsId) {
+    public void setMctsId(String mctsId) {
         this.mctsId = mctsId;
+    }
+
+    public String getRchId() {
+        return rchId;
+    }
+
+    public void setRchId(String rchId) {
+        this.rchId = rchId;
     }
 
     public String getName() {
@@ -91,13 +98,13 @@ public class KilkariLowUsage {
     public void setAgeOnService(Integer ageOnService) {
         this.ageOnService = ageOnService;
     }
-
-    public Integer getCallsAnswered() {
-        return callsAnswered;
+    
+    public Integer getStateId() {
+        return stateId;
     }
 
-    public void setCallsAnswered(Integer callsAnswered) {
-        this.callsAnswered = callsAnswered;
+    public void setStateId(Integer stateId) {
+        this.stateId = stateId;
     }
 
     public Integer getDistrictId() {
@@ -130,5 +137,21 @@ public class KilkariLowUsage {
 
     public void setVillageId(Integer villageId) {
         this.villageId = villageId;
+    }
+
+    public Date getModificationDate() {
+        return modificationDate;
+    }
+
+    public void setModificationDate(Date modificationDate) {
+        this.modificationDate = modificationDate;
+    }
+
+    public String getForMonth() {
+        return forMonth;
+    }
+
+    public void setForMonth(String forMonth) {
+        this.forMonth = forMonth;
     }
 }

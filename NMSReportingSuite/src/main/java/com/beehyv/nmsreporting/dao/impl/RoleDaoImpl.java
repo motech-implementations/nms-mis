@@ -27,15 +27,18 @@ public class RoleDaoImpl extends AbstractDao<Integer, Role> implements RoleDao {
         return criteria.list();
     }
 
+    @Override
     public List<Role> getAllRoles() {
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("roleId"));
         return (List<Role>) criteria.list();
     }
 
+    @Override
     public void saveRole(Role role) {
         persist(role);
     }
 
+    @Override
     public void deleteRole(Role role) {
         delete(role);
     }
