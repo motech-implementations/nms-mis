@@ -279,9 +279,9 @@ public class UserController {
 
 
 
-    @RequestMapping(value = {"/deleteUser"}, method = RequestMethod.POST)
-    public void deleteExistingUser(@RequestBody User user) {
-        userService.deleteExistingUser(user);
+    @RequestMapping(value = {"/deleteUser/{id}"}, method = RequestMethod.GET)
+    public Map deleteExistingUser(@PathVariable("id") Integer id) {
+        return userService.deleteExistingUser(id);
 //        ModificationTracker modification = new ModificationTracker();
 //        modification.setModificationDate(new Date(System.currentTimeMillis()));
 //        modification.setModificationType(ModificationType.DELETE.getModificationType());
