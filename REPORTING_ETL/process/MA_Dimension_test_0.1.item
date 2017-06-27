@@ -11,7 +11,7 @@
     <contextParameter comment="" name="reporting_db_Server" prompt="reporting_db_Server?" promptNeeded="false" repositoryContextId="_bRF9MCpcEeed2NP7fH7gnw" type="id_String" value="null"/>
     <contextParameter comment="" name="reporting_db_Login" prompt="reporting_db_Login?" promptNeeded="false" repositoryContextId="_bRF9MCpcEeed2NP7fH7gnw" type="id_String" value="null"/>
     <contextParameter comment="" name="reporting_db_Database" prompt="reporting_db_Database?" promptNeeded="false" repositoryContextId="_bRF9MCpcEeed2NP7fH7gnw" type="id_String" value="null"/>
-    <contextParameter comment="" name="reporting_db_AdditionalParams" prompt="reporting_db_AdditionalParams?" promptNeeded="false" repositoryContextId="_bRF9MCpcEeed2NP7fH7gnw" type="id_String" value="null"/>
+    <contextParameter comment="" name="reporting_db_AdditionalParams" prompt="reporting_db_AdditionalParams?" promptNeeded="false" type="id_String" value="null"/>
     <contextParameter comment="" name="reporting_db_Port" prompt="reporting_db_Port?" promptNeeded="false" repositoryContextId="_bRF9MCpcEeed2NP7fH7gnw" type="id_String" value="null"/>
   </context>
   <parameters>
