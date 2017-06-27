@@ -31,7 +31,7 @@
 			<div class="form-group" ng-class="{'has-error':editUserForm.accessType.$invalid && !editUserForm.accessType.$pristine}">
 				<label class="control-label col-xs-2">Access Type</label>
 				<div class="col-xs-10">
-					<select name="accessType" id="accessType" class="form-control input input-sm" ng-class="{'loading': roleLoading}" ng-model="editUser.roleId" ng-options="item as item.roleDescription for item in accessTypeList track by item.roleId" required>
+					<select name="accessType" id="accessType" class="form-control input input-sm" ng-class="{'loading': roleLoading}" ng-model="editUser.roleId" ng-options="item.roleId as item.roleDescription for item in accessTypeList" required>
 					</select>
 
 					<div class="errorMessage" ng-messages="editUserForm.accessType.$error" role="alert" ng-show="!editUserForm.accessType.$pristine">
@@ -124,6 +124,13 @@
  			<div class="form-group">
 				<div class="col-xs-offset-2 col-xs-10">
 					<button ng-click="resetPasswordSubmit()" type="button" class="btn btn-sm btn-primary">Reset Password</button>
+				</div>
+			</div>
+			<hr>
+
+			<div class="form-group">
+				<div class="col-xs-offset-2 col-xs-10">
+					<button ng-click="deactivateUserSubmit()" type="button" class="btn btn-sm btn-primary">Deactivate User</button>
 				</div>
 			</div>
 			<hr>

@@ -13,15 +13,17 @@
 			UserFormFactory.downloadCurrentUser()
 			.then(function(result){
 				UserFormFactory.setCurrentUser(result.data);
+
+				UserFormFactory.getUser($stateParams.id)
+				.then(function(result){
+					$scope.editUser = result.data;
+				});
 			})
 
 			$scope.editUser = {};
 			$scope.place = {};
 
-			UserFormFactory.getUser($stateParams.id)
-			.then(function(result){
-				$scope.editUser = result.data;
-			});
+				
 			
 
 			$scope.accessLevelList = ["NATIONAL", "STATE", "DISTRICT", "BLOCK"];
@@ -156,6 +158,18 @@
 			    password.newPassword = "";
                 $http({
                     method  : 'POST',
+                    url     : backend_root + 'nms/admin/changePassword',
+                    data    : password, //forms user object
+                    headers : {'Content-Type': 'application/json'}
+                }).then(function(result){
+                    alert(result.data['0']);
+                })
+
+            };
+
+            $scope.deactivateUserSubmit = function() {
+                $http({
+                    method  : 'GET',
                     url     : backend_root + 'nms/admin/changePassword',
                     data    : password, //forms user object
                     headers : {'Content-Type': 'application/json'}

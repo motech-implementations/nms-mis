@@ -81,7 +81,7 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
     public List<User> getUsersByRole(Role roleId) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.and(
-                Restrictions.eq("roleId", roleId),
+                Restrictions.eq("roleId", roleId.getRoleId()),
                 Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus())
         ));
         return (List<User>) criteria.list();
@@ -102,7 +102,7 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.and(
                 Restrictions.eq("accessLevel", AccessLevel.NATIONAL.getAccessLevel()),
-                Restrictions.eq("roleId", adminRole),
+                Restrictions.eq("roleId", adminRole.getRoleId()),
                 Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus())
         ));
         return (criteria.list().size() == 0 ? null : (User) criteria.list().get(0));
@@ -113,7 +113,7 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.and(
                 Restrictions.eq("accessLevel", AccessLevel.STATE.getAccessLevel()),
-                Restrictions.eq("roleId", adminRole),
+                Restrictions.eq("roleId", adminRole.getRoleId()),
                 Restrictions.eq("stateId", state.getStateId()),
                 Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus())
         ));
@@ -125,7 +125,7 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.and(
                 Restrictions.eq("accessLevel", AccessLevel.DISTRICT.getAccessLevel()),
-                Restrictions.eq("roleId", adminRole),
+                Restrictions.eq("roleId", adminRole.getRoleId()),
                 Restrictions.eq("districtId", district.getDistrictId()),
                 Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus())
         ));
