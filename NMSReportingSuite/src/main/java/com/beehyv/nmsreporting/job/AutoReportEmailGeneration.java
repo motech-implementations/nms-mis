@@ -27,6 +27,10 @@ public class AutoReportEmailGeneration {
         Calendar aCalendar = Calendar.getInstance();
         aCalendar.add(Calendar.MONTH, -1);
         aCalendar.set(Calendar.DATE, 1);
+        aCalendar.set(Calendar.MILLISECOND, 0);
+        aCalendar.set(Calendar.SECOND, 0);
+        aCalendar.set(Calendar.MINUTE, 0);
+        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
 
         Date fromDate = aCalendar.getTime();
 
