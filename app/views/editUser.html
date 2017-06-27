@@ -31,7 +31,7 @@
 			<div class="form-group" ng-class="{'has-error':editUserForm.accessType.$invalid && !editUserForm.accessType.$pristine}">
 				<label class="control-label col-xs-2">Access Type</label>
 				<div class="col-xs-10">
-					<select name="accessType" id="accessType" class="form-control input input-sm" ng-class="{'loading': roleLoading}" ng-model="editUser.roleId" ng-options="item.roleId as item.roleDescription for item in accessTypeList" required>
+					<select name="accessType" id="accessType" class="form-control input input-sm" ng-class="{'loading': roleLoading}" ng-model="editUser.roleId" ng-options="item.roleId as item.roleDescription for item in accessTypeList | filter: filterAccessType" required>
 					</select>
 
 					<div class="errorMessage" ng-messages="editUserForm.accessType.$error" role="alert" ng-show="!editUserForm.accessType.$pristine">
@@ -43,7 +43,7 @@
 			<div class="form-group" ng-class="{'has-error':editUserForm.accessLevel.$invalid && !editUserForm.accessLevel.$pristine}">
 				<label class="control-label col-xs-2">Access Level</label>
 				<div class="col-xs-10">
-					<select name="accessLevel" id="accessLevel" class="form-control input input-sm" ng-model="editUser.accessLevel" ng-options="item for item in accessLevelList | filter:showAccess" required>
+					<select name="accessLevel" id="accessLevel" class="form-control input input-sm" ng-model="editUser.accessLevel" ng-options="item for item in accessLevelList | filter: filterAccessLevel" required>
 					</select>
 
 					<div class="errorMessage" ng-messages="editUserForm.accessLevel.$error" role="alert" ng-show="!editUserForm.accessLevel.$pristine">
@@ -55,7 +55,7 @@
 			<div class="form-group" ng-class="{'has-error':editUserForm.state.$invalid && !editUserForm.state.$pristine}">
 				<label class="control-label col-xs-2">State</label>
 				<div class="col-xs-10">
-					<select name="state" id="state" class="form-control input input-sm" ng-class="{'loading': stateLoading}" ng-model="place.stateId" ng-options="item.stateId as item.stateName for item in states" ng-disabled="getAccessLevel(1)" ng-required="!getAccessLevel(1)">
+					<select name="state" id="state" class="form-control input input-sm" ng-class="{'loading': stateLoading}" ng-model="place.stateId" ng-options="item.stateId as item.stateName for item in states | orderBy : 'stateName'" ng-disabled="getAccessLevel(1)" ng-required="!getAccessLevel(1)">
 					</select>
 				</div>
 			</div>
@@ -63,7 +63,7 @@
 			<div class="form-group" ng-class="{'has-error':editUserForm.district.$invalid && !editUserForm.district.$pristine}">
 				<label class="control-label col-xs-2">District</label>
 				<div class="col-xs-10">
-					<select name="district" id="district" class="form-control input input-sm" ng-class="{'loading': districtLoading}" ng-model="place.districtId" ng-options="item.districtId as item.districtName for item in districts" ng-disabled="getAccessLevel(2)" ng-required="!getAccessLevel(2)">
+					<select name="district" id="district" class="form-control input input-sm" ng-class="{'loading': districtLoading}" ng-model="place.districtId" ng-options="item.districtId as item.districtName for item in districts | orderBy : 'districtName'" ng-disabled="getAccessLevel(2)" ng-required="!getAccessLevel(2)">
 					</select>
 				</div>
 			</div>
@@ -71,7 +71,7 @@
 			<div class="form-group" ng-class="{'has-error':editUserForm.block.$invalid && !editUserForm.block.$pristine}">
 				<label class="control-label col-xs-2">Block</label>
 				<div class="col-xs-10">
-					<select name="block" id="block" class="form-control input input-sm" ng-class="{'loading': blockLoading}" ng-model="place.blockId" ng-options="item.blockId as item.blockName for item in blocks" ng-disabled="getAccessLevel(3)" ng-required="!getAccessLevel(3)">
+					<select name="block" id="block" class="form-control input input-sm" ng-class="{'loading': blockLoading}" ng-model="place.blockId" ng-options="item.blockId as item.blockName for item in blocks | orderBy : 'blockName'" ng-disabled="getAccessLevel(3)" ng-required="!getAccessLevel(3)">
 					</select>
 				</div>
 			</div>

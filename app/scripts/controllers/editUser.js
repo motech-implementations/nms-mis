@@ -37,6 +37,28 @@
 				}
 			}
 
+			$scope.filterAccessType = function(accessType){
+				if($scope.editUser.accessLevel == 'BLOCK'){
+					return accessType.roleDescription != 'ADMIN';
+				}
+				else{
+					return true;
+				}
+			}
+
+			$scope.filterAccessLevel = function(accessLevel){
+				var temp = false;
+				if($scope.editUser.roleId == 2){ // admin
+					temp = accessLevel != "BLOCK";
+				}
+				else{
+					temp = true;
+				}
+
+				var levelIndex = $scope.accessLevelList.indexOf(UserFormFactory.getCurrentUser().accessLevel);
+				return ($scope.accessLevelList.indexOf(accessLevel) >= levelIndex) && temp;
+			}
+
 
 			$scope.getAccessLevel = function(level){
 				var list = $scope.accessLevelList;
@@ -168,15 +190,10 @@
             };
 
             $scope.deactivateUserSubmit = function() {
-                $http({
-                    method  : 'GET',
-                    url     : backend_root + 'nms/admin/changePassword',
-                    data    : password, //forms user object
-                    headers : {'Content-Type': 'application/json'}
-                }).then(function(result){
-                    alert(result.data['0']);
-                })
-
+                UserFormFactory.deactivateUser($scope.editUser.userId)
+                .then(function(result){
+                	alert(result.data['0']);
+                });
             };
 
 			// $scope.open = function () {

@@ -16,6 +16,10 @@
 					return currentUser;
 				},
 
+				deactivateUser: function(userId){
+					return $http.get(backend_root + 'nms/user/deleteUser/' + userId);
+				},
+
 				isLoggedIn: function(){
 					return $http.get(backend_root + 'nms/user/isLoggedIn');
 				},
