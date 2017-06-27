@@ -279,9 +279,9 @@ public class UserController {
 
 
 
-    @RequestMapping(value = {"/deleteUser"}, method = RequestMethod.POST)
-    public void deleteExistingUser(@RequestBody User user) {
-        userService.deleteExistingUser(user);
+    @RequestMapping(value = {"/deleteUser/{id}"}, method = RequestMethod.GET)
+    public Map deleteExistingUser(@PathVariable("id") Integer id) {
+        return userService.deleteExistingUser(id);
 //        ModificationTracker modification = new ModificationTracker();
 //        modification.setModificationDate(new Date(System.currentTimeMillis()));
 //        modification.setModificationType(ModificationType.DELETE.getModificationType());
@@ -326,15 +326,15 @@ public class UserController {
             }
        }
        else {
-           if(currentUser.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel()) && currentUser.getStateId() != reportRequest.getStateId()){
+           if(currentUser.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel()) && !currentUser.getStateId().equals(reportRequest.getStateId())){
                m.put("status", "fail");
                return m;
            }
-           if(currentUser.getAccessLevel().equals(AccessLevel.DISTRICT.getAccessLevel()) && currentUser.getDistrictId() != reportRequest.getDistrictId()){
+           if(currentUser.getAccessLevel().equals(AccessLevel.DISTRICT.getAccessLevel()) && !currentUser.getDistrictId().equals(reportRequest.getDistrictId())){
                m.put("status", "fail");
                return m;
            }
-           if(currentUser.getAccessLevel().equals(AccessLevel.BLOCK.getAccessLevel()) && currentUser.getBlockId() != reportRequest.getBlockId()){
+           if(currentUser.getAccessLevel().equals(AccessLevel.BLOCK.getAccessLevel()) && !currentUser.getBlockId().equals(reportRequest.getBlockId())){
                m.put("status", "fail");
                return m;
            }

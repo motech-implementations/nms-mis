@@ -644,11 +644,17 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void deleteExistingUser(User user) {
-        User entity = userDao.findByUserId(user.getUserId());
-        if(entity != null) {
+    public Map deleteExistingUser(Integer userId) {
+        User entity = userDao.findByUserId(userId);
+        Integer rowNum = 0;
+        Map<Integer, String> responseMap = new HashMap<>();
+        if((entity != null) && (getCurrentUser().equals(entity.getCreatedByUser()))) {
             entity.setAccountStatus(AccountStatus.INACTIVE.getAccountStatus());
+            responseMap.put(rowNum,"User deleted");
         }
+        else
+            responseMap.put(rowNum,"Cannot delete User");
+        return responseMap;
     }
 
     @Override

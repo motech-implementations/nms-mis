@@ -41,7 +41,7 @@ public interface UserService {
 
     Map<Integer, String> updateContacts(ContactInfo contactInfo);
 
-    void deleteExistingUser(User user);
+    Map<Integer, String> deleteExistingUser(Integer userId);
 
     boolean isUsernameUnique(String username, Integer userId);
 
