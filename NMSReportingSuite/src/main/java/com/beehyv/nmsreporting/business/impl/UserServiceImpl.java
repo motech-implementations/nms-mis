@@ -365,8 +365,6 @@ public class UserServiceImpl implements UserService{
         user.setPhoneNumber(contactInfo.getPhoneNumber());
         user.setEmailId(contactInfo.getEmail());
 
-        userDao.saveUser(user);
-
         responseMap.put(rowNum, "Contacts Updated");
         return responseMap;
     }

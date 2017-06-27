@@ -1,7 +1,15 @@
 package com.beehyv.nmsreporting.business.impl;
 
 import com.beehyv.nmsreporting.business.EmailService;
+import com.beehyv.nmsreporting.business.LocationService;
+import com.beehyv.nmsreporting.business.ReportService;
+import com.beehyv.nmsreporting.business.UserService;
 import com.beehyv.nmsreporting.entity.EmailInfo;
+import com.beehyv.nmsreporting.entity.ReportRequest;
+import com.beehyv.nmsreporting.enums.AccessLevel;
+import com.beehyv.nmsreporting.enums.ReportType;
+import com.beehyv.nmsreporting.model.Circle;
+import com.beehyv.nmsreporting.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -19,7 +27,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.servlet.ServletContext;
 import javax.transaction.Transactional;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Created by beehyv on 25/5/17.
@@ -32,6 +40,13 @@ public class EmailServiceImpl implements EmailService{
     JavaMailSender mailSender;
     @Autowired
     ServletContext context;
+
+    @Autowired
+    UserService userService;
+    @Autowired
+    ReportService reportService;
+    @Autowired
+    LocationService locationService;
 
     @Override
     public String sendMail(EmailInfo mailInfo) {
@@ -79,5 +94,102 @@ public class EmailServiceImpl implements EmailService{
         body+= "NSP Support Team \n \n \n";
         body+= "P.S: This an auto-generated email. Please do not reply";
         return body;
+    }
+
+    @Override
+    public HashMap<String, String> sendAllMails(String reportName) {
+        List<User> users = userService.findAllActiveUsers();
+        HashMap<String,String> errorSendingMail = new HashMap<>();
+        for(User user: users){
+            EmailInfo newMail = new EmailInfo();
+            newMail.setFrom("Beehyv");
+            newMail.setTo(user.getEmailId());
+//                for(ReportType reportType: ReportType.values()){
+            ReportType reportType = reportService.getReportTypeByName(reportName);
+            ReportRequest reportRequest = new ReportRequest();
+            Calendar c = Calendar.getInstance();   // this takes current date
+            c.add(Calendar.MONTH, -1);
+            c.set(Calendar.DATE, 1);
+            reportRequest.setToDate(c.getTime());
+            reportRequest.setReportType(reportType.getReportType());
+            String pathName = "",fileName = "",errorMessage = "",place = "";
+            if(reportType.getReportType().equalsIgnoreCase(ReportType.maAnonymous.getReportType())){
+                if(user.getAccessLevel().equalsIgnoreCase(AccessLevel.STATE.getAccessLevel())){
+                    List<Circle> stateCircleList = reportService.getUserCircles(user);
+                    for(Circle circle: stateCircleList){
+                        reportRequest.setCircleId(circle.getCircleId());
+                        pathName = reportService.getReportPathName(reportRequest).get(1);
+                        fileName = reportService.getReportPathName(reportRequest).get(0);
+                        newMail.setSubject(fileName);
+                        newMail.setFileName(fileName);
+                        place = circle.getCircleName()+" Circle";
+                        newMail.setBody(this.getBody(reportName,place,reportService.getMonthName(c.getTime()),user.getFullName()));
+                        newMail.setRootPath(pathName);
+                        errorMessage = this.sendMail(newMail);
+                        if (errorMessage.equalsIgnoreCase("failure"))
+                            errorSendingMail.put(user.getEmailId(),fileName);
+                    }
+                }//else if(user.getAccessLevel().equalsIgnoreCase(AccessLevel.NATIONAL.getAccessLevel())){
+//                            reportRequest.setCircleId(0);
+//                            pathName = reportService.getReportPathName(reportRequest).get(1);
+//                            fileName = reportService.getReportPathName(reportRequest).get(0);
+//                            newMail.setSubject(fileName);
+//                            newMail.setFileName(fileName);
+//                            place = "NATIONAL";
+//                            newMail.setBody(emailService.getBody(reportName,place,reportService.getMonthName(c.getTime()),user.getFullName()));
+//                            newMail.setRootPath(pathName);
+//                            errorMessage = emailService.sendMail(newMail);
+//                            if (errorMessage.equalsIgnoreCase("failure"))
+//                                errorSendingMail.put(user.getEmailId(),fileName);
+//                        } else {
+//                            reportRequest.setCircleId(locationService.findDistrictById(user.getDistrictId()).getCircleOfDistrict());
+//                            pathName = reportService.getReportPathName(reportRequest).get(1);
+//                            fileName = reportService.getReportPathName(reportRequest).get(0);
+//                            newMail.setSubject(fileName);
+//                            newMail.setFileName(fileName);
+//                            Circle circle = reportService.getUserCircles(user).get(0);
+//                            place = circle.getCircleName()+" Circle";
+//                            newMail.setBody(emailService.getBody(reportName,place,reportService.getMonthName(c.getTime()),user.getFullName()));
+//                            newMail.setRootPath(pathName);
+//                            errorMessage = emailService.sendMail(newMail);
+//                            if (errorMessage.equalsIgnoreCase("failure"))
+//                                errorSendingMail.put(user.getEmailId(),fileName);
+//                        }
+            }else {
+//                        place = "NATIONAL";
+//                        if (user.getStateId() == null)
+//                            reportRequest.setStateId(0);
+//                        else {
+//                            reportRequest.setStateId(user.getStateId());
+//                            place = locationService.findStateById(user.getStateId()).getStateName()+" State";
+//                        }
+                if (user.getDistrictId() == null)
+                    reportRequest.setDistrictId(0);
+                else {
+                    reportRequest.setDistrictId(user.getDistrictId());
+                    place = locationService.findDistrictById(user.getDistrictId()).getDistrictName()+" District";
+                }
+                if (user.getBlockId() == null)
+                    reportRequest.setBlockId(0);
+                else {
+                    reportRequest.setBlockId(user.getBlockId());
+                    place = locationService.findBlockById(user.getBlockId()).getBlockName()+" Block";
+                }
+                pathName = reportService.getReportPathName(reportRequest).get(1);
+                fileName = reportService.getReportPathName(reportRequest).get(0);
+                newMail.setSubject(fileName);
+                newMail.setFileName(fileName);
+                newMail.setBody(this.getBody(reportName,place,reportService.getMonthName(c.getTime()),user.getFullName()));
+                newMail.setRootPath(pathName);
+                if(user.getDistrictId() != null)
+                    errorMessage = this.sendMail(newMail);
+                else
+                    errorMessage = "success";
+                if (errorMessage.equalsIgnoreCase("failure"))
+                    errorSendingMail.put(user.getEmailId(),fileName);
+            }
+//            }
+        }
+        return errorSendingMail;
     }
 }

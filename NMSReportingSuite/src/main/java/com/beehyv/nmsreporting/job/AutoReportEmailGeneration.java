@@ -1,11 +1,14 @@
 package com.beehyv.nmsreporting.job;
 
 import com.beehyv.nmsreporting.business.AdminService;
+import com.beehyv.nmsreporting.business.EmailService;
 import com.beehyv.nmsreporting.controller.EmailController;
+import com.beehyv.nmsreporting.enums.ReportType;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 import static com.beehyv.nmsreporting.enums.ReportType.*;
 
@@ -17,8 +20,8 @@ public class AutoReportEmailGeneration {
     @Autowired
     AdminService adminService;
 
-//    @Autowired
-//    EmailController emailController;
+    @Autowired
+    EmailService emailService;
     public boolean executeInternal() {
 
         Calendar aCalendar = Calendar.getInstance();
@@ -35,17 +38,43 @@ public class AutoReportEmailGeneration {
         /*adminService.getCircleWiseAnonymousFiles(fromDate,toDate);*/
         System.out.println(fromDate+"tooo"+toDate);
         adminService.createFiles(maCourse.getReportType());
-        adminService.getCumulativeCourseCompletionFiles(toDate);
+        adminService.createFolders(ReportType.maAnonymous.getReportType());
+        adminService.createFiles(ReportType.maInactive.getReportType());
+        adminService.createFiles(ReportType.lowUsage.getReportType());
+        adminService.createFiles(ReportType.selfDeactivated.getReportType());
+        adminService.createFiles(ReportType.sixWeeks.getReportType());
 
-        adminService.createFiles(maInactive.getReportType());
-        adminService.getCumulativeInactiveFiles(toDate);
-        adminService.createFolders(maAnonymous.getReportType());
         adminService.getCircleWiseAnonymousFiles(fromDate,toDate);
-        /*adminService.createFiles(maAnonymous.getReportType());
-        adminService.createFiles(maInactive.getReportType());
-        adminService.createFiles(sixWeeks.getReportType());
-        adminService.createFiles(lowUsage.getReportType());
-        adminService.createFiles(selfDeactivated.getReportType());*/
+        adminService.getCumulativeCourseCompletionFiles(toDate);
+        adminService.getCumulativeInactiveFiles(toDate);
+        adminService.getKilkariSixWeekNoAnswerFiles(fromDate,toDate);
+        adminService.getKilkariSelfDeactivationFiles(fromDate,toDate);
+        adminService.getKilkariLowUsageFiles(fromDate,toDate);
+
         return true;
+    }
+
+    public HashMap sendFirstMail() {
+        return emailService.sendAllMails(ReportType.maAnonymous.getReportName());
+    }
+
+    public HashMap sendSecondMail() {
+        return emailService.sendAllMails(ReportType.maCourse.getReportName());
+    }
+
+    public HashMap sendThirdMail() {
+        return emailService.sendAllMails(ReportType.maInactive.getReportName());
+    }
+
+    public HashMap sendFourthMail() {
+        return emailService.sendAllMails(ReportType.sixWeeks.getReportName());
+    }
+
+    public HashMap sendFifthMail() {
+        return emailService.sendAllMails(ReportType.selfDeactivated.getReportName());
+    }
+
+    public HashMap sendSixthMail() {
+        return emailService.sendAllMails(ReportType.lowUsage.getReportName());
     }
 }

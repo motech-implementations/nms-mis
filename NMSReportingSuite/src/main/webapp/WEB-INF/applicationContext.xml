@@ -190,8 +190,14 @@
     <!--<task:scheduled-tasks>-->
         <!--<task:scheduled ref="dataBaseMigrationService" method="executeInternal" cron="0/9 * * * * ?"/>-->
     <!--</task:scheduled-tasks>-->
-    <!--<bean id="autoReportMail" class="com.beehyv.nmsreporting.job.AutoReportEmailGeneration"/>-->
-    <!--<task:scheduled-tasks>-->
-        <!--<task:scheduled ref="autoReportMail" method="executeInternal" cron="20 15 22 4 6 ?"/>-->
-    <!--</task:scheduled-tasks>-->
+    <bean id="autoReportMail" class="com.beehyv.nmsreporting.job.AutoReportEmailGeneration"/>
+    <task:scheduled-tasks>
+        <task:scheduled ref="autoReportMail" method="executeInternal" cron="0 0 8 1 * ?"/>
+        <task:scheduled ref="autoReportMail" method="sendFirstMail" cron="0 0 16 1 * ?"/>
+        <task:scheduled ref="autoReportMail" method="sendSecondMail" cron="0 0 16 2 * ?"/>
+        <task:scheduled ref="autoReportMail" method="sendThirdMail" cron="0 0 16 3 * ?"/>
+        <task:scheduled ref="autoReportMail" method="sendFourthMail" cron="0 0 16 4 * ?"/>
+        <task:scheduled ref="autoReportMail" method="sendFifthMail" cron="0 0 16 5 * ?"/>
+        <task:scheduled ref="autoReportMail" method="sendSixthMail" cron="0 0 16 6 * ?"/>
+    </task:scheduled-tasks>
 </beans>
