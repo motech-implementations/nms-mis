@@ -306,6 +306,14 @@ div.createUser button,
 div.profile button{
 	margin-right: 12px;
 }
+div.editUser button.floatR,
+div.createUser button.floatR,
+div.profile button.floatR{
+	margin-left: 12px;
+	float:right;
+	margin-right:0;
+}
+
 div.createUser .errorMessage,
 div.editUser .errorMessage,
 div.profile .errorMessage{

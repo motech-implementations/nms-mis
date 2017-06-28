@@ -81,4 +81,8 @@ public class AutoReportEmailGeneration {
     public HashMap sendSixthMail() {
         return emailService.sendAllMails(ReportType.lowUsage.getReportName());
     }
+
+    public void test(){
+//        System.out.println(new Date());
+    }
 }
