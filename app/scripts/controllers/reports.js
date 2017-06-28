@@ -12,6 +12,8 @@
 					UserFormFactory.downloadCurrentUser()
 					.then(function(result){
 						UserFormFactory.setCurrentUser(result.data);
+
+						$scope.getStatesByService(null);
 					})
 				}
 			})
@@ -76,23 +78,35 @@
 
 				$scope.report = null;
 				
-				$scope.states = [];
-				$scope.clearState();
+				if(!$scope.userHasState()){
+					$scope.clearState();
+				}
+				if(!$scope.userHasDistrict()){
+					$scope.clearDistrict();
+				}
+				if(!$scope.userHasBlock()){
+					$scope.clearBlock();
+				}
 				$scope.clearCircle();
-
 				$scope.dt == null;
+
+				$scope.getStatesByService(item.service);
+				$scope.getCirclesByService(item.service);
 			}
 
 			$scope.selectReport = function(item){
 				$scope.report = item;
 
-				$scope.states = [];
-				$scope.clearState();
+				if(!$scope.userHasState()){
+					$scope.clearState();
+				}
+				if(!$scope.userHasDistrict()){
+					$scope.clearDistrict();
+				}
+				if(!$scope.userHasBlock()){
+					$scope.clearBlock();
+				}
 				$scope.clearCircle();
-
-				$scope.getStatesByService(item.service);
-				$scope.getCirclesByService(item.service);
-
 				$scope.dt = null;
 				$scope.setDateOptions();
 			}
@@ -114,8 +128,18 @@
 			
 
 			$scope.getStatesByService = function(service){
+				var returnFactory = function(){
+					if(service == null){
+						return UserFormFactory.getStates();
+					}
+					else{
+						return UserFormFactory.getStatesByService(service);
+					}
+				}
+
 				$scope.statesLoading = true;
-				return UserFormFactory.getStatesByService(service)
+
+				return returnFactory()
 				.then(function(result){
 					$scope.states = result.data;
 					$scope.districts = [];
@@ -344,8 +368,16 @@
 			$scope.reset =function(){
 				$scope.report = null;
 				$scope.reportCategory = null;
-				$scope.states = [];
-				$scope.clearState();
+
+				if(!$scope.userHasState()){
+					$scope.clearState();
+				}
+				if(!$scope.userHasDistrict()){
+					$scope.clearDistrict();
+				}
+				if(!$scope.userHasBlock()){
+					$scope.clearBlock();
+				}
 				$scope.clearCircle();
 				$scope.dt = null;
 			}
