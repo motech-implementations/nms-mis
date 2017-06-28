@@ -12,6 +12,8 @@
 					UserFormFactory.downloadCurrentUser()
 					.then(function(result){
 						UserFormFactory.setCurrentUser(result.data);
+
+						$scope.getStatesByService(null);
 					})
 				}
 			})
@@ -76,23 +78,35 @@
 
 				$scope.report = null;
 				
-				$scope.states = [];
-				$scope.clearState();
+				if(!$scope.userHasState()){
+					$scope.clearState();
+				}
+				if(!$scope.userHasDistrict()){
+					$scope.clearDistrict();
+				}
+				if(!$scope.userHasBlock()){
+					$scope.clearBlock();
+				}
 				$scope.clearCircle();
-
 				$scope.dt == null;
+
+				$scope.getStatesByService(item.service);
+				$scope.getCirclesByService(item.service);
 			}
 
 			$scope.selectReport = function(item){
 				$scope.report = item;
 
-				$scope.states = [];
-				$scope.clearState();
+				if(!$scope.userHasState()){
+					$scope.clearState();
+				}
+				if(!$scope.userHasDistrict()){
+					$scope.clearDistrict();
+				}
+				if(!$scope.userHasBlock()){
+					$scope.clearBlock();
+				}
 				$scope.clearCircle();
-
-				$scope.getStatesByService(item.service);
-				$scope.getCirclesByService(item.service);
-
 				$scope.dt = null;
 				$scope.setDateOptions();
 			}
@@ -114,8 +128,18 @@
 			
 
 			$scope.getStatesByService = function(service){
+				var returnFactory = function(){
+					if(service == null){
+						return UserFormFactory.getStates();
+					}
+					else{
+						return UserFormFactory.getStatesByService(service);
+					}
+				}
+
 				$scope.statesLoading = true;
-				return UserFormFactory.getStatesByService(service)
+
+				return returnFactory()
 				.then(function(result){
 					$scope.states = result.data;
 					$scope.districts = [];
@@ -170,27 +194,27 @@
 			}
 
 			$scope.setDateOptions =function(){
-//				var minDate = new Date(2015, 09, 01);
-//				if($scope.report.service == 'M'){
-//					minDate = new Date(2015, 10, 01);
-//				}
-                var minDate = $scope.report.minDate;
-                console.log(minDate);
-				if(!$scope.isCircleReport() && $scope.state != null && $scope.state.serviceStartDate>minDate){
-					minDate = $scope.state.serviceStartDate;
-					console.log(minDate);
+				var minDate = new Date(2015, 09, 01);
+				if($scope.report.service == 'M'){
+					minDate = new Date(2015, 10, 01);
 				}
-				if($scope.isCircleReport() && $scope.circle != null && $scope.circle.serviceStartDate>minDate){
-					minDate = $scope.circle.serviceStartDate;
-					console.log(minDate);
-				}
+    //             var minDate = $scope.report.minDate;
+    //             console.log(minDate);
+				// if(!$scope.isCircleReport() && $scope.state != null && $scope.state.serviceStartDate>minDate){
+				// 	minDate = $scope.state.serviceStartDate;
+				// 	console.log(minDate);
+				// }
+				// if($scope.isCircleReport() && $scope.circle != null && $scope.circle.serviceStartDate>minDate){
+				// 	minDate = $scope.circle.serviceStartDate;
+				// 	console.log(minDate);
+				// }
 
-//				if($scope.report.reportEnum == 'MACumulativeInactiveUsers'){
-//					minDate = new Date(2017, 04, 30);
-//				}
-//				if($scope.report.reportEnum == 'MAAnonymousUsers'){
-//				    minDate = new Date(2017, 04, 30);
-//				}
+				if($scope.report.reportEnum == 'MACumulativeInactiveUsers'){
+					minDate = new Date(2017, 04, 30);
+				}
+				if($scope.report.reportEnum == 'MAAnonymousUsers'){
+				    minDate = new Date(2017, 04, 30);
+				}
 
 				$scope.dateOptions = {
 					minMode: 'month',
@@ -344,8 +368,16 @@
 			$scope.reset =function(){
 				$scope.report = null;
 				$scope.reportCategory = null;
-				$scope.states = [];
-				$scope.clearState();
+
+				if(!$scope.userHasState()){
+					$scope.clearState();
+				}
+				if(!$scope.userHasDistrict()){
+					$scope.clearDistrict();
+				}
+				if(!$scope.userHasBlock()){
+					$scope.clearBlock();
+				}
 				$scope.clearCircle();
 				$scope.dt = null;
 			}

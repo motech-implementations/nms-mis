@@ -5,14 +5,14 @@
     "service":"K",
     "options":[
       {
-        "name":"Cumulative Completion Report",
+        "name":"Cumulative Course Completion",
         "reportEnum":"MACumulativeCourseCompletion",
         "icon":"images/drop-down-3.png",
         "service":"M",
         "minDate":"2015-11-01"
       },
       {
-        "name":"Circle wise Anonymous Reports",
+        "name":"Circle wise Anonymous Users",
         "reportEnum":"MAAnonymousUsers",
         "icon":"images/drop-down-3.png",
         "service":"M",

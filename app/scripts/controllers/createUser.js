@@ -75,7 +75,7 @@
 			// }
 
 			$scope.filterAccessType = function(accessType){
-				if($scope.newUser.accessLevel == 'BLOCK'){
+				if($scope.newUser.accessLevel == 'BLOCK' || UserFormFactory.getCurrentUser().accessLevel == 'DISTRICT'){
 					return accessType.roleDescription != 'ADMIN';
 				}
 				else{
@@ -86,7 +86,7 @@
 			$scope.filterAccessLevel = function(accessLevel){
 				var temp = false;
 				if($scope.newUser.roleId == 2){ // admin
-					temp = accessLevel != "BLOCK";
+					temp = accessLevel != "BLOCK" && accessLevel != UserFormFactory.getCurrentUser().accessLevel;
 				}
 				else{
 					temp = true;
