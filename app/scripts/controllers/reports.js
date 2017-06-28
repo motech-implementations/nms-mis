@@ -128,28 +128,44 @@
 			
 
 			$scope.getStatesByService = function(service){
-				var returnFactory = function(){
-					if(service == null){
-						return UserFormFactory.getStates();
-					}
-					else{
-						return UserFormFactory.getStatesByService(service);
-					}
-				}
+			    $scope.statesLoading = true;
+                if(service == null){
+                    return UserFormFactory.getStates()
+                    .then(function(result){
+                        $scope.states = result.data;
+                        $scope.districts = [];
+                        $scope.blocks = [];
+                        $scope.statesLoading = false;
 
-				$scope.statesLoading = true;
+                        if($scope.userHasState()){
+                            $scope.selectState($scope.states[0]);
+                        }
+                    });
+                }
+                else{
+                    return UserFormFactory.getStatesByService(service)
+                    .then(function(result){
+                        $scope.states = result.data;
+                        $scope.districts = [];
+                        $scope.blocks = [];
+                        $scope.statesLoading = false;
 
-				return returnFactory()
-				.then(function(result){
-					$scope.states = result.data;
-					$scope.districts = [];
-					$scope.blocks = [];
-					$scope.statesLoading = false;
-
-					if($scope.userHasState()){
-						$scope.selectState($scope.states[0]);
-					}
-				});
+                        if($scope.userHasState()){
+                            $scope.selectState($scope.states[0]);
+                        }
+                    });
+                }
+//				return returnFactory()
+//                    .then(function(result){
+//                        $scope.states = result.data;
+//                        $scope.districts = [];
+//                        $scope.blocks = [];
+//                        $scope.statesLoading = false;
+//
+//                        if($scope.userHasState()){
+//                            $scope.selectState($scope.states[0]);
+//                        }
+//                    });
 			}
 			
 			$scope.getDistricts = function(stateId){
@@ -198,23 +214,24 @@
 				if($scope.report.service == 'M'){
 					minDate = new Date(2015, 10, 01);
 				}
+				if($scope.report.reportEnum == 'MACumulativeInactiveUsers'){
+                	minDate = new Date(2017, 04, 30);
+                }
+                if($scope.report.reportEnum == 'MAAnonymousUsers'){
+                    minDate = new Date(2017, 04, 30);
+                }
 //                var minDate = $scope.report.minDate;
 //                console.log(minDate);
-//				if(!$scope.isCircleReport() && $scope.state != null && $scope.state.serviceStartDate>minDate){
-//					minDate = $scope.state.serviceStartDate;
-//					console.log(minDate);
-//				}
-//				if($scope.isCircleReport() && $scope.circle != null && $scope.circle.serviceStartDate>minDate){
-//					minDate = $scope.circle.serviceStartDate;
-//					console.log(minDate);
-//				}
+				if(!$scope.isCircleReport() && $scope.state != null && $scope.state.serviceStartDate>minDate){
+					minDate = $scope.state.serviceStartDate;
+					console.log(minDate);
+				}
+				if($scope.isCircleReport() && $scope.circle != null && $scope.circle.serviceStartDate>minDate){
+					minDate = $scope.circle.serviceStartDate;
+					console.log(minDate);
+				}
 
-				if($scope.report.reportEnum == 'MACumulativeInactiveUsers'){
-					minDate = new Date(2017, 04, 30);
-				}
-				if($scope.report.reportEnum == 'MAAnonymousUsers'){
-				    minDate = new Date(2017, 04, 30);
-				}
+
 
 				$scope.dateOptions = {
 					minMode: 'month',
