@@ -12,12 +12,12 @@ public enum ReportType {
 //    selfDeactivated("selfDeactivated"),
 //    sixWeeks("sixWeeks");
 
-    maCourse("MACumulativeCourseCompletion", "Cumulative Completion Report", "M"),
-    maAnonymous("MAAnonymousUsers", "Circle wise Anonymous Reports", "M"),
+    maCourse("MACumulativeCourseCompletion", "Cumulative Course Completion", "M"),
+    maAnonymous("MAAnonymousUsers", "Circle wise Anonymous Users", "M"),
     maInactive("MACumulativeInactiveUsers", "Cumulative Inactive Users", "M"),
     lowUsage("KilkariLowUsage", "Listen to < 25% this month", "K"),
     selfDeactivated("KilkariSelfDeactivated", "Self Deactivations", "K"),
-    sixWeeks("KilkariSixWeeksNoAnswer", "Deactivation for not answering", "K");
+    sixWeeks("KilkariSixWeeksNoAnswer", "Deactivated for not answering", "K");
 
     private String reportType;
     private String reportName;

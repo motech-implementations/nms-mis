@@ -458,7 +458,7 @@ public class UserController {
                 "images/drop-down-3.png",
                 ReportType.selfDeactivated.getServiceType())
         );
-        maMenu.put("service", kList.get(0).getService());
+        kMenu.put("service", kList.get(0).getService());
         kMenu.put("options", kList);
 
         List<Map<String, Object>> l = new ArrayList<>();

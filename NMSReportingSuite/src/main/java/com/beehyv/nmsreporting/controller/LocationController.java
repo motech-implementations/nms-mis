@@ -72,6 +72,27 @@ public class LocationController {
         return stateObjects;
     }
 
+//    @RequestMapping(value = {"/myStates"}, method = RequestMethod.GET)
+//    public @ResponseBody List<StateObject> getUserStateObjects() {
+//        User user = userService.getCurrentUser();
+//        List<State> states;
+//        if(user.getAccessLevel().equals(AccessLevel.NATIONAL.getAccessLevel())) {
+//            states = locationService.getAllStates();
+//        }
+//        else{
+//            states = new ArrayList<>();
+//            states.add(locationService.findStateById(user.getStateId()));
+//        }
+//        ArrayList<StateObject> stateObjects = new ArrayList<>();
+//        for(State s : states){
+//            StateObject stateObject = new StateObject(s);
+//            stateObject.setServiceType(s.getServiceType());
+//            stateObject.setServiceStartDate(locationService.getServiceStartdateForState(s.getStateId(), s.getServiceType()));
+//            stateObjects.add(stateObject);
+//        }
+//        return stateObjects;
+//    }
+
     /*--------------------------District-----------------------------*/
 
     @RequestMapping(value = {"/districts/{stateId}"}, method = RequestMethod.GET)
