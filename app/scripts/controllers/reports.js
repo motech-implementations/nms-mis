@@ -12,6 +12,8 @@
 					UserFormFactory.downloadCurrentUser()
 					.then(function(result){
 						UserFormFactory.setCurrentUser(result.data);
+
+						$scope.getStatesByService(null);
 					})
 				}
 			})
@@ -35,7 +37,7 @@
 				return $scope.report == null || $scope.report.reportEnum == null;
 			}
 			$scope.disableState = function(){
-				return $scope.states[0]  == null || $scope.userHasState();
+				return $scope.states[0]  == null || $scope.userHasState() || $scope.report == null;
 			}
 			$scope.disableDistrict = function(){
 				return $scope.districts[0]  == null || $scope.userHasDistrict();	
@@ -66,6 +68,9 @@
 			.then(function(result){
 				$scope.reports = result.data;
 				$scope.reportsLoading = false;
+				if($scope.reports.length == 1){
+				    $scope.selectReportCategory($scope.reports[0]);
+				}
 			})
 
 			$scope.reportCategory=null;
@@ -76,25 +81,40 @@
 
 				$scope.report = null;
 				
-				$scope.states = [];
-				$scope.clearState();
+				if(!$scope.userHasState()){
+					$scope.clearState();
+				}
+				if(!$scope.userHasDistrict()){
+					$scope.clearDistrict();
+				}
+				if(!$scope.userHasBlock()){
+					$scope.clearBlock();
+				}
 				$scope.clearCircle();
-
 				$scope.dt == null;
+
+				$scope.getStatesByService(item.service);
+				$scope.getCirclesByService(item.service);
 			}
 
 			$scope.selectReport = function(item){
 				$scope.report = item;
 
-				$scope.states = [];
-				$scope.clearState();
+				if(!$scope.userHasState()){
+					$scope.clearState();
+				}
+				if(!$scope.userHasDistrict()){
+					$scope.clearDistrict();
+				}
+				if(!$scope.userHasBlock()){
+					$scope.clearBlock();
+				}
 				$scope.clearCircle();
-
-				$scope.getStatesByService(item.service);
-				$scope.getCirclesByService(item.service);
-
 				$scope.dt = null;
 				$scope.setDateOptions();
+				if($scope.userHasOneCircle()){
+                	$scope.selectCircle($scope.circles[0]);
+                }
 			}
 
 			$scope.crop = function(name){
@@ -108,24 +128,52 @@
 			}
 
 			$scope.isCircleReport = function(){
-				return $scope.report != null && $scope.report.name == 'Circle wise Anonymous Reports';
+				return $scope.report != null && $scope.report.reportEnum == 'MAAnonymousUsers';
 			}
 
 			
 
 			$scope.getStatesByService = function(service){
-				$scope.statesLoading = true;
-				return UserFormFactory.getStatesByService(service)
-				.then(function(result){
-					$scope.states = result.data;
-					$scope.districts = [];
-					$scope.blocks = [];
-					$scope.statesLoading = false;
+			    $scope.statesLoading = true;
+			    $scope.states = [];
+			    $scope.clearState();
+                if(service == null){
+                    return UserFormFactory.getStates()
+                    .then(function(result){
+                        $scope.states = result.data;
+                        $scope.districts = [];
+                        $scope.blocks = [];
+                        $scope.statesLoading = false;
 
-					if($scope.userHasState()){
-						$scope.selectState($scope.states[0]);
-					}
-				});
+                        if($scope.userHasState()){
+                            $scope.selectState($scope.states[0]);
+                        }
+                    });
+                }
+                else{
+                    return UserFormFactory.getStatesByService(service)
+                    .then(function(result){
+                        $scope.states = result.data;
+                        $scope.districts = [];
+                        $scope.blocks = [];
+                        $scope.statesLoading = false;
+
+                        if($scope.userHasState()){
+                            $scope.selectState($scope.states[0]);
+                        }
+                    });
+                }
+//				return returnFactory()
+//                    .then(function(result){
+//                        $scope.states = result.data;
+//                        $scope.districts = [];
+//                        $scope.blocks = [];
+//                        $scope.statesLoading = false;
+//
+//                        if($scope.userHasState()){
+//                            $scope.selectState($scope.states[0]);
+//                        }
+//                    });
 			}
 			
 			$scope.getDistricts = function(stateId){
@@ -171,28 +219,28 @@
 
 			$scope.setDateOptions =function(){
 				var minDate = new Date(2015, 09, 01);
-				if($scope.report.service == 'M'){
+				if($scope.report != null && $scope.report.service == 'M'){
 					minDate = new Date(2015, 10, 01);
 				}
-
-//                var minDate = $scope.report.minDate;
-//                console.log(minDate);
-				if(!$scope.isCircleReport() && $scope.state != null){
-					minDate = $scope.state.serviceStartDate;
-					console.log(minDate);
-				}
-				if($scope.isCircleReport() && $scope.circle != null){
-					minDate = $scope.circle.serviceStartDate;
-					console.log(minDate);
-				}
-
-                if($scope.report.reportEnum == 'MACumulativeInactiveUsers'){
+				if($scope.report != null && $scope.report.reportEnum == 'MACumulativeInactiveUsers'){
                 	minDate = new Date(2017, 04, 30);
                 }
-
-                if($scope.report.reportEnum == 'MAAnonymousUsers'){
+                if($scope.report != null && $scope.report.reportEnum == 'MAAnonymousUsers'){
                     minDate = new Date(2017, 04, 30);
                 }
+//                var minDate = $scope.report.minDate;
+//                console.log(minDate);
+				if(!$scope.isCircleReport() && $scope.state != null && Date.parse($scope.state.serviceStartDate) > minDate){
+					minDate = $scope.state.serviceStartDate;
+//					console.log($scope.state.serviceStartDate);
+//					console.log(minDate);
+				}
+				if($scope.isCircleReport() && $scope.circle != null && Date.parse($scope.circle.serviceStartDate) > minDate){
+					minDate = $scope.circle.serviceStartDate;
+//					console.log(minDate);
+				}
+
+
 
 				$scope.dateOptions = {
 					minMode: 'month',
@@ -241,7 +289,7 @@
 			}
 			$scope.selectCircle = function(circle){
 				if(circle != null){
-					$scope.clearBlock();
+//					$scope.clearBlock();
 					$scope.circle = circle;
 				}	
 			}
@@ -291,10 +339,10 @@
 			    	if($scope.state != null){
 				    	reportRequest.stateId = $scope.state.stateId;
 				    }
-				    // else{
-			    	// 	alert("Please select a state");
-			    	// 	return;
-				    // }
+                    else{
+                        alert("Please select a state");
+                        return;
+                    }
 				    if($scope.district != null){
 				    	reportRequest.districtId = $scope.district.districtId;
 				    }
@@ -306,10 +354,10 @@
 		    		if($scope.circle != null){
 				    	reportRequest.circleId = $scope.circle.circleId;
 				    }
-				    // else{
-			    	// 	alert("Please select a circle");
-			    	// 	return;
-				    // }				    
+                    else{
+                     	alert("Please select a circle");
+                     	return;
+                    }
 		    	}
 				
 			    reportRequest.fromDate = $scope.dt;
@@ -346,8 +394,16 @@
 			$scope.reset =function(){
 				$scope.report = null;
 				$scope.reportCategory = null;
-				$scope.states = [];
-				$scope.clearState();
+
+				if(!$scope.userHasState()){
+					$scope.clearState();
+				}
+				if(!$scope.userHasDistrict()){
+					$scope.clearDistrict();
+				}
+				if(!$scope.userHasBlock()){
+					$scope.clearBlock();
+				}
 				$scope.clearCircle();
 				$scope.dt = null;
 			}
