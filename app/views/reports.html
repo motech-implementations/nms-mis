@@ -75,7 +75,7 @@
 							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" ng-disabled="disableDistrict()" uib-dropdown-toggle ng-class="{loading: districtsLoading, autoSelected}">
 								<span class="block">
 									<span>{{crop(district.districtName)}}</span>
-									<!--<span ng-if="district == null">ALL</span>-->
+									<span ng-if="district == null">ALL</span>
 									<span class="caret"></span>
 								</span>
 							</button>
@@ -91,7 +91,7 @@
 							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" ng-disabled="disableBlock()" uib-dropdown-toggle ng-class="{loading: blocksLoading}">
 								<span class="block">
 									<span>{{crop(block.blockName)}}</span>
-									<!--<span ng-if="block == null">ALL</span>-->
+									<span ng-if="block == null">ALL</span>
 									<span class="caret"></span>
 								</span>
 							</button>
