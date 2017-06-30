@@ -806,7 +806,7 @@ public class AdminServiceImpl implements AdminService {
                 "ASHA Creation Date",
                 "ASHA Job Status",
                 "First Completion Date",
-                "Sent Notification"
+                "SMS Sent Notification"
         });
         Integer counter = 2;
         for (MACourseFirstCompletion maCourseFirstCompletion : successfulCandidates) {
