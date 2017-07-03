@@ -77,7 +77,12 @@
 
 			$scope.getTitle = function(state){
 				var states = $scope.getBreadCrumb(state)
-				return states[states.length - 1].name
+				if(states != null){
+					return states[states.length - 1].name;
+				}
+				else{
+					return "Please Wait...";
+				}
 			}
 
 			$scope.activeTab = function(tabName){

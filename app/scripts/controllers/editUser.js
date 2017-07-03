@@ -38,8 +38,10 @@
 			}
 
 			$scope.filterAccessType = function(accessType){
-				if($scope.editUser.accessLevel == 'BLOCK'){
-					return accessType.roleDescription != 'ADMIN';
+				if($scope.editUser.accessLevel == 'BLOCK' || 
+					UserFormFactory.getCurrentUser().accessLevel == 'DISTRICT' ||
+					(UserFormFactory.getCurrentUser().accessLevel == $scope.editUser.accessLevel && UserFormFactory.getCurrentUser().roleId != 1)){
+					return accessType.roleId != 2;
 				}
 				else{
 					return true;
@@ -48,8 +50,8 @@
 
 			$scope.filterAccessLevel = function(accessLevel){
 				var temp = false;
-				if($scope.editUser.roleId == 2){ // admin
-					temp = accessLevel != "BLOCK";
+				if($scope.editUser.roleId == 2 && UserFormFactory.getCurrentUser().roleId != 1){ // admin
+					temp = accessLevel != "BLOCK" && accessLevel != UserFormFactory.getCurrentUser().accessLevel;
 				}
 				else{
 					temp = true;
