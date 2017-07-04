@@ -75,8 +75,10 @@
 			// }
 
 			$scope.filterAccessType = function(accessType){
-				if($scope.newUser.accessLevel == 'BLOCK' || UserFormFactory.getCurrentUser().accessLevel == 'DISTRICT'){
-					return accessType.roleDescription != 'ADMIN';
+				if($scope.newUser.accessLevel == 'BLOCK' || 
+					UserFormFactory.getCurrentUser().accessLevel == 'DISTRICT' ||
+					(UserFormFactory.getCurrentUser().accessLevel == $scope.newUser.accessLevel && UserFormFactory.getCurrentUser().roleId != 1)){
+					return accessType.roleId != 2;
 				}
 				else{
 					return true;
@@ -85,7 +87,7 @@
 
 			$scope.filterAccessLevel = function(accessLevel){
 				var temp = false;
-				if($scope.newUser.roleId == 2){ // admin
+				if($scope.newUser.roleId == 2 && UserFormFactory.getCurrentUser().roleId != 1){ // admin
 					temp = accessLevel != "BLOCK" && accessLevel != UserFormFactory.getCurrentUser().accessLevel;
 				}
 				else{
