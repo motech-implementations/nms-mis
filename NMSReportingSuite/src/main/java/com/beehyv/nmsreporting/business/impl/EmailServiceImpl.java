@@ -89,7 +89,7 @@ public class EmailServiceImpl implements EmailService{
     public String getBody(String reportName,String place, String monthAndYear, String name) {
         String body = "";
         body+= "Dear "+name+ ",\n \n";
-        body+= "This is the "+reportName+" Report of "+place+" for the month "+monthAndYear+ ".\n";
+        body+= "This is the "+reportName+" Report of "+place+" for the month "+monthAndYear+ ".\n \n";
         body+= "Thank You.\n";
         body+= "NSP Support Team \n \n \n";
         body+= "P.S: This an auto-generated email. Please do not reply";
@@ -102,7 +102,7 @@ public class EmailServiceImpl implements EmailService{
         HashMap<String,String> errorSendingMail = new HashMap<>();
         for(User user: users){
             EmailInfo newMail = new EmailInfo();
-            newMail.setFrom("Beehyv");
+            newMail.setFrom("nsp-reports@beehyv.com");
             newMail.setTo(user.getEmailId());
 //                for(ReportType reportType: ReportType.values()){
             ReportType reportType = reportService.getReportTypeByName(reportName);
@@ -123,7 +123,7 @@ public class EmailServiceImpl implements EmailService{
                         newMail.setSubject(fileName);
                         newMail.setFileName(fileName);
                         place = circle.getCircleName()+" Circle";
-                        newMail.setBody(this.getBody(reportName,place,reportService.getMonthName(c.getTime()),user.getFullName()));
+                        newMail.setBody(this.getBody(reportType.getReportName(),place,reportService.getMonthName(c.getTime()),user.getFullName()));
                         newMail.setRootPath(pathName);
                         errorMessage = this.sendMail(newMail);
                         if (errorMessage.equalsIgnoreCase("failure"))

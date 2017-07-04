@@ -40,8 +40,8 @@ public class EmailController {
 //    }
 
     @RequestMapping(value = "/sendAll/{reportType}", method = RequestMethod.GET)
-    public @ResponseBody HashMap sendAllMails(@PathVariable String reportName){
-        return emailService.sendAllMails(reportName);
+    public @ResponseBody HashMap sendAllMails(@PathVariable String reportType){
+        return emailService.sendAllMails(reportType);
     }
 
     @RequestMapping(value = "/send", method = RequestMethod.POST)
