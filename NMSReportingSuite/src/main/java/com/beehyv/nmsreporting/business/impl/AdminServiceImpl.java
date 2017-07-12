@@ -186,18 +186,18 @@ public class AdminServiceImpl implements AdminService {
                         java.sql.Date sqlStartDate = new java.sql.Date(date.getTime());
                         user.setCreationDate((sqlStartDate));
                         /*user.setCreatedByUser(loggedInUser);*/
-                        List<Role> userRole = roleDao.findByRoleDescription(Line[8]);
+                        List<Role> userRole = roleDao.findByRoleDescription(Line[7]);
                         String State = Line[1];
                         String District = Line[2];
                         String Block = Line[3];
-                        boolean isLevel = AccessLevel.isLevel(Line[8]);
+                        boolean isLevel = AccessLevel.isLevel(Line[7]);
                         if (!(isLevel)) {
                             Integer rowNum = lineNumber;
                             String userNameError = "Please specify the access level for user";
                             errorCreatingUsers.put(rowNum, userNameError);
                             continue;
                         }
-                        boolean isType = AccessType.isType(Line[9]);
+                        boolean isType = AccessType.isType(Line[8]);
                         if (!(isType)) {
                             Integer rowNum = lineNumber;
                             String userNameError = "Please specify the role for user";
@@ -211,8 +211,8 @@ public class AdminServiceImpl implements AdminService {
                             continue;
                         }
                         int userRoleId = userRole.get(0).getRoleId();
-                        String UserRole = AccessType.getType(Line[9]);
-                        AccessLevel accessLevel = AccessLevel.getLevel(Line[8]);
+                        String UserRole = AccessType.getType(Line[8]);
+                        AccessLevel accessLevel = AccessLevel.getLevel(Line[7]);
                         if (UserRole.equalsIgnoreCase("ADMIN")) {
                             if ((accessLevel == AccessLevel.NATIONAL) || (accessLevel == AccessLevel.STATE)) {
                                 Integer rowNum = lineNumber;
@@ -430,7 +430,7 @@ public class AdminServiceImpl implements AdminService {
         String NEW_LINE_SEPARATOR = "\n";
 
         //CSV file header
-        String FILE_HEADER = "Full Name, State, District, Block, Phone number, Email ID, UserName, Creation Date, Access Level,Role";
+        String FILE_HEADER = "Full Name, State, District, Block, Phone number, Email ID, UserName, Access Level,Role";
         FileWriter fileWriter = null;
         try {
             fileWriter = new FileWriter(documents+"BulkImportData.csv");
