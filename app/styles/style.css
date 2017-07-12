@@ -18,6 +18,9 @@ body .login .login-header img{
 body .login .login-body{
 	height: 285px;
 }
+body .login .login-body .error{
+	color: #a94442;
+}
 body .login .login-body .checkbox{
 	padding: 0px 0px 20px;
 }

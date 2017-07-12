@@ -39,7 +39,8 @@ public class LoginController {
         System.out.println("password = " + loginUser.getPassword());
         System.out.println("rememberme " + loginUser.isRememberMe());
         if( errors.hasErrors() ) {
-            return returnLoginView(model, loginUser);
+            ensureUserIsLoggedOut();
+            return "redirect:"+ uiAddress +"login?error";
         }
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(loginUser.getUsername(), loginUser.getPassword(), loginUser.isRememberMe());
@@ -51,7 +52,8 @@ public class LoginController {
         }
 
         if( errors.hasErrors() ) {
-            return returnLoginView(model, loginUser);
+            ensureUserIsLoggedOut();
+            return "redirect:"+ uiAddress +"login?error";
         } else {
             return "redirect:"+ uiAddress +"reports";
         }
