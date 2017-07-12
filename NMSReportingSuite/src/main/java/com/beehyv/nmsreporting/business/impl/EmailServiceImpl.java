@@ -127,7 +127,7 @@ public class EmailServiceImpl implements EmailService{
                         newMail.setRootPath(pathName);
                         errorMessage = this.sendMail(newMail);
                         if (errorMessage.equalsIgnoreCase("failure"))
-                            errorSendingMail.put(user.getEmailId(),fileName);
+                            errorSendingMail.put(user.getUsername(),fileName);
                     }
                 }//else if(user.getAccessLevel().equalsIgnoreCase(AccessLevel.NATIONAL.getAccessLevel())){
 //                            reportRequest.setCircleId(0);
@@ -140,7 +140,7 @@ public class EmailServiceImpl implements EmailService{
 //                            newMail.setRootPath(pathName);
 //                            errorMessage = emailService.sendMail(newMail);
 //                            if (errorMessage.equalsIgnoreCase("failure"))
-//                                errorSendingMail.put(user.getEmailId(),fileName);
+//                                errorSendingMail.put(user.getUsername(),fileName);
 //                        } else {
 //                            reportRequest.setCircleId(locationService.findDistrictById(user.getDistrictId()).getCircleOfDistrict());
 //                            pathName = reportService.getReportPathName(reportRequest).get(1);
@@ -153,7 +153,7 @@ public class EmailServiceImpl implements EmailService{
 //                            newMail.setRootPath(pathName);
 //                            errorMessage = emailService.sendMail(newMail);
 //                            if (errorMessage.equalsIgnoreCase("failure"))
-//                                errorSendingMail.put(user.getEmailId(),fileName);
+//                                errorSendingMail.put(user.getUsername(),fileName);
 //                        }
             }else {
 //                        place = "NATIONAL";
@@ -186,7 +186,7 @@ public class EmailServiceImpl implements EmailService{
                 else
                     errorMessage = "success";
                 if (errorMessage.equalsIgnoreCase("failure"))
-                    errorSendingMail.put(user.getEmailId(),fileName);
+                    errorSendingMail.put(user.getUsername(),fileName);
             }
 //            }
         }
