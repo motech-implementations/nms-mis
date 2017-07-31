@@ -59,27 +59,27 @@ public class AutoReportEmailGeneration {
     }
 
     public HashMap sendFirstMail() {
-        return emailService.sendAllMails(ReportType.maAnonymous.getReportName());
+        return emailService.sendAllMails(ReportType.maAnonymous);
     }
 
     public HashMap sendSecondMail() {
-        return emailService.sendAllMails(ReportType.maCourse.getReportName());
+        return emailService.sendAllMails(ReportType.maCourse);
     }
 
     public HashMap sendThirdMail() {
-        return emailService.sendAllMails(ReportType.maInactive.getReportName());
+        return emailService.sendAllMails(ReportType.maInactive);
     }
 
     public HashMap sendFourthMail() {
-        return emailService.sendAllMails(ReportType.sixWeeks.getReportName());
+        return emailService.sendAllMails(ReportType.sixWeeks);
     }
 
     public HashMap sendFifthMail() {
-        return emailService.sendAllMails(ReportType.selfDeactivated.getReportName());
+        return emailService.sendAllMails(ReportType.selfDeactivated);
     }
 
     public HashMap sendSixthMail() {
-        return emailService.sendAllMails(ReportType.lowUsage.getReportName());
+        return emailService.sendAllMails(ReportType.lowUsage);
     }
 
     public void test(){

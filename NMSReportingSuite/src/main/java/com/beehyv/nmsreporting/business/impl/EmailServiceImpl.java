@@ -97,7 +97,7 @@ public class EmailServiceImpl implements EmailService{
     }
 
     @Override
-    public HashMap<String, String> sendAllMails(String reportName) {
+    public HashMap<String, String> sendAllMails(ReportType reportType) {
         List<User> users = userService.findAllActiveUsers();
         HashMap<String,String> errorSendingMail = new HashMap<>();
         for(User user: users){
@@ -105,7 +105,6 @@ public class EmailServiceImpl implements EmailService{
             newMail.setFrom("nsp-reports@beehyv.com");
             newMail.setTo(user.getEmailId());
 //                for(ReportType reportType: ReportType.values()){
-            ReportType reportType = reportService.getReportTypeByName(reportName);
             ReportRequest reportRequest = new ReportRequest();
             Calendar c = Calendar.getInstance();   // this takes current date
             c.add(Calendar.MONTH, -1);
@@ -179,7 +178,7 @@ public class EmailServiceImpl implements EmailService{
                 fileName = reportService.getReportPathName(reportRequest).get(0);
                 newMail.setSubject(fileName);
                 newMail.setFileName(fileName);
-                newMail.setBody(this.getBody(reportName,place,reportService.getMonthName(c.getTime()),user.getFullName()));
+                newMail.setBody(this.getBody(reportType.getReportName(),place,reportService.getMonthName(c.getTime()),user.getFullName()));
                 newMail.setRootPath(pathName);
                 if(user.getDistrictId() != null)
                     errorMessage = this.sendMail(newMail);

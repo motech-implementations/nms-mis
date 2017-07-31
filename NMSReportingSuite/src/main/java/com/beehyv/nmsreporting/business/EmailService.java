@@ -2,6 +2,7 @@ package com.beehyv.nmsreporting.business;
 
 import com.beehyv.nmsreporting.entity.EmailInfo;
 import com.beehyv.nmsreporting.entity.ReportRequest;
+import com.beehyv.nmsreporting.enums.ReportType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +16,6 @@ public interface EmailService {
 
     public String getBody(String reportName,String place, String monthAndYear,String name);
 
-    public HashMap sendAllMails(String reportName);
+    public HashMap sendAllMails(ReportType reportType);
 
 }
