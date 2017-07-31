@@ -322,7 +322,7 @@ public class UserController {
            }
 
             if(reportRequest.getCircleId()!=0){
-                place=StReplace(locationService.findCircleById(reportRequest.getCircleId()).getCircleName());
+                place=StReplace(locationService.findCircleById(reportRequest.getCircleId()).getCircleFullName());
                 rootPath+=place+"/";
             }
        }

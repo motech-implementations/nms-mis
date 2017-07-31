@@ -51,7 +51,7 @@ public class ReportServiceImpl implements ReportService{
 
         if(reportRequest.getReportType().equals(ReportType.maAnonymous.getReportType())){
             if(reportRequest.getCircleId()!=0){
-                place=circleDao.getByCircleId(reportRequest.getCircleId()).getCircleName();
+                place=circleDao.getByCircleId(reportRequest.getCircleId()).getCircleFullName();
                 rootPath+=place+"/";
             }
         }

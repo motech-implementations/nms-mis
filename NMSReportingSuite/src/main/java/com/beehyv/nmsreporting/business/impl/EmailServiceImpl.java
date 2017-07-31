@@ -9,6 +9,7 @@ import com.beehyv.nmsreporting.entity.ReportRequest;
 import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.Circle;
+import com.beehyv.nmsreporting.model.State;
 import com.beehyv.nmsreporting.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -99,9 +100,9 @@ public class EmailServiceImpl implements EmailService{
         }
         else if(reportName.equalsIgnoreCase(ReportType.maAnonymous.getReportName())) {
             body+="\tPlease find attached the list of anonymous callers to the Mobile Academy course from the telecom " +
-                    "circle of your state. We presume that these numbers are used by ASHAs working in your state but " +
+                    "circle of " + place + ". We presume that these numbers are used by ASHAs working in your state but " +
                     "have not been registered in RCH Application. Please contact these numbers and if they belong " +
-                    "to a registered ASHA in your state then please tell them to either use their registered number " +
+                    "to a registered ASHA in " + place + " then please tell them to either use their registered number " +
                     "to access the Mobile Academy course or register their correct numbers in the RCH Application so " +
                     "that they can access the Mobile Academy course.\n\n" +
                     "This is for your information.\n\n";
@@ -175,7 +176,7 @@ public class EmailServiceImpl implements EmailService{
                         fileName = reportService.getReportPathName(reportRequest).get(0);
                         newMail.setSubject(fileName);
                         newMail.setFileName(fileName);
-                        place = circle.getCircleName()+" Circle";
+                        place = getStatesNamesByCircle(circle);
                         newMail.setBody(this.getBody(reportType.getReportName(),place,reportService.getMonthName(c.getTime()),user.getFullName()));
                         newMail.setRootPath(pathName);
                         errorMessage = this.sendMail(newMail);
@@ -209,40 +210,51 @@ public class EmailServiceImpl implements EmailService{
 //                                errorSendingMail.put(user.getUsername(),fileName);
 //                        }
             }else {
-//                        place = "NATIONAL";
-//                        if (user.getStateId() == null)
-//                            reportRequest.setStateId(0);
-//                        else {
-//                            reportRequest.setStateId(user.getStateId());
-//                            place = locationService.findStateById(user.getStateId()).getStateName()+" State";
-//                        }
-                if (user.getDistrictId() == null)
-                    reportRequest.setDistrictId(0);
-                else {
-                    reportRequest.setDistrictId(user.getDistrictId());
-                    place = locationService.findDistrictById(user.getDistrictId()).getDistrictName()+" District";
-                }
-                if (user.getBlockId() == null)
-                    reportRequest.setBlockId(0);
-                else {
-                    reportRequest.setBlockId(user.getBlockId());
-                    place = locationService.findBlockById(user.getBlockId()).getBlockName()+" Block";
-                }
-                pathName = reportService.getReportPathName(reportRequest).get(1);
-                fileName = reportService.getReportPathName(reportRequest).get(0);
-                newMail.setSubject(fileName);
-                newMail.setFileName(fileName);
-                newMail.setBody(this.getBody(reportType.getReportName(),place,reportService.getMonthName(c.getTime()),user.getFullName()));
-                newMail.setRootPath(pathName);
-                if(user.getDistrictId() != null)
-                    errorMessage = this.sendMail(newMail);
-                else
-                    errorMessage = "success";
-                if (errorMessage.equalsIgnoreCase("failure"))
-                    errorSendingMail.put(user.getUsername(),fileName);
-            }
+                        place = "NATIONAL";
+                        if (user.getStateId() == null)
+                            reportRequest.setStateId(0);
+                        else {
+                            reportRequest.setStateId(user.getStateId());
+                            place = locationService.findStateById(user.getStateId()).getStateName()+" State";
+                        }
+                        if (user.getDistrictId() == null)
+                            reportRequest.setDistrictId(0);
+                        else {
+                            reportRequest.setDistrictId(user.getDistrictId());
+                            place = locationService.findDistrictById(user.getDistrictId()).getDistrictName()+" District";
+                        }
+                        if (user.getBlockId() == null)
+                            reportRequest.setBlockId(0);
+                        else {
+                            reportRequest.setBlockId(user.getBlockId());
+                            place = locationService.findBlockById(user.getBlockId()).getBlockName()+" Block";
+                        }
+                        pathName = reportService.getReportPathName(reportRequest).get(1);
+                        fileName = reportService.getReportPathName(reportRequest).get(0);
+                        newMail.setSubject(fileName);
+                        newMail.setFileName(fileName);
+                        newMail.setBody(this.getBody(reportType.getReportName(),place,reportService.getMonthName(c.getTime()),user.getFullName()));
+                        newMail.setRootPath(pathName);
+                        if(user.getDistrictId() != null)
+                            errorMessage = this.sendMail(newMail);
+                        else
+                            errorMessage = "success";
+                        if (errorMessage.equalsIgnoreCase("failure"))
+                            errorSendingMail.put(user.getUsername(),fileName);
+                    }
 //            }
         }
         return errorSendingMail;
+    }
+
+    private String getStatesNamesByCircle(Circle circle){
+        List<State> states = locationService.getStatesOfCircle(circle);
+        String placeNames = "";
+        if(states.size()>1){
+            placeNames += states.get(0).getStateName() + " and " + states.get(1).getStateName() + " regions";
+        } else {
+            placeNames += states.get(0).getStateName() + " region";
+        }
+        return placeNames;
     }
 }

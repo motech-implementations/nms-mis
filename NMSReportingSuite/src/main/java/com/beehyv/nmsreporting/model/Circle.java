@@ -21,6 +21,9 @@ public class Circle {
     @Column(name = "last_modified",columnDefinition = "TIMESTAMP")
     private Date lastModifiedDate;
 
+    @Column(name = "circle_full_name", columnDefinition = "VARCHAR(255)")
+    private String circleFullName;
+
     public Integer getCircleId() {
         return circleId;
     }
@@ -43,5 +46,13 @@ public class Circle {
 
     public void setLastModifiedDate(Date lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public String getCircleFullName() {
+        return circleFullName;
+    }
+
+    public void setCircleFullName(String circleFullName) {
+        this.circleFullName = circleFullName;
     }
 }

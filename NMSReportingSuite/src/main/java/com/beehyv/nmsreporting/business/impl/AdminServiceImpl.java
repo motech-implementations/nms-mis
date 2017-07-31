@@ -499,7 +499,7 @@ public class AdminServiceImpl implements AdminService {
         if (!dir.exists())
             dir.mkdirs();
         for (Circle circle : circleList) {
-            String circleName = StReplace(circle.getCircleName());
+            String circleName = StReplace(circle.getCircleFullName());
             String rootPathCircle = rootPath + reportType + "/" + circleName;
             File dirCircle = new File(rootPathCircle);
             if (!dirCircle.exists())
@@ -634,7 +634,8 @@ public class AdminServiceImpl implements AdminService {
             }
             else{
                 String circleName=StReplace(circleDao.getByCircleId(circleId).getCircleName());
-                String rootPathCircle=rootPath+circleName+"/";
+                String circleFullName = StReplace(circleDao.getByCircleId(circleId).getCircleFullName());
+                String rootPathCircle=rootPath+circleFullName+"/";
                 List<AnonymousUsers> anonymousUsersListCircle = anonymousUsersDao.getAnonymousUsersCircle(fromDate,toDate,StReplace(circleDao.getByCircleId(circleId).getCircleName()));
                 getCircleWiseAnonymousUsers(anonymousUsersListCircle, rootPathCircle, circleName, toDate);
             }
@@ -1264,14 +1265,15 @@ public class AdminServiceImpl implements AdminService {
         getCircleWiseAnonymousUsers(anonymousUsersList, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
         for (Circle circle : circleList) {
             String circleName = StReplace(circle.getCircleName());
-            String rootPathCircle=rootPath+circleName+"/";
+            String circleFullName = StReplace(circle.getCircleFullName());
+            String rootPathCircle=rootPath+circleFullName+"/";
             List<AnonymousUsers> anonymousUsersListCircle = new ArrayList<>();
             for(AnonymousUsers anonymousUser : anonymousUsersList){
                 if(anonymousUser.getCircleName().equalsIgnoreCase(circleName)){
                     anonymousUsersListCircle.add(anonymousUser);
                 }
             }
-            getCircleWiseAnonymousUsers(anonymousUsersListCircle, rootPathCircle, circleName, toDate);
+            getCircleWiseAnonymousUsers(anonymousUsersListCircle, rootPathCircle, circleFullName, toDate);
         }
     }
 

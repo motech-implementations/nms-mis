@@ -155,6 +155,16 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
+    public List<State> getStatesOfCircle(Circle circle) {
+        List<StateCircle> stateCircleList = stateCircleDao.getRelByCircleId(circle.getCircleId());
+        List<State> states = new ArrayList<>();
+        for(StateCircle stateCircle: stateCircleList){
+            states.add(stateDao.findByStateId(stateCircle.getStateId()));
+        }
+        return states;
+    }
+
+    @Override
     public List<CircleDto> getCircleObjectList(User user, String serviceType){
         List<StateCircle> list = new ArrayList<>();
         if(user.getAccessLevel().equalsIgnoreCase(AccessLevel.NATIONAL.getAccessLevel())){

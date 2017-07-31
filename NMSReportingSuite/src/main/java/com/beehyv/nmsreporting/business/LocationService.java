@@ -60,6 +60,8 @@ public interface LocationService {
 
     List<Circle> getAllCirles();
 
+    List<State> getStatesOfCircle(Circle circle);
+
     List<CircleDto> getCircleObjectList(User user, String serviceType);
 
 
