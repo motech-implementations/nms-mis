@@ -9,6 +9,9 @@ import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.*;
 import com.beehyv.nmsreporting.utils.*;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.util.CellUtil;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -809,6 +812,9 @@ public class AdminServiceImpl implements AdminService {
                 "SMS Sent Notification"
         });
         Integer counter = 2;
+        if(successfulCandidates.isEmpty()) {
+            empinfo.put(counter.toString(), new Object[]{"No Data Available"});
+        }
         for (MACourseFirstCompletion maCourseFirstCompletion : successfulCandidates) {
             empinfo.put((counter.toString()), new Object[]{
                     (maCourseFirstCompletion.getMsisdn() == null) ? "No Phone":maCourseFirstCompletion.getMsisdn(),
@@ -838,6 +844,10 @@ public class AdminServiceImpl implements AdminService {
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
                 cell.setCellValue(obj.toString());
+                if(rowid == 2 && successfulCandidates.isEmpty()){
+                    CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
+                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A2:N2"));
+                }
             }
         }
         //Write the workbook in file system
@@ -875,6 +885,9 @@ public class AdminServiceImpl implements AdminService {
                 "Last Called Date"
         });
         Integer counter = 2;
+        if(anonymousUsersList.isEmpty()) {
+            empinfo.put(counter.toString(), new Object[]{"No Data Available"});
+        }
         for (AnonymousUsers anonymousUser : anonymousUsersList) {
             empinfo.put((counter.toString()), new Object[]{
                     anonymousUser.getCircleName(),
@@ -892,6 +905,10 @@ public class AdminServiceImpl implements AdminService {
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
                 cell.setCellValue(obj.toString());
+                if(rowid==2 && anonymousUsersList.isEmpty()) {
+                    CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
+                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A2:C2"));
+                }
             }
         }
         //Write the workbook in file system
@@ -939,6 +956,9 @@ public class AdminServiceImpl implements AdminService {
                 "ASHA Job Status"
         });
         Integer counter = 2;
+        if(inactiveCandidates.isEmpty()) {
+            empinfo.put(counter.toString(),new Object[]{"No Data Available"});
+        }
         for (FrontLineWorkers frontLineWorker : inactiveCandidates) {
             empinfo.put((counter.toString()), new Object[]{
                     (frontLineWorker.getMobileNumber() == null) ? "No Phone":frontLineWorker.getMobileNumber(),
@@ -965,6 +985,10 @@ public class AdminServiceImpl implements AdminService {
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
                 cell.setCellValue(obj.toString());
+                if(rowid==2 && inactiveCandidates.isEmpty()) {
+                    CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
+                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A2:L2"));
+                }
             }
         }
         //Write the workbook in file system
@@ -1010,6 +1034,9 @@ public class AdminServiceImpl implements AdminService {
                 "Mobile Number",
                 "Age On Service In Weeks"});
         Integer counter = 2;
+        if(kilkariSixWeeksNoAnswersList.isEmpty()) {
+            empinfo.put(counter.toString(), new Object[]{"No Data Available"});
+        }
         for (KilkariSixWeeksNoAnswer kilkari : kilkariSixWeeksNoAnswersList) {
             empinfo.put((counter.toString()), new Object[]{
                     (kilkari.getStateId() == null) ? "No State" : stateDao.findByStateId(kilkari.getStateId()).getStateName(),
@@ -1037,6 +1064,10 @@ public class AdminServiceImpl implements AdminService {
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
                 cell.setCellValue(obj.toString());
+                if(rowid==2 && kilkariSixWeeksNoAnswersList.isEmpty()) {
+                    CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
+                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A2:L2"));
+                }
             }
         }
         //Write the workbook in file system
@@ -1086,6 +1117,9 @@ public class AdminServiceImpl implements AdminService {
                 "Number of calls answered when subscribed to Kilkari"
         });
         Integer counter = 2;
+        if(kilkariSelfDeactivatedList.isEmpty()) {
+            empinfo.put(counter.toString(), new Object[]{"No Data Available Available"});
+        }
         for (KilkariSelfDeactivated kilkari : kilkariSelfDeactivatedList) {
             empinfo.put((counter.toString()), new Object[]{
                     (kilkari.getStateId() == null) ? "No State" : stateDao.findByStateId(kilkari.getStateId()).getStateName(),
@@ -1116,6 +1150,10 @@ public class AdminServiceImpl implements AdminService {
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
                 cell.setCellValue(obj.toString());
+                if(rowid==2 && kilkariSelfDeactivatedList.isEmpty()) {
+                    CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
+                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A2:O2"));
+                }
             }
         }
         //Write the workbook in file system
@@ -1162,6 +1200,9 @@ public class AdminServiceImpl implements AdminService {
                 "Age On Service In Weeks"
         });
         Integer counter = 2;
+        if(kilkariLowUsageList.isEmpty()) {
+            empinfo.put(counter.toString(),new Object[]{"No Data Available"});
+        }
         for (KilkariLowUsage kilkari : kilkariLowUsageList) {
             empinfo.put((counter.toString()), new Object[]{
                     (kilkari.getStateId() == null) ? "No State" : stateDao.findByStateId(kilkari.getStateId()).getStateName(),
@@ -1188,6 +1229,10 @@ public class AdminServiceImpl implements AdminService {
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
                 cell.setCellValue(obj.toString());
+                if(rowid==2 && kilkariLowUsageList.isEmpty()) {
+                    CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
+                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A2:L2"));
+                }
             }
         }
         //Write the workbook in file system
