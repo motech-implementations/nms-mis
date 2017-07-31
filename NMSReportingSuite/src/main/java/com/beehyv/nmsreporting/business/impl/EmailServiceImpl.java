@@ -88,9 +88,63 @@ public class EmailServiceImpl implements EmailService{
     @Override
     public String getBody(String reportName,String place, String monthAndYear, String name) {
         String body = "";
-        body+= "Dear "+name+ ",\n \n";
-        body+= "This is the "+reportName+" Report of "+place+" for the month "+monthAndYear+ ".\n \n";
+        body+= "Dear "+name+",\n\n";
+        /*body+= "This is the "+reportName+" Report of "+place+" for the month "+monthAndYear+ ".\n \n";
         body+= "Thank You.\n";
+        body+= "NSP Support Team \n \n \n";
+        body+= "P.S: This an auto-generated email. Please do not reply";*/
+        if(reportName.equalsIgnoreCase(ReportType.maCourse.getReportName())) {
+            body+="\tPlease find attached the list of ASHAs who have completed the Mobile Academy course.\n\n" +
+                    "This is for your information.\n\n";
+        }
+        else if(reportName.equalsIgnoreCase(ReportType.maAnonymous.getReportName())) {
+            body+="\tPlease find attached the list of anonymous callers to the Mobile Academy course from the telecom " +
+                    "circle of your state. We presume that these numbers are used by ASHAs working in your state but " +
+                    "have not been registered in RCH Application. Please contact these numbers and if they belong " +
+                    "to a registered ASHA in your state then please tell them to either use their registered number " +
+                    "to access the Mobile Academy course or register their correct numbers in the RCH Application so " +
+                    "that they can access the Mobile Academy course.\n\n" +
+                    "This is for your information.\n\n";
+        }
+        else if(reportName.equalsIgnoreCase(ReportType.maInactive.getReportName())) {
+            body+="\tPlease find attached the list of ASHAs who have not yet started the Mobile Academy course.\n\n" +
+                    "\tYou are requested to kindly instruct your field level workers and ask them to start accessing " +
+                    "the Mobile Academy course and complete the course which has been designed to provide effective " +
+                    "training for their operations.\n\n";
+        } else if(reportName.equalsIgnoreCase(ReportType.lowUsage.getReportName())) {
+            body+="\tPlease find attached the List of Beneficiaries who are listening to less than 25% of content in " +
+                    "the last calendar month in the Kilkari system\n\n" +
+                    "\tYou are requested to kindly instruct your field level workers to contact the beneficiaries " +
+                    "personally and ask them to listen to the Kilkari content for the complete duration of 90 secs. " +
+                    "These Kilkari messages contains valuable information on the best practices of health, nutrition " +
+                    "and immunizations that they need to follow during their pregnancy period and child care.\n\n";
+        } else if(reportName.equalsIgnoreCase(ReportType.selfDeactivated.getReportName())) {
+            body+="\tPlease find attached the List of Beneficiaries who have deactivated themselves from the Kilkari " +
+                    "system.\n\n" +
+                    "\tYou are requested to kindly instruct your field level workers to contact the beneficiaries " +
+                    "personally and understand why they have deactivated from the system. If the mobile number belongs " +
+                    "to the correct beneficiary then they should be motivated to reactivate their Kilkari Subscription" +
+                    " and listen to the Kilkari content for the complete duration of 90 secs. If the mobile number " +
+                    "does not belong to the correct beneficiary then ask them to provide their mobile numbers through " +
+                    "which they could receive the Kilkari messages and update those mobile numbers in the RCH " +
+                    "application. These Kilkari messages contains valuable information on the best practices of health," +
+                    " nutrition and immunizations that they need to follow during their pregnancy period and child " +
+                    "care.\n\n";
+
+        } else if(reportName.equalsIgnoreCase(ReportType.sixWeeks.getReportName())) {
+            body+="\tPlease find attached the following files:\n" +
+                    "\tList of Beneficiaries deactivated for not answering any Kilkari calls for 6 consecutive weeks\n\n" +
+                    "You are requested to kindly instruct your field level workers to contact the beneficiaries " +
+                    "personally and understand why they are not listening to the Kilkari calls. If the mobile number " +
+                    "belongs to the correct beneficiary then they should be motivated to reactivate their Kilkari " +
+                    "Subscription and listen to the Kilkari content for the complete duration of 90 secs." +
+                    " If the mobile number does not belong to the correct beneficiary then ask them to provide their" +
+                    " mobile numbers through which they could receive the Kilkari messages and update those mobile" +
+                    " numbers in the RCH application. These Kilkari messages contains valuable information on the " +
+                    "best practices of health, nutrition and immunizations that they need to follow during their " +
+                    "pregnancy period and child care.\n\n";
+        }
+        body+="Regards\n";
         body+= "NSP Support Team \n \n \n";
         body+= "P.S: This an auto-generated email. Please do not reply";
         return body;
