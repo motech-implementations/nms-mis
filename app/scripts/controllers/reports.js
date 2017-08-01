@@ -375,6 +375,7 @@
 					$scope.status = result.data.status;
 					if($scope.status == 'success'){
 						$scope.fileName = result.data.file;
+						$scope.pathName = result.data.path;
 						angular.element('#downloadReportLink').trigger('click');
 					}
 					if($scope.status == 'fail'){
@@ -384,7 +385,11 @@
 			}
 
 			$scope.getReportUrl = backend_root + 'nms/user/getReport';
-			$scope.downloadReportUrl = backend_root + 'nms/user/downloadReport',
+			$scope.$watch('pathName', function(){
+			    $scope.downloadReportUrl = backend_root + 'nms/user/downloadReport?fileName='+
+            			        $scope.fileName+'&rootPath='+$scope.pathName;
+			})
+
 
 			$scope.clearFile = function(){
 				$scope.status = "";

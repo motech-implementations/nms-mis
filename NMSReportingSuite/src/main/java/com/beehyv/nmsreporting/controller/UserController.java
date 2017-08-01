@@ -17,9 +17,12 @@ import org.springframework.expression.ParseException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.QueryParam;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -306,7 +309,8 @@ public class UserController {
     @RequestMapping(value = "/getReport", method = RequestMethod.POST/*,produces = "application/vnd.ms-excel"*/)
     @ResponseBody
     public Map<String, String> getReport(@RequestBody ReportRequest reportRequest/*,HttpServletResponse response*/) throws ParseException, java.text.ParseException{
-
+        String reportPath = "";
+        String reportName = "";
         String rootPath = "";
         String place = AccessLevel.NATIONAL.getAccessLevel();
 
@@ -360,32 +364,31 @@ public class UserController {
        reportPath = reports+reportRequest.getReportType()+"/"+rootPath;
        reportName = filename;
 
-       rootPath = reportPath + reportName;
-
-       File file=new File(rootPath);
+       File file=new File(reportPath + reportName);
        if(!(file.exists())){
            adminService.createSpecificReport(reportRequest);
        }
 
-
        m.put("status", "success");
        m.put("file", reportName);
+       m.put("path", reportRequest.getReportType()+"/"+rootPath);
        return m;
     }
 
-    private String reportPath = "";
-    private String reportName = "";
 
     @RequestMapping(value = "/downloadReport", method = RequestMethod.GET,produces = "application/vnd.ms-excel")
     @ResponseBody
-    public String getBulkDataImportCSV(HttpServletResponse response) throws ParseException, java.text.ParseException {
+    public String getBulkDataImportCSV(HttpServletResponse response, @DefaultValue("") @QueryParam("fileName") String fileName,
+                                       @DefaultValue("") @QueryParam("rootPath") String rootPath) throws ParseException, java.text.ParseException {
 //        adminService.getBulkDataImportCSV();
         response.setContentType("APPLICATION/OCTECT-STREAM");
-        if (reportPath.length() == 0 || reportName.length() == 0) {
-            reportName = "";
-            reportPath = "";
+        if (StringUtils.isEmpty(fileName) || StringUtils.isEmpty(rootPath)) {
+            fileName = "";
+            rootPath = "";
             return "fail";
         }
+        String reportName=fileName;
+        String reportPath=reports+rootPath;
         try {
             PrintWriter out = response.getWriter();
             String filename = reportName;
@@ -400,8 +403,6 @@ public class UserController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        reportName = "";
-        reportPath = "";
         return "success";
     }
 
