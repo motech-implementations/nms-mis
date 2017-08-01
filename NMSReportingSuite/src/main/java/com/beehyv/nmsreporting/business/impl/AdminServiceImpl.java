@@ -814,7 +814,7 @@ public class AdminServiceImpl implements AdminService {
         });
         Integer counter = 2;
         if(successfulCandidates.isEmpty()) {
-            empinfo.put(counter.toString(), new Object[]{"No Data Available"});
+            empinfo.put(counter.toString(), new Object[]{"No Records to display"});
         }
         for (MACourseFirstCompletion maCourseFirstCompletion : successfulCandidates) {
             empinfo.put((counter.toString()), new Object[]{
@@ -887,7 +887,7 @@ public class AdminServiceImpl implements AdminService {
         });
         Integer counter = 2;
         if(anonymousUsersList.isEmpty()) {
-            empinfo.put(counter.toString(), new Object[]{"No Data Available"});
+            empinfo.put(counter.toString(), new Object[]{"No Records to display"});
         }
         for (AnonymousUsers anonymousUser : anonymousUsersList) {
             empinfo.put((counter.toString()), new Object[]{
@@ -958,7 +958,7 @@ public class AdminServiceImpl implements AdminService {
         });
         Integer counter = 2;
         if(inactiveCandidates.isEmpty()) {
-            empinfo.put(counter.toString(),new Object[]{"No Data Available"});
+            empinfo.put(counter.toString(),new Object[]{"No Records to display"});
         }
         for (FrontLineWorkers frontLineWorker : inactiveCandidates) {
             empinfo.put((counter.toString()), new Object[]{
@@ -1036,7 +1036,7 @@ public class AdminServiceImpl implements AdminService {
                 "Age On Service In Weeks"});
         Integer counter = 2;
         if(kilkariSixWeeksNoAnswersList.isEmpty()) {
-            empinfo.put(counter.toString(), new Object[]{"No Data Available"});
+            empinfo.put(counter.toString(), new Object[]{"No Records to display"});
         }
         for (KilkariSixWeeksNoAnswer kilkari : kilkariSixWeeksNoAnswersList) {
             empinfo.put((counter.toString()), new Object[]{
@@ -1119,7 +1119,7 @@ public class AdminServiceImpl implements AdminService {
         });
         Integer counter = 2;
         if(kilkariSelfDeactivatedList.isEmpty()) {
-            empinfo.put(counter.toString(), new Object[]{"No Data Available Available"});
+            empinfo.put(counter.toString(), new Object[]{"No Records to display"});
         }
         for (KilkariSelfDeactivated kilkari : kilkariSelfDeactivatedList) {
             empinfo.put((counter.toString()), new Object[]{
@@ -1202,7 +1202,7 @@ public class AdminServiceImpl implements AdminService {
         });
         Integer counter = 2;
         if(kilkariLowUsageList.isEmpty()) {
-            empinfo.put(counter.toString(),new Object[]{"No Data Available"});
+            empinfo.put(counter.toString(),new Object[]{"No Records to display"});
         }
         for (KilkariLowUsage kilkari : kilkariLowUsageList) {
             empinfo.put((counter.toString()), new Object[]{

@@ -40,7 +40,7 @@ public class AutoReportEmailGeneration {
 
         Date startDate=new Date(0);
         /*adminService.getCircleWiseAnonymousFiles(fromDate,toDate);*/
-        System.out.println(fromDate+"tooo"+toDate);
+        System.out.println("Report generation started");
         adminService.createFiles(maCourse.getReportType());
         adminService.createFolders(ReportType.maAnonymous.getReportType());
         adminService.createFiles(ReportType.maInactive.getReportType());
@@ -49,37 +49,62 @@ public class AutoReportEmailGeneration {
         adminService.createFiles(ReportType.sixWeeks.getReportType());
 
         adminService.getCircleWiseAnonymousFiles(fromDate,toDate);
+        System.out.println("MA_Anonymous reports generated");
         adminService.getCumulativeCourseCompletionFiles(toDate);
+        System.out.println("MA_Course_Completion reports generated");
         adminService.getCumulativeInactiveFiles(toDate);
+        System.out.println("MA_Inactive reports generated");
         adminService.getKilkariSixWeekNoAnswerFiles(fromDate,toDate);
+        System.out.println("KilkariSixWeekNoAnswer reports generated");
         adminService.getKilkariSelfDeactivationFiles(fromDate,toDate);
+        System.out.println("KilkariSelfDeactivation reports generated");
         adminService.getKilkariLowUsageFiles(fromDate,toDate);
+        System.out.println("KilkariLowUsage reports generated");
+        System.out.println("Report generation done");
 
         return true;
     }
 
     public HashMap sendFirstMail() {
-        return emailService.sendAllMails(ReportType.maAnonymous);
+        HashMap reports = emailService.sendAllMails(ReportType.maAnonymous);
+        System.out.println("MA_Anonymous: ");
+        System.out.println(reports.toString());
+        return reports;
     }
 
     public HashMap sendSecondMail() {
-        return emailService.sendAllMails(ReportType.maCourse);
+        HashMap reports = emailService.sendAllMails(ReportType.maCourse);
+        System.out.println("MA_Course: ");
+        System.out.println(reports.toString());
+        return reports;
     }
 
     public HashMap sendThirdMail() {
-        return emailService.sendAllMails(ReportType.maInactive);
+        HashMap reports = emailService.sendAllMails(ReportType.maInactive);
+        System.out.println("MA_Inactive: ");
+        System.out.println(reports.toString());
+        return reports;
     }
 
     public HashMap sendFourthMail() {
-        return emailService.sendAllMails(ReportType.sixWeeks);
+        HashMap reports = emailService.sendAllMails(ReportType.sixWeeks);
+        System.out.println("Kilkari_SixWeeks: ");
+        System.out.println(reports.toString());
+        return reports;
     }
 
     public HashMap sendFifthMail() {
-        return emailService.sendAllMails(ReportType.selfDeactivated);
+        HashMap reports = emailService.sendAllMails(ReportType.selfDeactivated);
+        System.out.println("Kilkari_SelfDeactivated: ");
+        System.out.println(reports.toString());
+        return reports;
     }
 
     public HashMap sendSixthMail() {
-        return emailService.sendAllMails(ReportType.lowUsage);
+        HashMap reports = emailService.sendAllMails(ReportType.lowUsage);
+        System.out.println("Kilkari_LowUsage: ");
+        System.out.println(reports.toString());
+        return reports;
     }
 
     public void test(){

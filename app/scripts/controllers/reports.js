@@ -128,7 +128,7 @@
 			}
 
 			$scope.isCircleReport = function(){
-				return $scope.report != null && $scope.report.reportEnum == 'MAAnonymousUsers';
+				return $scope.report != null && $scope.report.reportEnum == 'MA_Anonymous_Users';
 			}
 
 			
@@ -222,10 +222,10 @@
 				if($scope.report != null && $scope.report.service == 'M'){
 					minDate = new Date(2015, 10, 01);
 				}
-				if($scope.report != null && $scope.report.reportEnum == 'MACumulativeInactiveUsers'){
+				if($scope.report != null && $scope.report.reportEnum == 'MA_Cumulative_Inactive_Users'){
                 	minDate = new Date(2017, 04, 30);
                 }
-                if($scope.report != null && $scope.report.reportEnum == 'MAAnonymousUsers'){
+                if($scope.report != null && $scope.report.reportEnum == 'MA_Anonymous_Users'){
                     minDate = new Date(2017, 04, 30);
                 }
 //                var minDate = $scope.report.minDate;
@@ -246,7 +246,7 @@
 					minMode: 'month',
 					dateDisabled: disabled,
 					formatYear: 'yy',
-					maxDate: new Date().setMonth(new Date().getMonth()-1),
+					maxDate: new Date(new Date().getFullYear(), new Date().getMonth()-1, 1),
 					minDate: minDate,
 					startingDay: 1
 				};
