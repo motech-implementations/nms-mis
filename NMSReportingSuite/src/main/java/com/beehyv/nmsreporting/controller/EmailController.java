@@ -55,9 +55,9 @@ public class EmailController {
         c.set(Calendar.DATE, 1);
         String fileName = mailInfo.getFileName();
         String pathName = System.getProperty("user.home") + File.separator;
-        newMail.setSubject("Mobile Academy "+fileName);
+        newMail.setSubject(mailInfo.getSubject());
         newMail.setFileName(fileName);
-        newMail.setBody(emailService.getBody("Mobile Academy CumulativeInactiveUsers","ODISHA",reportService.getMonthName(c.getTime()),"OdishaNHM"));
+        newMail.setBody(mailInfo.getBody());
         newMail.setRootPath(pathName+fileName);
         return emailService.sendMail(newMail);
     }

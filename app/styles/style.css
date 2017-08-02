@@ -112,6 +112,44 @@ div.nav-bar .nav-menu li.active a{
 	color: #ffffff;
 }
 
+div ul.sundays-list{
+    position: absolute;
+    top: 90%;
+    left: 0;
+    z-index: 1000;
+    float: left;
+    min-width: 60px;
+    left: 278px;
+    list-style-type: none;
+    border: 1px solid #bfcbcf;
+    background-color: #ffffff;
+    border-radius:4px;
+    padding:0px 0;
+
+}
+
+div ul li.sunday-list-items{
+    height:35px;
+    text-align:center;
+    border-bottom:1px solid grey;
+    color: #b08a89;
+    vertical-align:center
+}
+
+div ul li.sunday-list-items p{
+     padding:5px
+}
+
+div ul li.sunday-list-header{
+    height: 30px;
+    text-align:center;
+    border-bottom:1px solid grey;
+    color: #ffffff;
+    background: #31b0d5;
+    padding:5px;
+}
+
+
 
 div.login .login-header{
 	min-height: 60px;
