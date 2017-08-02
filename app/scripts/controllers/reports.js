@@ -228,6 +228,9 @@
                 if($scope.report != null && $scope.report.reportEnum == 'MA_Anonymous_Users'){
                     minDate = new Date(2017, 04, 30);
                 }
+                if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Low_Usage'){
+                    minDate = new Date(2017, 03, 30);
+                }
 //                var minDate = $scope.report.minDate;
 //                console.log(minDate);
 				if(!$scope.isCircleReport() && $scope.state != null && Date.parse($scope.state.serviceStartDate) > minDate){
