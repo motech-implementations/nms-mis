@@ -730,7 +730,7 @@ public class UserServiceImpl implements UserService{
             modificationTrackerDao.saveModification(modificationTracker);
         }
 
-        if(!oldUser.getStateId().equals(newUser.getStateId())){
+        if(oldUser.getStateId() != null && newUser.getStateId() != null && !oldUser.getStateId().equals(newUser.getStateId())){
             ModificationTracker modificationTracker=new ModificationTracker();
             modificationTracker.setModifiedField("state");
             modificationTracker.setModificationDate(new Date());
@@ -742,7 +742,7 @@ public class UserServiceImpl implements UserService{
             modificationTrackerDao.saveModification(modificationTracker);
         }
 
-        if(!oldUser.getDistrictId().equals(newUser.getDistrictId())){
+        if(oldUser.getDistrictId() != null && oldUser.getDistrictId() != null && !oldUser.getDistrictId().equals(newUser.getDistrictId())){
             ModificationTracker modificationTracker=new ModificationTracker();
             modificationTracker.setModifiedField("district");
             modificationTracker.setModificationDate(new Date());
@@ -754,7 +754,7 @@ public class UserServiceImpl implements UserService{
             modificationTrackerDao.saveModification(modificationTracker);
         }
 
-        if(!oldUser.getBlockId().equals(newUser.getBlockId())){
+        if( oldUser.getBlockId()!=null && newUser.getBlockId()!=null && !oldUser.getBlockId().equals(newUser.getBlockId())){
             ModificationTracker modificationTracker=new ModificationTracker();
             modificationTracker.setModifiedField("healthblock");
             modificationTracker.setModificationDate(new Date());

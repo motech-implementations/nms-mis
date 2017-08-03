@@ -39,9 +39,9 @@ public class EmailController {
 //        return "AttachEmailInput";
 //    }
 
-    @RequestMapping(value = "/sendAll/{reportType}", method = RequestMethod.GET)
-    public @ResponseBody HashMap sendAllMails(@PathVariable String reportName){
-        ReportType reportType = reportService.getReportTypeByName(reportName);
+    @RequestMapping(value = "/sendAll/{reportEnum}", method = RequestMethod.GET)
+    public @ResponseBody HashMap sendAllMails(@PathVariable String reportEnum){
+        ReportType reportType = reportService.getReportTypeByName(reportEnum);
         return emailService.sendAllMails(reportType);
     }
 
