@@ -5,6 +5,7 @@ import com.beehyv.nmsreporting.dao.*;
 import com.beehyv.nmsreporting.entity.ReportRequest;
 import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.AccessType;
+import com.beehyv.nmsreporting.enums.ModificationType;
 import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.*;
 import com.beehyv.nmsreporting.utils.*;
@@ -83,6 +84,10 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private CircleDao circleDao;
+
+
+    @Autowired
+    private ModificationTrackerDao modificationTrackerDao;
 
     private final String documents = System.getProperty("user.home") +File.separator+ "Documents/";
     private final String reports = documents+"Reports/";
@@ -410,6 +415,13 @@ public class AdminServiceImpl implements AdminService {
                         user.setBlockName(user.getBlockId()==null ? "" :  blockDao.findByblockId(user.getBlockId()).getBlockName());
                         user.setRoleName(user.getRoleId()==null ? "" : roleDao.findByRoleId(user.getRoleId()).getRoleDescription());
                         userDao.saveUser(user);
+                        ModificationTracker modification = new ModificationTracker();
+                        modification.setModificationDate(new Date(System.currentTimeMillis()));
+                        modification.setModificationType(ModificationType.CREATE.getModificationType());
+                        modification.setModifiedUserId(userDao.findByUserName(user.getUsername()).getUserId());
+                        modification.setModifiedByUserId(loggedInUser.getUserId());
+                        modificationTrackerDao.saveModification(modification);
+
                     }
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();

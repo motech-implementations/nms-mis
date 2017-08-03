@@ -2,11 +2,14 @@ package com.beehyv.nmsreporting.controller;
 
 import com.beehyv.nmsreporting.business.AdminService;
 import com.beehyv.nmsreporting.business.LocationService;
+import com.beehyv.nmsreporting.business.ModificationTrackerService;
 import com.beehyv.nmsreporting.business.UserService;
 import com.beehyv.nmsreporting.dao.StateServiceDao;
 import com.beehyv.nmsreporting.entity.PasswordDto;
 import com.beehyv.nmsreporting.enums.AccessLevel;
+import com.beehyv.nmsreporting.enums.ModificationType;
 import com.beehyv.nmsreporting.enums.ReportType;
+import com.beehyv.nmsreporting.model.ModificationTracker;
 import com.beehyv.nmsreporting.model.State;
 import com.beehyv.nmsreporting.model.User;
 
@@ -41,6 +44,9 @@ public class AdminController {
 
     @Autowired
     private StateServiceDao stateServiceDao;
+
+    @Autowired
+    private ModificationTrackerService modificationTrackerService;
 
     private final String documents = System.getProperty("user.home") +File.separator+ "Documents/";
     private final String reports = documents+"Reports/";
@@ -133,11 +139,21 @@ public class AdminController {
 //        modification.setModificationType(ModificationType.UPDATE.getModificationType());
 //        modification.setModifiedByUserId(userService.findUserByUsername(getPrincipal()));
 //        modification.setModifiedUserId(user);
-//        modification.setModificationDescription(trackModification);
+//        modification.setModifiedField(trackModification);
 //        modificationTrackerService.saveModification(modification);
 
 //        return "redirect:http://localhost:8080/app/#!/";
-        return userService.updatePassword(passwordDto);
+        Map<Integer, String> map= userService.updatePassword(passwordDto);
+        if(map.get(0).equals("Password changed successfully")){
+            ModificationTracker modification = new ModificationTracker();
+            modification.setModificationDate(new Date(System.currentTimeMillis()));
+            modification.setModificationType(ModificationType.UPDATE.getModificationType());
+            modification.setModifiedUserId(passwordDto.getUserId());
+            modification.setModifiedField("password");
+            modification.setModifiedByUserId(userService.getCurrentUser().getUserId());
+            modificationTrackerService.saveModification(modification);
+        }
+        return map;
     }
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     @ResponseBody
