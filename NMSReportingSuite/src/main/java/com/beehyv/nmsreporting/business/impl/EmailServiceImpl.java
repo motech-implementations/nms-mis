@@ -244,21 +244,26 @@ public class EmailServiceImpl implements EmailService{
                         newMail.setFileName(fileName);
                         newMail.setBody(this.getBody(reportType.getReportName(),place,reportService.getMonthName(c.getTime()),user.getFullName()));
                         newMail.setRootPath(pathName);
-                        if(user.getDistrictId() != null)
+                        if(user.getDistrictId() != null) {
                             errorMessage = this.sendMail(newMail);
+                            EmailTracker emailTracker = new EmailTracker();
+                            emailTracker.setEmailSuccessful(true);
+                            emailTracker.setFileName(fileName);
+                            emailTracker.setReportType(reportType.getReportName());
+                            emailTracker.setTime(new Date());
+                            emailTracker.setUserId(user.getUserId());
+                            if (errorMessage.equalsIgnoreCase("failure")) {
+                                emailTracker.setEmailSuccessful(false);
+                            }
+                            emailTrackerService.saveEmailDeatils(emailTracker);
+                        }
                         else
                             errorMessage = "success";
-                        EmailTracker emailTracker=new EmailTracker();
-                        emailTracker.setEmailSuccessful(true);
+
                         if (errorMessage.equalsIgnoreCase("failure")) {
                             errorSendingMail.put(user.getUsername(), fileName);
-                            emailTracker.setEmailSuccessful(false);
                         }
-                        emailTracker.setFileName(fileName);
-                        emailTracker.setReportType(reportType.getReportName());
-                        emailTracker.setTime(new Date());
-                        emailTracker.setUserId(user.getUserId());
-                        emailTrackerService.saveEmailDeatils(emailTracker);
+
                     }
 //            }
         }
