@@ -50,4 +50,6 @@ public interface UserService {
     Map<Integer, String> changePassword(PasswordDto changePasswordDTO);
 
     Role getRoleById(Integer roleId);
+
+    void TrackModifications(User oldUser, User newUser);
 }

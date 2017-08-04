@@ -5,6 +5,7 @@ import com.beehyv.nmsreporting.dao.*;
 import com.beehyv.nmsreporting.entity.ReportRequest;
 import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.AccessType;
+import com.beehyv.nmsreporting.enums.ModificationType;
 import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.*;
 import com.beehyv.nmsreporting.utils.*;
@@ -84,6 +85,10 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private CircleDao circleDao;
 
+
+    @Autowired
+    private ModificationTrackerDao modificationTrackerDao;
+
     private final String documents = System.getProperty("user.home") +File.separator+ "Documents/";
     private final String reports = documents+"Reports/";
     private Calendar c =Calendar.getInstance();
@@ -118,7 +123,53 @@ public class AdminServiceImpl implements AdminService {
                         // use comma as separator
                         String[] Line = line.split(cvsSplitBy);
 
+                       /* List<Role> userRole = roleDao.findByRoleDescription(Line[7]);
+                        boolean isLevel = AccessLevel.isLevel(Line[7]);
+                        if (!(isLevel)) {
+                            Integer rowNum = lineNumber;
+                            String userNameError = "Please specify the access level for user";
+                            errorCreatingUsers.put(rowNum, userNameError);
+                            continue;
+                        }
+                        boolean isType = AccessType.isType(Line[8]);
+                        if (!(isType)) {
+                            Integer rowNum = lineNumber;
+                            String userNameError = "Please specify the role for user";
+                            errorCreatingUsers.put(rowNum, userNameError);
+                            continue;
+                        }
+                        if (userRole == null || userRole.size() == 0) {
+                            Integer rowNum = lineNumber;
+                            String userNameError = "Please specify the role of user";
+                            errorCreatingUsers.put(rowNum, userNameError);
+                            continue;
+                        }
+                        int userRoleId = userRole.get(0).getRoleId();
+                        String UserRole = AccessType.getType(Line[8]);
+                        AccessLevel accessLevel = AccessLevel.getLevel(Line[7]);
+
+                        if(stateDao.findByName(Line[1]).isEmpty()) {
+                            Integer rowNum = lineNumber;
+                            String userNameError = "Please specify valid state name";
+                            errorCreatingUsers.put(rowNum, userNameError);
+                            continue;
+                        }
+                        if(districtDao.findByName(Line[2]).isEmpty()){
+                            Integer rowNum = lineNumber;
+                            String userNameError = "Please specify the role of user";
+                            errorCreatingUsers.put(rowNum, userNameError);
+                            continue;
+                        }*/
                         User user = new User();
+                       /* user.setFullName(Line[0]);
+                        user.setStateId(stateDao.findByName(Line[1]).get(0).getStateId());
+                        user.setDistrictId(districtDao.findByName(Line[2]).get(0).getDistrictId());
+                        user.setBlockId(blockDao.findByName(Line[3]).get(0).getBlockId());
+                        user.setPhoneNumber(Line[4]);
+                        user.setEmailId(Line[5]);
+                        user.setUsername(Line[6]);
+                        user.setAccessLevel(accessLevel.getAccessLevel());
+                        user.setRoleId(userRoleId);*/
                         Role role;
                         State state;
                         String userName = Line[6];
@@ -179,7 +230,7 @@ public class AdminServiceImpl implements AdminService {
                             errorCreatingUsers.put(rowNum, userNameError);
                             continue;
                         }
-                        SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy");
+/*                        SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy");
                         Date date = null;
                         try {
                             date = sdf1.parse(Line[7]);
@@ -187,7 +238,7 @@ public class AdminServiceImpl implements AdminService {
                             e.printStackTrace();
                         }
                         java.sql.Date sqlStartDate = new java.sql.Date(date.getTime());
-                        user.setCreationDate((sqlStartDate));
+                        user.setCreationDate((sqlStartDate));*/
                         /*user.setCreatedByUser(loggedInUser);*/
                         List<Role> userRole = roleDao.findByRoleDescription(Line[7]);
                         String State = Line[1];
@@ -410,6 +461,13 @@ public class AdminServiceImpl implements AdminService {
                         user.setBlockName(user.getBlockId()==null ? "" :  blockDao.findByblockId(user.getBlockId()).getBlockName());
                         user.setRoleName(user.getRoleId()==null ? "" : roleDao.findByRoleId(user.getRoleId()).getRoleDescription());
                         userDao.saveUser(user);
+                        ModificationTracker modification = new ModificationTracker();
+                        modification.setModificationDate(new Date(System.currentTimeMillis()));
+                        modification.setModificationType(ModificationType.CREATE.getModificationType());
+                        modification.setModifiedUserId(userDao.findByUserName(user.getUsername()).getUserId());
+                        modification.setModifiedByUserId(loggedInUser.getUserId());
+                        modificationTrackerDao.saveModification(modification);
+
                     }
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();

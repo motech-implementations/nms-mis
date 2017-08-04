@@ -8,7 +8,9 @@ import com.beehyv.nmsreporting.entity.Report;
 import com.beehyv.nmsreporting.entity.ReportRequest;
 import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.AccessType;
+import com.beehyv.nmsreporting.enums.ModificationType;
 import com.beehyv.nmsreporting.enums.ReportType;
+import com.beehyv.nmsreporting.model.ModificationTracker;
 import com.beehyv.nmsreporting.model.Role;
 import com.beehyv.nmsreporting.model.State;
 import com.beehyv.nmsreporting.model.User;
@@ -124,6 +126,7 @@ public class UserController {
     public @ResponseBody Boolean isLoggedIn() {
         return userService.getCurrentUser() != null;
     }
+
     @RequestMapping(value={"/isAdminLoggedIn"})
     public @ResponseBody Boolean isAdminLoggedIn() {
         User currentUser = userService.getCurrentUser();
@@ -216,68 +219,81 @@ public class UserController {
     @RequestMapping(value = {"/createUser"}, method = RequestMethod.POST)
     @ResponseBody public Map<Integer, String> createNewUser(@RequestBody User user) {
 
-//        ModificationTracker modification = new ModificationTracker();
-//        modification.setModificationDate(new Date(System.currentTimeMillis()));
-//        modification.setModificationDescription("Account creation");
-//        modification.setModificationType(ModificationType.CREATE.getModificationType());
-//        modification.setModifiedUserId(user);
-//        modification.setModifiedByUserId(userService.findUserByUsername(getPrincipal()));
-//        modificationTrackerService.saveModification(modification);
         user = locationService.SetLocations(user);
-        return userService.createNewUser(user);
+        Map<Integer,String> map = userService.createNewUser(user);
+        if(map.get(0).equals("User Created")){
+            ModificationTracker modification = new ModificationTracker();
+            modification.setModificationDate(new Date(System.currentTimeMillis()));
+            modification.setModificationType(ModificationType.CREATE.getModificationType());
+            modification.setModifiedUserId(userService.findUserByUsername(user.getUsername()).getUserId());
+            modification.setModifiedByUserId(userService.getCurrentUser().getUserId());
+            modificationTrackerService.saveModification(modification);
+        }
+        return map;
     }
 
     @RequestMapping(value = {"/updateUser"}, method = RequestMethod.POST)
     @ResponseBody public Map updateExistingUser(@RequestBody User user) {
 
-//        String trackModification = mapper.convertValue(node.get("modification"), String.class);
-//
-//        ModificationTracker modification = new ModificationTracker();
-//        modification.setModificationDate(new Date(System.currentTimeMillis()));
-//        modification.setModificationType(ModificationType.UPDATE.getModificationType());
-//        modification.setModifiedByUserId(userService.findUserByUsername(getPrincipal()));
-//        modification.setModifiedUserId(user);
-//        modification.setModificationDescription(trackModification);
-//        modificationTrackerService.saveModification(modification);
-
-//        return "redirect:http://localhost:8080/app/#!/";
         user = locationService.SetLocations(user);
-        return userService.updateExistingUser(user);
+        User oldUser = userService.findUserByUserId(user.getUserId());
+        Map<Integer,String> map = userService.updateExistingUser(user);
+        if(map.get(0).equals("User Updated")){
+            userService.TrackModifications(oldUser, user);
+        }
+        return map;
     }
 
     @RequestMapping(value = {"/updateContacts"}, method = RequestMethod.POST)
     @ResponseBody public Map updateContacts(@RequestBody ContactInfo contactInfo) {
+        User user=userService.findUserByUserId(contactInfo.getUserId());
+        Map<Integer, String> map=userService.updateContacts(contactInfo);
+        if(map.get(0).equals("Contacts Updated")){
+            TrackContactInfoModifications(user, contactInfo);
+        }
+        return map;
+    }
 
-//        String trackModification = mapper.convertValue(node.get("modification"), String.class);
-//
-//        ModificationTracker modification = new ModificationTracker();
-//        modification.setModificationDate(new Date(System.currentTimeMillis()));
-//        modification.setModificationType(ModificationType.UPDATE.getModificationType());
-//        modification.setModifiedByUserId(userService.findUserByUsername(getPrincipal()));
-//        modification.setModifiedUserId(user);
-//        modification.setModificationDescription(trackModification);
-//        modificationTrackerService.saveModification(modification);
-
-//        return "redirect:http://localhost:8080/app/#!/";
-
-        return userService.updateContacts(contactInfo);
+    private void TrackContactInfoModifications(User oldUser, ContactInfo contactInfo) {
+        if(!oldUser.getEmailId().equals(contactInfo.getEmail())) {
+            ModificationTracker modification = new ModificationTracker();
+            modification.setModificationDate(new Date(System.currentTimeMillis()));
+            modification.setModificationType(ModificationType.UPDATE.getModificationType());
+            modification.setModifiedField("email_id");
+            modification.setPreviousValue(oldUser.getEmailId());
+            modification.setNewValue(contactInfo.getEmail());
+            modification.setModifiedUserId(oldUser.getUserId());
+            modification.setModifiedByUserId(userService.getCurrentUser().getUserId());
+            modificationTrackerService.saveModification(modification);
+        }
+        if(!oldUser.getPhoneNumber().equals(contactInfo.getPhoneNumber())){
+            ModificationTracker modification = new ModificationTracker();
+            modification.setModificationDate(new Date(System.currentTimeMillis()));
+            modification.setModificationType(ModificationType.UPDATE.getModificationType());
+            modification.setModifiedField("phone_no");
+            modification.setPreviousValue(oldUser.getPhoneNumber());
+            modification.setNewValue(contactInfo.getPhoneNumber());
+            modification.setModifiedUserId(oldUser.getUserId());
+            modification.setModifiedByUserId(userService.getCurrentUser().getUserId());
+            modificationTrackerService.saveModification(modification);
+        }
     }
 
     @RequestMapping(value = {"/resetPassword"}, method = RequestMethod.POST)
     @ResponseBody public Map resetPassword(@RequestBody PasswordDto passwordDto){
-        //        String trackModification = mapper.convertValue(node.get("modification"), String.class);
-//
-//        ModificationTracker modification = new ModificationTracker();
-//        modification.setModificationDate(new Date(System.currentTimeMillis()));
-//        modification.setModificationType(ModificationType.UPDATE.getModificationType());
-//        modification.setModifiedByUserId(userService.findUserByUsername(getPrincipal()));
-//        modification.setModifiedUserId(user);
-//        modification.setModificationDescription(trackModification);
-//        modificationTrackerService.saveModification(modification);
 
-//        return "redirect:http://localhost:8080/app/#!/";
-        /*return userService.updatePassword(passwordDto);*/
-        return  userService.changePassword(passwordDto);
+        User user=userService.findUserByUserId(passwordDto.getUserId());
+        Map<Integer, String >map=  userService.changePassword(passwordDto);
+        if(map.get(0).equals("Password changed successfully")){
+            ModificationTracker modification = new ModificationTracker();
+            modification.setModificationDate(new Date(System.currentTimeMillis()));
+            modification.setModificationType(ModificationType.UPDATE.getModificationType());
+            modification.setModifiedUserId(passwordDto.getUserId());
+            modification.setModifiedField("password");
+            modification.setModifiedByUserId(userService.getCurrentUser().getUserId());
+            modificationTrackerService.saveModification(modification);
+        }
+        return map;
     }
 
 
@@ -285,13 +301,18 @@ public class UserController {
     @RequestMapping(value = {"/deleteUser/{id}"}, method = RequestMethod.GET)
     @ResponseBody
     public Map deleteExistingUser(@PathVariable("id") Integer id) {
-        return userService.deleteExistingUser(id);
-//        ModificationTracker modification = new ModificationTracker();
-//        modification.setModificationDate(new Date(System.currentTimeMillis()));
-//        modification.setModificationType(ModificationType.DELETE.getModificationType());
-//        modification.setModificationDescription("Account deletion");
-//        modification.setModifiedUserId(user);
-//        modification.setModifiedByUserId(userService.findUserByUsername(getPrincipal()));
+
+        Map<Integer, String> map=userService.deleteExistingUser(id);
+        if(map.get(0).equals("User deleted")) {
+            ModificationTracker modification = new ModificationTracker();
+            modification.setModificationDate(new Date(System.currentTimeMillis()));
+            modification.setModificationType(ModificationType.DELETE.getModificationType());
+            modification.setModifiedField("account_status");
+            modification.setModifiedUserId(id);
+            modification.setModifiedByUserId(userService.getCurrentUser().getUserId());
+            modificationTrackerService.saveModification(modification);
+        }
+        return map;
     }
 
     private String getPrincipal(){
@@ -480,8 +501,8 @@ public class UserController {
         return l;
     }
 
-  @RequestMapping(value = {"/createMaster"}, method = RequestMethod.GET)
-   @ResponseBody String createNewUser() {
+    @RequestMapping(value = {"/createMaster"}, method = RequestMethod.GET)
+    @ResponseBody String createNewUser() {
 //
 ////        ModificationTracker modification = new ModificationTracker();
 ////        modification.setModificationDate(new Date(System.currentTimeMillis()));
@@ -493,20 +514,21 @@ public class UserController {
 //
         return userService.createMaster();
     }
-private String getMonthYear(Date toDate) {
-    Calendar c =Calendar.getInstance();
-    c.setTime(toDate);
-    int month=c.get(Calendar.MONTH)+1;
-    String monthString = "";
-    int year=(c.get(Calendar.YEAR))%100;
-//        String monthString = c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH );
-    if(month<10){
-        monthString="0"+String.valueOf(month);
+    private String getMonthYear(Date toDate) {
+        Calendar c =Calendar.getInstance();
+        c.setTime(toDate);
+        int month=c.get(Calendar.MONTH)+1;
+        String monthString = "";
+        int year=(c.get(Calendar.YEAR))%100;
+    //        String monthString = c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH );
+        if(month<10){
+            monthString="0"+String.valueOf(month);
+        }
+        else monthString=String.valueOf(month);
+
+        String yearString=String.valueOf(year);
+
+        return monthString+"_"+yearString;
     }
-    else monthString=String.valueOf(month);
 
-    String yearString=String.valueOf(year);
-
-    return monthString+"_"+yearString;
-}
 }

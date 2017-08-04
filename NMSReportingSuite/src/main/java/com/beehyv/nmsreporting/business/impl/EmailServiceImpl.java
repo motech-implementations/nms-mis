@@ -1,22 +1,18 @@
 package com.beehyv.nmsreporting.business.impl;
 
-import com.beehyv.nmsreporting.business.EmailService;
-import com.beehyv.nmsreporting.business.LocationService;
-import com.beehyv.nmsreporting.business.ReportService;
-import com.beehyv.nmsreporting.business.UserService;
+import com.beehyv.nmsreporting.business.*;
 import com.beehyv.nmsreporting.entity.EmailInfo;
 import com.beehyv.nmsreporting.entity.ReportRequest;
 import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.Circle;
+import com.beehyv.nmsreporting.model.EmailTracker;
 import com.beehyv.nmsreporting.model.State;
 import com.beehyv.nmsreporting.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -49,6 +45,8 @@ public class EmailServiceImpl implements EmailService{
     @Autowired
     LocationService locationService;
 
+    @Autowired
+    private EmailTrackerService emailTrackerService;
     @Override
     public String sendMail(EmailInfo mailInfo) {
         try {
@@ -180,8 +178,23 @@ public class EmailServiceImpl implements EmailService{
                         newMail.setBody(this.getBody(reportType.getReportName(),place,reportService.getMonthName(c.getTime()),user.getFullName()));
                         newMail.setRootPath(pathName);
                         errorMessage = this.sendMail(newMail);
-                        if (errorMessage.equalsIgnoreCase("failure"))
-                            errorSendingMail.put(user.getUsername(),fileName);
+                        EmailTracker emailTracker=new EmailTracker();
+                        emailTracker.setEmailSuccessful(true);
+                        if (errorMessage.equalsIgnoreCase("failure")){
+                            errorMessage = this.sendMail(newMail);
+                        }
+                        if (errorMessage.equalsIgnoreCase("failure")){
+                            errorMessage = this.sendMail(newMail);
+                        }
+                        if (errorMessage.equalsIgnoreCase("failure")) {
+                            errorSendingMail.put(user.getUsername(), fileName);
+                            emailTracker.setEmailSuccessful(false);
+                        }
+                        emailTracker.setFileName(fileName);
+                        emailTracker.setReportType(reportType.getReportName());
+                        emailTracker.setTime(new Date());
+                        emailTracker.setUserId(user.getUserId());
+                        emailTrackerService.saveEmailDeatils(emailTracker);
                     }
                 }//else if(user.getAccessLevel().equalsIgnoreCase(AccessLevel.NATIONAL.getAccessLevel())){
 //                            reportRequest.setCircleId(0);
@@ -235,11 +248,28 @@ public class EmailServiceImpl implements EmailService{
                         newMail.setFileName(fileName);
                         newMail.setBody(this.getBody(reportType.getReportName(),place,reportService.getMonthName(c.getTime()),user.getFullName()));
                         newMail.setRootPath(pathName);
-                        if(user.getDistrictId() != null)
+                        if(user.getDistrictId() != null) {
                             errorMessage = this.sendMail(newMail);
-                        else
+                            EmailTracker emailTracker = new EmailTracker();
+                            emailTracker.setEmailSuccessful(true);
+                            emailTracker.setFileName(fileName);
+                            emailTracker.setReportType(reportType.getReportName());
+                            emailTracker.setTime(new Date());
+                            emailTracker.setUserId(user.getUserId());
+                            if (errorMessage.equalsIgnoreCase("failure")){
+                                errorMessage = this.sendMail(newMail);
+                            }
+                            if (errorMessage.equalsIgnoreCase("failure")){
+                                errorMessage = this.sendMail(newMail);
+                            }
+                            if (errorMessage.equalsIgnoreCase("failure")) {
+                                emailTracker.setEmailSuccessful(false);
+                            }
+                            emailTrackerService.saveEmailDeatils(emailTracker);
+
+                        } else {
                             errorMessage = "success";
-                        if (errorMessage.equalsIgnoreCase("failure"))
+                        } if (errorMessage.equalsIgnoreCase("failure"))
                             errorSendingMail.put(user.getUsername(),fileName);
                     }
 //            }
