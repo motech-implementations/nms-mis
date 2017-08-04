@@ -13,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -182,6 +180,12 @@ public class EmailServiceImpl implements EmailService{
                         errorMessage = this.sendMail(newMail);
                         EmailTracker emailTracker=new EmailTracker();
                         emailTracker.setEmailSuccessful(true);
+                        if (errorMessage.equalsIgnoreCase("failure")){
+                            errorMessage = this.sendMail(newMail);
+                        }
+                        if (errorMessage.equalsIgnoreCase("failure")){
+                            errorMessage = this.sendMail(newMail);
+                        }
                         if (errorMessage.equalsIgnoreCase("failure")) {
                             errorSendingMail.put(user.getUsername(), fileName);
                             emailTracker.setEmailSuccessful(false);
@@ -252,18 +256,21 @@ public class EmailServiceImpl implements EmailService{
                             emailTracker.setReportType(reportType.getReportName());
                             emailTracker.setTime(new Date());
                             emailTracker.setUserId(user.getUserId());
+                            if (errorMessage.equalsIgnoreCase("failure")){
+                                errorMessage = this.sendMail(newMail);
+                            }
+                            if (errorMessage.equalsIgnoreCase("failure")){
+                                errorMessage = this.sendMail(newMail);
+                            }
                             if (errorMessage.equalsIgnoreCase("failure")) {
                                 emailTracker.setEmailSuccessful(false);
                             }
                             emailTrackerService.saveEmailDeatils(emailTracker);
-                        }
-                        else
+
+                        } else {
                             errorMessage = "success";
-
-                        if (errorMessage.equalsIgnoreCase("failure")) {
-                            errorSendingMail.put(user.getUsername(), fileName);
-                        }
-
+                        } if (errorMessage.equalsIgnoreCase("failure"))
+                            errorSendingMail.put(user.getUsername(),fileName);
                     }
 //            }
         }
