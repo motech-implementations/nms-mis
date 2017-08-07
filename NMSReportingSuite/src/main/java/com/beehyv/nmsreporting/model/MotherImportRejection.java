@@ -9,7 +9,7 @@ import java.util.Date;
  * Created by beehyv on 13/7/17.
  */
 @Entity
-@Table(name="child_import_rejection")
+@Table(name="mother_import_rejection")
 public class MotherImportRejection {
 
     @Id

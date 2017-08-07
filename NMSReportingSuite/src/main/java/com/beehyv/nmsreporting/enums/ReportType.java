@@ -17,8 +17,10 @@ public enum ReportType {
     maInactive("MA_Cumulative_Inactive_Users", "Cumulative Inactive Users", "M"),
     lowUsage("Kilkari_Low_Usage", "Listen to < 25% this month", "K"),
     selfDeactivated("Kilkari_Self_Deactivated", "Self Deactivations", "K"),
-    sixWeeks("Kilkari_Six_Weeks_No_Answer", "Deactivated for not answering", "K");
-
+    sixWeeks("Kilkari_Six_Weeks_No_Answer", "Deactivated for not answering", "K"),
+    flwRejected("Flw_Import_Rejects","Flw Rejected Records", "M"),
+    childRejected("Child_Import_Rejects","Child Rejected Records", "K"),
+    motherRejected("Mother_Import_Rejects","Mother Rejected Records", "K");
     private String reportType;
     private String reportName;
     private String serviceType;

@@ -40,5 +40,10 @@ public interface AdminService {
 
   void createSpecificReport(ReportRequest reportRequest);
 
+  void createChildImportRejectedFiles(Date toDate);
+
+  void createMotherImportRejectedFiles(Date toDate);
+
+  void createFlwImportRejectedFiles(Date toDate);
 
 }

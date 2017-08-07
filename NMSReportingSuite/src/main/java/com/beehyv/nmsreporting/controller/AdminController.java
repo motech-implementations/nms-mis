@@ -169,6 +169,9 @@ public class AdminController {
         adminService.createFiles(ReportType.lowUsage.getReportType());
         adminService.createFiles(ReportType.selfDeactivated.getReportType());
         adminService.createFiles(ReportType.sixWeeks.getReportType());
+        adminService.createFiles(ReportType.childRejected.getReportType());
+        adminService.createFiles(ReportType.motherRejected.getReportType());
+        adminService.createFiles(ReportType.flwRejected.getReportType());
     }
     @RequestMapping(value = "/generateReports/{reportType}/{relativeMonth}", method = RequestMethod.GET)
     @ResponseBody
@@ -215,6 +218,7 @@ public class AdminController {
                 adminService.getKilkariSixWeekNoAnswerFiles(fromDate, toDate);
                 break;
             }
+            case childRejected:
         }
         return "Reports Generated";
     }

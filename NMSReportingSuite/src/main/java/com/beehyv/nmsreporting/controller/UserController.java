@@ -453,6 +453,12 @@ public class UserController {
                 "images/drop-down-3.png",
                 ReportType.maInactive.getServiceType())
         );
+        maList.add(new Report(
+                ReportType.flwRejected.getReportName(),
+                ReportType.flwRejected.getReportType(),
+                "images/drop-down-3.png",
+                ReportType.flwRejected.getServiceType())
+        );
         maMenu.put("service", maList.get(0).getService());
         maMenu.put("options", maList);
 
@@ -479,7 +485,19 @@ public class UserController {
                 ReportType.selfDeactivated.getReportType(),
                 "images/drop-down-3.png",
                 ReportType.selfDeactivated.getServiceType())
+        );kList.add(new Report(
+                ReportType.motherRejected.getReportName(),
+                ReportType.motherRejected.getReportType(),
+                "images/drop-down-3.png",
+                ReportType.motherRejected.getServiceType())
         );
+        kList.add(new Report(
+                ReportType.childRejected.getReportName(),
+                ReportType.childRejected.getReportType(),
+                "images/drop-down-3.png",
+                ReportType.childRejected.getServiceType())
+        );
+
         kMenu.put("service", kList.get(0).getService());
         kMenu.put("options", kList);
 
