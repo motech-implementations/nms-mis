@@ -128,12 +128,26 @@ div ul.sundays-list{
 
 }
 
+div ul.sundays-list li.sunday-list-items:active{
+   background-color:#eeeeee;
+   color:green;
+
+}
+
+div ul.sundays-list li.sunday-list-items:hover{
+   background-color:rgb(180, 156, 164);;
+   color : white;
+   cursor : pointer;
+
+}
+
 div ul li.sunday-list-items{
     height:35px;
     text-align:center;
     border-bottom:1px solid grey;
-    color: #b08a89;
-    vertical-align:center
+    color: #9b605f;
+    vertical-align:center;
+    padding-top: 1px;
 }
 
 div ul li.sunday-list-items p{

@@ -23,6 +23,7 @@
 			$scope.districts = [];
 			$scope.blocks = [];
 			$scope.circles = [];
+			$scope.datePickerContent = "Select Month";
 
 			$scope.disableReportCategory = function(){
 				return $scope.reports[0] == null;
@@ -113,6 +114,12 @@
 				if($scope.userHasOneCircle()){
                 	$scope.selectCircle($scope.circles[0]);
                 }
+                if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected")))  ){
+                	$scope.datePickerContent = "Select Week";
+                }
+                else
+                    $scope.datePickerContent = "Select Month";
+
 			}
 
 			$scope.crop = function(name){
@@ -229,6 +236,15 @@
                 if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Low_Usage'){
                     minDate = new Date(2017, 03, 30);
                 }
+                if($scope.report != null && $scope.report.reportEnum == 'MARejectedReports'){
+                    minDate = new Date(2017, 06, 01);
+                 }
+                 if($scope.report != null && $scope.report.reportEnum == 'MotherRejectedReports'){
+                    minDate = new Date(2017, 06, 01);
+                 }
+                 if($scope.report != null && $scope.report.reportEnum == 'ChildRejectedReports'){
+                    minDate = new Date(2017, 06, 01);
+                 }
 //                var minDate = $scope.report.minDate;
 //                console.log(minDate);
 				if(!$scope.isCircleReport() && $scope.state != null && Date.parse($scope.state.serviceStartDate) > minDate){
@@ -305,12 +321,12 @@
 
 			$scope.$watch('dt', function(newDate){
                 if ($scope.wasSundaySelected){
-                $scope.format = 'yyyy-MM-dd';
+                $scope.format = 'yy-MM-dd';
                 $scope.wasSundaySelected = false;
                  return;
                 }
-                $scope.format = 'yyyy-MM';
-			    if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  ($scope.report.name == 'Rejected Reports' || $scope.report.name =='Mother Rejected Reports' || $scope.report.name =='Child Rejected Reports') && $scope.dt != null) {
+                $scope.format = 'yy-MM';
+			    if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected")) && $scope.dt != null) {
 			    	 $scope.getSundays($scope.dt);
                      $scope.sundaysTable = true;
 			    	 $scope.popup1.opened = true;
@@ -373,10 +389,17 @@
                      	return;
                     }
 		    	}
-				
+
+		    	if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected")) && $scope.format == 'yy-MM'){
+                    alert("Please select a week");
+                    return;
+		    	}
+
 			    reportRequest.fromDate = $scope.dt;
 
 			    $scope.waiting = true;
+
+                console.log($scope.dt);
 
 				$http({
 					method  : 'POST',
@@ -420,6 +443,8 @@
 				}
 				$scope.clearCircle();
 				$scope.dt = null;
+				$scope.datePickerContent = "Select Month";
+
 			}
 
 			// datepicker stuff
@@ -451,6 +476,11 @@
 
 			$scope.open1 = function() {
 				$scope.popup1.opened = true;
+				if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected")) && $scope.format == 'yy-MM'){
+                    $scope.sundaysTable = true;
+
+                }
+
 			};
 
 			$scope.setDate = function(year, month, day) {
