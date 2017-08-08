@@ -177,22 +177,32 @@ public class AdminController {
     @ResponseBody
     public String getReportsByNameAndMonth(@PathVariable("reportType") String reportType, @PathVariable("relativeMonth") Integer relativeMonth) throws ParseException, java.text.ParseException{
 
+        ReportType tempReportType = ReportType.valueOf(reportType);
         Calendar aCalendar = Calendar.getInstance();
-        aCalendar.add(Calendar.MONTH, (-1)*relativeMonth);
-        aCalendar.set(Calendar.DATE, 1);
-        aCalendar.set(Calendar.MILLISECOND, 0);
-        aCalendar.set(Calendar.SECOND, 0);
-        aCalendar.set(Calendar.MINUTE, 0);
-        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        Date fromDate=new Date();
+        Date toDate;
+        if(tempReportType.getReportType().equals(ReportType.flwRejected.getReportType()) ||
+                tempReportType.getReportType().equals(ReportType.motherRejected.getReportType()) ||
+                tempReportType.getReportType().equals(ReportType.childRejected.getReportType())) {
+            aCalendar.add( Calendar.DAY_OF_WEEK, -(aCalendar.get(Calendar.DAY_OF_WEEK)-1));
+            aCalendar.add(Calendar.DATE,-(7*(relativeMonth-1)));
+            toDate=aCalendar.getTime();
+        }else {
+            aCalendar.add(Calendar.MONTH, (-1) * relativeMonth);
+            aCalendar.set(Calendar.DATE, 1);
+            aCalendar.set(Calendar.MILLISECOND, 0);
+            aCalendar.set(Calendar.SECOND, 0);
+            aCalendar.set(Calendar.MINUTE, 0);
+            aCalendar.set(Calendar.HOUR_OF_DAY, 0);
 
-        Date fromDate = aCalendar.getTime();
+            fromDate = aCalendar.getTime();
 
-        aCalendar.add(Calendar.MONTH, 1);
+            aCalendar.add(Calendar.MONTH, 1);
 
-        Date toDate = aCalendar.getTime();
+            toDate = aCalendar.getTime();
+        }
 
         Date startDate=new Date(0);
-        ReportType tempReportType = ReportType.valueOf(reportType);
         switch (tempReportType) {
             case maCourse: {
                 adminService.getCumulativeCourseCompletionFiles(toDate);
@@ -218,7 +228,19 @@ public class AdminController {
                 adminService.getKilkariSixWeekNoAnswerFiles(fromDate, toDate);
                 break;
             }
-            case childRejected:
+            case childRejected: {
+                adminService.createChildImportRejectedFiles(toDate);
+                break;
+            }
+            case motherRejected:{
+                adminService.createMotherImportRejectedFiles(toDate);
+                break;
+            }
+            case flwRejected:{
+                adminService.createFlwImportRejectedFiles(toDate);
+                break;
+            }
+
         }
         return "Reports Generated";
     }

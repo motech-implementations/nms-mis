@@ -160,9 +160,23 @@ public class EmailServiceImpl implements EmailService{
 //                for(ReportType reportType: ReportType.values()){
             ReportRequest reportRequest = new ReportRequest();
             Calendar c = Calendar.getInstance();   // this takes current date
-            c.add(Calendar.MONTH, -1);
-            c.set(Calendar.DATE, 1);
-            reportRequest.setToDate(c.getTime());
+
+            /* if the report is rejection type, we need to find file name with previous sunday date(MM-DD-YY format)
+            * else find file with previous month and year(MM-YY format) */
+
+            /* previous sunday */
+            if(reportType.getReportType().equals(ReportType.flwRejected.getReportType()) ||
+                    reportType.getReportType().equals(ReportType.motherRejected.getReportType()) ||
+                    reportType.getReportType().equals(ReportType.childRejected.getReportType())) {
+                c.add( Calendar.DAY_OF_WEEK, -(c.get(Calendar.DAY_OF_WEEK)-1));
+                reportRequest.setToDate(c.getTime());
+
+            }else {
+                /* previous month */
+                c.add(Calendar.MONTH, -1);
+                c.set(Calendar.DATE, 1);
+                reportRequest.setToDate(c.getTime());
+            }
             reportRequest.setReportType(reportType.getReportType());
             String pathName = "",fileName = "",errorMessage = "",place = "";
             if(reportType.getReportType().equalsIgnoreCase(ReportType.maAnonymous.getReportType())){

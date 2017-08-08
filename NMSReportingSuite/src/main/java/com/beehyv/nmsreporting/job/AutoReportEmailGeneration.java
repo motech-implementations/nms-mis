@@ -107,6 +107,27 @@ public class AutoReportEmailGeneration {
         return reports;
     }
 
+    public HashMap sendWeeklyFirstMail() {
+        HashMap reports = emailService.sendAllMails(ReportType.childRejected);
+        System.out.println("Child Rejected reports: ");
+        System.out.println(reports.toString());
+        return reports;
+    }
+
+    public HashMap sendWeeklySecondMail() {
+        HashMap reports = emailService.sendAllMails(ReportType.motherRejected);
+        System.out.println("Mother Rejected reports: ");
+        System.out.println(reports.toString());
+        return reports;
+    }
+
+    public HashMap sendWeeklyThirdMail() {
+        HashMap reports = emailService.sendAllMails(ReportType.flwRejected);
+        System.out.println("Flw Rejected reports: ");
+        System.out.println(reports.toString());
+        return reports;
+    }
+
     public void test(){
 //        System.out.println(new Date());
     }

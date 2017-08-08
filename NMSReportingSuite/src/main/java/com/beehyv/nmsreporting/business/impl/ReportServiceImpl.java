@@ -16,6 +16,8 @@ import javax.transaction.Transactional;
 import java.io.File;
 import java.util.*;
 
+import static com.beehyv.nmsreporting.utils.ServiceFunctions.StReplace;
+
 /**
  * Created by beehyv on 25/5/17.
  */
@@ -51,27 +53,32 @@ public class ReportServiceImpl implements ReportService{
 
         if(reportRequest.getReportType().equals(ReportType.maAnonymous.getReportType())){
             if(reportRequest.getCircleId()!=0){
-                place=circleDao.getByCircleId(reportRequest.getCircleId()).getCircleFullName();
+                place=StReplace(circleDao.getByCircleId(reportRequest.getCircleId()).getCircleFullName());
                 rootPath+=place+"/";
             }
         }
         else {
             if (reportRequest.getStateId() != 0) {
-                place = stateDao.findByStateId(reportRequest.getStateId()).getStateName();
+                place = StReplace(stateDao.findByStateId(reportRequest.getStateId()).getStateName());
                 rootPath += place + "/";
             }
 
             if (reportRequest.getDistrictId() != 0) {
-                place = districtDao.findByDistrictId(reportRequest.getDistrictId()).getDistrictName();
+                place = StReplace(districtDao.findByDistrictId(reportRequest.getDistrictId()).getDistrictName());
                 rootPath += place + "/";
             }
 
             if (reportRequest.getBlockId() != 0) {
-                place = blockDao.findByblockId(reportRequest.getBlockId()).getBlockName();
+                place = StReplace(blockDao.findByblockId(reportRequest.getBlockId()).getBlockName());
                 rootPath += place + "/";
             }
         }
         String filename= reportRequest.getReportType()+"_"+place+"_"+getMonthYear(reportRequest.getToDate())+".xlsx";
+        if(reportRequest.getReportType().equals(ReportType.flwRejected.getReportType()) ||
+                reportRequest.getReportType().equals(ReportType.motherRejected.getReportType()) ||
+                reportRequest.getReportType().equals(ReportType.childRejected.getReportType())) {
+            filename=reportRequest.getReportType()+"_"+place+"_"+getDateMonthYear(reportRequest.getToDate())+".xlsx";
+        }
         rootPath = reports+reportRequest.getReportType()+"/"+rootPath+filename;
         List<String> extras = new ArrayList<>();
         extras.add(filename);
@@ -143,5 +150,28 @@ public class ReportServiceImpl implements ReportService{
         String yearString=String.valueOf(year);
 
         return monthString+"_"+yearString;
+    }
+
+    private String getDateMonthYear(Date toDate) {
+        Calendar calendar=Calendar.getInstance();
+        calendar.setTime(toDate);
+        int date=calendar.get(Calendar.DATE);
+        int month=calendar.get(Calendar.MONTH)+1;
+        int year=(calendar.get(Calendar.YEAR))%100;
+        String dateString;
+        if(date<10) {
+            dateString="0"+String.valueOf(date);
+        }
+        else dateString=String.valueOf(date);
+        String monthString;
+        if(month<10){
+            monthString="0"+String.valueOf(month);
+        }
+        else monthString=String.valueOf(month);
+
+        String yearString=String.valueOf(year);
+
+        return dateString + "_" + monthString+"_"+yearString;
+
     }
 }
