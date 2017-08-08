@@ -227,22 +227,22 @@
 				if($scope.report != null && $scope.report.service == 'M'){
 					minDate = new Date(2015, 10, 01);
 				}
-				if($scope.report != null && $scope.report.reportEnum == 'MACumulativeInactiveUsers'){
+				if($scope.report != null && $scope.report.reportEnum == 'MA_Cumulative_Inactive_Users'){
                 	minDate = new Date(2017, 04, 30);
                 }
-                if($scope.report != null && $scope.report.reportEnum == 'MAAnonymousUsers'){
+                if($scope.report != null && $scope.report.reportEnum == 'MA_Anonymous_Users'){
                     minDate = new Date(2017, 04, 30);
                 }
                 if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Low_Usage'){
                     minDate = new Date(2017, 03, 30);
                 }
-                if($scope.report != null && $scope.report.reportEnum == 'MARejectedReports'){
+                if($scope.report != null && $scope.report.reportEnum == 'Flw_Import_Rejects'){
                     minDate = new Date(2017, 06, 01);
                  }
-                 if($scope.report != null && $scope.report.reportEnum == 'MotherRejectedReports'){
+                 if($scope.report != null && $scope.report.reportEnum == 'Mother_Import_Rejects'){
                     minDate = new Date(2017, 06, 01);
                  }
-                 if($scope.report != null && $scope.report.reportEnum == 'ChildRejectedReports'){
+                 if($scope.report != null && $scope.report.reportEnum == '"Child_Import_Rejects'){
                     minDate = new Date(2017, 06, 01);
                  }
 //                var minDate = $scope.report.minDate;
@@ -326,7 +326,7 @@
                  return;
                 }
                 $scope.format = 'yy-MM';
-			    if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected")) && $scope.dt != null) {
+			    if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) && $scope.dt != null) {
 			    	 $scope.getSundays($scope.dt);
                      $scope.sundaysTable = true;
 			    	 $scope.popup1.opened = true;
@@ -390,7 +390,7 @@
                     }
 		    	}
 
-		    	if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected")) && $scope.format == 'yy-MM'){
+		    	if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) && $scope.format == 'yy-MM'){
                     alert("Please select a week");
                     return;
 		    	}
@@ -476,7 +476,7 @@
 
 			$scope.open1 = function() {
 				$scope.popup1.opened = true;
-				if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected")) && $scope.format == 'yy-MM'){
+				if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) && $scope.format == 'yy-MM'){
                     $scope.sundaysTable = true;
 
                 }

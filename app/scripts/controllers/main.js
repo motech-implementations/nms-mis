@@ -67,7 +67,21 @@
 						'sref': 'login',
 						'active': false,
 					},
-				]
+				],
+				'forgotPassword': [
+                	{
+                		'name': 'ForgotPassword',
+                		'sref': 'forgotPassword',
+                		'active': false,
+                	},
+                ],
+                'newPassword': [
+                     {
+                         'name': 'NewPassword',
+                         'sref': 'newPassword',
+                         'active': false,
+                     },
+                ]
 			}
 
 
@@ -97,6 +111,9 @@
 			})
 
 			$scope.logoutUrl = backend_root + "nms/logout";
+
+
+
 
 		}
 	])}
