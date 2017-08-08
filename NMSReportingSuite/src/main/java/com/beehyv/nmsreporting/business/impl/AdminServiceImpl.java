@@ -1263,6 +1263,7 @@ public class AdminServiceImpl implements AdminService {
                 "Entry Type",
                 "Source",
                 "Registration No",
+                "MCTS Mother Id",
                 "Action",
                 "Creation Date",
                 "Modification Date"
@@ -1357,6 +1358,7 @@ public class AdminServiceImpl implements AdminService {
                     (childRejection.getEntryType() == null) ? "No Entry Type": childRejection.getEntryType(),
                     (childRejection.getSource() == null) ? "No Source": childRejection.getSource(),
                     (childRejection.getRegistrationNo() == null) ? "No Registration No": childRejection.getRegistrationNo(),
+                    (childRejection.getmCTSMotherIDNo() == null) ? "No MCTS Mother Id": childRejection.getmCTSMotherIDNo(),
                     (childRejection.getAction() == null) ? "No Action": childRejection.getRegistrationNo(),
                     (childRejection.getCreationDate() == null) ? "No Creation Date": childRejection.getCreationDate(),
                     (childRejection.getModificationDate() == null) ? "No Modification Date": childRejection.getModificationDate(),
@@ -2620,26 +2622,6 @@ public class AdminServiceImpl implements AdminService {
         String yearString=String.valueOf(year);
 
         return dateString + "_" + monthString+"_"+yearString;
-
-    }
-
-    public static void main(String[] args) {
-
-        Calendar aCalendar = Calendar.getInstance();
-        aCalendar.setTime(new Date());
-        aCalendar.set(Calendar.MILLISECOND, 0);
-        aCalendar.set(Calendar.SECOND, 0);
-        aCalendar.set(Calendar.MINUTE, 0);
-        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
-
-//        aCalendar.add(Calendar.MONTH, -1);
-        aCalendar.set(Calendar.DATE, 1);
-
-        Date fromDate = aCalendar.getTime();
-
-        aCalendar.add(Calendar.MONTH, 1);
-
-        Date toDate = aCalendar.getTime();
 
     }
 
