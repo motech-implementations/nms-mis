@@ -21,6 +21,7 @@ public enum ReportType {
     flwRejected("Flw_Import_Rejects","Flw Rejected Records", "M"),
     childRejected("Child_Import_Rejects","Child Rejected Records", "K"),
     motherRejected("Mother_Import_Rejects","Mother Rejected Records", "K");
+
     private String reportType;
     private String reportName;
     private String serviceType;

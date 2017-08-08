@@ -22,6 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.QueryParam;
@@ -381,7 +382,11 @@ public class UserController {
            }
        }
        String filename= reportRequest.getReportType()+"_"+place+"_"+getMonthYear(reportRequest.getFromDate())+".xlsx";
-
+        if(reportRequest.getReportType().equals(ReportType.flwRejected.getReportType()) ||
+                reportRequest.getReportType().equals(ReportType.motherRejected.getReportType()) ||
+                reportRequest.getReportType().equals(ReportType.childRejected.getReportType())){
+            filename=reportRequest.getReportType()+"_"+place+"_"+getDateMonthYear(reportRequest.getFromDate())+".xlsx";
+        }
        reportPath = reports+reportRequest.getReportType()+"/"+rootPath;
        reportName = filename;
 
@@ -411,7 +416,7 @@ public class UserController {
         String reportName=fileName;
         String reportPath=reports+rootPath;
         try {
-            PrintWriter out = response.getWriter();
+            ServletOutputStream out = response.getOutputStream();
             String filename = reportName;
             response.setHeader("Content-Disposition", "attachment;filename=\"" + filename + "\"");
             FileInputStream fl = new FileInputStream(reportPath + reportName);
@@ -547,6 +552,29 @@ public class UserController {
         String yearString=String.valueOf(year);
 
         return monthString+"_"+yearString;
+    }
+
+    private String getDateMonthYear(Date toDate) {
+        Calendar calendar=Calendar.getInstance();
+        calendar.setTime(toDate);
+        int date=calendar.get(Calendar.DATE);
+        int month=calendar.get(Calendar.MONTH)+1;
+        int year=(calendar.get(Calendar.YEAR))%100;
+        String dateString;
+        if(date<10) {
+            dateString="0"+String.valueOf(date);
+        }
+        else dateString=String.valueOf(date);
+        String monthString;
+        if(month<10){
+            monthString="0"+String.valueOf(month);
+        }
+        else monthString=String.valueOf(month);
+
+        String yearString=String.valueOf(year);
+
+        return dateString + "_" + monthString+"_"+yearString;
+
     }
 
 }
