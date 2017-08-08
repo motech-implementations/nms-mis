@@ -1,11 +1,7 @@
 package com.beehyv.nmsreporting.controller;
 
 import com.beehyv.nmsreporting.business.*;
-import com.beehyv.nmsreporting.entity.PasswordDto;
-import com.beehyv.nmsreporting.entity.UserDto;
-import com.beehyv.nmsreporting.entity.ContactInfo;
-import com.beehyv.nmsreporting.entity.Report;
-import com.beehyv.nmsreporting.entity.ReportRequest;
+import com.beehyv.nmsreporting.entity.*;
 import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.AccessType;
 import com.beehyv.nmsreporting.enums.ModificationType;
@@ -29,7 +25,6 @@ import javax.ws.rs.QueryParam;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.*;
 
 import static com.beehyv.nmsreporting.utils.ServiceFunctions.StReplace;
@@ -292,6 +287,25 @@ public class UserController {
             modification.setModifiedUserId(passwordDto.getUserId());
             modification.setModifiedField("password");
             modification.setModifiedByUserId(userService.getCurrentUser().getUserId());
+            modificationTrackerService.saveModification(modification);
+        }
+        return map;
+    }
+
+
+    @RequestMapping(value = {"/forgotPassword"}, method = RequestMethod.POST)
+    @ResponseBody
+    public Map forgotPassword(@RequestBody ForgotPasswordDto forgotPasswordDto){
+
+        User user=userService.findUserByUsername(forgotPasswordDto.getUsername());
+        Map<Integer, String >map=  userService.forgotPasswordCredentialChecker(forgotPasswordDto);
+        if(map.get(0).equals("Password changed successfully")){
+            ModificationTracker modification = new ModificationTracker();
+            modification.setModificationDate(new Date(System.currentTimeMillis()));
+            modification.setModificationType(ModificationType.UPDATE.getModificationType());
+            modification.setModifiedUserId(user.getUserId());
+            modification.setModifiedField("password");
+            modification.setModifiedByUserId(user.getUserId());
             modificationTrackerService.saveModification(modification);
         }
         return map;

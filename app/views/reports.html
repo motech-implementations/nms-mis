@@ -48,7 +48,7 @@
 							<button type="button" class="btn btn-sm btn-default" ng-click="open1()"  ng-disabled='disableDate()' ><i class="glyphicon glyphicon-calendar" ng-disabled="disableDate()" ></i></button>
 							</span>
 						</p>
-						<ul  class="sundays-list"  tabindex="-1" ng-blur="onBlur()" focus="true" ng-if= " (reportCategory == 'Mobile Academy Reports' ||  reportCategory == 'Kilkari Reports') &&  (report.name == 'Rejected Reports' || report.name =='Mother Rejected Reports' || report.name =='Child Rejected Reports') && dt != null" ng-show = "sundaysTable">
+						<ul  class="sundays-list"  tabindex="-1" ng-blur="onBlur()" focus="true" ng-if= " (reportCategory == 'Mobile Academy Reports' ||  reportCategory == 'Kilkari Reports') &&  (report.name == 'Flw Rejected Records' || report.name =='Mother Rejected Records' || report.name =='Child Rejected Records') && dt != null" ng-show = "sundaysTable">
 							<li class="sunday-list-header"><p>Sun</p></li>
 
 							<li ng-repeat="date in sundays"   ng-click='closeSundaysTable(date)' class="sunday-list-items"><p>{{date}}</p></li>

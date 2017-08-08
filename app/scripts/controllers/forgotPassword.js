@@ -6,15 +6,16 @@
 
 			$scope.forgotPasswordSubmit = function(){
 				if ($scope.forgotPasswordForm.$valid) {
-					delete $scope.password.$$hashKey;
-					$scope.password.userId = $scope.user.id;
+
 					$http({
 						method  : 'POST',
 						url     : backend_root + 'nms/user/forgotPassword',
-						data    : $scope.user, //forms user object
+						data    : $scope.forgotPassword, //forms user object
 						headers : {'Content-Type': 'application/json'}
 					}).then(function(result){
+					alert("hi");
 						alert(result.data['0']);
+						alert("end");
 					})
 				}
 				else{

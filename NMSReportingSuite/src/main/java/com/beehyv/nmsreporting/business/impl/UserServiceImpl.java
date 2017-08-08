@@ -2,6 +2,7 @@ package com.beehyv.nmsreporting.business.impl;
 
 import com.beehyv.nmsreporting.business.UserService;
 import com.beehyv.nmsreporting.dao.*;
+import com.beehyv.nmsreporting.entity.ForgotPasswordDto;
 import com.beehyv.nmsreporting.entity.PasswordDto;
 import com.beehyv.nmsreporting.entity.ContactInfo;
 import com.beehyv.nmsreporting.enums.AccessLevel;
@@ -643,6 +644,35 @@ public class UserServiceImpl implements UserService{
         String success="Password changed successfully";
         responseMap.put(rowNum, success);
         return responseMap;
+    }
+
+    @Override
+    public Map<Integer, String> forgotPasswordCredentialChecker(ForgotPasswordDto forgotPasswordDto){
+
+        Integer rowNum = 0;
+        Map<Integer, String> responseMap = new HashMap<>();
+
+        User entity = userDao.findByUserName(forgotPasswordDto.getUsername());
+
+        if(entity == null){
+            responseMap.put(rowNum, "User Details incorrect");
+            return responseMap;
+        }
+
+        if(entity.getPhoneNumber().equals(forgotPasswordDto.getPhoneNumber())){
+            entity.setPassword(passwordEncoder.encode(forgotPasswordDto.getConfirmPassword()));
+            String success="Password changed successfully";
+            responseMap.put(rowNum, success);
+            return responseMap;
+
+        }
+        else{
+            String failure="User Details incorrect";
+            responseMap.put(rowNum, failure);
+            return responseMap;
+        }
+
+
     }
 
     @Override
