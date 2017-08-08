@@ -258,7 +258,7 @@ public class ChildImportRejection {
     @Column(name = "source")
     private String source;
 
-    @Column(name = "reistration_no")
+    @Column(name = "registration_no")
     private String registrationNo;
 
     @Column(name = "mcts_mother_id_no")
