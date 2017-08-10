@@ -135,17 +135,26 @@ div ul.sundays-list li.sunday-list-items:active{
 }
 
 div ul.sundays-list li.sunday-list-items:hover{
-   background-color:rgb(180, 156, 164);;
-   color : white;
+   background-color:#d4d4d4;
+   color :#31708f;
    cursor : pointer;
+   border-color: #8c8c8c;
 
+}
+
+.uib-datepicker-current{
+   display:none;
+}
+
+.uib-clear{
+   border-radius : 3px !important;
 }
 
 div ul li.sunday-list-items{
     height:35px;
     text-align:center;
     border-bottom:1px solid grey;
-    color: #9b605f;
+    color: black;
     vertical-align:center;
     padding-top: 1px;
 }
@@ -166,6 +175,11 @@ div ul li.sunday-list-header{
 #newpass-btn-login{
     margin-left:64%;
 }
+
+#back-to-login{
+  margin-left : 12px;
+}
+
 
 div.login .login-header{
 	min-height: 60px;

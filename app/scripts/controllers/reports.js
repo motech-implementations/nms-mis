@@ -133,7 +133,7 @@
 			}
 
 			$scope.isCircleReport = function(){
-				return $scope.report != null && $scope.report.reportEnum == 'MAAnonymousUsers';
+				return $scope.report != null && $scope.report.reportEnum == 'MA_Anonymous_Users';
 			}
 
 			
@@ -236,14 +236,16 @@
                 if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Low_Usage'){
                     minDate = new Date(2017, 03, 30);
                 }
+
+                //In case of change in minDate for rejection reports, please change startMonth and startDate variable accordingly
                 if($scope.report != null && $scope.report.reportEnum == 'Flw_Import_Rejects'){
-                    minDate = new Date(2017, 06, 01);
+                    minDate = new Date(2017, 04, 01);
                  }
                  if($scope.report != null && $scope.report.reportEnum == 'Mother_Import_Rejects'){
-                    minDate = new Date(2017, 06, 01);
+                    minDate = new Date(2017, 04, 01);
                  }
-                 if($scope.report != null && $scope.report.reportEnum == '"Child_Import_Rejects'){
-                    minDate = new Date(2017, 06, 01);
+                 if($scope.report != null && $scope.report.reportEnum == 'Child_Import_Rejects'){
+                    minDate = new Date(2017, 04, 01);
                  }
 //                var minDate = $scope.report.minDate;
 //                console.log(minDate);
@@ -263,7 +265,7 @@
 					minMode: 'month',
 					dateDisabled: disabled,
 					formatYear: 'yyyy',
-					maxDate: new Date().setMonth(new Date().getMonth()-1),
+					maxDate: new Date().setMonth(new Date().getMonth() -1),
 					minDate: minDate,
 					startingDay: 1
 				};
@@ -334,7 +336,7 @@
 			    }
 			    if((newDate != null) && newDate.getDate() == 1){
                     $scope.dt = new Date($scope.dt.getFullYear(), $scope.dt.getMonth() + 1, 0, 23, 59, 59);
-                  }
+                }
 			});
 
 			$scope.serviceStarted = function(state){
@@ -350,8 +352,12 @@
 					alert("Please select a report")
 					return;
 				}
-				if($scope.dt == null){
-					alert("Please select a month")
+				if($scope.dt == null && (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) ){
+					alert("Please select a week")
+					return;
+				}
+				else if($scope.dt == null){
+                	alert("Please select a month")
 					return;
 				}
 
@@ -412,6 +418,7 @@
 					$scope.status = result.data.status;
 					if($scope.status == 'success'){
 						$scope.fileName = result.data.file;
+						$scope.pathName = result.data.path;
 						angular.element('#downloadReportLink').trigger('click');
 					}
 					if($scope.status == 'fail'){
@@ -421,7 +428,11 @@
 			}
 
 			$scope.getReportUrl = backend_root + 'nms/user/getReport';
-			$scope.downloadReportUrl = backend_root + 'nms/user/downloadReport',
+			$scope.$watch('pathName', function(){
+			    $scope.downloadReportUrl = backend_root + 'nms/user/downloadReport?fileName='+
+            			        $scope.fileName+'&rootPath='+$scope.pathName;
+			})
+
 
 			$scope.clearFile = function(){
 				$scope.status = "";
@@ -474,21 +485,47 @@
 				return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
 			}
 
+            var startMonth = 6 //August
+            var startDate = 11 //Start Date
+
 			$scope.open1 = function() {
 				$scope.popup1.opened = true;
-				if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) && $scope.format == 'yy-MM'){
+				var currentDate = new Date();
+
+
+				console.log(currentDate.getMonth() + " " + currentDate.getDate() + " " +currentDate.getFullYear());
+				if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) ){
+				    if(currentDate.getMonth() == startMonth && currentDate.getDate() >= startDate && currentDate.getFullYear() == 2017){
+				        $scope.dateOptions.maxDate = new Date().setMonth(new Date().getMonth());
+				    }
+				    else if(currentDate.getMonth() == startMonth && currentDate.getDate() < startDate && currentDate.getFullYear() == 2017){
+				         $scope.dateOptions.maxDate = new Date().setMonth(new Date().getMonth() - 1);
+				    }
+				    else {
+				        if($scope.getSundays(currentDate) >0){
+                            $scope.dateOptions.maxDate = new Date().setMonth(currentDate.getMonth());
+                        }
+                        else
+                            $scope.dateOptions.maxDate = new Date().setMonth(currentDate.getMonth() - 1);
+                        $scope.sundays = null;
+
+				    }
+
+				}
+
+				if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) && $scope.format == 'yy-MM' ){
+                    $scope.getSundays($scope.dt);
                     $scope.sundaysTable = true;
 
                 }
-
 			};
 
 			$scope.setDate = function(year, month, day) {
 				$scope.dt = new Date(year, month, day);
 			};
 
-			  $scope.format = 'yyyy-MM'
-			  $scope.altInputFormats = ['yyyy-M!'];
+			$scope.format = 'yyyy-MM'
+			$scope.altInputFormats = ['yyyy-M!'];
 
 			$scope.popup1 = {
 				opened: false
@@ -526,30 +563,62 @@
 
 				return '';
 			}
+            $scope.sundays = null;
 
 			$scope.getSundays = function(d){
+
                 if( d  === undefined || d == null){
                     return;
                 }
-                var getTot = new Date(d.getMonth(),d.getFullYear(),0).getDate(); //Get total days in a month
-                var sun = new Array();   //Declaring array for inserting Sundays
-                for(var i=1;i<=getTot;i++){    //looping through days in month
-                    var newDate = new Date(d.getFullYear(),d.getMonth(),i)
-                    if(newDate.getDay()==0){   //if Sunday
-                        sun.push(i);
+                var getTot = null;
+                var today = new Date();
+                if(d.getMonth() == startMonth && d.getFullYear() == 2017 ){
+                    var sun = new Array();   //Declaring array for inserting Sundays
+                    for(var i=startDate-1;i<=31;i++){    //looping through days in month
+                        var newDate = new Date(d.getFullYear(),d.getMonth(),i)
+                        if(newDate.getDay()==0){   //if Sunday
+                            sun.push(i);
+                        }
                     }
+                    $scope.sundays = sun;
+                    return ($scope.sundays.length);
+
                 }
-                $scope.sundays = sun;
+
+                else{
+
+                    if(d.getMonth() == today.getMonth() && d.getFullYear() == today.getFullYear() )
+                    {
+                      var getTot = (today.getDate()) - 1;
+                    }
+                    else{
+                      var getTot = new Date(d.getFullYear(),d.getMonth()+1,0).getDate();
+                    }
+
+                    console.log(getTot);
+                     //Get total days in a month
+                    var sun = new Array();   //Declaring array for inserting Sundays
+                    for(var i=1;i<=getTot;i++){    //looping through days in month
+                        var newDate = new Date(d.getFullYear(),d.getMonth(),i)
+                        if(newDate.getDay()==0){   //if Sunday
+                            sun.push(i);
+                        }
+                    }
+                    $scope.sundays = sun;
+                    return ($scope.sundays.length);
+
+                }
+
 			}
 
 			$scope.sundaysTable = false;
 
 			$scope.closeSundaysTable = function(date) {
-            				$scope.sundaysTable = false;
-            				$scope.sundays = [];
-            				$scope.dt = new Date($scope.dt.getFullYear(),$scope.dt.getMonth(),date);
-            				$scope.wasSundaySelected = true;
-            			};
+            	$scope.sundaysTable = false;
+            	$scope.sundays = [];
+            	$scope.dt = new Date($scope.dt.getFullYear(),$scope.dt.getMonth(),date);
+            	$scope.wasSundaySelected = true;
+            };
 
             $window.addEventListener('click', function() {
               if($scope.sundaysTable)

@@ -74,13 +74,6 @@
                 		'sref': 'forgotPassword',
                 		'active': false,
                 	},
-                ],
-                'newPassword': [
-                     {
-                         'name': 'NewPassword',
-                         'sref': 'newPassword',
-                         'active': false,
-                     },
                 ]
 			}
 
