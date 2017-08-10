@@ -16,10 +16,10 @@ public class ChildImportRejection {
     private Long id;
 
     @Column(name = "state_id")
-    private Long stateId;
+    private Integer stateId;
 
     @Column(name = "district_id")
-    private Long districtId;
+    private Integer districtId;
 
     @Column(name = "district_name")
     private String districtName;
@@ -40,7 +40,7 @@ public class ChildImportRejection {
     private String talukaName;
 
     @Column(name = "health_block_id")
-    private Long healthBlockId;
+    private Integer healthBlockId;
 
     @Column(name = "health_block_name")
     private String healthBlockName;
@@ -281,19 +281,19 @@ public class ChildImportRejection {
         this.id = id;
     }
 
-    public Long getStateId() {
+    public Integer getStateId() {
         return stateId;
     }
 
-    public void setStateId(Long stateId) {
+    public void setStateId(Integer stateId) {
         this.stateId = stateId;
     }
 
-    public Long getDistrictId() {
+    public Integer getDistrictId() {
         return districtId;
     }
 
-    public void setDistrictId(Long districtId) {
+    public void setDistrictId(Integer districtId) {
         this.districtId = districtId;
     }
 
@@ -345,11 +345,11 @@ public class ChildImportRejection {
         this.talukaName = talukaName;
     }
 
-    public Long getHealthBlockId() {
+    public Integer getHealthBlockId() {
         return healthBlockId;
     }
 
-    public void setHealthBlockId(Long healthBlockId) {
+    public void setHealthBlockId(Integer healthBlockId) {
         this.healthBlockId = healthBlockId;
     }
 
