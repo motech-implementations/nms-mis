@@ -87,7 +87,7 @@
 							</button>
 							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
 								<li role="menuitem"><a ng-click="clearDistrict()">ALL</a>
-								<li role="menuitem" ng-repeat="item in districts | orderBy : 'districtName'"><a ng-click='selectDistrict(item)'>{{item.districtName}}</a></li>
+								<li role="menuitem" ng-repeat="item in districts | orderBy : 'districtName'"><a ng-click='selectDistrict(item)'>{{crop(item.districtName)}}</a></li>
 							</ul>
 						</div>
 					</div>
@@ -103,7 +103,7 @@
 							</button>
 							<ul class="dropdown-menu small" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
 								<li role="menuitem"><a ng-click="clearBlock()">ALL</a>
-								<li role="menuitem" ng-repeat="item in blocks | orderBy : 'blockName'"><a ng-click='selectBlock(item)'>{{item.blockName}}</a></li>
+								<li role="menuitem" ng-repeat="item in blocks | orderBy : 'blockName'"><a ng-click='selectBlock(item)'>{{crop(item.blockName)}}</a></li>
 							</ul>
 						</div>
 					</div>
