@@ -485,7 +485,7 @@
 				return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
 			}
 
-            var startMonth = 6 //August
+            var startMonth = 4 //August
             var startDate = 11 //Start Date
 
 			$scope.open1 = function() {
