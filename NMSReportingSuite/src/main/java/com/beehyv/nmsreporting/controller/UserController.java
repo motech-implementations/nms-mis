@@ -1,14 +1,12 @@
 package com.beehyv.nmsreporting.controller;
 
 import com.beehyv.nmsreporting.business.*;
-import com.beehyv.nmsreporting.entity.PasswordDto;
-import com.beehyv.nmsreporting.entity.UserDto;
-import com.beehyv.nmsreporting.entity.ContactInfo;
-import com.beehyv.nmsreporting.entity.Report;
-import com.beehyv.nmsreporting.entity.ReportRequest;
+import com.beehyv.nmsreporting.entity.*;
 import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.AccessType;
+import com.beehyv.nmsreporting.enums.ModificationType;
 import com.beehyv.nmsreporting.enums.ReportType;
+import com.beehyv.nmsreporting.model.ModificationTracker;
 import com.beehyv.nmsreporting.model.Role;
 import com.beehyv.nmsreporting.model.State;
 import com.beehyv.nmsreporting.model.User;
@@ -17,13 +15,16 @@ import org.springframework.expression.ParseException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.QueryParam;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.*;
 
 import static com.beehyv.nmsreporting.utils.ServiceFunctions.StReplace;
@@ -121,6 +122,7 @@ public class UserController {
     public @ResponseBody Boolean isLoggedIn() {
         return userService.getCurrentUser() != null;
     }
+
     @RequestMapping(value={"/isAdminLoggedIn"})
     public @ResponseBody Boolean isAdminLoggedIn() {
         User currentUser = userService.getCurrentUser();
@@ -213,81 +215,119 @@ public class UserController {
     @RequestMapping(value = {"/createUser"}, method = RequestMethod.POST)
     @ResponseBody public Map<Integer, String> createNewUser(@RequestBody User user) {
 
-//        ModificationTracker modification = new ModificationTracker();
-//        modification.setModificationDate(new Date(System.currentTimeMillis()));
-//        modification.setModificationDescription("Account creation");
-//        modification.setModificationType(ModificationType.CREATE.getModificationType());
-//        modification.setModifiedUserId(user);
-//        modification.setModifiedByUserId(userService.findUserByUsername(getPrincipal()));
-//        modificationTrackerService.saveModification(modification);
         user = locationService.SetLocations(user);
-        return userService.createNewUser(user);
+        Map<Integer,String> map = userService.createNewUser(user);
+        if(map.get(0).equals("User Created")){
+            ModificationTracker modification = new ModificationTracker();
+            modification.setModificationDate(new Date(System.currentTimeMillis()));
+            modification.setModificationType(ModificationType.CREATE.getModificationType());
+            modification.setModifiedUserId(userService.findUserByUsername(user.getUsername()).getUserId());
+            modification.setModifiedByUserId(userService.getCurrentUser().getUserId());
+            modificationTrackerService.saveModification(modification);
+        }
+        return map;
     }
 
     @RequestMapping(value = {"/updateUser"}, method = RequestMethod.POST)
     @ResponseBody public Map updateExistingUser(@RequestBody User user) {
 
-//        String trackModification = mapper.convertValue(node.get("modification"), String.class);
-//
-//        ModificationTracker modification = new ModificationTracker();
-//        modification.setModificationDate(new Date(System.currentTimeMillis()));
-//        modification.setModificationType(ModificationType.UPDATE.getModificationType());
-//        modification.setModifiedByUserId(userService.findUserByUsername(getPrincipal()));
-//        modification.setModifiedUserId(user);
-//        modification.setModificationDescription(trackModification);
-//        modificationTrackerService.saveModification(modification);
-
-//        return "redirect:http://localhost:8080/app/#!/";
         user = locationService.SetLocations(user);
-        return userService.updateExistingUser(user);
+        User oldUser = userService.findUserByUserId(user.getUserId());
+        Map<Integer,String> map = userService.updateExistingUser(user);
+        if(map.get(0).equals("User Updated")){
+            userService.TrackModifications(oldUser, user);
+        }
+        return map;
     }
 
     @RequestMapping(value = {"/updateContacts"}, method = RequestMethod.POST)
     @ResponseBody public Map updateContacts(@RequestBody ContactInfo contactInfo) {
+        User user=userService.findUserByUserId(contactInfo.getUserId());
+        Map<Integer, String> map=userService.updateContacts(contactInfo);
+        if(map.get(0).equals("Contacts Updated")){
+            TrackContactInfoModifications(user, contactInfo);
+        }
+        return map;
+    }
 
-//        String trackModification = mapper.convertValue(node.get("modification"), String.class);
-//
-//        ModificationTracker modification = new ModificationTracker();
-//        modification.setModificationDate(new Date(System.currentTimeMillis()));
-//        modification.setModificationType(ModificationType.UPDATE.getModificationType());
-//        modification.setModifiedByUserId(userService.findUserByUsername(getPrincipal()));
-//        modification.setModifiedUserId(user);
-//        modification.setModificationDescription(trackModification);
-//        modificationTrackerService.saveModification(modification);
-
-//        return "redirect:http://localhost:8080/app/#!/";
-
-        return userService.updateContacts(contactInfo);
+    private void TrackContactInfoModifications(User oldUser, ContactInfo contactInfo) {
+        if(!oldUser.getEmailId().equals(contactInfo.getEmail())) {
+            ModificationTracker modification = new ModificationTracker();
+            modification.setModificationDate(new Date(System.currentTimeMillis()));
+            modification.setModificationType(ModificationType.UPDATE.getModificationType());
+            modification.setModifiedField("email_id");
+            modification.setPreviousValue(oldUser.getEmailId());
+            modification.setNewValue(contactInfo.getEmail());
+            modification.setModifiedUserId(oldUser.getUserId());
+            modification.setModifiedByUserId(userService.getCurrentUser().getUserId());
+            modificationTrackerService.saveModification(modification);
+        }
+        if(!oldUser.getPhoneNumber().equals(contactInfo.getPhoneNumber())){
+            ModificationTracker modification = new ModificationTracker();
+            modification.setModificationDate(new Date(System.currentTimeMillis()));
+            modification.setModificationType(ModificationType.UPDATE.getModificationType());
+            modification.setModifiedField("phone_no");
+            modification.setPreviousValue(oldUser.getPhoneNumber());
+            modification.setNewValue(contactInfo.getPhoneNumber());
+            modification.setModifiedUserId(oldUser.getUserId());
+            modification.setModifiedByUserId(userService.getCurrentUser().getUserId());
+            modificationTrackerService.saveModification(modification);
+        }
     }
 
     @RequestMapping(value = {"/resetPassword"}, method = RequestMethod.POST)
     @ResponseBody public Map resetPassword(@RequestBody PasswordDto passwordDto){
-        //        String trackModification = mapper.convertValue(node.get("modification"), String.class);
-//
-//        ModificationTracker modification = new ModificationTracker();
-//        modification.setModificationDate(new Date(System.currentTimeMillis()));
-//        modification.setModificationType(ModificationType.UPDATE.getModificationType());
-//        modification.setModifiedByUserId(userService.findUserByUsername(getPrincipal()));
-//        modification.setModifiedUserId(user);
-//        modification.setModificationDescription(trackModification);
-//        modificationTrackerService.saveModification(modification);
 
-//        return "redirect:http://localhost:8080/app/#!/";
-        /*return userService.updatePassword(passwordDto);*/
-        return  userService.changePassword(passwordDto);
+        User user=userService.findUserByUserId(passwordDto.getUserId());
+        Map<Integer, String >map=  userService.changePassword(passwordDto);
+        if(map.get(0).equals("Password changed successfully")){
+            ModificationTracker modification = new ModificationTracker();
+            modification.setModificationDate(new Date(System.currentTimeMillis()));
+            modification.setModificationType(ModificationType.UPDATE.getModificationType());
+            modification.setModifiedUserId(passwordDto.getUserId());
+            modification.setModifiedField("password");
+            modification.setModifiedByUserId(userService.getCurrentUser().getUserId());
+            modificationTrackerService.saveModification(modification);
+        }
+        return map;
+    }
+
+
+    @RequestMapping(value = {"/forgotPassword"}, method = RequestMethod.POST)
+    @ResponseBody
+    public Map forgotPassword(@RequestBody ForgotPasswordDto forgotPasswordDto){
+
+        User user=userService.findUserByUsername(forgotPasswordDto.getUsername());
+        Map<Integer, String >map=  userService.forgotPasswordCredentialChecker(forgotPasswordDto);
+        if(map.get(0).equals("Password changed successfully")){
+            ModificationTracker modification = new ModificationTracker();
+            modification.setModificationDate(new Date(System.currentTimeMillis()));
+            modification.setModificationType(ModificationType.UPDATE.getModificationType());
+            modification.setModifiedUserId(user.getUserId());
+            modification.setModifiedField("password");
+            modification.setModifiedByUserId(user.getUserId());
+            modificationTrackerService.saveModification(modification);
+        }
+        return map;
     }
 
 
 
     @RequestMapping(value = {"/deleteUser/{id}"}, method = RequestMethod.GET)
+    @ResponseBody
     public Map deleteExistingUser(@PathVariable("id") Integer id) {
-        return userService.deleteExistingUser(id);
-//        ModificationTracker modification = new ModificationTracker();
-//        modification.setModificationDate(new Date(System.currentTimeMillis()));
-//        modification.setModificationType(ModificationType.DELETE.getModificationType());
-//        modification.setModificationDescription("Account deletion");
-//        modification.setModifiedUserId(user);
-//        modification.setModifiedByUserId(userService.findUserByUsername(getPrincipal()));
+
+        Map<Integer, String> map=userService.deleteExistingUser(id);
+        if(map.get(0).equals("User deleted")) {
+            ModificationTracker modification = new ModificationTracker();
+            modification.setModificationDate(new Date(System.currentTimeMillis()));
+            modification.setModificationType(ModificationType.DELETE.getModificationType());
+            modification.setModifiedField("account_status");
+            modification.setModifiedUserId(id);
+            modification.setModifiedByUserId(userService.getCurrentUser().getUserId());
+            modificationTrackerService.saveModification(modification);
+        }
+        return map;
     }
 
     private String getPrincipal(){
@@ -305,7 +345,8 @@ public class UserController {
     @RequestMapping(value = "/getReport", method = RequestMethod.POST/*,produces = "application/vnd.ms-excel"*/)
     @ResponseBody
     public Map<String, String> getReport(@RequestBody ReportRequest reportRequest/*,HttpServletResponse response*/) throws ParseException, java.text.ParseException{
-
+        String reportPath = "";
+        String reportName = "";
         String rootPath = "";
         String place = AccessLevel.NATIONAL.getAccessLevel();
 
@@ -321,7 +362,7 @@ public class UserController {
            }
 
             if(reportRequest.getCircleId()!=0){
-                place=StReplace(locationService.findCircleById(reportRequest.getCircleId()).getCircleName());
+                place=StReplace(locationService.findCircleById(reportRequest.getCircleId()).getCircleFullName());
                 rootPath+=place+"/";
             }
        }
@@ -355,38 +396,41 @@ public class UserController {
            }
        }
        String filename= reportRequest.getReportType()+"_"+place+"_"+getMonthYear(reportRequest.getFromDate())+".xlsx";
-
+        if(reportRequest.getReportType().equals(ReportType.flwRejected.getReportType()) ||
+                reportRequest.getReportType().equals(ReportType.motherRejected.getReportType()) ||
+                reportRequest.getReportType().equals(ReportType.childRejected.getReportType())){
+            filename=reportRequest.getReportType()+"_"+place+"_"+getDateMonthYear(reportRequest.getFromDate())+".xlsx";
+        }
        reportPath = reports+reportRequest.getReportType()+"/"+rootPath;
        reportName = filename;
 
-       rootPath = reportPath + reportName;
-
-       File file=new File(rootPath);
+       File file=new File(reportPath + reportName);
        if(!(file.exists())){
            adminService.createSpecificReport(reportRequest);
        }
 
-
        m.put("status", "success");
        m.put("file", reportName);
+       m.put("path", reportRequest.getReportType()+"/"+rootPath);
        return m;
     }
 
-    private String reportPath = "";
-    private String reportName = "";
 
     @RequestMapping(value = "/downloadReport", method = RequestMethod.GET,produces = "application/vnd.ms-excel")
     @ResponseBody
-    public String getBulkDataImportCSV(HttpServletResponse response) throws ParseException, java.text.ParseException {
+    public String getBulkDataImportCSV(HttpServletResponse response, @DefaultValue("") @QueryParam("fileName") String fileName,
+                                       @DefaultValue("") @QueryParam("rootPath") String rootPath) throws ParseException, java.text.ParseException {
 //        adminService.getBulkDataImportCSV();
         response.setContentType("APPLICATION/OCTECT-STREAM");
-        if (reportPath.length() == 0 || reportName.length() == 0) {
-            reportName = "";
-            reportPath = "";
+        if (StringUtils.isEmpty(fileName) || StringUtils.isEmpty(rootPath)) {
+            fileName = "";
+            rootPath = "";
             return "fail";
         }
+        String reportName=fileName;
+        String reportPath=reports+rootPath;
         try {
-            PrintWriter out = response.getWriter();
+            ServletOutputStream out = response.getOutputStream();
             String filename = reportName;
             response.setHeader("Content-Disposition", "attachment;filename=\"" + filename + "\"");
             FileInputStream fl = new FileInputStream(reportPath + reportName);
@@ -399,8 +443,6 @@ public class UserController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        reportName = "";
-        reportPath = "";
         return "success";
     }
 
@@ -430,6 +472,12 @@ public class UserController {
                 "images/drop-down-3.png",
                 ReportType.maInactive.getServiceType())
         );
+        maList.add(new Report(
+                ReportType.flwRejected.getReportName(),
+                ReportType.flwRejected.getReportType(),
+                "images/drop-down-3.png",
+                ReportType.flwRejected.getServiceType())
+        );
         maMenu.put("service", maList.get(0).getService());
         maMenu.put("options", maList);
 
@@ -456,8 +504,20 @@ public class UserController {
                 ReportType.selfDeactivated.getReportType(),
                 "images/drop-down-3.png",
                 ReportType.selfDeactivated.getServiceType())
+        );kList.add(new Report(
+                ReportType.motherRejected.getReportName(),
+                ReportType.motherRejected.getReportType(),
+                "images/drop-down-3.png",
+                ReportType.motherRejected.getServiceType())
         );
-        maMenu.put("service", kList.get(0).getService());
+        kList.add(new Report(
+                ReportType.childRejected.getReportName(),
+                ReportType.childRejected.getReportType(),
+                "images/drop-down-3.png",
+                ReportType.childRejected.getServiceType())
+        );
+
+        kMenu.put("service", kList.get(0).getService());
         kMenu.put("options", kList);
 
         List<Map<String, Object>> l = new ArrayList<>();
@@ -478,8 +538,8 @@ public class UserController {
         return l;
     }
 
-  @RequestMapping(value = {"/createMaster"}, method = RequestMethod.GET)
-   @ResponseBody String createNewUser() {
+    @RequestMapping(value = {"/createMaster"}, method = RequestMethod.GET)
+    @ResponseBody String createNewUser() {
 //
 ////        ModificationTracker modification = new ModificationTracker();
 ////        modification.setModificationDate(new Date(System.currentTimeMillis()));
@@ -491,20 +551,44 @@ public class UserController {
 //
         return userService.createMaster();
     }
-private String getMonthYear(Date toDate) {
-    Calendar c =Calendar.getInstance();
-    c.setTime(toDate);
-    int month=c.get(Calendar.MONTH)+1;
-    String monthString = "";
-    int year=(c.get(Calendar.YEAR))%100;
-//        String monthString = c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH );
-    if(month<10){
-        monthString="0"+String.valueOf(month);
+    private String getMonthYear(Date toDate) {
+        Calendar c =Calendar.getInstance();
+        c.setTime(toDate);
+        int month=c.get(Calendar.MONTH)+1;
+        String monthString = "";
+        int year=(c.get(Calendar.YEAR))%100;
+    //        String monthString = c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH );
+        if(month<10){
+            monthString="0"+String.valueOf(month);
+        }
+        else monthString=String.valueOf(month);
+
+        String yearString=String.valueOf(year);
+
+        return monthString+"_"+yearString;
     }
-    else monthString=String.valueOf(month);
 
-    String yearString=String.valueOf(year);
+    private String getDateMonthYear(Date toDate) {
+        Calendar calendar=Calendar.getInstance();
+        calendar.setTime(toDate);
+        int date=calendar.get(Calendar.DATE);
+        int month=calendar.get(Calendar.MONTH)+1;
+        int year=(calendar.get(Calendar.YEAR))%100;
+        String dateString;
+        if(date<10) {
+            dateString="0"+String.valueOf(date);
+        }
+        else dateString=String.valueOf(date);
+        String monthString;
+        if(month<10){
+            monthString="0"+String.valueOf(month);
+        }
+        else monthString=String.valueOf(month);
 
-    return monthString+"_"+yearString;
-}
+        String yearString=String.valueOf(year);
+
+        return dateString + "_" + monthString+"_"+yearString;
+
+    }
+
 }

@@ -24,14 +24,7 @@
 
 			$scope.accessLevelList = ["NATIONAL", "STATE", "DISTRICT", "BLOCK"]
 
-			$scope.showAccess = function(level){
-				var levelIndex = $scope.accessLevelList.indexOf(UserFormFactory.getCurrentUser().accessLevel);
-				if($scope.accessLevelList.indexOf(level) >= levelIndex){
-					return true;
-				}else{
-					return false;
-				}
-			}
+			
 
 			$scope.getAccessLevel = function(level){
 			
@@ -79,6 +72,35 @@
 
 			// 	$scope.$parent.currentPage = "user-table";
 			// 	delete $scope.$parent.currentPageTitle;
+			// }
+
+			$scope.filterAccessType = function(accessType){
+				if($scope.newUser.accessLevel == 'BLOCK' || 
+					UserFormFactory.getCurrentUser().accessLevel == 'DISTRICT' ||
+					(UserFormFactory.getCurrentUser().accessLevel == $scope.newUser.accessLevel && UserFormFactory.getCurrentUser().roleId != 1)){
+					return accessType.roleId != 2;
+				}
+				else{
+					return true;
+				}
+			}
+
+			$scope.filterAccessLevel = function(accessLevel){
+				var temp = false;
+				if($scope.newUser.roleId == 2 && UserFormFactory.getCurrentUser().roleId != 1){ // admin
+					temp = accessLevel != "BLOCK" && accessLevel != UserFormFactory.getCurrentUser().accessLevel;
+				}
+				else{
+					temp = true;
+				}
+
+				var levelIndex = $scope.accessLevelList.indexOf(UserFormFactory.getCurrentUser().accessLevel);
+				return ($scope.accessLevelList.indexOf(accessLevel) >= levelIndex) && temp;
+			}
+
+			// $scope.showAccess = function(level){
+			// 	var levelIndex = $scope.accessLevelList.indexOf(UserFormFactory.getCurrentUser().accessLevel);
+			// 	return ($scope.accessLevelList.indexOf(level) >= levelIndex)
 			// }
 
 			$scope.createUserSubmit = function() {

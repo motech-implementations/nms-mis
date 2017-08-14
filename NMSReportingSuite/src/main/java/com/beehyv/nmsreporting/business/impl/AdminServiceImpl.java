@@ -5,10 +5,13 @@ import com.beehyv.nmsreporting.dao.*;
 import com.beehyv.nmsreporting.entity.ReportRequest;
 import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.AccessType;
+import com.beehyv.nmsreporting.enums.ModificationType;
 import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.*;
-import com.beehyv.nmsreporting.utils.*;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.util.CellUtil;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -17,8 +20,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.io.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -67,6 +68,15 @@ public class AdminServiceImpl implements AdminService {
     private KilkariSixWeeksNoAnswerDao kilkariSixWeeksNoAnswerDao;
 
     @Autowired
+    private ChildImportRejectionDao childImportRejectionDao;
+
+    @Autowired
+    private MotherImportRejectionDao motherImportRejectionDao;
+
+    @Autowired
+    private FlwImportRejectionDao flwImportRejectionDao;
+
+    @Autowired
     private KilkariLowUsageDao kilkariLowUsageDao;
 
     @Autowired
@@ -80,6 +90,10 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private CircleDao circleDao;
+
+
+    @Autowired
+    private ModificationTrackerDao modificationTrackerDao;
 
     private final String documents = System.getProperty("user.home") +File.separator+ "Documents/";
     private final String reports = documents+"Reports/";
@@ -115,7 +129,53 @@ public class AdminServiceImpl implements AdminService {
                         // use comma as separator
                         String[] Line = line.split(cvsSplitBy);
 
+                       /* List<Role> userRole = roleDao.findByRoleDescription(Line[7]);
+                        boolean isLevel = AccessLevel.isLevel(Line[7]);
+                        if (!(isLevel)) {
+                            Integer rowNum = lineNumber;
+                            String userNameError = "Please specify the access level for user";
+                            errorCreatingUsers.put(rowNum, userNameError);
+                            continue;
+                        }
+                        boolean isType = AccessType.isType(Line[8]);
+                        if (!(isType)) {
+                            Integer rowNum = lineNumber;
+                            String userNameError = "Please specify the role for user";
+                            errorCreatingUsers.put(rowNum, userNameError);
+                            continue;
+                        }
+                        if (userRole == null || userRole.size() == 0) {
+                            Integer rowNum = lineNumber;
+                            String userNameError = "Please specify the role of user";
+                            errorCreatingUsers.put(rowNum, userNameError);
+                            continue;
+                        }
+                        int userRoleId = userRole.get(0).getRoleId();
+                        String UserRole = AccessType.getType(Line[8]);
+                        AccessLevel accessLevel = AccessLevel.getLevel(Line[7]);
+
+                        if(stateDao.findByName(Line[1]).isEmpty()) {
+                            Integer rowNum = lineNumber;
+                            String userNameError = "Please specify valid state name";
+                            errorCreatingUsers.put(rowNum, userNameError);
+                            continue;
+                        }
+                        if(districtDao.findByName(Line[2]).isEmpty()){
+                            Integer rowNum = lineNumber;
+                            String userNameError = "Please specify the role of user";
+                            errorCreatingUsers.put(rowNum, userNameError);
+                            continue;
+                        }*/
                         User user = new User();
+                       /* user.setFullName(Line[0]);
+                        user.setStateId(stateDao.findByName(Line[1]).get(0).getStateId());
+                        user.setDistrictId(districtDao.findByName(Line[2]).get(0).getDistrictId());
+                        user.setBlockId(blockDao.findByName(Line[3]).get(0).getBlockId());
+                        user.setPhoneNumber(Line[4]);
+                        user.setEmailId(Line[5]);
+                        user.setUsername(Line[6]);
+                        user.setAccessLevel(accessLevel.getAccessLevel());
+                        user.setRoleId(userRoleId);*/
                         Role role;
                         State state;
                         String userName = Line[6];
@@ -176,7 +236,7 @@ public class AdminServiceImpl implements AdminService {
                             errorCreatingUsers.put(rowNum, userNameError);
                             continue;
                         }
-                        SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy");
+/*                        SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy");
                         Date date = null;
                         try {
                             date = sdf1.parse(Line[7]);
@@ -184,20 +244,20 @@ public class AdminServiceImpl implements AdminService {
                             e.printStackTrace();
                         }
                         java.sql.Date sqlStartDate = new java.sql.Date(date.getTime());
-                        user.setCreationDate((sqlStartDate));
+                        user.setCreationDate((sqlStartDate));*/
                         /*user.setCreatedByUser(loggedInUser);*/
-                        List<Role> userRole = roleDao.findByRoleDescription(Line[8]);
+                        List<Role> userRole = roleDao.findByRoleDescription(Line[7]);
                         String State = Line[1];
                         String District = Line[2];
                         String Block = Line[3];
-                        boolean isLevel = AccessLevel.isLevel(Line[8]);
+                        boolean isLevel = AccessLevel.isLevel(Line[7]);
                         if (!(isLevel)) {
                             Integer rowNum = lineNumber;
                             String userNameError = "Please specify the access level for user";
                             errorCreatingUsers.put(rowNum, userNameError);
                             continue;
                         }
-                        boolean isType = AccessType.isType(Line[9]);
+                        boolean isType = AccessType.isType(Line[8]);
                         if (!(isType)) {
                             Integer rowNum = lineNumber;
                             String userNameError = "Please specify the role for user";
@@ -211,8 +271,8 @@ public class AdminServiceImpl implements AdminService {
                             continue;
                         }
                         int userRoleId = userRole.get(0).getRoleId();
-                        String UserRole = AccessType.getType(Line[9]);
-                        AccessLevel accessLevel = AccessLevel.getLevel(Line[8]);
+                        String UserRole = AccessType.getType(Line[8]);
+                        AccessLevel accessLevel = AccessLevel.getLevel(Line[7]);
                         if (UserRole.equalsIgnoreCase("ADMIN")) {
                             if ((accessLevel == AccessLevel.NATIONAL) || (accessLevel == AccessLevel.STATE)) {
                                 Integer rowNum = lineNumber;
@@ -407,6 +467,13 @@ public class AdminServiceImpl implements AdminService {
                         user.setBlockName(user.getBlockId()==null ? "" :  blockDao.findByblockId(user.getBlockId()).getBlockName());
                         user.setRoleName(user.getRoleId()==null ? "" : roleDao.findByRoleId(user.getRoleId()).getRoleDescription());
                         userDao.saveUser(user);
+                        ModificationTracker modification = new ModificationTracker();
+                        modification.setModificationDate(new Date(System.currentTimeMillis()));
+                        modification.setModificationType(ModificationType.CREATE.getModificationType());
+                        modification.setModifiedUserId(userDao.findByUserName(user.getUsername()).getUserId());
+                        modification.setModifiedByUserId(loggedInUser.getUserId());
+                        modificationTrackerDao.saveModification(modification);
+
                     }
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -430,7 +497,7 @@ public class AdminServiceImpl implements AdminService {
         String NEW_LINE_SEPARATOR = "\n";
 
         //CSV file header
-        String FILE_HEADER = "Full Name, State, District, Block, Phone number, Email ID, UserName, Creation Date, Access Level,Role";
+        String FILE_HEADER = "Full Name, State, District, Block, Phone number, Email ID, UserName, Access Level,Role";
         FileWriter fileWriter = null;
         try {
             fileWriter = new FileWriter(documents+"BulkImportData.csv");
@@ -499,7 +566,7 @@ public class AdminServiceImpl implements AdminService {
         if (!dir.exists())
             dir.mkdirs();
         for (Circle circle : circleList) {
-            String circleName = StReplace(circle.getCircleName());
+            String circleName = StReplace(circle.getCircleFullName());
             String rootPathCircle = rootPath + reportType + "/" + circleName;
             File dirCircle = new File(rootPathCircle);
             if (!dirCircle.exists())
@@ -579,7 +646,7 @@ public class AdminServiceImpl implements AdminService {
                 }
             }
         }
-        if(reportRequest.getReportType().equals(ReportType.maInactive.getReportType())){
+        else if(reportRequest.getReportType().equals(ReportType.maInactive.getReportType())){
 
             List<FrontLineWorkers> inactiveFrontLineWorkers = frontLineWorkersDao.getInactiveFrontLineWorkers(toDate);
 
@@ -625,7 +692,7 @@ public class AdminServiceImpl implements AdminService {
                 }
             }
         }
-        if(reportRequest.getReportType().equals(ReportType.maAnonymous.getReportType())){
+        else if(reportRequest.getReportType().equals(ReportType.maAnonymous.getReportType())){
 
             List<AnonymousUsers> anonymousUsersList = anonymousUsersDao.getAnonymousUsers(fromDate,toDate);
 
@@ -634,12 +701,13 @@ public class AdminServiceImpl implements AdminService {
             }
             else{
                 String circleName=StReplace(circleDao.getByCircleId(circleId).getCircleName());
-                String rootPathCircle=rootPath+circleName+"/";
+                String circleFullName = StReplace(circleDao.getByCircleId(circleId).getCircleFullName());
+                String rootPathCircle=rootPath+circleFullName+"/";
                 List<AnonymousUsers> anonymousUsersListCircle = anonymousUsersDao.getAnonymousUsersCircle(fromDate,toDate,StReplace(circleDao.getByCircleId(circleId).getCircleName()));
-                getCircleWiseAnonymousUsers(anonymousUsersListCircle, rootPathCircle, circleName, toDate);
+                getCircleWiseAnonymousUsers(anonymousUsersListCircle, rootPathCircle, circleFullName, toDate);
             }
         }
-        if(reportRequest.getReportType().equals(ReportType.lowUsage.getReportType())){
+        else if(reportRequest.getReportType().equals(ReportType.lowUsage.getReportType())){
 
             List<KilkariLowUsage> kilkariLowUsageList = kilkariLowUsageDao.getKilkariLowUsageUsers(getMonthYear(toDate));
             if(stateId==0){
@@ -684,7 +752,7 @@ public class AdminServiceImpl implements AdminService {
                 }
             }
         }
-        if(reportRequest.getReportType().equals(ReportType.sixWeeks.getReportType())){
+        else if(reportRequest.getReportType().equals(ReportType.sixWeeks.getReportType())){
 
             List<KilkariSixWeeksNoAnswer> kilkariSixWeeksNoAnswers = kilkariSixWeeksNoAnswerDao.getKilkariUsers(fromDate, toDate);
 
@@ -731,7 +799,7 @@ public class AdminServiceImpl implements AdminService {
             }
         }
 
-        if(reportRequest.getReportType().equals(ReportType.selfDeactivated.getReportType())){
+        else if(reportRequest.getReportType().equals(ReportType.selfDeactivated.getReportType())){
 
             List<KilkariSelfDeactivated> kilkariSelfDeactivatedList = kilkariSelfDeactivatedDao.getSelfDeactivatedUsers(fromDate, toDate);
 
@@ -777,6 +845,800 @@ public class AdminServiceImpl implements AdminService {
                 }
             }
         }
+        else if(reportRequest.getReportType().equals(ReportType.motherRejected.getReportType())){
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(reportRequest.getFromDate());
+            calendar.set(Calendar.MILLISECOND, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.add(Calendar.DAY_OF_MONTH,1);
+            Date nextDay= calendar.getTime();
+            Date lastDate=reportRequest.getFromDate();
+            List<MotherImportRejection> motherImportRejections = motherImportRejectionDao.getAllRejectedMotherImportRecords(nextDay);
+
+            String stateName=StReplace(stateDao.findByStateId(stateId).getStateName());
+            String rootPathState = rootPath+ stateName+ "/";
+            if(districtId==0){
+                List<MotherImportRejection> candidatesFromThisState = new ArrayList<>();
+                for (MotherImportRejection rejection : motherImportRejections) {
+                    if ((rejection.getStateId()!=null)&&(rejection.getStateId() == stateId)) {
+                        candidatesFromThisState.add(rejection);
+                    }
+                }
+                getCumulativeRejectedMotherImports(candidatesFromThisState,rootPathState, stateName, lastDate);
+            }
+            else{
+                String districtName=StReplace(districtDao.findByDistrictId(districtId).getDistrictName());
+                String rootPathDistrict = rootPathState+ districtName+ "/";
+                if(blockId==0){
+                    List<MotherImportRejection> candidatesFromThisDistrict = new ArrayList<>();
+                    for (MotherImportRejection rejection : motherImportRejections) {
+                        if ((rejection.getDistrictId()!=null)&&(rejection.getDistrictId() == districtId)) {
+                            candidatesFromThisDistrict.add(rejection);
+                        }
+                    }
+                    getCumulativeRejectedMotherImports(candidatesFromThisDistrict,rootPathDistrict, districtName, lastDate);
+                }
+                else{
+                    String blockName=StReplace(blockDao.findByblockId(blockId).getBlockName());
+                    String rootPathblock = rootPathDistrict + blockName+ "/";
+
+                    List<MotherImportRejection> candidatesFromThisBlock = new ArrayList<>();
+                    for (MotherImportRejection rejection : motherImportRejections) {
+                        if ((rejection.getHealthBlockId()!=null)&&(rejection.getHealthBlockId() == blockId)) {
+                            candidatesFromThisBlock.add(rejection);
+                        }
+                    }
+                    getCumulativeRejectedMotherImports(candidatesFromThisBlock, rootPathblock, blockName, lastDate);
+                }
+            }
+        }
+        else if(reportRequest.getReportType().equals(ReportType.childRejected.getReportType())){
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(reportRequest.getFromDate());
+            calendar.set(Calendar.MILLISECOND, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.add(Calendar.DAY_OF_MONTH,1);
+            Date nextDay= calendar.getTime();
+            Date lastDate=reportRequest.getFromDate();
+            List<ChildImportRejection> childImportRejections = childImportRejectionDao.getRejectedChildRecords(nextDay);
+
+            String stateName=StReplace(stateDao.findByStateId(stateId).getStateName());
+            String rootPathState = rootPath+ stateName+ "/";
+            if(districtId==0){
+                List<ChildImportRejection> candidatesFromThisState = new ArrayList<>();
+                for (ChildImportRejection rejection : childImportRejections) {
+                    if ((rejection.getStateId()!=null)&&(rejection.getStateId() == stateId)) {
+                        candidatesFromThisState.add(rejection);
+                    }
+                }
+                getCumulativeRejectedChildImports(candidatesFromThisState,rootPathState, stateName, lastDate);
+            }
+            else{
+                String districtName=StReplace(districtDao.findByDistrictId(districtId).getDistrictName());
+                String rootPathDistrict = rootPathState+ districtName+ "/";
+                if(blockId==0){
+                    List<ChildImportRejection> candidatesFromThisDistrict = new ArrayList<>();
+                    for (ChildImportRejection rejection : childImportRejections) {
+                        if ((rejection.getDistrictId()!=null)&&(rejection.getDistrictId() == districtId)) {
+                            candidatesFromThisDistrict.add(rejection);
+                        }
+                    }
+                    getCumulativeRejectedChildImports(candidatesFromThisDistrict,rootPathDistrict, districtName, lastDate);
+                }
+                else{
+                    String blockName=StReplace(blockDao.findByblockId(blockId).getBlockName());
+                    String rootPathblock = rootPathDistrict + blockName+ "/";
+
+                    List<ChildImportRejection> candidatesFromThisBlock = new ArrayList<>();
+                    for (ChildImportRejection rejection : childImportRejections) {
+                        if ((rejection.getHealthBlockId()!=null)&&(rejection.getHealthBlockId() == blockId)) {
+                            candidatesFromThisBlock.add(rejection);
+                        }
+                    }
+                    getCumulativeRejectedChildImports(candidatesFromThisBlock, rootPathblock, blockName, lastDate);
+                }
+            }
+
+        }
+        else if(reportRequest.getReportType().equals(ReportType.flwRejected.getReportType())){
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(reportRequest.getFromDate());
+            calendar.set(Calendar.MILLISECOND, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.add(Calendar.DAY_OF_MONTH,1);
+            Date nextDay= calendar.getTime();
+            Date lastDate=reportRequest.getFromDate();
+            List<FlwImportRejection> childImportRejections = flwImportRejectionDao.getAllRejectedFlwImportRecords(nextDay);
+
+            String stateName=StReplace(stateDao.findByStateId(stateId).getStateName());
+            String rootPathState = rootPath+ stateName+ "/";
+            if(districtId==0){
+                List<FlwImportRejection> candidatesFromThisState = new ArrayList<>();
+                for (FlwImportRejection rejection : childImportRejections) {
+                    if ((rejection.getStateId()!=null)&&(rejection.getStateId() == stateId)) {
+                        candidatesFromThisState.add(rejection);
+                    }
+                }
+                getCumulativeRejectedFlwImports(candidatesFromThisState,rootPathState, stateName, lastDate);
+            }
+            else{
+                String districtName=StReplace(districtDao.findByDistrictId(districtId).getDistrictName());
+                String rootPathDistrict = rootPathState+ districtName+ "/";
+                if(blockId==0){
+                    List<FlwImportRejection> candidatesFromThisDistrict = new ArrayList<>();
+                    for (FlwImportRejection rejection : childImportRejections) {
+                        if ((rejection.getDistrictId()!=null)&&(rejection.getDistrictId() == districtId)) {
+                            candidatesFromThisDistrict.add(rejection);
+                        }
+                    }
+                    getCumulativeRejectedFlwImports(candidatesFromThisDistrict,rootPathDistrict, districtName, toDate);
+                }
+                else{
+                    String blockName=StReplace(blockDao.findByblockId(blockId).getBlockName());
+                    String rootPathblock = rootPathDistrict + blockName+ "/";
+
+                    List<FlwImportRejection> candidatesFromThisBlock = new ArrayList<>();
+                    for (FlwImportRejection rejection : childImportRejections) {
+                        if ((rejection.getHealthBlockId()!=null)&&(rejection.getHealthBlockId() == blockId)) {
+                            candidatesFromThisBlock.add(rejection);
+                        }
+                    }
+                    getCumulativeRejectedFlwImports(candidatesFromThisBlock, rootPathblock, blockName, lastDate);
+                }
+            }
+
+        }
+    }
+
+
+    private void getCumulativeRejectedChildImports(List<ChildImportRejection> rejectedChildImports, String rootPath,
+                                                   String place, Date toDate) {
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        //Create a blank sheet
+        XSSFSheet spreadsheet = workbook.createSheet(
+                " Child Import Rejected Details ");
+        //Create row object
+        XSSFRow row;
+        //This data needs to be written (Object[])
+        Map<String, Object[]> empinfo =
+                new TreeMap<String, Object[]>();
+        empinfo.put("1", new Object[]{
+                "State Id",
+                "District Id",
+                "District Name",
+                "PHC Id",
+                "PHC Name",
+                "Subcentre Id",
+                "Taluka Id",
+                "Taluka Name",
+                "Health Block Id",
+                "Health Block Name",
+                "Subcentre Name",
+                "Village Id",
+                "Village Name",
+                "Yr",
+                "City Maholla",
+                "GP Viilage",
+                "Address",
+                "Id No",
+                "Name",
+                "Mobile No",
+                "Mother Name",
+                "Mother Id",
+                "Asha Phone Number",
+                "BCG Dt",
+                "OPV0 Dt",
+                "HepatitisB1 Dt",
+                "DPT1 Dt",
+                "OPV1 Dt",
+                "HepatitisB2 Dt",
+                "Phone Number of Whom",
+                "Whom Phone Number",
+                "Birth Date",
+                "Place Of Delivery",
+                "Blood Group",
+                "Caste",
+                "Subcenter Name1",
+                "ANM Name",
+                "ANM Phone ",
+                "Asha Phone",
+                "Asha Name",
+                "DPT2 Dt",
+                "OPV2 Dt",
+                "HepatitisB3 Dt",
+                "DPT3 Dt",
+                "OPV3 Dt",
+                "HepatitisB4 Dt",
+                "Measles Dt",
+                "VitA Dose1 Dt",
+                "MR Dt",
+                "DPT Booster Dt",
+                "OPV Booster Dt",
+                "VitA Dose2 Dt",
+                "VitA Dose3 Dt",
+                "TT10 Dt",
+                "JE Dt",
+                "VitA Dose9 Dt",
+                "DT5 Dt",
+                "TT16Dt",
+                "CLD Reg Date",
+                "Asha ID",
+                "Last Update Date",
+                "VitA Dose6 Dt",
+                "Remarks",
+                "ANM Id",
+                "Created By",
+                "Updated By",
+                "Measles2 Dt",
+                "Weight Of Child",
+                "Child Aadhar No",
+                "Child EID",
+                "Sex",
+                "VitA Dose5 Dt",
+                "VitA Dose7 Dt",
+                "VitA Dose8 Dt",
+                "Child EID Time",
+                "Father Name",
+                "Exec Date",
+                "Accepted",
+                "Rejection Reason",
+                "Birth Certificate Number",
+                "Entry Type",
+                "Source",
+                "Registration No",
+                "MCTS Mother Id",
+                "Action",
+                "Creation Date",
+                "Modification Date"
+
+        });
+        Integer counter = 2;
+        if(rejectedChildImports.isEmpty()) {
+            empinfo.put(counter.toString(), new Object[]{"No Records to display"});
+        }
+        for (ChildImportRejection childRejection : rejectedChildImports) {
+            empinfo.put((counter.toString()), new Object[]{
+                    (childRejection.getStateId() == null) ? "No State Id": childRejection.getStateId(),
+                    (childRejection.getDistrictId() == null) ? "No District Id": childRejection.getDistrictId(),
+                    (childRejection.getDistrictName() == null) ? "No District Name": childRejection.getDistrictName(),
+                    (childRejection.getPhcId() == null) ? "No PHC Id" : childRejection.getPhcId(),
+                    (childRejection.getPhcName() == null) ? "No PHC Name" : childRejection.getPhcName(),
+                    (childRejection.getSubcentreId() == null) ? "No Sub-centre Id" : childRejection.getSubcentreId(),
+                    (childRejection.getTalukaId() == null) ? "No Health Taluka Id" : childRejection.getTalukaId(),
+                    (childRejection.getTalukaName() == null) ? "No Taluka Name" : childRejection.getTalukaName(),
+                    (childRejection.getHealthBlockId() == null) ? "No Health Block Id": childRejection.getHealthBlockId(),
+                    (childRejection.getHealthBlockName() == null) ? "No Health Block Name": childRejection.getHealthBlockName(),
+                    (childRejection.getSubcentreName() == null) ? "No Sub Centre Name": childRejection.getSubcentreName(),
+                    (childRejection.getVillageId() == null) ? "No Village Id": childRejection.getVillageId(),
+                    (childRejection.getVillageName() == null) ? "No Village Name": childRejection.getVillageName(),
+                    (childRejection.getYr() == null) ? "No Yr": childRejection.getYr(),
+                    (childRejection.getCityMaholla() == null) ? "No City Maholla": childRejection.getCityMaholla(),
+                    (childRejection.getgPVillage() == null) ? "No Gp Village": childRejection.getgPVillage(),
+                    (childRejection.getAddress() == null) ? "No Address": childRejection.getAddress(),
+                    (childRejection.getIdNo() == null) ? "No Id No": childRejection.getIdNo(),
+                    (childRejection.getName() == null) ? "No Name": childRejection.getName(),
+                    (childRejection.getMobileNo() == null) ? "No Mobile No": childRejection.getMobileNo(),
+                    (childRejection.getMotherName() == null) ? "No Mother name": childRejection.getMotherName(),
+                    (childRejection.getMotherId() == null) ? "No Mother Id": childRejection.getMotherId(),
+                    (childRejection.getAshaPhone() == null) ? "No Asha Phone no": childRejection.getAshaPhone(),
+                    (childRejection.getbCGDt() == null) ? "No  Bcg Dt": childRejection.getbCGDt(),
+                    (childRejection.getoPV0Dt() == null) ? "No OpV0 Dt": childRejection.getoPV0Dt(),
+                    (childRejection.getHepatitisB1Dt() == null) ? "No HepatitisB1 Dt": childRejection.getHepatitisB1Dt(),
+                    (childRejection.getdPT1Dt() == null) ? "No DPT1 Dt": childRejection.getdPT1Dt(),
+                    (childRejection.getoPV1Dt() == null) ? "No OPT1 Dt": childRejection.getoPV1Dt(),
+                    (childRejection.getHepatitisB2Dt() == null) ? "No HepatitisB2 Dt": childRejection.getHepatitisB2Dt(),
+                    (childRejection.getPhoneNumberWhom() == null) ? "No Phone Number of Whom": childRejection.getPhoneNumberWhom(),
+                    (childRejection.getWhomPhoneNumber() == null) ? "No Whom Phone Number": childRejection.getWhomPhoneNumber(),
+                    (childRejection.getBirthDate() == null) ? "No Birth Date": childRejection.getBirthDate(),
+                    (childRejection.getPlaceOfDelivery() == null) ? "No Place of Delivery": childRejection.getPlaceOfDelivery(),
+                    (childRejection.getBloodGroup() == null) ? "No Blood Group": childRejection.getBloodGroup(),
+                    (childRejection.getCaste() == null) ? "No Caste": childRejection.getCaste(),
+                    (childRejection.getSubcenterName1() == null) ? "No Sub Center Name1": childRejection.getSubcenterName1(),
+                    (childRejection.getaNMName() == null) ? "No ANM Name": childRejection.getaNMName(),
+                    (childRejection.getaNMPhone() == null) ? "No ANM phone": childRejection.getaNMPhone(),
+                    (childRejection.getAshaPhone() == null) ? "No Asha Phone Number": childRejection.getAshaPhone(),
+                    (childRejection.getAshaName() == null) ? "No Asha Name": childRejection.getAshaName(),
+                    (childRejection.getdPT2Dt() == null) ? "No DPT2 Dt": childRejection.getdPT2Dt(),
+                    (childRejection.getoPV2Dt() == null) ? "No OPV2 Dt": childRejection.getoPV2Dt(),
+                    (childRejection.getHepatitisB3Dt() == null) ? "No HepatitisB3 Dt": childRejection.getHepatitisB3Dt(),
+                    (childRejection.getdPT3Dt() == null) ? "No DPV3 Dt": childRejection.getdPT3Dt(),
+                    (childRejection.getoPV3Dt() == null) ? "No OPV3 Dt": childRejection.getoPV3Dt(),
+                    (childRejection.getHepatitisB4Dt() == null) ? "No HepatitisB4 Dt": childRejection.getHepatitisB4Dt(),
+                    (childRejection.getMeaslesDt() == null) ? "No Measles Dt": childRejection.getMeaslesDt(),
+                    (childRejection.getVitADose1Dt() == null) ? "No VitA Dose1 Dt": childRejection.getVitADose1Dt(),
+                    (childRejection.getmRDt() == null) ? "No MR Dt": childRejection.getmRDt(),
+                    (childRejection.getdPTBoosterDt() == null) ? "No DPV Booster Dt": childRejection.getdPTBoosterDt(),
+                    (childRejection.getoPVBoosterDt() == null) ? "No OPV Booster Dt": childRejection.getoPVBoosterDt(),
+                    (childRejection.getVitADose2Dt() == null) ? "No VitA Dose2 Dt": childRejection.getVitADose2Dt(),
+                    (childRejection.getVitADose3Dt() == null) ? "No VitA Dose3 Dt": childRejection.getjEDt(),
+                    (childRejection.gettT10Dt() == null) ? "No T10 Dt": childRejection.gettT10Dt(),
+                    (childRejection.getjEDt() == null) ? "No JE Dt": childRejection.getjEDt(),
+                    (childRejection.getVitADose9Dt() == null) ? "No VitA Dose9 Dt": childRejection.getVitADose9Dt(),
+                    (childRejection.getdT5Dt() == null) ? "No Dt5 Dt": childRejection.getdT5Dt(),
+                    (childRejection.gettT16Dt() == null) ? "No Tt16 Dt": childRejection.gettT16Dt(),
+                    (childRejection.getcLDRegDATE() == null) ? "No Cld Reg Date": childRejection.getcLDRegDATE(),
+                    (childRejection.getAshaID() == null) ? "No Asha Id": childRejection.getAshaID(),
+                    (childRejection.getLastUpdateDate() == null) ? "No Last Updated Date": childRejection.getLastUpdateDate(),
+                    (childRejection.getVitADose6Dt() == null) ? "No VitaDose6 Dt": childRejection.getVitADose6Dt(),
+                    (childRejection.getRemarks() == null) ? "No Remarks": childRejection.getRemarks(),
+                    (childRejection.getaNMID() == null) ? "No ANMID": childRejection.getaNMID(),
+                    (childRejection.getCreatedBy() == null) ? "No Created By": childRejection.getCreatedBy(),
+                    (childRejection.getUpdatedBy() == null) ? "No Updated by": childRejection.getUpdatedBy(),
+                    (childRejection.getMeasles2Dt() == null) ? "No Measles2 Dt": childRejection.getMeasles2Dt(),
+                    (childRejection.getWeightOfChild() == null) ? "No Weight of Child": childRejection.getWeightOfChild(),
+                    (childRejection.getChildAadhaarNo() == null) ? "No Child Aadhaar No": childRejection.getChildAadhaarNo(),
+                    (childRejection.getChildEID() == null) ? "No Child EID": childRejection.getChildEID(),
+                    (childRejection.getSex() == null) ? "No Sex": childRejection.getSex(),
+                    (childRejection.getVitADose5Dt() == null) ? "No VitA Dose5 Dt": childRejection.getVitADose5Dt(),
+                    (childRejection.getVitADose7Dt() == null) ? "No VitA Dose7 Dt": childRejection.getVitADose7Dt(),
+                    (childRejection.getVitADose8Dt() == null) ? "No VitA Dose8 Dt": childRejection.getVitADose8Dt(),
+                    (childRejection.getChildEIDTime() == null) ? "No Child EID Time": childRejection.getChildEIDTime(),
+                    (childRejection.getFatherName() == null) ? "No Father name": childRejection.getFatherName(),
+                    (childRejection.getExecDate() == null) ? "No Exec Date": childRejection.getExecDate(),
+                    (childRejection.getAccepted() == null) ? "No Accepted": childRejection.getAccepted(),
+                    (childRejection.getRejectionReason() == null) ? "No Details": childRejection.getRejectionReason(),
+                    (childRejection.getBirthCertificateNumber() == null) ? "No Birth Certificate Number": childRejection.getBirthCertificateNumber(),
+                    (childRejection.getEntryType() == null) ? "No Entry Type": childRejection.getEntryType(),
+                    (childRejection.getSource() == null) ? "No Source": childRejection.getSource(),
+                    (childRejection.getRegistrationNo() == null) ? "No Registration No": childRejection.getRegistrationNo(),
+                    (childRejection.getmCTSMotherIDNo() == null) ? "No MCTS Mother Id": childRejection.getmCTSMotherIDNo(),
+                    (childRejection.getAction() == null) ? "No Action": childRejection.getRegistrationNo(),
+                    (childRejection.getCreationDate() == null) ? "No Creation Date": childRejection.getCreationDate(),
+                    (childRejection.getModificationDate() == null) ? "No Modification Date": childRejection.getModificationDate(),
+            });
+            counter++;
+//            System.out.println("Added "+counter);
+        }
+        Set<String> keyid = empinfo.keySet();
+        int rowid = 0;
+        for (String key : keyid) {
+            row = spreadsheet.createRow(rowid++);
+            Object[] objectArr = empinfo.get(key);
+            int cellid = 0;
+            for (Object obj : objectArr) {
+                Cell cell = row.createCell(cellid++);
+                cell.setCellValue(obj.toString());
+                if(rowid == 2 && rejectedChildImports.isEmpty()){
+                    CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
+                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A2:CI2"));
+                }
+            }
+        }
+        //Write the workbook in file system
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(new File(rootPath + ReportType.childRejected.getReportType() + "_" + place + "_" + getDateMonthYear(toDate) + ".xlsx"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            workbook.write(out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void getCumulativeRejectedMotherImports(List<MotherImportRejection> rejectedMotherImports, String rootPath,
+                                                   String place, Date toDate) {
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        //Create a blank sheet
+        XSSFSheet spreadsheet = workbook.createSheet(
+                " Mother Import Rejected Details ");
+        //Create row object
+        XSSFRow row;
+        //This data needs to be written (Object[])
+        Map<String, Object[]> empinfo = new TreeMap<String, Object[]>();
+        empinfo.put("1", new Object[]{
+                "State Id",
+                "District Id",
+                "District Name",
+                "PHC Id",
+                "PHC Name",
+                "Subcentre Id",
+                "Taluka Id",
+                "Taluka Name",
+                "Health Block Id",
+                "Health Block Name",
+                "Subcentre Name",
+                "Village Id",
+                "Village Name",
+                "Yr",
+                "GP Viilage",
+                "Address",
+                "Id No",
+                "Name",
+                "Husband Name",
+                "Phone Number of Whom",
+                "Whom Phone Number",
+                "Birth Date",
+                "JSY Beneficiary",
+                "Caste",
+                "Subcentre Name1",
+                "ANM Name",
+                "ANM Phone",
+                "Asha Phone",
+                "Asha Name",
+                "Delivery Lnk Facility",
+                "Facility Name",
+                "LMP Date",
+                "ANC1 Date",
+                "ANC2 Date",
+                "ANC3 Date",
+                "ANC4 Date",
+                "TT1 Date",
+                "TT2 Date",
+                "TT Booster Date",
+                "IFA100 Given Date",
+                "Anemia",
+                "ANC Complication",
+                "RTI STI",
+                "Dly Date",
+                "Dly Place Home Type",
+                "Dly Place Public",
+                "Dly Place Private",
+                "Dly Type",
+                "Dly Complication",
+                "Discharge Date",
+                "JSY Paid Date",
+                "Abortion",
+                "PNC Home Visit",
+                "PNC Complication",
+                "PPC Method",
+                "PNC Checkup",
+                "Outcome Nos",
+                "Child1 Name",
+                "Child1 Sex",
+                "Child1 Wt",
+                "Child1 Brestfeeding",
+                "Child2 Name",
+                "Child2 Sex",
+                "Child2 Wt",
+                "Child2 Brestfeeding",
+                "Child3 Name",
+                "Child3 Sex",
+                "Child3 Wt",
+                "Child3 Brestfeeding",
+                "Child4 Name",
+                "Child4 Sex",
+                "Child4 Wt",
+                "Child4 Brestfeeding",
+                "Age",
+                "MTHRREG DATE",
+                "Last Update Date",
+                "Remarks",
+                "ANM ID",
+                "ASHA ID",
+                "Call Ans",
+                "No Call Reason",
+                "No Phone Reason",
+                "Created By",
+                "Updated By",
+                "Aadhar No",
+                "BPLAPL",
+                "EID",
+                "EID Time",
+                "Entry Type",
+                "Registration No",
+                "Case No",
+                "Mobile No",
+                "Abortion Type",
+                "Delivery Outcomes",
+                "Exec Date",
+                "Accepted",
+                "Rejection Reason",
+                "Source",
+                "Action",
+                "Creation Date",
+                "Modification Date"
+        });
+        Integer counter = 2;
+        if(rejectedMotherImports.isEmpty()) {
+            empinfo.put(counter.toString(), new Object[]{"No Records to display"});
+        }
+        for (MotherImportRejection motherRejection : rejectedMotherImports) {
+            empinfo.put((counter.toString()), new Object[]{
+                    (motherRejection.getStateId() == null) ? "No State Id": motherRejection.getStateId(),
+                    (motherRejection.getDistrictId() == null) ? "No District Id": motherRejection.getDistrictId(),
+                    (motherRejection.getDistrictName() == null) ? "No District Name": motherRejection.getDistrictName(),
+                    (motherRejection.getPhcId() == null) ? "No PHC Id" : motherRejection.getPhcId(),
+                    (motherRejection.getPhcName() == null) ? "No PHC Name" : motherRejection.getPhcName(),
+                    (motherRejection.getSubcentreId() == null) ? "No Sub-centre Id" : motherRejection.getSubcentreId(),
+                    (motherRejection.getTalukaId() == null) ? "No Health Taluka Id" : motherRejection.getTalukaId(),
+                    (motherRejection.getTalukaName() == null) ? "No Taluka Name" : motherRejection.getTalukaName(),
+                    (motherRejection.getHealthBlockId() == null) ? "No Health Block Id": motherRejection.getHealthBlockId(),
+                    (motherRejection.getHealthBlockName() == null) ? "No Health Block Name": motherRejection.getHealthBlockName(),
+                    (motherRejection.getSubcentreName() == null) ? "No Sub Centre Name": motherRejection.getSubcentreName(),
+                    (motherRejection.getVillageId() == null) ? "No Village Id": motherRejection.getVillageId(),
+                    (motherRejection.getVillageName() == null) ? "No Village Name": motherRejection.getVillageName(),
+                    (motherRejection.getYr() == null) ? "No Yr": motherRejection.getYr(),
+                    (motherRejection.getgPVillage() == null) ? "No Gp Village": motherRejection.getgPVillage(),
+                    (motherRejection.getAddress() == null) ? "No Address": motherRejection.getAddress(),
+                    (motherRejection.getIdNo() == null) ? "No Id No": motherRejection.getIdNo(),
+                    (motherRejection.getName() == null) ? "No Name": motherRejection.getName(),
+                    (motherRejection.getHusbandName() == null) ? "No Husband Name": motherRejection.getHusbandName(),
+                    (motherRejection.getPhoneNumberWhom() == null) ? "No Phone Number of Whom": motherRejection.getPhoneNumberWhom(),
+                    (motherRejection.getWhomPhoneNumber() == null) ? "No Whom Phone Number": motherRejection.getWhomPhoneNumber(),
+                    (motherRejection.getBirthDate() == null) ? "No Birth Date": motherRejection.getBirthDate(),
+                    (motherRejection.getjSYBeneficiary() == null) ? "No Jsy Beneficiary": motherRejection.getjSYBeneficiary(),
+                    (motherRejection.getCaste() == null) ? "No Caste": motherRejection.getCaste(),
+                    (motherRejection.getSubcenterName1() == null) ? "No Sub Center Name1": motherRejection.getSubcenterName1(),
+                    (motherRejection.getaNMName() == null) ? "No ANM Name": motherRejection.getaNMName(),
+                    (motherRejection.getaNMPhone() == null) ? "No ANM phone": motherRejection.getaNMPhone(),
+                    (motherRejection.getAshaPhone() == null) ? "No Asha Phone Number": motherRejection.getAshaPhone(),
+                    (motherRejection.getAshaName() == null) ? "No Asha Name": motherRejection.getAshaName(),
+                    (motherRejection.getDeliveryLnkFacility() == null) ? "No Delivery Link Facility": motherRejection.getDeliveryLnkFacility(),
+                    (motherRejection.getFacilityName() == null) ? "No Facility Name": motherRejection.getFacilityName(),
+                    (motherRejection.getLmpDate() == null) ? "No Lmp Date": motherRejection.getLmpDate(),
+                    (motherRejection.getaNC1Date() == null) ? "No ANC1 Date": motherRejection.getaNC1Date(),
+                    (motherRejection.getaNC2Date() == null) ? "No ANC2 Date": motherRejection.getaNC2Date(),
+                    (motherRejection.getaNC3Date() == null) ? "No ANC3 Date": motherRejection.getaNC3Date(),
+                    (motherRejection.getaNC4Date() == null) ? "No ANC4 Date": motherRejection.getaNC4Date(),
+                    (motherRejection.gettT1Date() == null) ? "No TT1 Date": motherRejection.gettT1Date(),
+                    (motherRejection.gettT2Date() == null) ? "No TT2 Date": motherRejection.gettT2Date(),
+                    (motherRejection.gettTBoosterDate() == null) ? "No TT Booster Date": motherRejection.gettTBoosterDate(),
+                    (motherRejection.getiFA100GivenDate() == null) ? "No IFA100 Given Date": motherRejection.getiFA100GivenDate(),
+                    (motherRejection.getAnemia() == null) ? "No Anemia" : motherRejection.getAnemia(),
+                    (motherRejection.getaNCComplication() == null) ? "No ANC Complication": motherRejection.getaNCComplication(),
+                    (motherRejection.getrTISTI() == null) ? "No RTISTI": motherRejection.getrTISTI(),
+                    (motherRejection.getDlyDate() == null) ? "No Dly Date": motherRejection.getDlyDate(),
+                    (motherRejection.getDlyPlaceHomeType() == null) ? "No Dly Place Home type": motherRejection.getDlyPlaceHomeType(),
+                    (motherRejection.getDlyPlacePublic() == null) ? "No Dly Place Public": motherRejection.getDlyPlacePublic(),
+                    (motherRejection.getDlyPlacePrivate() == null) ? "No Dly Place Private": motherRejection.getDlyPlacePrivate(),
+                    (motherRejection.getDlyType() == null) ? "No Dly Type": motherRejection.getDlyType(),
+                    (motherRejection.getDlyComplication() == null) ? "No Dly Complication": motherRejection.getDlyComplication(),
+                    (motherRejection.getDischargeDate() == null) ? "No Discharge Date": motherRejection.getDischargeDate(),
+                    (motherRejection.getjSYPaidDate() == null) ? "No JSY Paid Date": motherRejection.getjSYPaidDate(),
+                    (motherRejection.getAbortion() == null) ? "No Abortion": motherRejection.getAbortion(),
+                    (motherRejection.getpNCHomeVisit() == null) ? "No PNC HOME Visit": motherRejection.getpNCHomeVisit(),
+                    (motherRejection.getpNCComplication() == null) ? "No PNC Complication": motherRejection.getpNCComplication(),
+                    (motherRejection.getpPCMethod() == null) ? "No PPC Method": motherRejection.getpPCMethod(),
+                    (motherRejection.getpNCCheckup() == null) ? "No PNC Checkup": motherRejection.getpNCCheckup(),
+                    (motherRejection.getOutcomeNos() == null) ? "No Outcomes": motherRejection.getOutcomeNos(),
+                    (motherRejection.getChild1Name() == null) ? "No Child1 Name": motherRejection.getChild1Name(),
+                    (motherRejection.getChild1Sex() == null) ? "No Child1 Sex": motherRejection.getChild1Sex(),
+                    (motherRejection.getChild1Wt() == null) ? "No Child1 Weight": motherRejection.getChild1Wt(),
+                    (motherRejection.getChild1Brestfeeding() == null) ? "No Child1 Brest Feeding": motherRejection.getChild1Brestfeeding(),
+                    (motherRejection.getChild2Name() == null) ? "No Child2 Name": motherRejection.getChild2Name(),
+                    (motherRejection.getChild2Sex() == null) ? "No Child2 Sex": motherRejection.getChild2Sex(),
+                    (motherRejection.getChild2Wt() == null) ? "No Child2 Weight": motherRejection.getChild2Wt(),
+                    (motherRejection.getChild2Brestfeeding() == null) ? "No Child2 Brest Feeding": motherRejection.getChild2Brestfeeding(),
+                    (motherRejection.getChild3Name() == null) ? "No Child3 Name": motherRejection.getChild3Name(),
+                    (motherRejection.getChild3Sex() == null) ? "No Child3 Sex": motherRejection.getChild3Sex(),
+                    (motherRejection.getChild3Wt() == null) ? "No Child3 Weight": motherRejection.getChild3Wt(),
+                    (motherRejection.getChild3Brestfeeding() == null) ? "No Child3 Brest Feeding": motherRejection.getChild3Brestfeeding(),
+                    (motherRejection.getChild4Name() == null) ? "No Child4 Name": motherRejection.getChild4Name(),
+                    (motherRejection.getChild4Sex() == null) ? "No Child4 Sex": motherRejection.getChild4Sex(),
+                    (motherRejection.getChild4Wt() == null) ? "No Child4 Weight": motherRejection.getChild4Wt(),
+                    (motherRejection.getChild4Brestfeeding() == null) ? "No Child4 Brest Feeding": motherRejection.getChild4Brestfeeding(),
+                    (motherRejection.getAge() == null) ? "No Age": motherRejection.getAge(),
+                    (motherRejection.getmTHRREGDATE() == null) ? "No MTHRREGDATE": motherRejection.getmTHRREGDATE(),
+                    (motherRejection.getLastUpdateDate() == null) ? "No Last Updated Date": motherRejection.getLastUpdateDate(),
+                    (motherRejection.getRemarks() == null) ? "No Remarks": motherRejection.getRemarks(),
+                    (motherRejection.getaNMID() == null) ? "No ANMID": motherRejection.getaNMID(),
+                    (motherRejection.getaSHAID() == null) ? "No AshaID": motherRejection.getaSHAID(),
+                    (motherRejection.getCallAns() == null) ? "No Call Ans": motherRejection.getCallAns(),
+                    (motherRejection.getNoCallReason() == null) ? "No Call Reason": motherRejection.getNoCallReason(),
+                    (motherRejection.getNoPhoneReason() == null) ? "No Phone Reason": motherRejection.getNoPhoneReason(),
+                    (motherRejection.getCreatedBy() == null) ? "No Created By": motherRejection.getCreatedBy(),
+                    (motherRejection.getUpdatedBy() == null) ? "No Updated by": motherRejection.getUpdatedBy(),
+                    (motherRejection.getAadharNo() == null) ? "No Aadhar No": motherRejection.getAadharNo(),
+                    (motherRejection.getbPLAPL() == null) ? "No BPLAPL": motherRejection.getbPLAPL(),
+                    (motherRejection.geteID() == null) ? "No EID": motherRejection.geteID(),
+                    (motherRejection.geteIDTime() == null) ? "No EID Time": motherRejection.geteIDTime(),
+                    (motherRejection.getEntryType() == null) ? "No Entry Type": motherRejection.getEntryType(),
+                    (motherRejection.getRegistrationNo() == null) ? "No Registration No": motherRejection.getRegistrationNo(),
+                    (motherRejection.getCaseNo() == null) ? "No Case No": motherRejection.getCaseNo(),
+                    (motherRejection.getMobileNo() == null) ? "No Mobile No": motherRejection.getMobileNo(),
+                    (motherRejection.getAbortionType() == null) ? "No Abortion Type": motherRejection.getAbortionType(),
+                    (motherRejection.getDeliveryOutcomes() == null) ? "No Delivery Outcomes": motherRejection.getDeliveryOutcomes(),
+                    (motherRejection.getExecDate() == null) ? "No Exec Date": motherRejection.getExecDate(),
+                    (motherRejection.getAccepted() == null) ? "Not Accepted": motherRejection.getAccepted(),
+                    (motherRejection.getRejectionReason() == null) ? "No Rejection Reason": motherRejection.getRejectionReason(),
+                    (motherRejection.getSource() == null) ? "No Source": motherRejection.getSource(),
+                    (motherRejection.getAction() == null) ? "No Action": motherRejection.getRegistrationNo(),
+                    (motherRejection.getCreationDate() == null) ? "No Creation Date": motherRejection.getCreationDate(),
+                    (motherRejection.getModificationDate() == null) ? "No Modification Date": motherRejection.getModificationDate(),
+            });
+            counter++;
+//            System.out.println("Added "+counter);
+        }
+        Set<String> keyid = empinfo.keySet();
+        int rowid = 0;
+        for (String key : keyid) {
+            row = spreadsheet.createRow(rowid++);
+            Object[] objectArr = empinfo.get(key);
+            int cellid = 0;
+            for (Object obj : objectArr) {
+                Cell cell = row.createCell(cellid++);
+                cell.setCellValue(obj.toString());
+                if(rowid == 2 && rejectedMotherImports.isEmpty()){
+                    CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
+                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A2:CW2"));
+                }
+            }
+        }
+        //Write the workbook in file system
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(new File(rootPath + ReportType.motherRejected.getReportType() + "_" + place + "_" + getDateMonthYear(toDate) + ".xlsx"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            workbook.write(out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void getCumulativeRejectedFlwImports(List<FlwImportRejection> rejectedChildImports, String rootPath,
+                                                    String place, Date toDate) {
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        //Create a blank sheet
+        XSSFSheet spreadsheet = workbook.createSheet(
+                " Flw Import Rejected Details ");
+        //Create row object
+        XSSFRow row;
+        //This data needs to be written (Object[])
+        Map<String, Object[]> empinfo =
+                new TreeMap<String, Object[]>();
+        empinfo.put("1", new Object[]{
+                "State Id",
+                "District Id",
+                "District Name",
+                "Taluka Id",
+                "Taluka Name",
+                "Health Block Id",
+                "Health Block Name",
+                "PHC Id",
+                "PHC Name",
+                "Subcentre Id",
+                "Subcentre Name",
+                "Village Id",
+                "Village Name",
+                "Flw Id",
+                "MSIDN",
+                "Gf Name",
+                "Gf Status",
+                "Exec Date",
+                "Reg Date",
+                "Sex",
+                "Type",
+                "SMS Reply",
+                "Aadhar No",
+                "Created On",
+                "Updated On",
+                "Bank Id",
+                "Branch Name",
+                "IFSC ID Code",
+                "Bank Name",
+                "Account Number",
+                "Linked Aadhar Number",
+                "Verified Date",
+                "Verifier Name",
+                "Verifier Id",
+                "Call Answer",
+                "Correct Phone Number",
+                "Reason For No Call Answer",
+                "Reason For No Phone",
+                "Verifier Remarks",
+                "Gf Address",
+                "Husband Name",
+                "Accepted",
+               "Rejection Reason",
+                "Source",
+                "Action",
+                "Creation Date",
+                "Last Modification Date"
+
+        });
+        Integer counter = 2;
+        if(rejectedChildImports.isEmpty()) {
+            empinfo.put(counter.toString(), new Object[]{"No Records to display"});
+        }
+        for (FlwImportRejection flwRejection : rejectedChildImports) {
+            empinfo.put((counter.toString()), new Object[]{
+                    (flwRejection.getStateId() == null) ? "No State Id": flwRejection.getStateId(),
+                    (flwRejection.getDistrictId() == null) ? "No District Id": flwRejection.getDistrictId(),
+                    (flwRejection.getDistrictName() == null) ? "No District Name": flwRejection.getDistrictName(),
+                    (flwRejection.getTalukaId() == null) ? "No Health Taluka Id" : flwRejection.getTalukaId(),
+                    (flwRejection.getTalukaName() == null) ? "No Taluka Name" : flwRejection.getTalukaName(),
+                    (flwRejection.getHealthBlockId() == null) ? "No Health Block Id": flwRejection.getHealthBlockId(),
+                    (flwRejection.getHealthBlockName() == null) ? "No Health Block Name": flwRejection.getHealthBlockName(),
+                    (flwRejection.getPhcId() == null) ? "No PHC Id" : flwRejection.getPhcId(),
+                    (flwRejection.getPhcName() == null) ? "No PHC Name" : flwRejection.getPhcName(),
+                    (flwRejection.getSubcentreId() == null) ? "No Sub Centre Id" : flwRejection.getSubcentreId(),
+                    (flwRejection.getSubcentreName() == null) ? "No Sub-centre Id" : flwRejection.getSubcentreName(),
+                    (flwRejection.getVillageId() == null) ? "No Village Id": flwRejection.getVillageId(),
+                    (flwRejection.getVillageName() == null) ? "No Village Name": flwRejection.getVillageName(),
+                    (flwRejection.getFlwId() == null) ? "No CFLW ID": flwRejection.getFlwId(),
+                    (flwRejection.getMsisdn() == null) ? "No MSISDN": flwRejection.getMsisdn(),
+                    (flwRejection.getGfName() == null) ? "No Gf Name": flwRejection.getGfName(),
+                    (flwRejection.getGfStatus() == null) ? "No Gf Status": flwRejection.getGfStatus(),
+                    (flwRejection.getExecDate() == null) ? "No Exec Date": flwRejection.getExecDate(),
+                    (flwRejection.getRegDate() == null) ? "No Reg Date": flwRejection.getRegDate(),
+                    (flwRejection.getSex() == null) ? "No Sex": flwRejection.getSex(),
+                    (flwRejection.getType() == null) ? "No Type": flwRejection.getType(),
+                    (flwRejection.getSmsReply() == null) ? "No SMS Reply": flwRejection.getSmsReply(),
+                    (flwRejection.getAadharNo() == null) ? "No Aadhar No": flwRejection.getAadharNo(),
+                    (flwRejection.getCreatedOn() == null) ? "No  Created On": flwRejection.getCreatedOn(),
+                    (flwRejection.getUpdatedOn() == null) ? "No Updated On": flwRejection.getUpdatedOn(),
+                    (flwRejection.getBankId() == null) ? "No Bank Id ": flwRejection.getBankId(),
+                    (flwRejection.getBranchName() == null) ? "No Bank Name ": flwRejection.getBranchName(),
+                    (flwRejection.getIfscIdCode() == null) ? "No IFSC Code ": flwRejection.getIfscIdCode(),
+                    (flwRejection.getBankName() == null) ? "No Bank Name": flwRejection.getBankName(),
+                    (flwRejection.getAccountNumber() == null) ? "No Account Nummber": flwRejection.getAccountNumber(),
+                    (flwRejection.getAadharLinked() == null) ? "No Aadhar linked": flwRejection.getAadharLinked(),
+                    (flwRejection.getVerifyDate() == null) ? "No Verified Date": flwRejection.getVerifyDate(),
+                    (flwRejection.getVerifierName() == null) ? "No Verifier Name": flwRejection.getVerifierName(),
+                    (flwRejection.getVerifierId() == null) ? "No Verifier Id": flwRejection.getVerifierId(),
+                    (flwRejection.getCallAns() == null) ? "No Call Answer": flwRejection.getCallAns(),
+                    (flwRejection.getPhoneNoCorrect() == null) ? "No Correct Phone number": flwRejection.getPhoneNoCorrect(),
+                    (flwRejection.getNoCallReason() == null) ? "No Reason For No Call": flwRejection.getNoCallReason(),
+                    (flwRejection.getNoPhoneReason() == null) ? "No Reason For No Phone": flwRejection.getNoPhoneReason(),
+                    (flwRejection.getVerifierRemarks() == null) ? "No Verifier Remarks": flwRejection.getVerifierRemarks(),
+                    (flwRejection.getGfAddress() == null) ? "No Gf Address": flwRejection.getGfAddress(),
+                    (flwRejection.getHusbandName() == null) ? "No Husband Name": flwRejection.getHusbandName(),
+                    (flwRejection.getAccepted() == null) ? "Not Accepted": flwRejection.getAccepted(),
+                    (flwRejection.getRejectionReason() == null) ? "No Rejection Reason": flwRejection.getRejectionReason(),
+                    (flwRejection.getSource() == null) ? "No Source": flwRejection.getSource(),
+                    (flwRejection.getAction() == null) ? "No Action": flwRejection.getAction(),
+                    (flwRejection.getCreationDate() == null) ? "No Creation Date": flwRejection.getCreationDate(),
+                    (flwRejection.getModificationDate() == null) ? "No Modification Date": flwRejection.getModificationDate(),
+            });
+            counter++;
+//            System.out.println("Added "+counter);
+        }
+        Set<String> keyid = empinfo.keySet();
+        int rowid = 0;
+        for (String key : keyid) {
+            row = spreadsheet.createRow(rowid++);
+            Object[] objectArr = empinfo.get(key);
+            int cellid = 0;
+            for (Object obj : objectArr) {
+                Cell cell = row.createCell(cellid++);
+                cell.setCellValue(obj.toString());
+                if(rowid == 2 && rejectedChildImports.isEmpty()){
+                    CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
+                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A2:AU2"));
+                }
+            }
+        }
+        //Write the workbook in file system
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(new File(rootPath + ReportType.flwRejected.getReportType() + "_" + place + "_" + getDateMonthYear(toDate) + ".xlsx"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            workbook.write(out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void getCumulativeCourseCompletion(List<MACourseFirstCompletion> successfulCandidates, String rootPath, String place, Date toDate) {
@@ -806,9 +1668,12 @@ public class AdminServiceImpl implements AdminService {
                 "ASHA Creation Date",
                 "ASHA Job Status",
                 "First Completion Date",
-                "Sent Notification"
+                "SMS Sent Notification"
         });
         Integer counter = 2;
+        if(successfulCandidates.isEmpty()) {
+            empinfo.put(counter.toString(), new Object[]{"No Records to display"});
+        }
         for (MACourseFirstCompletion maCourseFirstCompletion : successfulCandidates) {
             empinfo.put((counter.toString()), new Object[]{
                     (maCourseFirstCompletion.getMsisdn() == null) ? "No Phone":maCourseFirstCompletion.getMsisdn(),
@@ -838,6 +1703,10 @@ public class AdminServiceImpl implements AdminService {
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
                 cell.setCellValue(obj.toString());
+                if(rowid == 2 && successfulCandidates.isEmpty()){
+                    CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
+                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A2:N2"));
+                }
             }
         }
         //Write the workbook in file system
@@ -875,6 +1744,9 @@ public class AdminServiceImpl implements AdminService {
                 "Last Called Date"
         });
         Integer counter = 2;
+        if(anonymousUsersList.isEmpty()) {
+            empinfo.put(counter.toString(), new Object[]{"No Records to display"});
+        }
         for (AnonymousUsers anonymousUser : anonymousUsersList) {
             empinfo.put((counter.toString()), new Object[]{
                     anonymousUser.getCircleName(),
@@ -892,6 +1764,10 @@ public class AdminServiceImpl implements AdminService {
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
                 cell.setCellValue(obj.toString());
+                if(rowid==2 && anonymousUsersList.isEmpty()) {
+                    CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
+                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A2:C2"));
+                }
             }
         }
         //Write the workbook in file system
@@ -939,6 +1815,9 @@ public class AdminServiceImpl implements AdminService {
                 "ASHA Job Status"
         });
         Integer counter = 2;
+        if(inactiveCandidates.isEmpty()) {
+            empinfo.put(counter.toString(),new Object[]{"No Records to display"});
+        }
         for (FrontLineWorkers frontLineWorker : inactiveCandidates) {
             empinfo.put((counter.toString()), new Object[]{
                     (frontLineWorker.getMobileNumber() == null) ? "No Phone":frontLineWorker.getMobileNumber(),
@@ -965,6 +1844,10 @@ public class AdminServiceImpl implements AdminService {
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
                 cell.setCellValue(obj.toString());
+                if(rowid==2 && inactiveCandidates.isEmpty()) {
+                    CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
+                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A2:L2"));
+                }
             }
         }
         //Write the workbook in file system
@@ -1010,6 +1893,9 @@ public class AdminServiceImpl implements AdminService {
                 "Mobile Number",
                 "Age On Service In Weeks"});
         Integer counter = 2;
+        if(kilkariSixWeeksNoAnswersList.isEmpty()) {
+            empinfo.put(counter.toString(), new Object[]{"No Records to display"});
+        }
         for (KilkariSixWeeksNoAnswer kilkari : kilkariSixWeeksNoAnswersList) {
             empinfo.put((counter.toString()), new Object[]{
                     (kilkari.getStateId() == null) ? "No State" : stateDao.findByStateId(kilkari.getStateId()).getStateName(),
@@ -1037,6 +1923,10 @@ public class AdminServiceImpl implements AdminService {
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
                 cell.setCellValue(obj.toString());
+                if(rowid==2 && kilkariSixWeeksNoAnswersList.isEmpty()) {
+                    CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
+                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A2:L2"));
+                }
             }
         }
         //Write the workbook in file system
@@ -1086,6 +1976,9 @@ public class AdminServiceImpl implements AdminService {
                 "Number of calls answered when subscribed to Kilkari"
         });
         Integer counter = 2;
+        if(kilkariSelfDeactivatedList.isEmpty()) {
+            empinfo.put(counter.toString(), new Object[]{"No Records to display"});
+        }
         for (KilkariSelfDeactivated kilkari : kilkariSelfDeactivatedList) {
             empinfo.put((counter.toString()), new Object[]{
                     (kilkari.getStateId() == null) ? "No State" : stateDao.findByStateId(kilkari.getStateId()).getStateName(),
@@ -1116,6 +2009,10 @@ public class AdminServiceImpl implements AdminService {
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
                 cell.setCellValue(obj.toString());
+                if(rowid==2 && kilkariSelfDeactivatedList.isEmpty()) {
+                    CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
+                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A2:O2"));
+                }
             }
         }
         //Write the workbook in file system
@@ -1162,6 +2059,9 @@ public class AdminServiceImpl implements AdminService {
                 "Age On Service In Weeks"
         });
         Integer counter = 2;
+        if(kilkariLowUsageList.isEmpty()) {
+            empinfo.put(counter.toString(),new Object[]{"No Records to display"});
+        }
         for (KilkariLowUsage kilkari : kilkariLowUsageList) {
             empinfo.put((counter.toString()), new Object[]{
                     (kilkari.getStateId() == null) ? "No State" : stateDao.findByStateId(kilkari.getStateId()).getStateName(),
@@ -1188,6 +2088,10 @@ public class AdminServiceImpl implements AdminService {
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
                 cell.setCellValue(obj.toString());
+                if(rowid==2 && kilkariLowUsageList.isEmpty()) {
+                    CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
+                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A2:L2"));
+                }
             }
         }
         //Write the workbook in file system
@@ -1207,6 +2111,177 @@ public class AdminServiceImpl implements AdminService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void createChildImportRejectedFiles(Date toDate) {
+        List<State> states = stateDao.getStatesByServiceType(ReportType.childRejected.getServiceType());
+        String rootPath = reports +ReportType.childRejected.getReportType()+ "/";
+        Calendar aCalendar = Calendar.getInstance();
+        aCalendar.setTime(toDate);
+        aCalendar.set(Calendar.MILLISECOND, 0);
+        aCalendar.set(Calendar.SECOND, 0);
+        aCalendar.set(Calendar.MINUTE, 0);
+        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        aCalendar.add(Calendar.DAY_OF_MONTH,1);
+        Date nextDay=aCalendar.getTime();
+        List<ChildImportRejection> rejectedChildImports = childImportRejectionDao.getRejectedChildRecords(nextDay);
+        getCumulativeRejectedChildImports(rejectedChildImports, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
+        for (State state : states) {
+            String stateName = StReplace(state.getStateName());
+            String rootPathState = rootPath + stateName+ "/";
+            int stateId = state.getStateId();
+            List<ChildImportRejection> candidatesFromThisState = new ArrayList<>();
+            for (ChildImportRejection rejectedImport : rejectedChildImports) {
+                if ((rejectedImport.getStateId()!=null)&&(rejectedImport.getStateId() == stateId)) {
+                    candidatesFromThisState.add(rejectedImport);
+                }
+            }
+            getCumulativeRejectedChildImports(candidatesFromThisState, rootPathState, stateName, toDate);
+            List<District> districts = districtDao.getDistrictsOfState(stateId);
+
+            for (District district : districts) {
+                String districtName = StReplace(district.getDistrictName());
+                String rootPathDistrict = rootPathState + districtName+ "/";
+                int districtId = district.getDistrictId();
+                List<ChildImportRejection> candidatesFromThisDistrict = new ArrayList<>();
+                for (ChildImportRejection rejectedImport : candidatesFromThisState) {
+                    if ((rejectedImport.getDistrictId()!=null)&&(rejectedImport.getDistrictId() == districtId)) {
+                        candidatesFromThisDistrict.add(rejectedImport);
+                    }
+                }
+                getCumulativeRejectedChildImports(candidatesFromThisDistrict, rootPathDistrict, districtName, toDate);
+                List<Block> Blocks = blockDao.getBlocksOfDistrict(districtId);
+                for (Block block : Blocks) {
+                    String blockName = StReplace(block.getBlockName());
+                    String rootPathblock = rootPathDistrict + blockName+ "/";
+
+                    int blockId = block.getBlockId();
+                    List<ChildImportRejection> candidatesFromThisBlock = new ArrayList<>();
+                    for (ChildImportRejection rejectedImport : candidatesFromThisDistrict) {
+                        if ((rejectedImport.getHealthBlockId()!=null)&&(rejectedImport.getHealthBlockId() == blockId)) {
+                            candidatesFromThisBlock.add(rejectedImport);
+                        }
+                    }
+                    getCumulativeRejectedChildImports(candidatesFromThisBlock, rootPathblock, blockName, toDate);
+                }
+            }
+        }
+
+    }
+
+    @Override
+    public void createMotherImportRejectedFiles(Date toDate) {
+        List<State> states = stateDao.getStatesByServiceType(ReportType.motherRejected.getServiceType());
+        String rootPath = reports +ReportType.motherRejected.getReportType()+ "/";
+        Calendar aCalendar = Calendar.getInstance();
+        aCalendar.setTime(toDate);
+        aCalendar.set(Calendar.MILLISECOND, 0);
+        aCalendar.set(Calendar.SECOND, 0);
+        aCalendar.set(Calendar.MINUTE, 0);
+        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        aCalendar.add(Calendar.DAY_OF_MONTH,1);
+        Date nextDay=aCalendar.getTime();
+        List<MotherImportRejection> rejectedMotherImports = motherImportRejectionDao.getAllRejectedMotherImportRecords(nextDay);
+        getCumulativeRejectedMotherImports(rejectedMotherImports, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
+        for (State state : states) {
+            String stateName = StReplace(state.getStateName());
+            String rootPathState = rootPath + stateName+ "/";
+            int stateId = state.getStateId();
+            List<MotherImportRejection> candidatesFromThisState = new ArrayList<>();
+            for (MotherImportRejection rejectedImport : rejectedMotherImports) {
+                if ((rejectedImport.getStateId()!=null)&&(rejectedImport.getStateId() == stateId)) {
+                    candidatesFromThisState.add(rejectedImport);
+                }
+            }
+            getCumulativeRejectedMotherImports(candidatesFromThisState, rootPathState, stateName, toDate);
+            List<District> districts = districtDao.getDistrictsOfState(stateId);
+
+            for (District district : districts) {
+                String districtName = StReplace(district.getDistrictName());
+                String rootPathDistrict = rootPathState + districtName+ "/";
+                int districtId = district.getDistrictId();
+                List<MotherImportRejection> candidatesFromThisDistrict = new ArrayList<>();
+                for (MotherImportRejection rejectedImport : candidatesFromThisState) {
+                    if ((rejectedImport.getDistrictId()!=null)&&(rejectedImport.getDistrictId() == districtId)) {
+                        candidatesFromThisDistrict.add(rejectedImport);
+                    }
+                }
+                getCumulativeRejectedMotherImports(candidatesFromThisDistrict, rootPathDistrict, districtName, toDate);
+                List<Block> Blocks = blockDao.getBlocksOfDistrict(districtId);
+                for (Block block : Blocks) {
+                    String blockName = StReplace(block.getBlockName());
+                    String rootPathblock = rootPathDistrict + blockName+ "/";
+
+                    int blockId = block.getBlockId();
+                    List<MotherImportRejection> candidatesFromThisBlock = new ArrayList<>();
+                    for (MotherImportRejection rejectedImport : candidatesFromThisDistrict) {
+                        if ((rejectedImport.getHealthBlockId()!=null)&&(rejectedImport.getHealthBlockId() == blockId)) {
+                            candidatesFromThisBlock.add(rejectedImport);
+                        }
+                    }
+                    getCumulativeRejectedMotherImports(candidatesFromThisBlock, rootPathblock, blockName, toDate);
+                }
+            }
+        }
+
+    }
+
+    @Override
+    public void createFlwImportRejectedFiles(Date toDate) {
+        List<State> states = stateDao.getStatesByServiceType(ReportType.flwRejected.getServiceType());
+        String rootPath = reports +ReportType.flwRejected.getReportType()+ "/";
+        Calendar aCalendar = Calendar.getInstance();
+        aCalendar.setTime(toDate);
+        aCalendar.set(Calendar.MILLISECOND, 0);
+        aCalendar.set(Calendar.SECOND, 0);
+        aCalendar.set(Calendar.MINUTE, 0);
+        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        aCalendar.add(Calendar.DAY_OF_MONTH,1);
+        Date nextDay=aCalendar.getTime();
+        List<FlwImportRejection> rejectedFlwImports = flwImportRejectionDao.getAllRejectedFlwImportRecords(nextDay);
+        getCumulativeRejectedFlwImports(rejectedFlwImports, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
+        for (State state : states) {
+            String stateName = StReplace(state.getStateName());
+            String rootPathState = rootPath + stateName+ "/";
+            int stateId = state.getStateId();
+            List<FlwImportRejection> candidatesFromThisState = new ArrayList<>();
+            for (FlwImportRejection rejectedImport : rejectedFlwImports) {
+                if ((rejectedImport.getStateId()!=null)&&(rejectedImport.getStateId() == stateId)) {
+                    candidatesFromThisState.add(rejectedImport);
+                }
+            }
+            getCumulativeRejectedFlwImports(candidatesFromThisState, rootPathState, stateName, toDate);
+            List<District> districts = districtDao.getDistrictsOfState(stateId);
+
+            for (District district : districts) {
+                String districtName = StReplace(district.getDistrictName());
+                String rootPathDistrict = rootPathState + districtName+ "/";
+                int districtId = district.getDistrictId();
+                List<FlwImportRejection> candidatesFromThisDistrict = new ArrayList<>();
+                for (FlwImportRejection rejectedImport : candidatesFromThisState) {
+                    if ((rejectedImport.getDistrictId()!=null)&&(rejectedImport.getDistrictId() == districtId)) {
+                        candidatesFromThisDistrict.add(rejectedImport);
+                    }
+                }
+                getCumulativeRejectedFlwImports(candidatesFromThisDistrict, rootPathDistrict, districtName, toDate);
+                List<Block> Blocks = blockDao.getBlocksOfDistrict(districtId);
+                for (Block block : Blocks) {
+                    String blockName = StReplace(block.getBlockName());
+                    String rootPathblock = rootPathDistrict + blockName+ "/";
+
+                    int blockId = block.getBlockId();
+                    List<FlwImportRejection> candidatesFromThisBlock = new ArrayList<>();
+                    for (FlwImportRejection rejectedImport : candidatesFromThisDistrict) {
+                        if ((rejectedImport.getHealthBlockId()!=null)&&(rejectedImport.getHealthBlockId() == blockId)) {
+                            candidatesFromThisBlock.add(rejectedImport);
+                        }
+                    }
+                    getCumulativeRejectedFlwImports(candidatesFromThisBlock, rootPathblock, blockName, toDate);
+                }
+            }
+        }
+
     }
 
     @Override
@@ -1264,14 +2339,15 @@ public class AdminServiceImpl implements AdminService {
         getCircleWiseAnonymousUsers(anonymousUsersList, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
         for (Circle circle : circleList) {
             String circleName = StReplace(circle.getCircleName());
-            String rootPathCircle=rootPath+circleName+"/";
+            String circleFullName = StReplace(circle.getCircleFullName());
+            String rootPathCircle=rootPath+circleFullName+"/";
             List<AnonymousUsers> anonymousUsersListCircle = new ArrayList<>();
             for(AnonymousUsers anonymousUser : anonymousUsersList){
                 if(anonymousUser.getCircleName().equalsIgnoreCase(circleName)){
                     anonymousUsersListCircle.add(anonymousUser);
                 }
             }
-            getCircleWiseAnonymousUsers(anonymousUsersListCircle, rootPathCircle, circleName, toDate);
+            getCircleWiseAnonymousUsers(anonymousUsersListCircle, rootPathCircle, circleFullName, toDate);
         }
     }
 
@@ -1525,5 +2601,29 @@ public class AdminServiceImpl implements AdminService {
 
         return monthString+"_"+yearString;
     }
+
+    private String getDateMonthYear(Date toDate) {
+        Calendar calendar=Calendar.getInstance();
+        calendar.setTime(toDate);
+        int date=calendar.get(Calendar.DATE);
+        int month=calendar.get(Calendar.MONTH)+1;
+        int year=(calendar.get(Calendar.YEAR))%100;
+        String dateString;
+        if(date<10) {
+            dateString="0"+String.valueOf(date);
+        }
+        else dateString=String.valueOf(date);
+        String monthString;
+        if(month<10){
+            monthString="0"+String.valueOf(month);
+        }
+        else monthString=String.valueOf(month);
+
+        String yearString=String.valueOf(year);
+
+        return dateString + "_" + monthString+"_"+yearString;
+
+    }
+
 
 }

@@ -2,11 +2,14 @@ package com.beehyv.nmsreporting.business.impl;
 
 import com.beehyv.nmsreporting.business.UserService;
 import com.beehyv.nmsreporting.dao.*;
+import com.beehyv.nmsreporting.entity.ForgotPasswordDto;
 import com.beehyv.nmsreporting.entity.PasswordDto;
 import com.beehyv.nmsreporting.entity.ContactInfo;
 import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.AccessType;
 import com.beehyv.nmsreporting.enums.AccountStatus;
+import com.beehyv.nmsreporting.enums.ModificationType;
+import com.beehyv.nmsreporting.model.ModificationTracker;
 import com.beehyv.nmsreporting.model.Role;
 import com.beehyv.nmsreporting.model.User;
 import org.apache.shiro.SecurityUtils;
@@ -39,6 +42,9 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private RoleDao roleDao;
+
+    @Autowired
+    private ModificationTrackerDao modificationTrackerDao;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -306,7 +312,6 @@ public class UserServiceImpl implements UserService{
         user.setAccountStatus(AccountStatus.ACTIVE.getAccountStatus());
 
         userDao.saveUser(user);
-
         String authorityError = "User Created";
         responseMap.put(rowNum, authorityError);
         return responseMap;
@@ -364,8 +369,6 @@ public class UserServiceImpl implements UserService{
 
         user.setPhoneNumber(contactInfo.getPhoneNumber());
         user.setEmailId(contactInfo.getEmail());
-
-        userDao.saveUser(user);
 
         responseMap.put(rowNum, "Contacts Updated");
         return responseMap;
@@ -601,7 +604,7 @@ public class UserServiceImpl implements UserService{
         }
         entity.setPassword(passwordEncoder.encode(entity.getPhoneNumber()));
 
-        responseMap.put(rowNum, "password changed");
+        responseMap.put(rowNum, "Password changed successfully");
         return responseMap;
     }
 
@@ -641,6 +644,35 @@ public class UserServiceImpl implements UserService{
         String success="Password changed successfully";
         responseMap.put(rowNum, success);
         return responseMap;
+    }
+
+    @Override
+    public Map<Integer, String> forgotPasswordCredentialChecker(ForgotPasswordDto forgotPasswordDto){
+
+        Integer rowNum = 0;
+        Map<Integer, String> responseMap = new HashMap<>();
+
+        User entity = userDao.findByUserName(forgotPasswordDto.getUsername());
+
+        if(entity == null){
+            responseMap.put(rowNum, "User Details incorrect");
+            return responseMap;
+        }
+
+        if(entity.getPhoneNumber().equals(forgotPasswordDto.getPhoneNumber())){
+            entity.setPassword(passwordEncoder.encode(forgotPasswordDto.getConfirmPassword()));
+            String success="Password changed successfully";
+            responseMap.put(rowNum, success);
+            return responseMap;
+
+        }
+        else{
+            String failure="User Details incorrect";
+            responseMap.put(rowNum, failure);
+            return responseMap;
+        }
+
+
     }
 
     @Override
@@ -688,5 +720,105 @@ public class UserServiceImpl implements UserService{
     @Override
     public Role getRoleById(Integer roleId) {
         return roleDao.findByRoleId(roleId);
+    }
+
+    @Override
+    public void TrackModifications(User oldUser, User newUser){
+        if(!oldUser.getFullName().equals(newUser.getFullName())){
+            ModificationTracker modificationTracker=new ModificationTracker();
+            modificationTracker.setModifiedField("full_name");
+            modificationTracker.setModificationDate(new Date());
+            modificationTracker.setModificationType(ModificationType.UPDATE.getModificationType());
+            modificationTracker.setModifiedByUserId(getCurrentUser().getUserId());
+            modificationTracker.setModifiedUserId(oldUser.getUserId());
+            modificationTracker.setNewValue(newUser.getFullName());
+            modificationTracker.setPreviousValue(oldUser.getFullName());
+            modificationTrackerDao.saveModification(modificationTracker);
+        }
+
+        if(!oldUser.getPhoneNumber().equals(newUser.getPhoneNumber())){
+            ModificationTracker modificationTracker=new ModificationTracker();
+            modificationTracker.setModifiedField("phone_no");
+            modificationTracker.setModificationDate(new Date());
+            modificationTracker.setModificationType(ModificationType.UPDATE.getModificationType());
+            modificationTracker.setModifiedByUserId(getCurrentUser().getUserId());
+            modificationTracker.setModifiedUserId(oldUser.getUserId());
+            modificationTracker.setNewValue(newUser.getPhoneNumber());
+            modificationTracker.setPreviousValue(oldUser.getPhoneNumber());
+            modificationTrackerDao.saveModification(modificationTracker);
+        }
+
+        if(!oldUser.getEmailId().equals(newUser.getEmailId())){
+            ModificationTracker modificationTracker=new ModificationTracker();
+            modificationTracker.setModifiedField("email_id");
+            modificationTracker.setModificationDate(new Date());
+            modificationTracker.setModificationType(ModificationType.UPDATE.getModificationType());
+            modificationTracker.setModifiedByUserId(getCurrentUser().getUserId());
+            modificationTracker.setModifiedUserId(oldUser.getUserId());
+            modificationTracker.setNewValue(newUser.getEmailId());
+            modificationTracker.setPreviousValue(oldUser.getEmailId());
+            modificationTrackerDao.saveModification(modificationTracker);
+        }
+
+        if(oldUser.getStateId() != null && newUser.getStateId() != null && !oldUser.getStateId().equals(newUser.getStateId())){
+            ModificationTracker modificationTracker=new ModificationTracker();
+            modificationTracker.setModifiedField("state");
+            modificationTracker.setModificationDate(new Date());
+            modificationTracker.setModificationType(ModificationType.UPDATE.getModificationType());
+            modificationTracker.setModifiedByUserId(getCurrentUser().getUserId());
+            modificationTracker.setModifiedUserId(oldUser.getUserId());
+            modificationTracker.setNewValue(newUser.getStateId().toString());
+            modificationTracker.setPreviousValue(oldUser.getStateId().toString());
+            modificationTrackerDao.saveModification(modificationTracker);
+        }
+
+        if(oldUser.getDistrictId() != null && oldUser.getDistrictId() != null && !oldUser.getDistrictId().equals(newUser.getDistrictId())){
+            ModificationTracker modificationTracker=new ModificationTracker();
+            modificationTracker.setModifiedField("district");
+            modificationTracker.setModificationDate(new Date());
+            modificationTracker.setModificationType(ModificationType.UPDATE.getModificationType());
+            modificationTracker.setModifiedByUserId(getCurrentUser().getUserId());
+            modificationTracker.setModifiedUserId(oldUser.getUserId());
+            modificationTracker.setNewValue(newUser.getDistrictId().toString());
+            modificationTracker.setPreviousValue(oldUser.getDistrictId().toString());
+            modificationTrackerDao.saveModification(modificationTracker);
+        }
+
+        if( oldUser.getBlockId()!=null && newUser.getBlockId()!=null && !oldUser.getBlockId().equals(newUser.getBlockId())){
+            ModificationTracker modificationTracker=new ModificationTracker();
+            modificationTracker.setModifiedField("healthblock");
+            modificationTracker.setModificationDate(new Date());
+            modificationTracker.setModificationType(ModificationType.UPDATE.getModificationType());
+            modificationTracker.setModifiedByUserId(getCurrentUser().getUserId());
+            modificationTracker.setModifiedUserId(oldUser.getUserId());
+            modificationTracker.setNewValue(newUser.getBlockId().toString());
+            modificationTracker.setPreviousValue(oldUser.getBlockId().toString());
+            modificationTrackerDao.saveModification(modificationTracker);
+        }
+
+        if(!oldUser.getRoleId().equals(newUser.getRoleId())){
+            ModificationTracker modificationTracker=new ModificationTracker();
+            modificationTracker.setModifiedField("role_id");
+            modificationTracker.setModificationDate(new Date());
+            modificationTracker.setModificationType(ModificationType.UPDATE.getModificationType());
+            modificationTracker.setModifiedByUserId(getCurrentUser().getUserId());
+            modificationTracker.setModifiedUserId(oldUser.getUserId());
+            modificationTracker.setNewValue(newUser.getRoleId().toString());
+            modificationTracker.setPreviousValue(oldUser.getRoleId().toString());
+            modificationTrackerDao.saveModification(modificationTracker);
+        }
+
+        if(!oldUser.getAccessLevel().equals(newUser.getAccessLevel())){
+            ModificationTracker modificationTracker=new ModificationTracker();
+            modificationTracker.setModifiedField("access_level");
+            modificationTracker.setModificationDate(new Date());
+            modificationTracker.setModificationType(ModificationType.UPDATE.getModificationType());
+            modificationTracker.setModifiedByUserId(getCurrentUser().getUserId());
+            modificationTracker.setModifiedUserId(oldUser.getUserId());
+            modificationTracker.setNewValue(newUser.getAccessLevel());
+            modificationTracker.setPreviousValue(oldUser.getAccessLevel());
+            modificationTrackerDao.saveModification(modificationTracker);
+        }
+
     }
 }

@@ -2,7 +2,7 @@ package com.beehyv.nmsreporting.model;
 
 import com.beehyv.nmsreporting.enums.ModificationType;
 
-import java.sql.Date;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,31 +12,36 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.util.Date;
 
 @Entity
-@Table(name="MODIFICATIONS_TABLE")
+@Table(name="modifications_table")
 public class ModificationTracker {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="modification_id")
+	@Column(name="id")
 	private Integer modificationId;
 	
 	@Column(name="modification_type")
 	private String modificationType = ModificationType.CREATE.getModificationType();
 	
-	@Column(name="modification_desc")
-	private String modificationDescription;
+	@Column(name="modified_field")
+	private String modifiedField;
+
+	@Column(name="previous_value")
+	private String previousValue;
+
+	@Column(name="new_value")
+	private String newValue;
 	
 	@Column(name="modification_date")
 	private Date modificationDate;
 	
-	@ManyToOne
-	@JoinColumn(name="modified_user_id")
-	private User modifiedUserId;
-	
-	@ManyToOne
-	@JoinColumn(name="modified_by_user_id")
-	private User modifiedByUserId;
+	@Column(name="modified_user_id")
+	private Integer modifiedUserId;
+
+	@Column(name="modified_by_user_id")
+	private Integer modifiedByUserId;
 
 	public Integer getModificationId() {
 		return modificationId;
@@ -54,12 +59,28 @@ public class ModificationTracker {
 		this.modificationType = modificationType;
 	}
 
-	public String getModificationDescription() {
-		return modificationDescription;
+	public String getModifiedField() {
+		return modifiedField;
 	}
 
-	public void setModificationDescription(String modificationDescription) {
-		this.modificationDescription = modificationDescription;
+	public void setModifiedField(String modifiedField) {
+		this.modifiedField = modifiedField;
+	}
+
+	public String getPreviousValue() {
+		return previousValue;
+	}
+
+	public void setPreviousValue(String previousValue) {
+		this.previousValue = previousValue;
+	}
+
+	public String getNewValue() {
+		return newValue;
+	}
+
+	public void setNewValue(String newValue) {
+		this.newValue = newValue;
 	}
 
 	public Date getModificationDate() {
@@ -70,19 +91,19 @@ public class ModificationTracker {
 		this.modificationDate = modificationDate;
 	}
 
-	public User getModifiedUserId() {
+	public Integer getModifiedUserId() {
 		return modifiedUserId;
 	}
 
-	public void setModifiedUserId(User modifiedUserId) {
+	public void setModifiedUserId(Integer modifiedUserId) {
 		this.modifiedUserId = modifiedUserId;
 	}
 
-	public User getModifiedByUserId() {
+	public Integer getModifiedByUserId() {
 		return modifiedByUserId;
 	}
 
-	public void setModifiedByUserId(User modifiedByUserId) {
+	public void setModifiedByUserId(Integer modifiedByUserId) {
 		this.modifiedByUserId = modifiedByUserId;
-	}	
+	}
 }

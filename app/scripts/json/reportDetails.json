@@ -2,17 +2,17 @@
   {
     "icon":"images/drop-down-3.png",
     "name":"Mobile Academy Reports",
-    "service":"K",
+    "service":"M",
     "options":[
       {
-        "name":"Cumulative Completion Report",
+        "name":"Cumulative Course Completion",
         "reportEnum":"MACumulativeCourseCompletion",
         "icon":"images/drop-down-3.png",
         "service":"M",
         "minDate":"2015-11-01"
       },
       {
-        "name":"Circle wise Anonymous Reports",
+        "name":"Circle wise Anonymous Users",
         "reportEnum":"MAAnonymousUsers",
         "icon":"images/drop-down-3.png",
         "service":"M",
@@ -24,12 +24,20 @@
         "icon":"images/drop-down-3.png",
         "service":"M",
         "minDate":"2017-05-01"
+      },
+      {
+        "name":"Rejected Reports",
+        "reportEnum":"MARejectedReports",
+        "icon":"images/drop-down-3.png",
+        "service":"M",
+        "minDate":"2017-07-01"
       }
     ]
   },
   {
     "icon":"images/drop-down-3.png",
     "name":"Kilkari Reports",
+    "service":"K",
     "options":[
       {
         "name":"Deactivation for not answering",
@@ -51,6 +59,20 @@
         "icon":"images/drop-down-3.png",
         "service":"K",
         "minDate":"2015-10-01"
+      },
+      {
+        "name":"Mother Rejected Reports",
+        "reportEnum":"MotherRejectedReports",
+        "icon":"images/drop-down-3.png",
+        "service":"K",
+        "minDate":"2017-07-01"
+      },
+      {
+        "name":"Child Rejected Reports",
+        "reportEnum":"ChildRejectedReports",
+        "icon":"images/drop-down-3.png",
+        "service":"K",
+        "minDate":"2017-07-01"
       }
     ]
   }

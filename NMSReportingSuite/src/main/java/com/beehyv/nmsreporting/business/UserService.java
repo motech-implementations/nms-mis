@@ -1,5 +1,6 @@
 package com.beehyv.nmsreporting.business;
 
+import com.beehyv.nmsreporting.entity.ForgotPasswordDto;
 import com.beehyv.nmsreporting.entity.PasswordDto;
 import com.beehyv.nmsreporting.entity.ContactInfo;
 import com.beehyv.nmsreporting.model.Role;
@@ -50,4 +51,8 @@ public interface UserService {
     Map<Integer, String> changePassword(PasswordDto changePasswordDTO);
 
     Role getRoleById(Integer roleId);
+
+    void TrackModifications(User oldUser, User newUser);
+
+    Map<Integer, String> forgotPasswordCredentialChecker(ForgotPasswordDto forgotPasswordDto);
 }

@@ -41,13 +41,19 @@
 						</div>
 					</div>
 					<div class="form-group col-xs-4">
-						<label>Select Month</label><br>
+						<label>{{datePickerContent}}</label><br>
 						<p class="input-group" ng-disabled="disableDate()">
-							<input type="text" class="form-control input input-sm" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" datepicker-mode="'month'" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" ng-disabled='disableDate()' readonly />
+							<input type="text" class="form-control input input-sm" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" datepicker-mode="'month'" ng-required =="true" close-text="Close" alt-input-formats="altInputFormats" ng-disabled='disableDate()' readonly />
 							<span class="input-group-btn">
 							<button type="button" class="btn btn-sm btn-default" ng-click="open1()"  ng-disabled='disableDate()' ><i class="glyphicon glyphicon-calendar" ng-disabled="disableDate()" ></i></button>
 							</span>
 						</p>
+						<ul  class="sundays-list"  tabindex="-1" ng-blur="onBlur()" focus="true" ng-if= " (reportCategory == 'Mobile Academy Reports' ||  reportCategory == 'Kilkari Reports') &&  (report.name == 'Flw Rejected Records' || report.name =='Mother Rejected Records' || report.name =='Child Rejected Records') && dt != null " ng-show = "sundaysTable">
+							<li class="sunday-list-header"><p>Sun</p></li>
+
+							<li ng-repeat="date in sundays"   ng-click='closeSundaysTable(date)' class="sunday-list-items"><p>{{date}}</p></li>
+
+						</ul>
 					</div>
 				</div>
 
@@ -58,13 +64,13 @@
 							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" ng-disabled="disableState()" uib-dropdown-toggle ng-class="{loading: statesLoading}">
 								<span class="block">
 									<span>{{crop(state.stateName)}}</span>
-									<span ng-if="state == null">ALL</span>
+									<!--<span ng-if="state == null">ALL</span>-->
 									<span class="caret"></span>
 								</span>
 							</button>
 							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
-								<li role="menuitem"><a ng-click="clearState()">ALL</a>
-								<li role="menuitem" ng-repeat="item in states | filter:serviceStarted"><a ng-click='selectState(item)'>{{item.stateName}}</a></li>
+								<!--<li role="menuitem"><a ng-click="clearState()">ALL</a>-->
+								<li role="menuitem" ng-repeat="item in states | orderBy : 'stateName' | filter:serviceStarted"><a ng-click='selectState(item)'>{{item.stateName}}</a></li>
 							</ul>
 						</div>
 					</div>
@@ -81,7 +87,7 @@
 							</button>
 							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
 								<li role="menuitem"><a ng-click="clearDistrict()">ALL</a>
-								<li role="menuitem" ng-repeat="item in districts"><a ng-click='selectDistrict(item)'>{{item.districtName}}</a></li>
+								<li role="menuitem" ng-repeat="item in districts | orderBy : 'districtName'"><a ng-click='selectDistrict(item)'>{{crop(item.districtName)}}</a></li>
 							</ul>
 						</div>
 					</div>
@@ -97,7 +103,7 @@
 							</button>
 							<ul class="dropdown-menu small" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
 								<li role="menuitem"><a ng-click="clearBlock()">ALL</a>
-								<li role="menuitem" ng-repeat="item in blocks"><a ng-click='selectBlock(item)'>{{item.blockName}}</a></li>
+								<li role="menuitem" ng-repeat="item in blocks | orderBy : 'blockName'"><a ng-click='selectBlock(item)'>{{crop(item.blockName)}}</a></li>
 							</ul>
 						</div>
 					</div>
@@ -119,13 +125,13 @@
 							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" ng-disabled="disableCircle()" uib-dropdown-toggle ng-class="{loading: circlesLoading}">
 								<span class="block">
 									<span>{{circle.circleName}}</span>
-									<span ng-if="circle == null">ALL</span>
+									<!--<span ng-if="circle == null">ALL</span>-->
 									<span class="caret"></span>
 								</span>
 							</button>
 							<ul class="dropdown-menu small" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
-								<li role="menuitem"><a ng-click="clearCircle()">ALL</a>
-								<li role="menuitem" ng-repeat="item in circles | filter:serviceStarted"><a ng-click='selectCircle(item)'>{{item.circleName}}</a></li>
+								<!--<li role="menuitem"><a ng-click="clearCircle()">ALL</a>-->
+								<li role="menuitem" ng-repeat="item in circles | orderBy : 'circleName' | filter:serviceStarted"><a ng-click='selectCircle(item)'>{{item.circleName}}</a></li>
 							</ul>
 						</div>
 					</div>

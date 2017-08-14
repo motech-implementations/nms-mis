@@ -9,6 +9,11 @@ h1{
 	min-height: 94%;
 }
 
+body div.main{
+    min-width: 1180px;
+    overflow-x: auto;
+}
+
 body .login .login-header{
 	text-align: center;
 }
@@ -17,6 +22,9 @@ body .login .login-header img{
 }
 body .login .login-body{
 	height: 285px;
+}
+body .login .login-body .error{
+	color: #a94442;
 }
 body .login .login-body .checkbox{
 	padding: 0px 0px 20px;
@@ -107,6 +115,74 @@ div.nav-bar .nav-menu li a {
 }
 div.nav-bar .nav-menu li.active a{
 	color: #ffffff;
+}
+
+div ul.sundays-list{
+    position: absolute;
+    top: 90%;
+    left: 0;
+    z-index: 1000;
+    float: left;
+    min-width: 60px;
+    left: 278px;
+    list-style-type: none;
+    border: 1px solid #bfcbcf;
+    background-color: #ffffff;
+    border-radius:4px;
+    padding:0px 0;
+
+}
+
+div ul.sundays-list li.sunday-list-items:active{
+   background-color:#eeeeee;
+   color:green;
+
+}
+
+div ul.sundays-list li.sunday-list-items:hover{
+   background-color:#d4d4d4;
+   color :#31708f;
+   cursor : pointer;
+   border-color: #8c8c8c;
+
+}
+
+.uib-datepicker-current{
+   display:none;
+}
+
+.uib-clear{
+   border-radius : 3px !important;
+}
+
+div ul li.sunday-list-items{
+    height:35px;
+    text-align:center;
+    border-bottom:1px solid grey;
+    color: black;
+    vertical-align:center;
+    padding-top: 1px;
+}
+
+div ul li.sunday-list-items p{
+     padding:5px
+}
+
+div ul li.sunday-list-header{
+    height: 30px;
+    text-align:center;
+    border-bottom:1px solid grey;
+    color: #ffffff;
+    background: #31b0d5;
+    padding:5px;
+}
+
+#newpass-btn-login{
+    margin-left:64%;
+}
+
+#back-to-login{
+  margin-left : 12px;
 }
 
 
@@ -291,6 +367,7 @@ div.reports-body{
 	text-align: center;
 }
 
+
 div.editUser .loading,
 div.createUser .loading,
 div.profile .loading{
@@ -306,6 +383,14 @@ div.createUser button,
 div.profile button{
 	margin-right: 12px;
 }
+div.editUser button.floatR,
+div.createUser button.floatR,
+div.profile button.floatR{
+	margin-left: 12px;
+	float:right;
+	margin-right:0;
+}
+
 div.createUser .errorMessage,
 div.editUser .errorMessage,
 div.profile .errorMessage{

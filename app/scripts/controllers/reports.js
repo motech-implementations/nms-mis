@@ -1,7 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("ReportsController", ['$scope', '$state', '$http', 'UserFormFactory', function($scope, $state, $http, UserFormFactory){
+		.controller("ReportsController", ['$scope', '$state', '$http', 'UserFormFactory','$window', function($scope, $state, $http, UserFormFactory,$window){
 
 			UserFormFactory.isLoggedIn()
 			.then(function(result){
@@ -12,17 +12,18 @@
 					UserFormFactory.downloadCurrentUser()
 					.then(function(result){
 						UserFormFactory.setCurrentUser(result.data);
+
+						$scope.getStatesByService(null);
 					})
 				}
 			})
-
-
-			$scope.reports = [];
-
+            $scope.sundays = [];
+ 			$scope.reports = [];
 			$scope.states = [];
 			$scope.districts = [];
 			$scope.blocks = [];
 			$scope.circles = [];
+			$scope.datePickerContent = "Select Month";
 
 			$scope.disableReportCategory = function(){
 				return $scope.reports[0] == null;
@@ -35,7 +36,7 @@
 				return $scope.report == null || $scope.report.reportEnum == null;
 			}
 			$scope.disableState = function(){
-				return $scope.states[0]  == null || $scope.userHasState();
+				return $scope.states[0]  == null || $scope.userHasState() || $scope.report == null;
 			}
 			$scope.disableDistrict = function(){
 				return $scope.districts[0]  == null || $scope.userHasDistrict();	
@@ -66,6 +67,9 @@
 			.then(function(result){
 				$scope.reports = result.data;
 				$scope.reportsLoading = false;
+				if($scope.reports.length == 1){
+				    $scope.selectReportCategory($scope.reports[0]);
+				}
 			})
 
 			$scope.reportCategory=null;
@@ -76,25 +80,46 @@
 
 				$scope.report = null;
 				
-				$scope.states = [];
-				$scope.clearState();
+				if(!$scope.userHasState()){
+					$scope.clearState();
+				}
+				if(!$scope.userHasDistrict()){
+					$scope.clearDistrict();
+				}
+				if(!$scope.userHasBlock()){
+					$scope.clearBlock();
+				}
 				$scope.clearCircle();
-
 				$scope.dt == null;
+
+				$scope.getStatesByService(item.service);
+				$scope.getCirclesByService(item.service);
 			}
 
 			$scope.selectReport = function(item){
 				$scope.report = item;
 
-				$scope.states = [];
-				$scope.clearState();
+				if(!$scope.userHasState()){
+					$scope.clearState();
+				}
+				if(!$scope.userHasDistrict()){
+					$scope.clearDistrict();
+				}
+				if(!$scope.userHasBlock()){
+					$scope.clearBlock();
+				}
 				$scope.clearCircle();
-
-				$scope.getStatesByService(item.service);
-				$scope.getCirclesByService(item.service);
-
 				$scope.dt = null;
 				$scope.setDateOptions();
+				if($scope.userHasOneCircle()){
+                	$scope.selectCircle($scope.circles[0]);
+                }
+                if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected")))  ){
+                	$scope.datePickerContent = "Select Week";
+                }
+                else
+                    $scope.datePickerContent = "Select Month";
+
 			}
 
 			$scope.crop = function(name){
@@ -108,24 +133,52 @@
 			}
 
 			$scope.isCircleReport = function(){
-				return $scope.report != null && $scope.report.name == 'Circle wise Anonymous Reports';
+				return $scope.report != null && $scope.report.reportEnum == 'MA_Anonymous_Users';
 			}
 
 			
 
 			$scope.getStatesByService = function(service){
-				$scope.statesLoading = true;
-				return UserFormFactory.getStatesByService(service)
-				.then(function(result){
-					$scope.states = result.data;
-					$scope.districts = [];
-					$scope.blocks = [];
-					$scope.statesLoading = false;
+			    $scope.statesLoading = true;
+			    $scope.states = [];
+			    $scope.clearState();
+                if(service == null){
+                    return UserFormFactory.getStates()
+                    .then(function(result){
+                        $scope.states = result.data;
+                        $scope.districts = [];
+                        $scope.blocks = [];
+                        $scope.statesLoading = false;
 
-					if($scope.userHasState()){
-						$scope.selectState($scope.states[0]);
-					}
-				});
+                        if($scope.userHasState()){
+                            $scope.selectState($scope.states[0]);
+                        }
+                    });
+                }
+                else{
+                    return UserFormFactory.getStatesByService(service)
+                    .then(function(result){
+                        $scope.states = result.data;
+                        $scope.districts = [];
+                        $scope.blocks = [];
+                        $scope.statesLoading = false;
+
+                        if($scope.userHasState()){
+                            $scope.selectState($scope.states[0]);
+                        }
+                    });
+                }
+//				return returnFactory()
+//                    .then(function(result){
+//                        $scope.states = result.data;
+//                        $scope.districts = [];
+//                        $scope.blocks = [];
+//                        $scope.statesLoading = false;
+//
+//                        if($scope.userHasState()){
+//                            $scope.selectState($scope.states[0]);
+//                        }
+//                    });
 			}
 			
 			$scope.getDistricts = function(stateId){
@@ -170,33 +223,49 @@
 			}
 
 			$scope.setDateOptions =function(){
-//				var minDate = new Date(2015, 09, 01);
-//				if($scope.report.service == 'M'){
-//					minDate = new Date(2015, 10, 01);
-//				}
-                var minDate = $scope.report.minDate;
-                console.log(minDate);
-				if(!$scope.isCircleReport() && $scope.state != null && $scope.state.serviceStartDate>minDate){
-					minDate = $scope.state.serviceStartDate;
-					console.log(minDate);
+				var minDate = new Date(2015, 09, 01);
+				if($scope.report != null && $scope.report.service == 'M'){
+					minDate = new Date(2015, 10, 01);
 				}
-				if($scope.isCircleReport() && $scope.circle != null && $scope.circle.serviceStartDate>minDate){
+				if($scope.report != null && $scope.report.reportEnum == 'MA_Cumulative_Inactive_Users'){
+                	minDate = new Date(2017, 04, 30);
+                }
+                if($scope.report != null && $scope.report.reportEnum == 'MA_Anonymous_Users'){
+                    minDate = new Date(2017, 04, 30);
+                }
+                if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Low_Usage'){
+                    minDate = new Date(2017, 03, 30);
+                }
+
+                //In case of change in minDate for rejection reports, please change startMonth and startDate variable accordingly
+                if($scope.report != null && $scope.report.reportEnum == 'Flw_Import_Rejects'){
+                    minDate = new Date(2017, 07, 01);
+                 }
+                 if($scope.report != null && $scope.report.reportEnum == 'Mother_Import_Rejects'){
+                    minDate = new Date(2017, 07, 01);
+                 }
+                 if($scope.report != null && $scope.report.reportEnum == 'Child_Import_Rejects'){
+                    minDate = new Date(2017, 07, 01);
+                 }
+//                var minDate = $scope.report.minDate;
+//                console.log(minDate);
+				if(!$scope.isCircleReport() && $scope.state != null && Date.parse($scope.state.serviceStartDate) > minDate){
+					minDate = $scope.state.serviceStartDate;
+//					console.log($scope.state.serviceStartDate);
+//					console.log(minDate);
+				}
+				if($scope.isCircleReport() && $scope.circle != null && Date.parse($scope.circle.serviceStartDate) > minDate){
 					minDate = $scope.circle.serviceStartDate;
-					console.log(minDate);
+//					console.log(minDate);
 				}
 
-//				if($scope.report.reportEnum == 'MACumulativeInactiveUsers'){
-//					minDate = new Date(2017, 04, 30);
-//				}
-//				if($scope.report.reportEnum == 'MAAnonymousUsers'){
-//				    minDate = new Date(2017, 04, 30);
-//				}
+
 
 				$scope.dateOptions = {
 					minMode: 'month',
 					dateDisabled: disabled,
-					formatYear: 'yy',
-					maxDate: new Date().setMonth(new Date().getMonth()-1),
+					formatYear: 'yyyy',
+					maxDate: new Date().setMonth(new Date().getMonth() -1),
 					minDate: minDate,
 					startingDay: 1
 				};
@@ -239,7 +308,7 @@
 			}
 			$scope.selectCircle = function(circle){
 				if(circle != null){
-					$scope.clearBlock();
+//					$scope.clearBlock();
 					$scope.circle = circle;
 				}	
 			}
@@ -248,13 +317,26 @@
 			}
 
 			$scope.waiting = false;
+			$scope.wasSundaySelected = false;
 
 			$scope.fileName = "";
 
 			$scope.$watch('dt', function(newDate){
-				if((newDate != null) && newDate.getDate() == 1){
-					$scope.dt = new Date($scope.dt.getFullYear(), $scope.dt.getMonth() + 1, 0, 23, 59, 59);
-				}
+                if ($scope.wasSundaySelected){
+                $scope.format = 'yy-MM-dd';
+                $scope.wasSundaySelected = false;
+                 return;
+                }
+                $scope.format = 'yy-MM';
+			    if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) && $scope.dt != null) {
+			    	 $scope.getSundays($scope.dt);
+                     $scope.sundaysTable = true;
+			    	 $scope.popup1.opened = true;
+			    	 console.log(newDate);
+			    }
+			    if((newDate != null) && newDate.getDate() == 1){
+                    $scope.dt = new Date($scope.dt.getFullYear(), $scope.dt.getMonth() + 1, 0, 23, 59, 59);
+                }
 			});
 
 			$scope.serviceStarted = function(state){
@@ -270,8 +352,12 @@
 					alert("Please select a report")
 					return;
 				}
-				if($scope.dt == null){
-					alert("Please select a month")
+				if($scope.dt == null && (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) ){
+					alert("Please select a week")
+					return;
+				}
+				else if($scope.dt == null){
+                	alert("Please select a month")
 					return;
 				}
 
@@ -289,10 +375,10 @@
 			    	if($scope.state != null){
 				    	reportRequest.stateId = $scope.state.stateId;
 				    }
-				    // else{
-			    	// 	alert("Please select a state");
-			    	// 	return;
-				    // }
+                    else{
+                        alert("Please select a state");
+                        return;
+                    }
 				    if($scope.district != null){
 				    	reportRequest.districtId = $scope.district.districtId;
 				    }
@@ -304,15 +390,22 @@
 		    		if($scope.circle != null){
 				    	reportRequest.circleId = $scope.circle.circleId;
 				    }
-				    // else{
-			    	// 	alert("Please select a circle");
-			    	// 	return;
-				    // }				    
+                    else{
+                     	alert("Please select a circle");
+                     	return;
+                    }
 		    	}
-				
+
+		    	if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) && $scope.format == 'yy-MM'){
+                    alert("Please select a week");
+                    return;
+		    	}
+
 			    reportRequest.fromDate = $scope.dt;
 
 			    $scope.waiting = true;
+
+                console.log($scope.dt);
 
 				$http({
 					method  : 'POST',
@@ -325,6 +418,7 @@
 					$scope.status = result.data.status;
 					if($scope.status == 'success'){
 						$scope.fileName = result.data.file;
+						$scope.pathName = result.data.path;
 						angular.element('#downloadReportLink').trigger('click');
 					}
 					if($scope.status == 'fail'){
@@ -334,7 +428,11 @@
 			}
 
 			$scope.getReportUrl = backend_root + 'nms/user/getReport';
-			$scope.downloadReportUrl = backend_root + 'nms/user/downloadReport',
+			$scope.$watch('pathName', function(){
+			    $scope.downloadReportUrl = backend_root + 'nms/user/downloadReport?fileName='+
+            			        $scope.fileName+'&rootPath='+$scope.pathName;
+			})
+
 
 			$scope.clearFile = function(){
 				$scope.status = "";
@@ -344,10 +442,20 @@
 			$scope.reset =function(){
 				$scope.report = null;
 				$scope.reportCategory = null;
-				$scope.states = [];
-				$scope.clearState();
+
+				if(!$scope.userHasState()){
+					$scope.clearState();
+				}
+				if(!$scope.userHasDistrict()){
+					$scope.clearDistrict();
+				}
+				if(!$scope.userHasBlock()){
+					$scope.clearBlock();
+				}
 				$scope.clearCircle();
 				$scope.dt = null;
+				$scope.datePickerContent = "Select Month";
+
 			}
 
 			// datepicker stuff
@@ -377,16 +485,47 @@
 				return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
 			}
 
+            var startMonth = 7 //May
+            var startDate = 15 //Start Date
+
 			$scope.open1 = function() {
 				$scope.popup1.opened = true;
+				var currentDate = new Date();
+
+
+				console.log(currentDate.getMonth() + " " + currentDate.getDate() + " " +currentDate.getFullYear());
+				if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) ){
+				    if(currentDate.getMonth() == startMonth && currentDate.getDate() >= startDate && currentDate.getFullYear() == 2017){
+				        $scope.dateOptions.maxDate = new Date().setMonth(new Date().getMonth());
+				    }
+				    else if(currentDate.getMonth() == startMonth && currentDate.getDate() < startDate && currentDate.getFullYear() == 2017){
+				         $scope.dateOptions.maxDate = new Date().setMonth(new Date().getMonth() - 1);
+				    }
+				    else {
+				        if($scope.getSundays(currentDate) >0){
+                            $scope.dateOptions.maxDate = new Date().setMonth(currentDate.getMonth());
+                        }
+                        else
+                            $scope.dateOptions.maxDate = new Date().setMonth(currentDate.getMonth() - 1);
+                        $scope.sundays = null;
+
+				    }
+
+				}
+
+				if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) && $scope.format == 'yy-MM' ){
+                    $scope.getSundays($scope.dt);
+                    $scope.sundaysTable = true;
+
+                }
 			};
 
 			$scope.setDate = function(year, month, day) {
 				$scope.dt = new Date(year, month, day);
 			};
 
-			  $scope.format = 'yyyy-MM'
-			  $scope.altInputFormats = ['yyyy-M!'];
+			$scope.format = 'yyyy-MM'
+			$scope.altInputFormats = ['yyyy-M!'];
 
 			$scope.popup1 = {
 				opened: false
@@ -424,6 +563,67 @@
 
 				return '';
 			}
+            $scope.sundays = null;
+
+			$scope.getSundays = function(d){
+
+                if( d  === undefined || d == null){
+                    return;
+                }
+                var getTot = null;
+                var today = new Date();
+                if(d.getMonth() == startMonth && d.getFullYear() == 2017 ){
+                    var sun = new Array();   //Declaring array for inserting Sundays
+                    for(var i=startDate-1;i<=31;i++){    //looping through days in month
+                        var newDate = new Date(d.getFullYear(),d.getMonth(),i)
+                        if(newDate.getDay()==0){   //if Sunday
+                            sun.push(i);
+                        }
+                    }
+                    $scope.sundays = sun;
+                    return ($scope.sundays.length);
+
+                }
+
+                else{
+
+                    if(d.getMonth() == today.getMonth() && d.getFullYear() == today.getFullYear() )
+                    {
+                      var getTot = (today.getDate()) - 1;
+                    }
+                    else{
+                      var getTot = new Date(d.getFullYear(),d.getMonth()+1,0).getDate();
+                    }
+
+                    console.log(getTot);
+                     //Get total days in a month
+                    var sun = new Array();   //Declaring array for inserting Sundays
+                    for(var i=1;i<=getTot;i++){    //looping through days in month
+                        var newDate = new Date(d.getFullYear(),d.getMonth(),i)
+                        if(newDate.getDay()==0){   //if Sunday
+                            sun.push(i);
+                        }
+                    }
+                    $scope.sundays = sun;
+                    return ($scope.sundays.length);
+
+                }
+
+			}
+
+			$scope.sundaysTable = false;
+
+			$scope.closeSundaysTable = function(date) {
+            	$scope.sundaysTable = false;
+            	$scope.sundays = [];
+            	$scope.dt = new Date($scope.dt.getFullYear(),$scope.dt.getMonth(),date);
+            	$scope.wasSundaySelected = true;
+            };
+
+            $window.addEventListener('click', function() {
+              if($scope.sundaysTable)
+                $scope.sundaysTable = false;
+            });
 
 		}])
 })()

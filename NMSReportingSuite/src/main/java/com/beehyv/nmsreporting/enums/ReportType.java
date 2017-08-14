@@ -12,12 +12,15 @@ public enum ReportType {
 //    selfDeactivated("selfDeactivated"),
 //    sixWeeks("sixWeeks");
 
-    maCourse("MACumulativeCourseCompletion", "Cumulative Completion Report", "M"),
-    maAnonymous("MAAnonymousUsers", "Circle wise Anonymous Reports", "M"),
-    maInactive("MACumulativeInactiveUsers", "Cumulative Inactive Users", "M"),
-    lowUsage("KilkariLowUsage", "Listen to < 25% this month", "K"),
-    selfDeactivated("KilkariSelfDeactivated", "Self Deactivations", "K"),
-    sixWeeks("KilkariSixWeeksNoAnswer", "Deactivation for not answering", "K");
+    maCourse("MA_Cumulative_Course_Completion", "Cumulative Course Completion", "M"),
+    maAnonymous("MA_Anonymous_Users", "Circle wise Anonymous Users", "M"),
+    maInactive("MA_Cumulative_Inactive_Users", "Cumulative Inactive Users", "M"),
+    lowUsage("Kilkari_Low_Usage", "Listen to < 25% this month", "K"),
+    selfDeactivated("Kilkari_Self_Deactivated", "Self Deactivations", "K"),
+    sixWeeks("Kilkari_Six_Weeks_No_Answer", "Deactivated for not answering", "K"),
+    flwRejected("Flw_Import_Rejects","Flw Rejected Records", "M"),
+    childRejected("Child_Import_Rejects","Child Rejected Records", "K"),
+    motherRejected("Mother_Import_Rejects","Mother Rejected Records", "K");
 
     private String reportType;
     private String reportName;

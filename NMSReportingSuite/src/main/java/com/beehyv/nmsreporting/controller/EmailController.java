@@ -39,101 +39,10 @@ public class EmailController {
 //        return "AttachEmailInput";
 //    }
 
-    @RequestMapping(value = "/sendAll/{reportType}", method = RequestMethod.GET)
-    public @ResponseBody HashMap sendAllMails(@PathVariable String reportName){
-        List<User> users = userService.findAllActiveUsers();
-        HashMap<String,String> errorSendingMail = new HashMap<>();
-        for(User user: users){
-            EmailInfo newMail = new EmailInfo();
-            newMail.setFrom("Beehyv");
-            newMail.setTo(user.getEmailId());
-//                for(ReportType reportType: ReportType.values()){
-                    ReportType reportType = reportService.getReportTypeByName(reportName);
-                    ReportRequest reportRequest = new ReportRequest();
-                    Calendar c = Calendar.getInstance();   // this takes current date
-                    c.add(Calendar.MONTH, -1);
-                    c.set(Calendar.DATE, 1);
-                    reportRequest.setToDate(c.getTime());
-                    reportRequest.setReportType(reportType.getReportType());
-                    String pathName = "",fileName = "",errorMessage = "",place = "";
-                    if(reportType.getReportType().equalsIgnoreCase(ReportType.maAnonymous.getReportType())){
-                        if(user.getAccessLevel().equalsIgnoreCase(AccessLevel.STATE.getAccessLevel())){
-                            List<Circle> stateCircleList = reportService.getUserCircles(user);
-                            for(Circle circle: stateCircleList){
-                                reportRequest.setCircleId(circle.getCircleId());
-                                pathName = reportService.getReportPathName(reportRequest).get(1);
-                                fileName = reportService.getReportPathName(reportRequest).get(0);
-                                newMail.setSubject(fileName);
-                                newMail.setFileName(fileName);
-                                place = circle.getCircleName()+" Circle";
-                                newMail.setBody(emailService.getBody(reportName,place,reportService.getMonthName(c.getTime()),user.getFullName()));
-                                newMail.setRootPath(pathName);
-                                errorMessage = emailService.sendMail(newMail);
-                                if (errorMessage.equalsIgnoreCase("failure"))
-                                    errorSendingMail.put(user.getEmailId(),fileName);
-                            }
-                        }//else if(user.getAccessLevel().equalsIgnoreCase(AccessLevel.NATIONAL.getAccessLevel())){
-//                            reportRequest.setCircleId(0);
-//                            pathName = reportService.getReportPathName(reportRequest).get(1);
-//                            fileName = reportService.getReportPathName(reportRequest).get(0);
-//                            newMail.setSubject(fileName);
-//                            newMail.setFileName(fileName);
-//                            place = "NATIONAL";
-//                            newMail.setBody(emailService.getBody(reportName,place,reportService.getMonthName(c.getTime()),user.getFullName()));
-//                            newMail.setRootPath(pathName);
-//                            errorMessage = emailService.sendMail(newMail);
-//                            if (errorMessage.equalsIgnoreCase("failure"))
-//                                errorSendingMail.put(user.getEmailId(),fileName);
-//                        } else {
-//                            reportRequest.setCircleId(locationService.findDistrictById(user.getDistrictId()).getCircleOfDistrict());
-//                            pathName = reportService.getReportPathName(reportRequest).get(1);
-//                            fileName = reportService.getReportPathName(reportRequest).get(0);
-//                            newMail.setSubject(fileName);
-//                            newMail.setFileName(fileName);
-//                            Circle circle = reportService.getUserCircles(user).get(0);
-//                            place = circle.getCircleName()+" Circle";
-//                            newMail.setBody(emailService.getBody(reportName,place,reportService.getMonthName(c.getTime()),user.getFullName()));
-//                            newMail.setRootPath(pathName);
-//                            errorMessage = emailService.sendMail(newMail);
-//                            if (errorMessage.equalsIgnoreCase("failure"))
-//                                errorSendingMail.put(user.getEmailId(),fileName);
-//                        }
-                    }else {
-//                        place = "NATIONAL";
-//                        if (user.getStateId() == null)
-//                            reportRequest.setStateId(0);
-//                        else {
-//                            reportRequest.setStateId(user.getStateId());
-//                            place = locationService.findStateById(user.getStateId()).getStateName()+" State";
-//                        }
-                        if (user.getDistrictId() == null)
-                            reportRequest.setDistrictId(0);
-                        else {
-                            reportRequest.setDistrictId(user.getDistrictId());
-                            place = locationService.findDistrictById(user.getDistrictId()).getDistrictName()+" District";
-                        }
-                        if (user.getBlockId() == null)
-                            reportRequest.setBlockId(0);
-                        else {
-                            reportRequest.setBlockId(user.getBlockId());
-                            place = locationService.findBlockById(user.getBlockId()).getBlockName()+" Block";
-                        }
-                        pathName = reportService.getReportPathName(reportRequest).get(1);
-                        fileName = reportService.getReportPathName(reportRequest).get(0);
-                        newMail.setSubject(fileName);
-                        newMail.setFileName(fileName);
-                        newMail.setBody(emailService.getBody(reportName,place,reportService.getMonthName(c.getTime()),user.getFullName()));
-                        newMail.setRootPath(pathName);
-                        if(user.getDistrictId() != null)
-                            errorMessage = emailService.sendMail(newMail);
-                        else
-                            errorMessage = "success";
-                        if (errorMessage.equalsIgnoreCase("failure"))
-                            errorSendingMail.put(user.getEmailId(),fileName);
-                    }
-//            }
-        }
-        return errorSendingMail;
+    @RequestMapping(value = "/sendAll/{reportEnum}", method = RequestMethod.GET)
+    public @ResponseBody HashMap sendAllMails(@PathVariable String reportEnum){
+        ReportType reportType = reportService.getReportTypeByName(reportEnum);
+        return emailService.sendAllMails(reportType);
     }
 
     @RequestMapping(value = "/send", method = RequestMethod.POST)
@@ -146,9 +55,9 @@ public class EmailController {
         c.set(Calendar.DATE, 1);
         String fileName = mailInfo.getFileName();
         String pathName = System.getProperty("user.home") + File.separator;
-        newMail.setSubject("Mobile Academy "+fileName);
+        newMail.setSubject(mailInfo.getSubject());
         newMail.setFileName(fileName);
-        newMail.setBody(emailService.getBody("Mobile Academy CumulativeInactiveUsers","ODISHA",reportService.getMonthName(c.getTime()),"OdishaNHM"));
+        newMail.setBody(mailInfo.getBody());
         newMail.setRootPath(pathName+fileName);
         return emailService.sendMail(newMail);
     }

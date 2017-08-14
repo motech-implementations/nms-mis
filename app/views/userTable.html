@@ -79,7 +79,7 @@
 							<li>
 								<a ng-click="setUniqueStates('')">ALL</a>
 							</li>
-							<li ng-repeat="sName in sNames = (getUniqueStates())">
+							<li ng-repeat="sName in sNames = (getUniqueStates()) | orderBy">
 								<a ng-click="setUniqueStates(sName)" >{{sName}}</a>
 							</li>
 						</ul>
@@ -99,7 +99,7 @@
 							<li>
 								<a ng-click="setUniqueDistricts('')">ALL</a>
 							</li>
-							<li ng-repeat="dName in dNames = (getUniqueDistricts())">
+							<li ng-repeat="dName in dNames = (getUniqueDistricts()) | orderBy">
 								<a ng-click="setUniqueDistricts(dName)" >{{dName}}</a>
 							</li>
 						</ul>
@@ -117,7 +117,7 @@
 						</div>
 						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="blockDropdown">
 							<li><a ng-click="setUniqueBlocks('')">ALL</a></li>
-							<li ng-repeat="bName in bNames = (getUniqueBlocks())">
+							<li ng-repeat="bName in bNames = (getUniqueBlocks()) | orderBy">
 								<a ng-click="setUniqueBlocks(bName)" >{{bName}}</a>
 							</li>
 						</ul>
