@@ -30,6 +30,8 @@ public interface AdminService {
 
   void getKilkariSixWeekNoAnswerFiles(Date fromDate, Date toDate);
 
+  void getKilkariLowListenershipDeactivationFiles(Date fromDate, Date toDate);
+
   void getKilkariLowUsageFiles(Date fromDate, Date toDate);
 
   void getKilkariSelfDeactivationFiles(Date fromDate, Date toDate);
