@@ -488,8 +488,8 @@
 				return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
 			}
 
-            var startMonth = 7 //August
-            var startDate = 21 //Start Date
+            var startMonth = 7 //May
+            var startDate = 15 //Start Date
 
 			$scope.open1 = function() {
 				$scope.popup1.opened = true;
@@ -498,9 +498,12 @@
 
 				console.log(currentDate.getMonth() + " " + currentDate.getDate() + " " +currentDate.getFullYear());
 				if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) ){
-				    if(currentDate.getMonth() == startMonth && currentDate.getDate() >= startDate && currentDate.getFullYear() == 2017){
+				    if(currentDate.getMonth() == startMonth && currentDate.getDate() >= startDate && currentDate.getFullYear() == 2017 && $scope.getSundays(currentDate) > 0){
 				        $scope.dateOptions.maxDate = new Date().setMonth(new Date().getMonth());
 				    }
+				    else if(currentDate.getMonth() == startMonth && currentDate.getDate() >= startDate && currentDate.getFullYear() == 2017 && $scope.getSundays(currentDate) == 0){
+                    	$scope.dateOptions.maxDate = new Date().setMonth(new Date().getMonth() - 1);
+                     }
 				    else if(currentDate.getMonth() == startMonth && currentDate.getDate() < startDate && currentDate.getFullYear() == 2017){
 				         $scope.dateOptions.maxDate = new Date().setMonth(new Date().getMonth() - 1);
 				    }
@@ -574,19 +577,32 @@
                     return;
                 }
                 var getTot = null;
+                var sun = new Array(); //Declaring array for inserting Sundays
                 var today = new Date();
                 if(d.getMonth() == startMonth && d.getFullYear() == 2017 ){
-                    var sun = new Array();   //Declaring array for inserting Sundays
-                    for(var i=startDate-1;i<=31;i++){    //looping through days in month
-                        var newDate = new Date(d.getFullYear(),d.getMonth(),i)
-                        if(newDate.getDay()==0){   //if Sunday
-                            sun.push(i);
+                    if(d.getMonth() == today.getMonth()){
+                        for(var i=startDate;i<=today.getDate()-1;i++){    //looping through days in month
+                            var newDate = new Date(d.getFullYear(),d.getMonth(),i)
+                            if(newDate.getDay()==0){   //if Sunday
+                                sun.push(i);
+                            }
                         }
                     }
-                    $scope.sundays = sun;
-                    return ($scope.sundays.length);
+
+                    else{
+                        for(var i=startDate;i<=31;i++){    //looping through days in month
+                            var newDate = new Date(d.getFullYear(),d.getMonth(),i)
+                            if(newDate.getDay()==0){   //if Sunday
+                                sun.push(i);
+                            }
+                        }
+                    }
+
+                 $scope.sundays = sun;
+                 return ($scope.sundays.length);
 
                 }
+
 
                 else{
 
