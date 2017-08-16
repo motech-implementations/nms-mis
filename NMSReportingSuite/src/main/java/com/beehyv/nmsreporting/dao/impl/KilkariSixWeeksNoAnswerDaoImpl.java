@@ -26,4 +26,40 @@ public class KilkariSixWeeksNoAnswerDaoImpl extends AbstractDao<Integer, Kilkari
         criteria.addOrder(Order.asc("deactivationDate"));
         return (List<KilkariSixWeeksNoAnswer>) criteria.list();
     }
+
+    @Override
+    public List<KilkariSixWeeksNoAnswer> getKilkariUsersWithStateId(Date fromDate, Date toDate, Integer stateId) {
+        Criteria criteria = getSession().createCriteria(KilkariSixWeeksNoAnswer.class);
+        criteria.add(Restrictions.and(
+                Restrictions.lt("deactivationDate",toDate),
+                Restrictions.ge("deactivationDate",fromDate)
+        ))
+                .add(Restrictions.eq("stateId",stateId));
+        criteria.addOrder(Order.asc("deactivationDate"));
+        return (List<KilkariSixWeeksNoAnswer>) criteria.list();
+    }
+
+    @Override
+    public List<KilkariSixWeeksNoAnswer> getKilkariUsersWithDistrictId(Date fromDate, Date toDate, Integer districtId) {
+        Criteria criteria = getSession().createCriteria(KilkariSixWeeksNoAnswer.class);
+        criteria.add(Restrictions.and(
+                Restrictions.lt("deactivationDate",toDate),
+                Restrictions.ge("deactivationDate",fromDate)
+        ))
+                .add(Restrictions.eq("districtId",districtId));
+        criteria.addOrder(Order.asc("deactivationDate"));
+        return (List<KilkariSixWeeksNoAnswer>) criteria.list();
+    }
+
+    @Override
+    public List<KilkariSixWeeksNoAnswer> getKilkariUsersWithBlockId(Date fromDate, Date toDate, Integer blockId) {
+        Criteria criteria = getSession().createCriteria(KilkariSixWeeksNoAnswer.class);
+        criteria.add(Restrictions.and(
+                Restrictions.lt("deactivationDate",toDate),
+                Restrictions.ge("deactivationDate",fromDate)
+        ))
+                .add(Restrictions.eq("blockId",blockId));
+        criteria.addOrder(Order.asc("deactivationDate"));
+        return (List<KilkariSixWeeksNoAnswer>) criteria.list();
+    }
 }

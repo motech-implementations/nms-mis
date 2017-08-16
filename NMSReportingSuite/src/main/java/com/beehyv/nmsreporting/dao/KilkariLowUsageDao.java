@@ -11,4 +11,7 @@ import java.util.List;
 public interface KilkariLowUsageDao {
 
     public List<KilkariLowUsage> getKilkariLowUsageUsers(String forMonth);
+    List<KilkariLowUsage> getKilkariLowUsageUsersWithStateId(String forMonth, Integer stateId);
+    List<KilkariLowUsage> getKilkariLowUsageUsersWithDistrictId(String forMonth, Integer districtId);
+    List<KilkariLowUsage> getKilkariLowUsageUsersWithBlockId(String forMonth, Integer blockId);
 }

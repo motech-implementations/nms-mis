@@ -8,4 +8,8 @@ import java.util.List;
 public interface FlwImportRejectionDao {
 
     List<FlwImportRejection> getAllRejectedFlwImportRecords(Date toDate);
+    List<FlwImportRejection> getAllRejectedFlwImportRecordsWithStateId(Date toDate, Integer stateId);
+    List<FlwImportRejection> getAllRejectedFlwImportRecordsWithDistrictId(Date toDate, Integer districtId);
+    List<FlwImportRejection> getAllRejectedFlwImportRecordsWithBlockId(Date toDate, Integer blockId);
+
 }

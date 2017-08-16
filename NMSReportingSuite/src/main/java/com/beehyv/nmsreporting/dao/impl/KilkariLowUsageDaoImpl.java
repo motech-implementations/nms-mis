@@ -26,4 +26,39 @@ public class KilkariLowUsageDaoImpl extends AbstractDao<Integer, KilkariLowUsage
         criteria.addOrder(Order.asc("modificationDate"));
         return (List<KilkariLowUsage>) criteria.list();
     }
+
+    @Override
+    public List<KilkariLowUsage> getKilkariLowUsageUsersWithStateId(String forMonth, Integer stateId) {
+        Criteria criteria = getSession().createCriteria(KilkariLowUsage.class);
+        criteria.add(
+                Restrictions.like("forMonth",forMonth)
+        )
+                .add(Restrictions.eq("stateId",stateId));
+        criteria.addOrder(Order.asc("modificationDate"));
+        return (List<KilkariLowUsage>) criteria.list();
+    }
+
+    @Override
+    public List<KilkariLowUsage> getKilkariLowUsageUsersWithDistrictId(String forMonth, Integer districtId) {
+        Criteria criteria = getSession().createCriteria(KilkariLowUsage.class);
+        criteria.add(
+                Restrictions.like("forMonth",forMonth)
+        )
+                .add(Restrictions.eq("districtId",districtId));
+        criteria.addOrder(Order.asc("modificationDate"));
+        return (List<KilkariLowUsage>) criteria.list();
+    }
+
+    @Override
+    public List<KilkariLowUsage> getKilkariLowUsageUsersWithBlockId(String forMonth, Integer blockId) {
+        Criteria criteria = getSession().createCriteria(KilkariLowUsage.class);
+        criteria.add(
+                Restrictions.like("forMonth",forMonth)
+        )
+                .add(Restrictions.eq("blockId",blockId));
+        criteria.addOrder(Order.asc("modificationDate"));
+        return (List<KilkariLowUsage>) criteria.list();
+    }
+
+
 }
