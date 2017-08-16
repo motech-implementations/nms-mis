@@ -8,7 +8,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name="kilkari_six_weeks_no_answer")
-public class KilkariSixWeeksNoAnswer {
+public class KilkariDeactivationOther {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="id", columnDefinition = "INT(11)")

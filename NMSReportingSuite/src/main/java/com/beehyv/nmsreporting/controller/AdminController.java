@@ -169,6 +169,7 @@ public class AdminController {
         adminService.createFiles(ReportType.lowUsage.getReportType());
         adminService.createFiles(ReportType.selfDeactivated.getReportType());
         adminService.createFiles(ReportType.sixWeeks.getReportType());
+        adminService.createFiles(ReportType.lowListenership.getReportType());
         adminService.createFiles(ReportType.childRejected.getReportType());
         adminService.createFiles(ReportType.motherRejected.getReportType());
         adminService.createFiles(ReportType.flwRejected.getReportType());
