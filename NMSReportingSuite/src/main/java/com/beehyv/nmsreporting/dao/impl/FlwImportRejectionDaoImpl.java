@@ -20,4 +20,32 @@ public class FlwImportRejectionDaoImpl extends AbstractDao<Long, FlwImportReject
 
         return criteria.list();
     }
+
+    @Override
+    public List<FlwImportRejection> getAllRejectedFlwImportRecordsWithStateId(Date toDate, Integer stateId) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.lt("modificationDate", toDate))
+                .add(Restrictions.eq("accepted", true))
+                .add(Restrictions.eq("stateId", stateId));
+        return criteria.list();
+    }
+    @Override
+    public List<FlwImportRejection> getAllRejectedFlwImportRecordsWithDistrictId(Date toDate, Integer districtId) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.lt("modificationDate", toDate))
+                .add(Restrictions.eq("accepted", true))
+                .add(Restrictions.eq("districtId", districtId));
+
+        return criteria.list();
+    }
+
+    @Override
+    public List<FlwImportRejection> getAllRejectedFlwImportRecordsWithBlockId(Date toDate, Integer blockId) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.lt("modificationDate", toDate))
+                .add(Restrictions.eq("accepted", true))
+                .add(Restrictions.eq("blockId", blockId));
+
+        return criteria.list();
+    }
 }

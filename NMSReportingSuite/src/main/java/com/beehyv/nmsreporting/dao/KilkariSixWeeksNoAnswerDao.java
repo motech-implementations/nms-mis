@@ -10,4 +10,7 @@ import java.util.List;
  */
 public interface KilkariSixWeeksNoAnswerDao {
     public List<KilkariSixWeeksNoAnswer> getKilkariUsers(Date fromDate, Date toDate);
+    List<KilkariSixWeeksNoAnswer> getKilkariUsersWithStateId(Date fromDate, Date toDate, Integer stateId);
+    List<KilkariSixWeeksNoAnswer> getKilkariUsersWithDistrictId(Date fromDate, Date toDate, Integer districtId);
+    List<KilkariSixWeeksNoAnswer> getKilkariUsersWithBlockId(Date fromDate, Date toDate, Integer blockId);
 }

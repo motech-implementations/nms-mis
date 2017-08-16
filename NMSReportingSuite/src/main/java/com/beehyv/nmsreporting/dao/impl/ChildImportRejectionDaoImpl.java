@@ -21,4 +21,34 @@ public class ChildImportRejectionDaoImpl extends AbstractDao<Long, ChildImportRe
 
         return criteria.list();
     }
+
+    @Override
+    public List<ChildImportRejection> getRejectedChildRecordsWithStateId(Date toDate, Integer stateId) {
+
+        Criteria criteria=createEntityCriteria();
+        criteria.add(Restrictions.lt("modificationDate",toDate));
+        criteria.add(Restrictions.ge("accepted",false))
+                .add(Restrictions.eq("stateId",stateId));
+        return criteria.list();
+    }
+
+    @Override
+    public List<ChildImportRejection> getRejectedChildRecordsWithDistrictId(Date toDate, Integer districtId) {
+
+        Criteria criteria=createEntityCriteria();
+        criteria.add(Restrictions.lt("modificationDate",toDate));
+        criteria.add(Restrictions.ge("accepted",false))
+                .add(Restrictions.eq("districtId",districtId));
+        return criteria.list();
+    }
+
+    @Override
+    public List<ChildImportRejection> getRejectedChildRecordsWithBlockId(Date toDate, Integer blockId) {
+
+        Criteria criteria=createEntityCriteria();
+        criteria.add(Restrictions.lt("modificationDate",toDate));
+        criteria.add(Restrictions.ge("accepted",false))
+                .add(Restrictions.eq("blockId",blockId));
+        return criteria.list();
+    }
 }
