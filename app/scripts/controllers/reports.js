@@ -236,15 +236,18 @@
                 if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Low_Usage'){
                     minDate = new Date(2017, 03, 30);
                 }
+                if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Low_Listenership_Deactivation'){
+                    minDate = new Date(2017, 08, 30);
+                }
 
                 //In case of change in minDate for rejection reports, please change startMonth and startDate variable accordingly
-                if($scope.report != null && $scope.report.reportEnum == 'Flw_Import_Rejects'){
+                if($scope.report != null && $scope.report.reportEnum == 'MA_Flw_Import_Rejects'){
                     minDate = new Date(2017, 07, 01);
                  }
-                 if($scope.report != null && $scope.report.reportEnum == 'Mother_Import_Rejects'){
+                 if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Mother_Import_Rejects'){
                     minDate = new Date(2017, 07, 01);
                  }
-                 if($scope.report != null && $scope.report.reportEnum == 'Child_Import_Rejects'){
+                 if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Child_Import_Rejects'){
                     minDate = new Date(2017, 07, 01);
                  }
 //                var minDate = $scope.report.minDate;
@@ -485,8 +488,8 @@
 				return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
 			}
 
-            var startMonth = 7 //May
-            var startDate = 15 //Start Date
+            var startMonth = 7 //August
+            var startDate = 21 //Start Date
 
 			$scope.open1 = function() {
 				$scope.popup1.opened = true;
