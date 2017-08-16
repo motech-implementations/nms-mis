@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<talendfile:ProcessType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.talend.org/mapper" xmlns:talendfile="platform:/resource/org.talend.model/model/TalendFile.xsd" defaultContext="Default">
+<talendfile:ProcessType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.talend.org/mapper" xmlns:talendfile="platform:/resource/org.talend.model/model/TalendFile.xsd" defaultContext="Default" jobType="Standard">
   <context confirmationNeeded="false" name="Default">
     <contextParameter comment="" name="motech_server" prompt="motech_server?" promptNeeded="false" type="id_String" value="null"/>
     <contextParameter comment="" name="motech_password" prompt="motech_password?" promptNeeded="false" type="id_Password" value="RRyLGfljUdg="/>
@@ -258,7 +258,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" value="" show="false"/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select b.id as 'beneficiary_id',s.subscription_id,s.ms_isdn as 'msisdn',b.mother_beneficiary,&#xA;s.activation_date as 'pack_activation_date',s.last_modified as 'deactivation_date',&#xA;format(datediff(s.last_modified,s.activation_date)/7,0) as 'age_on_service',b.name,b.state_id,b.district_id,b.healthBlock_id,&#xA;b.healthSubFacility_id,b.village_id,s.last_modified as 'modificationDate',b.mcts_id,b.rch_id&#xA;from subscriptions s&#xA;left join Beneficiary b on s.beneficiary_id = b.id&#xA;left join kilkari_calls_answered kca on kca.subscription_id = s.subscription_id&#xA;where s.deactivation_reason = 'WEEKLY_CALLS_NOT_ANSWERED'&#xA;and s.last_modified>'&quot;+(String)globalMap.get(&quot;lastEtlTime&quot;)+&quot;'&#xA;ORDER BY s.last_modified ASC&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select b.id as 'beneficiary_id',s.subscription_id,s.ms_isdn as 'msisdn',b.mother_beneficiary,&#xA;s.activation_date as 'pack_activation_date',s.last_modified as 'deactivation_date',&#xA;format(datediff(s.last_modified,s.activation_date)/7,0) as 'age_on_service',b.name,b.state_id,b.district_id,b.healthBlock_id,&#xA;b.healthSubFacility_id,b.village_id,s.last_modified as 'modificationDate',b.mcts_id,b.rch_id, s.deactivation_reason&#xA;from subscriptions s&#xA;left join Beneficiary b on s.beneficiary_id = b.id&#xA;left join kilkari_calls_answered kca on kca.subscription_id = s.subscription_id&#xA;where (s.deactivation_reason = 'WEEKLY_CALLS_NOT_ANSWERED' or s.deactivation_reason = 'LOW_LISTENERSHIP')&#xA;and s.last_modified>'&quot;+(String)globalMap.get(&quot;lastEtlTime&quot;)+&quot;'&#xA;ORDER BY s.last_modified ASC&quot;"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" value="&quot;&quot;" show="false"/>
@@ -301,6 +301,8 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="rch_id"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="deactivation_reason"/>
+      <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tMysqlInput_2">
@@ -320,6 +322,7 @@
       <column comment="" key="false" length="-1" name="modificationDate" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="mcts_id" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="rch_id" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="deactivation_reason" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" originalLength="-1" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="320" posY="256">
@@ -330,6 +333,7 @@
     <elementParameter field="IMAGE" name="PREVIEW" value="_8oJj0DVlEeeS5MClhXu9XA-tMap_1-PREVIEW.bmp"/>
     <elementParameter field="CHECK" name="DIE_ON_ERROR" value="true" show="false"/>
     <elementParameter field="CHECK" name="LKUP_PARALLELIZE" value="false" show="false"/>
+    <elementParameter field="CHECK" name="ENABLE_AUTO_CONVERT_TYPE" value="false" show="false"/>
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="false"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
@@ -351,6 +355,7 @@
       <column comment="" key="false" length="-1" name="modificationDate" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="mcts_id" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="rch_id" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="deactivation_reason" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" originalLength="-1" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="MapperData">
       <uiProperties shellMaximized="true"/>
@@ -373,6 +378,7 @@
         <mapperTableEntries name="modificationDate" expression="row3.modificationDate " type="id_String" nullable="true"/>
         <mapperTableEntries name="mcts_id" expression="row3.mcts_id " type="id_String" nullable="true"/>
         <mapperTableEntries name="rch_id" expression="row3.rch_id " type="id_String" nullable="true"/>
+        <mapperTableEntries name="deactivation_reason" expression="row3.deactivation_reason " type="id_String" nullable="true"/>
       </outputTables>
       <inputTables sizeState="INTERMEDIATE" name="row3" matchingMode="UNIQUE_MATCH" lookupMode="LOAD_ONCE">
         <mapperTableEntries name="beneficiary_id" type="id_Long" nullable="true"/>
@@ -391,6 +397,7 @@
         <mapperTableEntries name="modificationDate" type="id_String" nullable="true"/>
         <mapperTableEntries name="mcts_id" type="id_String" nullable="true"/>
         <mapperTableEntries name="rch_id" type="id_String" nullable="true"/>
+        <mapperTableEntries name="deactivation_reason" type="id_String" nullable="true"/>
       </inputTables>
     </nodeData>
   </node>
@@ -512,6 +519,11 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="deactivation_reason"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="USE_HINT_OPTIONS" value="false"/>
     <elementParameter field="TABLE" name="HINT_OPTIONS" show="false"/>
@@ -538,6 +550,7 @@
       <column comment="" key="false" length="-1" name="modificationDate" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="mcts_id" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="rch_id" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="deactivation_reason" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" originalLength="-1" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="beneficiary_data" name="REJECT">
       <column comment="" key="true" length="-1" name="id" nullable="true" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
@@ -557,6 +570,7 @@
       <column comment="" key="false" length="-1" name="modificationDate" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="mcts_id" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="rch_id" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="deactivation_reason" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" originalLength="-1" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -681,6 +695,9 @@
       <elementValue elementRef="TRACE_COLUMN" value="subscription_id"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="deactivation_reason"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" value="row3" show="false"/>
@@ -742,6 +759,9 @@
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
       <elementValue elementRef="TRACE_COLUMN" value="subscription_id"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="deactivation_reason"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
