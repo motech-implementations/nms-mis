@@ -2140,7 +2140,7 @@ public class AdminServiceImpl implements AdminService {
         aCalendar.add(Calendar.DAY_OF_MONTH,1);
         Date nextDay=aCalendar.getTime();
         List<ChildImportRejection> rejectedChildImports = childImportRejectionDao.getRejectedChildRecords(nextDay);
-        getCumulativeRejectedChildImports(rejectedChildImports, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
+//        getCumulativeRejectedChildImports(rejectedChildImports, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
         for (State state : states) {
             String stateName = StReplace(state.getStateName());
             String rootPathState = rootPath + stateName+ "/";
@@ -2197,7 +2197,7 @@ public class AdminServiceImpl implements AdminService {
         aCalendar.add(Calendar.DAY_OF_MONTH,1);
         Date nextDay=aCalendar.getTime();
         List<MotherImportRejection> rejectedMotherImports = motherImportRejectionDao.getAllRejectedMotherImportRecords(nextDay);
-        getCumulativeRejectedMotherImports(rejectedMotherImports, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
+//        getCumulativeRejectedMotherImports(rejectedMotherImports, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
         for (State state : states) {
             String stateName = StReplace(state.getStateName());
             String rootPathState = rootPath + stateName+ "/";
