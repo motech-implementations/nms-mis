@@ -9,6 +9,8 @@ public class EmailInfo {
     private String from = "", to = "", subject = "", body = "";
     private String fileName = "";
     private String rootPath = "";
+    private String fileName2="";
+    private String rootPathForFile2="";
 
     public String getFrom() {
         return from;
@@ -56,5 +58,21 @@ public class EmailInfo {
 
     public void setRootPath(String rootPath) {
         this.rootPath = rootPath;
+    }
+
+    public String getFileName2() {
+        return fileName2;
+    }
+
+    public void setFileName2(String fileName2) {
+        this.fileName2 = fileName2;
+    }
+
+    public String getRootPathForFile2() {
+        return rootPathForFile2;
+    }
+
+    public void setRootPathForFile2(String rootPathForFile2) {
+        this.rootPathForFile2 = rootPathForFile2;
     }
 }

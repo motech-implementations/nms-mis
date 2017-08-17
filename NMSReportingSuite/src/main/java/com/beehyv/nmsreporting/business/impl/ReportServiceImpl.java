@@ -77,7 +77,7 @@ public class ReportServiceImpl implements ReportService{
         if(reportRequest.getReportType().equals(ReportType.flwRejected.getReportType()) ||
                 reportRequest.getReportType().equals(ReportType.motherRejected.getReportType()) ||
                 reportRequest.getReportType().equals(ReportType.childRejected.getReportType())) {
-            filename=reportRequest.getReportType()+"_"+place+"_"+getDateMonthYear(reportRequest.getToDate())+".xlsx";
+            filename=reportRequest.getReportType()+"_"+place+"_"+this.getDateMonthYear(reportRequest.getToDate())+".xlsx";
         }
         rootPath = reports+reportRequest.getReportType()+"/"+rootPath+filename;
         List<String> extras = new ArrayList<>();
@@ -152,7 +152,8 @@ public class ReportServiceImpl implements ReportService{
         return monthString+"_"+yearString;
     }
 
-    private String getDateMonthYear(Date toDate) {
+    @Override
+    public String getDateMonthYear(Date toDate) {
         Calendar calendar=Calendar.getInstance();
         calendar.setTime(toDate);
         int date=calendar.get(Calendar.DATE);

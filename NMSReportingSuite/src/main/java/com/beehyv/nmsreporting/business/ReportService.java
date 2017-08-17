@@ -24,5 +24,7 @@ public interface ReportService {
 
     String getMonthName(Date toDate);
 
+    String getDateMonthYear(Date toDate);
+
 
 }

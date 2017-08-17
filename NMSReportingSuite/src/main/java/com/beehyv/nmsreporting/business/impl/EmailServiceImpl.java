@@ -236,59 +236,220 @@ public class EmailServiceImpl implements EmailService{
 //                            if (errorMessage.equalsIgnoreCase("failure"))
 //                                errorSendingMail.put(user.getUsername(),fileName);
 //                        }
-            }else {
-                        place = "NATIONAL";
-                        if (user.getStateId() == null)
-                            reportRequest.setStateId(0);
-                        else {
-                            reportRequest.setStateId(user.getStateId());
-                            place = locationService.findStateById(user.getStateId()).getStateName()+" State";
-                        }
-                        if (user.getDistrictId() == null)
-                            reportRequest.setDistrictId(0);
-                        else {
-                            reportRequest.setDistrictId(user.getDistrictId());
-                            place = locationService.findDistrictById(user.getDistrictId()).getDistrictName()+" District";
-                        }
-                        if (user.getBlockId() == null)
-                            reportRequest.setBlockId(0);
-                        else {
-                            reportRequest.setBlockId(user.getBlockId());
-                            place = locationService.findBlockById(user.getBlockId()).getBlockName()+" Block";
-                        }
-                        pathName = reportService.getReportPathName(reportRequest).get(1);
-                        fileName = reportService.getReportPathName(reportRequest).get(0);
-                        newMail.setSubject(fileName);
-                        newMail.setFileName(fileName);
-                        newMail.setBody(this.getBody(reportType.getReportName(),place,reportService.getMonthName(c.getTime()),user.getFullName()));
-                        newMail.setRootPath(pathName);
-                        if(user.getDistrictId() != null) {
-                            errorMessage = this.sendMail(newMail);
-                            EmailTracker emailTracker = new EmailTracker();
-                            emailTracker.setEmailSuccessful(true);
-                            emailTracker.setFileName(fileName);
-                            emailTracker.setReportType(reportType.getReportName());
-                            emailTracker.setTime(new Date());
-                            emailTracker.setUserId(user.getUserId());
-                            if (errorMessage.equalsIgnoreCase("failure")){
-                                errorMessage = this.sendMail(newMail);
-                            }
-                            if (errorMessage.equalsIgnoreCase("failure")){
-                                errorMessage = this.sendMail(newMail);
-                            }
-                            if (errorMessage.equalsIgnoreCase("failure")) {
-                                emailTracker.setEmailSuccessful(false);
-                            }
-                            emailTrackerService.saveEmailDeatils(emailTracker);
-
-                        } else {
-                            errorMessage = "success";
-                        } if (errorMessage.equalsIgnoreCase("failure"))
-                            errorSendingMail.put(user.getUsername(),fileName);
+            } else {
+                    place = "NATIONAL";
+                    if (user.getStateId() == null)
+                        reportRequest.setStateId(0);
+                    else {
+                        reportRequest.setStateId(user.getStateId());
+                        place = locationService.findStateById(user.getStateId()).getStateName()+" State";
                     }
-//            }
+                    if (user.getDistrictId() == null)
+                        reportRequest.setDistrictId(0);
+                    else {
+                        reportRequest.setDistrictId(user.getDistrictId());
+                        place = locationService.findDistrictById(user.getDistrictId()).getDistrictName()+" District";
+                    }
+                    if (user.getBlockId() == null)
+                        reportRequest.setBlockId(0);
+                    else {
+                        reportRequest.setBlockId(user.getBlockId());
+                        place = locationService.findBlockById(user.getBlockId()).getBlockName()+" Block";
+                    }
+                     if(reportType.getReportType().equals(ReportType.motherRejected.getReportType()) ||
+                        reportType.getReportType().equals(ReportType.childRejected.getReportType())) {
+
+                        reportRequest.setReportType(ReportType.childRejected.getReportType());
+                        List<String> file1Details=reportService.getReportPathName(reportRequest);
+                        reportRequest.setReportType(ReportType.motherRejected.getReportType());
+                        String file1Name=file1Details.get(0);
+                        String file1Path=file1Details.get(1);
+                        List<String> file2Details=reportService.getReportPathName(reportRequest);
+                         String file2Name=file2Details.get(0);
+                         String file2Path=file2Details.get(1);
+                        newMail.setFileName(file1Name);
+                        newMail.setFileName2(file2Name);
+                        newMail.setRootPath(file1Path);
+                        newMail.setRootPathForFile2(file2Path);
+                        newMail.setSubject("Rejected Mother and child Records for " +reportService.getDateMonthYear(c.getTime()));
+
+                        //getBody should change
+
+                        newMail.setBody(this.getBody(reportType.getReportName(), place, reportService.getDateMonthYear(c.getTime()), user.getFullName()));
+                        // email for district users
+                        if (user.getDistrictId() != null) {
+                             //errorMessage=this.sendMailWithMultipleAttachments(newMail);
+                             EmailTracker emailTracker = new EmailTracker();
+                             emailTracker.setEmailSuccessful(true);
+                             emailTracker.setFileName(file1Name);
+                             emailTracker.setReportType(ReportType.motherRejected.getReportName());
+                             emailTracker.setTime(new Date());
+                             emailTracker.setUserId(user.getUserId());
+                             EmailTracker emailTracker1 = new EmailTracker();
+                             emailTracker1.setEmailSuccessful(true);
+                             emailTracker1.setFileName(file2Name);
+                             emailTracker1.setReportType(ReportType.childRejected.getReportName());
+                             emailTracker1.setTime(new Date());
+                             emailTracker1.setUserId(user.getUserId());
+                             if (errorMessage.equalsIgnoreCase("failure")) {
+                                 //errorMessage = this.sendMail(newMail);
+                             }
+                             if (errorMessage.equalsIgnoreCase("failure")) {
+                                 //errorMessage = this.sendMail(newMail);
+                             }
+                             if (errorMessage.equalsIgnoreCase("failure")) {
+                                 emailTracker.setEmailSuccessful(false);
+                                 emailTracker1.setEmailSuccessful(false);
+                             }
+                             emailTrackerService.saveEmailDeatils(emailTracker);
+                             emailTrackerService.saveEmailDeatils(emailTracker1);
+                         }else if(user.getStateId()!=null){
+                            sendMailWithStatistics(newMail);
+                         }
+
+                     }else {
+                         List<String> fileDetails=reportService.getReportPathName(reportRequest);
+                         pathName = fileDetails.get(1);
+                         fileName = fileDetails.get(0);
+                         newMail.setSubject(fileName);
+                         newMail.setFileName(fileName);
+                         newMail.setBody(this.getBody(reportType.getReportName(), place, reportService.getMonthName(c.getTime()), user.getFullName()));
+                         newMail.setRootPath(pathName);
+                         if (user.getDistrictId() != null) {
+                             errorMessage = this.sendMail(newMail);
+                             EmailTracker emailTracker = new EmailTracker();
+                             emailTracker.setEmailSuccessful(true);
+                             emailTracker.setFileName(fileName);
+                             emailTracker.setReportType(reportType.getReportName());
+                             emailTracker.setTime(new Date());
+                             emailTracker.setUserId(user.getUserId());
+                             if (errorMessage.equalsIgnoreCase("failure")) {
+                                 errorMessage = this.sendMail(newMail);
+                             }
+                             if (errorMessage.equalsIgnoreCase("failure")) {
+                                 errorMessage = this.sendMail(newMail);
+                             }
+                             if (errorMessage.equalsIgnoreCase("failure")) {
+                                 emailTracker.setEmailSuccessful(false);
+                             }
+                             emailTrackerService.saveEmailDeatils(emailTracker);
+
+                         } else {
+                             errorMessage = "success";
+                         }
+                         if (errorMessage.equalsIgnoreCase("failure"))
+                             errorSendingMail.put(user.getUsername(), fileName);
+                     }
+                }
+//          }
         }
         return errorSendingMail;
+    }
+
+    private String sendMailWithStatistics(EmailInfo emailInfo) {
+        try {
+            final JavaMailSenderImpl ms = (JavaMailSenderImpl) mailSender;
+            Properties props = ms.getJavaMailProperties();
+            final String username = ms.getUsername();
+            final String password = ms.getPassword();
+            //need authenticate to server
+            Session session = Session.getInstance(props,
+                    new javax.mail.Authenticator() {
+                        protected PasswordAuthentication getPasswordAuthentication() {
+                            return new PasswordAuthentication(username, password);
+                        }
+                    });
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(emailInfo.getFrom()));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailInfo.getTo()));
+            message.setSubject(emailInfo.getSubject(),"UTF-8");
+            BodyPart messageBodyPart = new MimeBodyPart();
+            String text=
+                    "Hi , please find attachment <body><br><br><table width='100%' border='1' align='center'>"
+                            + "<tr align='center'>"
+                            + "<td><b>Product Name <b></td>"
+                            + "<td><b>Count<b></td>"
+                            + "</tr>";
+            text=text+"<tr align='center'>"+"<td>" + "ok" + "</td>"
+                    + "<td>" + "yes" + "</td>"+"</tr></body>";
+
+            Multipart multipart = new MimeMultipart();
+
+            messageBodyPart = new MimeBodyPart();
+            message.setContent(text,"text/html; charset=utf-8");
+            Transport.send(message);
+            return "success";
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            return "failure";
+        }
+    }
+
+    private String sendMailWithMultipleAttachments(EmailInfo mailInfo) {
+        try {
+            final JavaMailSenderImpl ms = (JavaMailSenderImpl) mailSender;
+            Properties props = ms.getJavaMailProperties();
+            final String username = ms.getUsername();
+            final String password = ms.getPassword();
+            //need authenticate to server
+            Session session = Session.getInstance(props,
+                    new javax.mail.Authenticator() {
+                        protected PasswordAuthentication getPasswordAuthentication() {
+                            return new PasswordAuthentication(username, password);
+                        }
+                    });
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(mailInfo.getFrom()));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mailInfo.getTo()));
+            message.setSubject(mailInfo.getSubject(),"UTF-8");
+            /*BodyPart messageBodyPart = new MimeBodyPart();
+            String text=
+                    "Hi , please find attachment <body><br><br><table width='100%' border='1' align='center'>"
+                            + "<tr align='center'>"
+                            + "<td><b>Product Name <b></td>"
+                            + "<td><b>Count<b></td>"
+                            + "</tr>";
+            text=text+"<tr align='center'>"+"<td>" + "ok" + "</td>"
+                    + "<td>" + "yes" + "</td>"+"</tr></body>";
+
+            Multipart multipart = new MimeMultipart();
+
+            //multipart.addBodyPart(messageBodyPart);
+            messageBodyPart = new MimeBodyPart();
+            List<String> fileNames=new ArrayList<>();
+            fileNames.add("/home/beehyv/Documents/Reports/Mother_Import_Rejects/Mother_Import_Rejects_NATIONAL_06_08_17.xlsx");
+            fileNames.add("/home/beehyv/Documents/Reports/Child_Import_Rejects/Child_Import_Rejects_NATIONAL_06_08_17.xlsx");*/
+            BodyPart messageBodyPart = new MimeBodyPart();
+            messageBodyPart.setText(mailInfo.getBody());
+            Multipart multipart = new MimeMultipart();
+            //multipart.addBodyPart(messageBodyPart);
+            List<String> filePaths=new ArrayList<>();
+            filePaths.add(mailInfo.getRootPath());
+            filePaths.add(mailInfo.getRootPathForFile2());
+            addAttachment(multipart,filePaths.get(0), mailInfo.getFileName());
+            addAttachment(multipart,filePaths.get(1), mailInfo.getFileName2());
+            //message.setContent(mailInfo.getBody(),"text/html; charset=utf-8");
+            message.setContent(multipart);
+            Transport.send(message);
+            return "success";
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            return "failure";
+        }
+    }
+    private static void addAttachment(Multipart multipart, String filePath, String fileName )
+    {
+        DataSource source = new FileDataSource(filePath);
+        BodyPart messageBodyPart = new MimeBodyPart();
+
+        try {
+            messageBodyPart.setDataHandler(new DataHandler(source));
+            messageBodyPart.setFileName(fileName);
+            multipart.addBodyPart(messageBodyPart);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private String getStatesNamesByCircle(Circle circle){
