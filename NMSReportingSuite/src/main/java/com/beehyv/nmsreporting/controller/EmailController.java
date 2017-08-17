@@ -33,12 +33,6 @@ public class EmailController {
     @Autowired
     LocationService locationService;
 
-//    @RequestMapping(value = "/input", method = RequestMethod.GET)
-//    public @ResponseBody String showForm(ModelMap model) {
-//        model.addAttribute("mail", new EmailInfo());
-//        return "AttachEmailInput";
-//    }
-
     @RequestMapping(value = "/sendAll/{reportEnum}", method = RequestMethod.GET)
     public @ResponseBody HashMap sendAllMails(@PathVariable String reportEnum){
         ReportType reportType = reportService.getReportTypeByName(reportEnum);
@@ -63,9 +57,11 @@ public class EmailController {
     }
 
 
+    /*@RequestMapping(value = "/test", method =RequestMethod.GET )
+    @ResponseBody
+        public String dummyTest() {
+            //return emailService.dummyEmail();
+        }*/
 
-    @RequestMapping(value = "/dummy", method = RequestMethod.GET)
-    public @ResponseBody EmailInfo dummy(){
-        return new EmailInfo();
-    }
+
 }
