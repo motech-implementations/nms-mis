@@ -29,4 +29,43 @@ public class FrontLineWorkersDaoImpl extends AbstractDao<Integer,FrontLineWorker
         ));
         return (List<FrontLineWorkers>) criteria.list();
     }
+
+    @Override
+    public List<FrontLineWorkers> getInactiveFrontLineWorkersWithStateId(Date toDate, Integer stateId) {
+        Criteria criteria = createEntityCriteria().addOrder(Order.asc("creationDate"));
+        criteria.add(Restrictions.and(
+                Restrictions.eq("status","INACTIVE").ignoreCase(),
+                Restrictions.lt("lastModifiedDate",toDate),
+                Restrictions.ne("jobStatus","INACTIVE").ignoreCase(),
+                Restrictions.eq("designation","ASHA").ignoreCase(),
+                Restrictions.eq("stateId","stateId").ignoreCase()
+        ));
+        return (List<FrontLineWorkers>) criteria.list();
+    }
+
+    @Override
+    public List<FrontLineWorkers> getInactiveFrontLineWorkersWithDistrictId(Date toDate, Integer districtId) {
+        Criteria criteria = createEntityCriteria().addOrder(Order.asc("creationDate"));
+        criteria.add(Restrictions.and(
+                Restrictions.eq("status","INACTIVE").ignoreCase(),
+                Restrictions.lt("lastModifiedDate",toDate),
+                Restrictions.ne("jobStatus","INACTIVE").ignoreCase(),
+                Restrictions.eq("designation","ASHA").ignoreCase(),
+                Restrictions.eq("districtId","districtId").ignoreCase()
+        ));
+        return (List<FrontLineWorkers>) criteria.list();
+    }
+
+    @Override
+    public List<FrontLineWorkers> getInactiveFrontLineWorkersWithBlockId(Date toDate, Integer blockId) {
+        Criteria criteria = createEntityCriteria().addOrder(Order.asc("creationDate"));
+        criteria.add(Restrictions.and(
+                Restrictions.eq("status","INACTIVE").ignoreCase(),
+                Restrictions.lt("lastModifiedDate",toDate),
+                Restrictions.ne("jobStatus","INACTIVE").ignoreCase(),
+                Restrictions.eq("designation","ASHA").ignoreCase(),
+                Restrictions.eq("blockId","blockId").ignoreCase()
+        ));
+        return (List<FrontLineWorkers>) criteria.list();
+    }
 }

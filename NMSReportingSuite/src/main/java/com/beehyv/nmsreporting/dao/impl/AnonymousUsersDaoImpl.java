@@ -36,5 +36,7 @@ public class  AnonymousUsersDaoImpl extends AbstractDao<Integer,AnonymousUsers> 
                 Restrictions.eq("circleName",circleName)));
         return (List<AnonymousUsers>)criteria.list();
     }
+
+
 }
 

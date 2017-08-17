@@ -47,6 +47,7 @@ public class AutoReportEmailGeneration {
         adminService.createFiles(ReportType.lowUsage.getReportType());
         adminService.createFiles(ReportType.selfDeactivated.getReportType());
         adminService.createFiles(ReportType.sixWeeks.getReportType());
+        adminService.createFiles(ReportType.lowListenership.getReportType());
 
         adminService.getCircleWiseAnonymousFiles(fromDate,toDate);
         System.out.println("MA_Anonymous reports generated");
@@ -56,6 +57,8 @@ public class AutoReportEmailGeneration {
         System.out.println("MA_Inactive reports generated");
         adminService.getKilkariSixWeekNoAnswerFiles(fromDate,toDate);
         System.out.println("KilkariSixWeekNoAnswer reports generated");
+        adminService.getKilkariLowListenershipDeactivationFiles(fromDate,toDate);
+        System.out.println("LowListenershipDeactivation reports generated");
         adminService.getKilkariSelfDeactivationFiles(fromDate,toDate);
         System.out.println("KilkariSelfDeactivation reports generated");
         adminService.getKilkariLowUsageFiles(fromDate,toDate);

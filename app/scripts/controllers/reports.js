@@ -236,15 +236,18 @@
                 if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Low_Usage'){
                     minDate = new Date(2017, 03, 30);
                 }
+                if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Low_Listenership_Deactivation'){
+                    minDate = new Date(2017, 08, 30);
+                }
 
                 //In case of change in minDate for rejection reports, please change startMonth and startDate variable accordingly
-                if($scope.report != null && $scope.report.reportEnum == 'Flw_Import_Rejects'){
+                if($scope.report != null && $scope.report.reportEnum == 'MA_Flw_Import_Rejects'){
                     minDate = new Date(2017, 07, 01);
                  }
-                 if($scope.report != null && $scope.report.reportEnum == 'Mother_Import_Rejects'){
+                 if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Mother_Import_Rejects'){
                     minDate = new Date(2017, 07, 01);
                  }
-                 if($scope.report != null && $scope.report.reportEnum == 'Child_Import_Rejects'){
+                 if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Child_Import_Rejects'){
                     minDate = new Date(2017, 07, 01);
                  }
 //                var minDate = $scope.report.minDate;
@@ -495,9 +498,12 @@
 
 				console.log(currentDate.getMonth() + " " + currentDate.getDate() + " " +currentDate.getFullYear());
 				if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) ){
-				    if(currentDate.getMonth() == startMonth && currentDate.getDate() >= startDate && currentDate.getFullYear() == 2017){
+				    if(currentDate.getMonth() == startMonth && currentDate.getDate() >= startDate && currentDate.getFullYear() == 2017 && $scope.getSundays(currentDate) > 0){
 				        $scope.dateOptions.maxDate = new Date().setMonth(new Date().getMonth());
 				    }
+				    else if(currentDate.getMonth() == startMonth && currentDate.getDate() >= startDate && currentDate.getFullYear() == 2017 && $scope.getSundays(currentDate) == 0){
+                    	$scope.dateOptions.maxDate = new Date().setMonth(new Date().getMonth() - 1);
+                     }
 				    else if(currentDate.getMonth() == startMonth && currentDate.getDate() < startDate && currentDate.getFullYear() == 2017){
 				         $scope.dateOptions.maxDate = new Date().setMonth(new Date().getMonth() - 1);
 				    }
@@ -571,19 +577,32 @@
                     return;
                 }
                 var getTot = null;
+                var sun = new Array(); //Declaring array for inserting Sundays
                 var today = new Date();
                 if(d.getMonth() == startMonth && d.getFullYear() == 2017 ){
-                    var sun = new Array();   //Declaring array for inserting Sundays
-                    for(var i=startDate-1;i<=31;i++){    //looping through days in month
-                        var newDate = new Date(d.getFullYear(),d.getMonth(),i)
-                        if(newDate.getDay()==0){   //if Sunday
-                            sun.push(i);
+                    if(d.getMonth() == today.getMonth()){
+                        for(var i=startDate;i<=today.getDate()-1;i++){    //looping through days in month
+                            var newDate = new Date(d.getFullYear(),d.getMonth(),i)
+                            if(newDate.getDay()==0){   //if Sunday
+                                sun.push(i);
+                            }
                         }
                     }
-                    $scope.sundays = sun;
-                    return ($scope.sundays.length);
+
+                    else{
+                        for(var i=startDate;i<=31;i++){    //looping through days in month
+                            var newDate = new Date(d.getFullYear(),d.getMonth(),i)
+                            if(newDate.getDay()==0){   //if Sunday
+                                sun.push(i);
+                            }
+                        }
+                    }
+
+                 $scope.sundays = sun;
+                 return ($scope.sundays.length);
 
                 }
+
 
                 else{
 

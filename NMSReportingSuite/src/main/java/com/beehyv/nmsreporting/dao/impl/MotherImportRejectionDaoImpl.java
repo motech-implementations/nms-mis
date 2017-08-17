@@ -20,4 +20,35 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
 
         return criteria.list();
     }
+
+    @Override
+    public List<MotherImportRejection> getAllRejectedMotherImportRecordsWithStateId(Date toDate, Integer stateId) {
+        Criteria criteria=createEntityCriteria();
+        criteria.add(Restrictions.lt("modificationDate", toDate))
+                .add(Restrictions.eq("accepted", false))
+                .add(Restrictions.eq("stateId", stateId));
+
+        return criteria.list();
+    }
+
+    @Override
+    public List<MotherImportRejection> getAllRejectedMotherImportRecordsWithDistrictId(Date toDate, Integer districtId) {
+        Criteria criteria=createEntityCriteria();
+        criteria.add(Restrictions.lt("modificationDate", toDate))
+                .add(Restrictions.eq("accepted", false))
+                .add(Restrictions.eq("districtId", districtId));
+
+        return criteria.list();
+    }
+
+    @Override
+    public List<MotherImportRejection> getAllRejectedMotherImportRecordsWithBlockId(Date toDate, Integer blockId) {
+        Criteria criteria=createEntityCriteria();
+        criteria.add(Restrictions.lt("modificationDate", toDate))
+                .add(Restrictions.eq("accepted", false))
+                .add(Restrictions.eq("blockId", blockId));
+
+        return criteria.list();
+    }
+
 }

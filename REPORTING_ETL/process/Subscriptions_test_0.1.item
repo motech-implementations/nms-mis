@@ -216,7 +216,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" value="" show="false"/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT subs.id as 'ID', &#xA;case when subs.subscriptionPack_id_OID=1 then m.beneficiaryId else c.beneficiaryId end as &#xA; 'mcts_id', &#xA;case when subs.subscriptionPack_id_OID=1 then m.rchId else c.rchId end as &#xA; 'rch_id', &#xA;case when subs.subscriptionPack_id_OID = 1 then 1 else 0 end as mother_beneficiary,&#xA;subs.status as 'Subscription_Status',&#xA;subs.startDate as 'Start_Date',&#xA;sbr.callingNumber as 'MSISDN',&#xA;subs.modificationDate,&#xA;subs.activationDate,&#xA;subs.creationDate,&#xA;subs.deactivationReason AS 'Deactivation_Reason',&#xA;subs.origin&#xA;FROM nms_subscriptions subs&#xA;INNER JOIN nms_subscription_packs sp&#xA;ON sp.id = subs.subscriptionPack_id_OID&#xA;INNER JOIN nms_subscribers sbr&#xA;ON sbr.id = subs.subscriber_id_OID&#xA;LEFT JOIN nms_mcts_mothers m on sbr.mother_id_OID=m.id&#xA;LEFT JOIN nms_mcts_children c on sbr.child_id_OID=c.id&#xA;WHERE subs.modificationDate >'&quot;+(String)globalMap.get(&quot;lastEtlTime&quot;)+&quot;'&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT subs.id as 'ID', &#xA;case when subs.subscriptionPack_id_OID=1 then m.beneficiaryId else c.beneficiaryId end as &#xA; 'mcts_id', &#xA;case when subs.subscriptionPack_id_OID=1 then m.rchId else c.rchId end as &#xA; 'rch_id', &#xA;case when subs.subscriptionPack_id_OID = 1 then 1 else 0 end as mother_beneficiary,&#xA;subs.status as 'Subscription_Status',&#xA;subs.startDate as 'Start_Date',&#xA;sbr.callingNumber as 'MSISDN',&#xA;subs.modificationDate,&#xA;subs.activationDate,&#xA;subs.creationDate,&#xA;subs.deactivationReason AS 'Deactivation_Reason',&#xA;subs.origin,&#xA;subs.subscriptionId&#xA;FROM nms_subscriptions subs&#xA;INNER JOIN nms_subscription_packs sp&#xA;ON sp.id = subs.subscriptionPack_id_OID&#xA;left JOIN nms_subscribers sbr&#xA;ON sbr.id = subs.subscriber_id_OID&#xA;LEFT JOIN nms_mcts_mothers m on sbr.mother_id_OID=m.id&#xA;LEFT JOIN nms_mcts_children c on sbr.child_id_OID=c.id&#xA;WHERE subs.modificationDate >'&quot;+(String)globalMap.get(&quot;lastEtlTime&quot;)+&quot;'&quot;"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" value="&quot;&quot;" show="false"/>
@@ -251,13 +251,15 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="origin"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="subscriptionId"/>
+      <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tMysqlInput_1">
       <column comment="" key="true" length="-1" name="ID" nullable="false" pattern="" precision="-1" sourceType="VARCHAR" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="mcts_id" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="rch_id" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="mother_beneficiary" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="mother_beneficiary" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_Byte" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="Subscription_Status" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="Start_Date" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="MSISDN" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_Long" usefulColumn="true"/>
@@ -266,6 +268,7 @@
       <column comment="" key="false" length="-1" name="creationDate" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="Deactivation_Reason" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="origin" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="subscriptionId" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="288" posY="192">
@@ -282,7 +285,7 @@
     <metadata connector="FLOW" label="output" name="output">
       <column comment="" key="true" length="20" name="subscription_id" nullable="false" pattern="" precision="-1" sourceType="" type="id_Long" originalLength="20" usefulColumn="true"/>
       <column comment="" key="false" length="20" name="beneficiary_id" nullable="true" pattern="" precision="-1" sourceType="" type="id_Long" originalLength="20" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="mother_beneficiary" nullable="true" pattern="" precision="-1" sourceType="" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="mother_beneficiary" nullable="true" pattern="" precision="-1" sourceType="" type="id_Byte" usefulColumn="true"/>
       <column comment="" key="false" length="20" name="ms_isdn" nullable="true" pattern="" precision="-1" sourceType="" type="id_Long" originalLength="20" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="subscription_status" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="start_date" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
@@ -291,14 +294,15 @@
       <column comment="" key="false" length="-1" name="creation_time" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="last_modified" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="origin" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="subscriptionId" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables sizeState="INTERMEDIATE" name="Var" minimized="true"/>
       <outputTables sizeState="INTERMEDIATE" name="output">
         <mapperTableEntries name="subscription_id" expression=" row2.ID " type="id_Long"/>
         <mapperTableEntries name="beneficiary_id" expression="ReportingHelper.beneficiary(row2.mcts_id, row2.rch_id, row2.mother_beneficiary, (java.sql.Connection) resourceMap.get(&quot;conn_tMysqlOutput_1&quot;)) " type="id_Long" nullable="true"/>
-        <mapperTableEntries name="mother_beneficiary" expression="row2.mother_beneficiary " type="id_Boolean" nullable="true"/>
+        <mapperTableEntries name="mother_beneficiary" expression="row2.mother_beneficiary " type="id_Byte" nullable="true"/>
         <mapperTableEntries name="ms_isdn" expression="row2.MSISDN " type="id_Long" nullable="true"/>
         <mapperTableEntries name="subscription_status" expression="row2.Subscription_Status " type="id_String" nullable="true"/>
         <mapperTableEntries name="start_date" expression="row2.Start_Date " type="id_String" nullable="true"/>
@@ -307,12 +311,13 @@
         <mapperTableEntries name="creation_time" expression="row2.creationDate " type="id_String" nullable="true"/>
         <mapperTableEntries name="last_modified" expression="row2.modificationDate " type="id_String" nullable="true"/>
         <mapperTableEntries name="origin" expression="row2.origin " type="id_String" nullable="true"/>
+        <mapperTableEntries name="subscriptionId" expression="row2.subscriptionId " type="id_String" nullable="true"/>
       </outputTables>
       <inputTables sizeState="INTERMEDIATE" name="row2" matchingMode="UNIQUE_MATCH" lookupMode="LOAD_ONCE">
         <mapperTableEntries name="ID" type="id_Long"/>
         <mapperTableEntries name="mcts_id" type="id_String" nullable="true"/>
         <mapperTableEntries name="rch_id" type="id_String" nullable="true"/>
-        <mapperTableEntries name="mother_beneficiary" type="id_Boolean" nullable="true"/>
+        <mapperTableEntries name="mother_beneficiary" type="id_Byte" nullable="true"/>
         <mapperTableEntries name="Subscription_Status" type="id_String" nullable="true"/>
         <mapperTableEntries name="Start_Date" type="id_String" nullable="true"/>
         <mapperTableEntries name="MSISDN" type="id_Long" nullable="true"/>
@@ -321,6 +326,7 @@
         <mapperTableEntries name="creationDate" type="id_String" nullable="true"/>
         <mapperTableEntries name="Deactivation_Reason" type="id_String" nullable="true"/>
         <mapperTableEntries name="origin" type="id_String" nullable="true"/>
+        <mapperTableEntries name="subscriptionId" type="id_String" nullable="true"/>
       </inputTables>
     </nodeData>
   </node>
@@ -412,6 +418,11 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="subscriptionId"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="USE_HINT_OPTIONS" value="false"/>
     <elementParameter field="TABLE" name="HINT_OPTIONS" show="false"/>
@@ -423,7 +434,7 @@
     <metadata connector="FLOW" label="output" name="tMysqlOutput_1">
       <column comment="" key="true" length="20" name="subscription_id" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" originalLength="20" usefulColumn="true"/>
       <column comment="" key="false" length="20" name="beneficiary_id" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" originalLength="20" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="mother_beneficiary" nullable="true" pattern="" precision="-1" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="mother_beneficiary" nullable="true" pattern="" precision="-1" sourceType="TINYINT" type="id_Byte" usefulColumn="true"/>
       <column comment="" key="false" length="20" name="ms_isdn" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" originalLength="20" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="subscription_status" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="start_date" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -432,11 +443,12 @@
       <column comment="" key="false" length="-1" name="creation_time" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="last_modified" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="origin" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="subscriptionId" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="output" name="REJECT">
       <column comment="" key="true" length="20" name="subscription_id" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" originalLength="20" usefulColumn="true"/>
       <column comment="" key="false" length="20" name="beneficiary_id" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" originalLength="20" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="mother_beneficiary" nullable="true" pattern="" precision="-1" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="mother_beneficiary" nullable="true" pattern="" precision="-1" sourceType="TINYINT" type="id_Byte" usefulColumn="true"/>
       <column comment="" key="false" length="20" name="ms_isdn" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" originalLength="20" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="subscription_status" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="start_date" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -445,6 +457,7 @@
       <column comment="" key="false" length="-1" name="creation_time" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="last_modified" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="origin" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="subscriptionId" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -596,6 +609,9 @@
   <connection connectorName="FLOW" label="output" lineStyle="0" metaname="output" offsetLabelX="0" offsetLabelY="0" source="tMap_1" target="tMysqlOutput_1">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
       <elementValue elementRef="TRACE_COLUMN" value="origin"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="subscriptionId"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>

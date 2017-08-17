@@ -8,7 +8,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name="kilkari_six_weeks_no_answer")
-public class KilkariSixWeeksNoAnswer {
+public class KilkariDeactivationOther {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="id", columnDefinition = "INT(11)")
@@ -46,6 +46,9 @@ public class KilkariSixWeeksNoAnswer {
 
     @Column(name="village_id", columnDefinition = "INT(11)")
     private Integer villageId;
+
+    @Column(name="deactivation_reason", columnDefinition = "VARCHAR(100)")
+    private String deactivationReason;
 
     public Integer getKilkariId() {
         return kilkariId;
@@ -141,5 +144,13 @@ public class KilkariSixWeeksNoAnswer {
 
     public void setVillageId(Integer villageId) {
         this.villageId = villageId;
+    }
+
+    public String getDeactivationReason() {
+        return deactivationReason;
+    }
+
+    public void setDeactivationReason(String deactivationReason) {
+        this.deactivationReason = deactivationReason;
     }
 }

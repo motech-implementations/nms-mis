@@ -26,4 +26,40 @@ public class KilkariSelfDeactivatedDaoImpl extends AbstractDao<Integer, KilkariS
         criteria.addOrder(Order.asc("deactivationDate"));
         return (List<KilkariSelfDeactivated>) criteria.list();
     }
+
+    @Override
+    public List<KilkariSelfDeactivated> getSelfDeactivatedUsersWithStateId(Date fromDate, Date toDate, Integer stateId) {
+        Criteria criteria = getSession().createCriteria(KilkariSelfDeactivated.class);
+        criteria.add(Restrictions.and(
+                Restrictions.lt("deactivationDate",toDate),
+                Restrictions.ge("deactivationDate",fromDate)
+        ))
+                .add(Restrictions.eq("stateId", stateId));
+        criteria.addOrder(Order.asc("deactivationDate"));
+        return (List<KilkariSelfDeactivated>) criteria.list();
+    }
+
+    @Override
+    public List<KilkariSelfDeactivated> getSelfDeactivatedUsersWithDistrictId(Date fromDate, Date toDate, Integer districtId) {
+        Criteria criteria = getSession().createCriteria(KilkariSelfDeactivated.class);
+        criteria.add(Restrictions.and(
+                Restrictions.lt("deactivationDate",toDate),
+                Restrictions.ge("deactivationDate",fromDate)
+        ))
+                .add(Restrictions.eq("districtId", districtId));
+        criteria.addOrder(Order.asc("deactivationDate"));
+        return (List<KilkariSelfDeactivated>) criteria.list();
+    }
+
+    @Override
+    public List<KilkariSelfDeactivated> getSelfDeactivatedUsersWithBlockId(Date fromDate, Date toDate, Integer blockId) {
+        Criteria criteria = getSession().createCriteria(KilkariSelfDeactivated.class);
+        criteria.add(Restrictions.and(
+                Restrictions.lt("deactivationDate",toDate),
+                Restrictions.ge("deactivationDate",fromDate)
+        ))
+                .add(Restrictions.eq("blockId", blockId));
+        criteria.addOrder(Order.asc("deactivationDate"));
+        return (List<KilkariSelfDeactivated>) criteria.list();
+    }
 }

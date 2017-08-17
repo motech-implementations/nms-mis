@@ -173,7 +173,7 @@
   <node componentName="tFileInputDelimited" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="96" posY="96">
     <elementParameter field="TEXT" name="UNIQUE_NAME" value="tFileInputDelimited_1" show="false"/>
     <elementParameter field="LABEL" name="FILENAMETEXT" value="&quot;When the input source is a stream or a zip file,footer and random shouldn't be bigger than 0.&quot;"/>
-    <elementParameter field="FILE" name="FILENAME" value="&quot;/home/vishnu/Desktop/db_connection.txt&quot;"/>
+    <elementParameter field="FILE" name="FILENAME" value="&quot;../db_connection.txt&quot;"/>
     <elementParameter field="CHECK" name="CSV_OPTION" value="false"/>
     <elementParameter field="TEXT" name="ROWSEPARATOR" value="&quot;\n&quot;"/>
     <elementParameter field="OPENED_LIST" name="CSVROWSEPARATOR" value="&quot;\n&quot;" show="false"/>
@@ -258,7 +258,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" value="" show="false"/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select a.beneficiary_id as 'beneficiary_id',&#xA;b.ms_isdn as 'msisdn',&#xA;a.mother_beneficiary as 'mother_beneficiary',&#xA;case when ((b.Subscription_Status='COMPLETED' or b.Subscription_Status='DEACTIVATED') and b.last_modified &lt;= '2017-04-30 23:59:59') then (DATEDIFF(b.last_modified, b.activation_date))/7 else (DATEDIFF('2017-04-30', b.activation_date))/7 end as 'age_on_service',&#xA;Case when a.call_status ='SUCCESS' then MAX(a.modificationDate) END as 'modificationDate',&#xA;'04_17' as 'for_month'&#xA;from beneficiary_call_measure a&#xA;LEFT JOIN subscriptions b on a.subscription_id=b.subscription_id&#xA;LEFT JOIN dim_campaign d on a.campaign_id=d.id&#xA;where a.modificationDate like '2017-04%' and a.call_status = 'SUCCESS'&#xA;group by a.subscription_id &#xA;having (SUM(a.msg_duration)/SUM(d.message_duration))*100 &lt;= 25)&#xA;and b.modificationDate>'&quot;+(String)globalMap.get(&quot;lastEtlTime&quot;)+&quot;'&#xA;ORDER BY b.modificationDate ASC&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select a.beneficiary_id as 'beneficiary_id',&#xA;a.subscription_id as 'subscription_id',&#xA;b.ms_isdn as 'msisdn',&#xA;a.mother_beneficiary as 'mother_beneficiary',&#xA;case when ((b.Subscription_Status='COMPLETED' or b.Subscription_Status='DEACTIVATED') and b.last_modified &lt;= DATE_FORMAT(NOW() ,'%Y-%m-01')) then (DATEDIFF(b.last_modified, b.activation_date))/7 else (DATEDIFF(DATE_FORMAT(NOW() ,'%Y-%m-01'), b.activation_date)-1)/7 end as 'age_on_service',&#xA;bf.name as 'name',&#xA;bf.state_id as 'state_id',&#xA;bf.district_id as 'district_id',&#xA;bf.healthBlock_id as 'block_id',&#xA;bf.healthSubFacility_id as 'hsubcenter_id',&#xA;bf.village_id as 'village_id',&#xA;Case when a.call_status ='SUCCESS' then MAX(a.modificationDate) END as 'modificationDate',&#xA;bf.mcts_id as 'mcts_id',&#xA;bf.rch_id as 'rch_id',&#xA;date_format(NOW() - interval 1 month,'%m_%y') as 'for_month'&#xA;from beneficiary_call_measure a&#xA;LEFT JOIN subscriptions b on a.subscription_id=b.subscription_id&#xA;LEFT JOIN dim_campaign d on a.campaign_id=d.id&#xA;left JOIN Beneficiary bf on bf.id = a.beneficiary_id&#xA;where a.modificationDate like DATE_FORMAT(NOW() - interval 1 month ,'%Y-%m%') and a.call_status = 'SUCCESS'&#xA;group by a.subscription_id &#xA;having ((SUM(case when a.modificationDate like DATE_FORMAT(NOW() - interval 1 month ,'%Y-%m%') and a.call_status = 'SUCCESS' and a.call_source = 'OBD' THEN a.msg_duration END)/SUM(CASE WHEN a.modificationDate like DATE_FORMAT(NOW() - interval 1 month ,'%Y-%m%') and a.call_status = 'SUCCESS' and a.call_source = 'OBD' THEN d.message_duration END))*100 &lt;= 25)&quot;"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" value="&quot;&quot;" show="false"/>
@@ -270,6 +270,8 @@
     <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
     <elementParameter field="TABLE" name="TRIM_COLUMN">
       <elementValue elementRef="SCHEMA_COLUMN" value="beneficiary_id"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="subscription_id"/>
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="msisdn"/>
       <elementValue elementRef="TRIM" value="false"/>
@@ -301,6 +303,7 @@
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tMysqlInput_2">
       <column comment="" key="false" length="-1" name="beneficiary_id" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="subscription_id" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="msisdn" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="mother_beneficiary" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_Boolean" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="age_on_service" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_Integer" usefulColumn="true"/>
@@ -330,6 +333,7 @@
     <metadata connector="FLOW" label="beneficiary_data" name="Kilkari_self_deactivated_data">
       <column comment="" key="true" length="-1" name="id" nullable="true" pattern="" precision="-1" sourceType="" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="beneficiary_id" nullable="true" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="subscription_id" nullable="true" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="msisdn" nullable="true" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="mother_beneficiary" nullable="true" pattern="" precision="-1" sourceType="" type="id_Boolean" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="age_on_service" nullable="true" pattern="" precision="-1" sourceType="" type="id_Integer" usefulColumn="true"/>
@@ -350,6 +354,7 @@
       <outputTables sizeState="INTERMEDIATE" name="Kilkari_self_deactivated_data">
         <mapperTableEntries name="id" type="id_Integer" nullable="true"/>
         <mapperTableEntries name="beneficiary_id" expression="row3.beneficiary_id " type="id_Long" nullable="true"/>
+        <mapperTableEntries name="subscription_id" expression="row3.subscription_id " type="id_Long" nullable="true"/>
         <mapperTableEntries name="msisdn" expression="row3.msisdn " type="id_Long" nullable="true"/>
         <mapperTableEntries name="mother_beneficiary" expression="row3.mother_beneficiary " type="id_Boolean" nullable="true"/>
         <mapperTableEntries name="age_on_service" expression="row3.age_on_service " type="id_Integer" nullable="true"/>
@@ -366,6 +371,7 @@
       </outputTables>
       <inputTables sizeState="INTERMEDIATE" name="row3" matchingMode="UNIQUE_MATCH" lookupMode="LOAD_ONCE">
         <mapperTableEntries name="beneficiary_id" type="id_Long" nullable="true"/>
+        <mapperTableEntries name="subscription_id" type="id_Long" nullable="true"/>
         <mapperTableEntries name="msisdn" type="id_Long" nullable="true"/>
         <mapperTableEntries name="mother_beneficiary" type="id_Boolean" nullable="true"/>
         <mapperTableEntries name="age_on_service" type="id_Integer" nullable="true"/>
@@ -397,16 +403,16 @@
     <elementParameter field="PASSWORD" name="PASS" value="8pW6Nmy2kuc9p/xfCccm1qVicJRYPVM92ggU87Wnj9E="/>
     <elementParameter field="DBTABLE" name="TABLE" value="&quot;kilkari_low_usage&quot;"/>
     <elementParameter field="CLOSED_LIST" name="TABLE_ACTION" value="NONE"/>
-    <elementParameter field="CLOSED_LIST" name="DATA_ACTION" value="INSERT_OR_UPDATE"/>
+    <elementParameter field="CLOSED_LIST" name="DATA_ACTION" value="INSERT"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" value="&quot;&quot;" show="false"/>
     <elementParameter field="CHECK" name="DIE_ON_ERROR" value="false"/>
     <elementParameter field="MAPPING_TYPE" name="MAPPING" value="mysql_id" show="false"/>
     <elementParameter field="TEXT" name="PROPERTIES" value="context.reporting_db_AdditionalParams"/>
-    <elementParameter field="CHECK" name="EXTENDINSERT" value="true" show="false"/>
-    <elementParameter field="LABEL" name="NOTE" value="(Not compatible with reject links)" show="false"/>
-    <elementParameter field="TEXT" name="NB_ROWS_PER_INSERT" value="100" show="false"/>
+    <elementParameter field="CHECK" name="EXTENDINSERT" value="true"/>
+    <elementParameter field="LABEL" name="NOTE" value="(Not compatible with reject links)"/>
+    <elementParameter field="TEXT" name="NB_ROWS_PER_INSERT" value="100"/>
     <elementParameter field="CHECK" name="USE_BATCH_SIZE" value="true" show="false"/>
     <elementParameter field="TEXT" name="BATCH_SIZE" value="10000" show="false"/>
     <elementParameter field="ENCODING_TYPE" name="ENCODING" value="&quot;ISO-8859-15&quot;" show="false"/>
@@ -421,6 +427,11 @@
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="beneficiary_id"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="subscription_id"/>
       <elementValue elementRef="UPDATE_KEY" value="false"/>
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
@@ -494,13 +505,14 @@
     <elementParameter field="CHECK" name="USE_HINT_OPTIONS" value="false"/>
     <elementParameter field="TABLE" name="HINT_OPTIONS" show="false"/>
     <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
-    <elementParameter field="CHECK" name="ON_DUPLICATE_KEY_UPDATE" value="false" show="false"/>
+    <elementParameter field="CHECK" name="ON_DUPLICATE_KEY_UPDATE" value="false"/>
     <elementParameter field="TABLE" name="DUPLICATED_KEYS" show="false"/>
-    <elementParameter field="CHECK" name="SUPPORT_NULL_WHERE" value="false"/>
+    <elementParameter field="CHECK" name="SUPPORT_NULL_WHERE" value="false" show="false"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="beneficiary_data" name="tMysqlOutput_1">
       <column comment="" key="true" length="-1" name="id" nullable="true" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="beneficiary_id" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="subscription_id" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="msisdn" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="mother_beneficiary" nullable="true" pattern="" precision="-1" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="age_on_service" nullable="true" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
@@ -518,6 +530,7 @@
     <metadata connector="REJECT" label="beneficiary_data" name="REJECT">
       <column comment="" key="true" length="-1" name="id" nullable="true" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="beneficiary_id" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="subscription_id" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="msisdn" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="mother_beneficiary" nullable="true" pattern="" precision="-1" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="age_on_service" nullable="true" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
@@ -655,6 +668,9 @@
       <elementValue elementRef="TRACE_COLUMN" value="mcts_id"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="subscription_id"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" value="row3" show="false"/>
@@ -716,6 +732,9 @@
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
       <elementValue elementRef="TRACE_COLUMN" value="mcts_id"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="subscription_id"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
