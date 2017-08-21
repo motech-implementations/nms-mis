@@ -944,15 +944,12 @@ public class AdminServiceImpl implements AdminService {
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
         empinfo.put("1", new Object[]{
-                "State Id",
-                "District Id",
                 "District Name",
                 "PHC Id",
                 "PHC Name",
                 "Subcentre Id",
                 "Taluka Id",
                 "Taluka Name",
-                "Health Block Id",
                 "Health Block Name",
                 "Subcentre Name",
                 "Village Id",
@@ -1039,15 +1036,12 @@ public class AdminServiceImpl implements AdminService {
         }
         for (ChildImportRejection childRejection : rejectedChildImports) {
             empinfo.put((counter.toString()), new Object[]{
-                    (childRejection.getStateId() == null) ? "No State Id": childRejection.getStateId(),
-                    (childRejection.getDistrictId() == null) ? "No District Id": childRejection.getDistrictId(),
                     (childRejection.getDistrictName() == null) ? "No District Name": childRejection.getDistrictName(),
                     (childRejection.getPhcId() == null) ? "No PHC Id" : childRejection.getPhcId(),
                     (childRejection.getPhcName() == null) ? "No PHC Name" : childRejection.getPhcName(),
                     (childRejection.getSubcentreId() == null) ? "No Sub-centre Id" : childRejection.getSubcentreId(),
                     (childRejection.getTalukaId() == null) ? "No Health Taluka Id" : childRejection.getTalukaId(),
                     (childRejection.getTalukaName() == null) ? "No Taluka Name" : childRejection.getTalukaName(),
-                    (childRejection.getHealthBlockId() == null) ? "No Health Block Id": childRejection.getHealthBlockId(),
                     (childRejection.getHealthBlockName() == null) ? "No Health Block Name": childRejection.getHealthBlockName(),
                     (childRejection.getSubcentreName() == null) ? "No Sub Centre Name": childRejection.getSubcentreName(),
                     (childRejection.getVillageId() == null) ? "No Village Id": childRejection.getVillageId(),
@@ -1123,7 +1117,7 @@ public class AdminServiceImpl implements AdminService {
                     (childRejection.getSource() == null) ? "No Source": childRejection.getSource(),
                     (childRejection.getRegistrationNo() == null) ? "No Registration No": childRejection.getRegistrationNo(),
                     (childRejection.getmCTSMotherIDNo() == null) ? "No MCTS Mother Id": childRejection.getmCTSMotherIDNo(),
-                    (childRejection.getAction() == null) ? "No Action": childRejection.getRegistrationNo(),
+                    (childRejection.getAction() == null) ? "No Action": childRejection.getAction(),
                     (childRejection.getCreationDate() == null) ? "No Creation Date": childRejection.getCreationDate(),
                     (childRejection.getModificationDate() == null) ? "No Modification Date": childRejection.getModificationDate(),
             });
@@ -1141,7 +1135,7 @@ public class AdminServiceImpl implements AdminService {
                 cell.setCellValue(obj.toString());
                 if(rowid == 2 && rejectedChildImports.isEmpty()){
                     CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
-                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A2:CI2"));
+                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A2:CF2"));
                 }
             }
         }
@@ -1176,15 +1170,12 @@ public class AdminServiceImpl implements AdminService {
         //This data needs to be written (Object[])
         Map<String, Object[]> empinfo = new TreeMap<String, Object[]>();
         empinfo.put("1", new Object[]{
-                "State Id",
-                "District Id",
                 "District Name",
                 "PHC Id",
                 "PHC Name",
                 "Subcentre Id",
                 "Taluka Id",
                 "Taluka Name",
-                "Health Block Id",
                 "Health Block Name",
                 "Subcentre Name",
                 "Village Id",
@@ -1284,15 +1275,12 @@ public class AdminServiceImpl implements AdminService {
         }
         for (MotherImportRejection motherRejection : rejectedMotherImports) {
             empinfo.put((counter.toString()), new Object[]{
-                    (motherRejection.getStateId() == null) ? "No State Id": motherRejection.getStateId(),
-                    (motherRejection.getDistrictId() == null) ? "No District Id": motherRejection.getDistrictId(),
                     (motherRejection.getDistrictName() == null) ? "No District Name": motherRejection.getDistrictName(),
                     (motherRejection.getPhcId() == null) ? "No PHC Id" : motherRejection.getPhcId(),
                     (motherRejection.getPhcName() == null) ? "No PHC Name" : motherRejection.getPhcName(),
                     (motherRejection.getSubcentreId() == null) ? "No Sub-centre Id" : motherRejection.getSubcentreId(),
                     (motherRejection.getTalukaId() == null) ? "No Health Taluka Id" : motherRejection.getTalukaId(),
                     (motherRejection.getTalukaName() == null) ? "No Taluka Name" : motherRejection.getTalukaName(),
-                    (motherRejection.getHealthBlockId() == null) ? "No Health Block Id": motherRejection.getHealthBlockId(),
                     (motherRejection.getHealthBlockName() == null) ? "No Health Block Name": motherRejection.getHealthBlockName(),
                     (motherRejection.getSubcentreName() == null) ? "No Sub Centre Name": motherRejection.getSubcentreName(),
                     (motherRejection.getVillageId() == null) ? "No Village Id": motherRejection.getVillageId(),
@@ -1382,7 +1370,7 @@ public class AdminServiceImpl implements AdminService {
                     (motherRejection.getAccepted() == null) ? "Not Accepted": motherRejection.getAccepted(),
                     (motherRejection.getRejectionReason() == null) ? "No Rejection Reason": motherRejection.getRejectionReason(),
                     (motherRejection.getSource() == null) ? "No Source": motherRejection.getSource(),
-                    (motherRejection.getAction() == null) ? "No Action": motherRejection.getRegistrationNo(),
+                    (motherRejection.getAction() == null) ? "No Action": motherRejection.getAction(),
                     (motherRejection.getCreationDate() == null) ? "No Creation Date": motherRejection.getCreationDate(),
                     (motherRejection.getModificationDate() == null) ? "No Modification Date": motherRejection.getModificationDate(),
             });
@@ -1400,7 +1388,7 @@ public class AdminServiceImpl implements AdminService {
                 cell.setCellValue(obj.toString());
                 if(rowid == 2 && rejectedMotherImports.isEmpty()){
                     CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
-                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A2:CW2"));
+                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A2:CT2"));
                 }
             }
         }
@@ -1436,12 +1424,9 @@ public class AdminServiceImpl implements AdminService {
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
         empinfo.put("1", new Object[]{
-                "State Id",
-                "District Id",
                 "District Name",
                 "Taluka Id",
                 "Taluka Name",
-                "Health Block Id",
                 "Health Block Name",
                 "PHC Id",
                 "PHC Name",
@@ -1491,12 +1476,9 @@ public class AdminServiceImpl implements AdminService {
         }
         for (FlwImportRejection flwRejection : rejectedChildImports) {
             empinfo.put((counter.toString()), new Object[]{
-                    (flwRejection.getStateId() == null) ? "No State Id": flwRejection.getStateId(),
-                    (flwRejection.getDistrictId() == null) ? "No District Id": flwRejection.getDistrictId(),
                     (flwRejection.getDistrictName() == null) ? "No District Name": flwRejection.getDistrictName(),
                     (flwRejection.getTalukaId() == null) ? "No Health Taluka Id" : flwRejection.getTalukaId(),
                     (flwRejection.getTalukaName() == null) ? "No Taluka Name" : flwRejection.getTalukaName(),
-                    (flwRejection.getHealthBlockId() == null) ? "No Health Block Id": flwRejection.getHealthBlockId(),
                     (flwRejection.getHealthBlockName() == null) ? "No Health Block Name": flwRejection.getHealthBlockName(),
                     (flwRejection.getPhcId() == null) ? "No PHC Id" : flwRejection.getPhcId(),
                     (flwRejection.getPhcName() == null) ? "No PHC Name" : flwRejection.getPhcName(),
@@ -1553,7 +1535,7 @@ public class AdminServiceImpl implements AdminService {
                 cell.setCellValue(obj.toString());
                 if(rowid == 2 && rejectedChildImports.isEmpty()){
                     CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
-                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A2:AU2"));
+                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A2:AR2"));
                 }
             }
         }

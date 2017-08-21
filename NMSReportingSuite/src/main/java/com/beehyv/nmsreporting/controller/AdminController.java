@@ -203,7 +203,6 @@ public class AdminController {
             toDate = aCalendar.getTime();
         }
 
-        Date startDate=new Date(0);
         switch (tempReportType) {
             case maCourse: {
                 adminService.getCumulativeCourseCompletionFiles(toDate);
@@ -227,6 +226,10 @@ public class AdminController {
             }
             case sixWeeks:{
                 adminService.getKilkariSixWeekNoAnswerFiles(fromDate, toDate);
+                break;
+            }
+            case lowListenership:{
+                adminService.getKilkariLowListenershipDeactivationFiles(fromDate,toDate);
                 break;
             }
             case childRejected: {
