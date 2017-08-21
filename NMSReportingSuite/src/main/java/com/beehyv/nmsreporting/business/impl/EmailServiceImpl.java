@@ -45,6 +45,8 @@ public class EmailServiceImpl implements EmailService{
     @Autowired
     LocationService locationService;
     @Autowired
+    private EmailTrackerService emailTrackerService;
+    @Autowired
     DistrictDao districtDao;
     @Autowired
     MACourseAttemptDao maCourseAttemptDao;
@@ -63,8 +65,6 @@ public class EmailServiceImpl implements EmailService{
     @Autowired
     ChildImportRejectionDao childImportRejectionDao;
 
-    @Autowired
-    private EmailTrackerService emailTrackerService;
     @Override
     public String sendMail(EmailInfo mailInfo) {
         try {
@@ -93,6 +93,66 @@ public class EmailServiceImpl implements EmailService{
             messageBodyPart.setDataHandler(new DataHandler(source));
             messageBodyPart.setFileName(mailInfo.getFileName());
             multipart.addBodyPart(messageBodyPart);
+            message.setContent(multipart);
+            Transport.send(message);
+            return "success";
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            return "failure";
+        }
+    }
+
+    private String sendMailWithStatistics(EmailInfo emailInfo, String reportType, User user) {
+        try {
+            final JavaMailSenderImpl ms = (JavaMailSenderImpl) mailSender;
+            Properties props = ms.getJavaMailProperties();
+            final String username = ms.getUsername();
+            final String password = ms.getPassword();
+            //need authenticate to server
+            Session session = Session.getInstance(props,
+                    new javax.mail.Authenticator() {
+                        protected PasswordAuthentication getPasswordAuthentication() {
+                            return new PasswordAuthentication(username, password);
+                        }
+                    });
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(emailInfo.getFrom()));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailInfo.getTo()));
+            message.setSubject(emailInfo.getSubject(),"UTF-8");
+            message.setContent(getBodyForStateLevelUsers(reportType,user.getStateId(), user.getFullName()),"text/html; charset=utf-8");
+            Transport.send(message);
+            return "success";
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            return "failure";
+        }
+    }
+
+    private String sendMailWithMultipleAttachments(EmailInfo mailInfo) {
+        try {
+            final JavaMailSenderImpl ms = (JavaMailSenderImpl) mailSender;
+            Properties props = ms.getJavaMailProperties();
+            final String username = ms.getUsername();
+            final String password = ms.getPassword();
+            //need authenticate to server
+            Session session = Session.getInstance(props,
+                    new javax.mail.Authenticator() {
+                        protected PasswordAuthentication getPasswordAuthentication() {
+                            return new PasswordAuthentication(username, password);
+                        }
+                    });
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(mailInfo.getFrom()));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mailInfo.getTo()));
+            message.setSubject(mailInfo.getSubject(),"UTF-8");
+            BodyPart messageBodyPart = new MimeBodyPart();
+            messageBodyPart.setText(mailInfo.getBody());
+            Multipart multipart = new MimeMultipart();
+            List<String> filePaths=new ArrayList<>();
+            filePaths.add(mailInfo.getRootPath());
+            filePaths.add(mailInfo.getRootPath2());
+            addAttachment(multipart,filePaths.get(0), mailInfo.getFileName());
+            addAttachment(multipart,filePaths.get(1), mailInfo.getFileName2());
             message.setContent(multipart);
             Transport.send(message);
             return "success";
@@ -162,6 +222,152 @@ public class EmailServiceImpl implements EmailService{
         body+="Regards\n";
         body+= "NSP Support Team \n \n \n";
         body+= "P.S: This an auto-generated email. Please do not reply";
+        return body;
+    }
+
+    private String getBodyForStateLevelUsers(String reportType, Integer stateId, String  name) {
+        String body= "Dear "+name +",<br>";
+        Calendar calendar=Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.DAY_OF_MONTH,1);
+
+        Date toDate = calendar.getTime();
+        calendar.add(Calendar.MONTH,-1);
+        Date fromDate=calendar.getTime();
+
+        List<District> districts=districtDao.getDistrictsOfState(stateId);
+        if(reportType.equals(ReportType.maCourse.getReportType())){
+            body+= "<pre>   </pre>Please find below the district wise count of ASHAs who have successfully completed the Mobile Academy" +
+                    " course. The line listing of the ASHAs have been sent to the respective district and block users.";
+
+            body+=  "<body><br><br><table width='100%' border='1' align='center'>"
+                    + "<tr align='center'>"
+                    + "<td><b>District Name<b></td>"
+                    + "<td><b>Count of ASHAs who have successfully completed the course.<b></td>"
+                    + "</tr>";
+            for (District district:districts
+                    ) {
+
+                body=body+"<tr align='center'>"+"<td>" + district.getDistrictName() + "</td>"
+                        + "<td>" +maCourseAttemptDao.getCountForGivenDistrict(toDate, district.getDistrictId())+ "</td>"+"</tr>";
+            }
+            body+="<<br>/body>";
+        } else if(reportType.equals(ReportType.maInactive.getReportType())){
+            body+="<pre>   </pre>Please find below the district wise count of ASHAs who have not yet started the Mobile Academy course." +
+                    " The line listing of the ASHAs have been sent to the respective district and block users.";
+
+            body+="<body><br><br><table width='100%' border='1' align='center'>"
+                    + "<tr align='center'>"
+                    + "<td><b>District Name<b></td>"
+                    + "<td><b>Count of Inactive ASHAs.<b></td>"
+                    + "</tr>";
+
+            for (District district:districts
+                    ) {
+
+                body=body+"<tr align='center'>"+"<td>" + district.getDistrictName() + "</td>"
+                        + "<td>" +frontLineWorkersDao.getCountOfInactiveFrontLineWorkersForGievnDistrict(toDate, district.getDistrictId())+ "</td>"+"</tr>";
+            }
+            body+="<br></body>";
+        } else if(reportType.equals(ReportType.lowUsage.getReportType())){
+            body+="<pre>   </pre>Please find below the district wise count of beneficiaries have been deactivated for listening low or not answering. " +
+                    "The line listing of the individual beneficiaries have been sent to the respective district and block users. ";
+            body+= "<body><br><br><table width='100%' border='1' align='center'>"
+                    + "<tr align='center'>"
+                    + "<td><b>District Name<b></td>"
+                    + "<td><b>Count of Beneficiaries listening less than 25% of content<b></td>"
+                    + "</tr>";
+            for (District district:districts
+                    ) {
+
+                body=body+"<tr align='center'>"+"<td>" + district.getDistrictName() + "</td>"
+                        + "<td>" +kilkariLowUsageDao.getCountOfLowUsageUsersForGivenDistrict(getMonthYear(toDate), district.getDistrictId())+ "</td>"+"</tr>";
+
+            }
+            body+="<br></body>";
+
+        }
+        else if(reportType.equals(ReportType.selfDeactivated.getReportType())){
+            body+="<pre>   </pre>Please find below the district wise count of beneficiaries who have deactivated themselves from the " +
+                    "Kilkari system. The line listing of the individual beneficiaries have been sent to the respective " +
+                    "district and block users. ";
+            body+="<body><br><br><table width='100%' border='1' align='center'>"
+                    + "<tr align='center'>"
+                    + "<td><b>District Name<b></td>"
+                    + "<td><b>Count of Beneficiaries deactivated themselves<b></td>"
+                    + "</tr>";
+            for (District district:districts
+                    ) {
+
+                body=body+"<tr align='center'>"+"<td>" + district.getDistrictName() + "</td>"
+                        + "<td>" +kilkariSelfDeactivatedDao.getCountOfSelfDeactivatedUsers(fromDate,toDate, district.getDistrictId())+ "</td>"+"</tr>";
+
+            }
+            body+="<br></body>";
+
+        }else if (reportType.equals(ReportType.sixWeeks.getReportType()) ||
+                reportType.equals(ReportType.lowListenership.getReportType())){
+            body+= "<pre>   </pre>Please find below the district wise count of beneficiaries have been deactivated for listening low or not answering. " +
+                    "The line listing of the individual beneficiaries have been sent to the respective district and block users.";
+            body+="<body><br><br><table width='100%' border='1' align='center'>"
+                    + "<tr align='center'>"
+                    + "<td><b>District Name<b></td>"
+                    + "<td><b>Count of deactivated records for answering a single call for six consecutive weeks<b></td>"
+                    + "<td><b>Count of deactivated records for Low Listenership.<b></td>"
+                    + "</tr>";
+            for (District district:districts
+                    ) {
+                body=body+"<tr align='center'>"+"<td>" + district.getDistrictName() + "</td>"
+                        + "<td>" +kilkariSixWeeksNoAnswerDao.getCountOfDeactivatedForDistrict(fromDate,toDate, district.getDistrictId())+ "</td>"
+                        + "<td>" +kilkariSixWeeksNoAnswerDao.getCountOfLowListenershipUsersForDistrict(fromDate,toDate, district.getDistrictId())+ "</td>"+"</tr>";
+            }
+            body+="<br></body>";
+        } else if(reportType.equals(ReportType.flwRejected.getReportType())){
+            body+="<pre>   </pre>Please find attached the list of ASHAs rejected due to one of the following rejection reasons " +
+                    "viz.,MSISDN_ALREADY_IN_USE,FLW_TYPE_NOT_ASHA,FLW_IMPORT_ERROR,RECORD_ALREADY_EXISTS";
+
+            body+= "<body><br><br><table width='100%' border='1' align='center'>"
+                    + "<tr align='center'>"
+                    + "<td><b>District Name<b></td>"
+                    + "<td><b>Count of Rejected ASHAs Records<b></td>"
+                    + "</tr>";
+            for (District district:districts
+                    ) {
+                body=body+"<tr align='center'>"+"<td>" + district.getDistrictName() + "</td>"
+                        + "<td>" +flwImportRejectionDao.getCountOfFlwRejectedRecordsForDistrict(toDate, district.getDistrictId())+ "</td>"
+                        +"</tr>";
+            }
+            body=body+"<br></body>";
+        }
+        else if(reportType.equals(ReportType.motherRejected.getReportType()) ||
+                reportType.equals(ReportType.childRejected.getReportType())){
+            body+= "<pre>   </pre>Please find attached the following files:<br>"
+                    + "1. The following List of mother records are deactivated for one of the following rejection reasons" +
+                    " viz., Subscription Rejected,MSISDN already in use,Record already exists,Active child present,Invalid case no.<br>"
+                    +  "2. The following List of child records are deactivated for one of the following rejection reasons " +
+                    "viz., MSISDN already in use,Subscription Rejected,Mother id error,Record already exists";
+
+            body+=" <body><br><br><table width='100%' border='1' align='center'>"
+                    + "<tr align='center'>"
+                    + "<td><b>District Name<b></td>"
+                    + "<td><b>Count of Rejected Mother Records<b></td>"
+                    + "<td><b>Count of Rejected Child Records.<b></td>"
+                    + "</tr>";
+            for (District district:districts
+                    ) {
+                body=body+"<tr align='center'>"+"<td>" + district.getDistrictName() + "</td>"
+                        + "<td>" +motherImportRejectionDao.getCountOFRejectedMotherImportRecordsWithDistrictId(toDate, district.getDistrictId())+ "</td>"
+                        + "<td>" +childImportRejectionDao.getCountOfRejectedChildRecords(toDate, district.getDistrictId())+ "</td>"+"</tr>";
+            }
+            body=body+"</body>";
+            body+="<br>Regards<br>";
+            body+= "NSP Support Team <br><br>";
+            body+= "P.S: This an auto-generated email. Please do not reply";
+        }
         return body;
     }
 
@@ -481,66 +687,6 @@ public class EmailServiceImpl implements EmailService{
         return errorSendingMail;
     }
 
-    private String sendMailWithStatistics(EmailInfo emailInfo, String reportType, User user) {
-        try {
-            final JavaMailSenderImpl ms = (JavaMailSenderImpl) mailSender;
-            Properties props = ms.getJavaMailProperties();
-            final String username = ms.getUsername();
-            final String password = ms.getPassword();
-            //need authenticate to server
-            Session session = Session.getInstance(props,
-                    new javax.mail.Authenticator() {
-                        protected PasswordAuthentication getPasswordAuthentication() {
-                            return new PasswordAuthentication(username, password);
-                        }
-                    });
-            MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(emailInfo.getFrom()));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailInfo.getTo()));
-            message.setSubject(emailInfo.getSubject(),"UTF-8");
-            message.setContent(getBodyForStateLevelUsers(reportType,user.getStateId(), user.getFullName()),"text/html; charset=utf-8");
-            Transport.send(message);
-            return "success";
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            return "failure";
-        }
-    }
-
-    private String sendMailWithMultipleAttachments(EmailInfo mailInfo) {
-        try {
-            final JavaMailSenderImpl ms = (JavaMailSenderImpl) mailSender;
-            Properties props = ms.getJavaMailProperties();
-            final String username = ms.getUsername();
-            final String password = ms.getPassword();
-            //need authenticate to server
-            Session session = Session.getInstance(props,
-                    new javax.mail.Authenticator() {
-                        protected PasswordAuthentication getPasswordAuthentication() {
-                            return new PasswordAuthentication(username, password);
-                        }
-                    });
-            MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(mailInfo.getFrom()));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mailInfo.getTo()));
-            message.setSubject(mailInfo.getSubject(),"UTF-8");
-            BodyPart messageBodyPart = new MimeBodyPart();
-            messageBodyPart.setText(mailInfo.getBody());
-            Multipart multipart = new MimeMultipart();
-            List<String> filePaths=new ArrayList<>();
-            filePaths.add(mailInfo.getRootPath());
-            filePaths.add(mailInfo.getRootPath2());
-            addAttachment(multipart,filePaths.get(0), mailInfo.getFileName());
-            addAttachment(multipart,filePaths.get(1), mailInfo.getFileName2());
-            message.setContent(multipart);
-            Transport.send(message);
-            return "success";
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            return "failure";
-        }
-    }
-
     private static void addAttachment(Multipart multipart, String filePath, String fileName )
     {
         DataSource source = new FileDataSource(filePath);
@@ -556,151 +702,6 @@ public class EmailServiceImpl implements EmailService{
 
     }
 
-    private String getBodyForStateLevelUsers(String reportType, Integer stateId, String  name) {
-        String body= "Dear "+name +",<br>";
-        Calendar calendar=Calendar.getInstance();
-        calendar.setTime(new Date());
-        calendar.set(Calendar.MILLISECOND, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.DAY_OF_MONTH,1);
-
-        Date toDate = calendar.getTime();
-        calendar.add(Calendar.MONTH,-1);
-        Date fromDate=calendar.getTime();
-
-        List<District> districts=districtDao.getDistrictsOfState(stateId);
-        if(reportType.equals(ReportType.maCourse.getReportType())){
-            body+= "<pre>   </pre>Please find below the district wise count of ASHAs who have successfully completed the Mobile Academy" +
-                    " course. The line listing of the ASHAs have been sent to the respective district and block users.";
-
-            body+=  "<body><br><br><table width='100%' border='1' align='center'>"
-                + "<tr align='center'>"
-                + "<td><b>District Name<b></td>"
-                + "<td><b>Count of ASHAs who have successfully completed the course.<b></td>"
-                + "</tr>";
-            for (District district:districts
-                 ) {
-
-                   body=body+"<tr align='center'>"+"<td>" + district.getDistrictName() + "</td>"
-                           + "<td>" +maCourseAttemptDao.getCountForGivenDistrict(toDate, district.getDistrictId())+ "</td>"+"</tr>";
-            }
-            body+="<<br>/body>";
-        } else if(reportType.equals(ReportType.maInactive.getReportType())){
-            body+="<pre>   </pre>Please find below the district wise count of ASHAs who have not yet started the Mobile Academy course." +
-                    " The line listing of the ASHAs have been sent to the respective district and block users.";
-
-            body+="<body><br><br><table width='100%' border='1' align='center'>"
-                    + "<tr align='center'>"
-                    + "<td><b>District Name<b></td>"
-                    + "<td><b>Count of Inactive ASHAs.<b></td>"
-                    + "</tr>";
-
-            for (District district:districts
-                    ) {
-
-                body=body+"<tr align='center'>"+"<td>" + district.getDistrictName() + "</td>"
-                        + "<td>" +frontLineWorkersDao.getCountOfInactiveFrontLineWorkersForGievnDistrict(toDate, district.getDistrictId())+ "</td>"+"</tr>";
-            }
-            body+="<br></body>";
-        } else if(reportType.equals(ReportType.lowUsage.getReportType())){
-            body+="<pre>   </pre>Please find below the district wise count of beneficiaries have been deactivated for listening low or not answering. " +
-                    "The line listing of the individual beneficiaries have been sent to the respective district and block users. ";
-            body+= "<body><br><br><table width='100%' border='1' align='center'>"
-                    + "<tr align='center'>"
-                    + "<td><b>District Name<b></td>"
-                    + "<td><b>Count of Beneficiaries listening less than 25% of content<b></td>"
-                    + "</tr>";
-            for (District district:districts
-                    ) {
-
-                body=body+"<tr align='center'>"+"<td>" + district.getDistrictName() + "</td>"
-                        + "<td>" +kilkariLowUsageDao.getCountOfLowUsageUsersForGivenDistrict(getMonthYear(toDate), district.getDistrictId())+ "</td>"+"</tr>";
-
-            }
-            body+="<br></body>";
-
-        }
-        else if(reportType.equals(ReportType.selfDeactivated.getReportType())){
-            body+="<pre>   </pre>Please find below the district wise count of beneficiaries who have deactivated themselves from the " +
-                    "Kilkari system. The line listing of the individual beneficiaries have been sent to the respective " +
-                    "district and block users. ";
-            body+="<body><br><br><table width='100%' border='1' align='center'>"
-                    + "<tr align='center'>"
-                    + "<td><b>District Name<b></td>"
-                    + "<td><b>Count of Beneficiaries deactivated themselves<b></td>"
-                    + "</tr>";
-            for (District district:districts
-                    ) {
-
-                body=body+"<tr align='center'>"+"<td>" + district.getDistrictName() + "</td>"
-                        + "<td>" +kilkariSelfDeactivatedDao.getCountOfSelfDeactivatedUsers(fromDate,toDate, district.getDistrictId())+ "</td>"+"</tr>";
-
-            }
-            body+="<br></body>";
-
-        }else if (reportType.equals(ReportType.sixWeeks.getReportType()) ||
-                reportType.equals(ReportType.lowListenership.getReportType())){
-            body+= "<pre>   </pre>Please find below the district wise count of beneficiaries have been deactivated for listening low or not answering. " +
-                    "The line listing of the individual beneficiaries have been sent to the respective district and block users.";
-            body+="<body><br><br><table width='100%' border='1' align='center'>"
-                    + "<tr align='center'>"
-                    + "<td><b>District Name<b></td>"
-                    + "<td><b>Count of deactivated records for answering a single call for six consecutive weeks<b></td>"
-                    + "<td><b>Count of deactivated records for Low Listnership.<b></td>"
-                    + "</tr>";
-            for (District district:districts
-                    ) {
-                body=body+"<tr align='center'>"+"<td>" + district.getDistrictName() + "</td>"
-                        + "<td>" +kilkariSixWeeksNoAnswerDao.getCountOfDeactivatedForDistrict(fromDate,toDate, district.getDistrictId())+ "</td>"
-                        + "<td>" +kilkariSixWeeksNoAnswerDao.getCountOfLowListenershipUsersForDistrict(fromDate,toDate, district.getDistrictId())+ "</td>"+"</tr>";
-            }
-            body+="<br></body>";
-        } else if(reportType.equals(ReportType.flwRejected.getReportType())){
-            body+="<pre>   </pre>Please find attached the list of ASHAs rejected due to one of the following rejection reasons " +
-                    "viz.,MSISDN_ALREADY_IN_USE,FLW_TYPE_NOT_ASHA,FLW_IMPORT_ERROR,RECORD_ALREADY_EXISTS";
-
-            body+= "<body><br><br><table width='100%' border='1' align='center'>"
-                    + "<tr align='center'>"
-                    + "<td><b>District Name<b></td>"
-                    + "<td><b>Count of Rejected ASHAs Records<b></td>"
-                    + "</tr>";
-            for (District district:districts
-                    ) {
-                body=body+"<tr align='center'>"+"<td>" + district.getDistrictName() + "</td>"
-                        + "<td>" +flwImportRejectionDao.getCountOfFlwRejectedRecordsForDistrict(toDate, district.getDistrictId())+ "</td>"
-                        +"</tr>";
-            }
-            body=body+"<br></body>";
-        }
-        else if(reportType.equals(ReportType.motherRejected.getReportType()) ||
-                reportType.equals(ReportType.childRejected.getReportType())){
-            body+= "<pre>   </pre>Please find attached the following files:<br>"
-                   + "1. The following List of mother records are deactivated for one of the following rejection reasons" +
-                    " viz., Subscription Rejected,MSISDN already in use,Record already exists,Active chils present,Invalid case no.<br>"
-                   +  "2. The following List of child records are deactivated for one of the following rejection reasons " +
-                    "viz., MSISDN already in use,Subscription Rejected,Mother id error,Record already exists";
-
-            body+=" <body><br><br><table width='100%' border='1' align='center'>"
-                    + "<tr align='center'>"
-                    + "<td><b>District Name<b></td>"
-                    + "<td><b>Count of Rejected Mother Records<b></td>"
-                    + "<td><b>Count of Rejected Child Records.<b></td>"
-                    + "</tr>";
-            for (District district:districts
-                    ) {
-                body=body+"<tr align='center'>"+"<td>" + district.getDistrictName() + "</td>"
-                        + "<td>" +motherImportRejectionDao.getCountOFRejectedMotherImportRecordsWithDistrictId(toDate, district.getDistrictId())+ "</td>"
-                        + "<td>" +childImportRejectionDao.getCountOfRejectedChildRecords(toDate, district.getDistrictId())+ "</td>"+"</tr>";
-            }
-            body=body+"</body>";
-            body+="<br>Regards<br>";
-            body+= "NSP Support Team <br><br>";
-            body+= "P.S: This an auto-generated email. Please do not reply";
-        }
-        return body;
-    }
 
     private String getStatesNamesByCircle(Circle circle){
         List<State> states = locationService.getStatesOfCircle(circle);
