@@ -16,7 +16,7 @@ public class EmailTrackerServiceImpl implements EmailTrackerService {
     private EmailTrackerDao emailTrackerDao;
 
     @Override
-    public void saveEmailDeatils(EmailTracker emailTracker) {
+    public void saveEmailDetails(EmailTracker emailTracker) {
         emailTrackerDao.saveEmailTracker(emailTracker);
     }
 

@@ -5,6 +5,7 @@ import com.beehyv.nmsreporting.dao.KilkariSixWeeksNoAnswerDao;
 import com.beehyv.nmsreporting.model.KilkariDeactivationOther;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -67,6 +68,20 @@ public class KilkariSixWeeksNoAnswerDaoImpl extends AbstractDao<Integer, Kilkari
         return (List<KilkariDeactivationOther>) criteria.list();
     }
 
+    @Override
+    public Long getCountOfDeactivatedForDistrict(Date fromDate, Date toDate, Integer districtId) {
+        Criteria criteria = getSession().createCriteria(KilkariDeactivationOther.class);
+        criteria.add(Restrictions.and(
+                Restrictions.lt("deactivationDate",toDate),
+                Restrictions.ge("deactivationDate",fromDate),
+                Restrictions.eq("deactivationReason","WEEKLY_CALLS_NOT_ANSWERED")
+        ))
+                .add(Restrictions.eq("districtId",districtId))
+                .setProjection(Projections.rowCount());
+
+        return (Long) criteria.uniqueResult();
+    }
+
 
     @Override
     public List<KilkariDeactivationOther> getLowListenershipUsers(Date fromDate, Date toDate) {
@@ -117,5 +132,19 @@ public class KilkariSixWeeksNoAnswerDaoImpl extends AbstractDao<Integer, Kilkari
                 .add(Restrictions.eq("blockId",blockId));
         criteria.addOrder(Order.asc("deactivationDate"));
         return (List<KilkariDeactivationOther>) criteria.list();
+    }
+
+    @Override
+    public Long getCountOfLowListenershipUsersForDistrict(Date fromDate, Date toDate, Integer districtId) {
+        Criteria criteria = getSession().createCriteria(KilkariDeactivationOther.class);
+        criteria.add(Restrictions.and(
+                Restrictions.lt("deactivationDate",toDate),
+                Restrictions.ge("deactivationDate",fromDate),
+                Restrictions.eq("deactivationReason","LOW_LISTENERSHIP")
+        ))
+                .add(Restrictions.eq("districtId",districtId))
+                .setProjection(Projections.rowCount());
+
+        return (Long) criteria.uniqueResult();
     }
 }
