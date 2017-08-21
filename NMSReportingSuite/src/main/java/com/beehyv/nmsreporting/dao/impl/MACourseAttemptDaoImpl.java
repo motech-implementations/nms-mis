@@ -6,6 +6,7 @@ import com.beehyv.nmsreporting.enums.AccountStatus;
 import com.beehyv.nmsreporting.model.*;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -49,5 +50,16 @@ public class MACourseAttemptDaoImpl extends AbstractDao<Integer, User> implement
         criteria.add(Restrictions.lt("firstCompletionDate",toDate))
                 .add(Restrictions.eq("blockId",blockId));
         return criteria.list();
+    }
+
+    @Override
+    public Long getCountForGivenDistrict(Date toDate, Integer districtId) {
+        Criteria criteria=createEntityCriteria();
+        criteria.add(Restrictions.lt("firstCompletionDate",toDate))
+                .add(Restrictions.eq("districtId",districtId))
+                .setProjection(Projections.rowCount());
+
+        return (Long) criteria.uniqueResult();
+
     }
 }

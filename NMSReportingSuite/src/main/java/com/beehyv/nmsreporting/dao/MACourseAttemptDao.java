@@ -14,7 +14,12 @@ import java.util.List;
 public interface MACourseAttemptDao {
 
    List<MACourseFirstCompletion> getSuccessFulCompletion(Date toDate);
+
    List<MACourseFirstCompletion> getSuccessFulCompletionWithStateId(Date toDate, Integer stateId);
+
    List<MACourseFirstCompletion> getSuccessFulCompletionWithDistrictId(Date toDate, Integer districtId);
+
    List<MACourseFirstCompletion> getSuccessFulCompletionWithBlockId(Date toDate, Integer blockId);
+
+   Long getCountForGivenDistrict(Date toDate,Integer districtId);
 }

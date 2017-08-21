@@ -6,6 +6,7 @@ import com.beehyv.nmsreporting.model.FrontLineWorkers;
 import com.beehyv.nmsreporting.model.User;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -67,5 +68,18 @@ public class FrontLineWorkersDaoImpl extends AbstractDao<Integer,FrontLineWorker
                 Restrictions.eq("blockId","blockId").ignoreCase()
         ));
         return (List<FrontLineWorkers>) criteria.list();
+    }
+
+    @Override
+    public Long getCountOfInactiveFrontLineWorkersForGievnDistrict(Date toDate, Integer districtId) {
+        Criteria criteria = createEntityCriteria().addOrder(Order.asc("creationDate"));
+        criteria.add(Restrictions.and(
+                Restrictions.eq("status","INACTIVE").ignoreCase(),
+                Restrictions.lt("lastModifiedDate",toDate),
+                Restrictions.ne("jobStatus","INACTIVE").ignoreCase(),
+                Restrictions.eq("designation","ASHA").ignoreCase(),
+                Restrictions.eq("districtId","districtId").ignoreCase()
+        )).setProjection(Projections.rowCount());
+        return (Long) criteria.uniqueResult();
     }
 }

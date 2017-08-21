@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface EmailTrackerService {
 
-    void saveEmailDeatils(EmailTracker emailTracker);
+    void saveEmailDetails(EmailTracker emailTracker);
 
     List<EmailTracker> getAllFailedEmailsOfGivenReportTypeFromGivenDate(String reportType, Date fromDate);
 }

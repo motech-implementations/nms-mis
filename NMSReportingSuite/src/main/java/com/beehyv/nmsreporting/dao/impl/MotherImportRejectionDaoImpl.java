@@ -4,6 +4,7 @@ import com.beehyv.nmsreporting.dao.AbstractDao;
 import com.beehyv.nmsreporting.dao.MotherImportRejectionDao;
 import com.beehyv.nmsreporting.model.MotherImportRejection;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +17,8 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
     public List<MotherImportRejection> getAllRejectedMotherImportRecords(Date toDate) {
         Criteria criteria=createEntityCriteria();
         criteria.add(Restrictions.lt("modificationDate", toDate))
-                .add(Restrictions.eq("accepted", false));
+                .add(Restrictions.eq("accepted", false))
+                .add(Restrictions.ne("rejectionReason","INVALID_LMP_DATE"));
 
         return criteria.list();
     }
@@ -26,7 +28,8 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
         Criteria criteria=createEntityCriteria();
         criteria.add(Restrictions.lt("modificationDate", toDate))
                 .add(Restrictions.eq("accepted", false))
-                .add(Restrictions.eq("stateId", stateId));
+                .add(Restrictions.eq("stateId", stateId))
+                .add(Restrictions.ne("rejectionReason","INVALID_LMP_DATE"));
 
         return criteria.list();
     }
@@ -36,7 +39,8 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
         Criteria criteria=createEntityCriteria();
         criteria.add(Restrictions.lt("modificationDate", toDate))
                 .add(Restrictions.eq("accepted", false))
-                .add(Restrictions.eq("districtId", districtId));
+                .add(Restrictions.eq("districtId", districtId))
+                .add(Restrictions.ne("rejectionReason","INVALID_LMP_DATE"));
 
         return criteria.list();
     }
@@ -46,9 +50,23 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
         Criteria criteria=createEntityCriteria();
         criteria.add(Restrictions.lt("modificationDate", toDate))
                 .add(Restrictions.eq("accepted", false))
-                .add(Restrictions.eq("blockId", blockId));
+                .add(Restrictions.eq("blockId", blockId))
+                .add(Restrictions.ne("rejectionReason","INVALID_LMP_DATE"));
 
         return criteria.list();
+    }
+
+    @Override
+    public Long getCountOFRejectedMotherImportRecordsWithDistrictId(Date toDate, Integer districtId) {
+        Criteria criteria=createEntityCriteria();
+        criteria.add(Restrictions.lt("modificationDate", toDate))
+                .add(Restrictions.eq("accepted", false))
+                .add(Restrictions.eq("districtId", districtId))
+                .add(Restrictions.ne("rejectionReason","INVALID_LMP_DATE"))
+                .setProjection(Projections.rowCount());
+
+        return (Long) criteria.uniqueResult();
+
     }
 
 }

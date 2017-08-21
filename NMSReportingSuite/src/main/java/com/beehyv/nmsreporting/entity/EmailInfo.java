@@ -1,7 +1,5 @@
 package com.beehyv.nmsreporting.entity;
 
-import java.io.File;
-
 /**
  * Created by beehyv on 16/5/17.
  */
@@ -10,7 +8,7 @@ public class EmailInfo {
     private String fileName = "";
     private String rootPath = "";
     private String fileName2="";
-    private String rootPathForFile2="";
+    private String rootPath2 ="";
 
     public String getFrom() {
         return from;
@@ -68,11 +66,11 @@ public class EmailInfo {
         this.fileName2 = fileName2;
     }
 
-    public String getRootPathForFile2() {
-        return rootPathForFile2;
+    public String getRootPath2() {
+        return rootPath2;
     }
 
-    public void setRootPathForFile2(String rootPathForFile2) {
-        this.rootPathForFile2 = rootPathForFile2;
+    public void setRootPath2(String rootPath2) {
+        this.rootPath2 = rootPath2;
     }
 }

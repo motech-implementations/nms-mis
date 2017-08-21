@@ -4,6 +4,7 @@ import com.beehyv.nmsreporting.dao.AbstractDao;
 import com.beehyv.nmsreporting.dao.ChildImportRejectionDao;
 import com.beehyv.nmsreporting.model.ChildImportRejection;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -16,8 +17,9 @@ public class ChildImportRejectionDaoImpl extends AbstractDao<Long, ChildImportRe
     public List<ChildImportRejection> getRejectedChildRecords(Date toDate) {
 
         Criteria criteria=createEntityCriteria();
-        criteria.add(Restrictions.lt("modificationDate",toDate));
-        criteria.add(Restrictions.ge("accepted",false));
+        criteria.add(Restrictions.lt("modificationDate",toDate))
+                .add(Restrictions.ge("accepted",false))
+                .add(Restrictions.ne("rejectionReason","INVALID_DOB"));
 
         return criteria.list();
     }
@@ -26,9 +28,10 @@ public class ChildImportRejectionDaoImpl extends AbstractDao<Long, ChildImportRe
     public List<ChildImportRejection> getRejectedChildRecordsWithStateId(Date toDate, Integer stateId) {
 
         Criteria criteria=createEntityCriteria();
-        criteria.add(Restrictions.lt("modificationDate",toDate));
-        criteria.add(Restrictions.ge("accepted",false))
-                .add(Restrictions.eq("stateId",stateId));
+        criteria.add(Restrictions.lt("modificationDate",toDate))
+                .add(Restrictions.ge("accepted",false))
+                .add(Restrictions.eq("stateId",stateId))
+                .add(Restrictions.ne("rejectionReason","INVALID_DOB"));
         return criteria.list();
     }
 
@@ -36,9 +39,10 @@ public class ChildImportRejectionDaoImpl extends AbstractDao<Long, ChildImportRe
     public List<ChildImportRejection> getRejectedChildRecordsWithDistrictId(Date toDate, Integer districtId) {
 
         Criteria criteria=createEntityCriteria();
-        criteria.add(Restrictions.lt("modificationDate",toDate));
-        criteria.add(Restrictions.ge("accepted",false))
-                .add(Restrictions.eq("districtId",districtId));
+        criteria.add(Restrictions.lt("modificationDate",toDate))
+                .add(Restrictions.ge("accepted",false))
+                .add(Restrictions.eq("districtId",districtId))
+                .add(Restrictions.ne("rejectionReason","INVALID_DOB"));
         return criteria.list();
     }
 
@@ -46,9 +50,22 @@ public class ChildImportRejectionDaoImpl extends AbstractDao<Long, ChildImportRe
     public List<ChildImportRejection> getRejectedChildRecordsWithBlockId(Date toDate, Integer blockId) {
 
         Criteria criteria=createEntityCriteria();
-        criteria.add(Restrictions.lt("modificationDate",toDate));
-        criteria.add(Restrictions.ge("accepted",false))
-                .add(Restrictions.eq("blockId",blockId));
+        criteria.add(Restrictions.lt("modificationDate",toDate))
+                .add(Restrictions.ge("accepted",false))
+                .add(Restrictions.eq("blockId",blockId))
+                .add(Restrictions.ne("rejectionReason","INVALID_DOB"));
         return criteria.list();
+    }
+
+    @Override
+    public Long getCountOfRejectedChildRecords(Date toDate, Integer districtId) {
+        Criteria criteria=createEntityCriteria();
+        criteria.add(Restrictions.lt("modificationDate",toDate))
+                .add(Restrictions.ge("accepted",false))
+                .add(Restrictions.eq("districtId",districtId))
+                .add(Restrictions.ne("rejectionReason","INVALID_DOB"))
+                .setProjection(Projections.rowCount());
+
+        return (Long) criteria.uniqueResult();
     }
 }

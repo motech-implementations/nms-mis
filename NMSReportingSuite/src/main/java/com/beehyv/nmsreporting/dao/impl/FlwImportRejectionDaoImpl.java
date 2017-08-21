@@ -4,6 +4,8 @@ import com.beehyv.nmsreporting.dao.AbstractDao;
 import com.beehyv.nmsreporting.dao.FlwImportRejectionDao;
 import com.beehyv.nmsreporting.model.FlwImportRejection;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -47,5 +49,16 @@ public class FlwImportRejectionDaoImpl extends AbstractDao<Long, FlwImportReject
                 .add(Restrictions.eq("blockId", blockId));
 
         return criteria.list();
+    }
+
+    @Override
+    public Long getCountOfFlwRejectedRecordsForDistrict(Date toDate, Integer districtId) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.lt("modificationDate", toDate))
+                .add(Restrictions.eq("accepted", false))
+                .add(Restrictions.eq("districtId", districtId))
+                .setProjection(Projections.rowCount());
+
+        return (Long) criteria.uniqueResult();
     }
 }

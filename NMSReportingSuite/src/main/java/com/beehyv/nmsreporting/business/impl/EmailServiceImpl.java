@@ -1,14 +1,12 @@
 package com.beehyv.nmsreporting.business.impl;
 
 import com.beehyv.nmsreporting.business.*;
+import com.beehyv.nmsreporting.dao.*;
 import com.beehyv.nmsreporting.entity.EmailInfo;
 import com.beehyv.nmsreporting.entity.ReportRequest;
 import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.ReportType;
-import com.beehyv.nmsreporting.model.Circle;
-import com.beehyv.nmsreporting.model.EmailTracker;
-import com.beehyv.nmsreporting.model.State;
-import com.beehyv.nmsreporting.model.User;
+import com.beehyv.nmsreporting.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -25,6 +23,8 @@ import javax.mail.internet.MimeMultipart;
 import javax.servlet.ServletContext;
 import javax.transaction.Transactional;
 import java.util.*;
+
+import static com.beehyv.nmsreporting.utils.ServiceFunctions.getMonthYear;
 
 /**
  * Created by beehyv on 25/5/17.
@@ -44,6 +44,24 @@ public class EmailServiceImpl implements EmailService{
     ReportService reportService;
     @Autowired
     LocationService locationService;
+    @Autowired
+    DistrictDao districtDao;
+    @Autowired
+    MACourseAttemptDao maCourseAttemptDao;
+    @Autowired
+    FrontLineWorkersDao frontLineWorkersDao;
+    @Autowired
+    KilkariLowUsageDao kilkariLowUsageDao;
+    @Autowired
+    KilkariSelfDeactivatedDao kilkariSelfDeactivatedDao;
+    @Autowired
+    KilkariSixWeeksNoAnswerDao kilkariSixWeeksNoAnswerDao;
+    @Autowired
+    FlwImportRejectionDao flwImportRejectionDao;
+    @Autowired
+    MotherImportRejectionDao motherImportRejectionDao;
+    @Autowired
+    ChildImportRejectionDao childImportRejectionDao;
 
     @Autowired
     private EmailTrackerService emailTrackerService;
@@ -123,10 +141,8 @@ public class EmailServiceImpl implements EmailService{
                     "\tYou are requested to kindly instruct your field level workers to contact the beneficiaries " +
                     "personally and understand why they have deactivated from the system. If the mobile number belongs " +
                     "to the correct beneficiary then they should be motivated to reactivate their Kilkari Subscription" +
-                    " and listen to the Kilkari content for the complete duration of 90 secs. If the mobile number " +
-                    "does not belong to the correct beneficiary then ask them to provide their mobile numbers through " +
-                    "which they could receive the Kilkari messages and update those mobile numbers in the RCH " +
-                    "application. These Kilkari messages contains valuable information on the best practices of health," +
+                    " and listen to the Kilkari content for the complete duration of 90 secs.  These Kilkari messages" +
+                    " contains valuable information on the best practices of health," +
                     " nutrition and immunizations that they need to follow during their pregnancy period and child " +
                     "care.\n\n";
 
@@ -208,7 +224,7 @@ public class EmailServiceImpl implements EmailService{
                         emailTracker.setReportType(reportType.getReportName());
                         emailTracker.setTime(new Date());
                         emailTracker.setUserId(user.getUserId());
-                        emailTrackerService.saveEmailDeatils(emailTracker);
+                        emailTrackerService.saveEmailDetails(emailTracker);
                     }
                 }//else if(user.getAccessLevel().equalsIgnoreCase(AccessLevel.NATIONAL.getAccessLevel())){
 //                            reportRequest.setCircleId(0);
@@ -256,7 +272,7 @@ public class EmailServiceImpl implements EmailService{
                         reportRequest.setBlockId(user.getBlockId());
                         place = locationService.findBlockById(user.getBlockId()).getBlockName()+" Block";
                     }
-                     if(reportType.getReportType().equals(ReportType.motherRejected.getReportType()) ||
+                    if(reportType.getReportType().equals(ReportType.motherRejected.getReportType()) ||
                         reportType.getReportType().equals(ReportType.childRejected.getReportType())) {
 
                         reportRequest.setReportType(ReportType.childRejected.getReportType());
@@ -265,20 +281,21 @@ public class EmailServiceImpl implements EmailService{
                         String file1Name=file1Details.get(0);
                         String file1Path=file1Details.get(1);
                         List<String> file2Details=reportService.getReportPathName(reportRequest);
-                         String file2Name=file2Details.get(0);
-                         String file2Path=file2Details.get(1);
+                        String file2Name=file2Details.get(0);
+                        String file2Path=file2Details.get(1);
                         newMail.setFileName(file1Name);
                         newMail.setFileName2(file2Name);
                         newMail.setRootPath(file1Path);
-                        newMail.setRootPathForFile2(file2Path);
+                        newMail.setRootPath2(file2Path);
                         newMail.setSubject("Rejected Mother and child Records for " +reportService.getDateMonthYear(c.getTime()));
 
                         //getBody should change
 
                         newMail.setBody(this.getBody(reportType.getReportName(), place, reportService.getDateMonthYear(c.getTime()), user.getFullName()));
-                        // email for district users
+                         // email for district users
+                         // we are not sending any emails to national users
                         if (user.getDistrictId() != null) {
-                             //errorMessage=this.sendMailWithMultipleAttachments(newMail);
+                             errorMessage=this.sendMailWithMultipleAttachments(newMail);
                              EmailTracker emailTracker = new EmailTracker();
                              emailTracker.setEmailSuccessful(true);
                              emailTracker.setFileName(file1Name);
@@ -292,22 +309,124 @@ public class EmailServiceImpl implements EmailService{
                              emailTracker1.setTime(new Date());
                              emailTracker1.setUserId(user.getUserId());
                              if (errorMessage.equalsIgnoreCase("failure")) {
-                                 //errorMessage = this.sendMail(newMail);
+                                 errorMessage = this.sendMail(newMail);
                              }
                              if (errorMessage.equalsIgnoreCase("failure")) {
-                                 //errorMessage = this.sendMail(newMail);
+                                 errorMessage = this.sendMail(newMail);
                              }
                              if (errorMessage.equalsIgnoreCase("failure")) {
                                  emailTracker.setEmailSuccessful(false);
                                  emailTracker1.setEmailSuccessful(false);
                              }
-                             emailTrackerService.saveEmailDeatils(emailTracker);
-                             emailTrackerService.saveEmailDeatils(emailTracker1);
-                         }else if(user.getStateId()!=null){
-                            sendMailWithStatistics(newMail);
-                         }
+                             emailTrackerService.saveEmailDetails(emailTracker);
+                             emailTrackerService.saveEmailDetails(emailTracker1);
 
-                     }else {
+                        }else if(user.getStateId()!=null){
+                            errorMessage=sendMailWithStatistics(newMail, reportType.getReportType(), user);
+                            EmailTracker emailTracker = new EmailTracker();
+                            emailTracker.setEmailSuccessful(true);
+                            emailTracker.setFileName(file1Name);
+                            emailTracker.setReportType(ReportType.motherRejected.getReportName());
+                            emailTracker.setTime(new Date());
+                            emailTracker.setUserId(user.getUserId());
+                            EmailTracker emailTracker1 = new EmailTracker();
+                            emailTracker1.setEmailSuccessful(true);
+                            emailTracker1.setFileName(file2Name);
+                            emailTracker1.setReportType(ReportType.childRejected.getReportName());
+                            emailTracker1.setTime(new Date());
+                            emailTracker1.setUserId(user.getUserId());
+                            if (errorMessage.equalsIgnoreCase("failure")) {
+                                errorMessage = sendMailWithStatistics(newMail, reportType.getReportType(), user);
+                            }
+                            if (errorMessage.equalsIgnoreCase("failure")) {
+                                errorMessage = sendMailWithStatistics(newMail, reportType.getReportType(), user);
+                            }
+                            if (errorMessage.equalsIgnoreCase("failure")) {
+                                emailTracker.setEmailSuccessful(false);
+                                emailTracker1.setEmailSuccessful(false);
+                            }
+                            emailTrackerService.saveEmailDetails(emailTracker);
+                            emailTrackerService.saveEmailDetails(emailTracker1);
+                        }
+
+                    }else if(reportType.getReportType().equals(ReportType.sixWeeks.getReportType()) ||
+                            reportType.getReportType().equals(ReportType.lowListenership.getReportType())) {
+
+                        reportRequest.setReportType(ReportType.sixWeeks.getReportType());
+                        List<String> file1Details=reportService.getReportPathName(reportRequest);
+                        reportRequest.setReportType(ReportType.lowListenership.getReportType());
+                        String file1Name=file1Details.get(0);
+                        String file1Path=file1Details.get(1);
+                        List<String> file2Details=reportService.getReportPathName(reportRequest);
+                        String file2Name=file2Details.get(0);
+                        String file2Path=file2Details.get(1);
+                        newMail.setFileName(file1Name);
+                        newMail.setFileName2(file2Name);
+                        newMail.setRootPath(file1Path);
+                        newMail.setRootPath2(file2Path);
+                        newMail.setSubject("Deactivation records for " +reportService.getMonthName(c.getTime()));
+
+                        //getBody should change
+
+                        newMail.setBody(this.getBody(reportType.getReportName(), place, reportService.getMonthName(c.getTime()), user.getFullName()));
+                        // email for district users
+                        // we are not sending any emails to national users
+                        if (user.getDistrictId() != null) {
+                            errorMessage=this.sendMailWithMultipleAttachments(newMail);
+                            EmailTracker emailTracker = new EmailTracker();
+                            emailTracker.setEmailSuccessful(true);
+                            emailTracker.setFileName(file1Name);
+                            emailTracker.setReportType(ReportType.sixWeeks.getReportName());
+                            emailTracker.setTime(new Date());
+                            emailTracker.setUserId(user.getUserId());
+                            EmailTracker emailTracker1 = new EmailTracker();
+                            emailTracker1.setEmailSuccessful(true);
+                            emailTracker1.setFileName(file2Name);
+                            emailTracker1.setReportType(ReportType.lowListenership.getReportName());
+                            emailTracker1.setTime(new Date());
+                            emailTracker1.setUserId(user.getUserId());
+                            if (errorMessage.equalsIgnoreCase("failure")) {
+                                errorMessage = this.sendMail(newMail);
+                            }
+                            if (errorMessage.equalsIgnoreCase("failure")) {
+                                errorMessage = this.sendMail(newMail);
+                            }
+                            if (errorMessage.equalsIgnoreCase("failure")) {
+                                emailTracker.setEmailSuccessful(false);
+                                emailTracker1.setEmailSuccessful(false);
+                            }
+                            emailTrackerService.saveEmailDetails(emailTracker);
+                            emailTrackerService.saveEmailDetails(emailTracker1);
+                        }else if(user.getStateId()!=null){
+                            errorMessage=sendMailWithStatistics(newMail, reportType.getReportType(), user);
+                            EmailTracker emailTracker = new EmailTracker();
+                            emailTracker.setEmailSuccessful(true);
+                            emailTracker.setFileName(file1Name);
+                            emailTracker.setReportType(ReportType.sixWeeks.getReportName());
+                            emailTracker.setTime(new Date());
+                            emailTracker.setUserId(user.getUserId());
+                            EmailTracker emailTracker1 = new EmailTracker();
+                            emailTracker1.setEmailSuccessful(true);
+                            emailTracker1.setFileName(file2Name);
+                            emailTracker1.setReportType(ReportType.lowListenership.getReportName());
+                            emailTracker1.setTime(new Date());
+                            emailTracker1.setUserId(user.getUserId());
+                            if (errorMessage.equalsIgnoreCase("failure")) {
+                                errorMessage = sendMailWithStatistics(newMail, reportType.getReportType(), user);
+                            }
+                            if (errorMessage.equalsIgnoreCase("failure")) {
+                                errorMessage = sendMailWithStatistics(newMail, reportType.getReportType(), user);
+                            }
+                            if (errorMessage.equalsIgnoreCase("failure")) {
+                                emailTracker.setEmailSuccessful(false);
+                                emailTracker1.setEmailSuccessful(false);
+                            }
+                            emailTrackerService.saveEmailDetails(emailTracker);
+                            emailTrackerService.saveEmailDetails(emailTracker1);
+                        }
+
+                    }
+                    else {
                          List<String> fileDetails=reportService.getReportPathName(reportRequest);
                          pathName = fileDetails.get(1);
                          fileName = fileDetails.get(0);
@@ -332,10 +451,26 @@ public class EmailServiceImpl implements EmailService{
                              if (errorMessage.equalsIgnoreCase("failure")) {
                                  emailTracker.setEmailSuccessful(false);
                              }
-                             emailTrackerService.saveEmailDeatils(emailTracker);
+                             emailTrackerService.saveEmailDetails(emailTracker);
 
-                         } else {
-                             errorMessage = "success";
+                         } else if(user.getDistrictId()!=null)  {
+                             errorMessage=sendMailWithMultipleAttachments(newMail);
+                             EmailTracker emailTracker = new EmailTracker();
+                             emailTracker.setEmailSuccessful(true);
+                             emailTracker.setFileName(fileName);
+                             emailTracker.setReportType(reportType.getReportName());
+                             emailTracker.setTime(new Date());
+                             emailTracker.setUserId(user.getUserId());
+                             if (errorMessage.equalsIgnoreCase("failure")) {
+                                 errorMessage =sendMailWithMultipleAttachments(newMail);
+                             }
+                             if (errorMessage.equalsIgnoreCase("failure")) {
+                                 errorMessage = sendMailWithMultipleAttachments(newMail);
+                             }
+                             if (errorMessage.equalsIgnoreCase("failure")) {
+                                 emailTracker.setEmailSuccessful(false);
+                             }
+                             emailTrackerService.saveEmailDetails(emailTracker);
                          }
                          if (errorMessage.equalsIgnoreCase("failure"))
                              errorSendingMail.put(user.getUsername(), fileName);
@@ -346,7 +481,7 @@ public class EmailServiceImpl implements EmailService{
         return errorSendingMail;
     }
 
-    private String sendMailWithStatistics(EmailInfo emailInfo) {
+    private String sendMailWithStatistics(EmailInfo emailInfo, String reportType, User user) {
         try {
             final JavaMailSenderImpl ms = (JavaMailSenderImpl) mailSender;
             Properties props = ms.getJavaMailProperties();
@@ -363,20 +498,7 @@ public class EmailServiceImpl implements EmailService{
             message.setFrom(new InternetAddress(emailInfo.getFrom()));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailInfo.getTo()));
             message.setSubject(emailInfo.getSubject(),"UTF-8");
-            BodyPart messageBodyPart = new MimeBodyPart();
-            String text=
-                    "Hi , please find attachment <body><br><br><table width='100%' border='1' align='center'>"
-                            + "<tr align='center'>"
-                            + "<td><b>Product Name <b></td>"
-                            + "<td><b>Count<b></td>"
-                            + "</tr>";
-            text=text+"<tr align='center'>"+"<td>" + "ok" + "</td>"
-                    + "<td>" + "yes" + "</td>"+"</tr></body>";
-
-            Multipart multipart = new MimeMultipart();
-
-            messageBodyPart = new MimeBodyPart();
-            message.setContent(text,"text/html; charset=utf-8");
+            message.setContent(getBodyForStateLevelUsers(reportType,user.getStateId(), user.getFullName()),"text/html; charset=utf-8");
             Transport.send(message);
             return "success";
         } catch (Exception ex) {
@@ -402,33 +524,14 @@ public class EmailServiceImpl implements EmailService{
             message.setFrom(new InternetAddress(mailInfo.getFrom()));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mailInfo.getTo()));
             message.setSubject(mailInfo.getSubject(),"UTF-8");
-            /*BodyPart messageBodyPart = new MimeBodyPart();
-            String text=
-                    "Hi , please find attachment <body><br><br><table width='100%' border='1' align='center'>"
-                            + "<tr align='center'>"
-                            + "<td><b>Product Name <b></td>"
-                            + "<td><b>Count<b></td>"
-                            + "</tr>";
-            text=text+"<tr align='center'>"+"<td>" + "ok" + "</td>"
-                    + "<td>" + "yes" + "</td>"+"</tr></body>";
-
-            Multipart multipart = new MimeMultipart();
-
-            //multipart.addBodyPart(messageBodyPart);
-            messageBodyPart = new MimeBodyPart();
-            List<String> fileNames=new ArrayList<>();
-            fileNames.add("/home/beehyv/Documents/Reports/Mother_Import_Rejects/Mother_Import_Rejects_NATIONAL_06_08_17.xlsx");
-            fileNames.add("/home/beehyv/Documents/Reports/Child_Import_Rejects/Child_Import_Rejects_NATIONAL_06_08_17.xlsx");*/
             BodyPart messageBodyPart = new MimeBodyPart();
             messageBodyPart.setText(mailInfo.getBody());
             Multipart multipart = new MimeMultipart();
-            //multipart.addBodyPart(messageBodyPart);
             List<String> filePaths=new ArrayList<>();
             filePaths.add(mailInfo.getRootPath());
-            filePaths.add(mailInfo.getRootPathForFile2());
+            filePaths.add(mailInfo.getRootPath2());
             addAttachment(multipart,filePaths.get(0), mailInfo.getFileName());
             addAttachment(multipart,filePaths.get(1), mailInfo.getFileName2());
-            //message.setContent(mailInfo.getBody(),"text/html; charset=utf-8");
             message.setContent(multipart);
             Transport.send(message);
             return "success";
@@ -437,6 +540,7 @@ public class EmailServiceImpl implements EmailService{
             return "failure";
         }
     }
+
     private static void addAttachment(Multipart multipart, String filePath, String fileName )
     {
         DataSource source = new FileDataSource(filePath);
@@ -450,6 +554,152 @@ public class EmailServiceImpl implements EmailService{
             e.printStackTrace();
         }
 
+    }
+
+    private String getBodyForStateLevelUsers(String reportType, Integer stateId, String  name) {
+        String body= "Dear "+name +",<br>";
+        Calendar calendar=Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.DAY_OF_MONTH,1);
+
+        Date toDate = calendar.getTime();
+        calendar.add(Calendar.MONTH,-1);
+        Date fromDate=calendar.getTime();
+
+        List<District> districts=districtDao.getDistrictsOfState(stateId);
+        if(reportType.equals(ReportType.maCourse.getReportType())){
+            body+= "<pre>   </pre>Please find below the district wise count of ASHAs who have successfully completed the Mobile Academy" +
+                    " course. The line listing of the ASHAs have been sent to the respective district and block users.";
+
+            body+=  "<body><br><br><table width='100%' border='1' align='center'>"
+                + "<tr align='center'>"
+                + "<td><b>District Name<b></td>"
+                + "<td><b>Count of ASHAs who have successfully completed the course.<b></td>"
+                + "</tr>";
+            for (District district:districts
+                 ) {
+
+                   body=body+"<tr align='center'>"+"<td>" + district.getDistrictName() + "</td>"
+                           + "<td>" +maCourseAttemptDao.getCountForGivenDistrict(toDate, district.getDistrictId())+ "</td>"+"</tr>";
+            }
+            body+="<<br>/body>";
+        } else if(reportType.equals(ReportType.maInactive.getReportType())){
+            body+="<pre>   </pre>Please find below the district wise count of ASHAs who have not yet started the Mobile Academy course." +
+                    " The line listing of the ASHAs have been sent to the respective district and block users.";
+
+            body+="<body><br><br><table width='100%' border='1' align='center'>"
+                    + "<tr align='center'>"
+                    + "<td><b>District Name<b></td>"
+                    + "<td><b>Count of Inactive ASHAs.<b></td>"
+                    + "</tr>";
+
+            for (District district:districts
+                    ) {
+
+                body=body+"<tr align='center'>"+"<td>" + district.getDistrictName() + "</td>"
+                        + "<td>" +frontLineWorkersDao.getCountOfInactiveFrontLineWorkersForGievnDistrict(toDate, district.getDistrictId())+ "</td>"+"</tr>";
+            }
+            body+="<br></body>";
+        } else if(reportType.equals(ReportType.lowUsage.getReportType())){
+            body+="<pre>   </pre>Please find below the district wise count of beneficiaries have been deactivated for listening low or not answering. " +
+                    "The line listing of the individual beneficiaries have been sent to the respective district and block users. ";
+            body+= "<body><br><br><table width='100%' border='1' align='center'>"
+                    + "<tr align='center'>"
+                    + "<td><b>District Name<b></td>"
+                    + "<td><b>Count of Beneficiaries listening less than 25% of content<b></td>"
+                    + "</tr>";
+            for (District district:districts
+                    ) {
+
+                body=body+"<tr align='center'>"+"<td>" + district.getDistrictName() + "</td>"
+                        + "<td>" +kilkariLowUsageDao.getCountOfLowUsageUsersForGivenDistrict(getMonthYear(toDate), district.getDistrictId())+ "</td>"+"</tr>";
+
+            }
+            body+="<br></body>";
+
+        }
+        else if(reportType.equals(ReportType.selfDeactivated.getReportType())){
+            body+="<pre>   </pre>Please find below the district wise count of beneficiaries who have deactivated themselves from the " +
+                    "Kilkari system. The line listing of the individual beneficiaries have been sent to the respective " +
+                    "district and block users. ";
+            body+="<body><br><br><table width='100%' border='1' align='center'>"
+                    + "<tr align='center'>"
+                    + "<td><b>District Name<b></td>"
+                    + "<td><b>Count of Beneficiaries deactivated themselves<b></td>"
+                    + "</tr>";
+            for (District district:districts
+                    ) {
+
+                body=body+"<tr align='center'>"+"<td>" + district.getDistrictName() + "</td>"
+                        + "<td>" +kilkariSelfDeactivatedDao.getCountOfSelfDeactivatedUsers(fromDate,toDate, district.getDistrictId())+ "</td>"+"</tr>";
+
+            }
+            body+="<br></body>";
+
+        }else if (reportType.equals(ReportType.sixWeeks.getReportType()) ||
+                reportType.equals(ReportType.lowListenership.getReportType())){
+            body+= "<pre>   </pre>Please find below the district wise count of beneficiaries have been deactivated for listening low or not answering. " +
+                    "The line listing of the individual beneficiaries have been sent to the respective district and block users.";
+            body+="<body><br><br><table width='100%' border='1' align='center'>"
+                    + "<tr align='center'>"
+                    + "<td><b>District Name<b></td>"
+                    + "<td><b>Count of deactivated records for answering a single call for six consecutive weeks<b></td>"
+                    + "<td><b>Count of deactivated records for Low Listnership.<b></td>"
+                    + "</tr>";
+            for (District district:districts
+                    ) {
+                body=body+"<tr align='center'>"+"<td>" + district.getDistrictName() + "</td>"
+                        + "<td>" +kilkariSixWeeksNoAnswerDao.getCountOfDeactivatedForDistrict(fromDate,toDate, district.getDistrictId())+ "</td>"
+                        + "<td>" +kilkariSixWeeksNoAnswerDao.getCountOfLowListenershipUsersForDistrict(fromDate,toDate, district.getDistrictId())+ "</td>"+"</tr>";
+            }
+            body+="<br></body>";
+        } else if(reportType.equals(ReportType.flwRejected.getReportType())){
+            body+="<pre>   </pre>Please find attached the list of ASHAs rejected due to one of the following rejection reasons " +
+                    "viz.,MSISDN_ALREADY_IN_USE,FLW_TYPE_NOT_ASHA,FLW_IMPORT_ERROR,RECORD_ALREADY_EXISTS";
+
+            body+= "<body><br><br><table width='100%' border='1' align='center'>"
+                    + "<tr align='center'>"
+                    + "<td><b>District Name<b></td>"
+                    + "<td><b>Count of Rejected ASHAs Records<b></td>"
+                    + "</tr>";
+            for (District district:districts
+                    ) {
+                body=body+"<tr align='center'>"+"<td>" + district.getDistrictName() + "</td>"
+                        + "<td>" +flwImportRejectionDao.getCountOfFlwRejectedRecordsForDistrict(toDate, district.getDistrictId())+ "</td>"
+                        +"</tr>";
+            }
+            body=body+"<br></body>";
+        }
+        else if(reportType.equals(ReportType.motherRejected.getReportType()) ||
+                reportType.equals(ReportType.childRejected.getReportType())){
+            body+= "<pre>   </pre>Please find attached the following files:<br>"
+                   + "1. The following List of mother records are deactivated for one of the following rejection reasons" +
+                    " viz., Subscription Rejected,MSISDN already in use,Record already exists,Active chils present,Invalid case no.<br>"
+                   +  "2. The following List of child records are deactivated for one of the following rejection reasons " +
+                    "viz., MSISDN already in use,Subscription Rejected,Mother id error,Record already exists";
+
+            body+=" <body><br><br><table width='100%' border='1' align='center'>"
+                    + "<tr align='center'>"
+                    + "<td><b>District Name<b></td>"
+                    + "<td><b>Count of Rejected Mother Records<b></td>"
+                    + "<td><b>Count of Rejected Child Records.<b></td>"
+                    + "</tr>";
+            for (District district:districts
+                    ) {
+                body=body+"<tr align='center'>"+"<td>" + district.getDistrictName() + "</td>"
+                        + "<td>" +motherImportRejectionDao.getCountOFRejectedMotherImportRecordsWithDistrictId(toDate, district.getDistrictId())+ "</td>"
+                        + "<td>" +childImportRejectionDao.getCountOfRejectedChildRecords(toDate, district.getDistrictId())+ "</td>"+"</tr>";
+            }
+            body=body+"</body>";
+            body+="<br>Regards<br>";
+            body+= "NSP Support Team <br><br>";
+            body+= "P.S: This an auto-generated email. Please do not reply";
+        }
+        return body;
     }
 
     private String getStatesNamesByCircle(Circle circle){
