@@ -1,16 +1,10 @@
 package com.beehyv.nmsreporting.model;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import com.beehyv.nmsreporting.enums.AccountStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-
-import com.beehyv.nmsreporting.enums.AccountStatus;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.Date;
 
 @Entity
 @Table(name="USER_DETAILS")

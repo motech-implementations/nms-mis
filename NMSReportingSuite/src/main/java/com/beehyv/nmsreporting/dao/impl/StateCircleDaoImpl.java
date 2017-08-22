@@ -3,7 +3,6 @@ package com.beehyv.nmsreporting.dao.impl;
 import com.beehyv.nmsreporting.dao.AbstractDao;
 import com.beehyv.nmsreporting.dao.StateCircleDao;
 import com.beehyv.nmsreporting.model.StateCircle;
-import org.apache.shiro.session.mgt.eis.AbstractSessionDAO;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;

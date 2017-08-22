@@ -2,7 +2,6 @@ package com.beehyv.nmsreporting.utils;
 
 import com.beehyv.nmsreporting.business.UserService;
 import com.beehyv.nmsreporting.model.User;
-import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;

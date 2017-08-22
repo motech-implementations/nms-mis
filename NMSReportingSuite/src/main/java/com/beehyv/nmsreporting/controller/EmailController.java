@@ -5,17 +5,14 @@ import com.beehyv.nmsreporting.business.LocationService;
 import com.beehyv.nmsreporting.business.ReportService;
 import com.beehyv.nmsreporting.business.UserService;
 import com.beehyv.nmsreporting.entity.EmailInfo;
-import com.beehyv.nmsreporting.entity.ReportRequest;
-import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.ReportType;
-import com.beehyv.nmsreporting.model.Circle;
-import com.beehyv.nmsreporting.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
-import java.util.*;
+import java.util.Calendar;
+import java.util.HashMap;
 
 /**
  * Created by beehyv on 16/5/17.

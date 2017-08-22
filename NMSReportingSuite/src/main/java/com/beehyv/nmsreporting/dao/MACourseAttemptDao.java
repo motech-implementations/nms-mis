@@ -1,9 +1,6 @@
 package com.beehyv.nmsreporting.dao;
 
-import com.beehyv.nmsreporting.model.FrontLineWorkers;
-import com.beehyv.nmsreporting.model.MACourseCompletion;
 import com.beehyv.nmsreporting.model.MACourseFirstCompletion;
-import com.beehyv.nmsreporting.model.State;
 
 import java.util.Date;
 import java.util.List;

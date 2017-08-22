@@ -1,11 +1,9 @@
 package com.beehyv.nmsreporting.business;
 
 import com.beehyv.nmsreporting.entity.EmailInfo;
-import com.beehyv.nmsreporting.entity.ReportRequest;
 import com.beehyv.nmsreporting.enums.ReportType;
 
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by beehyv on 25/5/17.
