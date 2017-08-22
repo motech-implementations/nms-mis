@@ -102,7 +102,7 @@ public class EmailServiceImpl implements EmailService{
         }
     }
 
-    private String sendMailWithStatistics(EmailInfo emailInfo, String reportType, User user) {
+    private String sendMailWithStatistics(EmailInfo emailInfo) {
         try {
             final JavaMailSenderImpl ms = (JavaMailSenderImpl) mailSender;
             Properties props = ms.getJavaMailProperties();
@@ -119,7 +119,7 @@ public class EmailServiceImpl implements EmailService{
             message.setFrom(new InternetAddress(emailInfo.getFrom()));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailInfo.getTo()));
             message.setSubject(emailInfo.getSubject(),"UTF-8");
-            message.setContent(getBodyForStateLevelUsers(reportType,user.getStateId(), user.getFullName()),"text/html; charset=utf-8");
+            message.setContent(emailInfo.getBody(),"text/html; charset=utf-8");
             Transport.send(message);
             return "success";
         } catch (Exception ex) {
@@ -370,7 +370,7 @@ public class EmailServiceImpl implements EmailService{
         }
         return body;
     }
-
+    /* for district users, we send mail with attachments and for state users, we send summary mails with district-wise details*/
     @Override
     public HashMap<String, String> sendAllMails(ReportType reportType) {
         List<User> users = userService.findAllActiveUsers();
@@ -515,10 +515,10 @@ public class EmailServiceImpl implements EmailService{
                              emailTracker1.setTime(new Date());
                              emailTracker1.setUserId(user.getUserId());
                              if (errorMessage.equalsIgnoreCase("failure")) {
-                                 errorMessage = this.sendMail(newMail);
+                                 errorMessage = this.sendMailWithMultipleAttachments(newMail);
                              }
                              if (errorMessage.equalsIgnoreCase("failure")) {
-                                 errorMessage = this.sendMail(newMail);
+                                 errorMessage = this.sendMailWithMultipleAttachments(newMail);
                              }
                              if (errorMessage.equalsIgnoreCase("failure")) {
                                  emailTracker.setEmailSuccessful(false);
@@ -528,7 +528,8 @@ public class EmailServiceImpl implements EmailService{
                              emailTrackerService.saveEmailDetails(emailTracker1);
 
                         }else if(user.getStateId()!=null){
-                            errorMessage=sendMailWithStatistics(newMail, reportType.getReportType(), user);
+                            newMail.setBody(this.getBodyForStateLevelUsers(reportType.getReportType(), user.getStateId(), user.getFullName()));
+                            errorMessage=sendMailWithStatistics(newMail);
                             EmailTracker emailTracker = new EmailTracker();
                             emailTracker.setEmailSuccessful(true);
                             emailTracker.setFileName(file1Name);
@@ -542,10 +543,10 @@ public class EmailServiceImpl implements EmailService{
                             emailTracker1.setTime(new Date());
                             emailTracker1.setUserId(user.getUserId());
                             if (errorMessage.equalsIgnoreCase("failure")) {
-                                errorMessage = sendMailWithStatistics(newMail, reportType.getReportType(), user);
+                                errorMessage = sendMailWithStatistics(newMail);
                             }
                             if (errorMessage.equalsIgnoreCase("failure")) {
-                                errorMessage = sendMailWithStatistics(newMail, reportType.getReportType(), user);
+                                errorMessage = sendMailWithStatistics(newMail);
                             }
                             if (errorMessage.equalsIgnoreCase("failure")) {
                                 emailTracker.setEmailSuccessful(false);
@@ -592,10 +593,10 @@ public class EmailServiceImpl implements EmailService{
                             emailTracker1.setTime(new Date());
                             emailTracker1.setUserId(user.getUserId());
                             if (errorMessage.equalsIgnoreCase("failure")) {
-                                errorMessage = this.sendMail(newMail);
+                                errorMessage = this.sendMailWithMultipleAttachments(newMail);
                             }
                             if (errorMessage.equalsIgnoreCase("failure")) {
-                                errorMessage = this.sendMail(newMail);
+                                errorMessage = this.sendMailWithMultipleAttachments(newMail);
                             }
                             if (errorMessage.equalsIgnoreCase("failure")) {
                                 emailTracker.setEmailSuccessful(false);
@@ -604,7 +605,8 @@ public class EmailServiceImpl implements EmailService{
                             emailTrackerService.saveEmailDetails(emailTracker);
                             emailTrackerService.saveEmailDetails(emailTracker1);
                         }else if(user.getStateId()!=null){
-                            errorMessage=sendMailWithStatistics(newMail, reportType.getReportType(), user);
+                            newMail.setBody(this.getBodyForStateLevelUsers(reportType.getReportType(), user.getStateId(), user.getFullName()));
+                            errorMessage=sendMailWithStatistics(newMail);
                             EmailTracker emailTracker = new EmailTracker();
                             emailTracker.setEmailSuccessful(true);
                             emailTracker.setFileName(file1Name);
@@ -618,10 +620,10 @@ public class EmailServiceImpl implements EmailService{
                             emailTracker1.setTime(new Date());
                             emailTracker1.setUserId(user.getUserId());
                             if (errorMessage.equalsIgnoreCase("failure")) {
-                                errorMessage = sendMailWithStatistics(newMail, reportType.getReportType(), user);
+                                errorMessage = sendMailWithStatistics(newMail);
                             }
                             if (errorMessage.equalsIgnoreCase("failure")) {
-                                errorMessage = sendMailWithStatistics(newMail, reportType.getReportType(), user);
+                                errorMessage = sendMailWithStatistics(newMail);
                             }
                             if (errorMessage.equalsIgnoreCase("failure")) {
                                 emailTracker.setEmailSuccessful(false);
@@ -659,8 +661,9 @@ public class EmailServiceImpl implements EmailService{
                              }
                              emailTrackerService.saveEmailDetails(emailTracker);
 
-                         } else if(user.getDistrictId()!=null)  {
-                             errorMessage=sendMailWithMultipleAttachments(newMail);
+                         } else if(user.getStateId()!=null)  {
+                             newMail.setBody(this.getBodyForStateLevelUsers(reportType.getReportType(), user.getStateId(), user.getFullName()));
+                             errorMessage=sendMailWithStatistics(newMail);
                              EmailTracker emailTracker = new EmailTracker();
                              emailTracker.setEmailSuccessful(true);
                              emailTracker.setFileName(fileName);
@@ -668,20 +671,21 @@ public class EmailServiceImpl implements EmailService{
                              emailTracker.setTime(new Date());
                              emailTracker.setUserId(user.getUserId());
                              if (errorMessage.equalsIgnoreCase("failure")) {
-                                 errorMessage =sendMailWithMultipleAttachments(newMail);
+                                 errorMessage =sendMailWithStatistics(newMail);
                              }
                              if (errorMessage.equalsIgnoreCase("failure")) {
-                                 errorMessage = sendMailWithMultipleAttachments(newMail);
+                                 errorMessage = sendMailWithStatistics(newMail);
                              }
                              if (errorMessage.equalsIgnoreCase("failure")) {
                                  emailTracker.setEmailSuccessful(false);
                              }
                              emailTrackerService.saveEmailDetails(emailTracker);
                          }
-                         if (errorMessage.equalsIgnoreCase("failure"))
-                             errorSendingMail.put(user.getUsername(), fileName);
-                     }
+                    }
+
                 }
+            if (errorMessage.equalsIgnoreCase("failure"))
+                errorSendingMail.put(user.getUsername(), fileName);
 //          }
         }
         return errorSendingMail;
