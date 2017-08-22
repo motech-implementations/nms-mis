@@ -1,9 +1,5 @@
 package com.beehyv.nmsreporting.entity;
 
-import com.beehyv.nmsreporting.model.User;
-
-import java.util.List;
-
 /**
  * Created by beehyv on 26/4/17.
  */

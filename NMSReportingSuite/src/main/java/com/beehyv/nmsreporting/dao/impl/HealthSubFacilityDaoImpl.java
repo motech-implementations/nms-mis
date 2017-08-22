@@ -2,7 +2,6 @@ package com.beehyv.nmsreporting.dao.impl;
 
 import com.beehyv.nmsreporting.dao.AbstractDao;
 import com.beehyv.nmsreporting.dao.HealthSubFacilityDao;
-import com.beehyv.nmsreporting.model.HealthFacility;
 import com.beehyv.nmsreporting.model.HealthSubFacility;
 import org.springframework.stereotype.Repository;
 

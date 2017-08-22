@@ -1,11 +1,7 @@
 package com.beehyv.nmsreporting.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by beehyv on 4/5/17.

@@ -1,6 +1,5 @@
 package com.beehyv.nmsreporting.dao;
 
-import com.beehyv.nmsreporting.model.District;
 import com.beehyv.nmsreporting.model.State;
 
 import java.util.List;

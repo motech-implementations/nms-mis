@@ -1,13 +1,10 @@
 package com.beehyv.nmsreporting.security;
 
 import com.beehyv.nmsreporting.business.UserService;
-import com.beehyv.nmsreporting.dao.UserDao;
-import com.beehyv.nmsreporting.model.Role;
 import com.beehyv.nmsreporting.model.User;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
-import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.realm.jdbc.JdbcRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;

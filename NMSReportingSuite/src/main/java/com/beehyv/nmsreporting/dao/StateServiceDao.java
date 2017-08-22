@@ -1,6 +1,5 @@
 package com.beehyv.nmsreporting.dao;
 
-import com.beehyv.nmsreporting.model.State;
 import com.beehyv.nmsreporting.model.StateService;
 
 import java.util.Date;

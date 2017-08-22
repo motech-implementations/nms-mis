@@ -2,15 +2,13 @@ package com.beehyv.nmsreporting.dao.impl;
 
 import com.beehyv.nmsreporting.dao.AbstractDao;
 import com.beehyv.nmsreporting.dao.MACourseAttemptDao;
-import com.beehyv.nmsreporting.enums.AccountStatus;
-import com.beehyv.nmsreporting.model.*;
+import com.beehyv.nmsreporting.model.MACourseFirstCompletion;
+import com.beehyv.nmsreporting.model.User;
 import org.hibernate.Criteria;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
