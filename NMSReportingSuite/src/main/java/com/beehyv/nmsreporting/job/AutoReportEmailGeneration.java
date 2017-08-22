@@ -2,7 +2,6 @@ package com.beehyv.nmsreporting.job;
 
 import com.beehyv.nmsreporting.business.AdminService;
 import com.beehyv.nmsreporting.business.EmailService;
-import com.beehyv.nmsreporting.controller.EmailController;
 import com.beehyv.nmsreporting.enums.ReportType;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -10,7 +9,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
-import static com.beehyv.nmsreporting.enums.ReportType.*;
+import static com.beehyv.nmsreporting.enums.ReportType.maCourse;
 
 /**
  * Created by beehyv on 31/5/17.

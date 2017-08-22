@@ -2,7 +2,6 @@ package com.beehyv.nmsreporting.business.impl;
 
 import com.beehyv.nmsreporting.business.ReportService;
 import com.beehyv.nmsreporting.dao.*;
-import com.beehyv.nmsreporting.dao.ReportTypeDao;
 import com.beehyv.nmsreporting.entity.ReportRequest;
 import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.ReportType;

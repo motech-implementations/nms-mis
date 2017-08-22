@@ -1,8 +1,5 @@
 package com.beehyv.nmsreporting.dao;
 
-import com.beehyv.nmsreporting.model.District;
-import com.beehyv.nmsreporting.model.State;
-import com.beehyv.nmsreporting.model.Taluka;
 import com.beehyv.nmsreporting.model.Taluka;
 
 import java.util.List;

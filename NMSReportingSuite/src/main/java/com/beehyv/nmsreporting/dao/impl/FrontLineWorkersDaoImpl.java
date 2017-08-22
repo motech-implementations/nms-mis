@@ -3,7 +3,6 @@ package com.beehyv.nmsreporting.dao.impl;
 import com.beehyv.nmsreporting.dao.AbstractDao;
 import com.beehyv.nmsreporting.dao.FrontLineWorkersDao;
 import com.beehyv.nmsreporting.model.FrontLineWorkers;
-import com.beehyv.nmsreporting.model.User;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
