@@ -824,8 +824,7 @@ public class AdminServiceImpl implements AdminService {
             calendar.set(Calendar.MINUTE, 0);
             calendar.set(Calendar.HOUR_OF_DAY, 0);
             calendar.add(Calendar.DAY_OF_MONTH,1);
-            Date nextDay= calendar.getTime();
-            Date lastDate=reportRequest.getFromDate();
+             toDate= calendar.getTime();
 //            List<MotherImportRejection> motherImportRejections = motherImportRejectionDao.getAllRejectedMotherImportRecords(nextDay);
 
             String stateName=StReplace(stateDao.findByStateId(stateId).getStateName());
@@ -833,7 +832,7 @@ public class AdminServiceImpl implements AdminService {
             if(districtId==0){
                 List<MotherImportRejection> candidatesFromThisState = motherImportRejectionDao.getAllRejectedMotherImportRecordsWithStateId(toDate,stateId);
 
-                getCumulativeRejectedMotherImports(candidatesFromThisState,rootPathState, stateName, lastDate);
+                getCumulativeRejectedMotherImports(candidatesFromThisState,rootPathState, stateName, toDate);
             }
             else{
                 String districtName=StReplace(districtDao.findByDistrictId(districtId).getDistrictName());;
@@ -841,7 +840,7 @@ public class AdminServiceImpl implements AdminService {
                 if(blockId==0){
                     List<MotherImportRejection> candidatesFromThisDistrict = motherImportRejectionDao.getAllRejectedMotherImportRecordsWithDistrictId(toDate,districtId);
 
-                    getCumulativeRejectedMotherImports(candidatesFromThisDistrict,rootPathDistrict, districtName, lastDate);
+                    getCumulativeRejectedMotherImports(candidatesFromThisDistrict,rootPathDistrict, districtName, toDate);
                 }
                 else{
                     String blockName=StReplace(blockDao.findByblockId(blockId).getBlockName());
@@ -849,7 +848,7 @@ public class AdminServiceImpl implements AdminService {
 
                     List<MotherImportRejection> candidatesFromThisBlock = motherImportRejectionDao.getAllRejectedMotherImportRecordsWithBlockId(toDate,blockId);
 
-                    getCumulativeRejectedMotherImports(candidatesFromThisBlock, rootPathblock, blockName, lastDate);
+                    getCumulativeRejectedMotherImports(candidatesFromThisBlock, rootPathblock, blockName, toDate);
                 }
             }
         }
@@ -861,8 +860,7 @@ public class AdminServiceImpl implements AdminService {
             calendar.set(Calendar.MINUTE, 0);
             calendar.set(Calendar.HOUR_OF_DAY, 0);
             calendar.add(Calendar.DAY_OF_MONTH,1);
-            Date nextDay= calendar.getTime();
-            Date lastDate=reportRequest.getFromDate();
+            toDate=calendar.getTime();
 //            List<ChildImportRejection> childImportRejections = childImportRejectionDao.getRejectedChildRecords(nextDay);
 
             String stateName=StReplace(stateDao.findByStateId(stateId).getStateName());
@@ -870,7 +868,7 @@ public class AdminServiceImpl implements AdminService {
             if(districtId==0){
                 List<ChildImportRejection> candidatesFromThisState = childImportRejectionDao.getRejectedChildRecordsWithStateId(toDate,stateId);
 
-                getCumulativeRejectedChildImports(candidatesFromThisState,rootPathState, stateName, lastDate);
+                getCumulativeRejectedChildImports(candidatesFromThisState,rootPathState, stateName, toDate);
             }
             else{
                 String districtName=StReplace(districtDao.findByDistrictId(districtId).getDistrictName());
@@ -878,7 +876,7 @@ public class AdminServiceImpl implements AdminService {
                 if(blockId==0){
                     List<ChildImportRejection> candidatesFromThisDistrict = childImportRejectionDao.getRejectedChildRecordsWithDistrictId(toDate,districtId);
 
-                    getCumulativeRejectedChildImports(candidatesFromThisDistrict,rootPathDistrict, districtName, lastDate);
+                    getCumulativeRejectedChildImports(candidatesFromThisDistrict,rootPathDistrict, districtName, toDate);
                 }
                 else{
                     String blockName=StReplace(blockDao.findByblockId(blockId).getBlockName());
@@ -886,7 +884,7 @@ public class AdminServiceImpl implements AdminService {
 
                     List<ChildImportRejection> candidatesFromThisBlock =childImportRejectionDao.getRejectedChildRecordsWithBlockId(toDate,blockId);
 
-                    getCumulativeRejectedChildImports(candidatesFromThisBlock, rootPathblock, blockName, lastDate);
+                    getCumulativeRejectedChildImports(candidatesFromThisBlock, rootPathblock, blockName, toDate);
                 }
             }
 
@@ -899,8 +897,7 @@ public class AdminServiceImpl implements AdminService {
             calendar.set(Calendar.MINUTE, 0);
             calendar.set(Calendar.HOUR_OF_DAY, 0);
             calendar.add(Calendar.DAY_OF_MONTH,1);
-            Date nextDay= calendar.getTime();
-            Date lastDate=reportRequest.getFromDate();
+            toDate=calendar.getTime();
 //            List<FlwImportRejection> childImportRejections = flwImportRejectionDao.getAllRejectedFlwImportRecords(nextDay);
 
             String stateName=StReplace(stateDao.findByStateId(stateId).getStateName());
@@ -908,7 +905,7 @@ public class AdminServiceImpl implements AdminService {
             if(districtId==0){
                 List<FlwImportRejection> candidatesFromThisState = flwImportRejectionDao.getAllRejectedFlwImportRecordsWithStateId(toDate,stateId);
 
-                getCumulativeRejectedFlwImports(candidatesFromThisState,rootPathState, stateName, lastDate);
+                getCumulativeRejectedFlwImports(candidatesFromThisState,rootPathState, stateName, toDate);
             }
             else{
                 String districtName=StReplace(districtDao.findByDistrictId(districtId).getDistrictName());
@@ -924,7 +921,7 @@ public class AdminServiceImpl implements AdminService {
 
                     List<FlwImportRejection> candidatesFromThisBlock = flwImportRejectionDao.getAllRejectedFlwImportRecordsWithBlockId(toDate,blockId);
 
-                    getCumulativeRejectedFlwImports(candidatesFromThisBlock, rootPathblock, blockName, lastDate);
+                    getCumulativeRejectedFlwImports(candidatesFromThisBlock, rootPathblock, blockName, toDate);
                 }
             }
 
@@ -1620,9 +1617,9 @@ public class AdminServiceImpl implements AdminService {
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
                 cell.setCellValue(obj.toString());
-                if(rowid == 2 && successfulCandidates.isEmpty()){
+                if(rowid == 3 && successfulCandidates.isEmpty()){
                     CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
-                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A2:N2"));
+                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A3:N3"));
                 }
             }
         }
@@ -2649,6 +2646,7 @@ public class AdminServiceImpl implements AdminService {
     private String getDateMonthYear(Date toDate) {
         Calendar calendar=Calendar.getInstance();
         calendar.setTime(toDate);
+        calendar.add(Calendar.DATE, -1);
         int date=calendar.get(Calendar.DATE);
         int month=calendar.get(Calendar.MONTH)+1;
         int year=(calendar.get(Calendar.YEAR))%100;
