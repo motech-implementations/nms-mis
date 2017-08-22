@@ -17,5 +17,5 @@ public interface FrontLineWorkersDao {
 
     List<FrontLineWorkers> getInactiveFrontLineWorkersWithBlockId(Date toDate, Integer blockId);
 
-    Long getCountOfInactiveFrontLineWorkersForGievnDistrict(Date toDate, Integer districtId);
+    Long getCountOfInactiveFrontLineWorkersForGivenDistrict(Date toDate, Integer districtId);
 }

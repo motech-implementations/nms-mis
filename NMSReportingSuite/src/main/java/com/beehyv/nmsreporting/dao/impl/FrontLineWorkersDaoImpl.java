@@ -71,7 +71,7 @@ public class FrontLineWorkersDaoImpl extends AbstractDao<Integer,FrontLineWorker
     }
 
     @Override
-    public Long getCountOfInactiveFrontLineWorkersForGievnDistrict(Date toDate, Integer districtId) {
+    public Long getCountOfInactiveFrontLineWorkersForGivenDistrict(Date toDate, Integer districtId) {
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("creationDate"));
         criteria.add(Restrictions.and(
                 Restrictions.eq("status","INACTIVE").ignoreCase(),
