@@ -2,7 +2,6 @@ package com.beehyv.nmsreporting.dao;
 
 import com.beehyv.nmsreporting.model.KilkariLowUsage;
 
-import java.util.Date;
 import java.util.List;
 
 /**

@@ -4,7 +4,6 @@ import com.beehyv.nmsreporting.dao.AbstractDao;
 import com.beehyv.nmsreporting.dao.FlwImportRejectionDao;
 import com.beehyv.nmsreporting.model.FlwImportRejection;
 import org.hibernate.Criteria;
-import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;

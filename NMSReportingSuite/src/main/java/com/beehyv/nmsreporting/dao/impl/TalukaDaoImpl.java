@@ -2,8 +2,6 @@ package com.beehyv.nmsreporting.dao.impl;
 
 import com.beehyv.nmsreporting.dao.AbstractDao;
 import com.beehyv.nmsreporting.dao.TalukaDao;
-import com.beehyv.nmsreporting.model.District;
-import com.beehyv.nmsreporting.model.State;
 import com.beehyv.nmsreporting.model.Taluka;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;

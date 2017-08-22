@@ -1,6 +1,5 @@
 package com.beehyv.nmsreporting.dao;
 
-import com.beehyv.nmsreporting.model.HealthFacility;
 import com.beehyv.nmsreporting.model.HealthSubFacility;
 
 /**

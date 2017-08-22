@@ -2,10 +2,8 @@ package com.beehyv.nmsreporting.dao.impl;
 
 import com.beehyv.nmsreporting.dao.AbstractDao;
 import com.beehyv.nmsreporting.dao.StateServiceDao;
-import com.beehyv.nmsreporting.model.State;
 import com.beehyv.nmsreporting.model.StateService;
 import org.hibernate.Criteria;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
