@@ -12,20 +12,22 @@ public enum ReportType {
 //    selfDeactivated("selfDeactivated"),
 //    sixWeeks("sixWeeks");
 
-    maCourse("MA_Cumulative_Course_Completion", "Cumulative Course Completion", "M"),
-    maAnonymous("MA_Anonymous_Users", "Circle wise Anonymous Users", "M"),
-    maInactive("MA_Cumulative_Inactive_Users", "Cumulative Inactive Users", "M"),
-    lowUsage("Kilkari_Low_Usage", "Listen to < 25% this month", "K"),
-    selfDeactivated("Kilkari_Self_Deactivated", "Self Deactivations", "K"),
-    sixWeeks("Kilkari_Six_Weeks_No_Answer", "Deactivated for not answering", "K"),
-    flwRejected("MA_Flw_Import_Rejects","Flw Rejected Records", "M"),
-    childRejected("Kilkari_Child_Import_Rejects","Child Rejected Records", "K"),
-    motherRejected("Kilkari_Mother_Import_Rejects","Mother Rejected Records", "K"),
-    lowListenership("Kilkari_Low_Listenership_Deactivation", "Deactivated for Low Listenership","K");
+    maCourse("MA_Cumulative_Course_Completion", "Cumulative Course Completion", "M","MA Completion Line-Listing Report"),
+    maAnonymous("MA_Anonymous_Users", "Circle wise Anonymous Users", "M", "MA Circle Wise Anonymous Line-Listing Report"),
+    maInactive("MA_Cumulative_Inactive_Users", "Cumulative Inactive Users", "M", "MA Inactive Users Line-Listing Report"),
+    lowUsage("Kilkari_Low_Usage", "Listen to < 25% this month", "K","Kilkari Deactivations for For Low Listening Report"),
+    selfDeactivated("Kilkari_Self_Deactivated", "Self Deactivations", "K","Kilkari Self Deactivation Report"),
+    sixWeeks("Kilkari_Six_Weeks_No_Answer", "Deactivated for not answering", "K","Kilkari Deactivations for not answering Report"),
+    flwRejected("MA_Flw_Import_Rejects","Flw Rejected Records", "M", "MA Rejected Line-Listing Report"),
+    childRejected("Kilkari_Child_Import_Rejects","Child Rejected Records", "K","Kilkari Rejected Child Line Listing Report"),
+    motherRejected("Kilkari_Mother_Import_Rejects","Mother Rejected Records", "K" ,"Kilkari Rejected Mother Line Listing Report"),
+    lowListenership("Kilkari_Low_Listenership_Deactivation", "Deactivated for Low Listenership","K",
+            "Kilkari Deactivations for For Low Listening Report");
 
     private String reportType;
     private String reportName;
     private String serviceType;
+    private String reportHeader;
 
     public String getReportType() {
         return reportType;
@@ -36,11 +38,15 @@ public enum ReportType {
     public String getServiceType(){
         return serviceType;
     }
+    public String getReportHeader() {
+        return reportHeader;
+    }
 
-    ReportType(String reportType, String reportName, String serviceType) {
+    ReportType(String reportType, String reportName, String serviceType, String reportHeader) {
         this.reportType = reportType;
         this.reportName = reportName;
         this.serviceType = serviceType;
+        this.reportHeader=reportHeader;
     }
 
     public static ReportType getType(String test){
