@@ -270,7 +270,7 @@ public class EmailServiceImpl implements EmailService{
                     ) {
 
                 body=body+"<tr align='center'>"+"<td>" + district.getDistrictName() + "</td>"
-                        + "<td>" +frontLineWorkersDao.getCountOfInactiveFrontLineWorkersForGievnDistrict(toDate, district.getDistrictId())+ "</td>"+"</tr>";
+                        + "<td>" +frontLineWorkersDao.getCountOfInactiveFrontLineWorkersForGivenDistrict(toDate, district.getDistrictId())+ "</td>"+"</tr>";
             }
             body+="<br></body>";
         } else if(reportType.equals(ReportType.lowUsage.getReportType())){
