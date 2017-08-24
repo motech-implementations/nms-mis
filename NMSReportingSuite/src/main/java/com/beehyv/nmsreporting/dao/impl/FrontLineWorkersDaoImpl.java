@@ -38,7 +38,7 @@ public class FrontLineWorkersDaoImpl extends AbstractDao<Integer,FrontLineWorker
                 Restrictions.lt("lastModifiedDate",toDate),
                 Restrictions.ne("jobStatus","INACTIVE").ignoreCase(),
                 Restrictions.eq("designation","ASHA").ignoreCase(),
-                Restrictions.eq("stateId","stateId").ignoreCase()
+                Restrictions.eq("state",stateId)
         ));
         return (List<FrontLineWorkers>) criteria.list();
     }
@@ -51,7 +51,7 @@ public class FrontLineWorkersDaoImpl extends AbstractDao<Integer,FrontLineWorker
                 Restrictions.lt("lastModifiedDate",toDate),
                 Restrictions.ne("jobStatus","INACTIVE").ignoreCase(),
                 Restrictions.eq("designation","ASHA").ignoreCase(),
-                Restrictions.eq("districtId","districtId").ignoreCase()
+                Restrictions.eq("district",districtId)
         ));
         return (List<FrontLineWorkers>) criteria.list();
     }
@@ -64,7 +64,7 @@ public class FrontLineWorkersDaoImpl extends AbstractDao<Integer,FrontLineWorker
                 Restrictions.lt("lastModifiedDate",toDate),
                 Restrictions.ne("jobStatus","INACTIVE").ignoreCase(),
                 Restrictions.eq("designation","ASHA").ignoreCase(),
-                Restrictions.eq("blockId","blockId").ignoreCase()
+                Restrictions.eq("block",blockId)
         ));
         return (List<FrontLineWorkers>) criteria.list();
     }
@@ -77,7 +77,7 @@ public class FrontLineWorkersDaoImpl extends AbstractDao<Integer,FrontLineWorker
                 Restrictions.lt("lastModifiedDate",toDate),
                 Restrictions.ne("jobStatus","INACTIVE").ignoreCase(),
                 Restrictions.eq("designation","ASHA").ignoreCase(),
-                Restrictions.eq("districtId","districtId").ignoreCase()
+                Restrictions.eq("district",districtId)
         )).setProjection(Projections.rowCount());
         return (Long) criteria.uniqueResult();
     }

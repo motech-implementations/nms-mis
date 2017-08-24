@@ -25,7 +25,7 @@ public class FrontLineWorkersDaoImpl extends AbstractDao<Integer, FrontLineWorke
                 Restrictions.lt("lastModifiedDate", toDate),
                 Restrictions.ne("jobStatus", "INACTIVE").ignoreCase(),
                 Restrictions.eq("designation", "ASHA").ignoreCase(),
-                Restrictions.eq("districtId", "districtId").ignoreCase()
+                Restrictions.eq("district", districtId)
         )).setProjection(Projections.rowCount());
         return (Long) criteria.uniqueResult();
     }

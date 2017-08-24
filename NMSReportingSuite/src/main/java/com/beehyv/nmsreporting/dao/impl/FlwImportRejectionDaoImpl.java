@@ -45,7 +45,7 @@ public class FlwImportRejectionDaoImpl extends AbstractDao<Long, FlwImportReject
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.lt("modificationDate", toDate))
                 .add(Restrictions.eq("accepted", false))
-                .add(Restrictions.eq("blockId", blockId));
+                .add(Restrictions.eq("healthBlockId", blockId));
 
         return criteria.list();
     }

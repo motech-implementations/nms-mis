@@ -2016,7 +2016,7 @@ public class AdminServiceImpl implements AdminService {
                 cell.setCellValue(obj.toString());
                 if(rowid==6 && kilkariSelfDeactivatedList.isEmpty()) {
                     CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
-                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A6:O2"));
+                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A6:O6"));
                 }
             }
         }
@@ -2127,17 +2127,16 @@ public class AdminServiceImpl implements AdminService {
         Font font = workbook.createFont();//Create font
         font.setBoldweight(Font.BOLDWEIGHT_BOLD);//Make font bold
         style.setFont(font);//set it to bold
-        style.setAlignment(CellStyle.ALIGN_CENTER); //Horizontal align
         style.setVerticalAlignment(CellStyle.VERTICAL_CENTER); //vertical align
 
         Cell cell1=row.createCell(0);
-        Cell cell2=row.createCell(2);
-        Cell cell3=row.createCell(8);
-        Cell cell4=row.createCell(10);
-        spreadsheet.addMergedRegion(new CellRangeAddress(0,1,0,1));
-        spreadsheet.addMergedRegion(new CellRangeAddress(0,1,2,6));
+        Cell cell2=row.createCell(1);
+        Cell cell3=row.createCell(7);
+        Cell cell4=row.createCell(8);
+        spreadsheet.addMergedRegion(new CellRangeAddress(0,1,0,0));
+        spreadsheet.addMergedRegion(new CellRangeAddress(0,1,1,5));
+        spreadsheet.addMergedRegion(new CellRangeAddress(0,1,7,7));
         spreadsheet.addMergedRegion(new CellRangeAddress(0,1,8,9));
-        spreadsheet.addMergedRegion(new CellRangeAddress(0,1,10,10));
         XSSFRow row1=spreadsheet.createRow(++rowid);
         Cell cell5=row1.createCell(0);
         Cell cell6=row1.createCell(1);
@@ -2163,7 +2162,7 @@ public class AdminServiceImpl implements AdminService {
                     reportRequest.getReportType().equals(ReportType.motherRejected.getReportType())||
                     reportRequest.getReportType().equals(ReportType.childRejected.getReportType())){
                 cell3.setCellValue("Week:");
-                cell4.setCellValue(getDateMonthYearName(reportRequest.getToDate()));
+                cell4.setCellValue(getDateMonthYearName(reportRequest.getFromDate()));
             } else {
                 cell3.setCellValue("Month:");
                 cell4.setCellValue(getMonthYearName(reportRequest.getFromDate()));
@@ -2862,7 +2861,7 @@ public class AdminServiceImpl implements AdminService {
     private String getMonthYearName(Date toDate) {
         Calendar c =Calendar.getInstance();
         c.setTime(toDate);
-        c.add(Calendar.MONTH, -1);
+//        c.add(Calendar.MONTH, -1);
         int month=c.get(Calendar.MONTH)+1;
 //        String monthString = "";
         int year=(c.get(Calendar.YEAR))%100;
@@ -2889,7 +2888,7 @@ public class AdminServiceImpl implements AdminService {
             dateString="0"+String.valueOf(date);
         }
         else dateString=String.valueOf(date);
-        String monthString = c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH );
+        String monthString = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH );
         String yearString=String.valueOf(year);
 
         return dateString + " " + monthString+" "+yearString;
