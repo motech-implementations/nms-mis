@@ -2605,7 +2605,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void getKilkariLowListenershipDeactivationFiles(Date fromDate, Date toDate) {
         List<State> states = stateDao.getStatesByServiceType(ReportType.lowListenership.getServiceType());
-        String rootPath = reports +ReportType.sixWeeks.getReportType()+ "/";
+        String rootPath = reports +ReportType.lowListenership.getReportType()+ "/";
         List<KilkariDeactivationOther> kilkariDeactivationOthers = kilkariSixWeeksNoAnswerDao.getKilkariUsers(fromDate, toDate);
         ReportRequest reportRequest=new ReportRequest();
         reportRequest.setFromDate(toDate);
