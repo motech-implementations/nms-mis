@@ -2220,7 +2220,7 @@ public class AdminServiceImpl implements AdminService {
         aCalendar.set(Calendar.HOUR_OF_DAY, 0);
         aCalendar.add(Calendar.DAY_OF_MONTH,1);
         ReportRequest reportRequest=new ReportRequest();
-        reportRequest.setToDate(toDate);
+        reportRequest.setFromDate(toDate);
         reportRequest.setBlockId(0);
         reportRequest.setDistrictId(0);
         reportRequest.setStateId(0);
@@ -2287,7 +2287,7 @@ public class AdminServiceImpl implements AdminService {
         aCalendar.set(Calendar.HOUR_OF_DAY, 0);
         aCalendar.add(Calendar.DAY_OF_MONTH,1);
         ReportRequest reportRequest=new ReportRequest();
-        reportRequest.setToDate(toDate);
+        reportRequest.setFromDate(toDate);
         reportRequest.setBlockId(0);
         reportRequest.setDistrictId(0);
         reportRequest.setStateId(0);
@@ -2353,7 +2353,7 @@ public class AdminServiceImpl implements AdminService {
         aCalendar.set(Calendar.HOUR_OF_DAY, 0);
         aCalendar.add(Calendar.DAY_OF_MONTH,1);
         ReportRequest reportRequest=new ReportRequest();
-        reportRequest.setToDate(toDate);
+        reportRequest.setFromDate(toDate);
         reportRequest.setBlockId(0);
         reportRequest.setDistrictId(0);
         reportRequest.setStateId(0);
@@ -2413,7 +2413,7 @@ public class AdminServiceImpl implements AdminService {
         String rootPath = reports+ReportType.maCourse.getReportType()+ "/";
         List<MACourseFirstCompletion> successFullcandidates = maCourseAttemptDao.getSuccessFulCompletion(toDate);
         ReportRequest reportRequest=new ReportRequest();
-        reportRequest.setToDate(toDate);
+        reportRequest.setFromDate(toDate);
         reportRequest.setBlockId(0);
         reportRequest.setDistrictId(0);
         reportRequest.setStateId(0);
@@ -2469,7 +2469,7 @@ public class AdminServiceImpl implements AdminService {
         String rootPath = reports+ReportType.maAnonymous.getReportType()+ "/";
         List<AnonymousUsers> anonymousUsersList = anonymousUsersDao.getAnonymousUsers(startDate,toDate);
         ReportRequest reportRequest=new ReportRequest();
-        reportRequest.setToDate(toDate);
+        reportRequest.setFromDate(toDate);
         reportRequest.setBlockId(0);
         reportRequest.setDistrictId(0);
         reportRequest.setStateId(0);
@@ -2495,7 +2495,7 @@ public class AdminServiceImpl implements AdminService {
         String rootPath = reports+ReportType.maInactive.getReportType()+ "/";
         List<FrontLineWorkers> inactiveFrontLineWorkers = frontLineWorkersDao.getInactiveFrontLineWorkers(toDate);
         ReportRequest reportRequest=new ReportRequest();
-        reportRequest.setToDate(toDate);
+        reportRequest.setFromDate(toDate);
         reportRequest.setBlockId(0);
         reportRequest.setDistrictId(0);
         reportRequest.setStateId(0);
@@ -2551,7 +2551,7 @@ public class AdminServiceImpl implements AdminService {
         String rootPath = reports +ReportType.sixWeeks.getReportType()+ "/";
         List<KilkariDeactivationOther> kilkariDeactivationOthers = kilkariSixWeeksNoAnswerDao.getKilkariUsers(fromDate, toDate);
         ReportRequest reportRequest=new ReportRequest();
-        reportRequest.setToDate(toDate);
+        reportRequest.setFromDate(toDate);
         reportRequest.setBlockId(0);
         reportRequest.setDistrictId(0);
         reportRequest.setStateId(0);
@@ -2608,7 +2608,7 @@ public class AdminServiceImpl implements AdminService {
         String rootPath = reports +ReportType.sixWeeks.getReportType()+ "/";
         List<KilkariDeactivationOther> kilkariDeactivationOthers = kilkariSixWeeksNoAnswerDao.getKilkariUsers(fromDate, toDate);
         ReportRequest reportRequest=new ReportRequest();
-        reportRequest.setToDate(toDate);
+        reportRequest.setFromDate(toDate);
         reportRequest.setBlockId(0);
         reportRequest.setDistrictId(0);
         reportRequest.setStateId(0);
@@ -2665,7 +2665,7 @@ public class AdminServiceImpl implements AdminService {
         String rootPath = reports+ReportType.lowUsage.getReportType() + "/";
         List<KilkariLowUsage> kilkariLowUsageList = kilkariLowUsageDao.getKilkariLowUsageUsers(getMonthYear(toDate));
         ReportRequest reportRequest=new ReportRequest();
-        reportRequest.setToDate(toDate);
+        reportRequest.setFromDate(toDate);
         reportRequest.setBlockId(0);
         reportRequest.setDistrictId(0);
         reportRequest.setStateId(0);
@@ -2720,7 +2720,7 @@ public class AdminServiceImpl implements AdminService {
         String rootPath = reports+ReportType.selfDeactivated.getReportType() + "/";
         List<KilkariSelfDeactivated> kilkariSelfDeactivatedList = kilkariSelfDeactivatedDao.getSelfDeactivatedUsers(fromDate, toDate);
         ReportRequest reportRequest=new ReportRequest();
-        reportRequest.setToDate(toDate);
+        reportRequest.setFromDate(toDate);
         reportRequest.setBlockId(0);
         reportRequest.setDistrictId(0);
         reportRequest.setStateId(0);
