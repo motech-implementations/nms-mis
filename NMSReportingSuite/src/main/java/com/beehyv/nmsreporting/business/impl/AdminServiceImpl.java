@@ -4,10 +4,7 @@ import com.beehyv.nmsreporting.business.AdminService;
 import com.beehyv.nmsreporting.dao.*;
 import com.beehyv.nmsreporting.entity.Report;
 import com.beehyv.nmsreporting.entity.ReportRequest;
-import com.beehyv.nmsreporting.enums.AccessLevel;
-import com.beehyv.nmsreporting.enums.AccessType;
-import com.beehyv.nmsreporting.enums.ModificationType;
-import com.beehyv.nmsreporting.enums.ReportType;
+import com.beehyv.nmsreporting.enums.*;
 import com.beehyv.nmsreporting.model.*;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -16,6 +13,7 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellUtil;
 import org.apache.poi.xssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -97,6 +95,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private ModificationTrackerDao modificationTrackerDao;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     private final String documents = System.getProperty("user.home") +File.separator+ "Documents/";
     private final String reports = documents+"Reports/";
@@ -216,9 +217,10 @@ public class AdminServiceImpl implements AdminService {
                             errorCreatingUsers.put(rowNum, userNameError);
                             continue;
                         }
-                        user.setPassword(Line[4]);
+                        user.setPassword(passwordEncoder.encode(Line[4]));
                         user.setFullName(Line[0]);
                         user.setPhoneNumber(Line[4]);
+                        user.setAccountStatus(AccountStatus.ACTIVE.getAccountStatus());
                         String userEmail = Line[5];
                         if (userEmail.equals("")) {
                             Integer rowNum = lineNumber;
@@ -250,7 +252,7 @@ public class AdminServiceImpl implements AdminService {
                         user.setCreationDate((sqlStartDate));*/
                         user.setCreatedByUser(loggedInUser);
                         user.setCreationDate(new Date());
-                        List<Role> userRole = roleDao.findByRoleDescription(Line[7]);
+                        List<Role> userRole = roleDao.findByRoleDescription(Line[8]);
                         String State = Line[1];
                         String District = Line[2];
                         String Block = Line[3];
@@ -415,6 +417,9 @@ public class AdminServiceImpl implements AdminService {
                                         userBlock = userBlockList.get(0);
                                         userDistrict = districtDao.findByDistrictId(userBlock.getDistrictOfBlock());
                                         userState = stateDao.findByStateId(userDistrict.getStateOfDistrict());
+                                        user.setBlockId(userBlock.getBlockId());
+                                        user.setStateId(userState.getStateId());
+                                        user.setDistrictId(userDistrict.getDistrictId());
                                     } else if ((userBlockList.size() == 0) || userBlockList == null) {
                                         Integer rowNum = lineNumber;
                                         String authorityError = "Please enter the valid Block for this user.";
@@ -469,7 +474,8 @@ public class AdminServiceImpl implements AdminService {
                         user.setStateName(user.getStateId()==null ? "" : stateDao.findByStateId(user.getStateId()).getStateName());
                         user.setDistrictName(user.getDistrictId()==null? "" : districtDao.findByDistrictId(user.getDistrictId()).getDistrictName());
                         user.setBlockName(user.getBlockId()==null ? "" :  blockDao.findByblockId(user.getBlockId()).getBlockName());
-                        user.setRoleName(user.getRoleId()==null ? "" : roleDao.findByRoleId(user.getRoleId()).getRoleDescription());
+                        user.setRoleId(userRoleId);
+                        user.setRoleName(roleDao.findByRoleId(userRoleId).getRoleDescription());
                         userDao.saveUser(user);
                         ModificationTracker modification = new ModificationTracker();
                         modification.setModificationDate(new Date(System.currentTimeMillis()));
