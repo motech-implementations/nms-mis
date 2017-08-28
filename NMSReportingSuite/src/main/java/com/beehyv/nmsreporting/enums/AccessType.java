@@ -12,7 +12,9 @@ public enum AccessType {
 
     public static boolean isType(String test){
         for (AccessType type: AccessType.values()) {
-            return (type.name().equalsIgnoreCase(test));
+            if(type.name().equalsIgnoreCase(test)){
+                return true;
+            }
         }
         return false;
     }
