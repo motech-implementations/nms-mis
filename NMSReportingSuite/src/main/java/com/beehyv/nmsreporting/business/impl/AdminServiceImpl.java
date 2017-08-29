@@ -280,7 +280,7 @@ public class AdminServiceImpl implements AdminService {
                         String UserRole = AccessType.getType(Line[8]);
                         AccessLevel accessLevel = AccessLevel.getLevel(Line[7]);
                         if (UserRole.equalsIgnoreCase("ADMIN")) {
-                            if ((accessLevel == AccessLevel.NATIONAL) || (accessLevel == AccessLevel.STATE)) {
+                            if ((accessLevel == AccessLevel.NATIONAL) ) {
                                 Integer rowNum = lineNumber;
                                 String authorityError = "You don't have authority to create this user.";
                                 errorCreatingUsers.put(rowNum, authorityError);
@@ -290,7 +290,32 @@ public class AdminServiceImpl implements AdminService {
                                 String authorityError = "You don't have authority to create this user.";
                                 errorCreatingUsers.put(rowNum, authorityError);
                                 continue;
-                            } else {
+                            }  else if (accessLevel == AccessLevel.STATE && loggedUserAccessLevel != AccessLevel.NATIONAL) {
+                                Integer rowNum = lineNumber;
+                                String authorityError = "You don't have authority to create this user.";
+                                errorCreatingUsers.put(rowNum, authorityError);
+                                continue;
+                            }else if (accessLevel == AccessLevel.STATE && loggedUserAccessLevel == AccessLevel.NATIONAL) {
+                                List<State> userStateList = stateDao.findByName(State);
+                                if(userStateList==null || userStateList.size()==0){
+                                    Integer rowNum = lineNumber;
+                                    String authorityError = "Please enter the valid state for this admin";
+                                    errorCreatingUsers.put(rowNum, authorityError);
+                                    continue;
+                                }
+                                State userState=userStateList.get(0);
+                                boolean isAdminAvailable = userDao.isAdminCreated(userState);
+                                if (!(isAdminAvailable)) {
+                                    user.setAccessLevel(AccessLevel.STATE.getAccessLevel());
+                                    user.setStateId(userState.getStateId());
+                                } else {
+                                    Integer rowNum = lineNumber;
+                                    String authorityError = "Admin is available for this state.";
+                                    errorCreatingUsers.put(rowNum, authorityError);
+                                    continue;
+                                }
+                            }
+                            else {
                                 List<State> userStateList = stateDao.findByName(State);
                                 List<District> userDistrictList = districtDao.findByName(District);
                                 District userDistrict = null;
@@ -317,7 +342,7 @@ public class AdminServiceImpl implements AdminService {
                                     errorCreatingUsers.put(rowNum, authorityError);
                                     continue;
                                 } else {
-                                    if (!loggedInUser.getStateId().equals(userState.getStateId())) {
+                                    if ((loggedInUser.getStateId()!=null && !loggedInUser.getStateId().equals(userState.getStateId()))) {
                                         Integer rowNum = lineNumber;
                                         String authorityError = "You don't have authority to create this user.";
                                         errorCreatingUsers.put(rowNum, authorityError);
