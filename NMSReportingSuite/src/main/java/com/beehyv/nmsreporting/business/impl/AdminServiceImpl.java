@@ -132,54 +132,7 @@ public class AdminServiceImpl implements AdminService {
                         lineNumber++;
                         // use comma as separator
                         String[] Line = line.split(cvsSplitBy);
-
-                       /* List<Role> userRole = roleDao.findByRoleDescription(Line[7]);
-                        boolean isLevel = AccessLevel.isLevel(Line[7]);
-                        if (!(isLevel)) {
-                            Integer rowNum = lineNumber;
-                            String userNameError = "Please specify the access level for user";
-                            errorCreatingUsers.put(rowNum, userNameError);
-                            continue;
-                        }
-                        boolean isType = AccessType.isType(Line[8]);
-                        if (!(isType)) {
-                            Integer rowNum = lineNumber;
-                            String userNameError = "Please specify the role for user";
-                            errorCreatingUsers.put(rowNum, userNameError);
-                            continue;
-                        }
-                        if (userRole == null || userRole.size() == 0) {
-                            Integer rowNum = lineNumber;
-                            String userNameError = "Please specify the role of user";
-                            errorCreatingUsers.put(rowNum, userNameError);
-                            continue;
-                        }
-                        int userRoleId = userRole.get(0).getRoleId();
-                        String UserRole = AccessType.getType(Line[8]);
-                        AccessLevel accessLevel = AccessLevel.getLevel(Line[7]);
-
-                        if(stateDao.findByName(Line[1]).isEmpty()) {
-                            Integer rowNum = lineNumber;
-                            String userNameError = "Please specify valid state name";
-                            errorCreatingUsers.put(rowNum, userNameError);
-                            continue;
-                        }
-                        if(districtDao.findByName(Line[2]).isEmpty()){
-                            Integer rowNum = lineNumber;
-                            String userNameError = "Please specify the role of user";
-                            errorCreatingUsers.put(rowNum, userNameError);
-                            continue;
-                        }*/
                         User user = new User();
-                       /* user.setFullName(Line[0]);
-                        user.setStateId(stateDao.findByName(Line[1]).get(0).getStateId());
-                        user.setDistrictId(districtDao.findByName(Line[2]).get(0).getDistrictId());
-                        user.setBlockId(blockDao.findByName(Line[3]).get(0).getBlockId());
-                        user.setPhoneNumber(Line[4]);
-                        user.setEmailId(Line[5]);
-                        user.setUsername(Line[6]);
-                        user.setAccessLevel(accessLevel.getAccessLevel());
-                        user.setRoleId(userRoleId);*/
                         Role role;
                         State state;
                         String userName = Line[6];
@@ -241,15 +194,6 @@ public class AdminServiceImpl implements AdminService {
                             errorCreatingUsers.put(rowNum, userNameError);
                             continue;
                         }
-/*                        SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy");
-                        Date date = null;
-                        try {
-                            date = sdf1.parse(Line[7]);
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                        java.sql.Date sqlStartDate = new java.sql.Date(date.getTime());
-                        user.setCreationDate((sqlStartDate));*/
                         user.setCreatedByUser(loggedInUser);
                         user.setCreationDate(new Date());
                         List<Role> userRole = roleDao.findByRoleDescription(Line[8]);
@@ -509,6 +453,10 @@ public class AdminServiceImpl implements AdminService {
                         modification.setModifiedByUserId(loggedInUser.getUserId());
                         modificationTrackerDao.saveModification(modification);
 
+                    }
+                    if(lineNumber == 1){
+                        errorCreatingUsers.put(0,"fail");
+                        errorCreatingUsers.put(1,"No records present in the uploaded file");
                     }
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();

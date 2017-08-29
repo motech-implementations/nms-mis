@@ -418,6 +418,9 @@ div.bulkUpload p{
 div.bulkUpload p.grey{
 	color: #4d4d4d;
 }
+div.bulkUpload p.green{
+	color: green;
+}
 div.bulkUpload p.red{
 	color: #ff0000;
 }
