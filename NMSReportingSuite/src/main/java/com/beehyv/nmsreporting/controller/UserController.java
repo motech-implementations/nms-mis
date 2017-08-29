@@ -494,6 +494,12 @@ public class UserController {
                 ReportType.sixWeeks.getServiceType())
         );
         kList.add(new Report(
+                ReportType.lowListenership.getReportName(),
+                ReportType.lowListenership.getReportType(),
+                "images/drop-down-3.png",
+                ReportType.lowListenership.getServiceType())
+        );
+        kList.add(new Report(
                 ReportType.lowUsage.getReportName(),
                 ReportType.lowUsage.getReportType(),
                 "images/drop-down-3.png",

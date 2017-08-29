@@ -40,5 +40,7 @@ public interface UserDao {
 
     void saveUser(User user);
 
-    boolean isAdminCreated(District districtId);
+    boolean isAdminCreated(District district);
+
+    boolean isAdminCreated(State state);
 }

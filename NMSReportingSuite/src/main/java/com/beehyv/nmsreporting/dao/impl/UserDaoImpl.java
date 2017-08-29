@@ -141,19 +141,35 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
     }
 
     @Override
-    public boolean isAdminCreated(District districtId) {
+    public boolean isAdminCreated(District district) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.and(
-                Restrictions.eq("district", districtId),
+                Restrictions.eq("districtId", district.getDistrictId()),
                 Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus()),
-                Restrictions.eq("access_level", AccessLevel.DISTRICT.getAccessLevel()),
-                Restrictions.eq("access_type", AccessType.ADMIN.getAccessType())
+                Restrictions.eq("accessLevel", AccessLevel.DISTRICT.getAccessLevel()),
+                Restrictions.eq("roleName", AccessType.ADMIN.getAccessType())
         ));
         List<User> Admins=(List<User>) criteria.list();
         if(Admins==null||Admins.size()==0){
-            return true;
+            return false;
         }
-        else return false;
+        else return true;
+    }
+
+    @Override
+    public boolean isAdminCreated(State state) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.and(
+                Restrictions.eq("stateId", state.getStateId()),
+                Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus()),
+                Restrictions.eq("accessLevel", AccessLevel.DISTRICT.getAccessLevel()),
+                Restrictions.eq("roleName", AccessType.ADMIN.getAccessType())
+        ));
+        List<User> Admins=(List<User>) criteria.list();
+        if(Admins==null||Admins.size()==0){
+            return false;
+        }
+        else return true;
     }
 
 }

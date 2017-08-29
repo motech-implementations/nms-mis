@@ -50,7 +50,7 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
         Criteria criteria=createEntityCriteria();
         criteria.add(Restrictions.lt("modificationDate", toDate))
                 .add(Restrictions.eq("accepted", false))
-                .add(Restrictions.eq("blockId", blockId))
+                .add(Restrictions.eq("healthBlockId", blockId))
                 .add(Restrictions.ne("rejectionReason","INVALID_LMP_DATE"));
 
         return criteria.list();

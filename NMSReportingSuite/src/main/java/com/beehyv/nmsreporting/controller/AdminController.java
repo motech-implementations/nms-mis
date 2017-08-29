@@ -81,12 +81,12 @@ public class AdminController {
             } catch (Exception e) {
                 System.out.println(e);
                 responseMap.put(0, "fail");
-                responseMap.put(1, "You failed to upload " + name);
+                responseMap.put(1, "You failed to upload " + file.getOriginalFilename());
                 return responseMap;
             }
         } else {
             responseMap.put(0, "fail");
-            responseMap.put(1, "You failed to upload " + name + " because the file was empty.");
+            responseMap.put(1, "You failed to upload " + file.getOriginalFilename() + " because the file was empty.");
             return responseMap;
         }
 

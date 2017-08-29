@@ -4,10 +4,7 @@ import com.beehyv.nmsreporting.business.AdminService;
 import com.beehyv.nmsreporting.dao.*;
 import com.beehyv.nmsreporting.entity.Report;
 import com.beehyv.nmsreporting.entity.ReportRequest;
-import com.beehyv.nmsreporting.enums.AccessLevel;
-import com.beehyv.nmsreporting.enums.AccessType;
-import com.beehyv.nmsreporting.enums.ModificationType;
-import com.beehyv.nmsreporting.enums.ReportType;
+import com.beehyv.nmsreporting.enums.*;
 import com.beehyv.nmsreporting.model.*;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -16,6 +13,7 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellUtil;
 import org.apache.poi.xssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -97,6 +95,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private ModificationTrackerDao modificationTrackerDao;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     private final String documents = System.getProperty("user.home") +File.separator+ "Documents/";
     private final String reports = documents+"Reports/";
@@ -216,9 +217,10 @@ public class AdminServiceImpl implements AdminService {
                             errorCreatingUsers.put(rowNum, userNameError);
                             continue;
                         }
-                        user.setPassword(Line[4]);
+                        user.setPassword(passwordEncoder.encode(Line[4]));
                         user.setFullName(Line[0]);
                         user.setPhoneNumber(Line[4]);
+                        user.setAccountStatus(AccountStatus.ACTIVE.getAccountStatus());
                         String userEmail = Line[5];
                         if (userEmail.equals("")) {
                             Integer rowNum = lineNumber;
@@ -250,7 +252,7 @@ public class AdminServiceImpl implements AdminService {
                         user.setCreationDate((sqlStartDate));*/
                         user.setCreatedByUser(loggedInUser);
                         user.setCreationDate(new Date());
-                        List<Role> userRole = roleDao.findByRoleDescription(Line[7]);
+                        List<Role> userRole = roleDao.findByRoleDescription(Line[8]);
                         String State = Line[1];
                         String District = Line[2];
                         String Block = Line[3];
@@ -278,7 +280,7 @@ public class AdminServiceImpl implements AdminService {
                         String UserRole = AccessType.getType(Line[8]);
                         AccessLevel accessLevel = AccessLevel.getLevel(Line[7]);
                         if (UserRole.equalsIgnoreCase("ADMIN")) {
-                            if ((accessLevel == AccessLevel.NATIONAL) || (accessLevel == AccessLevel.STATE)) {
+                            if ((accessLevel == AccessLevel.NATIONAL) ) {
                                 Integer rowNum = lineNumber;
                                 String authorityError = "You don't have authority to create this user.";
                                 errorCreatingUsers.put(rowNum, authorityError);
@@ -288,7 +290,32 @@ public class AdminServiceImpl implements AdminService {
                                 String authorityError = "You don't have authority to create this user.";
                                 errorCreatingUsers.put(rowNum, authorityError);
                                 continue;
-                            } else {
+                            }  else if (accessLevel == AccessLevel.STATE && loggedUserAccessLevel != AccessLevel.NATIONAL) {
+                                Integer rowNum = lineNumber;
+                                String authorityError = "You don't have authority to create this user.";
+                                errorCreatingUsers.put(rowNum, authorityError);
+                                continue;
+                            }else if (accessLevel == AccessLevel.STATE && loggedUserAccessLevel == AccessLevel.NATIONAL) {
+                                List<State> userStateList = stateDao.findByName(State);
+                                if(userStateList==null || userStateList.size()==0){
+                                    Integer rowNum = lineNumber;
+                                    String authorityError = "Please enter the valid state for this admin";
+                                    errorCreatingUsers.put(rowNum, authorityError);
+                                    continue;
+                                }
+                                State userState=userStateList.get(0);
+                                boolean isAdminAvailable = userDao.isAdminCreated(userState);
+                                if (!(isAdminAvailable)) {
+                                    user.setAccessLevel(AccessLevel.STATE.getAccessLevel());
+                                    user.setStateId(userState.getStateId());
+                                } else {
+                                    Integer rowNum = lineNumber;
+                                    String authorityError = "Admin is available for this state.";
+                                    errorCreatingUsers.put(rowNum, authorityError);
+                                    continue;
+                                }
+                            }
+                            else {
                                 List<State> userStateList = stateDao.findByName(State);
                                 List<District> userDistrictList = districtDao.findByName(District);
                                 District userDistrict = null;
@@ -315,7 +342,7 @@ public class AdminServiceImpl implements AdminService {
                                     errorCreatingUsers.put(rowNum, authorityError);
                                     continue;
                                 } else {
-                                    if (!loggedInUser.getStateId().equals(userState.getStateId())) {
+                                    if ((loggedInUser.getStateId()!=null && !loggedInUser.getStateId().equals(userState.getStateId()))) {
                                         Integer rowNum = lineNumber;
                                         String authorityError = "You don't have authority to create this user.";
                                         errorCreatingUsers.put(rowNum, authorityError);
@@ -415,6 +442,9 @@ public class AdminServiceImpl implements AdminService {
                                         userBlock = userBlockList.get(0);
                                         userDistrict = districtDao.findByDistrictId(userBlock.getDistrictOfBlock());
                                         userState = stateDao.findByStateId(userDistrict.getStateOfDistrict());
+                                        user.setBlockId(userBlock.getBlockId());
+                                        user.setStateId(userState.getStateId());
+                                        user.setDistrictId(userDistrict.getDistrictId());
                                     } else if ((userBlockList.size() == 0) || userBlockList == null) {
                                         Integer rowNum = lineNumber;
                                         String authorityError = "Please enter the valid Block for this user.";
@@ -469,7 +499,8 @@ public class AdminServiceImpl implements AdminService {
                         user.setStateName(user.getStateId()==null ? "" : stateDao.findByStateId(user.getStateId()).getStateName());
                         user.setDistrictName(user.getDistrictId()==null? "" : districtDao.findByDistrictId(user.getDistrictId()).getDistrictName());
                         user.setBlockName(user.getBlockId()==null ? "" :  blockDao.findByblockId(user.getBlockId()).getBlockName());
-                        user.setRoleName(user.getRoleId()==null ? "" : roleDao.findByRoleId(user.getRoleId()).getRoleDescription());
+                        user.setRoleId(userRoleId);
+                        user.setRoleName(roleDao.findByRoleId(userRoleId).getRoleDescription());
                         userDao.saveUser(user);
                         ModificationTracker modification = new ModificationTracker();
                         modification.setModificationDate(new Date(System.currentTimeMillis()));
@@ -2016,7 +2047,7 @@ public class AdminServiceImpl implements AdminService {
                 cell.setCellValue(obj.toString());
                 if(rowid==6 && kilkariSelfDeactivatedList.isEmpty()) {
                     CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
-                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A6:O2"));
+                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A6:O6"));
                 }
             }
         }
@@ -2127,17 +2158,16 @@ public class AdminServiceImpl implements AdminService {
         Font font = workbook.createFont();//Create font
         font.setBoldweight(Font.BOLDWEIGHT_BOLD);//Make font bold
         style.setFont(font);//set it to bold
-        style.setAlignment(CellStyle.ALIGN_CENTER); //Horizontal align
         style.setVerticalAlignment(CellStyle.VERTICAL_CENTER); //vertical align
 
         Cell cell1=row.createCell(0);
-        Cell cell2=row.createCell(2);
-        Cell cell3=row.createCell(8);
-        Cell cell4=row.createCell(10);
-        spreadsheet.addMergedRegion(new CellRangeAddress(0,1,0,1));
-        spreadsheet.addMergedRegion(new CellRangeAddress(0,1,2,6));
+        Cell cell2=row.createCell(1);
+        Cell cell3=row.createCell(7);
+        Cell cell4=row.createCell(8);
+        spreadsheet.addMergedRegion(new CellRangeAddress(0,1,0,0));
+        spreadsheet.addMergedRegion(new CellRangeAddress(0,1,1,5));
+        spreadsheet.addMergedRegion(new CellRangeAddress(0,1,7,7));
         spreadsheet.addMergedRegion(new CellRangeAddress(0,1,8,9));
-        spreadsheet.addMergedRegion(new CellRangeAddress(0,1,10,10));
         XSSFRow row1=spreadsheet.createRow(++rowid);
         Cell cell5=row1.createCell(0);
         Cell cell6=row1.createCell(1);
@@ -2163,7 +2193,7 @@ public class AdminServiceImpl implements AdminService {
                     reportRequest.getReportType().equals(ReportType.motherRejected.getReportType())||
                     reportRequest.getReportType().equals(ReportType.childRejected.getReportType())){
                 cell3.setCellValue("Week:");
-                cell4.setCellValue(getDateMonthYearName(reportRequest.getToDate()));
+                cell4.setCellValue(getDateMonthYearName(reportRequest.getFromDate()));
             } else {
                 cell3.setCellValue("Month:");
                 cell4.setCellValue(getMonthYearName(reportRequest.getFromDate()));
@@ -2221,7 +2251,7 @@ public class AdminServiceImpl implements AdminService {
         aCalendar.set(Calendar.HOUR_OF_DAY, 0);
         aCalendar.add(Calendar.DAY_OF_MONTH,1);
         ReportRequest reportRequest=new ReportRequest();
-        reportRequest.setToDate(toDate);
+        reportRequest.setFromDate(toDate);
         reportRequest.setBlockId(0);
         reportRequest.setDistrictId(0);
         reportRequest.setStateId(0);
@@ -2288,7 +2318,7 @@ public class AdminServiceImpl implements AdminService {
         aCalendar.set(Calendar.HOUR_OF_DAY, 0);
         aCalendar.add(Calendar.DAY_OF_MONTH,1);
         ReportRequest reportRequest=new ReportRequest();
-        reportRequest.setToDate(toDate);
+        reportRequest.setFromDate(toDate);
         reportRequest.setBlockId(0);
         reportRequest.setDistrictId(0);
         reportRequest.setStateId(0);
@@ -2354,7 +2384,7 @@ public class AdminServiceImpl implements AdminService {
         aCalendar.set(Calendar.HOUR_OF_DAY, 0);
         aCalendar.add(Calendar.DAY_OF_MONTH,1);
         ReportRequest reportRequest=new ReportRequest();
-        reportRequest.setToDate(toDate);
+        reportRequest.setFromDate(toDate);
         reportRequest.setBlockId(0);
         reportRequest.setDistrictId(0);
         reportRequest.setStateId(0);
@@ -2414,7 +2444,7 @@ public class AdminServiceImpl implements AdminService {
         String rootPath = reports+ReportType.maCourse.getReportType()+ "/";
         List<MACourseFirstCompletion> successFullcandidates = maCourseAttemptDao.getSuccessFulCompletion(toDate);
         ReportRequest reportRequest=new ReportRequest();
-        reportRequest.setToDate(toDate);
+        reportRequest.setFromDate(toDate);
         reportRequest.setBlockId(0);
         reportRequest.setDistrictId(0);
         reportRequest.setStateId(0);
@@ -2470,7 +2500,7 @@ public class AdminServiceImpl implements AdminService {
         String rootPath = reports+ReportType.maAnonymous.getReportType()+ "/";
         List<AnonymousUsers> anonymousUsersList = anonymousUsersDao.getAnonymousUsers(startDate,toDate);
         ReportRequest reportRequest=new ReportRequest();
-        reportRequest.setToDate(toDate);
+        reportRequest.setFromDate(toDate);
         reportRequest.setBlockId(0);
         reportRequest.setDistrictId(0);
         reportRequest.setStateId(0);
@@ -2496,7 +2526,7 @@ public class AdminServiceImpl implements AdminService {
         String rootPath = reports+ReportType.maInactive.getReportType()+ "/";
         List<FrontLineWorkers> inactiveFrontLineWorkers = frontLineWorkersDao.getInactiveFrontLineWorkers(toDate);
         ReportRequest reportRequest=new ReportRequest();
-        reportRequest.setToDate(toDate);
+        reportRequest.setFromDate(toDate);
         reportRequest.setBlockId(0);
         reportRequest.setDistrictId(0);
         reportRequest.setStateId(0);
@@ -2552,7 +2582,7 @@ public class AdminServiceImpl implements AdminService {
         String rootPath = reports +ReportType.sixWeeks.getReportType()+ "/";
         List<KilkariDeactivationOther> kilkariDeactivationOthers = kilkariSixWeeksNoAnswerDao.getKilkariUsers(fromDate, toDate);
         ReportRequest reportRequest=new ReportRequest();
-        reportRequest.setToDate(toDate);
+        reportRequest.setFromDate(toDate);
         reportRequest.setBlockId(0);
         reportRequest.setDistrictId(0);
         reportRequest.setStateId(0);
@@ -2606,10 +2636,10 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void getKilkariLowListenershipDeactivationFiles(Date fromDate, Date toDate) {
         List<State> states = stateDao.getStatesByServiceType(ReportType.lowListenership.getServiceType());
-        String rootPath = reports +ReportType.sixWeeks.getReportType()+ "/";
+        String rootPath = reports +ReportType.lowListenership.getReportType()+ "/";
         List<KilkariDeactivationOther> kilkariDeactivationOthers = kilkariSixWeeksNoAnswerDao.getKilkariUsers(fromDate, toDate);
         ReportRequest reportRequest=new ReportRequest();
-        reportRequest.setToDate(toDate);
+        reportRequest.setFromDate(toDate);
         reportRequest.setBlockId(0);
         reportRequest.setDistrictId(0);
         reportRequest.setStateId(0);
@@ -2666,7 +2696,7 @@ public class AdminServiceImpl implements AdminService {
         String rootPath = reports+ReportType.lowUsage.getReportType() + "/";
         List<KilkariLowUsage> kilkariLowUsageList = kilkariLowUsageDao.getKilkariLowUsageUsers(getMonthYear(toDate));
         ReportRequest reportRequest=new ReportRequest();
-        reportRequest.setToDate(toDate);
+        reportRequest.setFromDate(toDate);
         reportRequest.setBlockId(0);
         reportRequest.setDistrictId(0);
         reportRequest.setStateId(0);
@@ -2721,7 +2751,7 @@ public class AdminServiceImpl implements AdminService {
         String rootPath = reports+ReportType.selfDeactivated.getReportType() + "/";
         List<KilkariSelfDeactivated> kilkariSelfDeactivatedList = kilkariSelfDeactivatedDao.getSelfDeactivatedUsers(fromDate, toDate);
         ReportRequest reportRequest=new ReportRequest();
-        reportRequest.setToDate(toDate);
+        reportRequest.setFromDate(toDate);
         reportRequest.setBlockId(0);
         reportRequest.setDistrictId(0);
         reportRequest.setStateId(0);
@@ -2862,7 +2892,7 @@ public class AdminServiceImpl implements AdminService {
     private String getMonthYearName(Date toDate) {
         Calendar c =Calendar.getInstance();
         c.setTime(toDate);
-        c.add(Calendar.MONTH, -1);
+//        c.add(Calendar.MONTH, -1);
         int month=c.get(Calendar.MONTH)+1;
 //        String monthString = "";
         int year=(c.get(Calendar.YEAR))%100;
@@ -2889,7 +2919,7 @@ public class AdminServiceImpl implements AdminService {
             dateString="0"+String.valueOf(date);
         }
         else dateString=String.valueOf(date);
-        String monthString = c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH );
+        String monthString = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH );
         String yearString=String.valueOf(year);
 
         return dateString + " " + monthString+" "+yearString;

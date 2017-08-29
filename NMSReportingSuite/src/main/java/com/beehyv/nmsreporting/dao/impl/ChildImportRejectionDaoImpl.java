@@ -52,7 +52,7 @@ public class ChildImportRejectionDaoImpl extends AbstractDao<Long, ChildImportRe
         Criteria criteria=createEntityCriteria();
         criteria.add(Restrictions.lt("modificationDate",toDate))
                 .add(Restrictions.ge("accepted",false))
-                .add(Restrictions.eq("blockId",blockId))
+                .add(Restrictions.eq("healthBlockId",blockId))
                 .add(Restrictions.ne("rejectionReason","INVALID_DOB"));
         return criteria.list();
     }
