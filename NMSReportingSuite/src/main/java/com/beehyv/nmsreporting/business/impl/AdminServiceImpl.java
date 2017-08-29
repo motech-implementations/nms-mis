@@ -635,7 +635,7 @@ public class AdminServiceImpl implements AdminService {
         int blockId=reportRequest.getBlockId();
         int circleId=reportRequest.getCircleId();
         if(reportRequest.getReportType().equals(ReportType.maCourse.getReportType())){
-
+            reportRequest.setFromDate(toDate);
             if(stateId==0){
                 List<MACourseFirstCompletion> successFullcandidates = maCourseAttemptDao.getSuccessFulCompletion(toDate);
                 getCumulativeCourseCompletion(successFullcandidates, rootPath,AccessLevel.NATIONAL.getAccessLevel(), toDate, reportRequest);
@@ -668,7 +668,7 @@ public class AdminServiceImpl implements AdminService {
             }
         }
         else if(reportRequest.getReportType().equals(ReportType.maInactive.getReportType())){
-
+            reportRequest.setFromDate(toDate);
             if(stateId==0){
                 List<FrontLineWorkers> inactiveFrontLineWorkers = frontLineWorkersDao.getInactiveFrontLineWorkers(toDate);
                 getCumulativeInactiveUsers(inactiveFrontLineWorkers, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate, reportRequest);
@@ -701,7 +701,7 @@ public class AdminServiceImpl implements AdminService {
             }
         }
         else if(reportRequest.getReportType().equals(ReportType.maAnonymous.getReportType())){
-
+            reportRequest.setFromDate(toDate);
 
             if(circleId==0){
                 List<AnonymousUsers> anonymousUsersList = anonymousUsersDao.getAnonymousUsers(fromDate,toDate);
@@ -749,7 +749,7 @@ public class AdminServiceImpl implements AdminService {
             }
         }
         else if(reportRequest.getReportType().equals(ReportType.sixWeeks.getReportType())){
-
+            reportRequest.setFromDate(toDate);
             if(stateId==0){
                 List<KilkariDeactivationOther> kilkariDeactivationOthers = kilkariSixWeeksNoAnswerDao.getKilkariUsers(fromDate, toDate);
                 getKilkariSixWeekNoAnswer(kilkariDeactivationOthers, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate, reportRequest);
@@ -783,7 +783,7 @@ public class AdminServiceImpl implements AdminService {
         }
 
         else if(reportRequest.getReportType().equals(ReportType.lowListenership.getReportType())){
-
+            reportRequest.setFromDate(toDate);
             if(stateId==0){
                 List<KilkariDeactivationOther> kilkariDeactivationOthers = kilkariSixWeeksNoAnswerDao.getLowListenershipUsers(fromDate, toDate);
                 getKilkariLowListenershipDeactivation(kilkariDeactivationOthers, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate, reportRequest);
@@ -817,7 +817,7 @@ public class AdminServiceImpl implements AdminService {
         }
 
         else if(reportRequest.getReportType().equals(ReportType.selfDeactivated.getReportType())){
-
+            reportRequest.setFromDate(toDate);
             if(stateId==0){
                 List<KilkariSelfDeactivated> kilkariSelfDeactivatedList = kilkariSelfDeactivatedDao.getSelfDeactivatedUsers(fromDate, toDate);
                 getKilkariSelfDeactivation(kilkariSelfDeactivatedList, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate, reportRequest);
@@ -859,7 +859,7 @@ public class AdminServiceImpl implements AdminService {
             calendar.add(Calendar.DAY_OF_MONTH,1);
              toDate= calendar.getTime();
 //            List<MotherImportRejection> motherImportRejections = motherImportRejectionDao.getAllRejectedMotherImportRecords(nextDay);
-
+            reportRequest.setFromDate(toDate);
             String stateName=StReplace(stateDao.findByStateId(stateId).getStateName());
             String rootPathState = rootPath+ stateName+ "/";
             if(districtId==0){
@@ -895,7 +895,7 @@ public class AdminServiceImpl implements AdminService {
             calendar.add(Calendar.DAY_OF_MONTH,1);
             toDate=calendar.getTime();
 //            List<ChildImportRejection> childImportRejections = childImportRejectionDao.getRejectedChildRecords(nextDay);
-
+            reportRequest.setFromDate(toDate);
             String stateName=StReplace(stateDao.findByStateId(stateId).getStateName());
             String rootPathState = rootPath+ stateName+ "/";
             if(districtId==0){
@@ -932,7 +932,7 @@ public class AdminServiceImpl implements AdminService {
             calendar.add(Calendar.DAY_OF_MONTH,1);
             toDate=calendar.getTime();
 //            List<FlwImportRejection> childImportRejections = flwImportRejectionDao.getAllRejectedFlwImportRecords(nextDay);
-
+            reportRequest.setFromDate(toDate);
             String stateName=StReplace(stateDao.findByStateId(stateId).getStateName());
             String rootPathState = rootPath+ stateName+ "/";
             if(districtId==0){
@@ -2250,13 +2250,13 @@ public class AdminServiceImpl implements AdminService {
         aCalendar.set(Calendar.MINUTE, 0);
         aCalendar.set(Calendar.HOUR_OF_DAY, 0);
         aCalendar.add(Calendar.DAY_OF_MONTH,1);
+        toDate=aCalendar.getTime();
         ReportRequest reportRequest=new ReportRequest();
         reportRequest.setFromDate(toDate);
         reportRequest.setBlockId(0);
         reportRequest.setDistrictId(0);
         reportRequest.setStateId(0);
         reportRequest.setReportType(ReportType.childRejected.getReportType());
-        toDate=aCalendar.getTime();
         List<ChildImportRejection> rejectedChildImports = childImportRejectionDao.getRejectedChildRecords(toDate);
 
 //        getCumulativeRejectedChildImports(rejectedChildImports, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
@@ -2271,6 +2271,8 @@ public class AdminServiceImpl implements AdminService {
                 }
             }
             reportRequest.setStateId(stateId);
+            reportRequest.setBlockId(0);
+            reportRequest.setDistrictId(0);
             getCumulativeRejectedChildImports(candidatesFromThisState, rootPathState, stateName, toDate, reportRequest);
             List<District> districts = districtDao.getDistrictsOfState(stateId);
 
@@ -2285,6 +2287,7 @@ public class AdminServiceImpl implements AdminService {
                     }
                 }
                 reportRequest.setDistrictId(districtId);
+                reportRequest.setBlockId(0);
                 getCumulativeRejectedChildImports(candidatesFromThisDistrict, rootPathDistrict, districtName, toDate, reportRequest);
                 List<Block> Blocks = blockDao.getBlocksOfDistrict(districtId);
                 for (Block block : Blocks) {
@@ -2317,13 +2320,13 @@ public class AdminServiceImpl implements AdminService {
         aCalendar.set(Calendar.MINUTE, 0);
         aCalendar.set(Calendar.HOUR_OF_DAY, 0);
         aCalendar.add(Calendar.DAY_OF_MONTH,1);
+        toDate=aCalendar.getTime();
         ReportRequest reportRequest=new ReportRequest();
         reportRequest.setFromDate(toDate);
         reportRequest.setBlockId(0);
         reportRequest.setDistrictId(0);
         reportRequest.setStateId(0);
         reportRequest.setReportType(ReportType.motherRejected.getReportType());
-        toDate=aCalendar.getTime();
         List<MotherImportRejection> rejectedMotherImports = motherImportRejectionDao.getAllRejectedMotherImportRecords(toDate);
 //        getCumulativeRejectedMotherImports(rejectedMotherImports, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
         for (State state : states) {
@@ -2337,6 +2340,8 @@ public class AdminServiceImpl implements AdminService {
                 }
             }
             reportRequest.setStateId(stateId);
+            reportRequest.setBlockId(0);
+            reportRequest.setDistrictId(0);
             getCumulativeRejectedMotherImports(candidatesFromThisState, rootPathState, stateName, toDate, reportRequest);
             List<District> districts = districtDao.getDistrictsOfState(stateId);
 
@@ -2351,6 +2356,7 @@ public class AdminServiceImpl implements AdminService {
                     }
                 }
                 reportRequest.setDistrictId(districtId);
+                reportRequest.setBlockId(0);
                 getCumulativeRejectedMotherImports(candidatesFromThisDistrict, rootPathDistrict, districtName, toDate, reportRequest);
                 List<Block> Blocks = blockDao.getBlocksOfDistrict(districtId);
                 for (Block block : Blocks) {
@@ -2383,12 +2389,14 @@ public class AdminServiceImpl implements AdminService {
         aCalendar.set(Calendar.MINUTE, 0);
         aCalendar.set(Calendar.HOUR_OF_DAY, 0);
         aCalendar.add(Calendar.DAY_OF_MONTH,1);
+        toDate=aCalendar.getTime();
         ReportRequest reportRequest=new ReportRequest();
         reportRequest.setFromDate(toDate);
         reportRequest.setBlockId(0);
         reportRequest.setDistrictId(0);
         reportRequest.setStateId(0);
-        toDate=aCalendar.getTime();
+        reportRequest.setReportType(ReportType.flwRejected.getReportType());
+
         List<FlwImportRejection> rejectedFlwImports = flwImportRejectionDao.getAllRejectedFlwImportRecords(toDate);
         getCumulativeRejectedFlwImports(rejectedFlwImports, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate, reportRequest);
         for (State state : states) {
@@ -2402,6 +2410,8 @@ public class AdminServiceImpl implements AdminService {
                 }
             }
             reportRequest.setStateId(stateId);
+            reportRequest.setBlockId(0);
+            reportRequest.setDistrictId(0);
             getCumulativeRejectedFlwImports(candidatesFromThisState, rootPathState, stateName, toDate, reportRequest);
             List<District> districts = districtDao.getDistrictsOfState(stateId);
 
@@ -2416,6 +2426,7 @@ public class AdminServiceImpl implements AdminService {
                     }
                 }
                 reportRequest.setDistrictId(districtId);
+                reportRequest.setBlockId(0);
                 getCumulativeRejectedFlwImports(candidatesFromThisDistrict, rootPathDistrict, districtName, toDate, reportRequest);
                 List<Block> Blocks = blockDao.getBlocksOfDistrict(districtId);
                 for (Block block : Blocks) {
@@ -2448,7 +2459,7 @@ public class AdminServiceImpl implements AdminService {
         reportRequest.setBlockId(0);
         reportRequest.setDistrictId(0);
         reportRequest.setStateId(0);
-        reportRequest.setReportType(ReportType.maInactive.getReportType());
+        reportRequest.setReportType(ReportType.maCourse.getReportType());
         getCumulativeCourseCompletion(successFullcandidates, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate, reportRequest);
         for (State state : states) {
             String stateName = StReplace(state.getStateName());
@@ -2461,6 +2472,8 @@ public class AdminServiceImpl implements AdminService {
                 }
             }
             reportRequest.setStateId(stateId);
+            reportRequest.setBlockId(0);
+            reportRequest.setDistrictId(0);
             getCumulativeCourseCompletion(candidatesFromThisState, rootPathState, stateName, toDate, reportRequest);
 
             List<District> districts = districtDao.getDistrictsOfState(stateId);
@@ -2474,7 +2487,8 @@ public class AdminServiceImpl implements AdminService {
                         candidatesFromThisDistrict.add(asha);
                     }
                 }
-                reportRequest.setDistrictId(0);
+                reportRequest.setDistrictId(districtId);
+                reportRequest.setBlockId(0);
                 getCumulativeCourseCompletion(candidatesFromThisDistrict, rootPathDistrict, districtName, toDate, reportRequest);
                 List<Block> Blocks = blockDao.getBlocksOfDistrict(districtId);
                 for (Block block : Blocks) {
@@ -2504,6 +2518,7 @@ public class AdminServiceImpl implements AdminService {
         reportRequest.setBlockId(0);
         reportRequest.setDistrictId(0);
         reportRequest.setStateId(0);
+        reportRequest.setCircleId(0);
         reportRequest.setReportType(ReportType.maAnonymous.getReportType());
         getCircleWiseAnonymousUsers(anonymousUsersList, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate, reportRequest);
         for (Circle circle : circleList) {
@@ -2516,6 +2531,7 @@ public class AdminServiceImpl implements AdminService {
                     anonymousUsersListCircle.add(anonymousUser);
                 }
             }
+            reportRequest.setCircleId(circle.getCircleId());
             getCircleWiseAnonymousUsers(anonymousUsersListCircle, rootPathCircle, circleFullName, toDate, reportRequest);
         }
     }
@@ -2543,6 +2559,8 @@ public class AdminServiceImpl implements AdminService {
                 }
             }
             reportRequest.setStateId(stateId);
+            reportRequest.setBlockId(0);
+            reportRequest.setDistrictId(0);
             getCumulativeInactiveUsers(candidatesFromThisState, rootPathState, stateName, toDate, reportRequest);
             List<District> districts = districtDao.getDistrictsOfState(stateId);
             for (District district : districts) {
@@ -2556,6 +2574,7 @@ public class AdminServiceImpl implements AdminService {
                     }
                 }
                 reportRequest.setDistrictId(districtId);
+                reportRequest.setBlockId(0);
                 getCumulativeInactiveUsers(candidatesFromThisDistrict, rootPathDistrict, districtName, toDate, reportRequest);
                 List<Block> Blocks = blockDao.getBlocksOfDistrict(districtId);
                 for (Block block : Blocks) {
@@ -2599,6 +2618,8 @@ public class AdminServiceImpl implements AdminService {
                 }
             }
             reportRequest.setStateId(stateId);
+            reportRequest.setBlockId(0);
+            reportRequest.setDistrictId(0);
             getKilkariSixWeekNoAnswer(candidatesFromThisState, rootPathState, stateName, toDate, reportRequest);
             List<District> districts = districtDao.getDistrictsOfState(stateId);
 
@@ -2613,6 +2634,7 @@ public class AdminServiceImpl implements AdminService {
                     }
                 }
                 reportRequest.setDistrictId(districtId);
+                reportRequest.setBlockId(0);
                 getKilkariSixWeekNoAnswer(candidatesFromThisDistrict, rootPathDistrict, districtName, toDate, reportRequest);
                 List<Block> Blocks = blockDao.getBlocksOfDistrict(districtId);
                 for (Block block : Blocks) {
@@ -2656,6 +2678,8 @@ public class AdminServiceImpl implements AdminService {
                 }
             }
             reportRequest.setStateId(stateId);
+            reportRequest.setBlockId(0);
+            reportRequest.setDistrictId(0);
             getKilkariLowListenershipDeactivation(candidatesFromThisState, rootPathState, stateName, toDate, reportRequest);
             List<District> districts = districtDao.getDistrictsOfState(stateId);
 
@@ -2670,6 +2694,7 @@ public class AdminServiceImpl implements AdminService {
                     }
                 }
                 reportRequest.setDistrictId(districtId);
+                reportRequest.setBlockId(0);
                 getKilkariLowListenershipDeactivation(candidatesFromThisDistrict, rootPathDistrict, districtName, toDate, reportRequest);
                 List<Block> Blocks = blockDao.getBlocksOfDistrict(districtId);
                 for (Block block : Blocks) {
@@ -2713,6 +2738,8 @@ public class AdminServiceImpl implements AdminService {
                 }
             }
             reportRequest.setStateId(stateId);
+            reportRequest.setBlockId(0);
+            reportRequest.setDistrictId(0);
             getKilkariLowUsage(candidatesFromThisState, rootPathState, stateName, toDate,reportRequest);
             List<District> districts = districtDao.getDistrictsOfState(stateId);
             for (District district : districts) {
@@ -2726,6 +2753,7 @@ public class AdminServiceImpl implements AdminService {
                     }
                 }
                 reportRequest.setDistrictId(districtId);
+                reportRequest.setBlockId(0);
                 getKilkariLowUsage(candidatesFromThisDistrict, rootPathDistrict, districtName, toDate, reportRequest);
                 List<Block> Blocks = blockDao.getBlocksOfDistrict(districtId);
                 for (Block block : Blocks) {
@@ -2768,6 +2796,8 @@ public class AdminServiceImpl implements AdminService {
                 }
             }
             reportRequest.setStateId(stateId);
+            reportRequest.setBlockId(0);
+            reportRequest.setDistrictId(0);
             getKilkariSelfDeactivation(candidatesFromThisState, rootPathState, stateName, toDate, reportRequest);
             List<District> districts = districtDao.getDistrictsOfState(stateId);
 
@@ -2782,6 +2812,7 @@ public class AdminServiceImpl implements AdminService {
                     }
                 }
                 reportRequest.setDistrictId(districtId);
+                reportRequest.setBlockId(0);
                 getKilkariSelfDeactivation(candidatesFromThisDistrict, rootPathDistrict, districtName, toDate,reportRequest);
                 List<Block> Blocks = blockDao.getBlocksOfDistrict(districtId);
                 for (Block block : Blocks) {
@@ -2892,8 +2923,8 @@ public class AdminServiceImpl implements AdminService {
     private String getMonthYearName(Date toDate) {
         Calendar c =Calendar.getInstance();
         c.setTime(toDate);
-//        c.add(Calendar.MONTH, -1);
-        int month=c.get(Calendar.MONTH)+1;
+        c.add(Calendar.MONTH, -1);
+        int month=c.get(Calendar.MONTH);
 //        String monthString = "";
         int year=(c.get(Calendar.YEAR))%100;
         String monthString = c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH );
@@ -2911,7 +2942,7 @@ public class AdminServiceImpl implements AdminService {
     private String getDateMonthYearName(Date toDate) {
         Calendar calendar=Calendar.getInstance();
         calendar.setTime(toDate);
-        int date=calendar.get(Calendar.DATE);
+        int date=calendar.get(Calendar.DATE)-1;
         int month=calendar.get(Calendar.MONTH)+1;
         int year=(calendar.get(Calendar.YEAR))%100;
         String dateString;
