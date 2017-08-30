@@ -18,7 +18,7 @@ public enum ReportType {
     lowUsage("Kilkari_Low_Usage", "Listen to < 25% this month", "K","Kilkari Deactivations for For Low Listening Report"),
     selfDeactivated("Kilkari_Self_Deactivated", "Self Deactivations", "K","Kilkari Self Deactivation Report"),
     sixWeeks("Kilkari_Six_Weeks_No_Answer", "Deactivated for not answering", "K","Kilkari Deactivations for not answering Report"),
-    flwRejected("MA_Flw_Import_Rejects","Flw Rejected Records", "M", "MA Rejected Line-Listing Report"),
+    flwRejected("MA_Asha_Import_Rejects","Asha Rejected Records", "M", "MA Rejected Line-Listing Report"),
     childRejected("Kilkari_Child_Import_Rejects","Child Rejected Records", "K","Kilkari Rejected Child Line Listing Report"),
     motherRejected("Kilkari_Mother_Import_Rejects","Mother Rejected Records", "K" ,"Kilkari Rejected Mother Line Listing Report"),
     lowListenership("Kilkari_Low_Listenership_Deactivation", "Deactivated for Low Listenership","K",
