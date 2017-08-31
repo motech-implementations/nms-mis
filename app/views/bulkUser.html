@@ -32,7 +32,7 @@
 
 	</div>
 	<hr>
-	<div class="bulkUpload-body block" ng-if="errorsObj.length > 0">
+	<div class="bulkUpload-body block" ng-if="errorsObj.length > 0 && uploadedFlag">
 		<!-- <ul>
 			<li ng-repeat="row in listErrors()">{{row}}</li>
 		</ul> -->
@@ -48,5 +48,9 @@
 				<td>{{row.name}}</td>
 			</tr>
 		</table>
+	</div>
+	<div class="bulkUpload-body block" ng-if="errorsObj.length == 0 && uploadedFlag">
+		<p class="grey">Status of Document Import</p>
+		<p class="green">Records successfully imported</p>
 	</div>
 </div>

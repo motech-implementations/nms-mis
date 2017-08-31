@@ -50,9 +50,10 @@
 			}
 
 			$scope.errorsObj = [];
-
+            $scope.uploadedFlag = false;
 			$scope.listErrors = function(errors){
 				$scope.errorsObj = [];
+				$scope.uploadedFlag = true;
 				for(i in errors){
 					var error = {};
 					error.line = i;
