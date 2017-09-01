@@ -52,7 +52,7 @@ public class MACourseAttemptDaoImpl extends AbstractDao<Integer, User> implement
 
     @Override
     public Long getCountForGivenDistrict(Date toDate, Integer districtId) {
-        Criteria criteria=createEntityCriteria();
+        Criteria criteria= getSession().createCriteria(MACourseFirstCompletion.class);
         criteria.add(Restrictions.lt("firstCompletionDate",toDate))
                 .add(Restrictions.eq("districtId",districtId))
                 .setProjection(Projections.rowCount());

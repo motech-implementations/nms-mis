@@ -244,7 +244,7 @@ public class EmailServiceImpl implements EmailService{
             body+= "<pre>   </pre>Please find below the district wise count of ASHAs who have successfully completed the Mobile Academy" +
                     " course. The line listing of the ASHAs have been sent to the respective district and block users.";
 
-            body+=  "<body><br><br><table width='100%' border='1' align='center'>"
+            body+=  "<br><br><table width='100%' border='1' align='center'>"
                     + "<tr align='center'>"
                     + "<td><b>District Name<b></td>"
                     + "<td><b>Count of ASHAs who have successfully completed the course.<b></td>"
@@ -255,12 +255,11 @@ public class EmailServiceImpl implements EmailService{
                 body=body+"<tr align='center'>"+"<td>" + district.getDistrictName() + "</td>"
                         + "<td>" +maCourseAttemptDao.getCountForGivenDistrict(toDate, district.getDistrictId())+ "</td>"+"</tr>";
             }
-            body+="<<br>/body>";
         } else if(reportType.equals(ReportType.maInactive.getReportType())){
             body+="<pre>   </pre>Please find below the district wise count of ASHAs who have not yet started the Mobile Academy course." +
                     " The line listing of the ASHAs have been sent to the respective district and block users.";
 
-            body+="<body><br><br><table width='100%' border='1' align='center'>"
+            body+="<br><br><table width='100%' border='1' align='center'>"
                     + "<tr align='center'>"
                     + "<td><b>District Name<b></td>"
                     + "<td><b>Count of Inactive ASHAs.<b></td>"
@@ -272,11 +271,10 @@ public class EmailServiceImpl implements EmailService{
                 body=body+"<tr align='center'>"+"<td>" + district.getDistrictName() + "</td>"
                         + "<td>" +frontLineWorkersDao.getCountOfInactiveFrontLineWorkersForGivenDistrict(toDate, district.getDistrictId())+ "</td>"+"</tr>";
             }
-            body+="<br></body>";
         } else if(reportType.equals(ReportType.lowUsage.getReportType())){
             body+="<pre>   </pre>Please find below the district wise count of beneficiaries have been deactivated for listening low or not answering. " +
                     "The line listing of the individual beneficiaries have been sent to the respective district and block users. ";
-            body+= "<body><br><br><table width='100%' border='1' align='center'>"
+            body+= "<br><br><table width='100%' border='1' align='center'>"
                     + "<tr align='center'>"
                     + "<td><b>District Name<b></td>"
                     + "<td><b>Count of Beneficiaries listening less than 25% of content<b></td>"
@@ -288,14 +286,13 @@ public class EmailServiceImpl implements EmailService{
                         + "<td>" +kilkariLowUsageDao.getCountOfLowUsageUsersForGivenDistrict(getMonthYear(toDate), district.getDistrictId())+ "</td>"+"</tr>";
 
             }
-            body+="<br></body>";
 
         }
         else if(reportType.equals(ReportType.selfDeactivated.getReportType())){
             body+="<pre>   </pre>Please find below the district wise count of beneficiaries who have deactivated themselves from the " +
                     "Kilkari system. The line listing of the individual beneficiaries have been sent to the respective " +
                     "district and block users. ";
-            body+="<body><br><br><table width='100%' border='1' align='center'>"
+            body+="<br><br><table width='100%' border='1' align='center'>"
                     + "<tr align='center'>"
                     + "<td><b>District Name<b></td>"
                     + "<td><b>Count of Beneficiaries deactivated themselves<b></td>"
@@ -307,13 +304,12 @@ public class EmailServiceImpl implements EmailService{
                         + "<td>" +kilkariSelfDeactivatedDao.getCountOfSelfDeactivatedUsers(fromDate,toDate, district.getDistrictId())+ "</td>"+"</tr>";
 
             }
-            body+="<br></body>";
 
         }else if (reportType.equals(ReportType.sixWeeks.getReportType()) ||
                 reportType.equals(ReportType.lowListenership.getReportType())){
             body+= "<pre>   </pre>Please find below the district wise count of beneficiaries have been deactivated for listening low or not answering. " +
                     "The line listing of the individual beneficiaries have been sent to the respective district and block users.";
-            body+="<body><br><br><table width='100%' border='1' align='center'>"
+            body+="<br><br><table width='100%' border='1' align='center'>"
                     + "<tr align='center'>"
                     + "<td><b>District Name<b></td>"
                     + "<td><b>Count of deactivated records for answering a single call for six consecutive weeks<b></td>"
@@ -325,12 +321,12 @@ public class EmailServiceImpl implements EmailService{
                         + "<td>" +kilkariSixWeeksNoAnswerDao.getCountOfDeactivatedForDistrict(fromDate,toDate, district.getDistrictId())+ "</td>"
                         + "<td>" +kilkariSixWeeksNoAnswerDao.getCountOfLowListenershipUsersForDistrict(fromDate,toDate, district.getDistrictId())+ "</td>"+"</tr>";
             }
-            body+="<br></body>";
+
         } else if(reportType.equals(ReportType.flwRejected.getReportType())){
             body+="<pre>   </pre>Please find attached the list of ASHAs rejected due to one of the following rejection reasons " +
                     "viz.,MSISDN_ALREADY_IN_USE,FLW_TYPE_NOT_ASHA,FLW_IMPORT_ERROR,RECORD_ALREADY_EXISTS";
 
-            body+= "<body><br><br><table width='100%' border='1' align='center'>"
+            body+= "<br><br><table width='100%' border='1' align='center'>"
                     + "<tr align='center'>"
                     + "<td><b>District Name<b></td>"
                     + "<td><b>Count of Rejected ASHAs Records<b></td>"
@@ -341,7 +337,7 @@ public class EmailServiceImpl implements EmailService{
                         + "<td>" +flwImportRejectionDao.getCountOfFlwRejectedRecordsForDistrict(toDate, district.getDistrictId())+ "</td>"
                         +"</tr>";
             }
-            body=body+"<br></body>";
+
         }
         else if(reportType.equals(ReportType.motherRejected.getReportType()) ||
                 reportType.equals(ReportType.childRejected.getReportType())){
@@ -351,7 +347,7 @@ public class EmailServiceImpl implements EmailService{
                     +  "2. The following List of child records are deactivated for one of the following rejection reasons " +
                     "viz., MSISDN already in use,Subscription Rejected,Mother id error,Record already exists";
 
-            body+=" <body><br><br><table width='100%' border='1' align='center'>"
+            body+=" <br><br><table width='100%' border='1' align='center'>"
                     + "<tr align='center'>"
                     + "<td><b>District Name<b></td>"
                     + "<td><b>Count of Rejected Mother Records<b></td>"
@@ -363,11 +359,11 @@ public class EmailServiceImpl implements EmailService{
                         + "<td>" +motherImportRejectionDao.getCountOFRejectedMotherImportRecordsWithDistrictId(toDate, district.getDistrictId())+ "</td>"
                         + "<td>" +childImportRejectionDao.getCountOfRejectedChildRecords(toDate, district.getDistrictId())+ "</td>"+"</tr>";
             }
-            body=body+"</body>";
-            body+="<br>Regards<br>";
-            body+= "NSP Support Team <br><br>";
-            body+= "P.S: This an auto-generated email. Please do not reply";
+
         }
+        body+="</table><br>Regards<br>";
+        body+= "NSP Support Team <br><br>";
+        body+= "P.S: This an auto-generated email. Please do not reply";
         return body;
     }
     /* for district users, we send mail with attachments and for state users, we send summary mails with district-wise details*/
