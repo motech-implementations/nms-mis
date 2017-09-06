@@ -2,6 +2,7 @@ package com.beehyv.nmsreporting.dao.impl;
 
 import com.beehyv.nmsreporting.dao.AbstractDao;
 import com.beehyv.nmsreporting.dao.MACourseAttemptDao;
+import com.beehyv.nmsreporting.model.MACourseFirstCompletion;
 import com.beehyv.nmsreporting.model.User;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Projections;
@@ -18,9 +19,9 @@ public class MACourseAttemptDaoImpl extends AbstractDao<Integer, User> implement
 
     @Override
     public Long getCountForGivenDistrict(Date toDate, Integer districtId) {
-        Criteria criteria = createEntityCriteria();
-        criteria.add(Restrictions.lt("firstCompletionDate", toDate))
-                .add(Restrictions.eq("districtId", districtId))
+        Criteria criteria= getSession().createCriteria(MACourseFirstCompletion.class);
+        criteria.add(Restrictions.lt("firstCompletionDate",toDate))
+                .add(Restrictions.eq("districtId",districtId))
                 .setProjection(Projections.rowCount());
 
         return (Long) criteria.uniqueResult();

@@ -10,13 +10,11 @@ public enum AccessType {
 
     private String accessType;
 
-    private AccessType(String accessType) {
-        this.accessType = accessType;
-    }
-
-    public static boolean isType(String test) {
-        for (AccessType type : AccessType.values()) {
-            return (type.name().equalsIgnoreCase(test));
+    public static boolean isType(String test){
+        for (AccessType type: AccessType.values()) {
+            if(type.name().equalsIgnoreCase(test)){
+                return true;
+            }
         }
         return false;
     }
@@ -31,9 +29,11 @@ public enum AccessType {
         return "not valid";
     }
 
-    public String getAccessType() {
-        return accessType;
-    }
+
+    private AccessType(String accessType){this.accessType = accessType;}
+
+    public String getAccessType(){return accessType;}
+
 
 
 }

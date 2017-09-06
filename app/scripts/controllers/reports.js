@@ -242,13 +242,13 @@
 
                 //In case of change in minDate for rejection reports, please change startMonth and startDate variable accordingly
                 if($scope.report != null && $scope.report.reportEnum == 'MA_Asha_Import_Rejects'){
-                    minDate = new Date(2017, 07, 01);
+                    minDate = new Date(2017, 08, 01);
                  }
                  if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Mother_Import_Rejects'){
-                    minDate = new Date(2017, 07, 01);
+                    minDate = new Date(2017, 08, 01);
                  }
                  if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Child_Import_Rejects'){
-                    minDate = new Date(2017, 07, 01);
+                    minDate = new Date(2017, 08, 01);
                  }
 //                var minDate = $scope.report.minDate;
 //                console.log(minDate);
@@ -326,11 +326,11 @@
 
 			$scope.$watch('dt', function(newDate){
                 if ($scope.wasSundaySelected){
-                $scope.format = 'yy-MM-dd';
+                $scope.format = 'yyyy-MM-dd';
                 $scope.wasSundaySelected = false;
                  return;
                 }
-                $scope.format = 'yy-MM';
+                $scope.format = 'yyyy-MM';
 			    if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) && $scope.dt != null) {
 			    	 $scope.getSundays($scope.dt);
                      $scope.sundaysTable = true;
@@ -399,7 +399,7 @@
                     }
 		    	}
 
-		    	if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) && $scope.format == 'yy-MM'){
+		    	if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) && $scope.format == 'yyyy-MM'){
                     alert("Please select a week");
                     return;
 		    	}
@@ -456,6 +456,7 @@
 					$scope.clearBlock();
 				}
 				$scope.clearCircle();
+				$scope.clearFile();
 				$scope.dt = null;
 				$scope.datePickerContent = "Select Month";
 
@@ -488,8 +489,8 @@
 				return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
 			}
 
-            var startMonth = 7 //May
-            var startDate = 15 //Start Date
+            var startMonth = 8 //September
+            var startDate = 1 //Start Date
 
 			$scope.open1 = function() {
 				$scope.popup1.opened = true;
@@ -519,7 +520,7 @@
 
 				}
 
-				if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) && $scope.format == 'yy-MM' ){
+				if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) && $scope.format == 'yyyy-MM' ){
                     $scope.getSundays($scope.dt);
                     $scope.sundaysTable = true;
 
@@ -590,7 +591,7 @@
                     }
 
                     else{
-                        for(var i=startDate;i<=31;i++){    //looping through days in month
+                        for(var i=startDate;i<=30;i++){    //looping through days in month
                             var newDate = new Date(d.getFullYear(),d.getMonth(),i)
                             if(newDate.getDay()==0){   //if Sunday
                                 sun.push(i);
