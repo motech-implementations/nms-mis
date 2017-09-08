@@ -4,6 +4,6 @@ import java.util.Date;
 
 public interface ChildImportRejectionDao {
 
-    Long getCountOfRejectedChildRecords(Date toDate, Integer districtId);
+    Long getCountOfRejectedChildRecords(Date fromDate, Date toDate, Integer districtId);
 
 }

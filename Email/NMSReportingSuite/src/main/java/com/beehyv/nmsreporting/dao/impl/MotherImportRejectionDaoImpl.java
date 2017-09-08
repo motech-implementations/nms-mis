@@ -14,9 +14,10 @@ import java.util.Date;
 public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImportRejection> implements MotherImportRejectionDao {
 
     @Override
-    public Long getCountOFRejectedMotherImportRecordsWithDistrictId(Date toDate, Integer districtId) {
+    public Long getCountOFRejectedMotherImportRecordsWithDistrictId(Date fromDate, Date toDate, Integer districtId) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.lt("modificationDate", toDate))
+                .add(Restrictions.ge("modificationDate", fromDate))
                 .add(Restrictions.eq("accepted", false))
                 .add(Restrictions.eq("districtId", districtId))
                 .add(Restrictions.ne("rejectionReason", "INVALID_LMP_DATE"))
