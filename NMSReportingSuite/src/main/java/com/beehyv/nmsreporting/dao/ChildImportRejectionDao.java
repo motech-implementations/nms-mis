@@ -7,15 +7,15 @@ import java.util.List;
 
 public interface ChildImportRejectionDao {
 
-    List<ChildImportRejection> getRejectedChildRecords( Date toDate);
+    List<ChildImportRejection> getRejectedChildRecords(Date fromDate, Date toDate);
 
-    List<ChildImportRejection> getRejectedChildRecordsWithStateId(Date toDate, Integer stateId);
+    List<ChildImportRejection> getRejectedChildRecordsWithStateId(Date fromDate, Date toDate, Integer stateId);
 
-    List<ChildImportRejection> getRejectedChildRecordsWithDistrictId(Date toDate, Integer districtId);
+    List<ChildImportRejection> getRejectedChildRecordsWithDistrictId(Date fromDate, Date toDate, Integer districtId);
 
-    List<ChildImportRejection> getRejectedChildRecordsWithBlockId(Date toDate, Integer blockId);
+    List<ChildImportRejection> getRejectedChildRecordsWithBlockId(Date fromDate, Date toDate, Integer blockId);
 
-    Long getCountOfRejectedChildRecords(Date toDate, Integer districtId);
+    Long getCountOfRejectedChildRecords(Date fromDate, Date toDate, Integer districtId);
 
 
 }

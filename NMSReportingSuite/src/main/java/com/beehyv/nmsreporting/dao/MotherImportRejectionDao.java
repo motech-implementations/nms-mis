@@ -7,14 +7,14 @@ import java.util.List;
 
 public interface MotherImportRejectionDao {
 
-    List<MotherImportRejection> getAllRejectedMotherImportRecords(Date toDate);
+    List<MotherImportRejection> getAllRejectedMotherImportRecords(Date fromDate, Date toDate);
 
-    List<MotherImportRejection> getAllRejectedMotherImportRecordsWithStateId(Date toDate, Integer stateId);
+    List<MotherImportRejection> getAllRejectedMotherImportRecordsWithStateId(Date fromDate, Date toDate, Integer stateId);
 
-    List<MotherImportRejection> getAllRejectedMotherImportRecordsWithDistrictId(Date toDate, Integer districtId);
+    List<MotherImportRejection> getAllRejectedMotherImportRecordsWithDistrictId(Date fromDate, Date toDate, Integer districtId);
 
-    List<MotherImportRejection> getAllRejectedMotherImportRecordsWithBlockId(Date toDate, Integer blockId);
+    List<MotherImportRejection> getAllRejectedMotherImportRecordsWithBlockId(Date fromDate, Date toDate, Integer blockId);
 
-    Long getCountOFRejectedMotherImportRecordsWithDistrictId(Date toDate, Integer districtId);
+    Long getCountOFRejectedMotherImportRecordsWithDistrictId(Date fromDate, Date toDate, Integer districtId);
 
 }
