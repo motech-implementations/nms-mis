@@ -236,7 +236,12 @@ public class EmailServiceImpl implements EmailService{
         calendar.set(Calendar.DAY_OF_MONTH,1);
 
         Date toDate = calendar.getTime();
-        calendar.add(Calendar.MONTH,-1);
+        if(reportType.equals(ReportType.flwRejected.getReportType()) || reportType.equals(ReportType.motherRejected.getReportType())
+                || reportType.equals(ReportType.childRejected.getReportType())){
+            calendar.add(Calendar.DAY_OF_MONTH, -7);
+        } else {
+            calendar.add(Calendar.MONTH, -1);
+        }
         Date fromDate=calendar.getTime();
 
         List<District> districts=districtDao.getDistrictsOfState(stateId);
@@ -334,7 +339,7 @@ public class EmailServiceImpl implements EmailService{
             for (District district:districts
                     ) {
                 body=body+"<tr align='center'>"+"<td>" + district.getDistrictName() + "</td>"
-                        + "<td>" +flwImportRejectionDao.getCountOfFlwRejectedRecordsForDistrict(toDate, district.getDistrictId())+ "</td>"
+                        + "<td>" +flwImportRejectionDao.getCountOfFlwRejectedRecordsForDistrict(fromDate, toDate, district.getDistrictId())+ "</td>"
                         +"</tr>";
             }
 
@@ -356,8 +361,10 @@ public class EmailServiceImpl implements EmailService{
             for (District district:districts
                     ) {
                 body=body+"<tr align='center'>"+"<td>" + district.getDistrictName() + "</td>"
-                        + "<td>" +motherImportRejectionDao.getCountOFRejectedMotherImportRecordsWithDistrictId(toDate, district.getDistrictId())+ "</td>"
-                        + "<td>" +childImportRejectionDao.getCountOfRejectedChildRecords(toDate, district.getDistrictId())+ "</td>"+"</tr>";
+                        + "<td>" +motherImportRejectionDao.getCountOFRejectedMotherImportRecordsWithDistrictId(toDate,
+                        fromDate, district.getDistrictId())+ "</td>"
+                        + "<td>" +childImportRejectionDao.getCountOfRejectedChildRecords(fromDate, toDate,
+                        district.getDistrictId())+ "</td>"+"</tr>";
             }
 
         }

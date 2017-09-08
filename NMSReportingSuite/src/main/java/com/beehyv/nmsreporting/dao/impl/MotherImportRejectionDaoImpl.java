@@ -14,9 +14,10 @@ import java.util.List;
 @Repository("motherImportRejectionDao")
 public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImportRejection> implements MotherImportRejectionDao {
     @Override
-    public List<MotherImportRejection> getAllRejectedMotherImportRecords(Date toDate) {
+    public List<MotherImportRejection> getAllRejectedMotherImportRecords(Date fromDate, Date toDate) {
         Criteria criteria=createEntityCriteria();
         criteria.add(Restrictions.lt("modificationDate", toDate))
+                .add(Restrictions.ge("modificationDate", fromDate))
                 .add(Restrictions.eq("accepted", false))
                 .add(Restrictions.ne("rejectionReason","INVALID_LMP_DATE"));
 
@@ -24,9 +25,10 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
     }
 
     @Override
-    public List<MotherImportRejection> getAllRejectedMotherImportRecordsWithStateId(Date toDate, Integer stateId) {
+    public List<MotherImportRejection> getAllRejectedMotherImportRecordsWithStateId(Date fromDate, Date toDate, Integer stateId) {
         Criteria criteria=createEntityCriteria();
         criteria.add(Restrictions.lt("modificationDate", toDate))
+                .add(Restrictions.ge("modificationDate", fromDate))
                 .add(Restrictions.eq("accepted", false))
                 .add(Restrictions.eq("stateId", stateId))
                 .add(Restrictions.ne("rejectionReason","INVALID_LMP_DATE"));
@@ -35,9 +37,10 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
     }
 
     @Override
-    public List<MotherImportRejection> getAllRejectedMotherImportRecordsWithDistrictId(Date toDate, Integer districtId) {
+    public List<MotherImportRejection> getAllRejectedMotherImportRecordsWithDistrictId(Date fromDate, Date toDate, Integer districtId) {
         Criteria criteria=createEntityCriteria();
         criteria.add(Restrictions.lt("modificationDate", toDate))
+                .add(Restrictions.ge("modificationDate", fromDate))
                 .add(Restrictions.eq("accepted", false))
                 .add(Restrictions.eq("districtId", districtId))
                 .add(Restrictions.ne("rejectionReason","INVALID_LMP_DATE"));
@@ -46,9 +49,10 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
     }
 
     @Override
-    public List<MotherImportRejection> getAllRejectedMotherImportRecordsWithBlockId(Date toDate, Integer blockId) {
+    public List<MotherImportRejection> getAllRejectedMotherImportRecordsWithBlockId(Date fromDate, Date toDate, Integer blockId) {
         Criteria criteria=createEntityCriteria();
         criteria.add(Restrictions.lt("modificationDate", toDate))
+                .add(Restrictions.ge("modificationDate", fromDate))
                 .add(Restrictions.eq("accepted", false))
                 .add(Restrictions.eq("healthBlockId", blockId))
                 .add(Restrictions.ne("rejectionReason","INVALID_LMP_DATE"));
@@ -57,9 +61,10 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
     }
 
     @Override
-    public Long getCountOFRejectedMotherImportRecordsWithDistrictId(Date toDate, Integer districtId) {
+    public Long getCountOFRejectedMotherImportRecordsWithDistrictId(Date fromDate, Date toDate, Integer districtId) {
         Criteria criteria=createEntityCriteria();
         criteria.add(Restrictions.lt("modificationDate", toDate))
+                .add(Restrictions.ge("modificationDate", fromDate))
                 .add(Restrictions.eq("accepted", false))
                 .add(Restrictions.eq("districtId", districtId))
                 .add(Restrictions.ne("rejectionReason","INVALID_LMP_DATE"))
