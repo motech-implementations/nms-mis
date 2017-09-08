@@ -1,1 +1,1 @@
-<jsp:forward page="/static/html/login.html"/>
+<% response.sendRedirect("https://rchivrreports.in/app/#!/login"); %>
