@@ -181,10 +181,10 @@ public class AdminController {
     @RequestMapping(value = "/generateReports/{reportType}/{relativeMonth}", method = RequestMethod.GET)
     @ResponseBody
     public String getReportsByNameAndMonth(@PathVariable("reportType") String reportType, @PathVariable("relativeMonth") Integer relativeMonth) throws ParseException, java.text.ParseException{
-        User user=userService.getCurrentUser();
-        if(user==null || ! (user.getRoleName().equals(AccessType.MASTER_ADMIN.getAccessType()))) {
-            return "You are not authorised";
-        }
+//        User user=userService.getCurrentUser();
+//        if(user==null || ! (user.getRoleName().equals(AccessType.MASTER_ADMIN.getAccessType()))) {
+//            return "You are not authorised";
+//        }
 
         ReportType tempReportType = ReportType.valueOf(reportType);
         Calendar aCalendar = Calendar.getInstance();
