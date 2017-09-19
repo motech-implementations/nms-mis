@@ -4,7 +4,7 @@ import java.util.Date;
 
 public interface FlwImportRejectionDao {
 
-    Long getCountOfFlwRejectedRecordsForDistrict(Date toDate, Integer districtId);
+    Long getCountOfFlwRejectedRecordsForDistrict(Date fromDate, Date toDate, Integer districtId);
 
 
 }

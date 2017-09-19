@@ -23,8 +23,8 @@ public class FrontLineWorkersDaoImpl extends AbstractDao<Integer,FrontLineWorker
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("creationDate"));
         criteria.add(Restrictions.and(
                 Restrictions.eq("status","INACTIVE").ignoreCase(),
-                Restrictions.lt("lastModifiedDate",toDate),
-                Restrictions.ne("jobStatus","INACTIVE").ignoreCase(),
+                Restrictions.lt("creationDate",toDate),
+                Restrictions.eq("jobStatus","ACTIVE").ignoreCase(),
                 Restrictions.eq("designation","ASHA").ignoreCase()
         ));
         return (List<FrontLineWorkers>) criteria.list();
@@ -35,8 +35,8 @@ public class FrontLineWorkersDaoImpl extends AbstractDao<Integer,FrontLineWorker
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("creationDate"));
         criteria.add(Restrictions.and(
                 Restrictions.eq("status","INACTIVE").ignoreCase(),
-                Restrictions.lt("lastModifiedDate",toDate),
-                Restrictions.ne("jobStatus","INACTIVE").ignoreCase(),
+                Restrictions.lt("creationDate",toDate),
+                Restrictions.eq("jobStatus","ACTIVE").ignoreCase(),
                 Restrictions.eq("designation","ASHA").ignoreCase(),
                 Restrictions.eq("state",stateId)
         ));
@@ -48,8 +48,8 @@ public class FrontLineWorkersDaoImpl extends AbstractDao<Integer,FrontLineWorker
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("creationDate"));
         criteria.add(Restrictions.and(
                 Restrictions.eq("status","INACTIVE").ignoreCase(),
-                Restrictions.lt("lastModifiedDate",toDate),
-                Restrictions.ne("jobStatus","INACTIVE").ignoreCase(),
+                Restrictions.lt("creationDate",toDate),
+                Restrictions.eq("jobStatus","ACTIVE").ignoreCase(),
                 Restrictions.eq("designation","ASHA").ignoreCase(),
                 Restrictions.eq("district",districtId)
         ));
@@ -61,8 +61,8 @@ public class FrontLineWorkersDaoImpl extends AbstractDao<Integer,FrontLineWorker
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("creationDate"));
         criteria.add(Restrictions.and(
                 Restrictions.eq("status","INACTIVE").ignoreCase(),
-                Restrictions.lt("lastModifiedDate",toDate),
-                Restrictions.ne("jobStatus","INACTIVE").ignoreCase(),
+                Restrictions.lt("creationDate",toDate),
+                Restrictions.eq("jobStatus","ACTIVE").ignoreCase(),
                 Restrictions.eq("designation","ASHA").ignoreCase(),
                 Restrictions.eq("block",blockId)
         ));
@@ -74,8 +74,8 @@ public class FrontLineWorkersDaoImpl extends AbstractDao<Integer,FrontLineWorker
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("creationDate"));
         criteria.add(Restrictions.and(
                 Restrictions.eq("status","INACTIVE").ignoreCase(),
-                Restrictions.lt("lastModifiedDate",toDate),
-                Restrictions.ne("jobStatus","INACTIVE").ignoreCase(),
+                Restrictions.lt("creationDate",toDate),
+                Restrictions.eq("jobStatus","ACTIVE").ignoreCase(),
                 Restrictions.eq("designation","ASHA").ignoreCase(),
                 Restrictions.eq("district",districtId)
         )).setProjection(Projections.rowCount());

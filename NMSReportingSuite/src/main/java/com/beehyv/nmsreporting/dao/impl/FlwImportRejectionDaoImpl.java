@@ -14,26 +14,29 @@ import java.util.List;
 @Repository("flwImportRejectionDao")
 public class FlwImportRejectionDaoImpl extends AbstractDao<Long, FlwImportRejection> implements FlwImportRejectionDao {
     @Override
-    public List<FlwImportRejection> getAllRejectedFlwImportRecords(Date toDate) {
+    public List<FlwImportRejection> getAllRejectedFlwImportRecords(Date fromDate, Date toDate) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.lt("modificationDate", toDate))
+                .add(Restrictions.ge("modificationDate",fromDate))
                 .add(Restrictions.eq("accepted", false));
 
         return criteria.list();
     }
 
     @Override
-    public List<FlwImportRejection> getAllRejectedFlwImportRecordsWithStateId(Date toDate, Integer stateId) {
+    public List<FlwImportRejection> getAllRejectedFlwImportRecordsWithStateId(Date fromDate, Date toDate, Integer stateId) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.lt("modificationDate", toDate))
+                .add(Restrictions.ge("modificationDate",fromDate))
                 .add(Restrictions.eq("accepted", false))
                 .add(Restrictions.eq("stateId", stateId));
         return criteria.list();
     }
     @Override
-    public List<FlwImportRejection> getAllRejectedFlwImportRecordsWithDistrictId(Date toDate, Integer districtId) {
+    public List<FlwImportRejection> getAllRejectedFlwImportRecordsWithDistrictId(Date fromDate, Date toDate, Integer districtId) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.lt("modificationDate", toDate))
+                .add(Restrictions.ge("modificationDate",fromDate))
                 .add(Restrictions.eq("accepted", false))
                 .add(Restrictions.eq("districtId", districtId));
 
@@ -41,9 +44,10 @@ public class FlwImportRejectionDaoImpl extends AbstractDao<Long, FlwImportReject
     }
 
     @Override
-    public List<FlwImportRejection> getAllRejectedFlwImportRecordsWithBlockId(Date toDate, Integer blockId) {
+    public List<FlwImportRejection> getAllRejectedFlwImportRecordsWithBlockId(Date fromDate, Date toDate, Integer blockId) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.lt("modificationDate", toDate))
+                .add(Restrictions.ge("modificationDate",fromDate))
                 .add(Restrictions.eq("accepted", false))
                 .add(Restrictions.eq("healthBlockId", blockId));
 
@@ -51,9 +55,10 @@ public class FlwImportRejectionDaoImpl extends AbstractDao<Long, FlwImportReject
     }
 
     @Override
-    public Long getCountOfFlwRejectedRecordsForDistrict(Date toDate, Integer districtId) {
+    public Long getCountOfFlwRejectedRecordsForDistrict(Date fromDate, Date toDate, Integer districtId) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.lt("modificationDate", toDate))
+                .add(Restrictions.ge("modificationDate",fromDate))
                 .add(Restrictions.eq("accepted", false))
                 .add(Restrictions.eq("districtId", districtId))
                 .setProjection(Projections.rowCount());

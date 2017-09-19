@@ -22,8 +22,8 @@ public class FrontLineWorkersDaoImpl extends AbstractDao<Integer, FrontLineWorke
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("creationDate"));
         criteria.add(Restrictions.and(
                 Restrictions.eq("status", "INACTIVE").ignoreCase(),
-                Restrictions.lt("lastModifiedDate", toDate),
-                Restrictions.ne("jobStatus", "INACTIVE").ignoreCase(),
+                Restrictions.lt("creationDate", toDate),
+                Restrictions.eq("jobStatus","ACTIVE").ignoreCase(),
                 Restrictions.eq("designation", "ASHA").ignoreCase(),
                 Restrictions.eq("district", districtId)
         )).setProjection(Projections.rowCount());

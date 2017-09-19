@@ -14,9 +14,10 @@ import java.util.Date;
 public class FlwImportRejectionDaoImpl extends AbstractDao<Long, FlwImportRejection> implements FlwImportRejectionDao {
 
     @Override
-    public Long getCountOfFlwRejectedRecordsForDistrict(Date toDate, Integer districtId) {
+    public Long getCountOfFlwRejectedRecordsForDistrict(Date fromDate, Date toDate, Integer districtId) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.lt("modificationDate", toDate))
+                .add(Restrictions.ge("modificationDate", fromDate))
                 .add(Restrictions.eq("accepted", false))
                 .add(Restrictions.eq("districtId", districtId))
                 .setProjection(Projections.rowCount());

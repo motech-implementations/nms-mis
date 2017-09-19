@@ -6,11 +6,15 @@ import com.beehyv.nmsreporting.business.ModificationTrackerService;
 import com.beehyv.nmsreporting.business.UserService;
 import com.beehyv.nmsreporting.dao.StateServiceDao;
 import com.beehyv.nmsreporting.entity.PasswordDto;
+import com.beehyv.nmsreporting.enums.AccessLevel;
+import com.beehyv.nmsreporting.enums.AccessType;
 import com.beehyv.nmsreporting.enums.ModificationType;
 import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.ModificationTracker;
 import com.beehyv.nmsreporting.model.State;
 import com.beehyv.nmsreporting.model.User;
+import com.sun.corba.se.impl.orbutil.closure.Constant;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.ParseException;
 import org.springframework.stereotype.Controller;
@@ -21,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.*;
 
+import static com.beehyv.nmsreporting.enums.AccessType.MASTER_ADMIN;
 import static com.beehyv.nmsreporting.enums.ReportType.maCourse;
 
 
@@ -172,9 +177,14 @@ public class AdminController {
         adminService.createFiles(ReportType.motherRejected.getReportType());
         adminService.createFiles(ReportType.flwRejected.getReportType());
     }
+
     @RequestMapping(value = "/generateReports/{reportType}/{relativeMonth}", method = RequestMethod.GET)
     @ResponseBody
     public String getReportsByNameAndMonth(@PathVariable("reportType") String reportType, @PathVariable("relativeMonth") Integer relativeMonth) throws ParseException, java.text.ParseException{
+//        User user=userService.getCurrentUser();
+//        if(user==null || ! (user.getRoleName().equals(AccessType.MASTER_ADMIN.getAccessType()))) {
+//            return "You are not authorised";
+//        }
 
         ReportType tempReportType = ReportType.valueOf(reportType);
         Calendar aCalendar = Calendar.getInstance();

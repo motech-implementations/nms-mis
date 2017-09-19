@@ -14,10 +14,11 @@ import java.util.Date;
 public class ChildImportRejectionDaoImpl extends AbstractDao<Long, ChildImportRejection> implements ChildImportRejectionDao {
 
     @Override
-    public Long getCountOfRejectedChildRecords(Date toDate, Integer districtId) {
+    public Long getCountOfRejectedChildRecords(Date fromDate, Date toDate, Integer districtId) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.lt("modificationDate", toDate))
-                .add(Restrictions.ge("accepted", false))
+                .add(Restrictions.ge("modificationDate", fromDate))
+                .add(Restrictions.eq("accepted", false))
                 .add(Restrictions.eq("districtId", districtId))
                 .add(Restrictions.ne("rejectionReason", "INVALID_DOB"))
                 .setProjection(Projections.rowCount());

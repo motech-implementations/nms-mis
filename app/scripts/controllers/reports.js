@@ -435,6 +435,10 @@
 			    $scope.downloadReportUrl = backend_root + 'nms/user/downloadReport?fileName='+
             			        $scope.fileName+'&rootPath='+$scope.pathName;
 			})
+			$scope.$watch('fileName', function(){
+            			    $scope.downloadReportUrl = backend_root + 'nms/user/downloadReport?fileName='+
+                        			        $scope.fileName+'&rootPath='+$scope.pathName;
+            			})
 
 
 			$scope.clearFile = function(){
