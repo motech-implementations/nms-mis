@@ -11,6 +11,8 @@ public interface StateDao {
 
     State findByStateId(Integer stateId);
 
+    State findByLocationId(Long stateId);
+
     List<State> findByName(String stateName);
 
     List<State> getAllStates();

@@ -21,7 +21,7 @@ public class AggregateCumulativeMA {
     @Column(name="location_id", columnDefinition = "BIGINT(20)")
     private Long locationId;
 
-    @Column(name="date", columnDefinition = "DATETIME")
+    @Column(name="date", columnDefinition = "DATE")
     private Date date;
 
     @Column(name="ashas_registered", columnDefinition = "INT(11)")
@@ -39,7 +39,34 @@ public class AggregateCumulativeMA {
     @Column(name="ashas_failed_course", columnDefinition = "INT(11)")
     private Integer ashasFailed; //sum of ashasFailed from daily
 
-    //Registered but not completed = ashasRegistered - ashasCompleted - ashasFailed ====> 5.2.3:3, 5.2.3:8
+    @Column(name="ashas_rejected", columnDefinition = "INT(11)")
+    private Integer ashasRejected;
+
+    public AggregateCumulativeMA(Integer id, String locationType, Long locationId, Date date, Integer ashasRegistered, Integer ashasStarted, Integer ashasNotStarted, Integer ashasCompleted, Integer ashasFailed, Integer ashasRejected) {
+        this.id = id;
+        this.locationType = locationType;
+        this.locationId = locationId;
+        this.date = date;
+        this.ashasRegistered = ashasRegistered;
+        this.ashasStarted = ashasStarted;
+        this.ashasNotStarted = ashasNotStarted;
+        this.ashasCompleted = ashasCompleted;
+        this.ashasFailed = ashasFailed;
+        this.ashasRejected = ashasRejected;
+    }
+
+    public AggregateCumulativeMA(){
+
+    }
+
+    public Integer getAshasRejected() {
+        return ashasRejected;
+    }
+
+    public void setAshasRejected(Integer ashasRejected) {
+        this.ashasRejected = ashasRejected;
+    }
+//Registered but not completed = ashasRegistered - ashasCompleted - ashasFailed ====> 5.2.3:3, 5.2.3:8
 
 
     public Integer getId() {

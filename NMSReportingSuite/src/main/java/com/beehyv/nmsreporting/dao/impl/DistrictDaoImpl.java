@@ -20,6 +20,12 @@ public class DistrictDaoImpl extends AbstractDao<Integer, District> implements D
     }
 
     @Override
+    public District findByLocationId(Long locationId) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.eq("locationId", locationId).ignoreCase());
+        return (District) criteria.list().get(0);
+    }
+    @Override
     public List<District> findByName(String districtName) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.eq("districtName", districtName).ignoreCase());

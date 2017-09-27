@@ -35,6 +35,9 @@ public class LocationServiceImpl implements LocationService {
     private BlockDao blockDao;
 
     @Autowired
+    private SubcenterDao subcenterDao;
+
+    @Autowired
     private CircleDao circleDao;
 
     @Autowired
@@ -130,6 +133,27 @@ public class LocationServiceImpl implements LocationService {
     /*----------------------Block-------------------------*/
 
     @Override
+    public Subcenter findSubcenterById(Integer subcenterId) {
+        return subcenterDao.findBySubcenterId(subcenterId);
+    }
+
+    @Override
+    public Subcenter findSubcenterByName(String subcenterName) {
+        return subcenterDao.findByName(subcenterName).get(0);
+    }
+
+    @Override
+    public Block getBlockOfSubcenter(Integer subcenterId) {
+//        return districtDao.findByDistrictId(blockDao.findByblockId(blockId).getDistrictOfBlock());
+        return blockDao.findByblockId(subcenterDao.findBySubcenterId(subcenterId).getBlockOfSubcenter());
+    }
+
+    @Override
+    public List<Subcenter> getChildSubcenters(Integer blockId) {
+        return subcenterDao.getSubcentersOfBlock(blockDao.findByblockId(blockId).getBlockId());
+    }
+
+    @Override
     public Block findBlockById(Integer blockId) {
         return blockDao.findByblockId(blockId);
     }
@@ -143,7 +167,6 @@ public class LocationServiceImpl implements LocationService {
     public District getDistrictOfBlock(Integer blockId) {
         return districtDao.findByDistrictId(blockDao.findByblockId(blockId).getDistrictOfBlock());
     }
-
     @Override
     public Circle findCircleById(Integer circleId) {
         return circleDao.getByCircleId(circleId);

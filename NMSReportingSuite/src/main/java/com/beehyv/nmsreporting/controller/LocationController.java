@@ -152,6 +152,41 @@ public class LocationController {
         return locationService.getDistrictOfBlock(blockId);
     }
 
+
+    @RequestMapping(value = {"/subcenters/{blockId}"}, method = RequestMethod.GET)
+    public @ResponseBody List<Subcenter> getsubcentersOfBlock(@PathVariable("blockId") Integer blockId) {
+        User user = userService.getCurrentUser();
+        List<Subcenter> subcenters;
+        if(user.getAccessLevel().equals(AccessLevel.NATIONAL.getAccessLevel())) {
+            subcenters = locationService.getChildSubcenters(blockId);
+        }
+        else if(user.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel())) {
+            if(locationService.findDistrictById(blockId).getStateOfDistrict().equals(user.getStateId())){
+                subcenters = locationService.getChildSubcenters(blockId);
+            }
+            else{
+                subcenters = new ArrayList<>();
+            }
+        }
+        else if(user.getAccessLevel().equals(AccessLevel.DISTRICT.getAccessLevel())){
+            subcenters = locationService.getChildSubcenters(blockId);
+        }
+        else if(user.getAccessLevel().equals(AccessLevel.BLOCK.getAccessLevel())){
+            subcenters = new ArrayList<>();
+            subcenters =locationService.getChildSubcenters(user.getBlockId());
+        }
+        else{
+            subcenters = new ArrayList<>();
+            subcenters.add(locationService.findSubcenterById(user.getSubcenterId()));
+        }
+        return subcenters;
+    }
+
+    @RequestMapping(value = {"/BoS/{sucenterId}"}, method = RequestMethod.GET)
+    public @ResponseBody Block getBlockOfSubcenter(@PathVariable("sucenterId") Integer sucenterId) {
+        return locationService.getBlockOfSubcenter(sucenterId);
+    }
+
     /*--------------------------Circle-----------------------------*/
 
     @RequestMapping(value = {"/circles"}, method = RequestMethod.GET)

@@ -11,6 +11,9 @@ public interface BlockDao {
 
     public Block findByblockId(Integer blockId);
 
+    Block findByLocationId(Long stateId);
+
+
     public List<Block> findByName(String blockName);
 
     public List<Block> getBlocksOfDistrict(Integer districtId);
