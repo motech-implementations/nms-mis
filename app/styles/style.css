@@ -304,6 +304,10 @@ div.userTable .dropdown-menu.small > li > a{
 
 }
 
+.report-type{
+    width: 260px;
+}
+
 div.reports-header{
 	margin-top: 15px;
 }
@@ -494,4 +498,9 @@ body > .main > .footer {
 body *{
 	/*border: 1px solid black;*/
 	font-family: 'Roboto', sans-serif;
+}
+
+.grid {
+  width: 500px;
+  height: 250px;
 }

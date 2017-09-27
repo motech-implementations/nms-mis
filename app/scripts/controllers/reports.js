@@ -24,6 +24,9 @@
 			$scope.blocks = [];
 			$scope.circles = [];
 			$scope.datePickerContent = "Select Month";
+			$scope.dateFormat = 'yyyy-MM-dd';
+			$scope.reportDisplayType = 'TABLE';
+
 
 			$scope.disableReportCategory = function(){
 				return $scope.reports[0] == null;
@@ -73,6 +76,10 @@
 			})
 
 			$scope.reportCategory=null;
+
+			$scope.selectReportType = function(item){
+			    $scope.reportDisplayType = item;
+			}
 
 			$scope.selectReportCategory = function(item){
 				$scope.reportCategory = item.name;
@@ -136,7 +143,11 @@
 				return $scope.report != null && $scope.report.reportEnum == 'MA_Anonymous_Users';
 			}
 
-			
+            $scope.isAggregateReport = function(){
+            	return $scope.report != null && ($scope.report.reportEnum == 'Cummulative_Summary_Report' || $scope.report.reportEnum == 'MA_Subscriber_Report' || $scope.report.reportEnum == 'MA_Performance_Report' );
+            }
+
+			$scope.reportTypes = ['TABLE', 'BAR GRAPH', 'PIE CHART'];
 
 			$scope.getStatesByService = function(service){
 			    $scope.statesLoading = true;
@@ -220,6 +231,14 @@
 						$scope.selectCircle($scope.circles[0]);
 					}
 				});
+			}
+			$scope.isClickAllowed=function(name){
+			    if(name == 'BAR GRAPH' || name == 'PIE CHART'){
+			        return false;
+			     }
+			    else {
+			         true
+			    }
 			}
 
 			$scope.setDateOptions =function(){
@@ -359,10 +378,18 @@
 					alert("Please select a week")
 					return;
 				}
-				else if($scope.dt == null){
+				else if($scope.dt == null && (!angular.lowercase($scope.report.name).includes(angular.lowercase("report"))) ){
                 	alert("Please select a month")
 					return;
 				}
+				else if($scope.dt1 == null && (angular.lowercase($scope.report.name).includes(angular.lowercase("report"))) ){
+                    alert("Please select a start date")
+                    return;
+                }
+                else if($scope.dt2 == null && (angular.lowercase($scope.report.name).includes(angular.lowercase("report"))) ){
+                    alert("Please select an end date")
+                    return;
+                }
 
 				var reportRequest = {};
 
@@ -374,13 +401,23 @@
 
 			    reportRequest.circleId = 0;
 			    
-			    if(!$scope.isCircleReport()){
-			    	if($scope.state != null){
-				    	reportRequest.stateId = $scope.state.stateId;
-				    }
-                    else{
-                        alert("Please select a state");
-                        return;
+			    if(!$scope.isCircleReport() ){
+
+			    	if(!$scope.isAggregateReport())
+			    	{
+                        if($scope.state != null){
+                            reportRequest.stateId = $scope.state.stateId;
+                        }
+                        else{
+                            alert("Please select a state");
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        if($scope.state != null){
+                            reportRequest.stateId = $scope.state.stateId;
+                        }
                     }
 				    if($scope.district != null){
 				    	reportRequest.districtId = $scope.district.districtId;
@@ -404,11 +441,20 @@
                     return;
 		    	}
 
-			    reportRequest.fromDate = $scope.dt;
+                if(!$scope.isAggregateReport())
+                {
+                    reportRequest.fromDate = $scope.dt;
+                }
+                else
+                {
+                    reportRequest.fromDate = $scope.dt1;
+                    reportRequest.toDate = $scope.dt2;
+                }
+
 
 			    $scope.waiting = true;
 
-                console.log($scope.dt);
+                console.log(reportRequest);
 
 				$http({
 					method  : 'POST',
@@ -463,6 +509,8 @@
 				$scope.clearFile();
 				$scope.dt = null;
 				$scope.datePickerContent = "Select Month";
+				$scope.dt1 = null;
+				$scope.dt2 = null;
 
 			}
 
@@ -541,6 +589,9 @@
 			$scope.popup1 = {
 				opened: false
 			};
+
+
+
 
 			var tomorrow = new Date();
 			tomorrow.setDate(tomorrow.getDate() + 1);
@@ -648,6 +699,87 @@
               if($scope.sundaysTable)
                 $scope.sundaysTable = false;
             });
+
+            $scope.myData = [
+                {
+                    "firstName": "Cox",
+                    "lastName": "Carney",
+                    "company": "Enormo",
+                    "employed": true,
+                    "id": 1
+                },
+                {
+                    "firstName": "Lorraine",
+                    "lastName": "Wise",
+                    "company": "Comveyer",
+                    "employed": false,
+                    "id": 2
+                },
+                {
+                    "firstName": "Nancy",
+                    "lastName": "Waters",
+                    "company": "Fuelton",
+                    "employed": false,
+                    "id": 3
+                }
+            ];
+
+            $scope.gridOptions1 = {
+                enableSorting: true,
+                columnDefs: [
+                  { field: 'firstName',
+                     cellTemplate:'<a class="btn primary" ng-click="grid.appScope.showMe(row.entity.company)">{{ COL_FIELD }}</a>'
+                  },
+                  { field: 'lastName' },
+                  { field: 'employed', enableSorting: false },
+                  { field: 'id'}
+                ],
+                data :  $scope.myData
+              };
+
+           $scope.someProp = 'abc',
+            $scope.showMe = function(company){
+                  alert(company);
+                  console.log(company);
+             };
+
+
+
+               $scope.dateFormatOptions = {
+                 formatYear: 'yyyy',
+                 maxDate: new Date(),
+                 minDate: new Date(2017, 5, 22),
+                 startingDay: 1
+               };
+
+
+               $scope.open2 = function() {
+                 $scope.popup2.opened = true;
+               };
+
+               $scope.open3 = function() {
+                 $scope.popup3.opened = true;
+               };
+
+               $scope.setDate = function(year, month, day) {
+                 $scope.dt1 = new Date(year, month, day);
+               };
+
+               $scope.setDate = function(year, month, day) {
+                  $scope.dt2 = new Date(year, month, day);
+               };
+
+               $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+               $scope.format = $scope.formats[0];
+               $scope.altInputFormats = ['M!/d!/yyyy'];
+
+               $scope.popup2 = {
+                 opened: false
+               };
+
+               $scope.popup3 = {
+                 opened: false
+               };
 
 		}])
 })()

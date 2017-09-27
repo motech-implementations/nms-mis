@@ -62,8 +62,8 @@
 				},
 
 				getReportsMenu: function(){
-				   return $http.get(backend_root + 'nms/user/reportsMenu/');
-//                   return $http.get("scripts/json/reportDetails.json");
+//				   return $http.get(backend_root + 'nms/user/reportsMenu/');
+                   return $http.get("scripts/json/reportDetails.json");
 				},
 
 				getUser: function(id){
