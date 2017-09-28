@@ -375,9 +375,9 @@ public class UserController {
         String place = AccessLevel.NATIONAL.getAccessLevel();
 
         Map<String, String> m = new HashMap<>();
-
+        Map<String,String> breadCrumbs = new HashMap<>();
         User currentUser = userService.getCurrentUser();
-
+        AggregateResponseDto aggregateResponseDto = new AggregateResponseDto();
         if(reportRequest.getReportType().equals(ReportType.maPerformance.getReportType())){
             DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
             Calendar calendar = Calendar.getInstance();
@@ -411,20 +411,67 @@ public class UserController {
             if (reportRequest.getStateId() == 0) {
                 cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0,"State",fromDate));
                 cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0,"State",toDate));
+                if(currentUser.getAccessLevel().equals(AccessLevel.NATIONAL.getAccessLevel())){
+                    breadCrumbs.put("NATIONAL","ACTIVE");
+                    }
             }
             else{
                 if (reportRequest.getDistrictId() == 0) {
                     cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(),"District",fromDate));
                     cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(),"District",toDate));
+                    breadCrumbs.put(stateDao.findByStateId(reportRequest.getStateId()).getStateName(),"ACTIVE");
+                    if(currentUser.getAccessLevel().equals(AccessLevel.NATIONAL.getAccessLevel())){
+                        breadCrumbs.put("NATIONAL","ACTIVE");
+                    }
+                    if(currentUser.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel())){
+                        breadCrumbs.put("NATIONAL","INACTIVE");
+                    }
                 }
                 else{
                     if(reportRequest.getBlockId() == 0){
                         cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(),"Block",fromDate));
                         cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(),"Block",toDate));
+                        breadCrumbs.put(districtDao.findByDistrictId(reportRequest.getDistrictId()).getDistrictName(),"ACTIVE");
+                        if(currentUser.getAccessLevel().equals(AccessLevel.NATIONAL.getAccessLevel())){
+                            breadCrumbs.put("NATIONAL","ACTIVE");
+                            breadCrumbs.put(stateDao.findByStateId(reportRequest.getStateId()).getStateName(),"ACTIVE");
+                        }
+                        if(currentUser.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel())){
+                            breadCrumbs.put("NATIONAL","INACTIVE");
+                            breadCrumbs.put(stateDao.findByStateId(reportRequest.getStateId()).getStateName(),"ACTIVE");
+                        }
+                        if(currentUser.getAccessLevel().equals(AccessLevel.DISTRICT.getAccessLevel())){
+                            breadCrumbs.put("NATIONAL","INACTIVE");
+                            breadCrumbs.put(stateDao.findByStateId(reportRequest.getStateId()).getStateName(),"INACTIVE");
+                        }
+
                     }
                     else {
                         cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(),"Subcenter",fromDate));
                         cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(),"Subcenter",toDate));
+                        breadCrumbs.put(blockDao.findByblockId(reportRequest.getBlockId()).getBlockName(),"ACTIVE");
+                        if(currentUser.getAccessLevel().equals(AccessLevel.NATIONAL.getAccessLevel())){
+                            breadCrumbs.put("NATIONAL","ACTIVE");
+                            breadCrumbs.put(stateDao.findByStateId(reportRequest.getStateId()).getStateName(),"ACTIVE");
+                            breadCrumbs.put(districtDao.findByDistrictId(reportRequest.getDistrictId()).getDistrictName(),"ACTIVE");
+
+                        }
+                        if(currentUser.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel())){
+                            breadCrumbs.put("NATIONAL","INACTIVE");
+                            breadCrumbs.put(stateDao.findByStateId(reportRequest.getStateId()).getStateName(),"ACTIVE");
+                            breadCrumbs.put(districtDao.findByDistrictId(reportRequest.getDistrictId()).getDistrictName(),"ACTIVE");
+                        }
+                        if(currentUser.getAccessLevel().equals(AccessLevel.DISTRICT.getAccessLevel())){
+                            breadCrumbs.put("NATIONAL","INACTIVE");
+                            breadCrumbs.put(stateDao.findByStateId(reportRequest.getStateId()).getStateName(),"INACTIVE");
+                            breadCrumbs.put(districtDao.findByDistrictId(reportRequest.getDistrictId()).getDistrictName(),"ACTIVE");
+                        }
+                        if(currentUser.getAccessLevel().equals(AccessLevel.BLOCK.getAccessLevel())){
+                            breadCrumbs.put("NATIONAL","INACTIVE");
+                            breadCrumbs.put(stateDao.findByStateId(reportRequest.getStateId()).getStateName(),"INACTIVE");
+                            breadCrumbs.put(districtDao.findByDistrictId(reportRequest.getDistrictId()).getDistrictName(),"INACTIVE");
+                        }
+
                     }
                 }
 
@@ -433,7 +480,7 @@ public class UserController {
 
             for(int i=0;i<cumulativesummaryReportEnd.size();i++){
                 for(int j=0;j<cumulativesummaryReportStart.size();j++)  {
-                    if(cumulativesummaryReportEnd.get(i).getLocationId() == (cumulativesummaryReportStart.get(j).getLocationId())){
+                    if(cumulativesummaryReportEnd.get(i).getLocationId().equals(cumulativesummaryReportStart.get(j).getLocationId())){
                         AggregateCumulativeMA a = cumulativesummaryReportEnd.get(i);
                         AggregateCumulativeMA b = cumulativesummaryReportStart.get(j);
                         MAPerformanceDto summaryDto1 = new MAPerformanceDto();
@@ -461,15 +508,28 @@ public class UserController {
                         if(locationType.equalsIgnoreCase("Subcenter")){
                             summaryDto1.setLocationName(subcenterDao.findBySubcenterId(a.getLocationId().intValue()).getSubcenterName());
                         }
+                        if (locationType.equalsIgnoreCase("DifferenceState")) {
+                            summaryDto1.setLocationName("No District Count");
+                        }
+                        if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
+                            summaryDto1.setLocationName("No Block Count");
+                        }
+                        if (locationType.equalsIgnoreCase("DifferenceBlock")) {
+                            summaryDto1.setLocationName("No Subcenter Count");
+                        }
 
-                        summaryDto.add(summaryDto1);
+                        if(a.getId()+b.getId()!=0){
+                            summaryDto.add(summaryDto1);
+                        }
                     }
 
 
 
                 }
             }
-            return summaryDto;
+            aggregateResponseDto.setTableData(summaryDto);
+            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
+            return aggregateResponseDto;
 
 
 
@@ -508,36 +568,85 @@ public class UserController {
 
             if (reportRequest.getStateId() == 0) {
                 cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0,"State",fromDate));
+                cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0,"State",toDate));
+                if(currentUser.getAccessLevel().equals(AccessLevel.NATIONAL.getAccessLevel())){
+                    breadCrumbs.put("NATIONAL","ACTIVE");
+                }
             }
             else{
                 if (reportRequest.getDistrictId() == 0) {
                     cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(),"District",fromDate));
+                    cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(),"District",toDate));
+                    breadCrumbs.put(stateDao.findByStateId(reportRequest.getStateId()).getStateName(),"ACTIVE");
+                    if(currentUser.getAccessLevel().equals(AccessLevel.NATIONAL.getAccessLevel())){
+                        breadCrumbs.put("NATIONAL","ACTIVE");
+                    }
+                    if(currentUser.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel())){
+                        breadCrumbs.put("NATIONAL","INACTIVE");
+                    }
                 }
                 else{
                     if(reportRequest.getBlockId() == 0){
                         cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(),"Block",fromDate));
-                    }
-                    else  cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(),"Subcenter",fromDate));
-                }
-
-
-            }
-            if (reportRequest.getStateId() == 0) {
-                cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0,"State",toDate));
-            }
-            else{
-                if (reportRequest.getDistrictId() == 0) {
-                    cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(),"District",toDate));
-                }
-                else{
-                    if(reportRequest.getBlockId() == 0){
                         cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(),"Block",toDate));
-                    }
-                    else  cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(),"Subcenter",toDate));
+                        breadCrumbs.put(districtDao.findByDistrictId(reportRequest.getDistrictId()).getDistrictName(),"ACTIVE");
+                        if(currentUser.getAccessLevel().equals(AccessLevel.NATIONAL.getAccessLevel())){
+                            breadCrumbs.put("NATIONAL","ACTIVE");
+                            breadCrumbs.put(stateDao.findByStateId(reportRequest.getStateId()).getStateName(),"ACTIVE");
+                        }
+                        if(currentUser.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel())){
+                            breadCrumbs.put("NATIONAL","INACTIVE");
+                            breadCrumbs.put(stateDao.findByStateId(reportRequest.getStateId()).getStateName(),"ACTIVE");
+                        }
+                        if(currentUser.getAccessLevel().equals(AccessLevel.DISTRICT.getAccessLevel())){
+                            breadCrumbs.put("NATIONAL","INACTIVE");
+                            breadCrumbs.put(stateDao.findByStateId(reportRequest.getStateId()).getStateName(),"INACTIVE");
+                        }}
+                    else {
+                        cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(),"Subcenter",fromDate));
+                        cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(),"Subcenter",toDate));
+                        breadCrumbs.put(blockDao.findByblockId(reportRequest.getBlockId()).getBlockName(),"ACTIVE");
+                        if(currentUser.getAccessLevel().equals(AccessLevel.NATIONAL.getAccessLevel())){
+                            breadCrumbs.put("NATIONAL","ACTIVE");
+                            breadCrumbs.put(stateDao.findByStateId(reportRequest.getStateId()).getStateName(),"ACTIVE");
+                            breadCrumbs.put(districtDao.findByDistrictId(reportRequest.getDistrictId()).getDistrictName(),"ACTIVE");
+
+                        }
+                        if(currentUser.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel())){
+                            breadCrumbs.put("NATIONAL","INACTIVE");
+                            breadCrumbs.put(stateDao.findByStateId(reportRequest.getStateId()).getStateName(),"ACTIVE");
+                            breadCrumbs.put(districtDao.findByDistrictId(reportRequest.getDistrictId()).getDistrictName(),"ACTIVE");
+                        }
+                        if(currentUser.getAccessLevel().equals(AccessLevel.DISTRICT.getAccessLevel())){
+                            breadCrumbs.put("NATIONAL","INACTIVE");
+                            breadCrumbs.put(stateDao.findByStateId(reportRequest.getStateId()).getStateName(),"INACTIVE");
+                            breadCrumbs.put(districtDao.findByDistrictId(reportRequest.getDistrictId()).getDistrictName(),"ACTIVE");
+                        }
+                        if(currentUser.getAccessLevel().equals(AccessLevel.BLOCK.getAccessLevel())){
+                            breadCrumbs.put("NATIONAL","INACTIVE");
+                            breadCrumbs.put(stateDao.findByStateId(reportRequest.getStateId()).getStateName(),"INACTIVE");
+                            breadCrumbs.put(districtDao.findByDistrictId(reportRequest.getDistrictId()).getDistrictName(),"INACTIVE");
+                        }}
                 }
 
 
             }
+//            if (reportRequest.getStateId() == 0) {
+//                cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0,"State",toDate));
+//            }
+//            else{
+//                if (reportRequest.getDistrictId() == 0) {
+//                    cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(),"District",toDate));
+//                }
+//                else{
+//                    if(reportRequest.getBlockId() == 0){
+//                        cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(),"Block",toDate));
+//                    }
+//                    else  cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(),"Subcenter",toDate));
+//                }
+//
+//
+//            }
 //            if((cumulativesummaryReportStart.size()== 0)){
 //                for(int i=0;i<cumulativesummaryReportEnd.size();i++) {
 //                    AggregateCumulativeMA a = cumulativesummaryReportEnd.get(i);
@@ -579,11 +688,11 @@ public class UserController {
                     boolean notAvailable = true;
                     for (int j = 0; j < cumulativesummaryReportStart.size(); j++) {
 
-                         if (cumulativesummaryReportEnd.get(i).getLocationId() == (cumulativesummaryReportStart.get(j).getLocationId())) {
+                         if (cumulativesummaryReportEnd.get(i).getLocationId().equals(cumulativesummaryReportStart.get(j).getLocationId())) {
                             AggregateCumulativeMA a = cumulativesummaryReportEnd.get(i);
                             AggregateCumulativeMA b = cumulativesummaryReportStart.get(j);
                             MASubscriberDto summaryDto1 = new MASubscriberDto();
-//                        summaryDto1.setId(a.getId());
+                             summaryDto1.setId(a.getId());
                             summaryDto1.setLocationId(a.getLocationId());
                             summaryDto1.setAshasCompleted(a.getAshasCompleted() - b.getAshasCompleted());
                             summaryDto1.setAshasFailed(a.getAshasFailed() - b.getAshasFailed());
@@ -611,15 +720,29 @@ public class UserController {
                             if (locationType.equalsIgnoreCase("Subcenter")) {
                                 summaryDto1.setLocationName(subcenterDao.findBySubcenterId(a.getLocationId().intValue()).getSubcenterName());
                             }
+                             if (locationType.equalsIgnoreCase("DifferenceState")) {
+                                 summaryDto1.setLocationName("No District Count");
+                             }
+                             if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
+                                 summaryDto1.setLocationName("No Block Count");
+                             }
+                             if (locationType.equalsIgnoreCase("DifferenceBlock")) {
+                                 summaryDto1.setLocationName("No Subcenter Count");
+                             }
                             notAvailable = false;
-                            summaryDto.add(summaryDto1);
+                             if(a.getId()+b.getId()!=0){
+                                 summaryDto.add(summaryDto1);
+                             }
+
                         }
 
 
                     }
                 }
 
-            return summaryDto;
+            aggregateResponseDto.setTableData(summaryDto);
+            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
+            return aggregateResponseDto;
 
 
 
@@ -650,16 +773,60 @@ public class UserController {
 
             if (reportRequest.getStateId() == 0) {
                 cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0,"State",toDate));
+                breadCrumbs.put("NATIONAL","ACTIVE");
             }
             else{
                 if (reportRequest.getDistrictId() == 0) {
                     cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(),"District",toDate));
+                    breadCrumbs.put(stateDao.findByStateId(reportRequest.getStateId()).getStateName(),"ACTIVE");
+                    if(currentUser.getAccessLevel().equals(AccessLevel.NATIONAL.getAccessLevel())){
+                        breadCrumbs.put("NATIONAL","ACTIVE");
+                    }
+                    if(currentUser.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel())){
+                        breadCrumbs.put("NATIONAL","INACTIVE");
+                    }
                 }
                 else{
                     if(reportRequest.getBlockId() == 0){
                         cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(),"Block",toDate));
+                        breadCrumbs.put(districtDao.findByDistrictId(reportRequest.getDistrictId()).getDistrictName(),"ACTIVE");
+                        if(currentUser.getAccessLevel().equals(AccessLevel.NATIONAL.getAccessLevel())){
+                            breadCrumbs.put("NATIONAL","ACTIVE");
+                            breadCrumbs.put(stateDao.findByStateId(reportRequest.getStateId()).getStateName(),"ACTIVE");
+                        }
+                        if(currentUser.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel())){
+                            breadCrumbs.put("NATIONAL","INACTIVE");
+                            breadCrumbs.put(stateDao.findByStateId(reportRequest.getStateId()).getStateName(),"ACTIVE");
+                        }
+                        if(currentUser.getAccessLevel().equals(AccessLevel.DISTRICT.getAccessLevel())){
+                            breadCrumbs.put("NATIONAL","INACTIVE");
+                            breadCrumbs.put(stateDao.findByStateId(reportRequest.getStateId()).getStateName(),"INACTIVE");
+                        }
                     }
-                   else  cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(),"Subcenter",toDate));
+                   else {
+                        cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(),"Subcenter",toDate));
+                        breadCrumbs.put(blockDao.findByblockId(reportRequest.getBlockId()).getBlockName(),"ACTIVE");
+                        if(currentUser.getAccessLevel().equals(AccessLevel.NATIONAL.getAccessLevel())){
+                            breadCrumbs.put("NATIONAL","ACTIVE");
+                            breadCrumbs.put(stateDao.findByStateId(reportRequest.getStateId()).getStateName(),"ACTIVE");
+                            breadCrumbs.put(districtDao.findByDistrictId(reportRequest.getDistrictId()).getDistrictName(),"ACTIVE");
+
+                        }
+                        if(currentUser.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel())){
+                            breadCrumbs.put("NATIONAL","INACTIVE");
+                            breadCrumbs.put(stateDao.findByStateId(reportRequest.getStateId()).getStateName(),"ACTIVE");
+                            breadCrumbs.put(districtDao.findByDistrictId(reportRequest.getDistrictId()).getDistrictName(),"ACTIVE");
+                        }
+                        if(currentUser.getAccessLevel().equals(AccessLevel.DISTRICT.getAccessLevel())){
+                            breadCrumbs.put("NATIONAL","INACTIVE");
+                            breadCrumbs.put(stateDao.findByStateId(reportRequest.getStateId()).getStateName(),"INACTIVE");
+                            breadCrumbs.put(districtDao.findByDistrictId(reportRequest.getDistrictId()).getDistrictName(),"ACTIVE");
+                        }
+                        if(currentUser.getAccessLevel().equals(AccessLevel.BLOCK.getAccessLevel())){
+                            breadCrumbs.put("NATIONAL","INACTIVE");
+                            breadCrumbs.put(stateDao.findByStateId(reportRequest.getStateId()).getStateName(),"INACTIVE");
+                            breadCrumbs.put(districtDao.findByDistrictId(reportRequest.getDistrictId()).getDistrictName(),"INACTIVE");
+                        } }
                 }
 
 
@@ -691,10 +858,24 @@ public class UserController {
                 if(locationType.equalsIgnoreCase("Subcenter")){
                     summaryDto1.setLocationName(subcenterDao.findBySubcenterId(a.getLocationId().intValue()).getSubcenterName());
                 }
+                if (locationType.equalsIgnoreCase("DifferenceState")) {
+                    summaryDto1.setLocationName("No District Count");
+                }
+                if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
+                    summaryDto1.setLocationName("No Block Count");
+                }
+                if (locationType.equalsIgnoreCase("DifferenceBlock")) {
+                    summaryDto1.setLocationName("No Subcenter Count");
+                }
 
-                summaryDto.add(summaryDto1);
+                if(a.getId()!=0){
+                    summaryDto.add(summaryDto1);
+                }
+
             }
-            return summaryDto;
+            aggregateResponseDto.setTableData(summaryDto);
+            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
+            return aggregateResponseDto;
 
         }
 

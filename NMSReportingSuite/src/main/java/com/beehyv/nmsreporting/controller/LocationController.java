@@ -171,13 +171,9 @@ public class LocationController {
         else if(user.getAccessLevel().equals(AccessLevel.DISTRICT.getAccessLevel())){
             subcenters = locationService.getChildSubcenters(blockId);
         }
-        else if(user.getAccessLevel().equals(AccessLevel.BLOCK.getAccessLevel())){
+        else {
             subcenters = new ArrayList<>();
             subcenters =locationService.getChildSubcenters(user.getBlockId());
-        }
-        else{
-            subcenters = new ArrayList<>();
-            subcenters.add(locationService.findSubcenterById(user.getSubcenterId()));
         }
         return subcenters;
     }

@@ -65,7 +65,7 @@ public class FrontLineWorkers {
     @Column(name="last_modified", columnDefinition = "DATE")
     private Date lastModifiedDate;
 
-    @Column(name="course_completion_date", columnDefinition = "DATE")
+    @Column(name="course_first_completion_date", columnDefinition = "DATE")
     private Date firstCompletionDate;
 
     @Column(name="course_start_date", columnDefinition = "DATE")
