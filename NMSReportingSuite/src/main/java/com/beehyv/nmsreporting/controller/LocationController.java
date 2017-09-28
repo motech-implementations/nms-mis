@@ -156,7 +156,7 @@ public class LocationController {
     @RequestMapping(value = {"/subcenters/{blockId}"}, method = RequestMethod.GET)
     public @ResponseBody List<Subcenter> getsubcentersOfBlock(@PathVariable("blockId") Integer blockId) {
         User user = userService.getCurrentUser();
-        List<Subcenter> subcenters;
+        List<Subcenter> subcenters= new ArrayList<>();;
         if(user.getAccessLevel().equals(AccessLevel.NATIONAL.getAccessLevel())) {
             subcenters = locationService.getChildSubcenters(blockId);
         }
@@ -164,17 +164,15 @@ public class LocationController {
             if(locationService.findDistrictById(blockId).getStateOfDistrict().equals(user.getStateId())){
                 subcenters = locationService.getChildSubcenters(blockId);
             }
-            else{
-                subcenters = new ArrayList<>();
-            }
         }
         else if(user.getAccessLevel().equals(AccessLevel.DISTRICT.getAccessLevel())){
             subcenters = locationService.getChildSubcenters(blockId);
         }
         else {
-            subcenters = new ArrayList<>();
             subcenters =locationService.getChildSubcenters(user.getBlockId());
         }
+
+
         return subcenters;
     }
 
