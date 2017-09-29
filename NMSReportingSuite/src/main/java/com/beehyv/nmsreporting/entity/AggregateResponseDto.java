@@ -8,14 +8,14 @@ import java.util.Map;
  */
 public class AggregateResponseDto {
 
-    Map<String,String> breadCrumbData;
+    List<BreadCrumbDto> breadCrumbData;
     Object tableData;
 
-    public Map<String, String> getBreadCrumbData() {
+    public List<BreadCrumbDto> getBreadCrumbData() {
         return breadCrumbData;
     }
 
-    public void setBreadCrumbData(Map<String, String> breadCrumbData) {
+    public void setBreadCrumbData(List<BreadCrumbDto> breadCrumbData) {
         this.breadCrumbData = breadCrumbData;
     }
 
