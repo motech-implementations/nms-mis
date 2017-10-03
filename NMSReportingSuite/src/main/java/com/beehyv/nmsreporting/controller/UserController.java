@@ -381,6 +381,25 @@ public class UserController {
         User currentUser = userService.getCurrentUser();
         List<BreadCrumbDto> breadCrumbs = breadCrumbService.getBreadCrumbs(currentUser,reportRequest);
         AggregateResponseDto aggregateResponseDto = new AggregateResponseDto();
+        if(currentUser.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel()) && !currentUser.getStateId().equals(reportRequest.getStateId())){
+            m.put("status", "fail");
+            return m;
+        }
+        if(currentUser.getAccessLevel().equals(AccessLevel.DISTRICT.getAccessLevel()) && !currentUser.getDistrictId().equals(reportRequest.getDistrictId())){
+            m.put("status", "fail");
+            return m;
+        }
+        if(currentUser.getAccessLevel().equals(AccessLevel.BLOCK.getAccessLevel()) && !currentUser.getBlockId().equals(reportRequest.getBlockId())){
+            m.put("status", "fail");
+            return m;
+        }
+        if(reportRequest.getReportType().equals(ReportType.kilkariCumulative.getReportType())){
+            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
+            List<AggregateCumulativekilkariDto> aggregateCumulativekilkariDtos=aggregateReportsService.getKilkariCumulativeSummary(reportRequest,currentUser);
+            aggregateResponseDto.setTableData(aggregateCumulativekilkariDtos);
+            return aggregateResponseDto;
+        }
+
         if(reportRequest.getReportType().equals(ReportType.maPerformance.getReportType())){
             DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
             Calendar calendar = Calendar.getInstance();

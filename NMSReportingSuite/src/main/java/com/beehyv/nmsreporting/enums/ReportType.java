@@ -11,6 +11,7 @@ public enum ReportType {
 //    lowUsage("KillowUsage"),
 //    selfDeactivated("selfDeactivated"),
 //    sixWeeks("sixWeeks");
+    kilkariCumulative("Kilkari_Cumulative_Summary","Kilkari Cumulative Summary","K","Kilkari Cumulative Summery Aggregate Report"),
     maPerformance("MA_Performance","MA Performance","M","MA Performance Aggregate Report"),
     maSubscriber("MA_Subscriber","MA Subscriber","M","MA Subscriber Aggregate Report"),
     maCumulative("MA_Cumulative_Summary","MA Cumulative Summary","M","MA Cumulative Summery Aggregate Report"),

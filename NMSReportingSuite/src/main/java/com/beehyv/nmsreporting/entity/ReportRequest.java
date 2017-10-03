@@ -21,6 +21,16 @@ public class ReportRequest {
 
     private Integer circleId;
 
+    private String dateType;
+
+    public String getDateType() {
+        return dateType;
+    }
+
+    public void setDateType(String dateType) {
+        this.dateType = dateType;
+    }
+
     public String getReportType() {
         return reportType;
     }
