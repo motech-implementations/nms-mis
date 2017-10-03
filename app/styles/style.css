@@ -305,7 +305,7 @@ div.userTable .dropdown-menu.small > li > a{
 }
 
 .report-type{
-    width: 260px;
+    width: 200px;
 }
 
 div.reports-header{
@@ -501,6 +501,6 @@ body *{
 }
 
 .grid {
-  width: 500px;
-  height: 250px;
+  width: 85%;
+  margin : auto;
 }

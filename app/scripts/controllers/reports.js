@@ -1,7 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("ReportsController", ['$scope', '$state', '$http', 'UserFormFactory','$window', function($scope, $state, $http, UserFormFactory,$window){
+		.controller("ReportsController", ['$scope', '$state', '$http', 'UserFormFactory','$window','$q', function($scope, $state, $http, UserFormFactory,$window,$q){
 
 			UserFormFactory.isLoggedIn()
 			.then(function(result){
@@ -17,6 +17,8 @@
 					})
 				}
 			})
+
+			var reportRequest = {};
             $scope.sundays = [];
  			$scope.reports = [];
 			$scope.states = [];
@@ -24,8 +26,57 @@
 			$scope.blocks = [];
 			$scope.circles = [];
 			$scope.datePickerContent = "Select Month";
-			$scope.dateFormat = 'yyyy-MM-dd';
 			$scope.reportDisplayType = 'TABLE';
+			$scope.gridOptions = {};
+			$scope.gridOptions1 = {};
+			$scope.MA_Performance_Column_Definitions = [];
+			$scope.MA_Cumulative_Column_Definitions = [];
+			$scope.MA_Subscriber_Column_Definitions = [];
+			$scope.hideGrid = true;
+			$scope.showEmptyData = false;
+			$scope.content = "There is no data available for these fields";
+			$scope.periodType = ['Select year','Select month','Select Quarter', 'Custom Range',];
+			$scope.quarterType = ['Q1','Q2','Q3', 'Q4',];
+			$scope.periodDisplayType = "";
+			$scope.dataPickermode = "";
+			$scope.periodTypeContent = "";
+			$scope.dateFormatOptions = {
+                 maxDate: new Date(),
+                 formatYear: 'yyyy',
+                 startingDay: 1,
+             };
+
+             $scope.endDateFormatOptions = {
+                 formatYear: 'yyyy',
+                 maxDate: new Date(),
+                 startingDay: 1
+             };
+            $scope.dateFormat ='yyyy-MM-dd'
+            $scope.dateFormatOptions.minMode = 'date';
+			$scope.endDateFormatOptions.minMode = 'date';
+			$scope.popup2 = {
+                 opened: false
+            };
+
+           $scope.popup3 = {
+             opened: false
+           };
+
+           $scope.open2 = function() {
+                $scope.popup2.opened = true;
+           };
+
+              $scope.open3 = function() {
+                $scope.popup3.opened = true;
+              };
+
+              $scope.setDate = function(year, month, day) {
+                $scope.dt1 = new Date(year, month, day);
+              };
+
+              $scope.setDate = function(year, month, day) {
+                $scope.dt2 = new Date(year, month, day);
+              };
 
 
 			$scope.disableReportCategory = function(){
@@ -80,6 +131,36 @@
 			$scope.selectReportType = function(item){
 			    $scope.reportDisplayType = item;
 			}
+
+			$scope.selectPeriodType = function(item){
+                $scope.periodDisplayType = item;
+                $scope.dt1 = null;
+                $scope.dt2 = null;
+                $scope.quarterDisplayType = '';
+                if($scope.periodDisplayType == 'Select year' || $scope.periodDisplayType == 'Select Quarter' ){
+                    $scope.periodTypeContent = "Select year";
+                    $scope.dateFormat = "yyyy";
+                    $scope.dateFormatOptions.minMode = 'year';
+                }
+                if($scope.periodDisplayType == 'Select month'){
+                    $scope.periodTypeContent = "Select month";
+                    $scope.dateFormat = "yyyy-MM";
+                    $scope.dateFormatOptions.minMode = null;
+                    $scope.dateFormatOptions.minMode = 'month';
+                }
+                if($scope.periodDisplayType == 'Custom Range'){
+                    $scope.periodTypeContent = "Start Date";
+                    $scope.dateFormat = "yyyy-MM-dd";
+                    $scope.dateFormatOptions.minMode = null;
+                    $scope.dateFormatOptions.minMode = 'date';
+                }
+
+            }
+
+            $scope.selectQuarterType = function(item){
+                $scope.quarterDisplayType = item;
+            }
+
 
 			$scope.selectReportCategory = function(item){
 				$scope.reportCategory = item.name;
@@ -144,7 +225,7 @@
 			}
 
             $scope.isAggregateReport = function(){
-            	return $scope.report != null && ($scope.report.reportEnum == 'Cummulative_Summary_Report' || $scope.report.reportEnum == 'MA_Subscriber_Report' || $scope.report.reportEnum == 'MA_Performance_Report' );
+            	return $scope.report != null && ($scope.report.reportEnum == 'MA_Cumulative_Summery' || $scope.report.reportEnum == 'MA_Subscriber' || $scope.report.reportEnum == 'MA_Performance' );
             }
 
 			$scope.reportTypes = ['TABLE', 'BAR GRAPH', 'PIE CHART'];
@@ -241,8 +322,9 @@
 			    }
 			}
 
+
 			$scope.setDateOptions =function(){
-				var minDate = new Date(2015, 09, 01);
+                var minDate = new Date(2015, 09, 01);
 				if($scope.report != null && $scope.report.service == 'M'){
 					minDate = new Date(2015, 10, 01);
 				}
@@ -281,7 +363,9 @@
 //					console.log(minDate);
 				}
 
+                 $scope.dateFormatOptions.minDate= minDate;
 
+                 $scope.endDateFormatOptions.minDate= minDate;
 
 				$scope.dateOptions = {
 					minMode: 'month',
@@ -354,7 +438,6 @@
 			    	 $scope.getSundays($scope.dt);
                      $scope.sundaysTable = true;
 			    	 $scope.popup1.opened = true;
-			    	 console.log(newDate);
 			    }
 			    if((newDate != null) && newDate.getDate() == 1){
                     $scope.dt = new Date($scope.dt.getFullYear(), $scope.dt.getMonth() + 1, 0, 23, 59, 59);
@@ -378,20 +461,20 @@
 					alert("Please select a week")
 					return;
 				}
-				else if($scope.dt == null && (!angular.lowercase($scope.report.name).includes(angular.lowercase("report"))) ){
+				else if($scope.dt == null && (!$scope.isAggregateReport() )){
                 	alert("Please select a month")
 					return;
 				}
-				else if($scope.dt1 == null && (angular.lowercase($scope.report.name).includes(angular.lowercase("report"))) ){
+				else if($scope.dt1 == null && ($scope.isAggregateReport() )){
                     alert("Please select a start date")
                     return;
                 }
-                else if($scope.dt2 == null && (angular.lowercase($scope.report.name).includes(angular.lowercase("report"))) ){
+                else if($scope.dt2 == null && ($scope.isAggregateReport() )){
                     alert("Please select an end date")
                     return;
                 }
 
-				var reportRequest = {};
+
 
 			    reportRequest.reportType = $scope.report.reportEnum;
 
@@ -454,8 +537,6 @@
 
 			    $scope.waiting = true;
 
-                console.log(reportRequest);
-
 				$http({
 					method  : 'POST',
 					url     : $scope.getReportUrl,
@@ -463,16 +544,45 @@
 					headers : {'Content-Type': 'application/json'} 
 				})
 				.then(function(result){
-					$scope.waiting = false;
-					$scope.status = result.data.status;
-					if($scope.status == 'success'){
-						$scope.fileName = result.data.file;
-						$scope.pathName = result.data.path;
-						angular.element('#downloadReportLink').trigger('click');
-					}
-					if($scope.status == 'fail'){
+
+					if(!$scope.isAggregateReport()){
+					    $scope.waiting = false;
+                        $scope.status = result.data.status;
+                        if($scope.status == 'success'){
+                            $scope.fileName = result.data.file;
+                            $scope.pathName = result.data.path;
+                            angular.element('#downloadReportLink').trigger('click');
+                        }
+                        if($scope.status == 'fail'){
+
+                        }
 
 					}
+
+					if($scope.isAggregateReport()){
+					    $scope.waiting = false;
+
+					    if($scope.report.reportEnum == 'MA_Cumulative_Summery'){
+					        $scope.gridOptions1.columnDefs = $scope.MA_Cumulative_Column_Definitions;
+					    }
+					    else if($scope.report.reportEnum == 'MA_Performance'){
+					        $scope.gridOptions1.columnDefs = $scope.MA_Performance_Column_Definitions;
+					    }
+					    else
+					        $scope.gridOptions1.columnDefs = $scope.MA_Subscriber_Column_Definitions;
+                        if(result.data.length >0){
+                            $scope.gridOptions1.data = result.data;
+                            $scope.hideGrid = false;
+                        }
+                         else{
+                            $scope.showEmptyData = true;
+                            $scope.hideGrid = true;
+                         }
+
+
+					    $scope.gridOptions = $scope.gridOptions1;
+					}
+
 				})
 			}
 
@@ -511,6 +621,8 @@
 				$scope.datePickerContent = "Select Month";
 				$scope.dt1 = null;
 				$scope.dt2 = null;
+				$scope.hideGrid = true;
+				$scope.content = "";
 
 			}
 
@@ -589,9 +701,6 @@
 			$scope.popup1 = {
 				opened: false
 			};
-
-
-
 
 			var tomorrow = new Date();
 			tomorrow.setDate(tomorrow.getDate() + 1);
@@ -700,86 +809,151 @@
                 $scope.sundaysTable = false;
             });
 
-            $scope.myData = [
-                {
-                    "firstName": "Cox",
-                    "lastName": "Carney",
-                    "company": "Enormo",
-                    "employed": true,
-                    "id": 1
-                },
-                {
-                    "firstName": "Lorraine",
-                    "lastName": "Wise",
-                    "company": "Comveyer",
-                    "employed": false,
-                    "id": 2
-                },
-                {
-                    "firstName": "Nancy",
-                    "lastName": "Waters",
-                    "company": "Fuelton",
-                    "employed": false,
-                    "id": 3
-                }
-            ];
+
+
+            var canceler = $q.defer();
 
             $scope.gridOptions1 = {
                 enableSorting: true,
-                columnDefs: [
-                  { field: 'firstName',
-                     cellTemplate:'<a class="btn primary" ng-click="grid.appScope.showMe(row.entity.company)">{{ COL_FIELD }}</a>'
-                  },
-                  { field: 'lastName' },
-                  { field: 'employed', enableSorting: false },
-                  { field: 'id'}
-                ],
-                data :  $scope.myData
+                onRegisterApi: function(gridApi){
+                      $scope.gridApi = gridApi;
+                    },
+
+
               };
 
-           $scope.someProp = 'abc',
-            $scope.showMe = function(company){
-                  alert(company);
-                  console.log(company);
-             };
+
+
+            $scope.MA_Cumulative_Column_Definitions =[
+                                                       { field: 'locationName',
+                                                         cellTemplate:'<a class="btn primary" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
+                                                         width: '13%'
+                                                       },
+                                                       { field: 'ashasRegistered', name : 'No of Registered ASHA', width: '13%' },
+                                                       { field: 'ashasStarted', name : ' No of Asha Started Course',  width: '13%' },
+                                                       { field: 'ashasNotStarted', name : ' No of Asha Not Started Course' },
+                                                       { field: 'ashasCompleted' , name : 'No of Asha Successfully Completed the Course'},
+                                                       { field: 'ashasFailed' , name : 'No of Asha who failed the course'},
+                                                       { field: 'notStartedpercentage' , name : '% Not Started Course'},
+                                                       { field: 'completedPercentage' , name : '% Successfully Completed'},
+                                                       { field: 'failedpercentage' , name : '% Failed the course'},
+                                                      ],
+
+
+            $scope.MA_Performance_Column_Definitions =[
+                                                         { field: 'locationName',
+                                                            cellTemplate:'<a class="btn primary" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>'
+                                                         },
+                                                         { field: 'ashasStarted', name: 'Number of Asha Started Course' },
+                                                         { field: 'ashasAccessed', name: 'Number of Asha Pursuing Course' },
+                                                         { field: 'ashasNotAccessed', name: 'Number of Asha not Pursuing Course'},
+                                                         { field: 'ashasCompleted', name: 'Number of Asha Successfully Completed Course'},
+                                                         { field: 'ashasFailed',  name: 'Number of Asha who Failed the Course'},
+                                                        ],
+
+            $scope.MA_Subscriber_Column_Definitions =[
+                                                         { field: 'locationName',
+                                                            cellTemplate:'<a class="btn primary" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>'
+                                                         },
+                                                         { field: 'registeredNotCompletedStart', name: 'Number of ASHA Registered But Not Completed (Period Start)' },
+                                                         { field: 'recordsReceived', name: 'Number of Asha Received Through Web Service' },
+                                                         { field: 'ashasRejected', name: 'Number of Asha Records Rejected'},
+                                                         { field: 'ashasRegistered', name: 'Number of Asha Subscriptions Added'},
+                                                         { field: 'ashasCompleted',  name: 'Number of Asha Successfully Completed the Course'},
+                                                         { field: 'registeredNotCompletedend',  name: 'Number of Asha Registered But Not Completed the Course (Period End)'},
+                                                        ],
+
+            $scope.drillDownData = function(locationId,locationType){
+
+                  if(locationType == "State"){
+                    reportRequest.stateId = locationId;
+                    $http({
+                            method  : 'POST',
+                            url     : $scope.getReportUrl,
+                            data    : reportRequest, //forms user object
+                            headers : {'Content-Type': 'application/json'}
+                        })
+                        .then(function(result){
+
+                            if($scope.isAggregateReport()){
+                                $scope.waiting = false;
+                                if(result.data.length >0){
+                                    $scope.gridOptions1.data = result.data;
+                                    $scope.hideGrid = false;
+                                }
+                                else{
+                                    $scope.showEmptyData = true;
+                                    $scope.hideGrid = true;
+                                }
+                                $scope.gridOptions = $scope.gridOptions1;
+                            }
+
+                        })
+                  }
+                  else if(locationType == "District"){
+                     reportRequest.districtId = locationId;
+                     $http({
+                             method  : 'POST',
+                             url     : $scope.getReportUrl,
+                             data    : reportRequest, //forms user object
+                             headers : {'Content-Type': 'application/json'}
+                         })
+                         .then(function(result){
+
+                             if($scope.isAggregateReport()){
+                                 $scope.waiting = false;
+                                 if(result.data.length >0){
+                                     $scope.gridOptions1.data = result.data;
+                                     $scope.hideGrid = false;
+                                 }
+                                 else{
+                                     $scope.showEmptyData = true;
+                                     $scope.hideGrid = true;
+                                 }
+                                 $scope.gridOptions = $scope.gridOptions1;
+                             }
+
+                         })
+                   }
+
+                   else if(locationType == "Block"){
+                    reportRequest.blockId = locationId;
+
+                    $http({
+                            method  : 'POST',
+                            url     : $scope.getReportUrl,
+                            data    : reportRequest, //forms user object
+                            headers : {'Content-Type': 'application/json'}
+                        })
+                        .then(function(result){
+
+                            if($scope.isAggregateReport()){
+                                $scope.waiting = false;
+                                if(result.data.length >0){
+                                    $scope.gridOptions1.data = result.data;
+                                    $scope.hideGrid = false;
+                                }
+                                else{
+                                     $scope.showEmptyData = true;
+                                     $scope.hideGrid = true;
+                                }
+                                $scope.gridOptions = $scope.gridOptions1;
+                            }
+
+                        })
+                  }
+
+
+            }
 
 
 
-               $scope.dateFormatOptions = {
-                 formatYear: 'yyyy',
-                 maxDate: new Date(),
-                 minDate: new Date(2017, 5, 22),
-                 startingDay: 1
-               };
 
 
-               $scope.open2 = function() {
-                 $scope.popup2.opened = true;
-               };
+               $scope.$on('$destroy', function(){
+                   canceler.resolve();  // Aborts the $http request if it isn't finished.
+                 });
 
-               $scope.open3 = function() {
-                 $scope.popup3.opened = true;
-               };
-
-               $scope.setDate = function(year, month, day) {
-                 $scope.dt1 = new Date(year, month, day);
-               };
-
-               $scope.setDate = function(year, month, day) {
-                  $scope.dt2 = new Date(year, month, day);
-               };
-
-               $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-               $scope.format = $scope.formats[0];
-               $scope.altInputFormats = ['M!/d!/yyyy'];
-
-               $scope.popup2 = {
-                 opened: false
-               };
-
-               $scope.popup3 = {
-                 opened: false
-               };
 
 		}])
 })()

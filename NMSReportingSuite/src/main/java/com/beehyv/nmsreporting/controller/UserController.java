@@ -433,7 +433,7 @@ public class UserController {
 
             for(int i=0;i<cumulativesummaryReportEnd.size();i++){
                 for(int j=0;j<cumulativesummaryReportStart.size();j++)  {
-                    if(cumulativesummaryReportEnd.get(i).getLocationId() == (cumulativesummaryReportStart.get(j).getLocationId())){
+                    if(cumulativesummaryReportEnd.get(i).getLocationId().equals (cumulativesummaryReportStart.get(j).getLocationId())){
                         AggregateCumulativeMA a = cumulativesummaryReportEnd.get(i);
                         AggregateCumulativeMA b = cumulativesummaryReportStart.get(j);
                         MAPerformanceDto summaryDto1 = new MAPerformanceDto();
@@ -579,7 +579,7 @@ public class UserController {
                     boolean notAvailable = true;
                     for (int j = 0; j < cumulativesummaryReportStart.size(); j++) {
 
-                         if (cumulativesummaryReportEnd.get(i).getLocationId() == (cumulativesummaryReportStart.get(j).getLocationId())) {
+                         if (cumulativesummaryReportEnd.get(i).getLocationId().equals(cumulativesummaryReportStart.get(j).getLocationId())) {
                             AggregateCumulativeMA a = cumulativesummaryReportEnd.get(i);
                             AggregateCumulativeMA b = cumulativesummaryReportStart.get(j);
                             MASubscriberDto summaryDto1 = new MASubscriberDto();
