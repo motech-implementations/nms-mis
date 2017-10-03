@@ -21,6 +21,26 @@ public class ReportRequest {
 
     private Integer circleId;
 
+    private String periodType;
+
+    private String quarterType;
+
+    public String getPeriodType() {
+        return periodType;
+    }
+
+    public void setPeriodType(String periodType) {
+        this.periodType = periodType;
+    }
+
+    public String getQuarterType() {
+        return quarterType;
+    }
+
+    public void setQuarterType(String quarterType) {
+        this.quarterType = quarterType;
+    }
+
     public String getReportType() {
         return reportType;
     }

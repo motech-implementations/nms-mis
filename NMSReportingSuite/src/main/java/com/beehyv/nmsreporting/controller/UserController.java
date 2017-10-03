@@ -384,32 +384,80 @@ public class UserController {
         if(reportRequest.getReportType().equals(ReportType.maPerformance.getReportType())){
             DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
             Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(reportRequest.getToDate().getTime());
-            String toDateString = formatter.format(calendar.getTime());
-            Date toDate;
-            toDate = formatter.parse(toDateString);
-            calendar.setTimeInMillis(reportRequest.getFromDate().getTime());
-            String fromDateString = formatter.format(calendar.getTime());
-            Date fromDate;
+            Date toDate = new Date();
+            Date startDate=new Date(0);
+            Calendar aCalendar = Calendar.getInstance();
+            aCalendar.setTime(reportRequest.getFromDate());
+            aCalendar.set(Calendar.MILLISECOND, 0);
+            aCalendar.set(Calendar.SECOND, 0);
+            aCalendar.set(Calendar.MINUTE, 0);
+            aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+
+//        aCalendar.add(Calendar.MONTH, -1);
+
+            Date fromDate = aCalendar.getTime();
+
+
+            if(reportRequest.getPeriodType().equalsIgnoreCase("Custom Range")){
+                aCalendar.setTime(reportRequest.getToDate());
+                aCalendar.set(Calendar.MILLISECOND, 0);
+                aCalendar.set(Calendar.SECOND, 0);
+                aCalendar.set(Calendar.MINUTE, 0);
+                aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+                toDate = aCalendar.getTime();
+
+            }
+            if(reportRequest.getPeriodType().equalsIgnoreCase("Select Month")){
+
+                aCalendar.add(Calendar.MONTH, 1);
+                aCalendar.add(Calendar.DATE,-1);
+                toDate = aCalendar.getTime();
+            }
+            if(reportRequest.getPeriodType().equalsIgnoreCase("Select Year")){
+                aCalendar.add(Calendar.YEAR, 1);
+                aCalendar.add(Calendar.DATE,-1);
+                toDate = aCalendar.getTime();
+            }
+            if(reportRequest.getPeriodType().equalsIgnoreCase("Select Quarter")){
+               if(reportRequest.getQuarterType().equalsIgnoreCase("Q1")){
+                   aCalendar.add(Calendar.MONTH,3);
+                   aCalendar.add(Calendar.DATE,-1);
+                   toDate = aCalendar.getTime();
+               }
+                if(reportRequest.getQuarterType().equalsIgnoreCase("Q2")){
+                    aCalendar.add(Calendar.MONTH,3);
+                    fromDate = aCalendar.getTime();
+                    aCalendar.add(Calendar.MONTH,3);
+                    aCalendar.add(Calendar.DATE,-1);
+                    toDate = aCalendar.getTime();
+                }
+                if(reportRequest.getQuarterType().equalsIgnoreCase("Q3")){
+                    aCalendar.add(Calendar.MONTH,6);
+                    fromDate = aCalendar.getTime();
+                    aCalendar.add(Calendar.MONTH,3);
+                    aCalendar.add(Calendar.DATE,-1);
+                    toDate = aCalendar.getTime();
+                }
+                if(reportRequest.getQuarterType().equalsIgnoreCase("Q4")){
+                    aCalendar.add(Calendar.MONTH,9);
+                    fromDate = aCalendar.getTime();
+                    aCalendar.add(Calendar.MONTH,3);
+                    aCalendar.add(Calendar.DATE,-1);
+                    toDate = aCalendar.getTime();
+                }
+            }
+
+
+//            calendar.setTimeInMillis(reportRequest.getFromDate().getTime());
+//            String fromDateString = formatter.format(calendar.getTime());
+//            Date fromDate;
             List<MAPerformanceDto> summaryDto = new ArrayList<>();
             List<AggregateCumulativeMA> cumulativesummaryReportStart = new ArrayList<>();
             List<AggregateCumulativeMA> cumulativesummaryReportEnd = new ArrayList<>();
-            fromDate = formatter.parse(fromDateString);
-            calendar.setTime(fromDate);
-            calendar.add(Calendar.DATE, -1);
-            fromDate = calendar.getTime();
-            if(currentUser.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel()) && !currentUser.getStateId().equals(reportRequest.getStateId())){
-                m.put("status", "fail");
-                return m;
-            }
-            if(currentUser.getAccessLevel().equals(AccessLevel.DISTRICT.getAccessLevel()) && !currentUser.getDistrictId().equals(reportRequest.getDistrictId())){
-                m.put("status", "fail");
-                return m;
-            }
-            if(currentUser.getAccessLevel().equals(AccessLevel.BLOCK.getAccessLevel()) && !currentUser.getBlockId().equals(reportRequest.getBlockId())){
-                m.put("status", "fail");
-                return m;
-            }
+//            fromDate = formatter.parse(fromDateString);
+//            calendar.setTime(fromDate);
+//            calendar.add(Calendar.DATE, -1);
+//            fromDate = calendar.getTime();
 
             if (reportRequest.getStateId() == 0) {
                 cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0,"State",fromDate));
@@ -497,32 +545,76 @@ public class UserController {
         if(reportRequest.getReportType().equals(ReportType.maSubscriber.getReportType())){
             DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
             Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(reportRequest.getToDate().getTime());
-            String toDateString = formatter.format(calendar.getTime());
-            Date toDate;
-            toDate = formatter.parse(toDateString);
-            calendar.setTimeInMillis(reportRequest.getFromDate().getTime());
-            String fromDateString = formatter.format(calendar.getTime());
-            Date fromDate;
+            Date toDate = new Date();
+            Date startDate=new Date(0);
+            Calendar aCalendar = Calendar.getInstance();
+            aCalendar.setTime(reportRequest.getFromDate());
+            aCalendar.set(Calendar.MILLISECOND, 0);
+            aCalendar.set(Calendar.SECOND, 0);
+            aCalendar.set(Calendar.MINUTE, 0);
+            aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+
+//        aCalendar.add(Calendar.MONTH, -1);
+
+            Date fromDate = aCalendar.getTime();
+
+
+            if(reportRequest.getPeriodType().equalsIgnoreCase("Custom Range")){
+                aCalendar.setTime(reportRequest.getToDate());
+                aCalendar.set(Calendar.MILLISECOND, 0);
+                aCalendar.set(Calendar.SECOND, 0);
+                aCalendar.set(Calendar.MINUTE, 0);
+                aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+                toDate = aCalendar.getTime();
+
+            }
+            if(reportRequest.getPeriodType().equalsIgnoreCase("Select Month")){
+
+                aCalendar.add(Calendar.MONTH, 1);
+                aCalendar.add(Calendar.DATE,-1);
+                toDate = aCalendar.getTime();
+            }
+            if(reportRequest.getPeriodType().equalsIgnoreCase("Select Year")){
+                aCalendar.add(Calendar.YEAR, 1);
+                aCalendar.add(Calendar.DATE,-1);
+                toDate = aCalendar.getTime();
+            }
+            if(reportRequest.getPeriodType().equalsIgnoreCase("Select Quarter")){
+                if(reportRequest.getQuarterType().equalsIgnoreCase("Q1")){
+                    aCalendar.add(Calendar.MONTH,3);
+                    aCalendar.add(Calendar.DATE,-1);
+                    toDate = aCalendar.getTime();
+                }
+                if(reportRequest.getQuarterType().equalsIgnoreCase("Q2")){
+                    aCalendar.add(Calendar.MONTH,3);
+                    toDate = aCalendar.getTime();
+                    aCalendar.add(Calendar.MONTH,3);
+                    aCalendar.add(Calendar.DATE,-1);
+                    toDate = aCalendar.getTime();
+                }
+                if(reportRequest.getQuarterType().equalsIgnoreCase("Q3")){
+                    aCalendar.add(Calendar.MONTH,6);
+                    toDate = aCalendar.getTime();
+                    aCalendar.add(Calendar.MONTH,3);
+                    aCalendar.add(Calendar.DATE,-1);
+                    toDate = aCalendar.getTime();
+                }
+                if(reportRequest.getQuarterType().equalsIgnoreCase("Q4")){
+                    aCalendar.add(Calendar.MONTH,9);
+                    toDate = aCalendar.getTime();
+                    aCalendar.add(Calendar.MONTH,3);
+                    aCalendar.add(Calendar.DATE,-1);
+                    toDate = aCalendar.getTime();
+                }
+            }
+
             List<MASubscriberDto> summaryDto = new ArrayList<>();
             List<AggregateCumulativeMA> cumulativesummaryReportStart = new ArrayList<>();
             List<AggregateCumulativeMA> cumulativesummaryReportEnd = new ArrayList<>();
-            fromDate = formatter.parse(fromDateString);
-            calendar.setTime(fromDate);
-            calendar.add(Calendar.DATE, -1);
-            fromDate = calendar.getTime();
-            if(currentUser.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel()) && !currentUser.getStateId().equals(reportRequest.getStateId())){
-                m.put("status", "fail");
-                return m;
-            }
-            if(currentUser.getAccessLevel().equals(AccessLevel.DISTRICT.getAccessLevel()) && !currentUser.getDistrictId().equals(reportRequest.getDistrictId())){
-                m.put("status", "fail");
-                return m;
-            }
-            if(currentUser.getAccessLevel().equals(AccessLevel.BLOCK.getAccessLevel()) && !currentUser.getBlockId().equals(reportRequest.getBlockId())){
-                m.put("status", "fail");
-                return m;
-            }
+//            fromDate = formatter.parse(fromDateString);
+//            calendar.setTime(fromDate);
+//            calendar.add(Calendar.DATE, -1);
+//            fromDate = calendar.getTime();
 
             if (reportRequest.getStateId() == 0) {
                 cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0,"State",fromDate));
@@ -667,24 +759,20 @@ public class UserController {
 //            List<Map<String,String>> summaryReport = new ArrayList<>();
             DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
             Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(reportRequest.getToDate().getTime());
-            String toDateString = formatter.format(calendar.getTime());
-            Date toDate;
-            toDate = formatter.parse(toDateString);
+            Date toDate = new Date();
+            Date startDate=new Date(0);
+            Calendar aCalendar = Calendar.getInstance();
+            aCalendar.setTime(reportRequest.getFromDate());
+            aCalendar.set(Calendar.MILLISECOND, 0);
+            aCalendar.set(Calendar.SECOND, 0);
+            aCalendar.set(Calendar.MINUTE, 0);
+            aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+
+//        aCalendar.add(Calendar.MONTH, -1);
+
+            toDate = aCalendar.getTime();
             List<AggregateCumulativeMADto> summaryDto = new ArrayList<>();
             List<AggregateCumulativeMA> cumulativesummaryReport = new ArrayList<>();
-            if(currentUser.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel()) && !currentUser.getStateId().equals(reportRequest.getStateId())){
-                m.put("status", "fail");
-                return m;
-            }
-            if(currentUser.getAccessLevel().equals(AccessLevel.DISTRICT.getAccessLevel()) && !currentUser.getDistrictId().equals(reportRequest.getDistrictId())){
-                m.put("status", "fail");
-                return m;
-            }
-            if(currentUser.getAccessLevel().equals(AccessLevel.BLOCK.getAccessLevel()) && !currentUser.getBlockId().equals(reportRequest.getBlockId())){
-                m.put("status", "fail");
-                return m;
-            }
 
             if (reportRequest.getStateId() == 0) {
                 cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0,"State",toDate));

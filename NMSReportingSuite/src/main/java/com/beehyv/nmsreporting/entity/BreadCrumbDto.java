@@ -8,9 +8,9 @@ public class BreadCrumbDto {
     String locationType;
     String locationName;
     Integer locationId;
-    String status;
+    boolean status;
 
-    public BreadCrumbDto(String locationType,String locationName, Integer locationId, String status) {
+    public BreadCrumbDto(String locationType,String locationName, Integer locationId, boolean status) {
         this.locationType = locationType;
         this.locationName = locationName;
         this.locationId = locationId;
@@ -43,11 +43,11 @@ public class BreadCrumbDto {
         this.locationId = locationId;
     }
 
-    public String getStatus() {
+    public boolean getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 }
