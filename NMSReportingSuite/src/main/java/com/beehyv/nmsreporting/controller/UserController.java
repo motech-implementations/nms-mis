@@ -476,15 +476,20 @@ public class UserController {
                         }
                         if (locationType.equalsIgnoreCase("DifferenceState")) {
                             summaryDto1.setLocationName("No District Count");
+                            summaryDto1.setLocationId((long)-1);
                         }
                         if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
                             summaryDto1.setLocationName("No Block Count");
+                            summaryDto1.setLocationId((long)-1);
+
                         }
                         if (locationType.equalsIgnoreCase("DifferenceBlock")) {
                             summaryDto1.setLocationName("No Subcenter Count");
+                            summaryDto1.setLocationId((long)-1);
+
                         }
 
-                        if(a.getId()+b.getId()!=0){
+                        if(summaryDto1.getAshasCompleted()+summaryDto1.getAshasFailed()+summaryDto1.getAshasStarted()+summaryDto1.getAshasAccessed()+summaryDto1.getAshasNotAccessed()!=0){
                             summaryDto.add(summaryDto1);
                         }
                     }
@@ -651,15 +656,23 @@ public class UserController {
                             }
                              if (locationType.equalsIgnoreCase("DifferenceState")) {
                                  summaryDto1.setLocationName("No District Count");
+                                 summaryDto1.setLocationId((long)-1);
+
                              }
                              if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
                                  summaryDto1.setLocationName("No Block Count");
+                                 summaryDto1.setLocationId((long)-1);
+
                              }
                              if (locationType.equalsIgnoreCase("DifferenceBlock")) {
                                  summaryDto1.setLocationName("No Subcenter Count");
+                                 summaryDto1.setLocationId((long)-1);
+
                              }
                             notAvailable = false;
-                             if(a.getId()+b.getId()!=0){
+                             if(summaryDto1.getAshasCompleted()+summaryDto1.getAshasStarted()+summaryDto1.getAshasFailed()+summaryDto1.getAshasRejected()
+                                     +summaryDto1.getAshasRegistered()+summaryDto1.getRegisteredNotCompletedend()
+                                     +summaryDto1.getRegisteredNotCompletedStart()+summaryDto1.getRecordsReceived()+summaryDto1.getAshasNotStarted()!=0){
                                  summaryDto.add(summaryDto1);
                              }
 
@@ -684,7 +697,7 @@ public class UserController {
             Date toDate = new Date();
             Date startDate=new Date(0);
             Calendar aCalendar = Calendar.getInstance();
-            aCalendar.setTime(reportRequest.getFromDate());
+            aCalendar.setTime(reportRequest.getToDate());
             aCalendar.set(Calendar.MILLISECOND, 0);
             aCalendar.set(Calendar.SECOND, 0);
             aCalendar.set(Calendar.MINUTE, 0);
@@ -743,12 +756,18 @@ public class UserController {
                 }
                 if (locationType.equalsIgnoreCase("DifferenceState")) {
                     summaryDto1.setLocationName("No District Count");
+                    summaryDto1.setLocationId((long)-1);
+
                 }
                 if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
                     summaryDto1.setLocationName("No Block Count");
+                    summaryDto1.setLocationId((long)-1);
+
                 }
                 if (locationType.equalsIgnoreCase("DifferenceBlock")) {
                     summaryDto1.setLocationName("No Subcenter Count");
+                    summaryDto1.setLocationId((long)-1);
+
                 }
 
                 if(a.getId()!=0){
