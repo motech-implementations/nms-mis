@@ -13,7 +13,7 @@ public enum ReportType {
 //    sixWeeks("sixWeeks");
     maPerformance("MA_Performance","MA Performance","M","MA Performance Aggregate Report"),
     maSubscriber("MA_Subscriber","MA Subscriber","M","MA Subscriber Aggregate Report"),
-    maCumulative("MA_Cumulative_Summery","MA Cumulative Summary","M","MA Cumulative Summery Aggregate Report"),
+    maCumulative("MA_Cumulative_Summary","MA Cumulative Summary","M","MA Cumulative Summery Aggregate Report"),
     maCourse("MA_Cumulative_Course_Completion", "Cumulative Course Completion", "M","MA Completion Line-Listing Report"),
     maAnonymous("MA_Anonymous_Users", "Circle wise Anonymous Users", "M", "MA Circle Wise Anonymous Line-Listing Report"),
     maInactive("MA_Cumulative_Inactive_Users", "Cumulative Inactive Users", "M", "MA Inactive Users Line-Listing Report"),

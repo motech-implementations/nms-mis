@@ -172,6 +172,7 @@ public class LocationController {
             subcenters =locationService.getChildSubcenters(user.getBlockId());
         }
 
+
         return subcenters;
     }
 

@@ -21,7 +21,7 @@ public class AggregateCumulativeMA {
     @Column(name="location_id", columnDefinition = "BIGINT(20)")
     private Long locationId;
 
-    @Column(name="date", columnDefinition = "DATE")
+    @Column(name="date", columnDefinition = "DATETIME")
     private Date date;
 
     @Column(name="ashas_registered", columnDefinition = "INT(11)")

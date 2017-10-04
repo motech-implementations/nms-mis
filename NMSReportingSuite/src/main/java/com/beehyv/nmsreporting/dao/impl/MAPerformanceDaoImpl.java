@@ -70,14 +70,14 @@ public class MAPerformanceDaoImpl extends AbstractDao<Integer, User> implements 
             return (long)query.list().size();
         }
         if(locationType.equalsIgnoreCase("subcenter")) {
-            Query query = getSession().createQuery("select f from FrontLineWorkers f where f.flwId NOT IN (select DISTINCT m.flwId from MACallDetailMeasure m where m.startTime between :fromDate"+"  AND  :toDate"+"   ) AND f.subcenter = :locationId"+" AND f.courseStartDate < :fromDate"+" AND (f.firstCompletionDate > :fromDate"+"  OR f.firstCompletionDate is NULL)");
+            Query query = getSession().createQuery("select f from FrontLineWorkers f where f.flwId NOT IN (select DISTINCT m.flwId from MACallDetailMeasure m where m.startTime between :fromDate"+"  AND  :toDate"+"   ) AND f.subfacility = :locationId"+" AND f.courseStartDate < :fromDate"+" AND (f.firstCompletionDate > :fromDate"+"  OR f.firstCompletionDate is NULL)");
             query.setParameter("fromDate",fromDate);
             query.setParameter("toDate",toDate);
             query.setParameter("locationId",locationId);
             return (long)query.list().size();
         }
 
-        return null;
+        return (long)0;
     }
 
     @Override
@@ -105,14 +105,14 @@ public class MAPerformanceDaoImpl extends AbstractDao<Integer, User> implements 
             return (long)query.list().size();
         }
         if(locationType.equalsIgnoreCase("subcenter")) {
-            Query query = getSession().createQuery("select f from FrontLineWorkers f where f.flwId IN (select DISTINCT m.flwId from MACallDetailMeasure m where m.startTime between :fromDate"+"  AND  :toDate"+"   ) AND f.subcenter = :locationId"+" AND f.courseStartDate < :fromDate"+" AND (f.firstCompletionDate > :fromDate"+"  OR f.firstCompletionDate is NULL)");
+            Query query = getSession().createQuery("select f from FrontLineWorkers f where f.flwId IN (select DISTINCT m.flwId from MACallDetailMeasure m where m.startTime between :fromDate"+"  AND  :toDate"+"   ) AND f.subfacility = :locationId"+" AND f.courseStartDate < :fromDate"+" AND (f.firstCompletionDate > :fromDate"+"  OR f.firstCompletionDate is NULL)");
             query.setParameter("fromDate",fromDate);
             query.setParameter("toDate",toDate);
             query.setParameter("locationId",locationId);
             return (long)query.list().size();
         }
 
-        return null;
+        return (long)0;
     }
 
 }
