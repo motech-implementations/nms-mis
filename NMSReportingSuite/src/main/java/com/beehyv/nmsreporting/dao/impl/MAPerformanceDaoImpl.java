@@ -77,7 +77,7 @@ public class MAPerformanceDaoImpl extends AbstractDao<Integer, User> implements 
             return (long)query.list().size();
         }
 
-        return null;
+        return (long)0;
     }
 
     @Override
@@ -112,7 +112,7 @@ public class MAPerformanceDaoImpl extends AbstractDao<Integer, User> implements 
             return (long)query.list().size();
         }
 
-        return null;
+        return (long)0;
     }
 
 }

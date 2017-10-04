@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -42,7 +43,13 @@ public class MAPerformanceServiceImpl implements MAPerformanceService{
     public Long getAccessedCount(Integer locationId, String locationType, Date fromDate, Date toDate){
 
         Long count = (long)0;
-
+        Calendar aCalendar = Calendar.getInstance();
+        aCalendar.setTime(fromDate);
+        aCalendar.add(Calendar.DATE,1);
+        fromDate = aCalendar.getTime();
+        aCalendar.setTime(toDate);
+        aCalendar.add(Calendar.DATE,1);
+        toDate = aCalendar.getTime();
         if(locationId == 0){
             count =  maPerformanceDao.accessedAtLeastOnce(locationId,locationType,fromDate,toDate);
         }

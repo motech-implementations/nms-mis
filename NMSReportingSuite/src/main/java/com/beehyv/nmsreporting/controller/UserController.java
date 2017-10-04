@@ -395,10 +395,9 @@ public class UserController {
 
 //        aCalendar.add(Calendar.MONTH, -1);
 
+
+            aCalendar.add(Calendar.DATE, -1);
             Date fromDate = aCalendar.getTime();
-
-
-            if(reportRequest.getPeriodType().equalsIgnoreCase("Custom Range")){
                 aCalendar.setTime(reportRequest.getToDate());
                 aCalendar.set(Calendar.MILLISECOND, 0);
                 aCalendar.set(Calendar.SECOND, 0);
@@ -406,46 +405,7 @@ public class UserController {
                 aCalendar.set(Calendar.HOUR_OF_DAY, 0);
                 toDate = aCalendar.getTime();
 
-            }
-            if(reportRequest.getPeriodType().equalsIgnoreCase("Select Month")){
 
-                aCalendar.add(Calendar.MONTH, 1);
-                aCalendar.add(Calendar.DATE,-1);
-                toDate = aCalendar.getTime();
-            }
-            if(reportRequest.getPeriodType().equalsIgnoreCase("Select Year")){
-                aCalendar.add(Calendar.YEAR, 1);
-                aCalendar.add(Calendar.DATE,-1);
-                toDate = aCalendar.getTime();
-            }
-            if(reportRequest.getPeriodType().equalsIgnoreCase("Select Quarter")){
-               if(reportRequest.getQuarterType().equalsIgnoreCase("Q1")){
-                   aCalendar.add(Calendar.MONTH,3);
-                   aCalendar.add(Calendar.DATE,-1);
-                   toDate = aCalendar.getTime();
-               }
-                if(reportRequest.getQuarterType().equalsIgnoreCase("Q2")){
-                    aCalendar.add(Calendar.MONTH,3);
-                    fromDate = aCalendar.getTime();
-                    aCalendar.add(Calendar.MONTH,3);
-                    aCalendar.add(Calendar.DATE,-1);
-                    toDate = aCalendar.getTime();
-                }
-                if(reportRequest.getQuarterType().equalsIgnoreCase("Q3")){
-                    aCalendar.add(Calendar.MONTH,6);
-                    fromDate = aCalendar.getTime();
-                    aCalendar.add(Calendar.MONTH,3);
-                    aCalendar.add(Calendar.DATE,-1);
-                    toDate = aCalendar.getTime();
-                }
-                if(reportRequest.getQuarterType().equalsIgnoreCase("Q4")){
-                    aCalendar.add(Calendar.MONTH,9);
-                    fromDate = aCalendar.getTime();
-                    aCalendar.add(Calendar.MONTH,3);
-                    aCalendar.add(Calendar.DATE,-1);
-                    toDate = aCalendar.getTime();
-                }
-            }
 
 
 //            calendar.setTimeInMillis(reportRequest.getFromDate().getTime());
@@ -555,11 +515,11 @@ public class UserController {
             aCalendar.set(Calendar.HOUR_OF_DAY, 0);
 
 //        aCalendar.add(Calendar.MONTH, -1);
-
+            aCalendar.add(Calendar.DATE, -1);
             Date fromDate = aCalendar.getTime();
 
 
-            if(reportRequest.getPeriodType().equalsIgnoreCase("Custom Range")){
+
                 aCalendar.setTime(reportRequest.getToDate());
                 aCalendar.set(Calendar.MILLISECOND, 0);
                 aCalendar.set(Calendar.SECOND, 0);
@@ -567,46 +527,8 @@ public class UserController {
                 aCalendar.set(Calendar.HOUR_OF_DAY, 0);
                 toDate = aCalendar.getTime();
 
-            }
-            if(reportRequest.getPeriodType().equalsIgnoreCase("Select Month")){
 
-                aCalendar.add(Calendar.MONTH, 1);
-                aCalendar.add(Calendar.DATE,-1);
-                toDate = aCalendar.getTime();
-            }
-            if(reportRequest.getPeriodType().equalsIgnoreCase("Select Year")){
-                aCalendar.add(Calendar.YEAR, 1);
-                aCalendar.add(Calendar.DATE,-1);
-                toDate = aCalendar.getTime();
-            }
-            if(reportRequest.getPeriodType().equalsIgnoreCase("Select Quarter")){
-                if(reportRequest.getQuarterType().equalsIgnoreCase("Q1")){
-                    aCalendar.add(Calendar.MONTH,3);
-                    aCalendar.add(Calendar.DATE,-1);
-                    toDate = aCalendar.getTime();
-                }
-                if(reportRequest.getQuarterType().equalsIgnoreCase("Q2")){
-                    aCalendar.add(Calendar.MONTH,3);
-                    toDate = aCalendar.getTime();
-                    aCalendar.add(Calendar.MONTH,3);
-                    aCalendar.add(Calendar.DATE,-1);
-                    toDate = aCalendar.getTime();
-                }
-                if(reportRequest.getQuarterType().equalsIgnoreCase("Q3")){
-                    aCalendar.add(Calendar.MONTH,6);
-                    toDate = aCalendar.getTime();
-                    aCalendar.add(Calendar.MONTH,3);
-                    aCalendar.add(Calendar.DATE,-1);
-                    toDate = aCalendar.getTime();
-                }
-                if(reportRequest.getQuarterType().equalsIgnoreCase("Q4")){
-                    aCalendar.add(Calendar.MONTH,9);
-                    toDate = aCalendar.getTime();
-                    aCalendar.add(Calendar.MONTH,3);
-                    aCalendar.add(Calendar.DATE,-1);
-                    toDate = aCalendar.getTime();
-                }
-            }
+
 
             List<MASubscriberDto> summaryDto = new ArrayList<>();
             List<AggregateCumulativeMA> cumulativesummaryReportStart = new ArrayList<>();
