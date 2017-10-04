@@ -95,7 +95,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                 noDistrictCount.setAshasStarted(stateCounts.getAshasStarted()-ashasStarted);
                 noDistrictCount.setLocationType("DifferenceState");
                 noDistrictCount.setId(stateCounts.getAshasRejected()-ashasRejected+stateCounts.getAshasNotStarted()-ashasNotStarted+stateCounts.getAshasRegistered()-ashasRegistered+stateCounts.getAshasFailed()-ashasFailed+stateCounts.getAshasCompleted()-ashasCompleted+stateCounts.getAshasStarted()-ashasStarted);
-                noDistrictCount.setLocationId((long)locationId);
+                noDistrictCount.setLocationId((long)-locationId);
                 CumulativeSummery.add(noDistrictCount);
             }
             else{
@@ -127,7 +127,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                     noBlockCount.setAshasStarted(districtCounts.getAshasStarted()-ashasStarted);
                     noBlockCount.setLocationType("DifferenceDistrict");
                     noBlockCount.setId(districtCounts.getAshasRejected()-ashasRejected+districtCounts.getAshasNotStarted()-ashasNotStarted+districtCounts.getAshasRegistered()-ashasRegistered+districtCounts.getAshasFailed()-ashasFailed+districtCounts.getAshasCompleted()-ashasCompleted+districtCounts.getAshasStarted()-ashasStarted);
-                    noBlockCount.setLocationId((long)locationId);
+                    noBlockCount.setLocationId((long)-locationId);
                     CumulativeSummery.add(noBlockCount);
                 }
                 else {
@@ -158,7 +158,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                     nosubcenterCount.setAshasStarted(blockCounts.getAshasStarted()-ashasStarted);
                     nosubcenterCount.setLocationType("DifferenceBlock");
                     nosubcenterCount.setId(blockCounts.getAshasRejected()-ashasRejected+blockCounts.getAshasNotStarted()-ashasNotStarted+blockCounts.getAshasRegistered()-ashasRegistered+blockCounts.getAshasFailed()-ashasFailed+blockCounts.getAshasCompleted()-ashasCompleted+blockCounts.getAshasStarted()-ashasStarted);
-                    nosubcenterCount.setLocationId((long)locationId);
+                    nosubcenterCount.setLocationId((long)-locationId);
                     CumulativeSummery.add(nosubcenterCount);
                 }
             }
