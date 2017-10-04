@@ -35,46 +35,58 @@
 			$scope.hideGrid = true;
 			$scope.showEmptyData = false;
 			$scope.content = "There is no data available for these fields";
-			$scope.periodType = ['Select year','Select month','Select Quarter', 'Custom Range',];
+			$scope.periodType = ['Select Year','Select Month','Select Quarter', 'Custom Range',];
 			$scope.quarterType = ['Q1','Q2','Q3', 'Q4',];
 			$scope.periodDisplayType = "";
 			$scope.dataPickermode = "";
 			$scope.periodTypeContent = "";
-			$scope.dateFormatOptions = {
-                 maxDate: new Date(),
-                 formatYear: 'yyyy',
-                 startingDay: 1,
-             };
+            $scope.dateFormat = '';
+            $scope.reportBreadCrumbData = [
+                    {
+                        "locationType": "NATIONAL",
+                        "locationName": "NATIONAL",
+                        "locationId": 0,
+                        "status": false
+                    },
+                    {
+                        "locationType": "State",
+                        "locationName": "maharashtra",
+                        "locationId": 39,
+                        "status": true
+                    },
+                     {
+                         "locationType": "District",
+                         "locationName": "Mumbai",
+                         "locationId": 598,
+                         "status": true
+                     }
+                ];
 
-             $scope.endDateFormatOptions = {
-                 formatYear: 'yyyy',
-                 maxDate: new Date(),
-                 startingDay: 1
-             };
-            $scope.dateFormat ='yyyy-MM-dd'
-            $scope.dateFormatOptions.minMode = 'date';
-			$scope.endDateFormatOptions.minMode = 'date';
-			$scope.popup2 = {
-                 opened: false
-            };
 
-           $scope.popup3 = {
+            $scope.popup2 = {
              opened: false
            };
 
-           $scope.open2 = function() {
-                $scope.popup2.opened = true;
+           $scope.popup3 = {
+                   opened: false
            };
 
-              $scope.open3 = function() {
-                $scope.popup3.opened = true;
-              };
+          $scope.open2 = function() {
+                $scope.popup2.opened = true;
 
-              $scope.setDate = function(year, month, day) {
+           };
+
+          $scope.open3 = function() {
+          $scope.popup3.opened = true;
+        };
+
+
+
+             $scope.setDate = function(year, month, day) {
                 $scope.dt1 = new Date(year, month, day);
               };
 
-              $scope.setDate = function(year, month, day) {
+             $scope.setDate = function(year, month, day) {
                 $scope.dt2 = new Date(year, month, day);
               };
 
@@ -133,26 +145,30 @@
 			}
 
 			$scope.selectPeriodType = function(item){
+			    $scope.finalDateOptions = {};
                 $scope.periodDisplayType = item;
                 $scope.dt1 = null;
                 $scope.dt2 = null;
                 $scope.quarterDisplayType = '';
-                if($scope.periodDisplayType == 'Select year' || $scope.periodDisplayType == 'Select Quarter' ){
+                if($scope.periodDisplayType == 'Select Year' || $scope.periodDisplayType == 'Select Quarter' ){
                     $scope.periodTypeContent = "Select year";
                     $scope.dateFormat = "yyyy";
-                    $scope.dateFormatOptions.minMode = 'year';
+                     $scope.datePickerOptions.minMode = '';
+                    $scope.datePickerOptions.minMode = 'year';
+
                 }
-                if($scope.periodDisplayType == 'Select month'){
+                if($scope.periodDisplayType == 'Select Month'){
                     $scope.periodTypeContent = "Select month";
                     $scope.dateFormat = "yyyy-MM";
-                    $scope.dateFormatOptions.minMode = null;
-                    $scope.dateFormatOptions.minMode = 'month';
+                     $scope.datePickerOptions.minMode = '';
+                    $scope.datePickerOptions.minMode ='month';
+
                 }
                 if($scope.periodDisplayType == 'Custom Range'){
                     $scope.periodTypeContent = "Start Date";
                     $scope.dateFormat = "yyyy-MM-dd";
-                    $scope.dateFormatOptions.minMode = null;
-                    $scope.dateFormatOptions.minMode = 'date';
+                    $scope.datePickerOptions.minMode = '';
+
                 }
 
             }
@@ -179,6 +195,9 @@
 				}
 				$scope.clearCircle();
 				$scope.dt == null;
+				$scope.periodDisplayType = '';
+				$scope.dt1 = null;
+				$scope.dt2 = null;
 
 				$scope.getStatesByService(item.service);
 				$scope.getCirclesByService(item.service);
@@ -207,6 +226,9 @@
                 }
                 else
                     $scope.datePickerContent = "Select Month";
+                $scope.periodDisplayType = '';
+                $scope.dt1 = null;
+                $scope.dt2 = null;
 
 			}
 
@@ -228,7 +250,7 @@
             	return $scope.report != null && ($scope.report.reportEnum == 'MA_Cumulative_Summery' || $scope.report.reportEnum == 'MA_Subscriber' || $scope.report.reportEnum == 'MA_Performance' );
             }
 
-			$scope.reportTypes = ['TABLE', 'BAR GRAPH', 'PIE CHART'];
+			$scope.reportTypes = ['TABLE'];
 
 			$scope.getStatesByService = function(service){
 			    $scope.statesLoading = true;
@@ -363,9 +385,13 @@
 //					console.log(minDate);
 				}
 
-                 $scope.dateFormatOptions.minDate= minDate;
 
-                 $scope.endDateFormatOptions.minDate= minDate;
+                $scope.datePickerOptions = {
+                    formatYear: 'yyyy',
+                    maxDate: new Date(),
+                    minDate: minDate,
+                    startingDay: 1
+                };
 
 				$scope.dateOptions = {
 					minMode: 'month',
@@ -375,6 +401,15 @@
 					minDate: minDate,
 					startingDay: 1
 				};
+
+				$scope.endDatePickerOptions = {
+                    formatYear: 'yyyy',
+                    maxDate: new Date(),
+                    minDate: minDate,
+                    startingDay: 1
+                };
+
+
 			}
 
 			$scope.selectState = function(state){
@@ -383,6 +418,9 @@
 					$scope.clearState();
 					$scope.state = state;
 				}
+				$scope.periodDisplayType = '';
+                $scope.dt1 = null;
+                $scope.dt2 = null;
 				$scope.setDateOptions();
 			}
 			$scope.clearState = function(){
@@ -396,7 +434,9 @@
 					$scope.clearDistrict()
 					$scope.district = district;
 				}
-				
+                $scope.periodDisplayType = '';
+				$scope.dt1 = null;
+				$scope.dt2 = null;
 			}
 			$scope.clearDistrict = function(){
 				$scope.district = null;
@@ -408,6 +448,9 @@
 					$scope.clearBlock();
 					$scope.block = block;
 				}
+				$scope.periodDisplayType = '';
+                $scope.dt1 = null;
+                $scope.dt2 = null;
 			}
 			$scope.clearBlock = function(){
 				$scope.block = null;
@@ -416,7 +459,10 @@
 				if(circle != null){
 //					$scope.clearBlock();
 					$scope.circle = circle;
-				}	
+				}
+                $scope.periodDisplayType = '';
+				$scope.dt1 = null;
+				$scope.dt2 = null;
 			}
 			$scope.clearCircle = function(){
 				$scope.circle = null;
@@ -465,15 +511,36 @@
                 	alert("Please select a month")
 					return;
 				}
-				else if($scope.dt1 == null && ($scope.isAggregateReport() )){
+				else if($scope.periodDisplayType == '' && ($scope.isAggregateReport() ) && $scope.report.name != 'MA Cumulative Summary'){
+                    alert("Please select a period type")
+                    return;
+                }
+				else if($scope.dt1 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType != 'Custom Range' && $scope.periodDisplayType != 'Select Quarter' && $scope.report.name != 'MA Cumulative Summary') ){
+                    alert("Please " +  $scope.periodDisplayType)
+                    return;
+                }
+                else if($scope.dt1 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType == 'Custom Range')){
                     alert("Please select a start date")
                     return;
                 }
-                else if($scope.dt2 == null && ($scope.isAggregateReport() )){
+                 else if($scope.dt1 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType == 'Select Quarter')){
+                    alert("Please select a year")
+                    return;
+                }
+                else if($scope.dt2 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType == 'Custom Range' || $scope.report.name == 'MA Cumulative Summary' )){
                     alert("Please select an end date")
                     return;
                 }
 
+                else if($scope.periodDisplayType == 'Select Quarter' && $scope.quarterDisplayType == '' && ($scope.isAggregateReport() )){
+                    alert("Please select a quarter type")
+                    return;
+                }
+                else if( ($scope.periodDisplayType == 'Custom Range') && ($scope.dt2 < $scope.dt1)){
+                    console.log("hi");
+                    alert("End date should be greater than start date")
+                    return;
+                }
 
 
 			    reportRequest.reportType = $scope.report.reportEnum;
@@ -530,11 +597,44 @@
                 }
                 else
                 {
-                    reportRequest.fromDate = $scope.dt1;
-                    reportRequest.toDate = $scope.dt2;
+
+                    reportRequest.periodType = $scope.periodDisplayType;
+
+                    if($scope.periodDisplayType == 'Select Year' ){
+                         reportRequest.fromDate = new Date($scope.dt1.getFullYear(),0,1);
+                         reportRequest.toDate = new Date($scope.dt1.getFullYear(),11,31);
+                    }
+
+                    if($scope.periodDisplayType == 'Select Month' ){
+                         reportRequest.fromDate = new Date($scope.dt1.getFullYear(),$scope.dt1.getMonth(),1);
+                         reportRequest.toDate = new Date($scope.dt1.getFullYear(),$scope.dt1.getMonth() + 1,0);
+                    }
+                    if($scope.periodDisplayType == 'Select Quarter' ){
+                         if($scope.quarterDisplayType == 'Q1'){
+                         reportRequest.fromDate = new Date($scope.dt1.getFullYear(),0,1);
+                         reportRequest.toDate = new Date($scope.dt1.getFullYear(),2,31);
+                         }
+                         if($scope.quarterDisplayType == 'Q2'){
+                         reportRequest.fromDate = new Date($scope.dt1.getFullYear(),3,1);
+                         reportRequest.toDate = new Date($scope.dt1.getFullYear(),5,30);
+                         }
+                         if($scope.quarterDisplayType == 'Q3'){
+                         reportRequest.fromDate = new Date($scope.dt1.getFullYear(),6,1);
+                         reportRequest.toDate = new Date($scope.dt1.getFullYear(),8,30);
+                         }
+                         if($scope.quarterDisplayType == 'Q4'){
+                         reportRequest.fromDate = new Date($scope.dt1.getFullYear(),9,1);
+                         reportRequest.toDate = new Date($scope.dt1.getFullYear(),11,31);
+                         }
+
+                    }
+                    if($scope.periodDisplayType == 'Custom Range' ){
+                        reportRequest.fromDate = $scope.dt1;
+                        reportRequest.toDate = $scope.dt2;
+                    }
                 }
 
-
+                console.log(reportRequest);
 			    $scope.waiting = true;
 
 				$http({
@@ -544,7 +644,7 @@
 					headers : {'Content-Type': 'application/json'} 
 				})
 				.then(function(result){
-
+                    console.log(result);
 					if(!$scope.isAggregateReport()){
 					    $scope.waiting = false;
                         $scope.status = result.data.status;
@@ -570,16 +670,15 @@
 					    }
 					    else
 					        $scope.gridOptions1.columnDefs = $scope.MA_Subscriber_Column_Definitions;
-                        if(result.data.length >0){
-                            $scope.gridOptions1.data = result.data;
+                        if(result.data.tableData.length >0){
+                            $scope.gridOptions1.data = result.data.tableData;
+                            $scope.reportBreadCrumbData = result.data.breadCrumbData;
                             $scope.hideGrid = false;
                         }
                          else{
                             $scope.showEmptyData = true;
                             $scope.hideGrid = true;
                          }
-
-
 					    $scope.gridOptions = $scope.gridOptions1;
 					}
 
@@ -623,6 +722,9 @@
 				$scope.dt2 = null;
 				$scope.hideGrid = true;
 				$scope.content = "";
+				$scope.periodDisplayType = '';
+				$scope.dt1 = new Date(2017,02,21);
+				console.log($scope.dt1 + " " + $scope.dt1.getFullYear() + " hii  " + $scope.dt1.getMonth() + " hii  " + $scope.dt1.getDate() );
 
 			}
 
@@ -818,15 +920,13 @@
                 onRegisterApi: function(gridApi){
                       $scope.gridApi = gridApi;
                     },
-
-
               };
 
 
 
             $scope.MA_Cumulative_Column_Definitions =[
                                                        { field: 'locationName',
-                                                         cellTemplate:'<a class="btn primary" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
+                                                         cellTemplate:'<a class="btn primary aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
                                                          width: '13%'
                                                        },
                                                        { field: 'ashasRegistered', name : 'No of Registered ASHA', width: '13%' },
@@ -842,7 +942,7 @@
 
             $scope.MA_Performance_Column_Definitions =[
                                                          { field: 'locationName',
-                                                            cellTemplate:'<a class="btn primary" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>'
+                                                            cellTemplate:'<a class="btn primary aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>'
                                                          },
                                                          { field: 'ashasStarted', name: 'Number of Asha Started Course' },
                                                          { field: 'ashasAccessed', name: 'Number of Asha Pursuing Course' },
@@ -853,7 +953,7 @@
 
             $scope.MA_Subscriber_Column_Definitions =[
                                                          { field: 'locationName',
-                                                            cellTemplate:'<a class="btn primary" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>'
+                                                            cellTemplate:'<a class="btn primary aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>'
                                                          },
                                                          { field: 'registeredNotCompletedStart', name: 'Number of ASHA Registered But Not Completed (Period Start)' },
                                                          { field: 'recordsReceived', name: 'Number of Asha Received Through Web Service' },
@@ -867,6 +967,9 @@
 
                   if(locationType == "State"){
                     reportRequest.stateId = locationId;
+                    reportRequest.districtId = 0;
+                    reportRequest.blockId = 0;
+
                     $http({
                             method  : 'POST',
                             url     : $scope.getReportUrl,
@@ -877,8 +980,9 @@
 
                             if($scope.isAggregateReport()){
                                 $scope.waiting = false;
-                                if(result.data.length >0){
-                                    $scope.gridOptions1.data = result.data;
+                                if(result.data.tableData.length >0){
+                                    $scope.gridOptions1.data = result.data.tableData;
+                                    $scope.reportBreadCrumbData = result.data.breadCrumbData;
                                     $scope.hideGrid = false;
                                 }
                                 else{
@@ -892,6 +996,7 @@
                   }
                   else if(locationType == "District"){
                      reportRequest.districtId = locationId;
+                     reportRequest.blockId = 0;
                      $http({
                              method  : 'POST',
                              url     : $scope.getReportUrl,
@@ -902,8 +1007,9 @@
 
                              if($scope.isAggregateReport()){
                                  $scope.waiting = false;
-                                 if(result.data.length >0){
-                                     $scope.gridOptions1.data = result.data;
+                                 if(result.data.tableData.length >0){
+                                    $scope.gridOptions1.data = result.data.tableData;
+                                    $scope.reportBreadCrumbData = result.data.breadCrumbData;
                                      $scope.hideGrid = false;
                                  }
                                  else{
@@ -929,8 +1035,9 @@
 
                             if($scope.isAggregateReport()){
                                 $scope.waiting = false;
-                                if(result.data.length >0){
-                                    $scope.gridOptions1.data = result.data;
+                                if(result.data.tableData.length >0){
+                                    $scope.gridOptions1.data = result.data.tableData;
+                                    $scope.reportBreadCrumbData = result.data.breadCrumbData;
                                     $scope.hideGrid = false;
                                 }
                                 else{
@@ -945,9 +1052,6 @@
 
 
             }
-
-
-
 
 
                $scope.$on('$destroy', function(){
