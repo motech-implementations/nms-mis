@@ -756,17 +756,17 @@ public class UserController {
                     summaryDto1.setLocationName(subcenterDao.findBySubcenterId(a.getLocationId().intValue()).getSubcenterName());
                 }
                 if (locationType.equalsIgnoreCase("DifferenceState")) {
-                    summaryDto1.setLocationName("No District Count");
+                    summaryDto1.setLocationName("No District");
                     summaryDto1.setLocationId((long)-1);
 
                 }
                 if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
-                    summaryDto1.setLocationName("No Block Count");
+                    summaryDto1.setLocationName("No Block");
                     summaryDto1.setLocationId((long)-1);
 
                 }
                 if (locationType.equalsIgnoreCase("DifferenceBlock")) {
-                    summaryDto1.setLocationName("No Subcenter Count");
+                    summaryDto1.setLocationName("No Subcenter");
                     summaryDto1.setLocationId((long)-1);
 
                 }
@@ -908,19 +908,19 @@ public class UserController {
         maList.add(new Report(
                 ReportType.maPerformance.getReportName(),
                 ReportType.maPerformance.getReportType(),
-                "images/drop-down-3.png",
+                "images/drop-down-2.png",
                 ReportType.maPerformance.getServiceType())
         );
         maList.add(new Report(
                 ReportType.maSubscriber.getReportName(),
                 ReportType.maSubscriber.getReportType(),
-                "images/drop-down-3.png",
+                "images/drop-down-2.png",
                 ReportType.maSubscriber.getServiceType())
         );
         maList.add(new Report(
                 ReportType.maCumulative.getReportName(),
                 ReportType.maCumulative.getReportType(),
-                "images/drop-down-3.png",
+                "images/drop-down-2.png",
                 ReportType.maCumulative.getServiceType())
         );
 
