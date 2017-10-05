@@ -44,7 +44,7 @@
 					<div class="form-group col-xs-4" ng-hide = "isAggregateReport()">
 						<label>{{datePickerContent}}</label><br>
 						<p class="input-group" ng-disabled="disableDate()">
-							<input type="text" class="form-control input input-sm" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" datepicker-mode="'month'" ng-required =="true" close-text="Close" alt-input-formats="altInputFormats" ng-disabled='disableDate()' readonly />
+							<input type="text" class="form-control input input-sm" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" datepicker-mode="'month'" ng-required = "true" close-text="Close" alt-input-formats="altInputFormats" ng-disabled='disableDate()' readonly />
 							<span class="input-group-btn">
 							<button type="button" class="btn btn-sm btn-default" ng-click="open1()"  ng-disabled='disableDate()' ><i class="glyphicon glyphicon-calendar" ng-disabled="disableDate()" ></i></button>
 							</span>
@@ -232,7 +232,7 @@
                     <div class="form-group col-xs-3" ng-hide="periodDisplayType == '' || report.name == 'MA Cumulative Summary'">
                         <label>{{periodTypeContent}}</label><br>
                         <p class="input-group" ng-disabled="disableDate()">
-                            <input type="text" class="form-control input input-sm" uib-datepicker-popup="{{dateFormat}}" ng-model="dt1" is-open="popup2.opened" datepicker-options="datePickerOptions"  ng-required =="true" close-text="Close" alt-input-formats="altInputFormats" ng-disabled='disableDate()' readonly />
+                            <input type="text" class="form-control input input-sm" uib-datepicker-popup="{{dateFormat}}" ng-model="dt1" is-open="popup2.opened" datepicker-options="datePickerOptions"  ng-required = "true" close-text="Close" alt-input-formats="altInputFormats" ng-disabled='disableDate()' readonly />
                             <span class="input-group-btn">
 							<button type="button" class="btn btn-sm btn-default" ng-click="open2()"  ng-disabled='disableDate()' ><i class="glyphicon glyphicon-calendar" ng-disabled="disableDate()" ></i></button>
 							</span>
@@ -242,7 +242,7 @@
                     <div class="form-group col-xs-3" ng-hide="periodDisplayType != 'Custom Range' && report.name != 'MA Cumulative Summary'">
                         <label>End Date</label><br>
                         <p class="input-group" ng-disabled="disableDate()">
-                            <input type="text" class="form-control input input-sm" uib-datepicker-popup="{{dateFormat}}" ng-model="dt2" is-open="popup3.opened" datepicker-options="endDatePickerOptions"  ng-required="true" close-text="Close" alt-input-formats="altInputFormats" ng-disabled='disableDate()' readonly />
+                            <input type="text" class="form-control input input-sm" uib-datepicker-popup="{{dateFormat}}" ng-model="dt2" is-open="popup3.opened" datepicker-options="endDatePickerOptions"  ng-required= "true" close-text="Close" alt-input-formats="altInputFormats" ng-disabled='disableDate()' readonly />
                             <span class="input-group-btn">
                             <button type="button" class="btn btn-sm btn-default" ng-click="open3()" ng-disabled='disableDate()'><i class="glyphicon glyphicon-calendar" ng-disabled='disableDate()'></i></button>
 							</span>
@@ -329,24 +329,25 @@
 
 
 	<div class="block reports-body" ng-if="hideGrid && showEmptyData">
-		<p>There is no data available for these fields</p>
+		<p>{{content}}</p>
 	</div>
 
     <div class="nav">
-	<ul class="breadcrumb" style = "background : #eaeade ; padding : 7px 21px" ng-hide = "hideGrid">
+	<ul class="breadcrumb aggregate-bread-crumb"  ng-hide = "hideGrid">
 		<li ng-repeat="item in reportBreadCrumbData">
-			<a  ng-click = "drillDownData(item.locationId,item.locationType)" ng-class="{'active': {{item.status}} }" >{{item.locationName}}</a>
+			<a  ng-click = "drillDownData(item.locationId,item.locationType)" ng-class="{'active': {{item.status}} }" >{{item.locationName}} <span ng-if=" item.locationName != 'NATIONAL'">{{item.locationType}}</span></a>
 		</li>
 	</ul>
     </div>
 
     <div class="reportheader" ng-hide="hideGrid">
         <p class="ng-binding" style="display: inline-block;"> {{reportCategory}} - {{report.name}}</p>
-        <i class="glyphicon glyphicon-calendar aggregate-calender"> 10/03/2016 to 15/09/2016</i>
+        <i class="glyphicon glyphicon-calendar aggregate-calender"> {{ headerFromDate | date:'dd/MM/y'}} <span style="font-size: 12px" ng-if=" report.name == 'MA Cumulative Summary'">up</span>to {{headerToDate | date:'dd/MM/y'}}</i>
     </div>
-
-	<div>
-		<div id="grid1" ui-grid=gridOptions class="grid" ng-hide = "hideGrid" ui-grid-infinite-scroll ui-grid-auto-resize></div>
+	<div class="row">
+		<div >
+			<div id="grid1" ui-grid=gridOptions class="grid" ng-if ="!hideGrid" ui-grid-infinite-scroll></div>
+		</div>
 	</div>
 
 	<div class="block reports-body loading" ng-if="waiting">

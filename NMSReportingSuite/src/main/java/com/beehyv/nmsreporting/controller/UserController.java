@@ -456,11 +456,7 @@ public class UserController {
                         summaryDto1.setAshasFailed(a.getAshasFailed()-b.getAshasFailed());
                         summaryDto1.setAshasStarted(a.getAshasStarted()-b.getAshasStarted());
                         summaryDto1.setLocationType(a.getLocationType());
-                        summaryDto1.setAshasAccessed(maPerformanceService.getAccessedCount(a.getLocationId().intValue(),a.getLocationType(),fromDate,toDate));
-//                        summaryDto1.setCompletedPercentage(a.getAshasCompleted()*100/a.getAshasStarted());
-//                        summaryDto1.setFailedpercentage(a.getAshasFailed()*100/a.getAshasStarted());
-//                        summaryDto1.setNotStartedpercentage(a.getAshasNotStarted()*100/a.getAshasRegistered());
-                        summaryDto1.setAshasNotAccessed(maPerformanceService.getNotAccessedcount(a.getLocationId().intValue(),a.getLocationType(),fromDate,toDate));
+
                         String locationType = a.getLocationType();
                         if(locationType.equalsIgnoreCase("State")){
                             summaryDto1.setLocationName(stateDao.findByStateId(a.getLocationId().intValue()).getStateName());
@@ -488,6 +484,11 @@ public class UserController {
                             summaryDto1.setLocationId((long)-1);
 
                         }
+                        summaryDto1.setAshasAccessed(maPerformanceService.getAccessedCount(a.getLocationId().intValue(),a.getLocationType(),fromDate,toDate));
+//                        summaryDto1.setCompletedPercentage(a.getAshasCompleted()*100/a.getAshasStarted());
+//                        summaryDto1.setFailedpercentage(a.getAshasFailed()*100/a.getAshasStarted());
+//                        summaryDto1.setNotStartedpercentage(a.getAshasNotStarted()*100/a.getAshasRegistered());
+                        summaryDto1.setAshasNotAccessed(maPerformanceService.getNotAccessedcount(a.getLocationId().intValue(),a.getLocationType(),fromDate,toDate));
 
                         if(summaryDto1.getAshasCompleted()+summaryDto1.getAshasFailed()+summaryDto1.getAshasStarted()+summaryDto1.getAshasAccessed()+summaryDto1.getAshasNotAccessed()!=0){
                             summaryDto.add(summaryDto1);
