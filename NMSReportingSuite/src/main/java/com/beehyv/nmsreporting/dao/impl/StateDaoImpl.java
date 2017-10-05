@@ -23,6 +23,13 @@ public class StateDaoImpl extends AbstractDao<Integer, State> implements StateDa
     }
 
     @Override
+    public State findByLocationId(Long locationId) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.eq("locationId", locationId));
+        return (State)criteria.list().get(0);
+    }
+
+    @Override
     public List<State> findByName(String stateName) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.eq("stateName", stateName).ignoreCase());

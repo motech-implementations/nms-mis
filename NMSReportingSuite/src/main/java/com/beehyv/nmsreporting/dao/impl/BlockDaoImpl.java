@@ -20,6 +20,13 @@ public class BlockDaoImpl extends AbstractDao<Integer, Block> implements BlockDa
     }
 
     @Override
+    public Block findByLocationId(Long locationId) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.eq("locationId", locationId).ignoreCase());
+        return (Block) criteria.list().get(0);
+    }
+
+    @Override
     public List<Block> findByName(String blockName) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.eq("blockName", blockName).ignoreCase());

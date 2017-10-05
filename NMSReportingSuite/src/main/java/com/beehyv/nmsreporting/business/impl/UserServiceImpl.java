@@ -9,9 +9,7 @@ import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.AccessType;
 import com.beehyv.nmsreporting.enums.AccountStatus;
 import com.beehyv.nmsreporting.enums.ModificationType;
-import com.beehyv.nmsreporting.model.ModificationTracker;
-import com.beehyv.nmsreporting.model.Role;
-import com.beehyv.nmsreporting.model.User;
+import com.beehyv.nmsreporting.model.*;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -44,10 +42,16 @@ public class UserServiceImpl implements UserService{
     private RoleDao roleDao;
 
     @Autowired
+    private SubcenterDao subcenterDao;
+
+    @Autowired
     private ModificationTrackerDao modificationTrackerDao;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private AggregateCumulativeMADao aggregateCumulativeMADao;
 
     private Role getAdminRole(){
         return roleDao.findByRoleDescription(AccessType.ADMIN.getAccessType()).get(0);
@@ -821,4 +825,6 @@ public class UserServiceImpl implements UserService{
         }
 
     }
+
+
 }

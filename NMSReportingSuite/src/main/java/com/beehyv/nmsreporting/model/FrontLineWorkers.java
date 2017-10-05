@@ -65,6 +65,28 @@ public class FrontLineWorkers {
     @Column(name="last_modified", columnDefinition = "DATE")
     private Date lastModifiedDate;
 
+    @Column(name="course_first_completion_date", columnDefinition = "DATE")
+    private Date firstCompletionDate;
+
+    @Column(name="course_start_date", columnDefinition = "DATE")
+    private Date courseStartDate;
+
+    public Date getFirstCompletionDate() {
+        return firstCompletionDate;
+    }
+
+    public void setFirstCompletionDate(Date firstCompletionDate) {
+        this.firstCompletionDate = firstCompletionDate;
+    }
+
+    public Date getCourseStartDate() {
+        return courseStartDate;
+    }
+
+    public void setCourseStartDate(Date courseStartDate) {
+        this.courseStartDate = courseStartDate;
+    }
+
     public Long getFlwId() {
         return flwId;
     }

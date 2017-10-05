@@ -63,16 +63,17 @@ div.nav-bar ul.breadcrumb {
 	background-color: inherit;
 	color: #ffffff;
 }
-div.nav-bar ul.breadcrumb > li + li:before {
-	content: ">";
+div.nav-bar ul.breadcrumb > li + li:before{
+	content: ">" !important;
 	color: #000000;
 }
 
-div.nav-bar .breadcrumb li {
-	float:left;
-	text-align: center;
-	text-decoration: none;
+div.nav .aggregate-bread-crumb > li + li:before{
+    content: ">" !important;
+    color: #23527c;
+
 }
+
 div.nav-bar .breadcrumb li a{
 	text-decoration: none;
 	color: #ffffff;
@@ -82,9 +83,35 @@ div.nav-bar .breadcrumb li a{
 	font-size: 12px;
 	cursor: default;
 }
+
+div.nav .aggregate-bread-crumb li a{
+    text-decoration: none;
+    color: #000000;
+    display: inline-block;
+    text-align: center;
+    cursor: default;
+    pointer-events : none;
+}
+
+
+a.active{
+	cursor:pointer;
+}
+
 div.nav-bar .breadcrumb li a.active{
 	color: #000000;
 	cursor:pointer;
+}
+
+div.nav .aggregate-bread-crumb li a.active{
+	color: #23527c;
+	cursor:pointer ;
+	pointer-events : all;
+}
+
+.aggregate-bread-crumb{
+    background : #eaeade !important ;
+    padding : 7px 21px !important;
 }
 
 div.nav-bar ul.nav-menu {
@@ -304,6 +331,10 @@ div.userTable .dropdown-menu.small > li > a{
 
 }
 
+.report-type{
+    width: 200px;
+}
+
 div.reports-header{
 	margin-top: 15px;
 }
@@ -495,3 +526,54 @@ body *{
 	/*border: 1px solid black;*/
 	font-family: 'Roboto', sans-serif;
 }
+
+.grid {
+  width: 97%;
+  margin : auto;
+}
+
+.reportheader{
+    margin-left: 15px;
+    color: #463f3f;
+    font-weight: bold;
+}
+
+.aggregate-calender{
+    color: #2164b2;
+    float: right;
+    margin-right: 35px;
+    font-weight: 600;
+}
+.ui-grid-header-cell {
+background-color:#2164b2 !important;
+color: white !important;
+}
+
+.ui-grid-header-cell .ui-grid-cell-contents {
+ white-space: normal;
+ -ms-text-overflow: clip;
+ -o-text-overflow: clip;
+ text-overflow: clip;
+ overflow: visible;
+ text-align : center !important;
+ }
+
+.ui-grid-header-cell-label{
+ font-size : 13px;
+}
+.ui-grid-cell{
+ text-align : center;
+}
+
+.aggregate-location{
+ text-align : left !important;
+}
+
+.ui-grid, .ui-grid-viewport {
+  height: auto !important;
+}
+
+.ui-grid-column-menu-button{
+  display : none;
+}
+

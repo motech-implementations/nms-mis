@@ -11,6 +11,9 @@ public interface DistrictDao {
 
     District findByDistrictId(Integer districtId);
 
+    District findByLocationId(Long stateId);
+
+
     List<District> findByName(String districtName);
 
     List<District> getDistrictsOfState(Integer state);
