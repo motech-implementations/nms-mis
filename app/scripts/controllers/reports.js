@@ -46,32 +46,28 @@
             $scope.headerToDate = '';
 
             $scope.popup2 = {
-             opened: false
-           };
+                opened: false
+            };
 
-           $scope.popup3 = {
-                   opened: false
-           };
+            $scope.popup3 = {
+                opened: false
+            };
 
-          $scope.open2 = function() {
+            $scope.open2 = function() {
                 $scope.popup2.opened = true;
+            };
 
-           };
+            $scope.open3 = function() {
+                $scope.popup3.opened = true;
+            };
 
-          $scope.open3 = function() {
-          $scope.popup3.opened = true;
-        };
-
-
-
-             $scope.setDate = function(year, month, day) {
+            $scope.setDate = function(year, month, day) {
                 $scope.dt1 = new Date(year, month, day);
-              };
+            };
 
-             $scope.setDate = function(year, month, day) {
+            $scope.setDate = function(year, month, day) {
                 $scope.dt2 = new Date(year, month, day);
-              };
-
+            };
 
 			$scope.disableReportCategory = function(){
 				return $scope.reports[0] == null;
@@ -142,7 +138,6 @@
                     $scope.datePickerOptions.minMode = '';
                     $scope.datePickerOptions.datepickerMode = 'year';
                     $scope.datePickerOptions.minMode = 'year';
-
                 }
                 if($scope.periodDisplayType == 'Select Month'){
                     $scope.periodTypeContent = "Select month";
@@ -150,14 +145,12 @@
                      $scope.datePickerOptions.minMode = '';
                     $scope.datePickerOptions.datepickerMode = 'month';
                     $scope.datePickerOptions.minMode ='month';
-
                 }
                 if($scope.periodDisplayType == 'Custom Range'){
                     $scope.periodTypeContent = "Start Date";
                     $scope.dateFormat = "yyyy-MM-dd";
                     delete $scope.datePickerOptions.datepickerMode;
                     $scope.datePickerOptions.minMode = '';
-
                 }
                 console.log($scope.datePickerOptions);
 
@@ -192,6 +185,7 @@
 				$scope.dt2 = null;
 				$scope.hideGrid = true;
 				$scope.showEmptyData = false;
+				$scope.clearFile();
 
 				$scope.getStatesByService(item.service);
 				$scope.getCirclesByService(item.service);
@@ -210,6 +204,7 @@
 					$scope.clearBlock();
 				}
 				$scope.clearCircle();
+				$scope.clearFile();
 				$scope.dt = null;
 				$scope.setDateOptions();
 				if($scope.userHasOneCircle()){
@@ -407,8 +402,6 @@
                     minDate: minDate,
                     startingDay: 1
                 };
-
-
 			}
 
 			$scope.selectState = function(state){
@@ -423,6 +416,7 @@
                 $scope.hideGrid = true;
                 $scope.showEmptyData = false;
 				$scope.setDateOptions();
+				$scope.clearFile();
 			}
 			$scope.clearState = function(){
 				$scope.state = null;
@@ -440,6 +434,7 @@
 				$scope.dt2 = null;
 				$scope.hideGrid = true;
 				$scope.showEmptyData = false;
+				$scope.clearFile();
 			}
 			$scope.clearDistrict = function(){
 				$scope.district = null;
@@ -456,6 +451,7 @@
                 $scope.dt2 = null;
                 $scope.hideGrid = true;
                 $scope.showEmptyData = false;
+                $scope.clearFile();
 			}
 			$scope.clearBlock = function(){
 				$scope.block = null;
@@ -470,6 +466,7 @@
 				$scope.dt2 = null;
 				$scope.hideGrid = true;
 				$scope.showEmptyData = false;
+				$scope.clearFile();
 			}
 			$scope.clearCircle = function(){
 				$scope.circle = null;
@@ -893,8 +890,6 @@
                  return ($scope.sundays.length);
 
                 }
-
-
                 else{
 
                     if(d.getMonth() == today.getMonth() && d.getFullYear() == today.getFullYear() )
@@ -916,9 +911,7 @@
                     }
                     $scope.sundays = sun;
                     return ($scope.sundays.length);
-
                 }
-
 			}
 
 			$scope.sundaysTable = false;
@@ -934,8 +927,6 @@
               if($scope.sundaysTable)
                 $scope.sundaysTable = false;
             });
-
-
 
             var canceler = $q.defer();
 
@@ -1080,11 +1071,9 @@
                              }
 
                          })
-                   }
-
-                   else if(locationType == "Block"){
+                  }
+                  else if(locationType == "Block"){
                     reportRequest.blockId = locationId;
-
                     $http({
                             method  : 'POST',
                             url     : $scope.getReportUrl,
@@ -1111,14 +1100,11 @@
 
                         })
                   }
-
-
             }
 
-               $scope.$on('$destroy', function(){
-                   canceler.resolve();  // Aborts the $http request if it isn't finished.
-                 });
-
+            $scope.$on('$destroy', function(){
+               canceler.resolve();  // Aborts the $http request if it isn't finished.
+            });
 
 		}])
 })()
