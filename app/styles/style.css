@@ -573,7 +573,7 @@ color: white !important;
     padding : 3px 14px !important;
 }
 .report_category{
-    padding : 10px 52px !important;
+    padding : 10px 25px !important;
 }
 .report-type{
     width : 221px;
@@ -581,7 +581,7 @@ color: white !important;
 .non-aggregate{
     width : 180px;
 }
-.type-aggregate{
+.report-dropdown-menu, .type-aggregate{
     width : 264px;
 }
 .type-aggregate>li>a{
