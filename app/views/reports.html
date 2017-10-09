@@ -14,8 +14,7 @@
 							</button>
 							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
 								<li role="menuitem" ng-repeat="item in reports">
-									<a ng-click='selectReportCategory(item)'>
-										<img class='block' src="{{item.icon}}">
+									<a class="report_category" ng-click='selectReportCategory(item)'>
 										<span>{{item.name}}</span>
 									</a>
 								</li>
@@ -32,7 +31,7 @@
 							</button>
 							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
 								<li role="menuitem" ng-repeat="item in reportNames">
-									<a ng-click='selectReport(item)'>
+									<a class="select_report" ng-click='selectReport(item)'>
 										<img class='block' src="{{item.icon}}">
 										<span>{{item.name}}</span>
 									</a>
@@ -68,8 +67,8 @@
 									<span class="caret"></span>
 								</span>
 							</button>
-							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
-								<li role="menuitem"><a ng-click="clearState()">ALL</a>
+							<ul class="dropdown-menu type-aggregate" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
+								<li role="menuitem"><a class="select_state" ng-click="clearState()">ALL</a>
 								<li role="menuitem" ng-repeat="item in states | orderBy : 'stateName' | filter:serviceStarted"><a ng-click='selectState(item)'>{{item.stateName}}</a></li>
 							</ul>
 						</div>
@@ -87,7 +86,7 @@
 									<span class="caret"></span>
 								</span>
 							</button>
-							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
+							<ul class="dropdown-menu non-aggregate" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
 								<li role="menuitem" ng-repeat="item in states | orderBy : 'stateName' | filter:serviceStarted"><a ng-click='selectState(item)'>{{item.stateName}}</a></li>
 							</ul>
 						</div>
@@ -103,8 +102,8 @@
 									<span class="caret"></span>
 								</span>
 							</button>
-							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
-								<li role="menuitem"><a ng-click="clearDistrict()">ALL</a>
+							<ul class="dropdown-menu type-aggregate" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
+								<li role="menuitem"><a class="select_district" ng-click="clearDistrict()">ALL</a>
 								<li role="menuitem" ng-repeat="item in districts | orderBy : 'districtName'"><a ng-click='selectDistrict(item)'>{{crop(item.districtName)}}</a></li>
 							</ul>
 						</div>
@@ -120,8 +119,8 @@
 									<span class="caret"></span>
 								</span>
 							</button>
-							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
-								<li role="menuitem"><a ng-click="clearDistrict()">ALL</a>
+							<ul class="dropdown-menu non-aggregate" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
+								<li role="menuitem"><a class="select_district" ng-click="clearDistrict()">ALL</a>
 								<li role="menuitem" ng-repeat="item in districts | orderBy : 'districtName'"><a ng-click='selectDistrict(item)'>{{crop(item.districtName)}}</a></li>
 							</ul>
 						</div>
@@ -136,8 +135,8 @@
 									<span class="caret"></span>
 								</span>
 							</button>
-							<ul class="dropdown-menu small" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
-								<li role="menuitem"><a ng-click="clearBlock()">ALL</a>
+							<ul class="dropdown-menu small type-aggregate" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
+								<li role="menuitem"><a class="select_block"  ng-click="clearBlock()">ALL</a>
 								<li role="menuitem" ng-repeat="item in blocks | orderBy : 'blockName'"><a ng-click='selectBlock(item)'>{{crop(item.blockName)}}</a></li>
 							</ul>
 						</div>
@@ -152,8 +151,8 @@
 									<span class="caret"></span>
 								</span>
 							</button>
-							<ul class="dropdown-menu small" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
-								<li role="menuitem"><a ng-click="clearBlock()">ALL</a>
+							<ul class="dropdown-menu small non-aggregate" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
+								<li role="menuitem"><a class="select_block" ng-click="clearBlock()">ALL</a>
 								<li role="menuitem" ng-repeat="item in blocks | orderBy : 'blockName'"><a ng-click='selectBlock(item)'>{{crop(item.blockName)}}</a></li>
 							</ul>
 						</div>
@@ -180,9 +179,9 @@
 									<span class="caret"></span>
 								</span>
 							</button>
-							<ul class="dropdown-menu small" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
+							<ul class="dropdown-menu small non-aggregate" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
 								<!--<li role="menuitem"><a ng-click="clearCircle()">ALL</a>-->
-								<li role="menuitem" ng-repeat="item in circles | orderBy : 'circleName' | filter:serviceStarted"><a ng-click='selectCircle(item)'>{{item.circleName}}</a></li>
+								<li role="menuitem" ng-repeat="item in circles | orderBy : 'circleName' | filter:serviceStarted"><a class="select_circle" ng-click='selectCircle(item)'>{{item.circleName}}</a></li>
 							</ul>
 						</div>
 					</div>
@@ -205,9 +204,9 @@
 			</div>
 
 			<div class="row" ng-hide= "!isAggregateReport() ">
-				<div class="col-xs-7 left">
+				<div class="col-xs-12 left">
 
-					<div class="form-group col-xs-3" ng-hide= "report.name == 'MA Cumulative Summary' ">
+					<div class="form-group col-xs-2" ng-hide= "report.name == 'MA Cumulative Summary' ">
 						<label for="name">Period Type</label><br>
 						<div class="btn-group" uib-dropdown dropdown-append-to-body>
 							<button id="btn-append-to-body9" type="button" class="btn btn-sm btn-default"  uib-dropdown-toggle >
@@ -229,7 +228,7 @@
 					</div>
 
 
-                    <div class="form-group col-xs-3" ng-hide="periodDisplayType == '' || report.name == 'MA Cumulative Summary'">
+                    <div class="form-group col-xs-2" ng-hide="periodDisplayType == '' || report.name == 'MA Cumulative Summary'">
                         <label>{{periodTypeContent}}</label><br>
                         <p class="input-group" ng-disabled="disableDate()">
                             <input type="text" class="form-control input input-sm" uib-datepicker-popup="{{dateFormat}}" ng-model="dt1" is-open="popup2.opened" datepicker-options="datePickerOptions"  ng-required = "true" close-text="Close" alt-input-formats="altInputFormats" ng-disabled='disableDate()' readonly />
@@ -239,7 +238,7 @@
                         </p>
                     </div>
 
-                    <div class="form-group col-xs-3" ng-hide="periodDisplayType != 'Custom Range' && report.name != 'MA Cumulative Summary'">
+                    <div class="form-group col-xs-2" ng-hide="periodDisplayType != 'Custom Range' && report.name != 'MA Cumulative Summary'">
                         <label>End Date</label><br>
                         <p class="input-group" ng-disabled="disableDate()">
                             <input type="text" class="form-control input input-sm" uib-datepicker-popup="{{dateFormat}}" ng-model="dt2" is-open="popup3.opened" datepicker-options="endDatePickerOptions"  ng-required= "true" close-text="Close" alt-input-formats="altInputFormats" ng-disabled='disableDate()' readonly />
@@ -249,7 +248,7 @@
                         </p>
                     </div>
 
-					<div class="form-group col-xs-3" ng-hide="periodDisplayType != 'Select Quarter'">
+					<div class="form-group col-xs-2" ng-hide="periodDisplayType != 'Quarter'">
 						<label for="name">Select Quarter</label><br>
 						<div class="btn-group" uib-dropdown dropdown-append-to-body>
 							<button id="btn-append-to-body10" type="button" class="btn btn-sm btn-default"  uib-dropdown-toggle >
@@ -281,10 +280,10 @@
 							<!--</span>-->
 						<!--</p>-->
 					<!--</div>-->
-					<div class="form-group col-xs-3">
+					<div class="form-group col-xs-2">
 						<label for="name">Report Type</label><br>
 						<div class="btn-group" uib-dropdown dropdown-append-to-body>
-							<button id="btn-append-to-body1" type="button" class="btn btn-sm btn-default"  uib-dropdown-toggle >
+							<button ng-disabled = "true"  id="btn-append-to-body1" type="button" class="btn btn-sm btn-default"  uib-dropdown-toggle >
 								<span class="block">
 									<span>{{reportDisplayType}}</span>
 									<span ng-if="reportDisplayType == null">ALL</span>
@@ -300,6 +299,10 @@
 								</li>
 							</ul>
 						</div>
+					</div>
+					<div class="form-group col-xs-2 aggregate-submit">
+						<button class="btn btn-sm btn-primary" ng-click="getReport()">Submit</button>
+						<button class="btn btn-sm btn-primary" ng-click="reset()">Reset</button>
 					</div>
 				</div>
 			</div>
@@ -318,7 +321,7 @@
             <!--</div>-->
 
 
-			<div class="row">
+			<div class="row" ng-hide= "isAggregateReport() ">
 				<div class="form-group col-xs-4">
 					<button class="btn btn-sm btn-primary" ng-click="getReport()">Submit</button>
 					<button class="btn btn-sm btn-primary" ng-click="reset()">Reset</button>
@@ -335,14 +338,14 @@
     <div class="nav">
 	<ul class="breadcrumb aggregate-bread-crumb"  ng-hide = "hideGrid">
 		<li ng-repeat="item in reportBreadCrumbData">
-			<a  ng-click = "drillDownData(item.locationId,item.locationType)" ng-class="{'active': {{item.status}} }" >{{item.locationName}} <span ng-if=" item.locationName != 'NATIONAL'">{{item.locationType}}</span></a>
+			<a  ng-click = "drillDownData(item.locationId,item.locationType)" ng-class="{'active': {{item.status}} }" >{{item.locationName}}</a>
 		</li>
 	</ul>
     </div>
 
     <div class="reportheader" ng-hide="hideGrid">
         <p class="ng-binding" style="display: inline-block;"> {{reportCategory}} - {{report.name}}</p>
-        <i class="glyphicon glyphicon-calendar aggregate-calender"> {{ headerFromDate | date:'dd/MM/y'}} <span style="font-size: 12px" ng-if=" report.name == 'MA Cumulative Summary'">up</span>to {{headerToDate | date:'dd/MM/y'}}</i>
+        <i class="glyphicon glyphicon-calendar aggregate-calender"> {{ headerFromDate | date:'dd/MM/y'}} <span style="font-size: 12px" ng-if=" report.name == 'MA Cumulative Summary'">Up</span>to {{headerToDate | date:'dd/MM/y'}}</i>
     </div>
 	<div class="row">
 		<div >

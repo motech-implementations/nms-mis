@@ -84,13 +84,8 @@ div.nav-bar .breadcrumb li a{
 	cursor: default;
 }
 
-div.nav .aggregate-bread-crumb li a{
-    text-decoration: none;
-    color: #000000;
-    display: inline-block;
-    text-align: center;
-    cursor: default;
-    pointer-events : none;
+.aggregate-submit{
+    margin-top : 25px;
 }
 
 
@@ -331,9 +326,7 @@ div.userTable .dropdown-menu.small > li > a{
 
 }
 
-.report-type{
-    width: 200px;
-}
+
 
 div.reports-header{
 	margin-top: 15px;
@@ -576,4 +569,21 @@ color: white !important;
 .ui-grid-column-menu-button{
   display : none;
 }
-
+.select_report{
+    padding : 3px 14px !important;
+}
+.report_category{
+    padding : 10px 52px !important;
+}
+.report-type{
+    width : 221px;
+}
+.non-aggregate{
+    width : 180px;
+}
+.type-aggregate{
+    width : 264px;
+}
+.type-aggregate>li>a{
+    padding : 5px 20px !important;
+}

@@ -34,9 +34,9 @@
 			$scope.MA_Subscriber_Column_Definitions = [];
 			$scope.hideGrid = true;
 			$scope.showEmptyData = false;
-			$scope.content = "There is no data available for these fields";
-			$scope.periodType = ['Select Year','Select Month','Select Quarter', 'Custom Range',];
-			$scope.quarterType = ['Q1','Q2','Q3', 'Q4',];
+			$scope.content = "There is no data available for the selected inputs";
+			$scope.periodType = ['Year','Month','Quarter', 'Custom Range',];
+			$scope.quarterType = ['Q1 (Jan to Mar)','Q2 (Apr to Jun)','Q3 (Jul to Sep)', 'Q4 (Oct to Dec)'];
 			$scope.periodDisplayType = "";
 			$scope.dataPickermode = "";
 			$scope.periodTypeContent = "";
@@ -44,6 +44,8 @@
             $scope.reportBreadCrumbData = [];
             $scope.headerFromDate = '';
             $scope.headerToDate = '';
+            var parentScope = $scope.$parent;
+            parentScope.child = $scope;
 
             $scope.popup2 = {
                 opened: false
@@ -132,14 +134,14 @@
                 $scope.quarterDisplayType = '';
                 $scope.hideGrid = true;
                 $scope.showEmptyData = false;
-                if($scope.periodDisplayType == 'Select Year' || $scope.periodDisplayType == 'Select Quarter' ){
+                if($scope.periodDisplayType == 'Year' || $scope.periodDisplayType == 'Quarter' ){
                     $scope.periodTypeContent = "Select year";
                     $scope.dateFormat = "yyyy";
                     $scope.datePickerOptions.minMode = '';
                     $scope.datePickerOptions.datepickerMode = 'year';
                     $scope.datePickerOptions.minMode = 'year';
                 }
-                if($scope.periodDisplayType == 'Select Month'){
+                if($scope.periodDisplayType == 'Month'){
                     $scope.periodTypeContent = "Select month";
                     $scope.dateFormat = "yyyy-MM";
                      $scope.datePickerOptions.minMode = '';
@@ -478,7 +480,7 @@
 			$scope.fileName = "";
 
 			$scope.$watch('dt', function(newDate){
-                if ($scope.wasSundaySelected){
+                if($scope.wasSundaySelected){
                 $scope.format = 'yyyy-MM-dd';
                 $scope.wasSundaySelected = false;
                  return;
@@ -489,8 +491,11 @@
                      $scope.sundaysTable = true;
 			    	 $scope.popup1.opened = true;
 			    }
-			    if((newDate != null) && newDate.getDate() == 1){
-                    $scope.dt = new Date($scope.dt.getFullYear(), $scope.dt.getMonth() + 1, 0, 23, 59, 59);
+
+                if(!$scope.wasSundaySelected){
+                    if((newDate != null) && newDate.getDate() == 1){
+                        $scope.dt = new Date($scope.dt.getFullYear(), $scope.dt.getMonth() + 1, 0, 23, 59, 59);
+                     }
                 }
 			});
 
@@ -519,7 +524,7 @@
                     alert("Please select a period type")
                     return;
                 }
-				else if($scope.dt1 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType != 'Custom Range' && $scope.periodDisplayType != 'Select Quarter' && $scope.report.name != 'MA Cumulative Summary') ){
+				else if($scope.dt1 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType != 'Custom Range' && $scope.periodDisplayType != 'Quarter' && $scope.report.name != 'MA Cumulative Summary') ){
                     alert("Please " +  $scope.periodDisplayType)
                     return;
                 }
@@ -527,7 +532,7 @@
                     alert("Please select a start date")
                     return;
                 }
-                 else if($scope.dt1 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType == 'Select Quarter')){
+                 else if($scope.dt1 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType == 'Quarter')){
                     alert("Please select a year")
                     return;
                 }
@@ -536,7 +541,7 @@
                     return;
                 }
 
-                else if($scope.periodDisplayType == 'Select Quarter' && $scope.quarterDisplayType == '' && ($scope.isAggregateReport() )){
+                else if($scope.periodDisplayType == 'Quarter' && $scope.quarterDisplayType == '' && ($scope.isAggregateReport() )){
                     alert("Please select a quarter type")
                     return;
                 }
@@ -604,29 +609,29 @@
 
                     reportRequest.periodType = $scope.periodDisplayType;
 
-                    if($scope.periodDisplayType == 'Select Year' ){
+                    if($scope.periodDisplayType == 'Year' ){
                          reportRequest.fromDate = new Date($scope.dt1.getFullYear(),0,1);
                          reportRequest.toDate = new Date($scope.dt1.getFullYear(),11,31);
                     }
 
-                    else if($scope.periodDisplayType == 'Select Month' ){
+                    else if($scope.periodDisplayType == 'Month' ){
                          reportRequest.fromDate = new Date($scope.dt1.getFullYear(),$scope.dt1.getMonth(),1);
                          reportRequest.toDate = new Date($scope.dt1.getFullYear(),$scope.dt1.getMonth() + 1,0);
                     }
-                    else if($scope.periodDisplayType == 'Select Quarter' ){
-                         if($scope.quarterDisplayType == 'Q1'){
+                    else if($scope.periodDisplayType == 'Quarter' ){
+                         if($scope.quarterDisplayType == 'Q1 (Jan to Mar)'){
                          reportRequest.fromDate = new Date($scope.dt1.getFullYear(),0,1);
                          reportRequest.toDate = new Date($scope.dt1.getFullYear(),2,31);
                          }
-                         if($scope.quarterDisplayType == 'Q2'){
+                         if($scope.quarterDisplayType == 'Q2 (Apr to Jun)'){
                          reportRequest.fromDate = new Date($scope.dt1.getFullYear(),3,1);
                          reportRequest.toDate = new Date($scope.dt1.getFullYear(),5,30);
                          }
-                         if($scope.quarterDisplayType == 'Q3'){
+                         if($scope.quarterDisplayType == 'Q3 (Jul to Sep)'){
                          reportRequest.fromDate = new Date($scope.dt1.getFullYear(),6,1);
                          reportRequest.toDate = new Date($scope.dt1.getFullYear(),8,30);
                          }
-                         if($scope.quarterDisplayType == 'Q4'){
+                         if($scope.quarterDisplayType == 'Q4 (Oct to Dec)'){
                          reportRequest.fromDate = new Date($scope.dt1.getFullYear(),9,1);
                          reportRequest.toDate = new Date($scope.dt1.getFullYear(),11,31);
                          }
@@ -746,7 +751,6 @@
 				$scope.hideGrid = true;
 				$scope.periodDisplayType = '';
 				$scope.showEmptyData = false;
-
 			}
 
 			// datepicker stuff
@@ -783,7 +787,6 @@
 				$scope.popup1.opened = true;
 				var currentDate = new Date();
 
-
 				console.log(currentDate.getMonth() + " " + currentDate.getDate() + " " +currentDate.getFullYear());
 				if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) ){
 				    if(currentDate.getMonth() == startMonth && currentDate.getDate() >= startDate && currentDate.getFullYear() == 2017 && $scope.getSundays(currentDate) > 0){
@@ -807,7 +810,7 @@
 
 				}
 
-				if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) && $scope.format == 'yyyy-MM' ){
+				if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) && ($scope.format == 'yyyy-MM-dd' || $scope.format == 'yyyy-MM' )){
                     $scope.getSundays($scope.dt);
                     $scope.sundaysTable = true;
 
