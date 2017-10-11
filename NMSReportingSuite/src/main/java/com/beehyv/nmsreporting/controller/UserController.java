@@ -399,6 +399,30 @@ public class UserController {
             aggregateResponseDto.setTableData(aggregateCumulativekilkariDtos);
             return aggregateResponseDto;
         }
+        if(reportRequest.getReportType().equals(ReportType.beneficiaryCompletion.getReportType())){
+            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
+            List<AggCumulativeBeneficiaryComplDto> aggCumulativeBeneficiaryComplDtos=aggregateReportsService.getCumulativeBeneficiaryCompletion(reportRequest,currentUser);
+            aggregateResponseDto.setTableData(aggCumulativeBeneficiaryComplDtos);
+            return aggregateResponseDto;
+        }
+        if(reportRequest.getReportType().equals(ReportType.beneficiary.getReportType())){
+            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
+            List<AggregateBeneficiaryDto> aggregateBeneficiaryDtos=aggregateReportsService.getBeneficiaryReport(reportRequest,currentUser);
+            aggregateResponseDto.setTableData(aggregateBeneficiaryDtos);
+            return aggregateResponseDto;
+        }
+        if(reportRequest.getReportType().equals(ReportType.usage.getReportType())){
+            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
+            List<UsageDto> kilkariUsageDtos=aggregateReportsService.getUsageReport(reportRequest,currentUser);
+            aggregateResponseDto.setTableData(kilkariUsageDtos);
+            return aggregateResponseDto;
+        }
+        if(reportRequest.getReportType().equals(ReportType.listeningMatrix.getReportType())){
+            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
+            List<ListeningMatrixDto> listeningMatrixDtos=aggregateReportsService.getListeningMatrixReport(reportRequest,currentUser);
+            aggregateResponseDto.setTableData(listeningMatrixDtos);
+            return aggregateResponseDto;
+        }
 
         if(reportRequest.getReportType().equals(ReportType.maPerformance.getReportType())){
             DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");

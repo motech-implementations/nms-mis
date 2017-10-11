@@ -1,0 +1,13 @@
+package com.beehyv.nmsreporting.dao;
+
+import com.beehyv.nmsreporting.model.AggregateCumulativeBeneficiary;
+
+import java.util.Date;
+
+/**
+ * Created by beehyv on 9/10/17.
+ */
+public interface AggregateCumulativeBeneficiaryDao {
+
+    AggregateCumulativeBeneficiary getCumulativeBeneficiary(Integer locationId, String locationType, Date toDate);
+}
