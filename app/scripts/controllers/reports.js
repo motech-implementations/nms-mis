@@ -140,6 +140,7 @@
                     $scope.datePickerOptions.minMode = '';
                     $scope.datePickerOptions.datepickerMode = 'year';
                     $scope.datePickerOptions.minMode = 'year';
+                    $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear() -1);
                 }
                 if($scope.periodDisplayType == 'Month'){
                     $scope.periodTypeContent = "Select month";
@@ -147,12 +148,14 @@
                      $scope.datePickerOptions.minMode = '';
                     $scope.datePickerOptions.datepickerMode = 'month';
                     $scope.datePickerOptions.minMode ='month';
+                    $scope.datePickerOptions.maxDate = new Date().setMonth(new Date().getMonth() -1);
                 }
                 if($scope.periodDisplayType == 'Custom Range'){
                     $scope.periodTypeContent = "Start Date";
                     $scope.dateFormat = "yyyy-MM-dd";
                     delete $scope.datePickerOptions.datepickerMode;
                     $scope.datePickerOptions.minMode = '';
+                    $scope.datePickerOptions.maxDate = new Date().setDate(new Date().getDate() - 1);
                 }
                 console.log($scope.datePickerOptions);
 
@@ -400,7 +403,7 @@
 
 				$scope.endDatePickerOptions = {
                     formatYear: 'yyyy',
-                    maxDate: new Date(),
+                    maxDate: new Date() - 1,
                     minDate: minDate,
                     startingDay: 1
                 };
@@ -687,18 +690,18 @@
                             $scope.reportBreadCrumbData = result.data.breadCrumbData;
                             $scope.hideGrid = false;
 
-                            if(result.data.tableData[0].locationType == 'State'){
+                            if(angular.lowercase(result.data.tableData[0].locationType) == 'state'){
                                 $scope.gridOptions1.columnDefs[0].displayName = 'State Names';
                             }
-                            else if(result.data.tableData[0].locationType == 'District'){
+                            else if(angular.lowercase(result.data.tableData[0].locationType) == 'district'){
                                 $scope.gridOptions1.columnDefs[0].displayName = 'District Names';
 
                             }
-                             else if(result.data.tableData[0].locationType == 'Block'){
+                             else if(angular.lowercase(result.data.tableData[0].locationType) == 'block'){
                                 $scope.gridOptions1.columnDefs[0].displayName = 'Block Names';
 
                             }
-                            else if(result.data.tableData[0].locationType == 'Subcenter'){
+                            else if(angular.lowercase(result.data.tableData[0].locationType) == 'subcenter'){
                                 $scope.gridOptions1.columnDefs[0].displayName = 'SubCenter Names';
 
                             }
@@ -985,7 +988,7 @@
 
             $scope.drillDownData = function(locationId,locationType){
 
-                  if(locationType == "State"){
+                  if(angular.lowercase(locationType) == "state"){
                     reportRequest.stateId = locationId;
                     reportRequest.districtId = 0;
                     reportRequest.blockId = 0;
@@ -1016,7 +1019,7 @@
 
                         })
                   }
-                  else if(locationType == "NATIONAL"){
+                  else if(angular.lowercase(locationType) == "national"){
                        reportRequest.stateId = 0;
                        reportRequest.districtId = 0;
                        reportRequest.blockId = 0;
@@ -1046,7 +1049,7 @@
 
                            })
                      }
-                  else if(locationType == "District"){
+                  else if(angular.lowercase(locationType) == "district"){
                      reportRequest.districtId = locationId;
                      reportRequest.blockId = 0;
                      $http({
@@ -1075,7 +1078,7 @@
 
                          })
                   }
-                  else if(locationType == "Block"){
+                  else if(angular.lowercase(locationType) == "block"){
                     reportRequest.blockId = locationId;
                     $http({
                             method  : 'POST',
