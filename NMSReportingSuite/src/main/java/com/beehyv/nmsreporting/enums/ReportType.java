@@ -11,6 +11,7 @@ public enum ReportType {
 //    lowUsage("KillowUsage"),
 //    selfDeactivated("selfDeactivated"),
 //    sixWeeks("sixWeeks");
+    messageMatrix("Kilkari_message_matrix","Kilkari Message Matrix","K","Kilkari Message Matrix Report"),
     kilkariCalls("Kilkari_Call","Kilkari Call","K","Kilkari Call Report"),
     listeningMatrix("Kilkari_listening_matrix","Kilkari Listening Matrix","K","Kilkari Listening Matrix Report"),
     beneficiary("Kilkari_Beneficiary","Kilkari Beneficiary","K","Kilkari Aggregate Beneficiary Report"),

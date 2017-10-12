@@ -95,22 +95,22 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                 for(District d:districts){
                     AggregateCumulativeMA distrcitCount = aggregateCumulativeMADao.getMACumulativeSummery(d.getDistrictId(),locationType,toDate);
                     CumulativeSummery.add(aggregateCumulativeMADao.getMACumulativeSummery(d.getDistrictId(),locationType,toDate));
-                    ashasStarted+=distrcitCount.getAshasStarted();
-                    ashasCompleted+=distrcitCount.getAshasCompleted();
-                    ashasFailed+=distrcitCount.getAshasFailed();
-                    ashasNotStarted+=distrcitCount.getAshasNotStarted();
-                    ashasRejected+=distrcitCount.getAshasRejected();
-                    ashasRegistered+=distrcitCount.getAshasRegistered();
+                    ashasStarted+=(distrcitCount.getAshasStarted().equals(null)?0:distrcitCount.getAshasStarted());
+                    ashasCompleted+=(distrcitCount.getAshasCompleted().equals(null)?0:distrcitCount.getAshasCompleted());
+                    ashasFailed+=(distrcitCount.getAshasFailed().equals(null)?0:distrcitCount.getAshasFailed());
+                    ashasNotStarted+=(distrcitCount.getAshasNotStarted().equals(null)?0:distrcitCount.getAshasNotStarted());
+                    ashasRejected+=(distrcitCount.getAshasRejected().equals(null)?0:distrcitCount.getAshasRejected());
+                    ashasRegistered+=(distrcitCount.getAshasRegistered().equals(null)?0:distrcitCount.getAshasRegistered());
                 }
                 AggregateCumulativeMA noDistrictCount = new AggregateCumulativeMA();
-                noDistrictCount.setAshasRejected(stateCounts.getAshasRejected()-ashasRejected);
-                noDistrictCount.setAshasNotStarted(stateCounts.getAshasNotStarted()-ashasNotStarted);
-                noDistrictCount.setAshasRegistered(stateCounts.getAshasRegistered()-ashasRegistered);
-                noDistrictCount.setAshasFailed(stateCounts.getAshasFailed()-ashasFailed);
+                noDistrictCount.setAshasRejected(stateCounts.getAshasRejected().equals(null)?0:stateCounts.getAshasRejected()-ashasRejected);
+                noDistrictCount.setAshasNotStarted(stateCounts.getAshasNotStarted().equals(null)?0:stateCounts.getAshasNotStarted()-ashasNotStarted);
+                noDistrictCount.setAshasRegistered(stateCounts.getAshasRegistered().equals(null)?0:stateCounts.getAshasRegistered()-ashasRegistered);
+                noDistrictCount.setAshasFailed(stateCounts.getAshasFailed().equals(null)?0:stateCounts.getAshasFailed()-ashasFailed);
                 noDistrictCount.setAshasCompleted(stateCounts.getAshasCompleted()-ashasCompleted);
-                noDistrictCount.setAshasStarted(stateCounts.getAshasStarted()-ashasStarted);
+                noDistrictCount.setAshasStarted(stateCounts.getAshasStarted().equals(null)?0:stateCounts.getAshasStarted()-ashasStarted);
                 noDistrictCount.setLocationType("DifferenceState");
-                noDistrictCount.setId(stateCounts.getAshasRejected()-ashasRejected+stateCounts.getAshasNotStarted()-ashasNotStarted+stateCounts.getAshasRegistered()-ashasRegistered+stateCounts.getAshasFailed()-ashasFailed+stateCounts.getAshasCompleted()-ashasCompleted+stateCounts.getAshasStarted()-ashasStarted);
+                noDistrictCount.setId(noDistrictCount.getAshasCompleted()+noDistrictCount.getAshasFailed()+noDistrictCount.getAshasRegistered()+noDistrictCount.getAshasRejected()+noDistrictCount.getAshasStarted()+noDistrictCount.getAshasNotStarted());
                 noDistrictCount.setLocationId((long)-locationId);
                 CumulativeSummery.add(noDistrictCount);
             }
@@ -127,22 +127,22 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                     for (Block d : blocks) {
                         AggregateCumulativeMA blockCount = aggregateCumulativeMADao.getMACumulativeSummery(d.getBlockId(),locationType,toDate);
                         CumulativeSummery.add(aggregateCumulativeMADao.getMACumulativeSummery(d.getBlockId(), locationType,toDate));
-                        ashasStarted+=blockCount.getAshasStarted();
-                        ashasCompleted+=blockCount.getAshasCompleted();
-                        ashasFailed+=blockCount.getAshasFailed();
-                        ashasNotStarted+=blockCount.getAshasNotStarted();
-                        ashasRejected+=blockCount.getAshasRejected();
-                        ashasRegistered+=blockCount.getAshasRegistered();
+                        ashasStarted+=(blockCount.getAshasStarted().equals(null)?0:blockCount.getAshasStarted());
+                        ashasCompleted+=(blockCount.getAshasCompleted().equals(null)?0:blockCount.getAshasCompleted());
+                        ashasFailed+=(blockCount.getAshasFailed().equals(null)?0:blockCount.getAshasFailed());
+                        ashasNotStarted+=(blockCount.getAshasNotStarted().equals(null)?0:blockCount.getAshasNotStarted());
+                        ashasRejected+=(blockCount.getAshasRejected().equals(null)?0:blockCount.getAshasRejected());
+                        ashasRegistered+=(blockCount.getAshasRegistered().equals(null)?0:blockCount.getAshasRegistered());
                     }
                     AggregateCumulativeMA noBlockCount = new AggregateCumulativeMA();
-                    noBlockCount.setAshasRejected(districtCounts.getAshasRejected()-ashasRejected);
-                    noBlockCount.setAshasNotStarted(districtCounts.getAshasNotStarted()-ashasNotStarted);
-                    noBlockCount.setAshasRegistered(districtCounts.getAshasRegistered()-ashasRegistered);
-                    noBlockCount.setAshasFailed(districtCounts.getAshasFailed()-ashasFailed);
-                    noBlockCount.setAshasCompleted(districtCounts.getAshasCompleted()-ashasCompleted);
-                    noBlockCount.setAshasStarted(districtCounts.getAshasStarted()-ashasStarted);
+                    noBlockCount.setAshasRejected(districtCounts.getAshasRejected().equals(null)?0:districtCounts.getAshasRejected()-ashasRejected);
+                    noBlockCount.setAshasNotStarted(districtCounts.getAshasNotStarted().equals(null)?0:districtCounts.getAshasNotStarted()-ashasNotStarted);
+                    noBlockCount.setAshasRegistered(districtCounts.getAshasRegistered().equals(null)?0:districtCounts.getAshasRegistered()-ashasRegistered);
+                    noBlockCount.setAshasFailed(districtCounts.getAshasFailed().equals(null)?0:districtCounts.getAshasFailed()-ashasFailed);
+                    noBlockCount.setAshasCompleted(districtCounts.getAshasCompleted().equals(null)?0:districtCounts.getAshasCompleted()-ashasCompleted);
+                    noBlockCount.setAshasStarted(districtCounts.getAshasStarted().equals(null)?0:districtCounts.getAshasStarted()-ashasStarted);
                     noBlockCount.setLocationType("DifferenceDistrict");
-                    noBlockCount.setId(districtCounts.getAshasRejected()-ashasRejected+districtCounts.getAshasNotStarted()-ashasNotStarted+districtCounts.getAshasRegistered()-ashasRegistered+districtCounts.getAshasFailed()-ashasFailed+districtCounts.getAshasCompleted()-ashasCompleted+districtCounts.getAshasStarted()-ashasStarted);
+                    noBlockCount.setId(noBlockCount.getAshasCompleted()+noBlockCount.getAshasFailed()+noBlockCount.getAshasRegistered()+noBlockCount.getAshasRejected()+noBlockCount.getAshasStarted()+noBlockCount.getAshasNotStarted());
                     noBlockCount.setLocationId((long)-locationId);
                     CumulativeSummery.add(noBlockCount);
                 }
@@ -158,22 +158,22 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                     for(Subcenter s: subcenters){
                         AggregateCumulativeMA subcenterCount = aggregateCumulativeMADao.getMACumulativeSummery(s.getSubcenterId(),locationType,toDate);
                         CumulativeSummery.add(aggregateCumulativeMADao.getMACumulativeSummery(s.getSubcenterId(), locationType,toDate));
-                        ashasStarted+=subcenterCount.getAshasStarted();
-                        ashasCompleted+=subcenterCount.getAshasCompleted();
-                        ashasFailed+=subcenterCount.getAshasFailed();
-                        ashasNotStarted+=subcenterCount.getAshasNotStarted();
-                        ashasRejected+=subcenterCount.getAshasRejected();
-                        ashasRegistered+=subcenterCount.getAshasRegistered();
+                        ashasStarted+=(subcenterCount.getAshasStarted().equals(null)?0:subcenterCount.getAshasStarted());
+                        ashasCompleted+=(subcenterCount.getAshasCompleted().equals(null)?0:subcenterCount.getAshasCompleted());
+                        ashasFailed+=(subcenterCount.getAshasFailed().equals(null)?0:subcenterCount.getAshasFailed());
+                        ashasNotStarted+=(subcenterCount.getAshasNotStarted().equals(null)?0:subcenterCount.getAshasNotStarted());
+                        ashasRejected+=(subcenterCount.getAshasRejected().equals(null)?0:subcenterCount.getAshasRejected());
+                        ashasRegistered+=(subcenterCount.getAshasRegistered().equals(null)?0:subcenterCount.getAshasRegistered());
                     }
                     AggregateCumulativeMA nosubcenterCount = new AggregateCumulativeMA();
-                    nosubcenterCount.setAshasRejected(blockCounts.getAshasRejected()-ashasRejected);
-                    nosubcenterCount.setAshasNotStarted(blockCounts.getAshasNotStarted()-ashasNotStarted);
-                    nosubcenterCount.setAshasRegistered(blockCounts.getAshasRegistered()-ashasRegistered);
-                    nosubcenterCount.setAshasFailed(blockCounts.getAshasFailed()-ashasFailed);
-                    nosubcenterCount.setAshasCompleted(blockCounts.getAshasCompleted()-ashasCompleted);
-                    nosubcenterCount.setAshasStarted(blockCounts.getAshasStarted()-ashasStarted);
+                    nosubcenterCount.setAshasRejected(blockCounts.getAshasRejected().equals(null)?0:blockCounts.getAshasRejected()-ashasRejected);
+                    nosubcenterCount.setAshasNotStarted(blockCounts.getAshasNotStarted().equals(null)?0:blockCounts.getAshasNotStarted()-ashasNotStarted);
+                    nosubcenterCount.setAshasRegistered(blockCounts.getAshasRegistered().equals(null)?0:blockCounts.getAshasRegistered()-ashasRegistered);
+                    nosubcenterCount.setAshasFailed(blockCounts.getAshasFailed().equals(null)?0:blockCounts.getAshasFailed()-ashasFailed);
+                    nosubcenterCount.setAshasCompleted(blockCounts.getAshasCompleted().equals(null)?0:blockCounts.getAshasCompleted()-ashasCompleted);
+                    nosubcenterCount.setAshasStarted(blockCounts.getAshasStarted().equals(null)?0:blockCounts.getAshasStarted()-ashasStarted);
                     nosubcenterCount.setLocationType("DifferenceBlock");
-                    nosubcenterCount.setId(blockCounts.getAshasRejected()-ashasRejected+blockCounts.getAshasNotStarted()-ashasNotStarted+blockCounts.getAshasRegistered()-ashasRegistered+blockCounts.getAshasFailed()-ashasFailed+blockCounts.getAshasCompleted()-ashasCompleted+blockCounts.getAshasStarted()-ashasStarted);
+                    nosubcenterCount.setId(nosubcenterCount.getAshasCompleted()+nosubcenterCount.getAshasFailed()+nosubcenterCount.getAshasRegistered()+nosubcenterCount.getAshasRejected()+nosubcenterCount.getAshasStarted()+nosubcenterCount.getAshasNotStarted());
                     nosubcenterCount.setLocationId((long)-locationId);
                     CumulativeSummery.add(nosubcenterCount);
                 }
@@ -341,13 +341,13 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                     summaryDto1.setLocationName(subcenterDao.findBySubcenterId(a.getLocationId().intValue()).getSubcenterName());
                 }
                 if (locationType.equalsIgnoreCase("DifferenceState")) {
-                    summaryDto1.setLocationName("No District Count");
+                    summaryDto1.setLocationName("No District");
                 }
                 if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
-                    summaryDto1.setLocationName("No Block Count");
+                    summaryDto1.setLocationName("No Block");
                 }
                 if (locationType.equalsIgnoreCase("DifferenceBlock")) {
-                    summaryDto1.setLocationName("No Subcenter Count");
+                    summaryDto1.setLocationName("No Subcenter");
                 }
 
                 if(a.getId()!=0){
@@ -381,6 +381,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                 Long calls_50_75 = (long)0;
                 Long calls_25_50 = (long)0;
                 Long calls_1_25 = (long)0;
+                Long totalAge = (long) 0;
                 for(District d:districts){
                     AggregateCumulativeBeneficiaryCompletion distrcitCount = aggCumulativeBeneficiaryComplDao.getBeneficiaryCompletion(d.getDistrictId(),locationType,toDate);
                     CumulativeCompletion.add(distrcitCount);
@@ -389,6 +390,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                     calls_50_75+=distrcitCount.getCalls_50_75();
                     calls_25_50+=distrcitCount.getCalls_25_50();
                     calls_1_25+=distrcitCount.getCalls_1_25();
+                    totalAge+=distrcitCount.getTotalAge();
                 }
                 AggregateCumulativeBeneficiaryCompletion noDistrictCount = new AggregateCumulativeBeneficiaryCompletion();
                 noDistrictCount.setCompletedBeneficiaries(stateCounts.getCompletedBeneficiaries()-completedBeneficiaries);
@@ -396,8 +398,9 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                 noDistrictCount.setCalls_50_75(stateCounts.getCalls_50_75()-calls_50_75);
                 noDistrictCount.setCalls_25_50(stateCounts.getCalls_25_50()-calls_25_50);
                 noDistrictCount.setCalls_1_25(stateCounts.getCalls_1_25()-calls_1_25);
+                noDistrictCount.setTotalAge(stateCounts.getTotalAge()-totalAge);
                 noDistrictCount.setLocationType("DifferenceState");
-                noDistrictCount.setId((int)(stateCounts.getCompletedBeneficiaries()-completedBeneficiaries+stateCounts.getCalls_75_100()-calls_75_100+stateCounts.getCalls_50_75()-calls_50_75+stateCounts.getCalls_25_50()-calls_25_50+stateCounts.getCalls_1_25()-calls_1_25));
+                noDistrictCount.setId((int)(stateCounts.getCompletedBeneficiaries()-completedBeneficiaries+stateCounts.getCalls_75_100()-calls_75_100+stateCounts.getCalls_50_75()-calls_50_75+stateCounts.getCalls_25_50()-calls_25_50+stateCounts.getCalls_1_25()-calls_1_25+stateCounts.getTotalAge()-totalAge));
                 noDistrictCount.setLocationId((long)(-1));
                 CumulativeCompletion.add(noDistrictCount);
             }
@@ -410,6 +413,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                     Long calls_50_75 = (long)0;
                     Long calls_25_50 = (long)0;
                     Long calls_1_25 = (long)0;
+                    Long totalAge = (long) 0;
                     for (Block d : blocks) {
                         AggregateCumulativeBeneficiaryCompletion blockCount = aggCumulativeBeneficiaryComplDao.getBeneficiaryCompletion(d.getBlockId(),locationType,toDate);
                         CumulativeCompletion.add(blockCount);
@@ -418,6 +422,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                         calls_50_75+=blockCount.getCalls_50_75();
                         calls_25_50+=blockCount.getCalls_25_50();
                         calls_1_25+=blockCount.getCalls_1_25();
+                        totalAge+=blockCount.getTotalAge();
                     }
                     AggregateCumulativeBeneficiaryCompletion noBlockCount = new AggregateCumulativeBeneficiaryCompletion();
                     noBlockCount.setCompletedBeneficiaries(districtCounts.getCompletedBeneficiaries()-completedBeneficiaries);
@@ -425,8 +430,9 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                     noBlockCount.setCalls_50_75(districtCounts.getCalls_50_75()-calls_50_75);
                     noBlockCount.setCalls_25_50(districtCounts.getCalls_25_50()-calls_25_50);
                     noBlockCount.setCalls_1_25(districtCounts.getCalls_1_25()-calls_1_25);
+                    noBlockCount.setTotalAge(districtCounts.getTotalAge()-totalAge);
                     noBlockCount.setLocationType("DifferenceDistrict");
-                    noBlockCount.setId((int)(districtCounts.getCompletedBeneficiaries()-completedBeneficiaries+districtCounts.getCalls_75_100()-calls_75_100+districtCounts.getCalls_50_75()-calls_50_75+districtCounts.getCalls_25_50()-calls_25_50+districtCounts.getCalls_1_25()-calls_1_25));
+                    noBlockCount.setId((int)(districtCounts.getCompletedBeneficiaries()-completedBeneficiaries+districtCounts.getCalls_75_100()-calls_75_100+districtCounts.getCalls_50_75()-calls_50_75+districtCounts.getCalls_25_50()-calls_25_50+districtCounts.getCalls_1_25()-calls_1_25+districtCounts.getTotalAge()-totalAge));
                     noBlockCount.setLocationId((long)(-1));
                     CumulativeCompletion.add(noBlockCount);
                 }
@@ -438,6 +444,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                     Long calls_50_75 = (long)0;
                     Long calls_25_50 = (long)0;
                     Long calls_1_25 = (long)0;
+                    Long totalAge = (long) 0;
                     for(Subcenter s: subcenters){
                         AggregateCumulativeBeneficiaryCompletion subcenterCount = aggCumulativeBeneficiaryComplDao.getBeneficiaryCompletion(s.getSubcenterId(),locationType,toDate);
                         CumulativeCompletion.add(subcenterCount);
@@ -446,6 +453,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                         calls_50_75+=subcenterCount.getCalls_50_75();
                         calls_25_50+=subcenterCount.getCalls_25_50();
                         calls_1_25+=subcenterCount.getCalls_1_25();
+                        totalAge+=subcenterCount.getTotalAge();
                     }
                     AggregateCumulativeBeneficiaryCompletion nosubcenterCount = new AggregateCumulativeBeneficiaryCompletion();
                     nosubcenterCount.setCompletedBeneficiaries(blockCounts.getCompletedBeneficiaries()-completedBeneficiaries);
@@ -453,8 +461,9 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                     nosubcenterCount.setCalls_50_75(blockCounts.getCalls_50_75()-calls_50_75);
                     nosubcenterCount.setCalls_25_50(blockCounts.getCalls_25_50()-calls_25_50);
                     nosubcenterCount.setCalls_1_25(blockCounts.getCalls_1_25()-calls_1_25);
+                    nosubcenterCount.setTotalAge(blockCounts.getTotalAge()-totalAge);
                     nosubcenterCount.setLocationType("DifferenceBlock");
-                    nosubcenterCount.setId((int)(blockCounts.getCompletedBeneficiaries()-completedBeneficiaries+blockCounts.getCalls_75_100()-calls_75_100+blockCounts.getCalls_50_75()-calls_50_75+blockCounts.getCalls_25_50()-calls_25_50+blockCounts.getCalls_1_25()-calls_1_25));
+                    nosubcenterCount.setId((int)(blockCounts.getCompletedBeneficiaries()-completedBeneficiaries+blockCounts.getCalls_75_100()-calls_75_100+blockCounts.getCalls_50_75()-calls_50_75+blockCounts.getCalls_25_50()-calls_25_50+blockCounts.getCalls_1_25()-calls_1_25+blockCounts.getTotalAge()-totalAge));
                     nosubcenterCount.setLocationId((long)(-1));
                     CumulativeCompletion.add(nosubcenterCount);
                 }
@@ -534,6 +543,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                     summaryDto1.setCalls_25_50(a.getCalls_25_50());
                     summaryDto1.setCalls_1_25(a.getCalls_1_25());
                     summaryDto1.setLocationType(a.getLocationType());
+                    summaryDto1.setAvgWeeks((float)((int)(a.getCompletedBeneficiaries()== 0?0:(a.getTotalAge()*100/a.getCompletedBeneficiaries())))/100);
                     String locationType = a.getLocationType();
                     if(locationType.equalsIgnoreCase("State")){
                         summaryDto1.setLocationName(stateDao.findByStateId(a.getLocationId().intValue()).getStateName());
@@ -548,13 +558,13 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                         summaryDto1.setLocationName(subcenterDao.findBySubcenterId(a.getLocationId().intValue()).getSubcenterName());
                     }
                     if (locationType.equalsIgnoreCase("DifferenceState")) {
-                        summaryDto1.setLocationName("No District Count");
+                        summaryDto1.setLocationName("No District");
                     }
                     if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
-                        summaryDto1.setLocationName("No Block Count");
+                        summaryDto1.setLocationName("No Block");
                     }
                     if (locationType.equalsIgnoreCase("DifferenceBlock")) {
-                        summaryDto1.setLocationName("No Subcenter Count");
+                        summaryDto1.setLocationName("No Subcenter");
                     }
 
                     if(a.getId()!=0){
@@ -619,7 +629,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                 noDistrictCount.setCalledInbox(stateCounts.getCalledInbox()-calledInbox);
                 noDistrictCount.setJoinedSubscription(stateCounts.getJoinedSubscription()-joinedSubscription);
                 noDistrictCount.setLocationType("DifferenceState");
-//                noDistrictCount.setId((int)(stateCounts.getCompletedBeneficiaries()-completedBeneficiaries+stateCounts.getCalls_75_100()-calls_75_100+stateCounts.getCalls_50_75()-calls_50_75+stateCounts.getCalls_25_50()-calls_25_50+stateCounts.getCalls_1_25()-calls_1_25));
+                noDistrictCount.setId((int)(noDistrictCount.getSystemDeactivation()+noDistrictCount.getNotAnswering()+noDistrictCount.getLowListenership()+noDistrictCount.getChildCompletion()+noDistrictCount.getBeneficiariesCalled()+noDistrictCount.getCalledInbox()+noDistrictCount.getJoinedSubscription()+noDistrictCount.getMotherCompletion()+noDistrictCount.getSelfDeactivated()));
                 noDistrictCount.setLocationId((long)(-1));
                 CumulativeBeneficiary.add(noDistrictCount);
             }
@@ -661,7 +671,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                     noBlockCount.setCalledInbox(districtCounts.getCalledInbox()-calledInbox);
                     noBlockCount.setJoinedSubscription(districtCounts.getJoinedSubscription()-joinedSubscription);
                     noBlockCount.setLocationType("DifferenceDistrict");
-//                    noBlockCount.setId((int)(districtCounts.getCompletedBeneficiaries()-completedBeneficiaries+districtCounts.getCalls_75_100()-calls_75_100+districtCounts.getCalls_50_75()-calls_50_75+districtCounts.getCalls_25_50()-calls_25_50+districtCounts.getCalls_1_25()-calls_1_25));
+                    noBlockCount.setId((int)(noBlockCount.getSystemDeactivation()+noBlockCount.getNotAnswering()+noBlockCount.getLowListenership()+noBlockCount.getChildCompletion()+noBlockCount.getBeneficiariesCalled()+noBlockCount.getCalledInbox()+noBlockCount.getJoinedSubscription()+noBlockCount.getMotherCompletion()+noBlockCount.getSelfDeactivated()));
                     noBlockCount.setLocationId((long)(-1));
                     CumulativeBeneficiary.add(noBlockCount);
                 }
@@ -701,7 +711,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                     nosubcenterCount.setCalledInbox(blockCounts.getCalledInbox()-calledInbox);
                     nosubcenterCount.setJoinedSubscription(blockCounts.getJoinedSubscription()-joinedSubscription);
                     nosubcenterCount.setLocationType("DifferenceBlock");
-//                    nosubcenterCount.setId((int)(blockCounts.getCompletedBeneficiaries()-completedBeneficiaries+blockCounts.getCalls_75_100()-calls_75_100+blockCounts.getCalls_50_75()-calls_50_75+blockCounts.getCalls_25_50()-calls_25_50+blockCounts.getCalls_1_25()-calls_1_25));
+                    nosubcenterCount.setId((int)(nosubcenterCount.getSystemDeactivation()+nosubcenterCount.getNotAnswering()+nosubcenterCount.getLowListenership()+nosubcenterCount.getChildCompletion()+nosubcenterCount.getBeneficiariesCalled()+nosubcenterCount.getCalledInbox()+nosubcenterCount.getJoinedSubscription()+nosubcenterCount.getMotherCompletion()+nosubcenterCount.getSelfDeactivated()));
                     nosubcenterCount.setLocationId((long)(-1));
                     CumulativeBeneficiary.add(nosubcenterCount);
                 }
@@ -795,13 +805,13 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                         summaryDto1.setLocationName(subcenterDao.findBySubcenterId(a.getLocationId().intValue()).getSubcenterName());
                     }
                     if (locationType.equalsIgnoreCase("DifferenceState")) {
-                        summaryDto1.setLocationName("No District Count");
+                        summaryDto1.setLocationName("No District");
                     }
                     if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
-                        summaryDto1.setLocationName("No Block Count");
+                        summaryDto1.setLocationName("No Block");
                     }
                     if (locationType.equalsIgnoreCase("DifferenceBlock")) {
-                        summaryDto1.setLocationName("No Subcenter Count");
+                        summaryDto1.setLocationName("No Subcenter");
                     }
 
                     if (a.getId() != 0) {
@@ -837,6 +847,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                 Long calls_25_50 = (long)0;
                 Long calls_1_25 = (long)0;
                 Long calledInbox = (long)0;
+                Long atLeastOneCall = (long)0;
                 for(District d:districts){
                     KilkariUsage distrcitCount = kilkariUsageDao.getUsage(d.getDistrictId(),locationType,toDate);
                     KilkariUsage.add(distrcitCount);
@@ -846,6 +857,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                     calls_25_50+=distrcitCount.getCalls_25_50();
                     calls_1_25+=distrcitCount.getCalls_1_25();
                     calledInbox+=distrcitCount.getCalledInbox();
+                    atLeastOneCall+=distrcitCount.getAtLeastOneCall();
 
                 }
                 KilkariUsage noDistrictCount = new KilkariUsage();
@@ -855,8 +867,9 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                 noDistrictCount.setCalls_25_50(stateCounts.getCalls_25_50()-calls_25_50);
                 noDistrictCount.setCalls_1_25(stateCounts.getCalls_1_25()-calls_1_25);
                 noDistrictCount.setCalledInbox(stateCounts.getCalledInbox()-calledInbox);
+                noDistrictCount.setAtLeastOneCall(stateCounts.getAtLeastOneCall()-atLeastOneCall);
                 noDistrictCount.setLocationType("DifferenceState");
-                noDistrictCount.setId((int)(noDistrictCount.getBeneficiariesCalled()+noDistrictCount.getCalledInbox()));
+                noDistrictCount.setId((int)(noDistrictCount.getBeneficiariesCalled()+noDistrictCount.getCalledInbox()+noDistrictCount.getAtLeastOneCall()+noDistrictCount.getCalls_1_25()+noDistrictCount.getCalls_25_50()+noDistrictCount.getCalls_50_75()+noDistrictCount.getCalls_75_100()+noDistrictCount.getAtLeastOneCall()));
                 noDistrictCount.setLocationId((long)(-1));
                 KilkariUsage.add(noDistrictCount);
             }
@@ -870,6 +883,8 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                     Long calls_25_50 = (long)0;
                     Long calls_1_25 = (long)0;
                     Long calledInbox = (long)0;
+                    Long atLeastOneCall = (long)0;
+
                     for (Block d : blocks) {
                         KilkariUsage blockCount = kilkariUsageDao.getUsage(d.getBlockId(),locationType,toDate);
                         KilkariUsage.add(blockCount);
@@ -879,6 +894,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                         calls_25_50+=blockCount.getCalls_25_50();
                         calls_1_25+=blockCount.getCalls_1_25();
                         calledInbox+=blockCount.getCalledInbox();
+                        atLeastOneCall+=blockCount.getAtLeastOneCall();
 
 
                     }
@@ -889,8 +905,9 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                     noBlockCount.setCalls_25_50(districtCounts.getCalls_25_50()-calls_25_50);
                     noBlockCount.setCalls_1_25(districtCounts.getCalls_1_25()-calls_1_25);
                     noBlockCount.setCalledInbox(districtCounts.getCalledInbox()-calledInbox);
+                    noBlockCount.setAtLeastOneCall(districtCounts.getAtLeastOneCall()-atLeastOneCall);
                     noBlockCount.setLocationType("DifferenceDistrict");
-                    noBlockCount.setId((int)(noBlockCount.getCalledInbox()+noBlockCount.getBeneficiariesCalled()));
+                    noBlockCount.setId((int)(noBlockCount.getCalledInbox()+noBlockCount.getBeneficiariesCalled()+noBlockCount.getAtLeastOneCall()+noBlockCount.getCalls_1_25()+noBlockCount.getCalls_25_50()+noBlockCount.getCalls_50_75()+noBlockCount.getCalls_75_100()+noBlockCount.getAtLeastOneCall()));
                     noBlockCount.setLocationId((long)(-1));
                     KilkariUsage.add(noBlockCount);
                 }
@@ -903,6 +920,8 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                     Long calls_25_50 = (long)0;
                     Long calls_1_25 = (long)0;
                     Long calledInbox = (long)0;
+                    Long atLeastOneCall = (long)0;
+
                     for(Subcenter s: subcenters){
                         KilkariUsage subcenterCount = kilkariUsageDao.getUsage(s.getSubcenterId(),locationType,toDate);
                         KilkariUsage.add(subcenterCount);
@@ -912,6 +931,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                         calls_25_50+=subcenterCount.getCalls_25_50();
                         calls_1_25+=subcenterCount.getCalls_1_25();
                         calledInbox+=subcenterCount.getCalledInbox();
+                        atLeastOneCall+=subcenterCount.getAtLeastOneCall();
 
                     }
                     KilkariUsage nosubcenterCount = new KilkariUsage();
@@ -921,8 +941,9 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                     nosubcenterCount.setCalls_25_50(blockCounts.getCalls_25_50()-calls_25_50);
                     nosubcenterCount.setCalls_1_25(blockCounts.getCalls_1_25()-calls_1_25);
                     nosubcenterCount.setCalledInbox(blockCounts.getCalledInbox()-calledInbox);
+                    nosubcenterCount.setAtLeastOneCall(blockCounts.getAtLeastOneCall()-atLeastOneCall);
                     nosubcenterCount.setLocationType("DifferenceBlock");
-                    nosubcenterCount.setId((int)(nosubcenterCount.getBeneficiariesCalled()+nosubcenterCount.getCalledInbox()));
+                    nosubcenterCount.setId((int)(nosubcenterCount.getBeneficiariesCalled()+nosubcenterCount.getCalledInbox()+nosubcenterCount.getCalls_1_25()+nosubcenterCount.getCalls_25_50()+nosubcenterCount.getCalls_50_75()+nosubcenterCount.getCalls_75_100()+nosubcenterCount.getAtLeastOneCall()));
                     nosubcenterCount.setLocationId((long)(-1));
                     KilkariUsage.add(nosubcenterCount);
                 }
@@ -1007,13 +1028,13 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                 summaryDto1.setLocationName(subcenterDao.findBySubcenterId(a.getLocationId().intValue()).getSubcenterName());
             }
             if (locationType.equalsIgnoreCase("DifferenceState")) {
-                summaryDto1.setLocationName("No District Count");
+                summaryDto1.setLocationName("No District");
             }
             if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
-                summaryDto1.setLocationName("No Block Count");
+                summaryDto1.setLocationName("No Block");
             }
             if (locationType.equalsIgnoreCase("DifferenceBlock")) {
-                summaryDto1.setLocationName("No Subcenter Count");
+                summaryDto1.setLocationName("No Subcenter");
             }
 
             if(a.getId()!=0){
@@ -1157,7 +1178,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                 noDistrictCount.setContent_50_75(stateCounts.getContent_50_75()-content_50_75);
                 noDistrictCount.setContent_75_100(stateCounts.getContent_75_100()-content_75_100);
                 noDistrictCount.setLocationType("DifferenceState");
-               // noDistrictCount.setId((int)(stateCounts.getCompletedBeneficiaries()-completedBeneficiaries+stateCounts.getCalls_75_100()-calls_75_100+stateCounts.getCalls_50_75()-calls_50_75+stateCounts.getCalls_25_50()-calls_25_50+stateCounts.getCalls_1_25()-calls_1_25));
+                noDistrictCount.setId((int)(noDistrictCount.getAvgDuration()+noDistrictCount.getBillableMinutes()+noDistrictCount.getCallsAttempted()+noDistrictCount.getCallsToInbox()+noDistrictCount.getContent_1_25()+noDistrictCount.getContent_25_50()+noDistrictCount.getContent_50_75()+noDistrictCount.getContent_75_100()+noDistrictCount.getSuccessfulCalls()));
                 noDistrictCount.setLocationId((long)(-1));
                 kilkariCall.add(noDistrictCount);
             }
@@ -1198,7 +1219,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                     noBlockCount.setContent_50_75(districtCounts.getContent_50_75()-content_50_75);
                     noBlockCount.setContent_75_100(districtCounts.getContent_75_100()-content_75_100);
                     noBlockCount.setLocationType("DifferenceDistrict");
-                    //noBlockCount.setId((int)(districtCounts.getCompletedBeneficiaries()-completedBeneficiaries+districtCounts.getCalls_75_100()-calls_75_100+districtCounts.getCalls_50_75()-calls_50_75+districtCounts.getCalls_25_50()-calls_25_50+districtCounts.getCalls_1_25()-calls_1_25));
+                    noBlockCount.setId((int)(noBlockCount.getAvgDuration()+noBlockCount.getBillableMinutes()+noBlockCount.getCallsAttempted()+noBlockCount.getCallsToInbox()+noBlockCount.getContent_1_25()+noBlockCount.getContent_25_50()+noBlockCount.getContent_50_75()+noBlockCount.getContent_75_100()+noBlockCount.getSuccessfulCalls()));
                     noBlockCount.setLocationId((long)(-1));
                     kilkariCall.add(noBlockCount);
                 }
@@ -1238,7 +1259,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                     nosubcenterCount.setContent_50_75(blockCounts.getContent_50_75()-content_50_75);
                     nosubcenterCount.setContent_75_100(blockCounts.getContent_75_100()-content_75_100);
                     nosubcenterCount.setLocationType("DifferenceBlock");
-                    //nosubcenterCount.setId((int)(blockCounts.getCompletedBeneficiaries()-completedBeneficiaries+blockCounts.getCalls_75_100()-calls_75_100+blockCounts.getCalls_50_75()-calls_50_75+blockCounts.getCalls_25_50()-calls_25_50+blockCounts.getCalls_1_25()-calls_1_25));
+                    nosubcenterCount.setId((int)(nosubcenterCount.getAvgDuration()+nosubcenterCount.getBillableMinutes()+nosubcenterCount.getCallsAttempted()+nosubcenterCount.getCallsToInbox()+nosubcenterCount.getContent_1_25()+nosubcenterCount.getContent_25_50()+nosubcenterCount.getContent_50_75()+nosubcenterCount.getContent_75_100()+nosubcenterCount.getSuccessfulCalls()));
                     nosubcenterCount.setLocationId((long)(-1));
                     kilkariCall.add(nosubcenterCount);
                 }
@@ -1326,13 +1347,13 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                 summaryDto1.setLocationName(subcenterDao.findBySubcenterId(a.getLocationId().intValue()).getSubcenterName());
             }
             if (locationType.equalsIgnoreCase("DifferenceState")) {
-                summaryDto1.setLocationName("No District Count");
+                summaryDto1.setLocationName("No District");
             }
             if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
-                summaryDto1.setLocationName("No Block Count");
+                summaryDto1.setLocationName("No Block");
             }
             if (locationType.equalsIgnoreCase("DifferenceBlock")) {
-                summaryDto1.setLocationName("No Subcenter Count");
+                summaryDto1.setLocationName("No Subcenter");
             }
 
             if(a.getId()!=0){

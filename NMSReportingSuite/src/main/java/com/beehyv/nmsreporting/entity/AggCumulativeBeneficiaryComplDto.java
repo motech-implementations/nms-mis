@@ -10,7 +10,7 @@ public class AggCumulativeBeneficiaryComplDto {
     String locationName;
     Long locationId;
     Long completedBeneficiaries;
-    Integer avgWeeks;
+    Float avgWeeks;
     Long calls_75_100;
     Long calls_50_75;
     Long calls_25_50;
@@ -57,11 +57,11 @@ public class AggCumulativeBeneficiaryComplDto {
         this.completedBeneficiaries = completedBeneficiaries;
     }
 
-    public Integer getAvgWeeks() {
+    public Float getAvgWeeks() {
         return avgWeeks;
     }
 
-    public void setAvgWeeks(Integer avgWeeks) {
+    public void setAvgWeeks(Float avgWeeks) {
         this.avgWeeks = avgWeeks;
     }
 

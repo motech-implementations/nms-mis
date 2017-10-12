@@ -25,7 +25,7 @@ public class AggCumulativeBeneficiaryComplDaoImpl extends AbstractDao<Integer,Ag
             ));
             if(criteria.list().isEmpty()){
                 Long a = (long)0;
-                AggregateCumulativeBeneficiaryCompletion aggregateCumulativeBeneficiaryCompletion = new AggregateCumulativeBeneficiaryCompletion(0,locationType,locationId.longValue(),date,a,a,a,a,a);
+                AggregateCumulativeBeneficiaryCompletion aggregateCumulativeBeneficiaryCompletion = new AggregateCumulativeBeneficiaryCompletion(0,locationType,locationId.longValue(),date,a,a,a,a,a,a);
                 return aggregateCumulativeBeneficiaryCompletion;
             }
             return (AggregateCumulativeBeneficiaryCompletion) criteria.list().get(0);

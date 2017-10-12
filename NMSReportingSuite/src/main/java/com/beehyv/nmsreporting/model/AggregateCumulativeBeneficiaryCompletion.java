@@ -39,8 +39,11 @@ public class AggregateCumulativeBeneficiaryCompletion {
     @Column(name="calls_1_25", columnDefinition = "BIGINT(20)")
     private Long calls_1_25;
 
+    @Column(name="total_age", columnDefinition = "BIGINT(20)")
+    private Long totalAge;
 
-    public AggregateCumulativeBeneficiaryCompletion(Integer id, String locationType, Long locationId, Date date, Long completedBeneficiaries, Long calls_75_100, Long calls_50_75, Long calls_25_50, Long calls_1_25) {
+
+    public AggregateCumulativeBeneficiaryCompletion(Integer id, String locationType, Long locationId, Date date, Long completedBeneficiaries, Long calls_75_100, Long calls_50_75, Long calls_25_50, Long calls_1_25, Long totalAge) {
         this.id = id;
         this.locationType = locationType;
         this.locationId = locationId;
@@ -50,10 +53,19 @@ public class AggregateCumulativeBeneficiaryCompletion {
         this.calls_50_75 = calls_50_75;
         this.calls_25_50 = calls_25_50;
         this.calls_1_25 = calls_1_25;
+        this.totalAge = totalAge;
     }
 
     public AggregateCumulativeBeneficiaryCompletion(){
 
+    }
+
+    public Long getTotalAge() {
+        return totalAge;
+    }
+
+    public void setTotalAge(Long totalAge) {
+        this.totalAge = totalAge;
     }
 
     public Integer getId() {
