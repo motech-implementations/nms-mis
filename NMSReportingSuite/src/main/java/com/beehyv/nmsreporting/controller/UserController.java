@@ -1006,10 +1006,22 @@ public class UserController {
                 ReportType.motherRejected.getServiceType())
         );
         kList.add(new Report(
-                ReportType.childRejected.getReportName(),
-                ReportType.childRejected.getReportType(),
-                "images/drop-down-3.png",
-                ReportType.childRejected.getServiceType())
+                ReportType.kilkariCumulative.getReportName(),
+                ReportType.kilkariCumulative.getReportType(),
+                "images/drop-down-2.png",
+                ReportType.kilkariCumulative.getServiceType())
+        );
+        kList.add(new Report(
+                ReportType.beneficiaryCompletion.getReportName(),
+                ReportType.beneficiaryCompletion.getReportType(),
+                "images/drop-down-2.png",
+                ReportType.beneficiaryCompletion.getServiceType())
+        );
+        kList.add(new Report(
+                ReportType.usage.getReportName(),
+                ReportType.usage.getReportType(),
+                "images/drop-down-2.png",
+                ReportType.usage.getServiceType())
         );
 
         kMenu.put("service", kList.get(0).getService());

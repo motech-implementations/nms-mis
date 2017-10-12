@@ -271,17 +271,31 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
     public List<AggregateCumulativekilkariDto> getKilkariCumulativeSummary(ReportRequest reportRequest,User currentUser){
 
 //            List<Map<String,String>> summaryReport = new ArrayList<>();
-            DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(reportRequest.getToDate().getTime());
-            String toDateString = formatter.format(calendar.getTime());
-            Date toDate = new Date();
-            try {
-                toDate = formatter.parse(toDateString);
+//            DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+//            Calendar calendar = Calendar.getInstance();
+//            calendar.setTimeInMillis(reportRequest.getToDate().getTime());
+//            String toDateString = formatter.format(calendar.getTime());
+//            Date toDate = new Date();
+//            try {
+//                toDate = formatter.parse(toDateString);
+//
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+        DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        Calendar calendar = Calendar.getInstance();
+        Date toDate = new Date();
+        Date startDate=new Date(0);
+        Calendar aCalendar = Calendar.getInstance();
+        aCalendar.setTime(reportRequest.getToDate());
+        aCalendar.set(Calendar.MILLISECOND, 0);
+        aCalendar.set(Calendar.SECOND, 0);
+        aCalendar.set(Calendar.MINUTE, 0);
+        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
 
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+//        aCalendar.add(Calendar.MONTH, -1);
+
+        toDate = aCalendar.getTime();
             List<AggregateCumulativekilkariDto> summaryDto = new ArrayList<>();
             List<AggregateCumulativeKilkari> cumulativesummaryReport = new ArrayList<>();
 
