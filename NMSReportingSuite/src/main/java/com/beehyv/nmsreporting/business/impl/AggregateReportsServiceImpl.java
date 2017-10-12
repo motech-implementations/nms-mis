@@ -187,7 +187,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         List<AggregateCumulativeKilkari> CumulativeSummery = new ArrayList<>();
         List<String> Headers = new ArrayList<>();
         if(locationType.equalsIgnoreCase("State")){
-            List<State> states=stateDao.getStatesByServiceType("M");
+            List<State> states=stateDao.getStatesByServiceType("K");
             for(State s:states){
                 CumulativeSummery.add(aggregateCumulativekilkariDao.getKilkariCumulativeSummary(s.getStateId(),locationType,toDate));
             }
@@ -352,7 +352,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
     private List<AggregateCumulativeBeneficiaryCompletion> getCumulativeBeneficiaryCompletion(Integer locationId,String locationType,Date toDate){
         List<AggregateCumulativeBeneficiaryCompletion> CumulativeCompletion = new ArrayList<>();
         if(locationType.equalsIgnoreCase("State")){
-            List<State> states=stateDao.getStatesByServiceType("M");
+            List<State> states=stateDao.getStatesByServiceType("K");
             for(State s:states){
                 CumulativeCompletion.add(aggCumulativeBeneficiaryComplDao.getBeneficiaryCompletion(s.getStateId(),locationType,toDate));
             }
@@ -561,7 +561,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
     private List<AggregateCumulativeBeneficiary> getCumulativeBeneficiary(Integer locationId,String locationType,Date toDate){
         List<AggregateCumulativeBeneficiary> CumulativeBeneficiary = new ArrayList<>();
         if(locationType.equalsIgnoreCase("State")){
-            List<State> states=stateDao.getStatesByServiceType("M");
+            List<State> states=stateDao.getStatesByServiceType("K");
             for(State s:states){
                 CumulativeBeneficiary.add(aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary(s.getStateId(),locationType,toDate));
             }
@@ -807,7 +807,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
     private List<KilkariUsage> getKilkariUsage(Integer locationId,String locationType,Date toDate){
         List<KilkariUsage> KilkariUsage = new ArrayList<>();
         if(locationType.equalsIgnoreCase("State")){
-            List<State> states=stateDao.getStatesByServiceType("M");
+            List<State> states=stateDao.getStatesByServiceType("K");
             for(State s:states){
                 KilkariUsage.add(kilkariUsageDao.getUsage(s.getStateId(),locationType,toDate));
             }
@@ -842,7 +842,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                 noDistrictCount.setCalls_1_25(stateCounts.getCalls_1_25()-calls_1_25);
                 noDistrictCount.setCalledInbox(stateCounts.getCalledInbox()-calledInbox);
                 noDistrictCount.setLocationType("DifferenceState");
-//                noDistrictCount.setId((int)(stateCounts.getCompletedBeneficiaries()-completedBeneficiaries+stateCounts.getCalls_75_100()-calls_75_100+stateCounts.getCalls_50_75()-calls_50_75+stateCounts.getCalls_25_50()-calls_25_50+stateCounts.getCalls_1_25()-calls_1_25));
+                noDistrictCount.setId((int)(noDistrictCount.getBeneficiariesCalled()+noDistrictCount.getCalledInbox()));
                 noDistrictCount.setLocationId((long)(-1));
                 KilkariUsage.add(noDistrictCount);
             }
@@ -876,7 +876,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                     noBlockCount.setCalls_1_25(districtCounts.getCalls_1_25()-calls_1_25);
                     noBlockCount.setCalledInbox(districtCounts.getCalledInbox()-calledInbox);
                     noBlockCount.setLocationType("DifferenceDistrict");
-//                    noBlockCount.setId((int)(districtCounts.getCompletedBeneficiaries()-completedBeneficiaries+districtCounts.getCalls_75_100()-calls_75_100+districtCounts.getCalls_50_75()-calls_50_75+districtCounts.getCalls_25_50()-calls_25_50+districtCounts.getCalls_1_25()-calls_1_25));
+                    noBlockCount.setId((int)(noBlockCount.getCalledInbox()+noBlockCount.getBeneficiariesCalled()));
                     noBlockCount.setLocationId((long)(-1));
                     KilkariUsage.add(noBlockCount);
                 }
@@ -908,7 +908,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                     nosubcenterCount.setCalls_1_25(blockCounts.getCalls_1_25()-calls_1_25);
                     nosubcenterCount.setCalledInbox(blockCounts.getCalledInbox()-calledInbox);
                     nosubcenterCount.setLocationType("DifferenceBlock");
-//                    nosubcenterCount.setId((int)(blockCounts.getCompletedBeneficiaries()-completedBeneficiaries+blockCounts.getCalls_75_100()-calls_75_100+blockCounts.getCalls_50_75()-calls_50_75+blockCounts.getCalls_25_50()-calls_25_50+blockCounts.getCalls_1_25()-calls_1_25));
+                    nosubcenterCount.setId((int)(nosubcenterCount.getBeneficiariesCalled()+nosubcenterCount.getCalledInbox()));
                     nosubcenterCount.setLocationId((long)(-1));
                     KilkariUsage.add(nosubcenterCount);
                 }
@@ -1100,7 +1100,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
     private List<KilkariCalls> getKilkariCallReport(Integer locationId,String locationType,Date toDate){
         List<KilkariCalls> kilkariCall = new ArrayList<>();
         if(locationType.equalsIgnoreCase("State")){
-            List<State> states=stateDao.getStatesByServiceType("M");
+            List<State> states=stateDao.getStatesByServiceType("K");
             for(State s:states){
                 kilkariCall.add(kilkariCallReportDao.getKilkariCallreport(s.getStateId(),locationType,toDate));
             }
