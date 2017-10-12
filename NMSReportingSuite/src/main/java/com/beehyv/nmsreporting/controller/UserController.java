@@ -2,10 +2,7 @@ package com.beehyv.nmsreporting.controller;
 
 import com.beehyv.nmsreporting.business.*;
 import com.beehyv.nmsreporting.business.impl.MAPerformanceServiceImpl;
-import com.beehyv.nmsreporting.dao.BlockDao;
-import com.beehyv.nmsreporting.dao.DistrictDao;
-import com.beehyv.nmsreporting.dao.StateDao;
-import com.beehyv.nmsreporting.dao.SubcenterDao;
+import com.beehyv.nmsreporting.dao.*;
 import com.beehyv.nmsreporting.entity.*;
 import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.AccessType;
@@ -75,6 +72,10 @@ public class UserController {
 
     @Autowired
     private MAPerformanceService maPerformanceService;
+
+
+    @Autowired
+    private AggregateKilkariReportsService aggregateKilkariReportsService;
 
     @Autowired
     private BreadCrumbService breadCrumbService;
@@ -381,7 +382,7 @@ public class UserController {
         User currentUser = userService.getCurrentUser();
         List<BreadCrumbDto> breadCrumbs = breadCrumbService.getBreadCrumbs(currentUser,reportRequest);
         AggregateResponseDto aggregateResponseDto = new AggregateResponseDto();
-        if(reportRequest.getReportType().equals(ReportType.maPerformance.getReportType())){
+        if(reportRequest.getReportType().equals(ReportType.maPerformance.getReportType())) {
             DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
             Calendar calendar = Calendar.getInstance();
             Date toDate = new Date();
@@ -440,8 +441,6 @@ public class UserController {
 
                     }
                 }
-
-
             }
 
             for(int i=0;i<cumulativesummaryReportEnd.size();i++){
@@ -493,18 +492,11 @@ public class UserController {
                             summaryDto.add(summaryDto1);
                         }
                     }
-
-
-
                 }
             }
             aggregateResponseDto.setTableData(summaryDto);
             aggregateResponseDto.setBreadCrumbData(breadCrumbs);
             return aggregateResponseDto;
-
-
-
-
         }
 
         if(reportRequest.getReportType().equals(ReportType.maSubscriber.getReportType())){
@@ -519,7 +511,7 @@ public class UserController {
             aCalendar.set(Calendar.MINUTE, 0);
             aCalendar.set(Calendar.HOUR_OF_DAY, 0);
 
-//        aCalendar.add(Calendar.MONTH, -1);
+//          aCalendar.add(Calendar.MONTH, -1);
             aCalendar.add(Calendar.DATE, -1);
             Date fromDate = aCalendar.getTime();
 
@@ -697,7 +689,7 @@ public class UserController {
             Date toDate = new Date();
             Date startDate=new Date(0);
             Calendar aCalendar = Calendar.getInstance();
-            aCalendar.setTime(reportRequest.getToDate());
+            aCalendar.setTime(reportRequest.getToDate   ());
             aCalendar.set(Calendar.MILLISECOND, 0);
             aCalendar.set(Calendar.SECOND, 0);
             aCalendar.set(Calendar.MINUTE, 0);
@@ -1040,6 +1032,26 @@ public class UserController {
 
         return dateString + "_" + monthString+"_"+yearString;
 
+    }
+
+    @RequestMapping(value = "/kilkariSubscriberReport", method = RequestMethod.POST/*,produces = "application/vnd.ms-excel"*/)
+    @ResponseBody
+    @Transactional
+    public Object getKilkariSubscriberReport(@RequestBody ReportRequest reportRequest/*,HttpServletResponse response*/) throws ParseException, java.text.ParseException {
+        String reportPath = "";
+        String reportName = "";
+        String rootPath = "";
+        String place = AccessLevel.NATIONAL.getAccessLevel();
+        AggregateKilkariReportsDto aggregateKilkariResponseDto = new AggregateKilkariReportsDto();
+        User currentUser = userService.getCurrentUser();
+        List<BreadCrumbDto> breadCrumbs = breadCrumbService.getBreadCrumbs(currentUser,reportRequest);
+
+        if(reportRequest.getReportType().equals(ReportType.kilkariSubscriber.getReportType())) {
+            aggregateKilkariResponseDto = aggregateKilkariReportsService.getKilkariSubscriberCountReport(reportRequest);
+            aggregateKilkariResponseDto.setBreadCrumbData(breadCrumbs);
+        }
+
+        return aggregateKilkariResponseDto;
     }
 
 }
