@@ -36,69 +36,49 @@ public class BraedCrumbServiceImpl implements BreadCrumbService {
         List<BreadCrumbDto> breadCrumbDtos = new ArrayList<>();
         if(currentUser.getAccessLevel().equals(AccessLevel.NATIONAL.getAccessLevel())){
 
-            BreadCrumbDto bread1=new BreadCrumbDto("NATIONAL","NATIONAL",0,true);
+            BreadCrumbDto bread1=new BreadCrumbDto("NATIONAL","NATIONAL",0);
             breadCrumbDtos.add(bread1);
             if(reportRequest.getStateId() != 0){
-                BreadCrumbDto bread2 = new BreadCrumbDto("State",stateDao.findByStateId(reportRequest.getStateId()).getStateName(),reportRequest.getStateId(),true);
+                BreadCrumbDto bread2 = new BreadCrumbDto("State",stateDao.findByStateId(reportRequest.getStateId()).getStateName(),reportRequest.getStateId());
                 breadCrumbDtos.add(bread2);
             }
             if(reportRequest.getDistrictId() != 0){
-                BreadCrumbDto bread3 = new BreadCrumbDto("District",districtDao.findByDistrictId(reportRequest.getDistrictId()).getDistrictName(),reportRequest.getDistrictId(),true);
+                BreadCrumbDto bread3 = new BreadCrumbDto("District",districtDao.findByDistrictId(reportRequest.getDistrictId()).getDistrictName(),reportRequest.getDistrictId());
                 breadCrumbDtos.add(bread3) ;
             }
             if(reportRequest.getBlockId()!=0){
-                BreadCrumbDto bread4 = new BreadCrumbDto("Block",blockDao.findByblockId(reportRequest.getBlockId()).getBlockName(),reportRequest.getBlockId(),true);
+                BreadCrumbDto bread4 = new BreadCrumbDto("Block",blockDao.findByblockId(reportRequest.getBlockId()).getBlockName(),reportRequest.getBlockId());
                 breadCrumbDtos.add(bread4);
             }
         }
         if(currentUser.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel())){
-
-            BreadCrumbDto bread1=new BreadCrumbDto("NATIONAL","NATIONAL",0,false);
-            breadCrumbDtos.add(bread1);
             if(reportRequest.getStateId() != 0){
-                BreadCrumbDto bread2 = new BreadCrumbDto("State",stateDao.findByStateId(reportRequest.getStateId()).getStateName(),reportRequest.getStateId(),true);
+                BreadCrumbDto bread2 = new BreadCrumbDto("State",stateDao.findByStateId(reportRequest.getStateId()).getStateName(),reportRequest.getStateId());
                 breadCrumbDtos.add(bread2);
             }
             if(reportRequest.getDistrictId() != 0){
-                BreadCrumbDto bread3 = new BreadCrumbDto("District",districtDao.findByDistrictId(reportRequest.getDistrictId()).getDistrictName(),reportRequest.getDistrictId(),true);
+                BreadCrumbDto bread3 = new BreadCrumbDto("District",districtDao.findByDistrictId(reportRequest.getDistrictId()).getDistrictName(),reportRequest.getDistrictId());
                 breadCrumbDtos.add(bread3) ;
             }
             if(reportRequest.getBlockId()!=0){
-                BreadCrumbDto bread4 = new BreadCrumbDto("Block",blockDao.findByblockId(reportRequest.getBlockId()).getBlockName(),reportRequest.getBlockId(),true);
+                BreadCrumbDto bread4 = new BreadCrumbDto("Block",blockDao.findByblockId(reportRequest.getBlockId()).getBlockName(),reportRequest.getBlockId());
                 breadCrumbDtos.add(bread4);
             }
         }
         if(currentUser.getAccessLevel().equals(AccessLevel.DISTRICT.getAccessLevel())){
 
-            BreadCrumbDto bread1=new BreadCrumbDto("NATIONAL","NATIONAL",0,false);
-            breadCrumbDtos.add(bread1);
-            if(reportRequest.getStateId() != 0){
-                BreadCrumbDto bread2 = new BreadCrumbDto("State",stateDao.findByStateId(reportRequest.getStateId()).getStateName(),reportRequest.getStateId(),false);
-                breadCrumbDtos.add(bread2);
-            }
             if(reportRequest.getDistrictId() != 0){
-                BreadCrumbDto bread3 = new BreadCrumbDto("District",districtDao.findByDistrictId(reportRequest.getDistrictId()).getDistrictName(),reportRequest.getDistrictId(),true);
+                BreadCrumbDto bread3 = new BreadCrumbDto("District",districtDao.findByDistrictId(reportRequest.getDistrictId()).getDistrictName(),reportRequest.getDistrictId());
                 breadCrumbDtos.add(bread3) ;
             }
             if(reportRequest.getBlockId()!=0){
-                BreadCrumbDto bread4 = new BreadCrumbDto("Block",blockDao.findByblockId(reportRequest.getBlockId()).getBlockName(),reportRequest.getBlockId(),true);
+                BreadCrumbDto bread4 = new BreadCrumbDto("Block",blockDao.findByblockId(reportRequest.getBlockId()).getBlockName(),reportRequest.getBlockId());
                 breadCrumbDtos.add(bread4);
             }
         }
         if(currentUser.getAccessLevel().equals(AccessLevel.BLOCK.getAccessLevel())){
-
-            BreadCrumbDto bread1=new BreadCrumbDto("NATIONAL","NATIONAL",0,false);
-            breadCrumbDtos.add(bread1);
-            if(reportRequest.getStateId() != 0){
-                BreadCrumbDto bread2 = new BreadCrumbDto("State",stateDao.findByStateId(reportRequest.getStateId()).getStateName(),reportRequest.getStateId(),false);
-                breadCrumbDtos.add(bread2);
-            }
-            if(reportRequest.getDistrictId() != 0){
-                BreadCrumbDto bread3 = new BreadCrumbDto("District",districtDao.findByDistrictId(reportRequest.getDistrictId()).getDistrictName(),reportRequest.getDistrictId(),false);
-                breadCrumbDtos.add(bread3) ;
-            }
             if(reportRequest.getBlockId()!=0){
-                BreadCrumbDto bread4 = new BreadCrumbDto("Block",blockDao.findByblockId(reportRequest.getBlockId()).getBlockName(),reportRequest.getBlockId(),true);
+                BreadCrumbDto bread4 = new BreadCrumbDto("Block",blockDao.findByblockId(reportRequest.getBlockId()).getBlockName(),reportRequest.getBlockId());
                 breadCrumbDtos.add(bread4);
             }
         }

@@ -14,7 +14,7 @@
 	<script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 	<script type="text/javascript" src="bower_components/angular-messages/angular-messages.min.js"></script>
 	<script type="text/javascript" src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
-
+	<script type="text/javascript" src="bower_components/angular-ui-grid/ui-grid.min.js"></script>
 	<script type="text/javascript" src="scripts/global/urls.js"></script>
 
 	<!-- main -->
@@ -44,6 +44,7 @@
 
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="styleSheet" href="bower_components/angular-ui-grid/ui-grid.min.css"/>
 
 	<link rel="stylesheet" href="styles/style.css">
 
@@ -51,7 +52,7 @@
 
 </head>
 <body>
-	<div class="main">
+	<div class="main" >
 		<div class='nav-bar'>
 			<div class="nav-header">
 				<img src="images/logo.png">
@@ -61,8 +62,9 @@
 			<div class="nav">
 				<ul class="breadcrumb" ng-hide='$state.current.name=="login" || $state.current.name=="forgotPassword"'>
 					<li ng-repeat="item in getBreadCrumb($state.current.name)">
-						<a ui-sref='{{item.sref}}' ng-class="{'active': {{item.active}} }" >{{item.name}}</a>
+						<a ui-sref='{{item.sref}}' ng-class="{'active': {{item.active}} }" >{{item.name}} </a>
 					</li>
+
 				</ul>
 				<ul class="nav-menu" ng-hide='$state.current.name=="login" || $state.current.name=="forgotPassword"'>
 					<li>

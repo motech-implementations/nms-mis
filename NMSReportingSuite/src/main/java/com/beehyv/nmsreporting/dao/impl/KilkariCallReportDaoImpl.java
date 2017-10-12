@@ -1,0 +1,39 @@
+package com.beehyv.nmsreporting.dao.impl;
+
+import com.beehyv.nmsreporting.dao.AbstractDao;
+import com.beehyv.nmsreporting.dao.KilkariCallReportDao;
+import com.beehyv.nmsreporting.model.KilkariCalls;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
+
+import java.util.Date;
+
+/**
+ * Created by beehyv on 11/10/17.
+ */
+@Repository("kilkariCallReportDao")
+public class KilkariCallReportDaoImpl extends AbstractDao<Integer,KilkariCalls> implements KilkariCallReportDao {
+
+    @Override
+    public  KilkariCalls getKilkariCallreport(Integer locationId, String locationType, Date toDate){
+
+
+        Criteria criteria = createEntityCriteria().addOrder(Order.asc("locationId"));
+        criteria.add(Restrictions.and(
+                Restrictions.eq("locationId",locationId.longValue()),
+                Restrictions.eq("locationType",locationType),
+                Restrictions.eq("date",toDate)
+        ));
+        if(criteria.list().isEmpty()){
+            Long a=(long)0;
+            KilkariCalls kilkariCalls = new KilkariCalls(0,locationType,locationId.longValue(),toDate,a,a,a,a,a,a,a,0,a);
+            return kilkariCalls;
+        }
+        return (KilkariCalls) criteria.list().get(0);
+
+
+    };
+}
+

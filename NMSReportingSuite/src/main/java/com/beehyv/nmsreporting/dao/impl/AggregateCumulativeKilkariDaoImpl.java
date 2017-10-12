@@ -1,0 +1,37 @@
+package com.beehyv.nmsreporting.dao.impl;
+
+import com.beehyv.nmsreporting.dao.AbstractDao;
+import com.beehyv.nmsreporting.dao.AggregateCumulativekilkariDao;
+import com.beehyv.nmsreporting.model.AggregateCumulativeKilkari;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
+
+import java.util.Date;
+
+/**
+ * Created by beehyv on 3/10/17.
+ */
+@Repository("aggregateCumulativeKilkariDao")
+public class AggregateCumulativeKilkariDaoImpl extends AbstractDao<Integer,AggregateCumulativeKilkari> implements AggregateCumulativekilkariDao{
+
+    public AggregateCumulativeKilkari getKilkariCumulativeSummary(Integer locationId, String locationType, Date toDate){
+
+        Criteria criteria = createEntityCriteria().addOrder(Order.asc("locationId"));
+        criteria.add(Restrictions.and(
+                Restrictions.eq("locationId",locationId.longValue()),
+                Restrictions.eq("locationType",locationType),
+                Restrictions.eq("date",toDate)
+        ));
+        if(criteria.list().isEmpty()){
+            AggregateCumulativeKilkari aggregateCumulativeKilkari = new AggregateCumulativeKilkari(0,locationType,locationId.longValue(),toDate,0,(long)0,(long)0);
+            return aggregateCumulativeKilkari;
+        }
+        return (AggregateCumulativeKilkari)criteria.list().get(0);
+
+    }
+
+
+
+}

@@ -2,7 +2,10 @@ package com.beehyv.nmsreporting.controller;
 
 import com.beehyv.nmsreporting.business.*;
 import com.beehyv.nmsreporting.business.impl.MAPerformanceServiceImpl;
-import com.beehyv.nmsreporting.dao.*;
+import com.beehyv.nmsreporting.dao.BlockDao;
+import com.beehyv.nmsreporting.dao.DistrictDao;
+import com.beehyv.nmsreporting.dao.StateDao;
+import com.beehyv.nmsreporting.dao.SubcenterDao;
 import com.beehyv.nmsreporting.entity.*;
 import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.AccessType;
@@ -382,6 +385,49 @@ public class UserController {
         User currentUser = userService.getCurrentUser();
         List<BreadCrumbDto> breadCrumbs = breadCrumbService.getBreadCrumbs(currentUser,reportRequest);
         AggregateResponseDto aggregateResponseDto = new AggregateResponseDto();
+        if(currentUser.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel()) && !currentUser.getStateId().equals(reportRequest.getStateId())){
+            m.put("status", "fail");
+            return m;
+        }
+        if(currentUser.getAccessLevel().equals(AccessLevel.DISTRICT.getAccessLevel()) && !currentUser.getDistrictId().equals(reportRequest.getDistrictId())){
+            m.put("status", "fail");
+            return m;
+        }
+        if(currentUser.getAccessLevel().equals(AccessLevel.BLOCK.getAccessLevel()) && !currentUser.getBlockId().equals(reportRequest.getBlockId())){
+            m.put("status", "fail");
+            return m;
+        }
+        if(reportRequest.getReportType().equals(ReportType.kilkariCumulative.getReportType())){
+            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
+            List<AggregateCumulativekilkariDto> aggregateCumulativekilkariDtos=aggregateReportsService.getKilkariCumulativeSummary(reportRequest,currentUser);
+            aggregateResponseDto.setTableData(aggregateCumulativekilkariDtos);
+            return aggregateResponseDto;
+        }
+        if(reportRequest.getReportType().equals(ReportType.beneficiaryCompletion.getReportType())){
+            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
+            List<AggCumulativeBeneficiaryComplDto> aggCumulativeBeneficiaryComplDtos=aggregateReportsService.getCumulativeBeneficiaryCompletion(reportRequest,currentUser);
+            aggregateResponseDto.setTableData(aggCumulativeBeneficiaryComplDtos);
+            return aggregateResponseDto;
+        }
+        if(reportRequest.getReportType().equals(ReportType.beneficiary.getReportType())){
+            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
+            List<AggregateBeneficiaryDto> aggregateBeneficiaryDtos=aggregateReportsService.getBeneficiaryReport(reportRequest,currentUser);
+            aggregateResponseDto.setTableData(aggregateBeneficiaryDtos);
+            return aggregateResponseDto;
+        }
+        if(reportRequest.getReportType().equals(ReportType.usage.getReportType())){
+            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
+            List<UsageDto> kilkariUsageDtos=aggregateReportsService.getUsageReport(reportRequest,currentUser);
+            aggregateResponseDto.setTableData(kilkariUsageDtos);
+            return aggregateResponseDto;
+        }
+        if(reportRequest.getReportType().equals(ReportType.listeningMatrix.getReportType())){
+            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
+            List<ListeningMatrixDto> listeningMatrixDtos=aggregateReportsService.getListeningMatrixReport(reportRequest,currentUser);
+            aggregateResponseDto.setTableData(listeningMatrixDtos);
+            return aggregateResponseDto;
+        }
+
         if(reportRequest.getReportType().equals(ReportType.maPerformance.getReportType())) {
             DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
             Calendar calendar = Calendar.getInstance();
@@ -455,11 +501,7 @@ public class UserController {
                         summaryDto1.setAshasFailed(a.getAshasFailed()-b.getAshasFailed());
                         summaryDto1.setAshasStarted(a.getAshasStarted()-b.getAshasStarted());
                         summaryDto1.setLocationType(a.getLocationType());
-                        summaryDto1.setAshasAccessed(maPerformanceService.getAccessedCount(a.getLocationId().intValue(),a.getLocationType(),fromDate,toDate));
-//                        summaryDto1.setCompletedPercentage(a.getAshasCompleted()*100/a.getAshasStarted());
-//                        summaryDto1.setFailedpercentage(a.getAshasFailed()*100/a.getAshasStarted());
-//                        summaryDto1.setNotStartedpercentage(a.getAshasNotStarted()*100/a.getAshasRegistered());
-                        summaryDto1.setAshasNotAccessed(maPerformanceService.getNotAccessedcount(a.getLocationId().intValue(),a.getLocationType(),fromDate,toDate));
+
                         String locationType = a.getLocationType();
                         if(locationType.equalsIgnoreCase("State")){
                             summaryDto1.setLocationName(stateDao.findByStateId(a.getLocationId().intValue()).getStateName());
@@ -487,6 +529,11 @@ public class UserController {
                             summaryDto1.setLocationId((long)-1);
 
                         }
+                        summaryDto1.setAshasAccessed(maPerformanceService.getAccessedCount(a.getLocationId().intValue(),a.getLocationType(),fromDate,toDate));
+//                        summaryDto1.setCompletedPercentage(a.getAshasCompleted()*100/a.getAshasStarted());
+//                        summaryDto1.setFailedpercentage(a.getAshasFailed()*100/a.getAshasStarted());
+//                        summaryDto1.setNotStartedpercentage(a.getAshasNotStarted()*100/a.getAshasRegistered());
+                        summaryDto1.setAshasNotAccessed(maPerformanceService.getNotAccessedcount(a.getLocationId().intValue(),a.getLocationType(),fromDate,toDate));
 
                         if(summaryDto1.getAshasCompleted()+summaryDto1.getAshasFailed()+summaryDto1.getAshasStarted()+summaryDto1.getAshasAccessed()+summaryDto1.getAshasNotAccessed()!=0){
                             summaryDto.add(summaryDto1);
@@ -747,17 +794,17 @@ public class UserController {
                     summaryDto1.setLocationName(subcenterDao.findBySubcenterId(a.getLocationId().intValue()).getSubcenterName());
                 }
                 if (locationType.equalsIgnoreCase("DifferenceState")) {
-                    summaryDto1.setLocationName("No District Count");
+                    summaryDto1.setLocationName("No District");
                     summaryDto1.setLocationId((long)-1);
 
                 }
                 if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
-                    summaryDto1.setLocationName("No Block Count");
+                    summaryDto1.setLocationName("No Block");
                     summaryDto1.setLocationId((long)-1);
 
                 }
                 if (locationType.equalsIgnoreCase("DifferenceBlock")) {
-                    summaryDto1.setLocationName("No Subcenter Count");
+                    summaryDto1.setLocationName("No Subcenter");
                     summaryDto1.setLocationId((long)-1);
 
                 }
@@ -899,19 +946,19 @@ public class UserController {
         maList.add(new Report(
                 ReportType.maPerformance.getReportName(),
                 ReportType.maPerformance.getReportType(),
-                "images/drop-down-3.png",
+                "images/drop-down-2.png",
                 ReportType.maPerformance.getServiceType())
         );
         maList.add(new Report(
                 ReportType.maSubscriber.getReportName(),
                 ReportType.maSubscriber.getReportType(),
-                "images/drop-down-3.png",
+                "images/drop-down-2.png",
                 ReportType.maSubscriber.getServiceType())
         );
         maList.add(new Report(
                 ReportType.maCumulative.getReportName(),
                 ReportType.maCumulative.getReportType(),
-                "images/drop-down-3.png",
+                "images/drop-down-2.png",
                 ReportType.maCumulative.getServiceType())
         );
 
@@ -954,10 +1001,22 @@ public class UserController {
                 ReportType.motherRejected.getServiceType())
         );
         kList.add(new Report(
-                ReportType.childRejected.getReportName(),
-                ReportType.childRejected.getReportType(),
-                "images/drop-down-3.png",
-                ReportType.childRejected.getServiceType())
+                ReportType.kilkariCumulative.getReportName(),
+                ReportType.kilkariCumulative.getReportType(),
+                "images/drop-down-2.png",
+                ReportType.kilkariCumulative.getServiceType())
+        );
+        kList.add(new Report(
+                ReportType.beneficiaryCompletion.getReportName(),
+                ReportType.beneficiaryCompletion.getReportType(),
+                "images/drop-down-2.png",
+                ReportType.beneficiaryCompletion.getServiceType())
+        );
+        kList.add(new Report(
+                ReportType.usage.getReportName(),
+                ReportType.usage.getReportType(),
+                "images/drop-down-2.png",
+                ReportType.usage.getServiceType())
         );
 
         kMenu.put("service", kList.get(0).getService());
