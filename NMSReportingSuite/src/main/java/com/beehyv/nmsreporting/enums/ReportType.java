@@ -31,7 +31,8 @@ public enum ReportType {
     childRejected("Kilkari_Child_Import_Rejects","Child Rejected Records", "K","Kilkari Rejected Child Line Listing Report"),
     motherRejected("Kilkari_Mother_Import_Rejects","Mother Rejected Records", "K" ,"Kilkari Rejected Mother Line Listing Report"),
     lowListenership("Kilkari_Low_Listenership_Deactivation", "Deactivated for Low Listenership","K",
-            "Kilkari Deactivations for For Low Listening Report");
+            "Kilkari Deactivations for For Low Listening Report"),
+    kilkariSubscriber("Kilkari_Subscriber","Kilkari Subscriber","K","Kilkari Subscriber Report");
 
     private String reportType;
     private String reportName;
