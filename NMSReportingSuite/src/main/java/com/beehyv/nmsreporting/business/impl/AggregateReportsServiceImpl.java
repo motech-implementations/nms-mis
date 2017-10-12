@@ -103,14 +103,14 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                     ashasRegistered+=(distrcitCount.getAshasRegistered().equals(null)?0:distrcitCount.getAshasRegistered());
                 }
                 AggregateCumulativeMA noDistrictCount = new AggregateCumulativeMA();
-                noDistrictCount.setAshasRejected(stateCounts.getAshasRejected().equals(null)?0:stateCounts.getAshasRejected()-ashasRejected);
-                noDistrictCount.setAshasNotStarted(stateCounts.getAshasNotStarted().equals(null)?0:stateCounts.getAshasNotStarted()-ashasNotStarted);
-                noDistrictCount.setAshasRegistered(stateCounts.getAshasRegistered().equals(null)?0:stateCounts.getAshasRegistered()-ashasRegistered);
-                noDistrictCount.setAshasFailed(stateCounts.getAshasFailed().equals(null)?0:stateCounts.getAshasFailed()-ashasFailed);
+                noDistrictCount.setAshasRejected(stateCounts.getAshasRejected()-ashasRejected);
+                noDistrictCount.setAshasNotStarted(stateCounts.getAshasNotStarted()-ashasNotStarted);
+                noDistrictCount.setAshasRegistered(stateCounts.getAshasRegistered()-ashasRegistered);
+                noDistrictCount.setAshasFailed(stateCounts.getAshasFailed()-ashasFailed);
                 noDistrictCount.setAshasCompleted(stateCounts.getAshasCompleted()-ashasCompleted);
-                noDistrictCount.setAshasStarted(stateCounts.getAshasStarted().equals(null)?0:stateCounts.getAshasStarted()-ashasStarted);
+                noDistrictCount.setAshasStarted(stateCounts.getAshasStarted()-ashasStarted);
                 noDistrictCount.setLocationType("DifferenceState");
-                noDistrictCount.setId(noDistrictCount.getAshasCompleted()+noDistrictCount.getAshasFailed()+noDistrictCount.getAshasRegistered()+noDistrictCount.getAshasRejected()+noDistrictCount.getAshasStarted()+noDistrictCount.getAshasNotStarted());
+                noDistrictCount.setId(stateCounts.getAshasRejected()-ashasRejected+stateCounts.getAshasNotStarted()-ashasNotStarted+stateCounts.getAshasRegistered()-ashasRegistered+stateCounts.getAshasFailed()-ashasFailed+stateCounts.getAshasCompleted()-ashasCompleted+stateCounts.getAshasStarted()-ashasStarted);
                 noDistrictCount.setLocationId((long)-locationId);
                 CumulativeSummery.add(noDistrictCount);
             }
@@ -135,14 +135,14 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                         ashasRegistered+=(blockCount.getAshasRegistered().equals(null)?0:blockCount.getAshasRegistered());
                     }
                     AggregateCumulativeMA noBlockCount = new AggregateCumulativeMA();
-                    noBlockCount.setAshasRejected(districtCounts.getAshasRejected().equals(null)?0:districtCounts.getAshasRejected()-ashasRejected);
-                    noBlockCount.setAshasNotStarted(districtCounts.getAshasNotStarted().equals(null)?0:districtCounts.getAshasNotStarted()-ashasNotStarted);
-                    noBlockCount.setAshasRegistered(districtCounts.getAshasRegistered().equals(null)?0:districtCounts.getAshasRegistered()-ashasRegistered);
-                    noBlockCount.setAshasFailed(districtCounts.getAshasFailed().equals(null)?0:districtCounts.getAshasFailed()-ashasFailed);
-                    noBlockCount.setAshasCompleted(districtCounts.getAshasCompleted().equals(null)?0:districtCounts.getAshasCompleted()-ashasCompleted);
-                    noBlockCount.setAshasStarted(districtCounts.getAshasStarted().equals(null)?0:districtCounts.getAshasStarted()-ashasStarted);
+                    noBlockCount.setAshasRejected(districtCounts.getAshasRejected()-ashasRejected);
+                    noBlockCount.setAshasNotStarted(districtCounts.getAshasNotStarted()-ashasNotStarted);
+                    noBlockCount.setAshasRegistered(districtCounts.getAshasRegistered()-ashasRegistered);
+                    noBlockCount.setAshasFailed(districtCounts.getAshasFailed()-ashasFailed);
+                    noBlockCount.setAshasCompleted(districtCounts.getAshasCompleted()-ashasCompleted);
+                    noBlockCount.setAshasStarted(districtCounts.getAshasStarted()-ashasStarted);
                     noBlockCount.setLocationType("DifferenceDistrict");
-                    noBlockCount.setId(noBlockCount.getAshasCompleted()+noBlockCount.getAshasFailed()+noBlockCount.getAshasRegistered()+noBlockCount.getAshasRejected()+noBlockCount.getAshasStarted()+noBlockCount.getAshasNotStarted());
+                    noBlockCount.setId(districtCounts.getAshasRejected()-ashasRejected+districtCounts.getAshasNotStarted()-ashasNotStarted+districtCounts.getAshasRegistered()-ashasRegistered+districtCounts.getAshasFailed()-ashasFailed+districtCounts.getAshasCompleted()-ashasCompleted+districtCounts.getAshasStarted()-ashasStarted);
                     noBlockCount.setLocationId((long)-locationId);
                     CumulativeSummery.add(noBlockCount);
                 }
@@ -166,14 +166,14 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                         ashasRegistered+=(subcenterCount.getAshasRegistered().equals(null)?0:subcenterCount.getAshasRegistered());
                     }
                     AggregateCumulativeMA nosubcenterCount = new AggregateCumulativeMA();
-                    nosubcenterCount.setAshasRejected(blockCounts.getAshasRejected().equals(null)?0:blockCounts.getAshasRejected()-ashasRejected);
-                    nosubcenterCount.setAshasNotStarted(blockCounts.getAshasNotStarted().equals(null)?0:blockCounts.getAshasNotStarted()-ashasNotStarted);
-                    nosubcenterCount.setAshasRegistered(blockCounts.getAshasRegistered().equals(null)?0:blockCounts.getAshasRegistered()-ashasRegistered);
-                    nosubcenterCount.setAshasFailed(blockCounts.getAshasFailed().equals(null)?0:blockCounts.getAshasFailed()-ashasFailed);
-                    nosubcenterCount.setAshasCompleted(blockCounts.getAshasCompleted().equals(null)?0:blockCounts.getAshasCompleted()-ashasCompleted);
-                    nosubcenterCount.setAshasStarted(blockCounts.getAshasStarted().equals(null)?0:blockCounts.getAshasStarted()-ashasStarted);
+                    nosubcenterCount.setAshasRejected(blockCounts.getAshasRejected()-ashasRejected);
+                    nosubcenterCount.setAshasNotStarted(blockCounts.getAshasNotStarted()-ashasNotStarted);
+                    nosubcenterCount.setAshasRegistered(blockCounts.getAshasRegistered()-ashasRegistered);
+                    nosubcenterCount.setAshasFailed(blockCounts.getAshasFailed()-ashasFailed);
+                    nosubcenterCount.setAshasCompleted(blockCounts.getAshasCompleted()-ashasCompleted);
+                    nosubcenterCount.setAshasStarted(blockCounts.getAshasStarted()-ashasStarted);
                     nosubcenterCount.setLocationType("DifferenceBlock");
-                    nosubcenterCount.setId(nosubcenterCount.getAshasCompleted()+nosubcenterCount.getAshasFailed()+nosubcenterCount.getAshasRegistered()+nosubcenterCount.getAshasRejected()+nosubcenterCount.getAshasStarted()+nosubcenterCount.getAshasNotStarted());
+                    nosubcenterCount.setId(blockCounts.getAshasRejected()-ashasRejected+blockCounts.getAshasNotStarted()-ashasNotStarted+blockCounts.getAshasRegistered()-ashasRegistered+blockCounts.getAshasFailed()-ashasFailed+blockCounts.getAshasCompleted()-ashasCompleted+blockCounts.getAshasStarted()-ashasStarted);
                     nosubcenterCount.setLocationId((long)-locationId);
                     CumulativeSummery.add(nosubcenterCount);
                 }
