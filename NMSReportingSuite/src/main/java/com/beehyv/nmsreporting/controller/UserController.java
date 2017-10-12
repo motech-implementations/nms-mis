@@ -427,6 +427,12 @@ public class UserController {
             aggregateResponseDto.setTableData(listeningMatrixDtos);
             return aggregateResponseDto;
         }
+        if(reportRequest.getReportType().equals(ReportType.kilkariCalls.getReportType())){
+            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
+            List<KilkariCallReportDto> kilkariCallReportDtos=aggregateReportsService.getKilkariCallReport(reportRequest,currentUser);
+            aggregateResponseDto.setTableData(kilkariCallReportDtos);
+            return aggregateResponseDto;
+        }
 
         if(reportRequest.getReportType().equals(ReportType.maPerformance.getReportType())) {
             DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
@@ -497,9 +503,9 @@ public class UserController {
                         MAPerformanceDto summaryDto1 = new MAPerformanceDto();
                         summaryDto1.setId(a.getId());
                         summaryDto1.setLocationId(a.getLocationId());
-                        summaryDto1.setAshasCompleted(a.getAshasCompleted()-b.getAshasCompleted());
-                        summaryDto1.setAshasFailed(a.getAshasFailed()-b.getAshasFailed());
-                        summaryDto1.setAshasStarted(a.getAshasStarted()-b.getAshasStarted());
+                        summaryDto1.setAshasCompleted(a.getAshasCompleted().equals(null)?0:a.getAshasCompleted()-(b.getAshasCompleted().equals(null)?0:b.getAshasCompleted()));
+                        summaryDto1.setAshasFailed(a.getAshasFailed().equals(null)?0:a.getAshasFailed()-(b.getAshasFailed().equals(null)?0:b.getAshasFailed()));
+                        summaryDto1.setAshasStarted(a.getAshasStarted().equals(null)?0:a.getAshasStarted()-(b.getAshasStarted().equals(null)?0:b.getAshasStarted()));
                         summaryDto1.setLocationType(a.getLocationType());
 
                         String locationType = a.getLocationType();
@@ -667,15 +673,15 @@ public class UserController {
                             MASubscriberDto summaryDto1 = new MASubscriberDto();
                              summaryDto1.setId(a.getId());
                             summaryDto1.setLocationId(a.getLocationId());
-                            summaryDto1.setAshasCompleted(a.getAshasCompleted() - b.getAshasCompleted());
-                            summaryDto1.setAshasFailed(a.getAshasFailed() - b.getAshasFailed());
-                            summaryDto1.setAshasRegistered(a.getAshasRegistered() - b.getAshasRegistered());
-                            summaryDto1.setAshasNotStarted(a.getAshasNotStarted() - b.getAshasNotStarted());
-                            summaryDto1.setAshasStarted(a.getAshasStarted() - b.getAshasStarted());
-                            summaryDto1.setAshasRejected(a.getAshasRejected() - b.getAshasRejected());
+                            summaryDto1.setAshasCompleted(a.getAshasCompleted().equals(null)?0:a.getAshasCompleted() - (b.getAshasCompleted().equals(null)?0:b.getAshasCompleted()));
+                            summaryDto1.setAshasFailed(a.getAshasFailed().equals(null)?0:a.getAshasFailed() - (b.getAshasFailed().equals(null)?0:b.getAshasFailed()));
+                            summaryDto1.setAshasRegistered(a.getAshasRegistered().equals(null)?0:a.getAshasRegistered() - (b.getAshasRegistered().equals(null)?0:b.getAshasRegistered()));
+                            summaryDto1.setAshasNotStarted(a.getAshasNotStarted().equals(null)?0:a.getAshasNotStarted() - (b.getAshasNotStarted().equals(null)?0:b.getAshasNotStarted()));
+                            summaryDto1.setAshasStarted(a.getAshasStarted().equals(null)?0:a.getAshasStarted() - (b.getAshasStarted().equals(null)?0:b.getAshasStarted()));
+                            summaryDto1.setAshasRejected(a.getAshasRejected().equals(null)?0:a.getAshasRejected() - (b.getAshasRejected().equals(null)?0:b.getAshasRejected()));
                             summaryDto1.setLocationType(a.getLocationType());
-                            summaryDto1.setRegisteredNotCompletedStart(b.getAshasRegistered() - b.getAshasCompleted() - b.getAshasFailed());
-                            summaryDto1.setRegisteredNotCompletedend(a.getAshasRegistered() - a.getAshasCompleted() - a.getAshasFailed());
+                            summaryDto1.setRegisteredNotCompletedStart(b.getAshasRegistered().equals(null)?0:b.getAshasRegistered() - (b.getAshasCompleted().equals(null)?0:b.getAshasCompleted()) - (b.getAshasFailed().equals(null)?0:b.getAshasFailed()));
+                            summaryDto1.setRegisteredNotCompletedend(a.getAshasRegistered().equals(null)?0:a.getAshasRegistered() - (a.getAshasCompleted().equals(null)?0:a.getAshasCompleted()) - (a.getAshasFailed().equals(null)?0:a.getAshasFailed()));
                             summaryDto1.setRecordsReceived((a.getAshasRegistered() + a.getAshasRejected()) - (b.getAshasRejected() + b.getAshasRegistered()));
 //                        summaryDto1.setCompletedPercentage(a.getAshasCompleted()*100/a.getAshasStarted());
 //                        summaryDto1.setFailedpercentage(a.getAshasFailed()*100/a.getAshasStarted());
@@ -771,15 +777,15 @@ public class UserController {
                 AggregateCumulativeMADto summaryDto1 = new AggregateCumulativeMADto();
                 summaryDto1.setId(a.getId());
                 summaryDto1.setLocationId(a.getLocationId());
-                summaryDto1.setAshasCompleted(a.getAshasCompleted());
-                summaryDto1.setAshasFailed(a.getAshasFailed());
-                summaryDto1.setAshasRegistered(a.getAshasRegistered());
-                summaryDto1.setAshasNotStarted(a.getAshasNotStarted());
-                summaryDto1.setAshasStarted(a.getAshasStarted());
+                summaryDto1.setAshasCompleted(a.getAshasCompleted().equals(null)?0:a.getAshasCompleted());
+                summaryDto1.setAshasFailed(a.getAshasFailed().equals(null)?0:a.getAshasFailed());
+                summaryDto1.setAshasRegistered(a.getAshasRegistered().equals(null)?0:a.getAshasRegistered());
+                summaryDto1.setAshasNotStarted(a.getAshasNotStarted().equals(null)?0:a.getAshasNotStarted());
+                summaryDto1.setAshasStarted(a.getAshasStarted().equals(null)?0:a.getAshasStarted());
                 summaryDto1.setLocationType(a.getLocationType());
-                summaryDto1.setCompletedPercentage(a.getAshasStarted() == 0 ? 0:a.getAshasCompleted()*100/a.getAshasStarted());
-                summaryDto1.setFailedpercentage(a.getAshasStarted()==0?0:a.getAshasFailed()*100/a.getAshasStarted());
-                summaryDto1.setNotStartedpercentage(a.getAshasRegistered()==0?0:a.getAshasNotStarted()*100/a.getAshasRegistered());
+                summaryDto1.setCompletedPercentage((a.getAshasStarted().equals(null)?0:a.getAshasStarted()) == 0 ? 0:(a.getAshasCompleted().equals(null)?0:a.getAshasCompleted())*100/a.getAshasStarted());
+                summaryDto1.setFailedpercentage((a.getAshasStarted().equals(null)?0:a.getAshasStarted()) == 0 ? 0:(a.getAshasFailed().equals(null)?0:a.getAshasFailed())*100/a.getAshasStarted());
+                summaryDto1.setNotStartedpercentage((a.getAshasRegistered().equals(null)?0:a.getAshasRegistered()) == 0 ? 0:(a.getAshasNotStarted().equals(null)?0:a.getAshasNotStarted())*100/a.getAshasRegistered());
                 String locationType = a.getLocationType();
                 if(locationType.equalsIgnoreCase("State")){
                     summaryDto1.setLocationName(stateDao.findByStateId(a.getLocationId().intValue()).getStateName());
