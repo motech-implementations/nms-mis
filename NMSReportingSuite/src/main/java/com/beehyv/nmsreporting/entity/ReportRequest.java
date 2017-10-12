@@ -21,16 +21,6 @@ public class ReportRequest {
 
     private Integer circleId;
 
-    private String periodType;
-
-    public String getPeriodType() {
-        return periodType;
-    }
-
-    public void setPeriodType(String periodType) {
-        this.periodType = periodType;
-    }
-
     public String getReportType() {
         return reportType;
     }

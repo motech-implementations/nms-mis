@@ -21,7 +21,7 @@ public class AggregateCumulativeKilkari {
     @Column(name="location_id", columnDefinition = "BIGINT(20)")
     private Long locationId;
 
-    @Column(name="date", columnDefinition = "DATETIME")
+    @Column(name="date", columnDefinition = "DATE")
     private Date date;
 
     @Column(name="total_unique_beneficiaries", columnDefinition = "INT(11)")
@@ -35,6 +35,20 @@ public class AggregateCumulativeKilkari {
 
     //Average minutes = billableMinutes/successfulCalls
 
+
+    public AggregateCumulativeKilkari(Integer id, String locationType, Long locationId, Date date, Integer uniqueBeneficiaries, Long successfulCalls, Long billableMinutes) {
+        this.id = id;
+        this.locationType = locationType;
+        this.locationId = locationId;
+        this.date = date;
+        this.uniqueBeneficiaries = uniqueBeneficiaries;
+        this.successfulCalls = successfulCalls;
+        this.billableMinutes = billableMinutes;
+    }
+
+    public AggregateCumulativeKilkari(){
+
+    }
 
     public Integer getId() {
         return id;
