@@ -562,7 +562,7 @@ color: white !important;
  text-align : left !important;
 }
 
-.ui-grid, .ui-grid-viewport {
+.ui-grid, .ui-grid-viewport, .ui-grid-canvas {
   height: auto !important;
 }
 
