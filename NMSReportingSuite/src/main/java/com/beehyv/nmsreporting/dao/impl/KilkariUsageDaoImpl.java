@@ -28,10 +28,19 @@ public class KilkariUsageDaoImpl extends AbstractDao<Integer,KilkariUsage> imple
         ));
         if(criteria.list().isEmpty()){
             Long a = (long)0;
-            KilkariUsage aggregateCumulativeMA = new KilkariUsage(0,locationType,locationId.longValue(),toDate,a,a,a,a,a,a,a);
-            return aggregateCumulativeMA;
+            KilkariUsage kilkariUsage = new KilkariUsage(0,locationType,locationId.longValue(),toDate,a,a,a,a,a,a,a);
+            return kilkariUsage;
         }
-        return (KilkariUsage) criteria.list().get(0);
+        KilkariUsage kilkariUsage = (KilkariUsage) criteria.list().get(0);
+        kilkariUsage.setAtLeastOneCall(kilkariUsage.getAtLeastOneCall()==null?0:kilkariUsage.getAtLeastOneCall());
+        kilkariUsage.setCalls_1_25(kilkariUsage.getCalls_1_25()==null?0:kilkariUsage.getCalls_1_25());
+        kilkariUsage.setCalls_25_50(kilkariUsage.getCalls_25_50()==null?0:kilkariUsage.getCalls_25_50());
+        kilkariUsage.setCalls_50_75(kilkariUsage.getCalls_50_75()==null?0:kilkariUsage.getCalls_50_75());
+        kilkariUsage.setCalls_75_100(kilkariUsage.getCalls_75_100()==null?0:kilkariUsage.getCalls_75_100());
+        kilkariUsage.setCalledInbox(kilkariUsage.getCalledInbox()==null?0:kilkariUsage.getCalledInbox());
+        kilkariUsage.setBeneficiariesCalled(kilkariUsage.getBeneficiariesCalled()==null?0:kilkariUsage.getBeneficiariesCalled());
+
+        return kilkariUsage;
 
 
     };

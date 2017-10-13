@@ -28,7 +28,13 @@ public class AggregateCumulativeKilkariDaoImpl extends AbstractDao<Integer,Aggre
             AggregateCumulativeKilkari aggregateCumulativeKilkari = new AggregateCumulativeKilkari(0,locationType,locationId.longValue(),toDate,0,(long)0,(long)0);
             return aggregateCumulativeKilkari;
         }
-        return (AggregateCumulativeKilkari)criteria.list().get(0);
+        
+        AggregateCumulativeKilkari aggregateCumulativeKilkari = (AggregateCumulativeKilkari)criteria.list().get(0);
+        aggregateCumulativeKilkari.setBillableMinutes(aggregateCumulativeKilkari.getBillableMinutes()==null?0:aggregateCumulativeKilkari.getBillableMinutes());
+        aggregateCumulativeKilkari.setSuccessfulCalls(aggregateCumulativeKilkari.getSuccessfulCalls()==null?0:aggregateCumulativeKilkari.getSuccessfulCalls());
+        aggregateCumulativeKilkari.setUniqueBeneficiaries(aggregateCumulativeKilkari.getUniqueBeneficiaries()==null?0:aggregateCumulativeKilkari.getUniqueBeneficiaries());
+
+        return aggregateCumulativeKilkari;
 
     }
 

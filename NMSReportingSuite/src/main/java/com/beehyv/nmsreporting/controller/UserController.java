@@ -446,8 +446,6 @@ public class UserController {
             aCalendar.set(Calendar.MINUTE, 0);
             aCalendar.set(Calendar.HOUR_OF_DAY, 0);
 
-//        aCalendar.add(Calendar.MONTH, -1);
-
 
             aCalendar.add(Calendar.DATE, -1);
             Date fromDate = aCalendar.getTime();
@@ -459,18 +457,9 @@ public class UserController {
                 toDate = aCalendar.getTime();
 
 
-
-
-//            calendar.setTimeInMillis(reportRequest.getFromDate().getTime());
-//            String fromDateString = formatter.format(calendar.getTime());
-//            Date fromDate;
             List<MAPerformanceDto> summaryDto = new ArrayList<>();
             List<AggregateCumulativeMA> cumulativesummaryReportStart = new ArrayList<>();
             List<AggregateCumulativeMA> cumulativesummaryReportEnd = new ArrayList<>();
-//            fromDate = formatter.parse(fromDateString);
-//            calendar.setTime(fromDate);
-//            calendar.add(Calendar.DATE, -1);
-//            fromDate = calendar.getTime();
 
             if (reportRequest.getStateId() == 0) {
                 cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0,"State",fromDate));
@@ -583,10 +572,6 @@ public class UserController {
             List<MASubscriberDto> summaryDto = new ArrayList<>();
             List<AggregateCumulativeMA> cumulativesummaryReportStart = new ArrayList<>();
             List<AggregateCumulativeMA> cumulativesummaryReportEnd = new ArrayList<>();
-//            fromDate = formatter.parse(fromDateString);
-//            calendar.setTime(fromDate);
-//            calendar.add(Calendar.DATE, -1);
-//            fromDate = calendar.getTime();
 
             if (reportRequest.getStateId() == 0) {
                 cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0,"State",fromDate));
@@ -610,59 +595,7 @@ public class UserController {
 
 
             }
-//            if (reportRequest.getStateId() == 0) {
-//                cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0,"State",toDate));
-//            }
-//            else{
-//                if (reportRequest.getDistrictId() == 0) {
-//                    cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(),"District",toDate));
-//                }
-//                else{
-//                    if(reportRequest.getBlockId() == 0){
-//                        cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(),"Block",toDate));
-//                    }
-//                    else  cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(),"Subcenter",toDate));
-//                }
-//
-//
-//            }
-//            if((cumulativesummaryReportStart.size()== 0)){
-//                for(int i=0;i<cumulativesummaryReportEnd.size();i++) {
-//                    AggregateCumulativeMA a = cumulativesummaryReportEnd.get(i);
-//                    MASubscriberDto summaryDto1 = new MASubscriberDto();
-////                        summaryDto1.setId(a.getId());
-//                    summaryDto1.setLocationId(a.getLocationId());
-//                    summaryDto1.setAshasCompleted(a.getAshasCompleted());
-//                    summaryDto1.setAshasFailed(a.getAshasFailed());
-//                    summaryDto1.setAshasRegistered(a.getAshasRegistered());
-//                    summaryDto1.setAshasNotStarted(a.getAshasNotStarted());
-//                    summaryDto1.setAshasStarted(a.getAshasStarted());
-//                    summaryDto1.setAshasRejected(a.getAshasRejected());
-//                    summaryDto1.setLocationType(a.getLocationType());
-//                    summaryDto1.setRegisteredNotCompletedStart(0);
-//                    summaryDto1.setRegisteredNotCompletedend(a.getAshasRegistered() - a.getAshasCompleted() - a.getAshasFailed());
-//                    summaryDto1.setRecordsReceived((a.getAshasRegistered() + a.getAshasRejected()));
-////                        summaryDto1.setCompletedPercentage(a.getAshasCompleted()*100/a.getAshasStarted());
-////                        summaryDto1.setFailedpercentage(a.getAshasFailed()*100/a.getAshasStarted());
-////                        summaryDto1.setNotStartedpercentage(a.getAshasNotStarted()*100/a.getAshasRegistered());
-//                    String locationType = a.getLocationType();
-//                    if (locationType.equalsIgnoreCase("State")) {
-//                        summaryDto1.setLocationName(stateDao.findByStateId(a.getLocationId().intValue()).getStateName());
-//                    }
-//                    if (locationType.equalsIgnoreCase("District")) {
-//                        summaryDto1.setLocationName(districtDao.findByDistrictId(a.getLocationId().intValue()).getDistrictName());
-//                    }
-//                    if (locationType.equalsIgnoreCase("Block")) {
-//                        summaryDto1.setLocationName(blockDao.findByblockId(a.getLocationId().intValue()).getBlockName());
-//                    }
-//                    if (locationType.equalsIgnoreCase("Subcenter")) {
-//                        summaryDto1.setLocationName(subcenterDao.findBySubcenterId(a.getLocationId().intValue()).getSubcenterName());
-//                    }
-//
-//                    summaryDto.add(summaryDto1);
-//                }
-//            }
-//            else {
+
                 for (int i = 0; i < cumulativesummaryReportEnd.size(); i++) {
                     boolean notAvailable = true;
                     for (int j = 0; j < cumulativesummaryReportStart.size(); j++) {
@@ -683,9 +616,6 @@ public class UserController {
                             summaryDto1.setRegisteredNotCompletedStart(b.getAshasRegistered() - b.getAshasCompleted() - b.getAshasFailed());
                             summaryDto1.setRegisteredNotCompletedend(a.getAshasRegistered() - a.getAshasCompleted() - a.getAshasFailed());
                             summaryDto1.setRecordsReceived((a.getAshasRegistered() + a.getAshasRejected()) - (b.getAshasRejected() + b.getAshasRegistered()));
-//                        summaryDto1.setCompletedPercentage(a.getAshasCompleted()*100/a.getAshasStarted());
-//                        summaryDto1.setFailedpercentage(a.getAshasFailed()*100/a.getAshasStarted());
-//                        summaryDto1.setNotStartedpercentage(a.getAshasNotStarted()*100/a.getAshasRegistered());
                             String locationType = a.getLocationType();
                             if (locationType.equalsIgnoreCase("State")) {
                                 summaryDto1.setLocationName(stateDao.findByStateId(a.getLocationId().intValue()).getStateName());
@@ -783,9 +713,9 @@ public class UserController {
                 summaryDto1.setAshasNotStarted(a.getAshasNotStarted());
                 summaryDto1.setAshasStarted(a.getAshasStarted());
                 summaryDto1.setLocationType(a.getLocationType());
-                summaryDto1.setCompletedPercentage(a.getAshasStarted() == 0 ? 0:a.getAshasCompleted()*100/a.getAshasStarted());
-                summaryDto1.setFailedpercentage(a.getAshasStarted()==0?0:a.getAshasFailed()*100/a.getAshasStarted());
-                summaryDto1.setNotStartedpercentage(a.getAshasRegistered()==0?0:a.getAshasNotStarted()*100/a.getAshasRegistered());
+                summaryDto1.setCompletedPercentage((float)(a.getAshasStarted() == 0 ? 0:(a.getAshasCompleted()*10000/a.getAshasStarted()))/100);
+                summaryDto1.setFailedpercentage((float)(a.getAshasStarted() == 0 ? 0:(a.getAshasFailed()*10000/a.getAshasStarted()))/100);
+                summaryDto1.setNotStartedpercentage((float)(a.getAshasRegistered() == 0 ? 0:(a.getAshasStarted()*10000/a.getAshasRegistered()))/100);
                 String locationType = a.getLocationType();
                 if(locationType.equalsIgnoreCase("State")){
                     summaryDto1.setLocationName(stateDao.findByStateId(a.getLocationId().intValue()).getStateName());
