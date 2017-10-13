@@ -1108,9 +1108,9 @@
                   }
             }
 
-            $scope.$on('$destroy', function(){
-               canceler.resolve();  // Aborts the $http request if it isn't finished.
-            });
+//            $scope.$on('$destroy', function(){
+//               canceler.resolve();  // Aborts the $http request if it isn't finished.
+//            });
 
 		}])
 })()

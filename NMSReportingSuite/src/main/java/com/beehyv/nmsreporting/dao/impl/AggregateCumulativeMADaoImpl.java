@@ -25,7 +25,11 @@ public class  AggregateCumulativeMADaoImpl extends AbstractDao<Integer,Aggregate
                            Restrictions.eq("locationType",locationType),
                            Restrictions.eq("date",toDate)
                    ));
-
+                if(criteria.list().isEmpty()){
+                    AggregateCumulativeMA aggregateCumulativeMA = new AggregateCumulativeMA(0,locationType,locationId.longValue(),toDate,0,0,0,0,0,0);
+                    return aggregateCumulativeMA;
+                }
+                
                 AggregateCumulativeMA aggregateCumulativeMA1 = (AggregateCumulativeMA)criteria.list().get(0);
                 aggregateCumulativeMA1.setAshasRejected(aggregateCumulativeMA1.getAshasRejected() == null?0:aggregateCumulativeMA1.getAshasRejected());
                 aggregateCumulativeMA1.setAshasStarted(aggregateCumulativeMA1.getAshasStarted() == null?0:aggregateCumulativeMA1.getAshasStarted());
@@ -34,10 +38,7 @@ public class  AggregateCumulativeMADaoImpl extends AbstractDao<Integer,Aggregate
                 aggregateCumulativeMA1.setAshasFailed(aggregateCumulativeMA1.getAshasFailed() == null?0:aggregateCumulativeMA1.getAshasFailed());
                 aggregateCumulativeMA1.setAshasNotStarted(aggregateCumulativeMA1.getAshasNotStarted() == null?0:aggregateCumulativeMA1.getAshasNotStarted());
 
-                if(criteria.list().isEmpty()){
-                    AggregateCumulativeMA aggregateCumulativeMA = new AggregateCumulativeMA(0,locationType,locationId.longValue(),toDate,0,0,0,0,0,0);
-                    return aggregateCumulativeMA;
-                }
+
                    return aggregateCumulativeMA1;
 
 
