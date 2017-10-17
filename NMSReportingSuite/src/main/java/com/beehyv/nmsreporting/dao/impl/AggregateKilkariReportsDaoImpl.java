@@ -2,6 +2,7 @@ package com.beehyv.nmsreporting.dao.impl;
 
 import com.beehyv.nmsreporting.dao.AbstractDao;
 import com.beehyv.nmsreporting.dao.AggregateKilkariReportsDao;
+import com.beehyv.nmsreporting.entity.KilkariMessageListenershipReportDto;
 import com.beehyv.nmsreporting.model.AggregateCumulativeMA;
 import com.beehyv.nmsreporting.model.KilkariSubscriber;
 import org.hibernate.Criteria;
@@ -33,4 +34,5 @@ public class AggregateKilkariReportsDaoImpl extends AbstractDao<Integer,KilkariS
         }
         return result.get(0);
     }
+
 }

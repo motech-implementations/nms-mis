@@ -1,6 +1,7 @@
 package com.beehyv.nmsreporting.dao;
 
 
+import com.beehyv.nmsreporting.entity.KilkariMessageListenershipReportDto;
 import com.beehyv.nmsreporting.model.AggregateCumulativeMA;
 import com.beehyv.nmsreporting.model.KilkariSubscriber;
 
@@ -11,4 +12,9 @@ public interface AggregateKilkariReportsDao {
 
 
     KilkariSubscriber getKilkariSubscriberCounts(Integer locationId, String locationType, Date toDate);
+
 }
+
+
+
+
