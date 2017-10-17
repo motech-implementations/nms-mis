@@ -9,7 +9,7 @@ public class KilkariSubscriberDto {
     private Long locationId;
     private String locationType;
     private String locationName;
-    private  Integer totalSubscriptions;
+    private Integer totalSubscriptions;
     private Integer totalBeneficiaryRecordsReceived;
     private Integer totalBeneficiaryRecordsEligible;
     private Integer totalBeneficiaryRecordsAccepted;

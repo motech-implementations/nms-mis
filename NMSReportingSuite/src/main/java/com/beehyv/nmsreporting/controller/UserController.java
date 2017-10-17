@@ -385,6 +385,7 @@ public class UserController {
         User currentUser = userService.getCurrentUser();
         List<BreadCrumbDto> breadCrumbs = breadCrumbService.getBreadCrumbs(currentUser,reportRequest);
         AggregateResponseDto aggregateResponseDto = new AggregateResponseDto();
+        AggregateKilkariReportsDto aggregateKilkariResponseDto = new AggregateKilkariReportsDto();
         if(currentUser.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel()) && !currentUser.getStateId().equals(reportRequest.getStateId())){
             m.put("status", "fail");
             return m;
@@ -432,6 +433,21 @@ public class UserController {
             List<KilkariCallReportDto> kilkariCallReportDtos=aggregateReportsService.getKilkariCallReport(reportRequest,currentUser);
             aggregateResponseDto.setTableData(kilkariCallReportDtos);
             return aggregateResponseDto;
+        }
+        if(reportRequest.getReportType().equals(ReportType.kilkariSubscriber.getReportType())) {
+            aggregateKilkariResponseDto = aggregateKilkariReportsService.getKilkariSubscriberCountReport(reportRequest);
+            aggregateKilkariResponseDto.setBreadCrumbData(breadCrumbs);
+            return aggregateKilkariResponseDto;
+        }
+        if(reportRequest.getReportType().equals(ReportType.kilkariMessageListenership.getReportType())) {
+            aggregateKilkariResponseDto = aggregateKilkariReportsService.getKilkariMessageListnershipReport(reportRequest);
+            aggregateKilkariResponseDto.setBreadCrumbData(breadCrumbs);
+            return aggregateKilkariResponseDto;
+        }
+        if(reportRequest.getReportType().equals(ReportType.kilkariThematicContent.getReportType())) {
+            aggregateKilkariResponseDto = aggregateKilkariReportsService.getKilkariThematicContentReport(reportRequest);
+            aggregateKilkariResponseDto.setBreadCrumbData(breadCrumbs);
+            return aggregateKilkariResponseDto;
         }
 
         if(reportRequest.getReportType().equals(ReportType.maPerformance.getReportType())) {
@@ -1114,6 +1130,11 @@ public class UserController {
         if(reportRequest.getReportType().equals(ReportType.kilkariSubscriber.getReportType())) {
             aggregateKilkariResponseDto = aggregateKilkariReportsService.getKilkariSubscriberCountReport(reportRequest);
             aggregateKilkariResponseDto.setBreadCrumbData(breadCrumbs);
+        }
+        if(reportRequest.getReportType().equals(ReportType.kilkariMessageListenership.getReportType())) {
+            aggregateKilkariResponseDto = aggregateKilkariReportsService.getKilkariMessageListnershipReport(reportRequest);
+            aggregateKilkariResponseDto.setBreadCrumbData(breadCrumbs);
+            return aggregateKilkariResponseDto;
         }
 
         return aggregateKilkariResponseDto;

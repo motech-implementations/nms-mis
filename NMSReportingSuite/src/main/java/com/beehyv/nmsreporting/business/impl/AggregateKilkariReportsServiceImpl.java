@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,6 +47,12 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
 
     @Autowired
     private AggregateKilkariReportsDao aggregateKilkariReportsDao;
+
+    @Autowired
+    private KilkariMessageListenershipReportDao kilkariMessageListenershipReportDao;
+
+    @Autowired
+    private KilkariThematicContentReportDao kilkariThematicContentReportDao;
 
     @Autowired
     private BreadCrumbService breadCrumbService;
@@ -248,6 +255,137 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     kilkariSubscribersCountList.add(kilkariNoSubcenterCount);
                 }
         return kilkariSubscribersCountList;
+    }
+
+    @Override
+    public AggregateKilkariReportsDto getKilkariMessageListnershipReport(ReportRequest reportRequest){
+        AggregateKilkariReportsDto aggregateKilkariReportsDto = new AggregateKilkariReportsDto();
+
+        DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        Calendar calendar = Calendar.getInstance();
+        Date toDate = new Date();
+        Date startDate=new Date(0);
+        Calendar aCalendar = Calendar.getInstance();
+        aCalendar.setTime(reportRequest.getFromDate());
+        aCalendar.set(Calendar.MILLISECOND, 0);
+        aCalendar.set(Calendar.SECOND, 0);
+        aCalendar.set(Calendar.MINUTE, 0);
+        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+
+
+        aCalendar.add(Calendar.DATE, -1);
+        Date fromDate = aCalendar.getTime();
+        aCalendar.setTime(reportRequest.getToDate());
+        aCalendar.set(Calendar.MILLISECOND, 0);
+        aCalendar.set(Calendar.SECOND, 0);
+        aCalendar.set(Calendar.MINUTE, 0);
+        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        toDate = aCalendar.getTime();
+
+        List<KilkariMessageListenershipReportDto> kilkariMessageListenershipReportDtoList = new ArrayList<>();
+        kilkariMessageListenershipReportDtoList.addAll(getKilkariMessageListenershipData(fromDate,toDate));
+        aggregateKilkariReportsDto.setTableData(kilkariMessageListenershipReportDtoList);
+        return aggregateKilkariReportsDto;
+    }
+
+
+    private List<KilkariMessageListenershipReportDto> getKilkariMessageListenershipData(Date startDate, Date endDate){
+
+        List<KilkariMessageListenershipReportDto> kilkariMessageListenershipReportDtos = new ArrayList<>();
+        List<State> stateList = stateDao.getStatesByServiceType("K");
+        for(int i = 0; i < stateList.size();i++){
+            State state = stateList.get(i);
+            KilkariMessageListenershipReportDto kilkariMessageListenershipReportDto = new KilkariMessageListenershipReportDto();
+            List<Object> beneficiaryList = kilkariMessageListenershipReportDao.getAllBeneficiaryIds(startDate, endDate, state.getStateId());
+            int beneficiariesAnsweredAtleastOnce = 0;
+            int beneficiariesAnsweredMoreThan75 = 0;
+            int beneficiariesAnswered50To75 = 0;
+            int beneficiariesAnswered25To50 = 0;
+            int beneficiariesAnswered1To25 = 0;
+            int beneficiariesAnsweredNoCalls = 0;
+            for(int j = 0; j< beneficiaryList.size(); j++){
+                BigInteger beneficiaryId = (BigInteger)beneficiaryList.get(j);
+               Integer totalCallsMadeToBeneficiary = kilkariMessageListenershipReportDao.getTotalCallsMadeToABeneficiary(beneficiaryId);
+               Integer totalCallsAnswered = kilkariMessageListenershipReportDao.getTotalCallsAnsweredByBeneficiary(beneficiaryId);
+               float callsAnsweredPercent = (((float)totalCallsAnswered/(float)totalCallsMadeToBeneficiary)*100);
+               if(totalCallsAnswered == 0){
+                    beneficiariesAnsweredNoCalls++;
+               } else if(totalCallsAnswered == 1 ){
+                   beneficiariesAnsweredAtleastOnce++;
+               } else if(callsAnsweredPercent > 75 && totalCallsAnswered > 1){
+                   beneficiariesAnsweredMoreThan75++;
+               } else if(callsAnsweredPercent <= 75 && callsAnsweredPercent >= 50 && totalCallsAnswered > 1){
+                   beneficiariesAnswered50To75++;
+               } else if(callsAnsweredPercent < 50 && callsAnsweredPercent >= 25 && totalCallsAnswered > 1){
+                   beneficiariesAnswered25To50++;
+               } else if(callsAnsweredPercent < 25 && callsAnsweredPercent > 1 && totalCallsAnswered > 1){
+                    beneficiariesAnswered1To25++;
+               }
+            }
+
+            kilkariMessageListenershipReportDto.setLocationName(state.getStateName());
+            kilkariMessageListenershipReportDto.setLocationId(state.getStateId());
+            kilkariMessageListenershipReportDto.setBeneficiariesAnswered1To25(beneficiariesAnswered1To25);
+            kilkariMessageListenershipReportDto.setBeneficiariesAnswered25To50(beneficiariesAnswered25To50);
+            kilkariMessageListenershipReportDto.setBeneficiariesAnswered50To75(beneficiariesAnswered50To75);
+            kilkariMessageListenershipReportDto.setBeneficiariesAnsweredMoreThan75(beneficiariesAnsweredMoreThan75);
+            kilkariMessageListenershipReportDto.setBeneficiariesAnsweredAtleastOnce(beneficiariesAnsweredAtleastOnce);
+            kilkariMessageListenershipReportDto.setBeneficiariesAnsweredNoCalls(beneficiariesAnsweredNoCalls);
+            kilkariMessageListenershipReportDto.setTotalBeneficiariesCalled(beneficiaryList.size());
+            if(beneficiaryList.size() != 0){
+                kilkariMessageListenershipReportDtos.add(kilkariMessageListenershipReportDto);
+            }
+        }
+        return kilkariMessageListenershipReportDtos;
+    }
+
+
+    @Override
+    public AggregateKilkariReportsDto getKilkariThematicContentReport(ReportRequest reportRequest){
+
+        AggregateKilkariReportsDto aggregateKilkariReportsDto = new AggregateKilkariReportsDto();
+
+        DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        Calendar calendar = Calendar.getInstance();
+        Date toDate = new Date();
+        Date startDate=new Date(0);
+        Calendar aCalendar = Calendar.getInstance();
+        aCalendar.setTime(reportRequest.getFromDate());
+        aCalendar.set(Calendar.MILLISECOND, 0);
+        aCalendar.set(Calendar.SECOND, 0);
+        aCalendar.set(Calendar.MINUTE, 0);
+        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+
+
+        aCalendar.add(Calendar.DATE, -1);
+        Date fromDate = aCalendar.getTime();
+        aCalendar.setTime(reportRequest.getToDate());
+        aCalendar.set(Calendar.MILLISECOND, 0);
+        aCalendar.set(Calendar.SECOND, 0);
+        aCalendar.set(Calendar.MINUTE, 0);
+        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        toDate = aCalendar.getTime();
+
+        List<KilkariThematicContentReportDto> kilkariThematicContentReportDtoList = new ArrayList<>();
+        List<KilkariThematicContent> kilkariThematicContentDataStart = kilkariThematicContentReportDao.getKilkariThematicContentReportData(fromDate);
+        List<KilkariThematicContent> kilkariThematicContentDataEnd = kilkariThematicContentReportDao.getKilkariThematicContentReportData(toDate);
+
+        for(int i = 0; i < kilkariThematicContentDataEnd.size(); i++) {
+            for (int j = 0; j < kilkariThematicContentDataStart.size(); j++) {
+                if(kilkariThematicContentDataEnd.get(i).getMessageWeekNumber().equals(kilkariThematicContentDataStart.get(j).getMessageWeekNumber())){
+                    KilkariThematicContentReportDto kilkariThematicContentReportDto = new KilkariThematicContentReportDto();
+                    kilkariThematicContentReportDto.setId(kilkariThematicContentDataEnd.get(i).getId());
+                    kilkariThematicContentReportDto.setTheme(kilkariThematicContentDataEnd.get(i).getTheme());
+                    kilkariThematicContentReportDto.setMinutesConsumed(kilkariThematicContentDataEnd.get(i).getMinutesConsumed() - kilkariThematicContentDataStart.get(j).getMinutesConsumed());
+                    kilkariThematicContentReportDto.setCallsAnswered(kilkariThematicContentDataEnd.get(i).getCallsAnswered() - kilkariThematicContentDataStart.get(j).getCallsAnswered());
+                    kilkariThematicContentReportDto.setUniqueBeneficiariesCalled(kilkariThematicContentReportDao.getUniqueBeneficiariesCalled(fromDate,toDate,kilkariThematicContentDataEnd.get(i).getMessageWeekNumber()));
+                    kilkariThematicContentReportDto.setMessageWeekNumber(kilkariThematicContentReportDao.getMessageWeekNumber(kilkariThematicContentDataEnd.get(i).getMessageWeekNumber()));
+                    kilkariThematicContentReportDtoList.add(kilkariThematicContentReportDto);
+                }
+            }
+        }
+        aggregateKilkariReportsDto.setTableData(kilkariThematicContentReportDtoList);
+        return aggregateKilkariReportsDto;
     }
 
 }

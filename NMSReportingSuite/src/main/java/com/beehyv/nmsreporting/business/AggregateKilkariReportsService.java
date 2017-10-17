@@ -15,5 +15,9 @@ public interface AggregateKilkariReportsService {
 
 //    List<KilkariSubscriber> getKilkariSubscriberCount(Integer locationId, String locationType, Date toDate);
     AggregateKilkariReportsDto getKilkariSubscriberCountReport(ReportRequest reportRequest);
+
+    AggregateKilkariReportsDto getKilkariMessageListnershipReport(ReportRequest reportRequest);
+
+    AggregateKilkariReportsDto getKilkariThematicContentReport(ReportRequest reportRequest);
 }
 

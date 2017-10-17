@@ -31,7 +31,7 @@
         <mapping class="com.beehyv.nmsreporting.model.LoginTracker"/>
         <mapping class="com.beehyv.nmsreporting.model.AggregateCumulativeMA"/>
         <mapping class="com.beehyv.nmsreporting.model.Subcenter"/>
-
+        <mapping class="com.beehyv.nmsreporting.model.BeneficiaryCallMeasure"/>
 
 
     </session-factory>
