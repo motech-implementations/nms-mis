@@ -28,7 +28,15 @@ public class AggCumulativeBeneficiaryComplDaoImpl extends AbstractDao<Integer,Ag
                 AggregateCumulativeBeneficiaryCompletion aggregateCumulativeBeneficiaryCompletion = new AggregateCumulativeBeneficiaryCompletion(0,locationType,locationId.longValue(),date,a,a,a,a,a,a);
                 return aggregateCumulativeBeneficiaryCompletion;
             }
-            return (AggregateCumulativeBeneficiaryCompletion) criteria.list().get(0);
+            AggregateCumulativeBeneficiaryCompletion aggregateCumulativeBeneficiaryCompletion = (AggregateCumulativeBeneficiaryCompletion) criteria.list().get(0);
+            aggregateCumulativeBeneficiaryCompletion.setCalls_1_25(aggregateCumulativeBeneficiaryCompletion.getCalls_1_25()==null?0:aggregateCumulativeBeneficiaryCompletion.getCalls_1_25());
+            aggregateCumulativeBeneficiaryCompletion.setTotalAge(aggregateCumulativeBeneficiaryCompletion.getTotalAge()==null?0:aggregateCumulativeBeneficiaryCompletion.getTotalAge());
+            aggregateCumulativeBeneficiaryCompletion.setCalls_25_50(aggregateCumulativeBeneficiaryCompletion.getCalls_25_50()==null?0:aggregateCumulativeBeneficiaryCompletion.getCalls_25_50());
+            aggregateCumulativeBeneficiaryCompletion.setCalls_50_75(aggregateCumulativeBeneficiaryCompletion.getCalls_50_75()==null?0:aggregateCumulativeBeneficiaryCompletion.getCalls_50_75());
+            aggregateCumulativeBeneficiaryCompletion.setCalls_75_100(aggregateCumulativeBeneficiaryCompletion.getCalls_75_100()==null?0:aggregateCumulativeBeneficiaryCompletion.getCalls_75_100());
+            aggregateCumulativeBeneficiaryCompletion.setCompletedBeneficiaries(aggregateCumulativeBeneficiaryCompletion.getCompletedBeneficiaries()==null?0:aggregateCumulativeBeneficiaryCompletion.getCompletedBeneficiaries());
+
+            return aggregateCumulativeBeneficiaryCompletion;
 
         };
 

@@ -31,8 +31,18 @@ public class KilkariCallReportDaoImpl extends AbstractDao<Integer,KilkariCalls> 
             KilkariCalls kilkariCalls = new KilkariCalls(0,locationType,locationId.longValue(),toDate,a,a,a,a,a,a,a,0,a);
             return kilkariCalls;
         }
-        return (KilkariCalls) criteria.list().get(0);
+        KilkariCalls kilkariCalls = (KilkariCalls) criteria.list().get(0);
+        kilkariCalls.setBillableMinutes(kilkariCalls.getBillableMinutes()==null?0:kilkariCalls.getBillableMinutes());
+        kilkariCalls.setContent_1_25(kilkariCalls.getContent_1_25()==null?0:kilkariCalls.getContent_1_25());
+        kilkariCalls.setContent_25_50(kilkariCalls.getContent_25_50()==null?0:kilkariCalls.getContent_25_50());
+        kilkariCalls.setContent_50_75(kilkariCalls.getContent_50_75()==null?0:kilkariCalls.getContent_50_75());
+        kilkariCalls.setContent_75_100(kilkariCalls.getContent_75_100()==null?0:kilkariCalls.getContent_75_100());
+        kilkariCalls.setAvgDuration(kilkariCalls.getAvgDuration()==null?0:kilkariCalls.getAvgDuration());
+        kilkariCalls.setCallsAttempted(kilkariCalls.getCallsAttempted()==null?0:kilkariCalls.getCallsAttempted());
+        kilkariCalls.setCallsToInbox(kilkariCalls.getCallsToInbox()==null?0:kilkariCalls.getCallsToInbox());
+        kilkariCalls.setSuccessfulCalls(kilkariCalls.getSuccessfulCalls()==null?0:kilkariCalls.getSuccessfulCalls());
 
+        return kilkariCalls;
 
     };
 }

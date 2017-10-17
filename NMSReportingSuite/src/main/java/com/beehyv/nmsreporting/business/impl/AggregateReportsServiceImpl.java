@@ -71,6 +71,9 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
     @Autowired
     private KilkariCallReportDao kilkariCallReportDao;
 
+    @Autowired
+    private MessageMatrixDao messageMatrixDao;
+
     @Override
     public List<AggregateCumulativeMA> getCumulativeSummaryMAReport(Integer locationId,String locationType,Date toDate){
         List<AggregateCumulativeMA> CumulativeSummery = new ArrayList<>();
@@ -95,22 +98,22 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                 for(District d:districts){
                     AggregateCumulativeMA distrcitCount = aggregateCumulativeMADao.getMACumulativeSummery(d.getDistrictId(),locationType,toDate);
                     CumulativeSummery.add(aggregateCumulativeMADao.getMACumulativeSummery(d.getDistrictId(),locationType,toDate));
-                    ashasStarted+=(distrcitCount.getAshasStarted().equals(null)?0:distrcitCount.getAshasStarted());
-                    ashasCompleted+=(distrcitCount.getAshasCompleted().equals(null)?0:distrcitCount.getAshasCompleted());
-                    ashasFailed+=(distrcitCount.getAshasFailed().equals(null)?0:distrcitCount.getAshasFailed());
-                    ashasNotStarted+=(distrcitCount.getAshasNotStarted().equals(null)?0:distrcitCount.getAshasNotStarted());
-                    ashasRejected+=(distrcitCount.getAshasRejected().equals(null)?0:distrcitCount.getAshasRejected());
-                    ashasRegistered+=(distrcitCount.getAshasRegistered().equals(null)?0:distrcitCount.getAshasRegistered());
+                    ashasStarted+=distrcitCount.getAshasStarted();
+                    ashasCompleted+=distrcitCount.getAshasCompleted();
+                    ashasFailed+=distrcitCount.getAshasFailed();
+                    ashasNotStarted+=distrcitCount.getAshasNotStarted();
+                    ashasRejected+=distrcitCount.getAshasRejected();
+                    ashasRegistered+=distrcitCount.getAshasRegistered();
                 }
                 AggregateCumulativeMA noDistrictCount = new AggregateCumulativeMA();
-                noDistrictCount.setAshasRejected(stateCounts.getAshasRejected().equals(null)?0:stateCounts.getAshasRejected()-ashasRejected);
-                noDistrictCount.setAshasNotStarted(stateCounts.getAshasNotStarted().equals(null)?0:stateCounts.getAshasNotStarted()-ashasNotStarted);
-                noDistrictCount.setAshasRegistered(stateCounts.getAshasRegistered().equals(null)?0:stateCounts.getAshasRegistered()-ashasRegistered);
-                noDistrictCount.setAshasFailed(stateCounts.getAshasFailed().equals(null)?0:stateCounts.getAshasFailed()-ashasFailed);
+                noDistrictCount.setAshasRejected(stateCounts.getAshasRejected()-ashasRejected);
+                noDistrictCount.setAshasNotStarted(stateCounts.getAshasNotStarted()-ashasNotStarted);
+                noDistrictCount.setAshasRegistered(stateCounts.getAshasRegistered()-ashasRegistered);
+                noDistrictCount.setAshasFailed(stateCounts.getAshasFailed()-ashasFailed);
                 noDistrictCount.setAshasCompleted(stateCounts.getAshasCompleted()-ashasCompleted);
-                noDistrictCount.setAshasStarted(stateCounts.getAshasStarted().equals(null)?0:stateCounts.getAshasStarted()-ashasStarted);
+                noDistrictCount.setAshasStarted(stateCounts.getAshasStarted()-ashasStarted);
                 noDistrictCount.setLocationType("DifferenceState");
-                noDistrictCount.setId(noDistrictCount.getAshasCompleted()+noDistrictCount.getAshasFailed()+noDistrictCount.getAshasRegistered()+noDistrictCount.getAshasRejected()+noDistrictCount.getAshasStarted()+noDistrictCount.getAshasNotStarted());
+                noDistrictCount.setId(stateCounts.getAshasRejected()-ashasRejected+stateCounts.getAshasNotStarted()-ashasNotStarted+stateCounts.getAshasRegistered()-ashasRegistered+stateCounts.getAshasFailed()-ashasFailed+stateCounts.getAshasCompleted()-ashasCompleted+stateCounts.getAshasStarted()-ashasStarted);
                 noDistrictCount.setLocationId((long)-locationId);
                 CumulativeSummery.add(noDistrictCount);
             }
@@ -127,22 +130,22 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                     for (Block d : blocks) {
                         AggregateCumulativeMA blockCount = aggregateCumulativeMADao.getMACumulativeSummery(d.getBlockId(),locationType,toDate);
                         CumulativeSummery.add(aggregateCumulativeMADao.getMACumulativeSummery(d.getBlockId(), locationType,toDate));
-                        ashasStarted+=(blockCount.getAshasStarted().equals(null)?0:blockCount.getAshasStarted());
-                        ashasCompleted+=(blockCount.getAshasCompleted().equals(null)?0:blockCount.getAshasCompleted());
-                        ashasFailed+=(blockCount.getAshasFailed().equals(null)?0:blockCount.getAshasFailed());
-                        ashasNotStarted+=(blockCount.getAshasNotStarted().equals(null)?0:blockCount.getAshasNotStarted());
-                        ashasRejected+=(blockCount.getAshasRejected().equals(null)?0:blockCount.getAshasRejected());
-                        ashasRegistered+=(blockCount.getAshasRegistered().equals(null)?0:blockCount.getAshasRegistered());
+                        ashasStarted+=blockCount.getAshasStarted();
+                        ashasCompleted+=blockCount.getAshasCompleted();
+                        ashasFailed+=blockCount.getAshasFailed();
+                        ashasNotStarted+=blockCount.getAshasNotStarted();
+                        ashasRejected+=blockCount.getAshasRejected();
+                        ashasRegistered+=blockCount.getAshasRegistered();
                     }
                     AggregateCumulativeMA noBlockCount = new AggregateCumulativeMA();
-                    noBlockCount.setAshasRejected(districtCounts.getAshasRejected().equals(null)?0:districtCounts.getAshasRejected()-ashasRejected);
-                    noBlockCount.setAshasNotStarted(districtCounts.getAshasNotStarted().equals(null)?0:districtCounts.getAshasNotStarted()-ashasNotStarted);
-                    noBlockCount.setAshasRegistered(districtCounts.getAshasRegistered().equals(null)?0:districtCounts.getAshasRegistered()-ashasRegistered);
-                    noBlockCount.setAshasFailed(districtCounts.getAshasFailed().equals(null)?0:districtCounts.getAshasFailed()-ashasFailed);
-                    noBlockCount.setAshasCompleted(districtCounts.getAshasCompleted().equals(null)?0:districtCounts.getAshasCompleted()-ashasCompleted);
-                    noBlockCount.setAshasStarted(districtCounts.getAshasStarted().equals(null)?0:districtCounts.getAshasStarted()-ashasStarted);
+                    noBlockCount.setAshasRejected(districtCounts.getAshasRejected()-ashasRejected);
+                    noBlockCount.setAshasNotStarted(districtCounts.getAshasNotStarted()-ashasNotStarted);
+                    noBlockCount.setAshasRegistered(districtCounts.getAshasRegistered()-ashasRegistered);
+                    noBlockCount.setAshasFailed(districtCounts.getAshasFailed()-ashasFailed);
+                    noBlockCount.setAshasCompleted(districtCounts.getAshasCompleted()-ashasCompleted);
+                    noBlockCount.setAshasStarted(districtCounts.getAshasStarted()-ashasStarted);
                     noBlockCount.setLocationType("DifferenceDistrict");
-                    noBlockCount.setId(noBlockCount.getAshasCompleted()+noBlockCount.getAshasFailed()+noBlockCount.getAshasRegistered()+noBlockCount.getAshasRejected()+noBlockCount.getAshasStarted()+noBlockCount.getAshasNotStarted());
+                    noBlockCount.setId(districtCounts.getAshasRejected()-ashasRejected+districtCounts.getAshasNotStarted()-ashasNotStarted+districtCounts.getAshasRegistered()-ashasRegistered+districtCounts.getAshasFailed()-ashasFailed+districtCounts.getAshasCompleted()-ashasCompleted+districtCounts.getAshasStarted()-ashasStarted);
                     noBlockCount.setLocationId((long)-locationId);
                     CumulativeSummery.add(noBlockCount);
                 }
@@ -158,22 +161,22 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                     for(Subcenter s: subcenters){
                         AggregateCumulativeMA subcenterCount = aggregateCumulativeMADao.getMACumulativeSummery(s.getSubcenterId(),locationType,toDate);
                         CumulativeSummery.add(aggregateCumulativeMADao.getMACumulativeSummery(s.getSubcenterId(), locationType,toDate));
-                        ashasStarted+=(subcenterCount.getAshasStarted().equals(null)?0:subcenterCount.getAshasStarted());
-                        ashasCompleted+=(subcenterCount.getAshasCompleted().equals(null)?0:subcenterCount.getAshasCompleted());
-                        ashasFailed+=(subcenterCount.getAshasFailed().equals(null)?0:subcenterCount.getAshasFailed());
-                        ashasNotStarted+=(subcenterCount.getAshasNotStarted().equals(null)?0:subcenterCount.getAshasNotStarted());
-                        ashasRejected+=(subcenterCount.getAshasRejected().equals(null)?0:subcenterCount.getAshasRejected());
-                        ashasRegistered+=(subcenterCount.getAshasRegistered().equals(null)?0:subcenterCount.getAshasRegistered());
+                        ashasStarted+=subcenterCount.getAshasStarted();
+                        ashasCompleted+=subcenterCount.getAshasCompleted();
+                        ashasFailed+=subcenterCount.getAshasFailed();
+                        ashasNotStarted+=subcenterCount.getAshasNotStarted();
+                        ashasRejected+=subcenterCount.getAshasRejected();
+                        ashasRegistered+=subcenterCount.getAshasRegistered();
                     }
                     AggregateCumulativeMA nosubcenterCount = new AggregateCumulativeMA();
-                    nosubcenterCount.setAshasRejected(blockCounts.getAshasRejected().equals(null)?0:blockCounts.getAshasRejected()-ashasRejected);
-                    nosubcenterCount.setAshasNotStarted(blockCounts.getAshasNotStarted().equals(null)?0:blockCounts.getAshasNotStarted()-ashasNotStarted);
-                    nosubcenterCount.setAshasRegistered(blockCounts.getAshasRegistered().equals(null)?0:blockCounts.getAshasRegistered()-ashasRegistered);
-                    nosubcenterCount.setAshasFailed(blockCounts.getAshasFailed().equals(null)?0:blockCounts.getAshasFailed()-ashasFailed);
-                    nosubcenterCount.setAshasCompleted(blockCounts.getAshasCompleted().equals(null)?0:blockCounts.getAshasCompleted()-ashasCompleted);
-                    nosubcenterCount.setAshasStarted(blockCounts.getAshasStarted().equals(null)?0:blockCounts.getAshasStarted()-ashasStarted);
+                    nosubcenterCount.setAshasRejected(blockCounts.getAshasRejected()-ashasRejected);
+                    nosubcenterCount.setAshasNotStarted(blockCounts.getAshasNotStarted()-ashasNotStarted);
+                    nosubcenterCount.setAshasRegistered(blockCounts.getAshasRegistered()-ashasRegistered);
+                    nosubcenterCount.setAshasFailed(blockCounts.getAshasFailed()-ashasFailed);
+                    nosubcenterCount.setAshasCompleted(blockCounts.getAshasCompleted()-ashasCompleted);
+                    nosubcenterCount.setAshasStarted(blockCounts.getAshasStarted()-ashasStarted);
                     nosubcenterCount.setLocationType("DifferenceBlock");
-                    nosubcenterCount.setId(nosubcenterCount.getAshasCompleted()+nosubcenterCount.getAshasFailed()+nosubcenterCount.getAshasRegistered()+nosubcenterCount.getAshasRejected()+nosubcenterCount.getAshasStarted()+nosubcenterCount.getAshasNotStarted());
+                    nosubcenterCount.setId(blockCounts.getAshasRejected()-ashasRejected+blockCounts.getAshasNotStarted()-ashasNotStarted+blockCounts.getAshasRegistered()-ashasRegistered+blockCounts.getAshasFailed()-ashasFailed+blockCounts.getAshasCompleted()-ashasCompleted+blockCounts.getAshasStarted()-ashasStarted);
                     nosubcenterCount.setLocationId((long)-locationId);
                     CumulativeSummery.add(nosubcenterCount);
                 }
@@ -1363,6 +1366,169 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         }
         return callReportDtos;
     }
+
+    /*----------5.3.7. Kilkari Listening Matrix Report -------*/
+    @Override
+    public MessageMatrixResponseDto getMessageMatrixReport(ReportRequest reportRequest, User currentUser){
+        DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(reportRequest.getToDate().getTime());
+        String toDateString = formatter.format(calendar.getTime());
+        Date toDate = new Date();
+        try {
+            toDate = formatter.parse(toDateString);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        calendar.setTimeInMillis(reportRequest.getFromDate().getTime());
+        String fromDateString = formatter.format(calendar.getTime());
+        Date fromDate = new Date();
+        try {
+            fromDate = formatter.parse(fromDateString);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        calendar.setTime(fromDate);
+        calendar.add(Calendar.DATE, -1);
+        fromDate = calendar.getTime();
+
+
+        List<MessageMatrixDto> motherMatrixDto = new ArrayList<>();
+        MessageMatrix messageMatrix = new MessageMatrix();
+        messageMatrix = messageMatrixDao.getMessageMatrixData(toDate);
+
+        MessageMatrixDto matrixDto1 = new MessageMatrixDto();
+        matrixDto1.setMessageWeek("Beneficiaries Listening > 75%calls");
+        matrixDto1.setContent_1_25(messageMatrix.getMother_1_6_Content_1());
+        matrixDto1.setContent_25_50(messageMatrix.getMother_1_6_Content_25());
+        matrixDto1.setContent_50_75(messageMatrix.getMother_1_6_Content_50());
+        matrixDto1.setContent_75_100(messageMatrix.getMother_1_6_Content_75());
+        matrixDto1.setTotal(messageMatrix.getMother_1_6_Content_1()+messageMatrix.getMother_1_6_Content_25()+messageMatrix.getMother_1_6_Content_50()+messageMatrix.getMother_1_6_Content_75());
+
+        MessageMatrixDto matrixDto2 = new MessageMatrixDto();
+        matrixDto2.setMessageWeek("Beneficiaries Listening 50 to 75 % calls");
+        matrixDto2.setContent_1_25(messageMatrix.getMother_7_12_Content_1());
+        matrixDto2.setContent_25_50(messageMatrix.getMother_7_12_Content_25());
+        matrixDto2.setContent_50_75(messageMatrix.getMother_7_12_Content_50());
+        matrixDto2.setContent_75_100(messageMatrix.getMother_7_12_Content_75());
+        matrixDto2.setTotal(messageMatrix.getMother_7_12_Content_1()+messageMatrix.getMother_7_12_Content_25()+messageMatrix.getMother_7_12_Content_50()+messageMatrix.getMother_7_12_Content_75());
+
+        MessageMatrixDto matrixDto3 = new MessageMatrixDto();
+        matrixDto3.setMessageWeek("Beneficiaries Listening 25 to 50 % calls");
+        matrixDto3.setContent_1_25(messageMatrix.getMother_13_18_Content_1());
+        matrixDto3.setContent_25_50(messageMatrix.getMother_13_18_Content_25());
+        matrixDto3.setContent_50_75(messageMatrix.getMother_13_18_Content_50());
+        matrixDto3.setContent_75_100(messageMatrix.getMother_13_18_Content_75());
+        matrixDto3.setTotal(messageMatrix.getMother_13_18_Content_1()+messageMatrix.getMother_13_18_Content_25()+messageMatrix.getMother_13_18_Content_50()+messageMatrix.getMother_13_18_Content_75());
+
+        MessageMatrixDto matrixDto4 = new MessageMatrixDto();
+        matrixDto4.setMessageWeek("Beneficiaries Listening < 25% calls");
+        matrixDto4.setContent_1_25(messageMatrix.getMother_19_24_Content_1());
+        matrixDto4.setContent_25_50(messageMatrix.getMother_19_24_Content_25());
+        matrixDto4.setContent_50_75(messageMatrix.getMother_19_24_Content_50());
+        matrixDto4.setContent_75_100(messageMatrix.getMother_19_24_Content_75());
+        matrixDto4.setTotal(messageMatrix.getMother_19_24_Content_1()+messageMatrix.getMother_19_24_Content_25()+messageMatrix.getMother_19_24_Content_50()+messageMatrix.getMother_19_24_Content_75());
+
+        MessageMatrixDto matrixDto5 = new MessageMatrixDto();
+        matrixDto5.setMessageWeek("Total");
+        matrixDto5.setContent_1_25(messageMatrix.getMother_1_6_Content_1()+messageMatrix.getMother_7_12_Content_1()+messageMatrix.getMother_13_18_Content_1()+messageMatrix.getMother_19_24_Content_1());
+        matrixDto5.setContent_25_50(messageMatrix.getMother_1_6_Content_25()+messageMatrix.getMother_7_12_Content_25()+messageMatrix.getMother_13_18_Content_25()+messageMatrix.getMother_19_24_Content_25());
+        matrixDto5.setContent_50_75(messageMatrix.getMother_19_24_Content_50()+messageMatrix.getMother_1_6_Content_50()+messageMatrix.getMother_7_12_Content_50()+messageMatrix.getMother_13_18_Content_50());
+        matrixDto5.setContent_75_100(messageMatrix.getMother_19_24_Content_75()+messageMatrix.getMother_1_6_Content_75()+messageMatrix.getMother_7_12_Content_75()+messageMatrix.getMother_13_18_Content_75());
+        matrixDto5.setTotal(matrixDto1.getTotal()+matrixDto2.getTotal()+matrixDto3.getTotal()+matrixDto4.getTotal());
+
+        motherMatrixDto.add(matrixDto1);
+        motherMatrixDto.add(matrixDto2);
+        motherMatrixDto.add(matrixDto3);
+        motherMatrixDto.add(matrixDto4);
+        motherMatrixDto.add(matrixDto5);
+
+        List<MessageMatrixDto> childMatrixDto = new ArrayList<>();
+
+        MessageMatrixDto matrixDto6 = new MessageMatrixDto();
+        matrixDto6.setMessageWeek("Beneficiaries Listening > 75%calls");
+        matrixDto6.setContent_1_25(messageMatrix.getChild_1_6_Content_1());
+        matrixDto6.setContent_25_50(messageMatrix.getChild_1_6_Content_25());
+        matrixDto6.setContent_50_75(messageMatrix.getChild_1_6_Content_50());
+        matrixDto6.setContent_75_100(messageMatrix.getChild_1_6_Content_75());
+        matrixDto6.setTotal(messageMatrix.getChild_1_6_Content_1()+messageMatrix.getChild_1_6_Content_25()+messageMatrix.getChild_1_6_Content_50()+messageMatrix.getChild_1_6_Content_75());
+
+        MessageMatrixDto matrixDto7 = new MessageMatrixDto();
+        matrixDto7.setMessageWeek("Beneficiaries Listening 50 to 75 % calls");
+        matrixDto7.setContent_1_25(messageMatrix.getChild_7_12_Content_1());
+        matrixDto7.setContent_25_50(messageMatrix.getChild_7_12_Content_25());
+        matrixDto7.setContent_50_75(messageMatrix.getChild_7_12_Content_50());
+        matrixDto7.setContent_75_100(messageMatrix.getChild_7_12_Content_75());
+        matrixDto7.setTotal(messageMatrix.getChild_7_12_Content_1()+messageMatrix.getChild_7_12_Content_25()+messageMatrix.getChild_7_12_Content_50()+messageMatrix.getChild_7_12_Content_75());
+
+        MessageMatrixDto matrixDto8 = new MessageMatrixDto();
+        matrixDto3.setMessageWeek("Beneficiaries Listening 25 to 50 % calls");
+        matrixDto3.setContent_1_25(messageMatrix.getMother_13_18_Content_1());
+        matrixDto3.setContent_25_50(messageMatrix.getMother_13_18_Content_25());
+        matrixDto3.setContent_50_75(messageMatrix.getMother_13_18_Content_50());
+        matrixDto3.setContent_75_100(messageMatrix.getMother_13_18_Content_75());
+        matrixDto3.setTotal(messageMatrix.getMother_13_18_Content_1()+messageMatrix.getMother_13_18_Content_25()+messageMatrix.getMother_13_18_Content_50()+messageMatrix.getMother_13_18_Content_75());
+
+        MessageMatrixDto matrixDto9 = new MessageMatrixDto();
+        matrixDto4.setMessageWeek("Beneficiaries Listening < 25% calls");
+        matrixDto4.setContent_1_25(messageMatrix.getMother_19_24_Content_1());
+        matrixDto4.setContent_25_50(messageMatrix.getMother_19_24_Content_25());
+        matrixDto4.setContent_50_75(messageMatrix.getMother_19_24_Content_50());
+        matrixDto4.setContent_75_100(messageMatrix.getMother_19_24_Content_75());
+        matrixDto4.setTotal(messageMatrix.getMother_19_24_Content_1()+messageMatrix.getMother_19_24_Content_25()+messageMatrix.getMother_19_24_Content_50()+messageMatrix.getMother_19_24_Content_75());
+
+        MessageMatrixDto matrixDto10 = new MessageMatrixDto();
+        matrixDto1.setMessageWeek("Beneficiaries Listening > 75%calls");
+        matrixDto1.setContent_1_25(messageMatrix.getMother_1_6_Content_1());
+        matrixDto1.setContent_25_50(messageMatrix.getMother_1_6_Content_25());
+        matrixDto1.setContent_50_75(messageMatrix.getMother_1_6_Content_50());
+        matrixDto1.setContent_75_100(messageMatrix.getMother_1_6_Content_75());
+        matrixDto1.setTotal(messageMatrix.getMother_1_6_Content_1()+messageMatrix.getMother_1_6_Content_25()+messageMatrix.getMother_1_6_Content_50()+messageMatrix.getMother_1_6_Content_75());
+
+        MessageMatrixDto matrixDto11 = new MessageMatrixDto();
+        matrixDto2.setMessageWeek("Beneficiaries Listening 50 to 75 % calls");
+        matrixDto2.setContent_1_25(messageMatrix.getMother_7_12_Content_1());
+        matrixDto2.setContent_25_50(messageMatrix.getMother_7_12_Content_25());
+        matrixDto2.setContent_50_75(messageMatrix.getMother_7_12_Content_50());
+        matrixDto2.setContent_75_100(messageMatrix.getMother_7_12_Content_75());
+        matrixDto2.setTotal(messageMatrix.getMother_7_12_Content_1()+messageMatrix.getMother_7_12_Content_25()+messageMatrix.getMother_7_12_Content_50()+messageMatrix.getMother_7_12_Content_75());
+
+        MessageMatrixDto matrixDto12 = new MessageMatrixDto();
+        matrixDto3.setMessageWeek("Beneficiaries Listening 25 to 50 % calls");
+        matrixDto3.setContent_1_25(messageMatrix.getMother_13_18_Content_1());
+        matrixDto3.setContent_25_50(messageMatrix.getMother_13_18_Content_25());
+        matrixDto3.setContent_50_75(messageMatrix.getMother_13_18_Content_50());
+        matrixDto3.setContent_75_100(messageMatrix.getMother_13_18_Content_75());
+        matrixDto3.setTotal(messageMatrix.getMother_13_18_Content_1()+messageMatrix.getMother_13_18_Content_25()+messageMatrix.getMother_13_18_Content_50()+messageMatrix.getMother_13_18_Content_75());
+
+        MessageMatrixDto matrixDto13 = new MessageMatrixDto();
+        matrixDto4.setMessageWeek("Beneficiaries Listening < 25% calls");
+        matrixDto4.setContent_1_25(messageMatrix.getMother_19_24_Content_1());
+        matrixDto4.setContent_25_50(messageMatrix.getMother_19_24_Content_25());
+        matrixDto4.setContent_50_75(messageMatrix.getMother_19_24_Content_50());
+        matrixDto4.setContent_75_100(messageMatrix.getMother_19_24_Content_75());
+        matrixDto4.setTotal(messageMatrix.getMother_19_24_Content_1()+messageMatrix.getMother_19_24_Content_25()+messageMatrix.getMother_19_24_Content_50()+messageMatrix.getMother_19_24_Content_75());
+        MessageMatrixDto matrixDto14 = new MessageMatrixDto();
+        matrixDto5.setMessageWeek("Total");
+        matrixDto5.setContent_1_25(messageMatrix.getMother_1_6_Content_1()+messageMatrix.getMother_7_12_Content_1()+messageMatrix.getMother_13_18_Content_1()+messageMatrix.getMother_19_24_Content_1());
+        matrixDto5.setContent_25_50(messageMatrix.getMother_1_6_Content_25()+messageMatrix.getMother_7_12_Content_25()+messageMatrix.getMother_13_18_Content_25()+messageMatrix.getMother_19_24_Content_25());
+        matrixDto5.setContent_50_75(messageMatrix.getMother_19_24_Content_50()+messageMatrix.getMother_1_6_Content_50()+messageMatrix.getMother_7_12_Content_50()+messageMatrix.getMother_13_18_Content_50());
+        matrixDto5.setContent_75_100(messageMatrix.getMother_19_24_Content_75()+messageMatrix.getMother_1_6_Content_75()+messageMatrix.getMother_7_12_Content_75()+messageMatrix.getMother_13_18_Content_75());
+        matrixDto5.setTotal(matrixDto1.getTotal()+matrixDto2.getTotal()+matrixDto3.getTotal()+matrixDto4.getTotal());
+
+        motherMatrixDto.add(matrixDto1);
+        motherMatrixDto.add(matrixDto2);
+        motherMatrixDto.add(matrixDto3);
+        motherMatrixDto.add(matrixDto4);
+        motherMatrixDto.add(matrixDto5);
+
+
+
+        return null;
+    }
+
 
 
 

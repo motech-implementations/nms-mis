@@ -29,7 +29,17 @@ public class  AggregateCumulativeMADaoImpl extends AbstractDao<Integer,Aggregate
                     AggregateCumulativeMA aggregateCumulativeMA = new AggregateCumulativeMA(0,locationType,locationId.longValue(),toDate,0,0,0,0,0,0);
                     return aggregateCumulativeMA;
                 }
-                   return (AggregateCumulativeMA)criteria.list().get(0);
+                
+                AggregateCumulativeMA aggregateCumulativeMA1 = (AggregateCumulativeMA)criteria.list().get(0);
+                aggregateCumulativeMA1.setAshasRejected(aggregateCumulativeMA1.getAshasRejected() == null?0:aggregateCumulativeMA1.getAshasRejected());
+                aggregateCumulativeMA1.setAshasStarted(aggregateCumulativeMA1.getAshasStarted() == null?0:aggregateCumulativeMA1.getAshasStarted());
+                aggregateCumulativeMA1.setAshasRegistered(aggregateCumulativeMA1.getAshasRegistered() == null?0:aggregateCumulativeMA1.getAshasRegistered());
+                aggregateCumulativeMA1.setAshasCompleted(aggregateCumulativeMA1.getAshasCompleted() == null?0:aggregateCumulativeMA1.getAshasCompleted());
+                aggregateCumulativeMA1.setAshasFailed(aggregateCumulativeMA1.getAshasFailed() == null?0:aggregateCumulativeMA1.getAshasFailed());
+                aggregateCumulativeMA1.setAshasNotStarted(aggregateCumulativeMA1.getAshasNotStarted() == null?0:aggregateCumulativeMA1.getAshasNotStarted());
+
+
+                   return aggregateCumulativeMA1;
 
 
             };

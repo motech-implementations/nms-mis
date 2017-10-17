@@ -27,5 +27,7 @@ public interface AggregateReportsService {
 
     List<KilkariCallReportDto> getKilkariCallReport(ReportRequest reportRequest, User currentUser);
 
+    MessageMatrixResponseDto getMessageMatrixReport(ReportRequest reportRequest, User currentUser);
+
 
     }

@@ -49,32 +49,32 @@ public class MAPerformanceDaoImpl extends AbstractDao<Integer, User> implements 
 //        Query query = getSession().createSQLQuery("select f from FrontLineWorkers f where f.flwId in (select DISTINCT m.flwId from MACallDetailMeasure m where m.startTime between "+fromDate+" AND "+toDate+" ) AND f.state= "+locationId+
 //                "AND f.courseStartDate <"+ fromDate +" AND (firstCompletionDate > "+fromDate+" OR firstCompletionDate is NULL)");
         if(locationType.equalsIgnoreCase("state")) {
-            Query query = getSession().createQuery("select f from FrontLineWorkers f where f.flwId NOT IN (select DISTINCT m.flwId from MACallDetailMeasure m where m.startTime between :fromDate"+"  AND  :toDate"+"   ) AND f.state = :locationId"+" AND f.courseStartDate < :fromDate"+" AND (f.firstCompletionDate > :fromDate"+"  OR f.firstCompletionDate is NULL)");
+            Query query = getSession().createQuery("select count(*) from FrontLineWorkers f where f.flwId NOT IN (select DISTINCT m.flwId from MACallDetailMeasure m where m.startTime between :fromDate"+"  AND  :toDate"+"   ) AND f.state = :locationId"+" AND f.courseStartDate < :fromDate"+" AND (f.firstCompletionDate > :fromDate"+"  OR f.firstCompletionDate is NULL)");
             query.setParameter("fromDate",fromDate);
             query.setParameter("toDate",toDate);
             query.setParameter("locationId",locationId);
-            return (long)query.list().size();
+            return (long)query.uniqueResult();
         }
         if(locationType.equalsIgnoreCase("district")){
-            Query query = getSession().createQuery("select f from FrontLineWorkers f where f.flwId NOT IN (select DISTINCT m.flwId from MACallDetailMeasure m where m.startTime between :fromDate"+"  AND  :toDate"+"   ) AND f.district = :locationId"+" AND f.courseStartDate < :fromDate"+" AND (f.firstCompletionDate > :fromDate"+"  OR f.firstCompletionDate is NULL)");
+            Query query = getSession().createQuery("select count(*) from FrontLineWorkers f where f.flwId NOT IN (select DISTINCT m.flwId from MACallDetailMeasure m where m.startTime between :fromDate"+"  AND  :toDate"+"   ) AND f.district = :locationId"+" AND f.courseStartDate < :fromDate"+" AND (f.firstCompletionDate > :fromDate"+"  OR f.firstCompletionDate is NULL)");
             query.setParameter("fromDate",fromDate);
             query.setParameter("toDate",toDate);
             query.setParameter("locationId",locationId);
-            return (long)query.list().size();
+            return (long)query.uniqueResult();
         }
         if(locationType.equalsIgnoreCase("block")){
-            Query query = getSession().createQuery("select f from FrontLineWorkers f where f.flwId NOT IN (select DISTINCT m.flwId from MACallDetailMeasure m where m.startTime between :fromDate"+"  AND  :toDate"+"   ) AND f.block = :locationId"+" AND f.courseStartDate < :fromDate"+" AND (f.firstCompletionDate > :fromDate"+"  OR f.firstCompletionDate is NULL)");
+            Query query = getSession().createQuery("select count(*) from FrontLineWorkers f where f.flwId NOT IN (select DISTINCT m.flwId from MACallDetailMeasure m where m.startTime between :fromDate"+"  AND  :toDate"+"   ) AND f.block = :locationId"+" AND f.courseStartDate < :fromDate"+" AND (f.firstCompletionDate > :fromDate"+"  OR f.firstCompletionDate is NULL)");
             query.setParameter("fromDate",fromDate);
             query.setParameter("toDate",toDate);
             query.setParameter("locationId",locationId);
-            return (long)query.list().size();
+            return (long)query.uniqueResult();
         }
         if(locationType.equalsIgnoreCase("subcenter")) {
-            Query query = getSession().createQuery("select f from FrontLineWorkers f where f.flwId NOT IN (select DISTINCT m.flwId from MACallDetailMeasure m where m.startTime between :fromDate"+"  AND  :toDate"+"   ) AND f.subfacility = :locationId"+" AND f.courseStartDate < :fromDate"+" AND (f.firstCompletionDate > :fromDate"+"  OR f.firstCompletionDate is NULL)");
+            Query query = getSession().createQuery("select count(*) from FrontLineWorkers f where f.flwId NOT IN (select DISTINCT m.flwId from MACallDetailMeasure m where m.startTime between :fromDate"+"  AND  :toDate"+"   ) AND f.subfacility = :locationId"+" AND f.courseStartDate < :fromDate"+" AND (f.firstCompletionDate > :fromDate"+"  OR f.firstCompletionDate is NULL)");
             query.setParameter("fromDate",fromDate);
             query.setParameter("toDate",toDate);
             query.setParameter("locationId",locationId);
-            return (long)query.list().size();
+            return (long)query.uniqueResult();
         }
 
         return (long)0;
@@ -84,32 +84,33 @@ public class MAPerformanceDaoImpl extends AbstractDao<Integer, User> implements 
     public Long accessedAtLeastOnce(Integer locationId, String locationType, Date fromDate, Date toDate){
 
         if(locationType.equalsIgnoreCase("state")) {
-            Query query = getSession().createQuery("select f from FrontLineWorkers f where f.flwId IN (select DISTINCT m.flwId from MACallDetailMeasure m where m.startTime between :fromDate"+"  AND  :toDate"+"   ) AND f.state = :locationId"+" AND f.courseStartDate < :fromDate"+" AND (f.firstCompletionDate > :fromDate"+"  OR f.firstCompletionDate is NULL)");
+            Query query = getSession().createQuery("select count(*) from FrontLineWorkers f where f.flwId IN (select DISTINCT m.flwId from MACallDetailMeasure m where m.startTime between :fromDate"+"  AND  :toDate"+"   ) AND f.state = :locationId"+" AND f.courseStartDate < :fromDate"+" AND (f.firstCompletionDate > :fromDate"+"  OR f.firstCompletionDate is NULL)");
             query.setParameter("fromDate",fromDate);
             query.setParameter("toDate",toDate);
             query.setParameter("locationId",locationId);
-            return (long)query.list().size();
+            return (long)query.uniqueResult();
         }
         if(locationType.equalsIgnoreCase("district")){
-            Query query = getSession().createQuery("select f from FrontLineWorkers f where f.flwId IN (select DISTINCT m.flwId from MACallDetailMeasure m where m.startTime between :fromDate"+"  AND  :toDate"+"   ) AND f.district = :locationId"+" AND f.courseStartDate < :fromDate"+" AND (f.firstCompletionDate > :fromDate"+"  OR f.firstCompletionDate is NULL)");
+            Query query = getSession().createQuery("select count(*) from FrontLineWorkers f where f.flwId IN (select DISTINCT m.flwId from MACallDetailMeasure m where m.startTime between :fromDate"+"  AND  :toDate"+"   ) AND f.district = :locationId"+" AND f.courseStartDate < :fromDate"+" AND (f.firstCompletionDate > :fromDate"+"  OR f.firstCompletionDate is NULL)");
             query.setParameter("fromDate",fromDate);
             query.setParameter("toDate",toDate);
             query.setParameter("locationId",locationId);
-            return (long)query.list().size();
+            return (long)query.uniqueResult();
         }
         if(locationType.equalsIgnoreCase("block")){
-            Query query = getSession().createQuery("select f from FrontLineWorkers f where f.flwId IN (select DISTINCT m.flwId from MACallDetailMeasure m where m.startTime between :fromDate"+"  AND  :toDate"+"   ) AND f.block = :locationId"+" AND f.courseStartDate < :fromDate"+" AND (f.firstCompletionDate > :fromDate"+"  OR f.firstCompletionDate is NULL)");
+            Query query = getSession().createQuery("select count(*) from FrontLineWorkers f where f.flwId IN (select DISTINCT m.flwId from MACallDetailMeasure m where m.startTime between :fromDate"+"  AND  :toDate"+"   ) AND f.block = :locationId"+" AND f.courseStartDate < :fromDate"+" AND (f.firstCompletionDate > :fromDate"+"  OR f.firstCompletionDate is NULL)");
             query.setParameter("fromDate",fromDate);
             query.setParameter("toDate",toDate);
             query.setParameter("locationId",locationId);
-            return (long)query.list().size();
+            return (long)query.uniqueResult();
         }
         if(locationType.equalsIgnoreCase("subcenter")) {
-            Query query = getSession().createQuery("select f from FrontLineWorkers f where f.flwId IN (select DISTINCT m.flwId from MACallDetailMeasure m where m.startTime between :fromDate"+"  AND  :toDate"+"   ) AND f.subfacility = :locationId"+" AND f.courseStartDate < :fromDate"+" AND (f.firstCompletionDate > :fromDate"+"  OR f.firstCompletionDate is NULL)");
+            Query query = getSession().createQuery("select count(*) from FrontLineWorkers f where f.flwId IN (select DISTINCT m.flwId from MACallDetailMeasure m where m.startTime between :fromDate"+"  AND  :toDate"+"   ) AND f.subfacility = :locationId"+" AND f.courseStartDate < :fromDate"+" AND (f.firstCompletionDate > :fromDate"+"  OR f.firstCompletionDate is NULL)");
             query.setParameter("fromDate",fromDate);
             query.setParameter("toDate",toDate);
             query.setParameter("locationId",locationId);
-            return (long)query.list().size();
+            return (long)query.uniqueResult();
+
         }
 
         return (long)0;
