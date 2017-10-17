@@ -66,7 +66,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
     private KilkariUsageDao kilkariUsageDao;
 
     @Autowired
-    private ListeningMatrixDao listeningMatrixDao;
+    private ListeningMatrixDao listeningMatrixReportDao;
 
     @Autowired
     private KilkariCallReportDao kilkariCallReportDao;
@@ -481,27 +481,24 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
 
         DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(reportRequest.getToDate().getTime());
-        String toDateString = formatter.format(calendar.getTime());
         Date toDate = new Date();
-        try {
-            toDate = formatter.parse(toDateString);
+        Date startDate=new Date(0);
+        Calendar aCalendar = Calendar.getInstance();
+        aCalendar.setTime(reportRequest.getFromDate());
+        aCalendar.set(Calendar.MILLISECOND, 0);
+        aCalendar.set(Calendar.SECOND, 0);
+        aCalendar.set(Calendar.MINUTE, 0);
+        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
 
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        calendar.setTimeInMillis(reportRequest.getFromDate().getTime());
-        String fromDateString = formatter.format(calendar.getTime());
-        Date fromDate = new Date();
-        try {
-            fromDate = formatter.parse(fromDateString);
 
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        calendar.setTime(fromDate);
-        calendar.add(Calendar.DATE, -1);
-        fromDate = calendar.getTime();
+        aCalendar.add(Calendar.DATE, -1);
+        Date fromDate = aCalendar.getTime();
+        aCalendar.setTime(reportRequest.getToDate());
+        aCalendar.set(Calendar.MILLISECOND, 0);
+        aCalendar.set(Calendar.SECOND, 0);
+        aCalendar.set(Calendar.MINUTE, 0);
+        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        toDate = aCalendar.getTime();
 
 
         List<AggCumulativeBeneficiaryComplDto> summaryDto = new ArrayList<>();
@@ -729,27 +726,24 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
     public  List<AggregateBeneficiaryDto> getBeneficiaryReport(ReportRequest reportRequest, User currentUser) {
         DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(reportRequest.getToDate().getTime());
-        String toDateString = formatter.format(calendar.getTime());
         Date toDate = new Date();
-        try {
-            toDate = formatter.parse(toDateString);
+        Date startDate=new Date(0);
+        Calendar aCalendar = Calendar.getInstance();
+        aCalendar.setTime(reportRequest.getFromDate());
+        aCalendar.set(Calendar.MILLISECOND, 0);
+        aCalendar.set(Calendar.SECOND, 0);
+        aCalendar.set(Calendar.MINUTE, 0);
+        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
 
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        calendar.setTimeInMillis(reportRequest.getFromDate().getTime());
-        String fromDateString = formatter.format(calendar.getTime());
-        Date fromDate = new Date();
-        try {
-            fromDate = formatter.parse(fromDateString);
 
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        calendar.setTime(fromDate);
-        calendar.add(Calendar.DATE, -1);
-        fromDate = calendar.getTime();
+        aCalendar.add(Calendar.DATE, -1);
+        Date fromDate = aCalendar.getTime();
+        aCalendar.setTime(reportRequest.getToDate());
+        aCalendar.set(Calendar.MILLISECOND, 0);
+        aCalendar.set(Calendar.SECOND, 0);
+        aCalendar.set(Calendar.MINUTE, 0);
+        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        toDate = aCalendar.getTime();
 
 
         List<AggregateBeneficiaryDto> summaryDto = new ArrayList<>();
@@ -961,28 +955,24 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
 
         DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(reportRequest.getToDate().getTime());
-        String toDateString = formatter.format(calendar.getTime());
         Date toDate = new Date();
-        try {
-            toDate = formatter.parse(toDateString);
+        Date startDate=new Date(0);
+        Calendar aCalendar = Calendar.getInstance();
+        aCalendar.setTime(reportRequest.getFromDate());
+        aCalendar.set(Calendar.MILLISECOND, 0);
+        aCalendar.set(Calendar.SECOND, 0);
+        aCalendar.set(Calendar.MINUTE, 0);
+        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
 
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        calendar.setTimeInMillis(reportRequest.getFromDate().getTime());
-        String fromDateString = formatter.format(calendar.getTime());
-        Date fromDate = new Date();
-        try {
-            fromDate = formatter.parse(fromDateString);
 
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        calendar.setTime(fromDate);
-        calendar.add(Calendar.DATE, -1);
-        fromDate = calendar.getTime();
-
+        aCalendar.add(Calendar.DATE, -1);
+        Date fromDate = aCalendar.getTime();
+        aCalendar.setTime(reportRequest.getToDate());
+        aCalendar.set(Calendar.MILLISECOND, 0);
+        aCalendar.set(Calendar.SECOND, 0);
+        aCalendar.set(Calendar.MINUTE, 0);
+        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        toDate = aCalendar.getTime();
 
         List<UsageDto> summaryDto = new ArrayList<>();
         List<KilkariUsage> kilkariUsageList = new ArrayList<>();
@@ -1055,33 +1045,32 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
 
         DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(reportRequest.getToDate().getTime());
-        String toDateString = formatter.format(calendar.getTime());
         Date toDate = new Date();
-        try {
-            toDate = formatter.parse(toDateString);
+        Date startDate=new Date(0);
+        Calendar aCalendar = Calendar.getInstance();
+        aCalendar.setTime(reportRequest.getFromDate());
+        aCalendar.set(Calendar.MILLISECOND, 0);
+        aCalendar.set(Calendar.SECOND, 0);
+        aCalendar.set(Calendar.MINUTE, 0);
+        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
 
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        calendar.setTimeInMillis(reportRequest.getFromDate().getTime());
-        String fromDateString = formatter.format(calendar.getTime());
-        Date fromDate = new Date();
-        try {
-            fromDate = formatter.parse(fromDateString);
 
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        calendar.setTime(fromDate);
-        calendar.add(Calendar.DATE, -1);
-        fromDate = calendar.getTime();
+        aCalendar.add(Calendar.DATE, -1);
+        Date fromDate = aCalendar.getTime();
+        aCalendar.setTime(reportRequest.getToDate());
+        aCalendar.set(Calendar.MILLISECOND, 0);
+        aCalendar.set(Calendar.SECOND, 0);
+        aCalendar.set(Calendar.MINUTE, 0);
+        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        toDate = aCalendar.getTime();
 
 
         List<ListeningMatrixDto> matrixDto = new ArrayList<>();
-        ListeningMatrix listeningMatrix = new ListeningMatrix();
-        listeningMatrix = listeningMatrixDao.getListeningMatrix(toDate);
+        ListeningMatrix listeningMatrix = listeningMatrixReportDao.getListeningMatrix(toDate);
 
+        if(listeningMatrix==null){
+            return matrixDto;
+        }
         ListeningMatrixDto matrixDto1 = new ListeningMatrixDto();
         matrixDto1.setPercentageCalls("Beneficiaries Listening > 75%calls");
         matrixDto1.setContent_1_25(listeningMatrix.getCalls_75_Content_1());
@@ -1278,27 +1267,24 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
 
         DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(reportRequest.getToDate().getTime());
-        String toDateString = formatter.format(calendar.getTime());
         Date toDate = new Date();
-        try {
-            toDate = formatter.parse(toDateString);
+        Date startDate=new Date(0);
+        Calendar aCalendar = Calendar.getInstance();
+        aCalendar.setTime(reportRequest.getFromDate());
+        aCalendar.set(Calendar.MILLISECOND, 0);
+        aCalendar.set(Calendar.SECOND, 0);
+        aCalendar.set(Calendar.MINUTE, 0);
+        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
 
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        calendar.setTimeInMillis(reportRequest.getFromDate().getTime());
-        String fromDateString = formatter.format(calendar.getTime());
-        Date fromDate = new Date();
-        try {
-            fromDate = formatter.parse(fromDateString);
 
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        calendar.setTime(fromDate);
-        calendar.add(Calendar.DATE, -1);
-        fromDate = calendar.getTime();
+        aCalendar.add(Calendar.DATE, -1);
+        Date fromDate = aCalendar.getTime();
+        aCalendar.setTime(reportRequest.getToDate());
+        aCalendar.set(Calendar.MILLISECOND, 0);
+        aCalendar.set(Calendar.SECOND, 0);
+        aCalendar.set(Calendar.MINUTE, 0);
+        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        toDate = aCalendar.getTime();
 
 
         List<KilkariCallReportDto> callReportDtos = new ArrayList<>();
@@ -1367,40 +1353,43 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         return callReportDtos;
     }
 
-    /*----------5.3.7. Kilkari Listening Matrix Report -------*/
+    /*----------5.3.9. Kilkari Message Matrix Report -------*/
     @Override
     public MessageMatrixResponseDto getMessageMatrixReport(ReportRequest reportRequest, User currentUser){
         DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(reportRequest.getToDate().getTime());
-        String toDateString = formatter.format(calendar.getTime());
         Date toDate = new Date();
-        try {
-            toDate = formatter.parse(toDateString);
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        calendar.setTimeInMillis(reportRequest.getFromDate().getTime());
-        String fromDateString = formatter.format(calendar.getTime());
-        Date fromDate = new Date();
-        try {
-            fromDate = formatter.parse(fromDateString);
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        calendar.setTime(fromDate);
-        calendar.add(Calendar.DATE, -1);
-        fromDate = calendar.getTime();
+        Date startDate=new Date(0);
+        Calendar aCalendar = Calendar.getInstance();
+        aCalendar.setTime(reportRequest.getFromDate());
+        aCalendar.set(Calendar.MILLISECOND, 0);
+        aCalendar.set(Calendar.SECOND, 0);
+        aCalendar.set(Calendar.MINUTE, 0);
+        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
 
 
+        aCalendar.add(Calendar.DATE, -1);
+        Date fromDate = aCalendar.getTime();
+        aCalendar.setTime(reportRequest.getToDate());
+        aCalendar.set(Calendar.MILLISECOND, 0);
+        aCalendar.set(Calendar.SECOND, 0);
+        aCalendar.set(Calendar.MINUTE, 0);
+        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        toDate = aCalendar.getTime();
+
+        MessageMatrixResponseDto messageMatrixResponseDto = new MessageMatrixResponseDto();
         List<MessageMatrixDto> motherMatrixDto = new ArrayList<>();
-        MessageMatrix messageMatrix = new MessageMatrix();
-        messageMatrix = messageMatrixDao.getMessageMatrixData(toDate);
+        List<MessageMatrixDto> childMatrixDto = new ArrayList<>();
+
+        MessageMatrix messageMatrix= messageMatrixDao.getMessageMatrixData(toDate);
+        if(messageMatrix == null){
+            messageMatrixResponseDto.setChildData(childMatrixDto);
+            messageMatrixResponseDto.setMotherData(motherMatrixDto);
+            return  messageMatrixResponseDto;
+        }
 
         MessageMatrixDto matrixDto1 = new MessageMatrixDto();
-        matrixDto1.setMessageWeek("Beneficiaries Listening > 75%calls");
+        matrixDto1.setMessageWeek("Message Week 1-6");
         matrixDto1.setContent_1_25(messageMatrix.getMother_1_6_Content_1());
         matrixDto1.setContent_25_50(messageMatrix.getMother_1_6_Content_25());
         matrixDto1.setContent_50_75(messageMatrix.getMother_1_6_Content_50());
@@ -1408,7 +1397,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         matrixDto1.setTotal(messageMatrix.getMother_1_6_Content_1()+messageMatrix.getMother_1_6_Content_25()+messageMatrix.getMother_1_6_Content_50()+messageMatrix.getMother_1_6_Content_75());
 
         MessageMatrixDto matrixDto2 = new MessageMatrixDto();
-        matrixDto2.setMessageWeek("Beneficiaries Listening 50 to 75 % calls");
+        matrixDto2.setMessageWeek("Message Week 7-12");
         matrixDto2.setContent_1_25(messageMatrix.getMother_7_12_Content_1());
         matrixDto2.setContent_25_50(messageMatrix.getMother_7_12_Content_25());
         matrixDto2.setContent_50_75(messageMatrix.getMother_7_12_Content_50());
@@ -1416,7 +1405,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         matrixDto2.setTotal(messageMatrix.getMother_7_12_Content_1()+messageMatrix.getMother_7_12_Content_25()+messageMatrix.getMother_7_12_Content_50()+messageMatrix.getMother_7_12_Content_75());
 
         MessageMatrixDto matrixDto3 = new MessageMatrixDto();
-        matrixDto3.setMessageWeek("Beneficiaries Listening 25 to 50 % calls");
+        matrixDto3.setMessageWeek("Message Week 13-18");
         matrixDto3.setContent_1_25(messageMatrix.getMother_13_18_Content_1());
         matrixDto3.setContent_25_50(messageMatrix.getMother_13_18_Content_25());
         matrixDto3.setContent_50_75(messageMatrix.getMother_13_18_Content_50());
@@ -1424,7 +1413,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         matrixDto3.setTotal(messageMatrix.getMother_13_18_Content_1()+messageMatrix.getMother_13_18_Content_25()+messageMatrix.getMother_13_18_Content_50()+messageMatrix.getMother_13_18_Content_75());
 
         MessageMatrixDto matrixDto4 = new MessageMatrixDto();
-        matrixDto4.setMessageWeek("Beneficiaries Listening < 25% calls");
+        matrixDto4.setMessageWeek("Message Week 19-24");
         matrixDto4.setContent_1_25(messageMatrix.getMother_19_24_Content_1());
         matrixDto4.setContent_25_50(messageMatrix.getMother_19_24_Content_25());
         matrixDto4.setContent_50_75(messageMatrix.getMother_19_24_Content_50());
@@ -1445,10 +1434,10 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         motherMatrixDto.add(matrixDto4);
         motherMatrixDto.add(matrixDto5);
 
-        List<MessageMatrixDto> childMatrixDto = new ArrayList<>();
+
 
         MessageMatrixDto matrixDto6 = new MessageMatrixDto();
-        matrixDto6.setMessageWeek("Beneficiaries Listening > 75%calls");
+        matrixDto6.setMessageWeek("Message Week 1-6");
         matrixDto6.setContent_1_25(messageMatrix.getChild_1_6_Content_1());
         matrixDto6.setContent_25_50(messageMatrix.getChild_1_6_Content_25());
         matrixDto6.setContent_50_75(messageMatrix.getChild_1_6_Content_50());
@@ -1456,7 +1445,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         matrixDto6.setTotal(messageMatrix.getChild_1_6_Content_1()+messageMatrix.getChild_1_6_Content_25()+messageMatrix.getChild_1_6_Content_50()+messageMatrix.getChild_1_6_Content_75());
 
         MessageMatrixDto matrixDto7 = new MessageMatrixDto();
-        matrixDto7.setMessageWeek("Beneficiaries Listening 50 to 75 % calls");
+        matrixDto7.setMessageWeek("Message Week 7-12");
         matrixDto7.setContent_1_25(messageMatrix.getChild_7_12_Content_1());
         matrixDto7.setContent_25_50(messageMatrix.getChild_7_12_Content_25());
         matrixDto7.setContent_50_75(messageMatrix.getChild_7_12_Content_50());
@@ -1464,69 +1453,79 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         matrixDto7.setTotal(messageMatrix.getChild_7_12_Content_1()+messageMatrix.getChild_7_12_Content_25()+messageMatrix.getChild_7_12_Content_50()+messageMatrix.getChild_7_12_Content_75());
 
         MessageMatrixDto matrixDto8 = new MessageMatrixDto();
-        matrixDto3.setMessageWeek("Beneficiaries Listening 25 to 50 % calls");
-        matrixDto3.setContent_1_25(messageMatrix.getMother_13_18_Content_1());
-        matrixDto3.setContent_25_50(messageMatrix.getMother_13_18_Content_25());
-        matrixDto3.setContent_50_75(messageMatrix.getMother_13_18_Content_50());
-        matrixDto3.setContent_75_100(messageMatrix.getMother_13_18_Content_75());
-        matrixDto3.setTotal(messageMatrix.getMother_13_18_Content_1()+messageMatrix.getMother_13_18_Content_25()+messageMatrix.getMother_13_18_Content_50()+messageMatrix.getMother_13_18_Content_75());
+        matrixDto8.setMessageWeek("Message Week 13-18");
+        matrixDto8.setContent_1_25(messageMatrix.getChild_13_18_Content_1());
+        matrixDto8.setContent_25_50(messageMatrix.getChild_13_18_Content_25());
+        matrixDto8.setContent_50_75(messageMatrix.getChild_13_18_Content_50());
+        matrixDto8.setContent_75_100(messageMatrix.getChild_13_18_Content_75());
+        matrixDto8.setTotal(messageMatrix.getChild_13_18_Content_1()+messageMatrix.getChild_13_18_Content_25()+messageMatrix.getChild_13_18_Content_50()+messageMatrix.getChild_13_18_Content_75());
 
         MessageMatrixDto matrixDto9 = new MessageMatrixDto();
-        matrixDto4.setMessageWeek("Beneficiaries Listening < 25% calls");
-        matrixDto4.setContent_1_25(messageMatrix.getMother_19_24_Content_1());
-        matrixDto4.setContent_25_50(messageMatrix.getMother_19_24_Content_25());
-        matrixDto4.setContent_50_75(messageMatrix.getMother_19_24_Content_50());
-        matrixDto4.setContent_75_100(messageMatrix.getMother_19_24_Content_75());
-        matrixDto4.setTotal(messageMatrix.getMother_19_24_Content_1()+messageMatrix.getMother_19_24_Content_25()+messageMatrix.getMother_19_24_Content_50()+messageMatrix.getMother_19_24_Content_75());
+        matrixDto9.setMessageWeek("Message Week 19-24");
+        matrixDto9.setContent_1_25(messageMatrix.getChild_19_24_Content_1());
+        matrixDto9.setContent_25_50(messageMatrix.getChild_19_24_Content_25());
+        matrixDto9.setContent_50_75(messageMatrix.getChild_19_24_Content_50());
+        matrixDto9.setContent_75_100(messageMatrix.getChild_19_24_Content_75());
+        matrixDto9.setTotal(messageMatrix.getChild_19_24_Content_1()+messageMatrix.getChild_19_24_Content_25()+messageMatrix.getChild_19_24_Content_50()+messageMatrix.getChild_19_24_Content_75());
 
         MessageMatrixDto matrixDto10 = new MessageMatrixDto();
-        matrixDto1.setMessageWeek("Beneficiaries Listening > 75%calls");
-        matrixDto1.setContent_1_25(messageMatrix.getMother_1_6_Content_1());
-        matrixDto1.setContent_25_50(messageMatrix.getMother_1_6_Content_25());
-        matrixDto1.setContent_50_75(messageMatrix.getMother_1_6_Content_50());
-        matrixDto1.setContent_75_100(messageMatrix.getMother_1_6_Content_75());
-        matrixDto1.setTotal(messageMatrix.getMother_1_6_Content_1()+messageMatrix.getMother_1_6_Content_25()+messageMatrix.getMother_1_6_Content_50()+messageMatrix.getMother_1_6_Content_75());
+        matrixDto10.setMessageWeek("Message Week 25-30");
+        matrixDto10.setContent_1_25(messageMatrix.getChild_25_30_Content_1());
+        matrixDto10.setContent_25_50(messageMatrix.getChild_25_30_Content_25());
+        matrixDto10.setContent_50_75(messageMatrix.getChild_25_30_Content_50());
+        matrixDto10.setContent_75_100(messageMatrix.getChild_25_30_Content_75());
+        matrixDto10.setTotal(messageMatrix.getChild_25_30_Content_1()+messageMatrix.getChild_25_30_Content_25()+messageMatrix.getChild_25_30_Content_50()+messageMatrix.getChild_25_30_Content_75());
 
         MessageMatrixDto matrixDto11 = new MessageMatrixDto();
-        matrixDto2.setMessageWeek("Beneficiaries Listening 50 to 75 % calls");
-        matrixDto2.setContent_1_25(messageMatrix.getMother_7_12_Content_1());
-        matrixDto2.setContent_25_50(messageMatrix.getMother_7_12_Content_25());
-        matrixDto2.setContent_50_75(messageMatrix.getMother_7_12_Content_50());
-        matrixDto2.setContent_75_100(messageMatrix.getMother_7_12_Content_75());
-        matrixDto2.setTotal(messageMatrix.getMother_7_12_Content_1()+messageMatrix.getMother_7_12_Content_25()+messageMatrix.getMother_7_12_Content_50()+messageMatrix.getMother_7_12_Content_75());
+        matrixDto11.setMessageWeek("Message Week 31-36");
+        matrixDto11.setContent_1_25(messageMatrix.getChild_31_36_Content_1());
+        matrixDto11.setContent_25_50(messageMatrix.getChild_31_36_Content_25());
+        matrixDto11.setContent_50_75(messageMatrix.getChild_31_36_Content_50());
+        matrixDto11.setContent_75_100(messageMatrix.getChild_31_36_Content_75());
+        matrixDto11.setTotal(messageMatrix.getChild_31_36_Content_1()+messageMatrix.getChild_31_36_Content_25()+messageMatrix.getChild_31_36_Content_50()+messageMatrix.getChild_31_36_Content_75());
 
         MessageMatrixDto matrixDto12 = new MessageMatrixDto();
-        matrixDto3.setMessageWeek("Beneficiaries Listening 25 to 50 % calls");
-        matrixDto3.setContent_1_25(messageMatrix.getMother_13_18_Content_1());
-        matrixDto3.setContent_25_50(messageMatrix.getMother_13_18_Content_25());
-        matrixDto3.setContent_50_75(messageMatrix.getMother_13_18_Content_50());
-        matrixDto3.setContent_75_100(messageMatrix.getMother_13_18_Content_75());
-        matrixDto3.setTotal(messageMatrix.getMother_13_18_Content_1()+messageMatrix.getMother_13_18_Content_25()+messageMatrix.getMother_13_18_Content_50()+messageMatrix.getMother_13_18_Content_75());
+        matrixDto12.setMessageWeek("Message Week 37-42");
+        matrixDto12.setContent_1_25(messageMatrix.getChild_37_42_Content_1());
+        matrixDto12.setContent_25_50(messageMatrix.getChild_37_42_Content_25());
+        matrixDto12.setContent_50_75(messageMatrix.getChild_37_42_Content_50());
+        matrixDto12.setContent_75_100(messageMatrix.getChild_37_42_Content_75());
+        matrixDto12.setTotal(messageMatrix.getChild_37_42_Content_1()+messageMatrix.getChild_37_42_Content_25()+messageMatrix.getChild_37_42_Content_50()+messageMatrix.getChild_37_42_Content_75());
 
         MessageMatrixDto matrixDto13 = new MessageMatrixDto();
-        matrixDto4.setMessageWeek("Beneficiaries Listening < 25% calls");
-        matrixDto4.setContent_1_25(messageMatrix.getMother_19_24_Content_1());
-        matrixDto4.setContent_25_50(messageMatrix.getMother_19_24_Content_25());
-        matrixDto4.setContent_50_75(messageMatrix.getMother_19_24_Content_50());
-        matrixDto4.setContent_75_100(messageMatrix.getMother_19_24_Content_75());
-        matrixDto4.setTotal(messageMatrix.getMother_19_24_Content_1()+messageMatrix.getMother_19_24_Content_25()+messageMatrix.getMother_19_24_Content_50()+messageMatrix.getMother_19_24_Content_75());
+        matrixDto13.setMessageWeek("Message Week 43-48");
+        matrixDto13.setContent_1_25(messageMatrix.getChild_43_48_Content_1());
+        matrixDto13.setContent_25_50(messageMatrix.getChild_43_48_Content_25());
+        matrixDto13.setContent_50_75(messageMatrix.getChild_43_48_Content_50());
+        matrixDto13.setContent_75_100(messageMatrix.getChild_43_48_Content_75());
+        matrixDto13.setTotal(messageMatrix.getChild_43_48_Content_1()+messageMatrix.getChild_43_48_Content_25()+messageMatrix.getChild_43_48_Content_50()+messageMatrix.getChild_43_48_Content_75());
+
         MessageMatrixDto matrixDto14 = new MessageMatrixDto();
-        matrixDto5.setMessageWeek("Total");
-        matrixDto5.setContent_1_25(messageMatrix.getMother_1_6_Content_1()+messageMatrix.getMother_7_12_Content_1()+messageMatrix.getMother_13_18_Content_1()+messageMatrix.getMother_19_24_Content_1());
-        matrixDto5.setContent_25_50(messageMatrix.getMother_1_6_Content_25()+messageMatrix.getMother_7_12_Content_25()+messageMatrix.getMother_13_18_Content_25()+messageMatrix.getMother_19_24_Content_25());
-        matrixDto5.setContent_50_75(messageMatrix.getMother_19_24_Content_50()+messageMatrix.getMother_1_6_Content_50()+messageMatrix.getMother_7_12_Content_50()+messageMatrix.getMother_13_18_Content_50());
-        matrixDto5.setContent_75_100(messageMatrix.getMother_19_24_Content_75()+messageMatrix.getMother_1_6_Content_75()+messageMatrix.getMother_7_12_Content_75()+messageMatrix.getMother_13_18_Content_75());
-        matrixDto5.setTotal(matrixDto1.getTotal()+matrixDto2.getTotal()+matrixDto3.getTotal()+matrixDto4.getTotal());
+        matrixDto14.setMessageWeek("Total");
+        matrixDto14.setContent_1_25(messageMatrix.getChild_1_6_Content_1()+messageMatrix.getChild_7_12_Content_1()+messageMatrix.getChild_13_18_Content_1()+messageMatrix.getChild_19_24_Content_1()+messageMatrix.getChild_25_30_Content_1()+messageMatrix.getChild_31_36_Content_1()+messageMatrix.getChild_37_42_Content_1()+messageMatrix.getChild_43_48_Content_1());
+        matrixDto14.setContent_25_50(messageMatrix.getChild_1_6_Content_25()+messageMatrix.getChild_7_12_Content_25()+messageMatrix.getChild_13_18_Content_25()+messageMatrix.getChild_19_24_Content_25()+messageMatrix.getChild_25_30_Content_25()+messageMatrix.getChild_31_36_Content_25()+messageMatrix.getChild_37_42_Content_25()+messageMatrix.getChild_43_48_Content_25());
+        matrixDto14.setContent_50_75(messageMatrix.getChild_1_6_Content_50()+messageMatrix.getChild_7_12_Content_50()+messageMatrix.getChild_13_18_Content_50()+messageMatrix.getChild_19_24_Content_50()+messageMatrix.getChild_25_30_Content_50()+messageMatrix.getChild_31_36_Content_50()+messageMatrix.getChild_37_42_Content_50()+messageMatrix.getChild_43_48_Content_50());
+        matrixDto14.setContent_75_100(messageMatrix.getChild_1_6_Content_75()+messageMatrix.getChild_7_12_Content_75()+messageMatrix.getChild_13_18_Content_75()+messageMatrix.getChild_19_24_Content_75()+messageMatrix.getChild_25_30_Content_75()+messageMatrix.getChild_31_36_Content_75()+messageMatrix.getChild_37_42_Content_75()+messageMatrix.getChild_43_48_Content_75());
+        matrixDto14.setTotal(matrixDto6.getTotal()+matrixDto7.getTotal()+matrixDto8.getTotal()+matrixDto9.getTotal()+matrixDto10.getTotal()+matrixDto11.getTotal()+matrixDto12.getTotal()+matrixDto13.getTotal());
 
-        motherMatrixDto.add(matrixDto1);
-        motherMatrixDto.add(matrixDto2);
-        motherMatrixDto.add(matrixDto3);
-        motherMatrixDto.add(matrixDto4);
-        motherMatrixDto.add(matrixDto5);
+        childMatrixDto.add(matrixDto6);
+        childMatrixDto.add(matrixDto7);
+        childMatrixDto.add(matrixDto8);
+        childMatrixDto.add(matrixDto9);
+        childMatrixDto.add(matrixDto10);
+        childMatrixDto.add(matrixDto11);
+        childMatrixDto.add(matrixDto12);
+        childMatrixDto.add(matrixDto13);
+        childMatrixDto.add(matrixDto14);
+
+
+        messageMatrixResponseDto.setChildData(childMatrixDto);
+        messageMatrixResponseDto.setMotherData(motherMatrixDto);
 
 
 
-        return null;
+
+        return messageMatrixResponseDto;
     }
 
 

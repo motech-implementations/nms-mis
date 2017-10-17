@@ -1,26 +1,28 @@
 package com.beehyv.nmsreporting.entity;
 
+import java.util.List;
+
 /**
  * Created by beehyv on 13/10/17.
  */
 public class MessageMatrixResponseDto {
 
-    MessageMatrixDto motherData;
-    MessageMatrixDto childData;
+    List<MessageMatrixDto> motherData;
+    List<MessageMatrixDto> childData;
 
-    public MessageMatrixDto getMotherData() {
+    public List<MessageMatrixDto> getMotherData() {
         return motherData;
     }
 
-    public void setMotherData(MessageMatrixDto motherData) {
+    public void setMotherData(List<MessageMatrixDto> motherData) {
         this.motherData = motherData;
     }
 
-    public MessageMatrixDto getChildData() {
+    public List<MessageMatrixDto> getChildData() {
         return childData;
     }
 
-    public void setChildData(MessageMatrixDto childData) {
+    public void setChildData(List<MessageMatrixDto> childData) {
         this.childData = childData;
     }
 }

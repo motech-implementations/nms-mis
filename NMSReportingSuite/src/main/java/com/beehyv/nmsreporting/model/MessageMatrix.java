@@ -162,6 +162,63 @@ public class MessageMatrix {
     @Column(name="child_43_48_Content_1", columnDefinition = "BIGINT(20)")
     private Long child_43_48_Content_1;
 
+    public MessageMatrix(Integer id, Date date, Long mother_1_6_Content_75, Long mother_7_12_Content_75, Long mother_13_18_Content_75, Long mother_19_24_Content_75, Long mother_1_6_Content_50, Long mother_7_12_Content_50, Long mother_13_18_Content_50, Long mother_19_24_Content_50, Long mother_1_6_Content_25, Long mother_7_12_Content_25, Long mother_13_18_Content_25, Long mother_19_24_Content_25, Long mother_1_6_Content_1, Long mother_7_12_Content_1, Long mother_13_18_Content_1, Long mother_19_24_Content_1, Long child_1_6_Content_75, Long child_7_12_Content_75, Long child_13_18_Content_75, Long child_19_24_Content_75, Long child_25_30_Content_75, Long child_31_36_Content_75, Long child_37_42_Content_75, Long child_43_48_Content_75, Long child_1_6_Content_50, Long child_7_12_Content_50, Long child_13_18_Content_50, Long child_19_24_Content_50, Long child_25_30_Content_50, Long child_31_36_Content_50, Long child_37_42_Content_50, Long child_43_48_Content_50, Long child_1_6_Content_25, Long child_7_12_Content_25, Long child_13_18_Content_25, Long child_19_24_Content_25, Long child_25_30_Content_25, Long child_31_36_Content_25, Long child_37_42_Content_25, Long child_43_48_Content_25, Long child_1_6_Content_1, Long child_7_12_Content_1, Long child_13_18_Content_1, Long child_19_24_Content_1, Long child_25_30_Content_1, Long child_31_36_Content_1, Long child_37_42_Content_1, Long child_43_48_Content_1) {
+        this.id = id;
+        this.date = date;
+        this.mother_1_6_Content_75 = mother_1_6_Content_75;
+        this.mother_7_12_Content_75 = mother_7_12_Content_75;
+        this.mother_13_18_Content_75 = mother_13_18_Content_75;
+        this.mother_19_24_Content_75 = mother_19_24_Content_75;
+        this.mother_1_6_Content_50 = mother_1_6_Content_50;
+        this.mother_7_12_Content_50 = mother_7_12_Content_50;
+        this.mother_13_18_Content_50 = mother_13_18_Content_50;
+        this.mother_19_24_Content_50 = mother_19_24_Content_50;
+        this.mother_1_6_Content_25 = mother_1_6_Content_25;
+        this.mother_7_12_Content_25 = mother_7_12_Content_25;
+        this.mother_13_18_Content_25 = mother_13_18_Content_25;
+        this.mother_19_24_Content_25 = mother_19_24_Content_25;
+        this.mother_1_6_Content_1 = mother_1_6_Content_1;
+        this.mother_7_12_Content_1 = mother_7_12_Content_1;
+        this.mother_13_18_Content_1 = mother_13_18_Content_1;
+        this.mother_19_24_Content_1 = mother_19_24_Content_1;
+        this.child_1_6_Content_75 = child_1_6_Content_75;
+        this.child_7_12_Content_75 = child_7_12_Content_75;
+        this.child_13_18_Content_75 = child_13_18_Content_75;
+        this.child_19_24_Content_75 = child_19_24_Content_75;
+        this.child_25_30_Content_75 = child_25_30_Content_75;
+        this.child_31_36_Content_75 = child_31_36_Content_75;
+        this.child_37_42_Content_75 = child_37_42_Content_75;
+        this.child_43_48_Content_75 = child_43_48_Content_75;
+        this.child_1_6_Content_50 = child_1_6_Content_50;
+        this.child_7_12_Content_50 = child_7_12_Content_50;
+        this.child_13_18_Content_50 = child_13_18_Content_50;
+        this.child_19_24_Content_50 = child_19_24_Content_50;
+        this.child_25_30_Content_50 = child_25_30_Content_50;
+        this.child_31_36_Content_50 = child_31_36_Content_50;
+        this.child_37_42_Content_50 = child_37_42_Content_50;
+        this.child_43_48_Content_50 = child_43_48_Content_50;
+        this.child_1_6_Content_25 = child_1_6_Content_25;
+        this.child_7_12_Content_25 = child_7_12_Content_25;
+        this.child_13_18_Content_25 = child_13_18_Content_25;
+        this.child_19_24_Content_25 = child_19_24_Content_25;
+        this.child_25_30_Content_25 = child_25_30_Content_25;
+        this.child_31_36_Content_25 = child_31_36_Content_25;
+        this.child_37_42_Content_25 = child_37_42_Content_25;
+        this.child_43_48_Content_25 = child_43_48_Content_25;
+        this.child_1_6_Content_1 = child_1_6_Content_1;
+        this.child_7_12_Content_1 = child_7_12_Content_1;
+        this.child_13_18_Content_1 = child_13_18_Content_1;
+        this.child_19_24_Content_1 = child_19_24_Content_1;
+        this.child_25_30_Content_1 = child_25_30_Content_1;
+        this.child_31_36_Content_1 = child_31_36_Content_1;
+        this.child_37_42_Content_1 = child_37_42_Content_1;
+        this.child_43_48_Content_1 = child_43_48_Content_1;
+    }
+
+    public MessageMatrix(){
+        
+    }
+
     public Integer getId() {
         return id;
     }

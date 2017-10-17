@@ -385,6 +385,7 @@ public class UserController {
         User currentUser = userService.getCurrentUser();
         List<BreadCrumbDto> breadCrumbs = breadCrumbService.getBreadCrumbs(currentUser,reportRequest);
         AggregateResponseDto aggregateResponseDto = new AggregateResponseDto();
+        MessageMatrixResponseDto messageMatrixResponseDto = new MessageMatrixResponseDto();
         if(currentUser.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel()) && !currentUser.getStateId().equals(reportRequest.getStateId())){
             m.put("status", "fail");
             return m;
@@ -432,6 +433,10 @@ public class UserController {
             List<KilkariCallReportDto> kilkariCallReportDtos=aggregateReportsService.getKilkariCallReport(reportRequest,currentUser);
             aggregateResponseDto.setTableData(kilkariCallReportDtos);
             return aggregateResponseDto;
+        }
+        if(reportRequest.getReportType().equals(ReportType.messageMatrix.getReportType())){
+           return aggregateReportsService.getMessageMatrixReport(reportRequest,currentUser);
+
         }
 
         if(reportRequest.getReportType().equals(ReportType.maPerformance.getReportType())) {
@@ -954,6 +959,38 @@ public class UserController {
                 "images/drop-down-2.png",
                 ReportType.usage.getServiceType())
         );
+        kList.add(new Report(
+                ReportType.kilkariCalls.getReportName(),
+                ReportType.kilkariCalls.getReportType(),
+                "images/drop-down-2.png",
+                ReportType.kilkariCalls.getServiceType())
+        );
+
+        kList.add(new Report(
+                ReportType.messageMatrix.getReportName(),
+                ReportType.messageMatrix.getReportType(),
+                "images/drop-down-2.png",
+                ReportType.messageMatrix.getServiceType())
+        );
+        kList.add(new Report(
+                ReportType.listeningMatrix.getReportName(),
+                ReportType.listeningMatrix.getReportType(),
+                "images/drop-down-2.png",
+                ReportType.listeningMatrix.getServiceType())
+        );
+        kList.add(new Report(
+                ReportType.kilkariSubscriber.getReportName(),
+                ReportType.kilkariSubscriber.getReportType(),
+                "images/drop-down-2.png",
+                ReportType.kilkariSubscriber.getServiceType())
+        );
+        kList.add(new Report(
+                ReportType.beneficiary.getReportName(),
+                ReportType.beneficiary.getReportType(),
+                "images/drop-down-2.png",
+                ReportType.beneficiary.getServiceType())
+        );
+
 
         kMenu.put("service", kList.get(0).getService());
         kMenu.put("options", kList);
