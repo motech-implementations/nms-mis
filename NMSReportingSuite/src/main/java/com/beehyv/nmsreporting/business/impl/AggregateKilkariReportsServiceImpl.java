@@ -109,7 +109,8 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     KilkariSubscriberDto kilkariSubscriberDto = new KilkariSubscriberDto();
                     kilkariSubscriberDto.setId(end.getId());
                     kilkariSubscriberDto.setLocationId(end.getLocationId());
-                    kilkariSubscriberDto.setTotalSubscriptions(end.getTotalSubscriptions() - start.getTotalSubscriptions());
+                    kilkariSubscriberDto.setTotalSubscriptionsStart(start.getTotalSubscriptions());
+                    kilkariSubscriberDto.setTotalSubscriptionsEnd(end.getTotalSubscriptions());
                     kilkariSubscriberDto.setTotalBeneficiaryRecordsReceived(end.getTotalBeneficiaryRecordsReceived() - start.getTotalBeneficiaryRecordsReceived());
                     kilkariSubscriberDto.setTotalBeneficiaryRecordsEligible(end.getTotalBeneficiaryRecordsEligible()- start.getTotalBeneficiaryRecordsEligible());
                     kilkariSubscriberDto.setTotalBeneficiaryRecordsAccepted(end.getTotalBeneficiaryRecordsAccepted()- start.getTotalBeneficiaryRecordsAccepted());
@@ -144,7 +145,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
 
                     }
 
-                    if((kilkariSubscriberDto.getTotalSubscriptions() + kilkariSubscriberDto.getTotalBeneficiaryRecordsReceived()
+                    if((kilkariSubscriberDto.getTotalSubscriptionsEnd() + kilkariSubscriberDto.getTotalSubscriptionsStart() + kilkariSubscriberDto.getTotalBeneficiaryRecordsReceived()
                             + kilkariSubscriberDto.getTotalBeneficiaryRecordsEligible() + kilkariSubscriberDto.getTotalBeneficiaryRecordsAccepted()
                             + kilkariSubscriberDto.getTotalBeneficiaryRecordsRejected() + kilkariSubscriberDto.getTotalSubscriptionsCompleted()) != 0){
                         kilkariSubscriberDtoList.add(kilkariSubscriberDto);

@@ -9,12 +9,13 @@ public class KilkariSubscriberDto {
     private Long locationId;
     private String locationType;
     private String locationName;
-    private Integer totalSubscriptions;
+    private Integer totalSubscriptionsStart;
     private Integer totalBeneficiaryRecordsReceived;
     private Integer totalBeneficiaryRecordsEligible;
     private Integer totalBeneficiaryRecordsAccepted;
     private Integer totalBeneficiaryRecordsRejected;
     private Integer totalSubscriptionsCompleted;
+    private Integer totalSubscriptionsEnd;
 
     public int getId() {
         return id;
@@ -48,12 +49,20 @@ public class KilkariSubscriberDto {
         this.locationName = locationName;
     }
 
-    public Integer getTotalSubscriptions() {
-        return totalSubscriptions;
+    public Integer getTotalSubscriptionsStart() {
+        return totalSubscriptionsStart;
     }
 
-    public void setTotalSubscriptions(Integer totalSubscriptions) {
-        this.totalSubscriptions = totalSubscriptions;
+    public void setTotalSubscriptionsStart(Integer totalSubscriptionsStart) {
+        this.totalSubscriptionsStart = totalSubscriptionsStart;
+    }
+
+    public Integer getTotalSubscriptionsEnd() {
+        return totalSubscriptionsEnd;
+    }
+
+    public void setTotalSubscriptionsEnd(Integer totalSubscriptionsEnd) {
+        this.totalSubscriptionsEnd = totalSubscriptionsEnd;
     }
 
     public Integer getTotalBeneficiaryRecordsReceived() {
