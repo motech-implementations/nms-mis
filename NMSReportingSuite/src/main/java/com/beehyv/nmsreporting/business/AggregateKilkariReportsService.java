@@ -4,9 +4,11 @@ package com.beehyv.nmsreporting.business;
  * Created by himanshu on 06/10/17.
  */
 
+import com.beehyv.nmsreporting.entity.AggregateKilkariRepeatListenerMonthWiseDto;
 import com.beehyv.nmsreporting.entity.AggregateKilkariReportsDto;
 import com.beehyv.nmsreporting.entity.ReportRequest;
 import com.beehyv.nmsreporting.model.KilkariSubscriber;
+import javafx.beans.property.ReadOnlyProperty;
 
 import java.util.Date;
 import java.util.List;
@@ -19,5 +21,7 @@ public interface AggregateKilkariReportsService {
     AggregateKilkariReportsDto getKilkariMessageListnershipReport(ReportRequest reportRequest);
 
     AggregateKilkariReportsDto getKilkariThematicContentReport(ReportRequest reportRequest);
+
+    AggregateKilkariRepeatListenerMonthWiseDto getKilkariListenerMonthWiseReport(ReportRequest reportRequest);
 }
 

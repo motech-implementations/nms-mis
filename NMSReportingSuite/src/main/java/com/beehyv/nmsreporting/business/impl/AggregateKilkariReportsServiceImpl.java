@@ -6,7 +6,6 @@ package com.beehyv.nmsreporting.business.impl;
 
 import com.beehyv.nmsreporting.business.AggregateKilkariReportsService;
 import com.beehyv.nmsreporting.business.BreadCrumbService;
-import com.beehyv.nmsreporting.business.UserService;
 import com.beehyv.nmsreporting.dao.*;
 import com.beehyv.nmsreporting.entity.*;
 import com.beehyv.nmsreporting.model.*;
@@ -53,6 +52,9 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
 
     @Autowired
     private KilkariThematicContentReportDao kilkariThematicContentReportDao;
+
+    @Autowired
+    private KilkariRepeatListenerMonthWiseDao kilkariRepeatListenerMonthWiseDao;
 
     @Autowired
     private BreadCrumbService breadCrumbService;
@@ -387,6 +389,68 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         }
         aggregateKilkariReportsDto.setTableData(kilkariThematicContentReportDtoList);
         return aggregateKilkariReportsDto;
+    }
+
+    @Override
+    public AggregateKilkariRepeatListenerMonthWiseDto getKilkariListenerMonthWiseReport(ReportRequest reportRequest){
+        AggregateKilkariRepeatListenerMonthWiseDto aggregateKilkariRepeatListenerMonthWiseDto = new AggregateKilkariRepeatListenerMonthWiseDto();
+
+        DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        Calendar calendar = Calendar.getInstance();
+        Date toDate = new Date();
+        Date startDate=new Date(0);
+        Calendar aCalendar = Calendar.getInstance();
+        aCalendar.setTime(reportRequest.getFromDate());
+        aCalendar.set(Calendar.MILLISECOND, 0);
+        aCalendar.set(Calendar.SECOND, 0);
+        aCalendar.set(Calendar.MINUTE, 0);
+        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        Date fromDate = aCalendar.getTime();
+        aCalendar.setTime(reportRequest.getToDate());
+        aCalendar.set(Calendar.MILLISECOND, 0);
+        aCalendar.set(Calendar.SECOND, 0);
+        aCalendar.set(Calendar.MINUTE, 0);
+        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        toDate = aCalendar.getTime();
+
+        List<KilkariRepeatListenerMonthWiseDto> kilkariRepeatListenerMonthWiseDtoList = new ArrayList<>();
+        List<KilkariRepeatListenerMonthWisePercentDto> kilkariRepeatListenerMonthWisePercentDtoList = new ArrayList<>();
+        List<KilkariRepeatListenerMonthWise> kilkariRepeatListenerMonthWiseList = kilkariRepeatListenerMonthWiseDao.getListenerData(fromDate,toDate);
+
+        for(int i = 0; i < kilkariRepeatListenerMonthWiseList.size(); i++){
+            KilkariRepeatListenerMonthWiseDto kilkariRepeatListenerMonthWiseDto = new KilkariRepeatListenerMonthWiseDto();
+            KilkariRepeatListenerMonthWisePercentDto kilkariRepeatListenerMonthWisePercentDto = new KilkariRepeatListenerMonthWisePercentDto();
+            KilkariRepeatListenerMonthWise kilkariRepeatListenerMonthWise1 = kilkariRepeatListenerMonthWiseList.get(i);
+            kilkariRepeatListenerMonthWiseDto.setId(kilkariRepeatListenerMonthWise1.getId());
+            kilkariRepeatListenerMonthWiseDto.setDate(kilkariRepeatListenerMonthWise1.getDate());
+            kilkariRepeatListenerMonthWiseDto.setFiveCallsAnswered(kilkariRepeatListenerMonthWise1.getFiveCallsAnswered());
+            kilkariRepeatListenerMonthWiseDto.setFourCallsAnswered(kilkariRepeatListenerMonthWise1.getFourCallsAnswered());
+            kilkariRepeatListenerMonthWiseDto.setThreeCallsAnswered(kilkariRepeatListenerMonthWise1.getThreeCallsAnswered());
+            kilkariRepeatListenerMonthWiseDto.setTwoCallsAnswered(kilkariRepeatListenerMonthWise1.getTwoCallsAnswered());
+            kilkariRepeatListenerMonthWiseDto.setOneCallAnswered(kilkariRepeatListenerMonthWise1.getOneCallAnswered());
+            kilkariRepeatListenerMonthWiseDto.setNoCallsAnswered(kilkariRepeatListenerMonthWise1.getNoCallsAnswered());
+            kilkariRepeatListenerMonthWiseDto.setTotal(kilkariRepeatListenerMonthWise1.getFiveCallsAnswered()
+                    +kilkariRepeatListenerMonthWise1.getFourCallsAnswered()
+                    +kilkariRepeatListenerMonthWise1.getThreeCallsAnswered()
+                    +kilkariRepeatListenerMonthWise1.getTwoCallsAnswered()
+                    +kilkariRepeatListenerMonthWise1.getOneCallAnswered()
+                    +kilkariRepeatListenerMonthWise1.getNoCallsAnswered());
+            kilkariRepeatListenerMonthWisePercentDto.setFiveCallsAnsweredPercent(((float)kilkariRepeatListenerMonthWiseDto.getFiveCallsAnswered()/(float)kilkariRepeatListenerMonthWiseDto.getTotal())*100);
+            kilkariRepeatListenerMonthWisePercentDto.setFourCallsAnsweredPercent(((float)kilkariRepeatListenerMonthWiseDto.getFourCallsAnswered()/(float)kilkariRepeatListenerMonthWiseDto.getTotal())*100);
+            kilkariRepeatListenerMonthWisePercentDto.setThreeCallsAnsweredPercent(((float)kilkariRepeatListenerMonthWiseDto.getThreeCallsAnswered()/(float)kilkariRepeatListenerMonthWiseDto.getTotal())*100);
+            kilkariRepeatListenerMonthWisePercentDto.setTwoCallsAnsweredPercent(((float)kilkariRepeatListenerMonthWiseDto.getTwoCallsAnswered()/(float)kilkariRepeatListenerMonthWiseDto.getTotal())*100);
+            kilkariRepeatListenerMonthWisePercentDto.setOneCallAnsweredPercent(((float)kilkariRepeatListenerMonthWiseDto.getOneCallAnswered()/(float)kilkariRepeatListenerMonthWiseDto.getTotal())*100);
+            kilkariRepeatListenerMonthWisePercentDto.setNoCallsAnsweredPercent(((float)kilkariRepeatListenerMonthWiseDto.getNoCallsAnswered()/(float)kilkariRepeatListenerMonthWiseDto.getTotal())*100);
+            kilkariRepeatListenerMonthWisePercentDto.setId(kilkariRepeatListenerMonthWise1.getId());
+            kilkariRepeatListenerMonthWisePercentDto.setDate(kilkariRepeatListenerMonthWise1.getDate());
+            kilkariRepeatListenerMonthWiseDtoList.add(kilkariRepeatListenerMonthWiseDto);
+            kilkariRepeatListenerMonthWisePercentDtoList.add(kilkariRepeatListenerMonthWisePercentDto);
+        }
+
+        aggregateKilkariRepeatListenerMonthWiseDto.setNumberData(kilkariRepeatListenerMonthWiseDtoList);
+        aggregateKilkariRepeatListenerMonthWiseDto.setPercentData(kilkariRepeatListenerMonthWisePercentDtoList);
+
+        return aggregateKilkariRepeatListenerMonthWiseDto;
     }
 
 }

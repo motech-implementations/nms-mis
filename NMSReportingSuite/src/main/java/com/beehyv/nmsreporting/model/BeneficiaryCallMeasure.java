@@ -1,4 +1,7 @@
 package com.beehyv.nmsreporting.model;
+/**
+ * Created by himanshu on 06/10/17.
+ */
 
 import javax.persistence.*;
 

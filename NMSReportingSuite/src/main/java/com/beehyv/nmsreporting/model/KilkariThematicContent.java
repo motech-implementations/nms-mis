@@ -1,6 +1,7 @@
 package com.beehyv.nmsreporting.model;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by himanshu on 06/10/17.
@@ -14,6 +15,9 @@ public class KilkariThematicContent {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="id", columnDefinition = "INT(11)")
     private Integer id;
+
+    @Column(name="date", columnDefinition = "DATETIME")
+    private Date date;
 
     @Column(name="theme", columnDefinition = "VARCHAR(45)")
     private String theme;
@@ -34,6 +38,14 @@ public class KilkariThematicContent {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public String getTheme() {

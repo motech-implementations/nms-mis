@@ -449,6 +449,11 @@ public class UserController {
             aggregateKilkariResponseDto.setBreadCrumbData(breadCrumbs);
             return aggregateKilkariResponseDto;
         }
+        if(reportRequest.getReportType().equals(ReportType.kilkariRepeatListenerMonthWise.getReportType())) {
+            AggregateKilkariRepeatListenerMonthWiseDto aggregateKilkariRepeatListenerMonthWiseDto = new AggregateKilkariRepeatListenerMonthWiseDto();
+            aggregateKilkariRepeatListenerMonthWiseDto = aggregateKilkariReportsService.getKilkariListenerMonthWiseReport(reportRequest);
+            return aggregateKilkariRepeatListenerMonthWiseDto;
+        }
 
         if(reportRequest.getReportType().equals(ReportType.maPerformance.getReportType())) {
             DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
