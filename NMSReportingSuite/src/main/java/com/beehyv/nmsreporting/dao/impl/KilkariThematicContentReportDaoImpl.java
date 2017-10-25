@@ -58,7 +58,4 @@ public class KilkariThematicContentReportDaoImpl extends AbstractDao<Integer,Kil
         BigInteger result = (BigInteger) query.uniqueResult();
         return result.intValue();
     }
-
-
-
 }

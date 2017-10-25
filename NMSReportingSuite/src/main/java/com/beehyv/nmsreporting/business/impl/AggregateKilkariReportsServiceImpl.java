@@ -422,6 +422,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             KilkariRepeatListenerMonthWisePercentDto kilkariRepeatListenerMonthWisePercentDto = new KilkariRepeatListenerMonthWisePercentDto();
             KilkariRepeatListenerMonthWise kilkariRepeatListenerMonthWise1 = kilkariRepeatListenerMonthWiseList.get(i);
             kilkariRepeatListenerMonthWiseDto.setId(kilkariRepeatListenerMonthWise1.getId());
+            kilkariRepeatListenerMonthWiseDto.setMonth(i+1);
             kilkariRepeatListenerMonthWiseDto.setDate(kilkariRepeatListenerMonthWise1.getDate());
             kilkariRepeatListenerMonthWiseDto.setFiveCallsAnswered(kilkariRepeatListenerMonthWise1.getFiveCallsAnswered());
             kilkariRepeatListenerMonthWiseDto.setFourCallsAnswered(kilkariRepeatListenerMonthWise1.getFourCallsAnswered());
@@ -442,6 +443,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             kilkariRepeatListenerMonthWisePercentDto.setOneCallAnsweredPercent(((float)kilkariRepeatListenerMonthWiseDto.getOneCallAnswered()/(float)kilkariRepeatListenerMonthWiseDto.getTotal())*100);
             kilkariRepeatListenerMonthWisePercentDto.setNoCallsAnsweredPercent(((float)kilkariRepeatListenerMonthWiseDto.getNoCallsAnswered()/(float)kilkariRepeatListenerMonthWiseDto.getTotal())*100);
             kilkariRepeatListenerMonthWisePercentDto.setId(kilkariRepeatListenerMonthWise1.getId());
+            kilkariRepeatListenerMonthWisePercentDto.setMonth(i+1);
             kilkariRepeatListenerMonthWisePercentDto.setDate(kilkariRepeatListenerMonthWise1.getDate());
             kilkariRepeatListenerMonthWiseDtoList.add(kilkariRepeatListenerMonthWiseDto);
             kilkariRepeatListenerMonthWisePercentDtoList.add(kilkariRepeatListenerMonthWisePercentDto);

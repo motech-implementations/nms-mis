@@ -997,6 +997,24 @@ public class UserController {
                 ReportType.kilkariSubscriber.getServiceType())
         );
         kList.add(new Report(
+                ReportType.kilkariMessageListenership.getReportName(),
+                ReportType.kilkariMessageListenership.getReportType(),
+                "images/drop-down-2.png",
+                ReportType.kilkariMessageListenership.getServiceType())
+        );
+        kList.add(new Report(
+                ReportType.kilkariThematicContent.getReportName(),
+                ReportType.kilkariThematicContent.getReportType(),
+                "images/drop-down-2.png",
+                ReportType.kilkariThematicContent.getServiceType())
+        );
+        kList.add(new Report(
+                ReportType.kilkariRepeatListenerMonthWise.getReportName(),
+                ReportType.kilkariRepeatListenerMonthWise.getReportType(),
+                "images/drop-down-2.png",
+                ReportType.kilkariRepeatListenerMonthWise.getServiceType())
+        );
+        kList.add(new Report(
                 ReportType.beneficiary.getReportName(),
                 ReportType.beneficiary.getReportType(),
                 "images/drop-down-2.png",
