@@ -191,6 +191,7 @@
     <bean id="autoReportMail" class="com.beehyv.nmsreporting.job.AutoReportEmailGeneration"/>
     <task:scheduled-tasks>
         <task:scheduled ref="autoReportMail" method="executeInternal" cron="0 0 9 1 * ?"/>
+        <task:scheduled ref="autoReportMail" method="executeInternal" cron="0 0 12 ? * MON *"/>
         <!--<task:scheduled ref="autoReportMail" method="sendFirstMail" cron="0 0 16 1 * ?"/>-->
         <!--<task:scheduled ref="autoReportMail" method="sendSecondMail" cron="0 0 16 2 * ?"/>-->
         <!--<task:scheduled ref="autoReportMail" method="sendThirdMail" cron="0 0 16 3 * ?"/>-->
