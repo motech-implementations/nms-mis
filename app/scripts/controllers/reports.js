@@ -114,7 +114,7 @@
 				if($scope.userHasOneCircle()){
                 	$scope.selectCircle($scope.circles[0]);
                 }
-                if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected")))  ){
+                if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).indexOf(angular.lowercase("rejected")) > -1)  ){
                 	$scope.datePickerContent = "Select Week";
                 }
                 else
@@ -126,11 +126,21 @@
 				if(name == null){
 					return "";
 				}
-				if(name.length > 18){
-					return name.substring(0, 15) + "..."
+				if(name.length > 17){
+					return name.substring(0, 14) + "..."
 				}
 				return name;
 			}
+
+            $scope.cropState = function(name){
+                if(name == null){
+                    return "";
+                }
+                if(name.length > 12){
+                    return name.substring(0, 10) + ".."
+                }
+                return name;
+            }
 
 			$scope.isCircleReport = function(){
 				return $scope.report != null && $scope.report.reportEnum == 'MA_Anonymous_Users';
@@ -331,7 +341,7 @@
                  return;
                 }
                 $scope.format = 'yyyy-MM';
-			    if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) && $scope.dt != null) {
+			    if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).indexOf(angular.lowercase("rejected"))  > -1 ) && $scope.dt != null) {
 			    	 $scope.getSundays($scope.dt);
                      $scope.sundaysTable = true;
 			    	 $scope.popup1.opened = true;
@@ -355,7 +365,7 @@
 					alert("Please select a report")
 					return;
 				}
-				if($scope.dt == null && (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) ){
+				if($scope.dt == null && (angular.lowercase($scope.report.name).indexOf(angular.lowercase("rejected")) > -1 ) ){
 					alert("Please select a week")
 					return;
 				}
@@ -399,7 +409,7 @@
                     }
 		    	}
 
-		    	if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) && $scope.format == 'yyyy-MM'){
+		    	if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).indexOf(angular.lowercase("rejected"))  > -1 ) && $scope.format == 'yyyy-MM'){
                     alert("Please select a week");
                     return;
 		    	}
@@ -502,7 +512,7 @@
 
 
 				console.log(currentDate.getMonth() + " " + currentDate.getDate() + " " +currentDate.getFullYear());
-				if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) ){
+				if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).indexOf(angular.lowercase("rejected"))  > -1 ) ){
 				    if(currentDate.getMonth() == startMonth && currentDate.getDate() >= startDate && currentDate.getFullYear() == 2017 && $scope.getSundays(currentDate) > 0){
 				        $scope.dateOptions.maxDate = new Date().setMonth(new Date().getMonth());
 				    }
@@ -524,7 +534,7 @@
 
 				}
 
-				if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) && $scope.format == 'yyyy-MM' ){
+				if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).indexOf(angular.lowercase("rejected"))  > -1 ) && $scope.format == 'yyyy-MM' ){
                     $scope.getSundays($scope.dt);
                     $scope.sundaysTable = true;
 

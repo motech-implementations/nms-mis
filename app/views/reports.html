@@ -63,8 +63,7 @@
 						<div class="btn-group" uib-dropdown dropdown-append-to-body>
 							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" ng-disabled="disableState()" uib-dropdown-toggle ng-class="{loading: statesLoading}">
 								<span class="block">
-									<span>{{crop(state.stateName)}}</span>
-									<!--<span ng-if="state == null">ALL</span>-->
+									<span>{{cropState(state.stateName)}}</span>
 									<span class="caret"></span>
 								</span>
 							</button>
