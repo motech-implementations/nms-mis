@@ -251,7 +251,7 @@
 				if(name == null){
 					return "";
 				}
-				if(name.length > 16){
+				if(name.length > 14){
 					return name.substring(0, 13) + "..."
 				}
 				return name;
