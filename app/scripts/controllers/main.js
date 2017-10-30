@@ -101,7 +101,11 @@
 			}
 
 			$scope.activeTab = function(tabName){
-				return $state.current.name.includes(tabName);
+				if($state.current.name.indexOf(tabName) > -1){
+				    return true;
+				}
+				else
+				    return false;
 			}
 
 			// $scope.breadCrumb = ['User Management', 'Create User'];
