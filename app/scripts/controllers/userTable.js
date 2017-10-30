@@ -100,8 +100,8 @@
 				var districts = [];
 				var users = UserTableFactory.getAllUsers();
 				for(var i=0;i<users.length;i++){
-					if((angular.lowercase(users[i].state).includes(angular.lowercase($scope.stateName)||''))&&
-					(angular.lowercase(users[i].block).includes(angular.lowercase($scope.blockName)||''))&&
+					if((angular.lowercase(users[i].state).indexOf(angular.lowercase($scope.stateName) > -1 ||''))&&
+					(angular.lowercase(users[i].block).indexOf(angular.lowercase($scope.blockName) > -1 ||''))&&
 					((users[i].district!="")&&(districts.indexOf(users[i].district)==-1))) {
 						districts.push(users[i].district);
 					}
@@ -116,8 +116,8 @@
 				var blocks = [];
 				var users = UserTableFactory.getAllUsers();
 				for(var i=0;i<users.length;i++){
-					if((angular.lowercase(users[i].state).includes(angular.lowercase($scope.stateName)||'')) &&
-					(angular.lowercase(users[i].district).includes(angular.lowercase($scope.districtName)||''))&&
+					if((angular.lowercase(users[i].state).indexOf(angular.lowercase($scope.stateName) > -1 ||'')) &&
+					(angular.lowercase(users[i].district).indexOf(angular.lowercase($scope.districtName) > -1 ||''))&&
 					((users[i].block!="")&&(blocks.indexOf(users[i].block)==-1))) {
 						blocks.push(users[i].block);
 					}
@@ -162,19 +162,19 @@
 			}
 
 			$scope.search = function (row) {
-				return (angular.lowercase(row.name).includes(angular.lowercase($scope.filterText) || '') || 
-						angular.lowercase(row.username).includes(angular.lowercase($scope.filterText) || '') || 
-						angular.lowercase(row.phoneNumber).includes(angular.lowercase($scope.filterText) || '') ||
-						angular.lowercase(row.email).includes(angular.lowercase($scope.filterText) || '') || 
-						angular.lowercase(row.accessLevel).includes(angular.lowercase($scope.filterText) || '') ||
-						angular.lowercase(row.state).includes(angular.lowercase($scope.filterText) || '') ||
-						angular.lowercase(row.district).includes(angular.lowercase($scope.filterText) || '') ||
-						angular.lowercase(row.block).includes(angular.lowercase($scope.filterText) || '') ) &&(
-						angular.lowercase(row.accessType).includes(angular.lowercase($scope.accType)||'') )&&(
-						angular.lowercase(row.accessLevel).includes(angular.lowercase($scope.accLevel)||'') )&&(
-						angular.lowercase(row.state).includes(angular.lowercase($scope.stateName)||'') )&&(
-						angular.lowercase(row.district).includes(angular.lowercase($scope.districtName)||'') )&&(
-						angular.lowercase(row.block).includes(angular.lowercase($scope.blockName)||'')
+				return (angular.lowercase(row.name).indexOf(angular.lowercase($scope.filterText) || '') > -1 ||
+						angular.lowercase(row.username).indexOf(angular.lowercase($scope.filterText) || '') > -1 ||
+						angular.lowercase(row.phoneNumber).indexOf(angular.lowercase($scope.filterText)  || '')> -1 ||
+						angular.lowercase(row.email).indexOf(angular.lowercase($scope.filterText) || '')> -1  ||
+						angular.lowercase(row.accessLevel).indexOf(angular.lowercase($scope.filterText)  || '')> -1 ||
+						angular.lowercase(row.state).indexOf(angular.lowercase($scope.filterText)  || '')> -1 ||
+						angular.lowercase(row.district).indexOf(angular.lowercase($scope.filterText)  || '')> -1 ||
+						angular.lowercase(row.block).indexOf(angular.lowercase($scope.filterText) || '') > -1 ) &&(
+						angular.lowercase(row.accessType).indexOf(angular.lowercase($scope.accType)  ||'')> -1 )&&(
+						angular.lowercase(row.accessLevel).indexOf(angular.lowercase($scope.accLevel) ||'') > -1 )&&(
+						angular.lowercase(row.state).indexOf(angular.lowercase($scope.stateName)  ||'') > -1)&&(
+						angular.lowercase(row.district).indexOf(angular.lowercase($scope.districtName)  ||'')> -1 )&&(
+						angular.lowercase(row.block).indexOf(angular.lowercase($scope.blockName)  ||'')> -1
 						);
 			};
 			$scope.sorter = 'id';
