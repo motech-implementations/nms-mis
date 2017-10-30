@@ -27,6 +27,7 @@ import java.util.*;
 
 import static com.beehyv.nmsreporting.enums.AccessType.MASTER_ADMIN;
 import static com.beehyv.nmsreporting.enums.ReportType.maCourse;
+import static com.beehyv.nmsreporting.utils.Global.documentsAddress;
 
 
 /**
@@ -51,7 +52,8 @@ public class AdminController {
     @Autowired
     private ModificationTrackerService modificationTrackerService;
 
-    private final String documents = System.getProperty("user.home") +File.separator+ "Documents/";
+//    private final String documents = System.getProperty("user.home") +File.separator+ "Documents/";
+    private final String documents = documentsAddress;
     private final String reports = documents+"Reports/";
 
     @RequestMapping(value = "/uploadFile",headers=("content-type=multipart/*"), method = RequestMethod.POST)

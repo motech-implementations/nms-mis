@@ -15,6 +15,7 @@ import javax.transaction.Transactional;
 import java.io.File;
 import java.util.*;
 
+import static com.beehyv.nmsreporting.utils.Global.documentsAddress;
 import static com.beehyv.nmsreporting.utils.ServiceFunctions.StReplace;
 
 /**
@@ -42,7 +43,8 @@ public class ReportServiceImpl implements ReportService{
     @Autowired
     private ReportTypeDao reportTypeDao;
 
-    private final String documents = System.getProperty("user.home") + File.separator+ "Documents/";
+//    private final String documents = System.getProperty("user.home") + File.separator+ "Documents/";
+    private final String documents =documentsAddress;
     private final String reports = documents+"Reports/";
 
     @Override

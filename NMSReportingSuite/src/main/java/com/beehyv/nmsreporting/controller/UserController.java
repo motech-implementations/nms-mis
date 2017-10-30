@@ -27,6 +27,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
 
+import static com.beehyv.nmsreporting.utils.Global.documentsAddress;
 import static com.beehyv.nmsreporting.utils.ServiceFunctions.StReplace;
 
 /**
@@ -54,7 +55,8 @@ public class UserController {
     private ReportService reportService;
 
     private final Date bigBang = new Date(0);
-    private final String documents = System.getProperty("user.home") +File.separator+ "Documents/";
+//    private final String documents = System.getProperty("user.home") +File.separator+ "Documents/";
+    private final String documents = documentsAddress;
     private final String reports = documents+"Reports/";
     private Calendar c =Calendar.getInstance();
     @RequestMapping(value = {"/", "/list"}, method = RequestMethod.GET)

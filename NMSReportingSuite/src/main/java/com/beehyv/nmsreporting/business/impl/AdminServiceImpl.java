@@ -21,6 +21,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.beehyv.nmsreporting.utils.Global.documentsAddress;
 import static com.beehyv.nmsreporting.utils.ServiceFunctions.StReplace;
 
 /**
@@ -98,7 +99,8 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private final String documents = System.getProperty("user.home") +File.separator+ "Documents/";
+//    private final String documents = System.getProperty("user.home") +File.separator+ "Documents/";
+    private final String documents = documentsAddress;
     private final String reports = documents+"Reports/";
     private Calendar c =Calendar.getInstance();
     @Override
