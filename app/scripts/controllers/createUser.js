@@ -1,7 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("CreateUserController", ['$scope', '$state', 'UserFormFactory', '$http', function($scope, $state, UserFormFactory, $http){
+		.controller("CreateUserController", ['$scope', '$state', 'UserFormFactory', '$http','$mdDialog', function($scope, $state, UserFormFactory, $http, $mdDialog){
 			
 			UserFormFactory.isLoggedIn()
 			.then(function(result){
@@ -112,7 +112,7 @@
 						data    : $scope.newUser, //forms user object
 						headers : {'Content-Type': 'application/json'} 
 					}).then(function(result){
-						alert(result.data['0']);
+						$scope.showAlert(result.data['0']);
 						if(result.data['0'] == 'User Created'){
 							$state.go('userManagement.userTable', {});
 						}
@@ -169,6 +169,21 @@
 
 				}
 			});
+
+			$scope.showAlert = function(message) {
+                // Appending dialog to document.body to cover sidenav in docs app
+                // Modal dialogs should fully cover application
+                // to prevent interaction outside of dialog
+                $mdDialog.show(
+                  $mdDialog.alert()
+                    .parent(angular.element(document.querySelector('#popupContainer')))
+                    .clickOutsideToClose(true)
+                    .title('MIS Alert!!')
+                    .textContent(message)
+                    .ariaLabel('Alert Dialog Demo')
+                    .ok('Got it!')
+                );
+              };
 
 		}])
 })()
