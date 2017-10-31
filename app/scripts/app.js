@@ -61,11 +61,6 @@ var nmsReportsApp = angular
             	templateUrl: 'views/forgotPassword.html',
             })
 
-            .state('alert', {
-                url: '/alert',
-                templateUrl: 'views/alert.html',
-             })
-
 		$urlRouterProvider
 			.otherwise('/login')
 
