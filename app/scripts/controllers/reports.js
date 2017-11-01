@@ -540,45 +540,49 @@
 
 			$scope.getReport = function(){
 
+                if($scope.reportCategory == null){
+                    $scope.showAlert("Please select a report category")
+                    return;
+                }
 				if($scope.report == null){
-					alert("Please select a report")
+					$scope.showAlert("Please select a report")
 					return;
 				}
 				if($scope.dt == null && (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) ){
-					alert("Please select a week")
+					$scope.showAlert("Please select a week")
 					return;
 				}
 				else if($scope.dt == null && (!$scope.isAggregateReport() )){
-                	alert("Please select a month")
+                	$scope.showAlert("Please select a month")
 					return;
 				}
 				else if($scope.periodDisplayType == '' && ($scope.isAggregateReport() ) && $scope.report.name != 'MA Cumulative Summary'){
-                    alert("Please select a period type")
+                    $scope.showAlert("Please select a period type")
                     return;
                 }
 				else if($scope.dt1 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType != 'Custom Range' && $scope.periodDisplayType != 'Quarter' && $scope.report.name != 'MA Cumulative Summary') ){
-                    alert("Please " +  $scope.periodDisplayType)
+                   $scope.showAlert("Please " +  $scope.periodDisplayType)
                     return;
                 }
                 else if($scope.dt1 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType == 'Custom Range')){
-                    alert("Please select a start date")
+                    $scope.showAlert("Please select a start date")
                     return;
                 }
                  else if($scope.dt1 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType == 'Quarter')){
-                    alert("Please select a year")
+                    $scope.showAlert("Please select a year")
                     return;
                 }
                 else if($scope.dt2 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType == 'Custom Range' || $scope.report.name == 'MA Cumulative Summary' )){
-                    alert("Please select an end date")
+                    $scope.showAlert("Please select an end date")
                     return;
                 }
 
                 else if($scope.periodDisplayType == 'Quarter' && $scope.quarterDisplayType == '' && ($scope.isAggregateReport() )){
-                    alert("Please select a quarter type")
+                    $scope.showAlert("Please select a quarter type")
                     return;
                 }
                 else if( ($scope.periodDisplayType == 'Custom Range') && ($scope.dt2 < $scope.dt1)){
-                    alert("End date should be greater than start date")
+                    $scope.showAlert("End date should be greater than start date")
                     return;
                 }
 
@@ -599,7 +603,7 @@
                             reportRequest.stateId = $scope.state.stateId;
                         }
                         else{
-                            alert("Please select a state");
+                            $scope.showAlert("Please select a state");
                             return;
                         }
                     }
@@ -621,13 +625,13 @@
 				    	reportRequest.circleId = $scope.circle.circleId;
 				    }
                     else{
-                     	alert("Please select a circle");
+                     	$scope.showAlert("Please select a circle");
                      	return;
                     }
 		    	}
 
 		    	if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) && $scope.format == 'yyyy-MM'){
-                    alert("Please select a week");
+                    $scope.showAlert("Please select a week");
                     return;
 		    	}
 
@@ -1417,6 +1421,23 @@
                         })
                   }
             }
+
+
+            $scope.showAlert = function(message) {
+                // Appending dialog to document.body to cover sidenav in docs app
+                // Modal dialogs should fully cover application
+                // to prevent interaction outside of dialog
+                $mdDialog.show(
+                  $mdDialog.alert()
+                    .parent(angular.element(document.querySelector('#popupContainer')))
+                    .clickOutsideToClose(true)
+                    .title('MIS Alert!!')
+                    .textContent(message)
+                    .ariaLabel('Alert Dialog Demo')
+                    .ok('Got it!')
+                );
+              };
+
 
 		}])
 })()
