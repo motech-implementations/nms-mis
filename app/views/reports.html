@@ -348,7 +348,7 @@
         <i class="glyphicon glyphicon-calendar aggregate-calender"> {{ headerFromDate | date:'dd/MM/y'}} <span style="font-size: 12px" ng-if=" report.name == 'MA Cumulative Summary'">Up</span>to {{headerToDate | date:'dd/MM/y'}}</i>
     </div>
 
-	<div class="reportheader" ng-hide="hideGrid || (report.reportEnum != 'Kilkari_Message_Matrix' && report.reportEnum != 'Kilkari_Listening_Matrix')">
+	<div class="reportheader" ng-hide="hideGrid || (report.reportEnum != 'Kilkari_Message_Matrix' && report.reportEnum != 'Kilkari_Repeat_Listener_Month_Wise')">
 		<p class="ng-binding" style="display: inline-block;">{{matrixContent1}}</p>
 	</div>
 
@@ -358,7 +358,7 @@
 		</div>
 	</div>
 
-	<div class="reportheader" ng-hide="hideMessageMatrix|| (report.reportEnum != 'Kilkari_Message_Matrix' && report.reportEnum != 'Kilkari_Listening_Matrix')">
+	<div class="reportheader" ng-hide="hideMessageMatrix || (report.reportEnum != 'Kilkari_Message_Matrix' && report.reportEnum != 'Kilkari_Repeat_Listener_Month_Wise')">
 		<p class="ng-binding" style="display: inline-block;">{{matrixContent2}}</p>
 	</div>
 

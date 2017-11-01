@@ -737,8 +737,8 @@
 					    else if($scope.report.reportEnum == 'Kilkari_Subscriber'){
                              $scope.gridOptions1.columnDefs = $scope.Kilkari_Subscriber_Definitions;
                         }
-                        else if($scope.report.reportEnum == 'Kilkari_Message_Listnership'){
-                             $scope.gridOptions1.columnDefs = $scope.Kilkari_Message_Listnership_Definitions;
+                        else if($scope.report.reportEnum == 'Kilkari_Message_Listenership'){
+                             $scope.gridOptions1.columnDefs = $scope.Kilkari_Message_Listenership_Definitions;
                         }
                         else if($scope.report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise'){
                              $scope.gridOptions1.columnDefs = $scope.Kilkari_RepeatListener_Numberdata_Definitions;
@@ -1233,7 +1233,7 @@
 
             ]
 
-            $scope.Kilkari_Message_Listnership_Definitions = [
+            $scope.Kilkari_Message_Listenership_Definitions = [
                                                      {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, cellTemplate: '<div>{{rowRenderIndex+1}}</div>'},
                                                      { field: 'locationName',
                                                         cellTemplate:'<a class="btn primary aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
