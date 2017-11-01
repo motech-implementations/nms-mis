@@ -45,6 +45,8 @@
             $scope.reportBreadCrumbData = [];
             $scope.headerFromDate = '';
             $scope.headerToDate = '';
+            $scope.matrixContent1 = '';
+            $scope.matrixContent2 = '';
             var parentScope = $scope.$parent;
             parentScope.child = $scope;
 
@@ -798,6 +800,8 @@
                             if(result.data.motherData.length >0){
                                 $scope.gridOptions1.data = result.data.motherData;
                                 $scope.hideGrid = false;
+                                $scope.matrixContent1 ='Kilkari MotherPack Data';
+
                             }
                              else{
                                 $scope.hideGrid = true;
@@ -806,6 +810,7 @@
                             if(result.data.childData.length >0){
                                 $scope.gridOptions2.data = result.data.childData;
                                 $scope.hideMessageMatrix = false;
+                                $scope.matrixContent2 ='Kilkari ChildPack Data';
                             }
                             else{
                                 $scope.hideMessageMatrix = true;
@@ -815,6 +820,7 @@
                             if(result.data.numberData.length >0){
                                 $scope.gridOptions1.data = result.data.numberData;
                                 $scope.hideGrid = false;
+                                $scope.matrixContent1 ='Beneficiary Count';
                             }
                              else{
                                 $scope.hideGrid = true;
@@ -823,6 +829,7 @@
                             if(result.data.percentData.length >0){
                                 $scope.gridOptions2.data = result.data.percentData;
                                 $scope.hideMessageMatrix = false;
+                                $scope.matrixContent2 ='Beneficiary Percentage';
                             }
                             else{
                                 $scope.hideMessageMatrix = true;
