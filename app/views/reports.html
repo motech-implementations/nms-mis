@@ -353,8 +353,12 @@
 	</div>
 
 	<div class="row">
+		<div class="block reports-body loading" ng-if="waiting && isAggregateReport()">
+			<img src="images/pageloader.gif">
+			<p>Aggregate Report is being generated...</p>
+		</div>
 		<div >
-			<div id="grid1" ui-grid=gridOptions class="grid" ng-if ="!hideGrid" ui-grid-infinite-scroll></div>
+			<div id="grid1" ui-grid=gridOptions class="grid" ng-if ="!hideGrid && !waiting" ui-grid-infinite-scroll></div>
 		</div>
 	</div>
 
@@ -368,7 +372,7 @@
 		</div>
 	</div>
 
-	<div class="block reports-body loading" ng-if="waiting">
+	<div class="block reports-body loading" ng-if="waiting && !isAggregateReport()">
 		<img src="images/pageloader.gif">
 		<p>Report is being generated...</p>
 	</div>

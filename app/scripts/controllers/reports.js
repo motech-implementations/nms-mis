@@ -1,7 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("ReportsController", ['$scope', '$state', '$http', 'UserFormFactory','$window','$q','uiGridConstants', function($scope, $state, $http, UserFormFactory,$window,$q,uiGridConstants){
+		.controller("ReportsController", ['$scope', '$state', '$http', 'UserFormFactory','$window','$q','uiGridConstants','$mdDialog', function($scope, $state, $http, UserFormFactory,$window,$q,uiGridConstants,$mdDialog){
 
 			UserFormFactory.isLoggedIn()
 			.then(function(result){
@@ -561,7 +561,7 @@
                     return;
                 }
 				else if($scope.dt1 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType != 'Custom Range' && $scope.periodDisplayType != 'Quarter' && $scope.report.name != 'MA Cumulative Summary') ){
-                   $scope.showAlert("Please " +  $scope.periodDisplayType)
+                   $scope.showAlert("Please select a " +  $scope.periodDisplayType)
                     return;
                 }
                 else if($scope.dt1 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType == 'Custom Range')){
