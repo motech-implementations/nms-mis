@@ -1084,7 +1084,7 @@
               };
 
             $scope.MA_Cumulative_Column_Definitions =[
-                                                       {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, cellTemplate: '<div>{{rowRenderIndex+1}}</div>'},
+                                                       {name: 'S No.', displayName: 'S No.',width:"6%",enableSorting: false, cellTemplate: '<div>{{rowRenderIndex+1}}</div>'},
                                                        { field: 'locationName',
                                                          cellTemplate:'<a class="btn primary aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
                                                          width: '11%', enableHiding: false
@@ -1101,7 +1101,7 @@
 
 
             $scope.MA_Performance_Column_Definitions =[
-                                                         {name: 'S No.', displayName: 'S No.',width:"7%", enableSorting: false, cellTemplate: '<div>{{rowRenderIndex+1}}</div>'},
+                                                         {name: 'S No.', displayName: 'S No.',width:"6%", enableSorting: false, cellTemplate: '<div>{{rowRenderIndex+1}}</div>'},
                                                          { field: 'locationName',
                                                             cellTemplate:'<a class="btn primary aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
                                                             enableHiding: false, width:"11%"
@@ -1114,7 +1114,7 @@
                                                         ],
 
             $scope.MA_Subscriber_Column_Definitions =[
-                                                         {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, cellTemplate: '<div>{{rowRenderIndex+1}}</div>'},
+                                                         {name: 'S No.', displayName: 'S No.',width:"6%",enableSorting: false, cellTemplate: '<div>{{rowRenderIndex+1}}</div>'},
                                                          { field: 'locationName',
                                                             cellTemplate:'<a class="btn primary aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
                                                             enableHiding: false,width:"10%"
@@ -1196,7 +1196,7 @@
                                                      { field: 'content_50_75', name: 'Listening 50 to 75 % content',width:"15%", enableHiding: false },
                                                      { field: 'content_25_50', name: 'Listening 25 to 50 % content', width:"15%", enableHiding: false },
                                                      { field: 'content_1_25', name: 'Listening < 25 % content',width:"15%", enableHiding: false },
-                                                     { field: 'total', name: 'Total', width:"11%", enableHiding: false },
+                                                     { field: 'total', name: 'Total', width:"10%", enableHiding: false },
 
             ]
 
@@ -1253,7 +1253,7 @@
             ]
 
             $scope.Kilkari_Subscriber_Definitions = [
-                                                     {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, cellTemplate: '<div>{{rowRenderIndex+1}}</div>'},
+                                                     {name: 'S No.', displayName: 'S No.',width:"4%",enableSorting: false, cellTemplate: '<div>{{rowRenderIndex+1}}</div>'},
                                                      { field: 'locationName',
                                                         cellTemplate:'<a class="btn primary aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
                                                         enableHiding: false,width:"10%"

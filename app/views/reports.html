@@ -338,7 +338,7 @@
     <div class="nav">
 	<ul class="breadcrumb aggregate-bread-crumb"  ng-hide = "hideGrid || report.reportEnum == 'Kilkari_Message_Matrix' || report.reportEnum == 'Kilkari_Listening_Matrix' || report.reportEnum == 'Kilkari_Thematic_Content' || report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise'">
 		<li ng-repeat="item in reportBreadCrumbData">
-			<a  ng-click = "drillDownData(item.locationId,item.locationType)" ng-class="{'active': {{item.status}} }" >{{item.locationName}}</a>
+			<a  ng-click = "drillDownData(item.locationId,item.locationType)" ng-class="{'active': item.status }" >{{item.locationName}}</a>
 		</li>
 	</ul>
     </div>
@@ -348,7 +348,7 @@
         <i class="glyphicon glyphicon-calendar aggregate-calender"> {{ headerFromDate | date:'dd/MM/y'}} <span style="font-size: 12px" ng-if=" report.name == 'MA Cumulative Summary'">Up</span>to {{headerToDate | date:'dd/MM/y'}}</i>
     </div>
 
-	<div class="reportheader" ng-hide="hideGrid || (report.reportEnum != 'Kilkari_Message_Matrix' && report.reportEnum != 'Kilkari_Repeat_Listener_Month_Wise')">
+	<div class="reportheader matrixHeader" ng-hide="hideGrid || (report.reportEnum != 'Kilkari_Message_Matrix' && report.reportEnum != 'Kilkari_Repeat_Listener_Month_Wise')">
 		<p class="ng-binding" style="display: inline-block;">{{matrixContent1}}</p>
 	</div>
 
@@ -362,13 +362,17 @@
 		</div>
 	</div>
 
-	<div class="reportheader" ng-hide="hideMessageMatrix || (report.reportEnum != 'Kilkari_Message_Matrix' && report.reportEnum != 'Kilkari_Repeat_Listener_Month_Wise')">
+	<div class="reportheader matrixHeader" ng-hide="hideMessageMatrix || (report.reportEnum != 'Kilkari_Message_Matrix' && report.reportEnum != 'Kilkari_Repeat_Listener_Month_Wise')">
 		<p class="ng-binding" style="display: inline-block;">{{matrixContent2}}</p>
 	</div>
 
 	<div class="row">
+		<div class="block reports-body loading" ng-if="waiting && (report.reportEnum == 'Kilkari_Message_Matrix' && report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise')">
+			<img src="images/pageloader.gif">
+			<p>Aggregate Report is being generated...</p>
+		</div>
 		<div >
-			<div id="grid2" ui-grid=gridOptions_Message_Matrix class="grid" ng-if ="!hideMessageMatrix" ui-grid-infinite-scroll></div>
+			<div id="grid2" ui-grid=gridOptions_Message_Matrix class="grid" ng-if ="!hideMessageMatrix && !waiting" ui-grid-infinite-scroll></div>
 		</div>
 	</div>
 
