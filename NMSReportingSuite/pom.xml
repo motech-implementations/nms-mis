@@ -15,6 +15,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 
     </properties>
 
+
     <dependencies>
         <!-- Spring -->
         <dependency>
@@ -59,6 +60,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
             <artifactId>spring-security-taglibs</artifactId>
             <version>${springsecurity.version}</version>
         </dependency>
+
 
 
         <!-- Hibernate -->
