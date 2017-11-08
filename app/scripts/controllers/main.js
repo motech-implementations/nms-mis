@@ -74,6 +74,13 @@
                 		'sref': 'forgotPassword',
                 		'active': false,
                 	},
+                ],
+                'changePassword': [
+                    {
+                        'name': 'ChangePassword',
+                        'sref': 'changePassword',
+                        'active': false,
+                    },
                 ]
 			}
 
