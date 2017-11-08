@@ -36,8 +36,7 @@
 	<script type="text/javascript" src="scripts/controllers/profile.js"></script>
 	<script type="text/javascript" src="scripts/controllers/login.js"></script>
 	<script type="text/javascript" src="scripts/controllers/forgotPassword.js"></script>
-	<script type="text/javascript" src="scripts/controllers/alert.js"></script>
-
+    <script type="text/javascript" src="scripts/controllers/changePassword.js"></script>
 	<!-- Factory -->
 	<!-- <script type="text/javascript" src="scripts/factories/navbar.js"></script> -->
 	<script type="text/javascript" src="scripts/factories/userTable.js"></script>
@@ -77,6 +76,9 @@
 					<li>
 						<a href={{logoutUrl}}>Logout</a>
 					</li>
+                    <li ng-class="{active: activeTab('changePassword')}">
+                        <a ui-sref="changePassword">Change Password</a>
+                    </li>
 					<li ng-class="{active: activeTab('profile')}">
 						<a ui-sref="profile">My Profile</a>
 					</li>
