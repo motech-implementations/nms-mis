@@ -2,7 +2,7 @@
 	var nmsReportsApp = angular
 		.module('nmsReports')
 		.controller("LoginController", ['$scope', '$http', '$location','Captcha','$mdDialog', function($scope, $http, $location, Captcha,$mdDialog){
-			
+
 			$scope.user = {};
 			$scope.user.rememberMe = false;
 
@@ -10,7 +10,7 @@
 
 			var url = $location.absUrl();
 			var error = url.split('?')[1]
-			
+
 			console.log(url.split('?')[0])
 			console.log(error)
 
