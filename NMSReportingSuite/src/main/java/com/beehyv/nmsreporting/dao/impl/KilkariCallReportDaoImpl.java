@@ -9,6 +9,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by beehyv on 11/10/17.
@@ -26,24 +27,25 @@ public class KilkariCallReportDaoImpl extends AbstractDao<Integer,KilkariCalls> 
                 Restrictions.eq("locationType",locationType),
                 Restrictions.eq("date",toDate)
         ));
-        if(criteria.list().isEmpty()){
+
+        List<KilkariCalls> result = criteria.list();
+        if(result.isEmpty()){
             Long a=(long)0;
             KilkariCalls kilkariCalls = new KilkariCalls(0,locationType,locationId.longValue(),toDate,a,a,a,a,a,a,a,0,a);
             return kilkariCalls;
         }
-        KilkariCalls kilkariCalls = (KilkariCalls) criteria.list().get(0);
-        kilkariCalls.setBillableMinutes(kilkariCalls.getBillableMinutes()==null?0:kilkariCalls.getBillableMinutes());
-        kilkariCalls.setContent_1_25(kilkariCalls.getContent_1_25()==null?0:kilkariCalls.getContent_1_25());
-        kilkariCalls.setContent_25_50(kilkariCalls.getContent_25_50()==null?0:kilkariCalls.getContent_25_50());
-        kilkariCalls.setContent_50_75(kilkariCalls.getContent_50_75()==null?0:kilkariCalls.getContent_50_75());
-        kilkariCalls.setContent_75_100(kilkariCalls.getContent_75_100()==null?0:kilkariCalls.getContent_75_100());
-        kilkariCalls.setAvgDuration(kilkariCalls.getAvgDuration()==null?0:kilkariCalls.getAvgDuration());
-        kilkariCalls.setCallsAttempted(kilkariCalls.getCallsAttempted()==null?0:kilkariCalls.getCallsAttempted());
-        kilkariCalls.setCallsToInbox(kilkariCalls.getCallsToInbox()==null?0:kilkariCalls.getCallsToInbox());
-        kilkariCalls.setSuccessfulCalls(kilkariCalls.getSuccessfulCalls()==null?0:kilkariCalls.getSuccessfulCalls());
 
+        KilkariCalls kilkariCalls = result.get(0);
+        kilkariCalls.setBillableMinutes(kilkariCalls.getBillableMinutes() == null ? 0 : kilkariCalls.getBillableMinutes());
+        kilkariCalls.setContent_1_25(kilkariCalls.getContent_1_25() == null ? 0 : kilkariCalls.getContent_1_25());
+        kilkariCalls.setContent_25_50(kilkariCalls.getContent_25_50() == null ? 0 : kilkariCalls.getContent_25_50());
+        kilkariCalls.setContent_50_75(kilkariCalls.getContent_50_75() == null ? 0 : kilkariCalls.getContent_50_75());
+        kilkariCalls.setContent_75_100(kilkariCalls.getContent_75_100() == null ? 0 : kilkariCalls.getContent_75_100());
+        kilkariCalls.setAvgDuration(kilkariCalls.getAvgDuration() == null ? 0 : kilkariCalls.getAvgDuration());
+        kilkariCalls.setCallsAttempted(kilkariCalls.getCallsAttempted() == null ? 0 : kilkariCalls.getCallsAttempted());
+        kilkariCalls.setCallsToInbox(kilkariCalls.getCallsToInbox() == null ? 0 : kilkariCalls.getCallsToInbox());
+        kilkariCalls.setSuccessfulCalls(kilkariCalls.getSuccessfulCalls() == null ? 0 : kilkariCalls.getSuccessfulCalls());
         return kilkariCalls;
-
-    };
+    }
 }
 

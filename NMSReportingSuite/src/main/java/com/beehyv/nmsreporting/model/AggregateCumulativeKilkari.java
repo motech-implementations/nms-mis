@@ -18,25 +18,25 @@ public class AggregateCumulativeKilkari {
     @Column(name="location_type", columnDefinition = "VARCHAR(45)")
     private String locationType;
 
-    @Column(name="location_id", columnDefinition = "BIGINT(20)")
-    private Long locationId;
+    @Column(name="location_id", columnDefinition = "INT(11)")
+    private Integer locationId;
 
     @Column(name="date", columnDefinition = "DATE")
     private Date date;
 
     @Column(name="total_unique_beneficiaries", columnDefinition = "INT(11)")
-    private Integer uniqueBeneficiaries; //5.3.1:3 , 5.3.2:3, 5.3.2:9
+    private Integer uniqueBeneficiaries;
 
-    @Column(name="total_successful_calls", columnDefinition = "BIGINT(20)")
-    private Long successfulCalls;
+    @Column(name="total_successful_calls", columnDefinition = "INT(11)")
+    private Integer successfulCalls;
 
-    @Column(name="total_billable_minutes", columnDefinition = "BIGINT(20)")
-    private Long billableMinutes;
+    @Column(name="total_billable_minutes", columnDefinition = "INT(11)")
+    private Integer billableMinutes;
 
     //Average minutes = billableMinutes/successfulCalls
 
 
-    public AggregateCumulativeKilkari(Integer id, String locationType, Long locationId, Date date, Integer uniqueBeneficiaries, Long successfulCalls, Long billableMinutes) {
+    public AggregateCumulativeKilkari(Integer id, String locationType, Integer locationId, Date date, Integer uniqueBeneficiaries, Integer successfulCalls, Integer billableMinutes) {
         this.id = id;
         this.locationType = locationType;
         this.locationId = locationId;
@@ -66,11 +66,11 @@ public class AggregateCumulativeKilkari {
         this.locationType = locationType;
     }
 
-    public Long getLocationId() {
+    public Integer getLocationId() {
         return locationId;
     }
 
-    public void setLocationId(Long locationId) {
+    public void setLocationId(Integer locationId) {
         this.locationId = locationId;
     }
 
@@ -90,19 +90,19 @@ public class AggregateCumulativeKilkari {
         this.uniqueBeneficiaries = uniqueBeneficiaries;
     }
 
-    public Long getSuccessfulCalls() {
+    public Integer getSuccessfulCalls() {
         return successfulCalls;
     }
 
-    public void setSuccessfulCalls(Long successfulCalls) {
+    public void setSuccessfulCalls(Integer successfulCalls) {
         this.successfulCalls = successfulCalls;
     }
 
-    public Long getBillableMinutes() {
+    public Integer getBillableMinutes() {
         return billableMinutes;
     }
 
-    public void setBillableMinutes(Long billableMinutes) {
+    public void setBillableMinutes(Integer billableMinutes) {
         this.billableMinutes = billableMinutes;
     }
 }

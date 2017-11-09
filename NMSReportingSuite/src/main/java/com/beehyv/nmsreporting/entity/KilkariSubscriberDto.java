@@ -13,7 +13,7 @@ public class KilkariSubscriberDto {
     private Integer totalBeneficiaryRecordsReceived;
     private Integer totalBeneficiaryRecordsEligible;
     private Integer totalBeneficiaryRecordsAccepted;
-    private Integer totalBeneficiaryRecordsRejected;
+    private Integer totalBeneficiaryRecordsRejectedDuplicateMobileNumbers;
     private Integer totalSubscriptionsCompleted;
     private Integer totalSubscriptionsEnd;
 
@@ -89,12 +89,12 @@ public class KilkariSubscriberDto {
         this.totalBeneficiaryRecordsAccepted = totalBeneficiaryRecordsAccepted;
     }
 
-    public Integer getTotalBeneficiaryRecordsRejected() {
-        return totalBeneficiaryRecordsRejected;
+    public Integer getTotalBeneficiaryRecordsRejectedDuplicateMobileNumbers() {
+        return totalBeneficiaryRecordsRejectedDuplicateMobileNumbers;
     }
 
-    public void setTotalBeneficiaryRecordsRejected(Integer totalBeneficiaryRecordsRejected) {
-        this.totalBeneficiaryRecordsRejected = totalBeneficiaryRecordsRejected;
+    public void setTotalBeneficiaryRecordsRejectedDuplicateMobileNumbers(Integer totalBeneficiaryRecordsRejectedDuplicateMobileNumbers) {
+        this.totalBeneficiaryRecordsRejectedDuplicateMobileNumbers = totalBeneficiaryRecordsRejectedDuplicateMobileNumbers;
     }
 
     public Integer getTotalSubscriptionsCompleted() {

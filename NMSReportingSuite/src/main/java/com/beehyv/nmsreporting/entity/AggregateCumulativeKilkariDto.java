@@ -3,16 +3,16 @@ package com.beehyv.nmsreporting.entity;
 /**
  * Created by beehyv on 3/10/17.
  */
-public class AggregateCumulativekilkariDto {
+public class AggregateCumulativeKilkariDto {
 
     int id;
     String locationType;
     String locationName;
-    Long locationId;
+    Integer locationId;
     Integer uniqueBeneficiaries;
-    Long successfulCalls;
-    Long billableMinutes;
-    Long averageDuration;
+    Integer successfulCalls;
+    Integer billableMinutes;
+    Integer averageDuration;
 
     public int getId() {
         return id;
@@ -38,11 +38,11 @@ public class AggregateCumulativekilkariDto {
         this.locationName = locationName;
     }
 
-    public Long getLocationId() {
+    public Integer getLocationId() {
         return locationId;
     }
 
-    public void setLocationId(Long locationId) {
+    public void setLocationId(Integer locationId) {
         this.locationId = locationId;
     }
 
@@ -54,27 +54,27 @@ public class AggregateCumulativekilkariDto {
         this.uniqueBeneficiaries = uniqueBeneficiaries;
     }
 
-    public Long getSuccessfulCalls() {
+    public Integer getSuccessfulCalls() {
         return successfulCalls;
     }
 
-    public void setSuccessfulCalls(Long successfulCalls) {
+    public void setSuccessfulCalls(Integer successfulCalls) {
         this.successfulCalls = successfulCalls;
     }
 
-    public Long getBillableMinutes() {
+    public Integer getBillableMinutes() {
         return billableMinutes;
     }
 
-    public void setBillableMinutes(Long billableMinutes) {
+    public void setBillableMinutes(Integer billableMinutes) {
         this.billableMinutes = billableMinutes;
     }
 
-    public Long getAverageDuration() {
+    public Integer getAverageDuration() {
         return averageDuration;
     }
 
-    public void setAverageDuration(Long averageDuration) {
+    public void setAverageDuration(Integer averageDuration) {
         this.averageDuration = averageDuration;
     }
 }

@@ -24,6 +24,9 @@ public class KilkariRepeatListenerMonthWiseDaoImpl extends AbstractDao<Integer,K
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("date"));
         criteria.add(Restrictions.between("date", fromDate, toDate));
         List<KilkariRepeatListenerMonthWise> kilkariRepeatListenerMonthWiseList = criteria.list();
+        if(kilkariRepeatListenerMonthWiseList.isEmpty()){
+            return null;
+        }
         return kilkariRepeatListenerMonthWiseList;
     }
 

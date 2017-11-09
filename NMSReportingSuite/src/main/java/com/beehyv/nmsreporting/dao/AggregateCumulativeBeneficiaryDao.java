@@ -9,5 +9,9 @@ import java.util.Date;
  */
 public interface AggregateCumulativeBeneficiaryDao {
 
-    AggregateCumulativeBeneficiary getCumulativeBeneficiary(Integer locationId, String locationType, Date toDate);
+    AggregateCumulativeBeneficiary getCumulativeBeneficiary(Long locationId, String locationType, Date toDate);
+
+    Long getTotalBeneficiariesCalled(Long locationId, String locationType, Date date);
+
+    Long getTotalBeneficiariesAnsweredAtleastOnce(Long locationId, String locationType, Date date);
 }

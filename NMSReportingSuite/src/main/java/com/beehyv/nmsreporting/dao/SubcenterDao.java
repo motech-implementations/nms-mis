@@ -11,8 +11,7 @@ public interface SubcenterDao {
 
     public Subcenter findBySubcenterId(Integer SubcenterId);
 
-    Subcenter findByLocationId(Long stateId);
-
+    Subcenter findByLocationId(Integer stateId);
 
     public List<Subcenter> findByName(String SubcenterName);
 
