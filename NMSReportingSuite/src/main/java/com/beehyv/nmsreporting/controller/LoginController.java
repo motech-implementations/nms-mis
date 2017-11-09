@@ -44,7 +44,7 @@ public class LoginController {
     }
 
     @RequestMapping(value={"/nms/login"}, method= RequestMethod.POST)
-    public String login(@RequestBody LoginUser loginUser, BindingResult errors) {
+    public String login(Model model,@RequestBody LoginUser loginUser, BindingResult errors) {
         validator.validate(loginUser, errors);
         System.out.println("username = " + loginUser.getUsername());
         System.out.println("password = " + loginUser.getPassword());
