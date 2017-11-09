@@ -14,6 +14,13 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
     <mysql.connector.version>5.1.31</mysql.connector.version>
 
     </properties>
+    <repositories>
+        <repository>
+            <id>captcha</id>
+            <name>BotDetect Captcha Repository</name>
+            <url>https://git.captcha.com/maven.git/blob_plain/HEAD:/</url>
+        </repository>
+    </repositories>
 
 
     <dependencies>
@@ -61,6 +68,12 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
             <version>${springsecurity.version}</version>
         </dependency>
 
+
+        <dependency>
+            <groupId>com.captcha</groupId>
+            <artifactId>botdetect-jsp20</artifactId>
+            <version>4.0.beta3</version>
+        </dependency>
 
 
         <!-- Hibernate -->

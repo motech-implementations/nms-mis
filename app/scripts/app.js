@@ -16,7 +16,7 @@ var nmsReportsApp = angular
 			$rootScope.$stateParams = $stateParams;
 		}
 	])
-	.config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
+	.config(function ($stateProvider, $urlRouterProvider, $httpProvider,captchaSettingsProvider) {
 		$stateProvider
 		
 			.state('userManagement', {
@@ -68,6 +68,9 @@ var nmsReportsApp = angular
 		$urlRouterProvider
 			.otherwise('/login')
 
+        captchaSettingsProvider.setSettings({
+            captchaEndpoint: backend_root + '/botdetectcaptcha',
+          })
 
 			
 		$httpProvider.defaults.headers.common = {};
