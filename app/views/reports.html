@@ -62,7 +62,7 @@
 						<div class="btn-group" uib-dropdown dropdown-append-to-body>
 							<button id="btn-append-to-body-5" type="button" class="btn btn-sm btn-default" ng-disabled="disableState()" uib-dropdown-toggle ng-class="{loading: statesLoading}">
 								<span class="block">
-									<span>{{crop(state.stateName)}}</span>
+									<span>{{state.stateName}}</span>
 									<span ng-if="state == null">ALL</span>
 									<span class="caret"></span>
 								</span>
@@ -82,7 +82,7 @@
 						<div class="btn-group" uib-dropdown dropdown-append-to-body>
 							<button id="btn-append-to-body-6" type="button" class="btn btn-sm btn-default" ng-disabled="disableState()" uib-dropdown-toggle ng-class="{loading: statesLoading}">
 								<span class="block">
-									<span>{{crop(state.stateName)}}</span>
+									<span>{{cropState(state.stateName)}}</span>
 									<span class="caret"></span>
 								</span>
 							</button>
@@ -130,7 +130,7 @@
 						<div class="btn-group" uib-dropdown dropdown-append-to-body>
 							<button id="btn-append-to-body-8" type="button" class="btn btn-sm btn-default" ng-disabled="disableBlock()" uib-dropdown-toggle ng-class="{loading: blocksLoading}">
 								<span class="block">
-									<span>{{crop(block.blockName)}}</span>
+									<span>{{block.blockName}}</span>
 									<span ng-if="block == null">ALL</span>
 									<span class="caret"></span>
 								</span>
@@ -336,9 +336,9 @@
 	</div>
 
     <div class="nav">
-	<ul class="breadcrumb aggregate-bread-crumb"  ng-hide = "hideGrid">
+	<ul class="breadcrumb aggregate-bread-crumb"  ng-hide = "hideGrid || report.reportEnum == 'Kilkari_Message_Matrix' || report.reportEnum == 'Kilkari_Listening_Matrix' || report.reportEnum == 'Kilkari_Thematic_Content' || report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise'">
 		<li ng-repeat="item in reportBreadCrumbData">
-			<a  ng-click = "drillDownData(item.locationId,item.locationType)" ng-class="{'active': {{item.status}} }" >{{item.locationName}}</a>
+			<a  ng-click = "drillDownData(item.locationId,item.locationType)" ng-class="{'active': item.status }" >{{item.locationName}}</a>
 		</li>
 	</ul>
     </div>
@@ -347,13 +347,36 @@
         <p class="ng-binding" style="display: inline-block;"> {{reportCategory}} - {{report.name}}</p>
         <i class="glyphicon glyphicon-calendar aggregate-calender"> {{ headerFromDate | date:'dd/MM/y'}} <span style="font-size: 12px" ng-if=" report.name == 'MA Cumulative Summary'">Up</span>to {{headerToDate | date:'dd/MM/y'}}</i>
     </div>
+
+	<div class="reportheader matrixHeader" ng-hide="hideGrid || (report.reportEnum != 'Kilkari_Message_Matrix' && report.reportEnum != 'Kilkari_Repeat_Listener_Month_Wise')">
+		<p class="ng-binding" style="display: inline-block;">{{matrixContent1}}</p>
+	</div>
+
 	<div class="row">
+		<div class="block reports-body loading" ng-if="waiting && isAggregateReport()">
+			<img src="images/pageloader.gif">
+			<p>Aggregate Report is being generated...</p>
+		</div>
 		<div >
-			<div id="grid1" ui-grid=gridOptions class="grid" ng-if ="!hideGrid" ui-grid-infinite-scroll></div>
+			<div id="grid1" ui-grid=gridOptions class="grid" ng-if ="!hideGrid && !waiting" ui-grid-infinite-scroll></div>
 		</div>
 	</div>
 
-	<div class="block reports-body loading" ng-if="waiting">
+	<div class="reportheader matrixHeader" ng-hide="hideMessageMatrix || (report.reportEnum != 'Kilkari_Message_Matrix' && report.reportEnum != 'Kilkari_Repeat_Listener_Month_Wise')">
+		<p class="ng-binding" style="display: inline-block;">{{matrixContent2}}</p>
+	</div>
+
+	<div class="row">
+		<div class="block reports-body loading" ng-if="waiting && (report.reportEnum == 'Kilkari_Message_Matrix' && report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise')">
+			<img src="images/pageloader.gif">
+			<p>Aggregate Report is being generated...</p>
+		</div>
+		<div >
+			<div id="grid2" ui-grid=gridOptions_Message_Matrix class="grid" ng-if ="!hideMessageMatrix && !waiting" ui-grid-infinite-scroll></div>
+		</div>
+	</div>
+
+	<div class="block reports-body loading" ng-if="waiting && !isAggregateReport()">
 		<img src="images/pageloader.gif">
 		<p>Report is being generated...</p>
 	</div>

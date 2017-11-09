@@ -1,7 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("ReportsController", ['$scope', '$state', '$http', 'UserFormFactory','$window','$q','uiGridConstants', function($scope, $state, $http, UserFormFactory,$window,$q,uiGridConstants){
+		.controller("ReportsController", ['$scope', '$state', '$http', 'UserFormFactory','$window','$q','uiGridConstants','$mdDialog', function($scope, $state, $http, UserFormFactory,$window,$q,uiGridConstants,$mdDialog){
 
 			UserFormFactory.isLoggedIn()
 			.then(function(result){
@@ -33,9 +33,10 @@
 			$scope.MA_Cumulative_Column_Definitions = [];
 			$scope.MA_Subscriber_Column_Definitions = [];
 			$scope.hideGrid = true;
+			$scope.hideMessageMatrix = true;
 			$scope.showEmptyData = false;
 			$scope.content = "There is no data available for the selected inputs";
-			$scope.periodType = ['Year','Month','Quarter', 'Custom Range',];
+			$scope.periodType = ['Year','Month','Quarter', 'Custom Range'];
 			$scope.quarterType = ['Q1 (Jan to Mar)','Q2 (Apr to Jun)','Q3 (Jul to Sep)', 'Q4 (Oct to Dec)'];
 			$scope.periodDisplayType = "";
 			$scope.dataPickermode = "";
@@ -44,6 +45,8 @@
             $scope.reportBreadCrumbData = [];
             $scope.headerFromDate = '';
             $scope.headerToDate = '';
+            $scope.matrixContent1 = '';
+            $scope.matrixContent2 = '';
             var parentScope = $scope.$parent;
             parentScope.child = $scope;
 
@@ -124,6 +127,7 @@
 			    $scope.reportDisplayType = item;
 			    $scope.hideGrid = true;
 			    $scope.showEmptyData = false;
+			    $scope.hideMessageMatrix = true;
 			}
 
 			$scope.selectPeriodType = function(item){
@@ -133,6 +137,7 @@
                 $scope.dt2 = null;
                 $scope.quarterDisplayType = '';
                 $scope.hideGrid = true;
+                $scope.hideMessageMatrix = true;
                 $scope.showEmptyData = false;
                 if($scope.periodDisplayType == 'Year' || $scope.periodDisplayType == 'Quarter' ){
                     $scope.periodTypeContent = "Select year";
@@ -164,6 +169,7 @@
             $scope.selectQuarterType = function(item){
                 $scope.quarterDisplayType = item;
                 $scope.hideGrid = true;
+                $scope.hideMessageMatrix = true;
                 $scope.showEmptyData = false;
             }
 
@@ -189,6 +195,7 @@
 				$scope.dt1 = null;
 				$scope.dt2 = null;
 				$scope.hideGrid = true;
+				$scope.hideMessageMatrix = true;
 				$scope.showEmptyData = false;
 				$scope.clearFile();
 
@@ -198,7 +205,7 @@
 
 			$scope.selectReport = function(item){
 				$scope.report = item;
-
+                console.log($scope.report.reportEnum);
 				if(!$scope.userHasState()){
 					$scope.clearState();
 				}
@@ -215,6 +222,14 @@
 				if($scope.userHasOneCircle()){
                 	$scope.selectCircle($scope.circles[0]);
                 }
+                if($scope.report.reportEnum == 'Kilkari_Message_Matrix' || $scope.report.reportEnum == 'Kilkari_Listening_Matrix' || $scope.report.reportEnum == 'Kilkari_Usage' || $scope.report.reportEnum == 'Kilkari_Message_Listenership'){
+                    $scope.periodType = ['Year','Month','Quarter'];
+                }
+                else if($scope.report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise'){
+                    $scope.periodType = ['Month'];
+                }
+                else
+                    $scope.periodType = ['Year','Month','Quarter', 'Custom Range'];
                 if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected")))  ){
                 	$scope.datePickerContent = "Select Week";
                 }
@@ -224,6 +239,7 @@
                 $scope.dt1 = null;
                 $scope.dt2 = null;
                 $scope.hideGrid = true;
+                $scope.hideMessageMatrix = true;
                 $scope.showEmptyData = false;
                 if($scope.report.name == 'MA Cumulative Summary'){
                     $scope.dateFormat = 'yyyy-MM-dd';
@@ -235,18 +251,28 @@
 				if(name == null){
 					return "";
 				}
-				if(name.length > 18){
-					return name.substring(0, 15) + "..."
+				if(name.length > 17){
+					return name.substring(0, 14) + "..."
 				}
 				return name;
 			}
+
+            $scope.cropState = function(name){
+                if(name == null){
+                    return "";
+                }
+                if(name.length > 12){
+                    return name.substring(0, 10) + ".."
+                }
+                return name;
+            }
 
 			$scope.isCircleReport = function(){
 				return $scope.report != null && $scope.report.reportEnum == 'MA_Anonymous_Users';
 			}
 
             $scope.isAggregateReport = function(){
-            	return $scope.report != null && ($scope.report.reportEnum == 'MA_Cumulative_Summary' || $scope.report.reportEnum == 'MA_Subscriber' || $scope.report.reportEnum == 'MA_Performance' );
+            	return $scope.report != null && $scope.report.icon == 'images/drop-down-2.png';
             }
 
 			$scope.reportTypes = ['TABLE'];
@@ -419,6 +445,7 @@
                 $scope.dt1 = null;
                 $scope.dt2 = null;
                 $scope.hideGrid = true;
+                $scope.hideMessageMatrix = true;
                 $scope.showEmptyData = false;
 				$scope.setDateOptions();
 				$scope.clearFile();
@@ -438,6 +465,7 @@
 				$scope.dt1 = null;
 				$scope.dt2 = null;
 				$scope.hideGrid = true;
+				$scope.hideMessageMatrix = true;
 				$scope.showEmptyData = false;
 				$scope.clearFile();
 			}
@@ -455,6 +483,7 @@
                 $scope.dt1 = null;
                 $scope.dt2 = null;
                 $scope.hideGrid = true;
+                $scope.hideMessageMatrix = true;
                 $scope.showEmptyData = false;
                 $scope.clearFile();
 			}
@@ -511,46 +540,49 @@
 
 			$scope.getReport = function(){
 
+                if($scope.reportCategory == null){
+                    $scope.showAlert("Please select a report category")
+                    return;
+                }
 				if($scope.report == null){
-					alert("Please select a report")
+					$scope.showAlert("Please select a report")
 					return;
 				}
 				if($scope.dt == null && (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) ){
-					alert("Please select a week")
+					$scope.showAlert("Please select a week")
 					return;
 				}
 				else if($scope.dt == null && (!$scope.isAggregateReport() )){
-                	alert("Please select a month")
+                	$scope.showAlert("Please select a month")
 					return;
 				}
 				else if($scope.periodDisplayType == '' && ($scope.isAggregateReport() ) && $scope.report.name != 'MA Cumulative Summary'){
-                    alert("Please select a period type")
+                    $scope.showAlert("Please select a period type")
                     return;
                 }
 				else if($scope.dt1 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType != 'Custom Range' && $scope.periodDisplayType != 'Quarter' && $scope.report.name != 'MA Cumulative Summary') ){
-                    alert("Please " +  $scope.periodDisplayType)
+                   $scope.showAlert("Please select a " +  $scope.periodDisplayType)
                     return;
                 }
                 else if($scope.dt1 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType == 'Custom Range')){
-                    alert("Please select a start date")
+                    $scope.showAlert("Please select a start date")
                     return;
                 }
                  else if($scope.dt1 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType == 'Quarter')){
-                    alert("Please select a year")
+                    $scope.showAlert("Please select a year")
                     return;
                 }
                 else if($scope.dt2 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType == 'Custom Range' || $scope.report.name == 'MA Cumulative Summary' )){
-                    alert("Please select an end date")
+                    $scope.showAlert("Please select an end date")
                     return;
                 }
 
                 else if($scope.periodDisplayType == 'Quarter' && $scope.quarterDisplayType == '' && ($scope.isAggregateReport() )){
-                    alert("Please select a quarter type")
+                    $scope.showAlert("Please select a quarter type")
                     return;
                 }
                 else if( ($scope.periodDisplayType == 'Custom Range') && ($scope.dt2 < $scope.dt1)){
-                    console.log("hi");
-                    alert("End date should be greater than start date")
+                    $scope.showAlert("End date should be greater than start date")
                     return;
                 }
 
@@ -571,7 +603,7 @@
                             reportRequest.stateId = $scope.state.stateId;
                         }
                         else{
-                            alert("Please select a state");
+                            $scope.showAlert("Please select a state");
                             return;
                         }
                     }
@@ -593,13 +625,13 @@
 				    	reportRequest.circleId = $scope.circle.circleId;
 				    }
                     else{
-                     	alert("Please select a circle");
+                     	$scope.showAlert("Please select a circle");
                      	return;
                     }
 		    	}
 
 		    	if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) && $scope.format == 'yyyy-MM'){
-                    alert("Please select a week");
+                    $scope.showAlert("Please select a week");
                     return;
 		    	}
 
@@ -683,37 +715,137 @@
 					    else if($scope.report.reportEnum == 'MA_Performance'){
 					        $scope.gridOptions1.columnDefs = $scope.MA_Performance_Column_Definitions;
 					    }
-					    else
+					    else if($scope.report.reportEnum == 'MA_Subscriber')
 					        $scope.gridOptions1.columnDefs = $scope.MA_Subscriber_Column_Definitions;
-                        if(result.data.tableData.length >0){
-                            $scope.gridOptions1.data = result.data.tableData;
-                            $scope.reportBreadCrumbData = result.data.breadCrumbData;
-                            $scope.hideGrid = false;
+					    else if($scope.report.reportEnum == 'Kilkari_Cumulative_Summary'){
+					        $scope.gridOptions1.columnDefs = $scope.Kilkari_Cumulative_Summary_Definitions;
+					    }
+					    else if($scope.report.reportEnum == 'Kilkari_Usage')
+					        $scope.gridOptions1.columnDefs = $scope.Kilkari_Usage_Definitions;
+					    else if($scope.report.reportEnum == 'Kilkari_Beneficiary'){
+					        $scope.gridOptions1.columnDefs = $scope.Kilkari_Aggregate_Beneficiaries_Definitions;
+					    }
+					    else if($scope.report.reportEnum == 'Kilkari_Beneficiary_Completion'){
+					        $scope.gridOptions1.columnDefs = $scope.Kilkari_Beneficiary_Completion_Definitions;
+					    }
+					    else if($scope.report.reportEnum == 'Kilkari_Message_Matrix'){
+					        $scope.gridOptions1.columnDefs = $scope.Kilkari_Message_Matrix_Motherpack_Definitions;
+                            $scope.gridOptions2.columnDefs = $scope.Kilkari_Message_Matrix_Childpack_Definitions;
+					    }
+					    else if($scope.report.reportEnum == 'Kilkari_Call'){
+					        $scope.gridOptions1.columnDefs = $scope.Kilkari_Call_Report_Definitions;
+					    }
+					    else if($scope.report.reportEnum == 'Kilkari_Listening_Matrix'){
+					         $scope.gridOptions1.columnDefs = $scope.Kilkari_Listening_Matrix_Definitions;
+					    }
+					    else if($scope.report.reportEnum == 'Kilkari_Subscriber'){
+                             $scope.gridOptions1.columnDefs = $scope.Kilkari_Subscriber_Definitions;
+                        }
+                        else if($scope.report.reportEnum == 'Kilkari_Message_Listenership'){
+                             $scope.gridOptions1.columnDefs = $scope.Kilkari_Message_Listenership_Definitions;
+                        }
+                        else if($scope.report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise'){
+                             $scope.gridOptions1.columnDefs = $scope.Kilkari_RepeatListener_Numberdata_Definitions;
+                             $scope.gridOptions2.columnDefs = $scope.Kilkari_RepeatListener_Percentdata_Definitions;
+                        }
+                        else if($scope.report.reportEnum == 'Kilkari_Thematic_Content'){
+                             $scope.gridOptions1.columnDefs = $scope.Kilkari_Thematic_Content_Definitions;
+                        }
+                        if($scope.report.reportEnum != 'Kilkari_Message_Matrix' && $scope.report.reportEnum != 'Kilkari_Listening_Matrix' && $scope.report.reportEnum != 'Kilkari_Repeat_Listener_Month_Wise' && $scope.report.reportEnum != 'Kilkari_Thematic_Content' ){
+                            if(result.data.tableData.length >0){
+                             $scope.gridOptions1.data = result.data.tableData;
+                             $scope.reportBreadCrumbData = result.data.breadCrumbData;
+                             $scope.hideGrid = false;
+                             if(angular.lowercase(result.data.tableData[0].locationType) == 'state'){
+                                     $scope.gridOptions1.columnDefs[1].displayName = 'State';
+                                 }
+                                 else if(angular.lowercase(result.data.tableData[0].locationType) == 'district'){
+                                     $scope.gridOptions1.columnDefs[1].displayName = 'District';
 
-                            if(angular.lowercase(result.data.tableData[0].locationType) == 'state'){
-                                $scope.gridOptions1.columnDefs[0].displayName = 'State Names';
+                                 }
+                                  else if(angular.lowercase(result.data.tableData[0].locationType) == 'block'){
+                                     $scope.gridOptions1.columnDefs[1].displayName = 'Block';
+
+                                 }
+                                 else if(angular.lowercase(result.data.tableData[0].locationType) == 'subcenter'){
+                                     $scope.gridOptions1.columnDefs[1].displayName = 'SubCenter';
+                                 }
                             }
-                            else if(angular.lowercase(result.data.tableData[0].locationType) == 'district'){
-                                $scope.gridOptions1.columnDefs[0].displayName = 'District Names';
-
+                            else{
+                                $scope.hideGrid = true;
+                                $scope.showEmptyData = true;
                             }
-                             else if(angular.lowercase(result.data.tableData[0].locationType) == 'block'){
-                                $scope.gridOptions1.columnDefs[0].displayName = 'Block Names';
 
+                        }
+                        if($scope.report.reportEnum == 'Kilkari_Listening_Matrix'){
+                            if(result.data.tableData.length >0){
+                                 $scope.gridOptions1.data = result.data.tableData;
+                                 $scope.reportBreadCrumbData = result.data.breadCrumbData;
+                                 $scope.hideGrid = false;
                             }
-                            else if(angular.lowercase(result.data.tableData[0].locationType) == 'subcenter'){
-                                $scope.gridOptions1.columnDefs[0].displayName = 'SubCenter Names';
-
+                            else{
+                                $scope.hideGrid = true;
+                                $scope.showEmptyData = true;
                             }
                         }
-                         else{
-                            $scope.showEmptyData = true;
-                            $scope.hideGrid = true;
-                         }
-					    $scope.gridOptions = $scope.gridOptions1;
-					}
+                        if($scope.report.reportEnum == 'Kilkari_Thematic_Content'){
+                            if(result.data.tableData.length >0){
+                                 $scope.gridOptions1.data = result.data.tableData;
+                                 $scope.reportBreadCrumbData = result.data.breadCrumbData;
+                                 $scope.hideGrid = false;
+                            }
+                            else{
+                                $scope.hideGrid = true;
+                                $scope.showEmptyData = true;
+                            }
+                        }
+                        if($scope.report.reportEnum == 'Kilkari_Message_Matrix'){
+                            console.log(result.data.motherData.length);
+                            if(result.data.motherData.length >0){
+                                $scope.gridOptions1.data = result.data.motherData;
+                                $scope.hideGrid = false;
+                                $scope.matrixContent1 ='Kilkari MotherPack Data';
 
-				})
+                            }
+                             else{
+                                $scope.hideGrid = true;
+                                $scope.showEmptyData = true;
+                            }
+                            if(result.data.childData.length >0){
+                                $scope.gridOptions2.data = result.data.childData;
+                                $scope.hideMessageMatrix = false;
+                                $scope.matrixContent2 ='Kilkari ChildPack Data';
+                            }
+                            else{
+                                $scope.hideMessageMatrix = true;
+                            }
+                        }
+                       if($scope.report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise'){
+                            if(result.data.numberData.length >0){
+                                $scope.gridOptions1.data = result.data.numberData;
+                                $scope.hideGrid = false;
+                                $scope.matrixContent1 ='Beneficiary Count';
+                            }
+                             else{
+                                $scope.hideGrid = true;
+                                $scope.showEmptyData = true;
+                            }
+                            if(result.data.percentData.length >0){
+                                $scope.gridOptions2.data = result.data.percentData;
+                                $scope.hideMessageMatrix = false;
+                                $scope.matrixContent2 ='Beneficiary Percentage';
+                            }
+                            else{
+                                $scope.hideMessageMatrix = true;
+                            }
+                       }
+
+                         $scope.gridOptions = $scope.gridOptions1;
+                         $scope.gridOptions_Message_Matrix = $scope.gridOptions2;
+                    }
+                }
+
+				)
 			}
 
 			$scope.getReportUrl = backend_root + 'nms/user/getReport';
@@ -752,6 +884,7 @@
 				$scope.dt1 = null;
 				$scope.dt2 = null;
 				$scope.hideGrid = true;
+				$scope.hideMessageMatrix = true;
 				$scope.periodDisplayType = '';
 				$scope.showEmptyData = false;
 			}
@@ -943,48 +1076,229 @@
                     },
               };
 
-
+            $scope.gridOptions2 = {
+                enableSorting: true,
+                onRegisterApi: function(gridApi){
+                      $scope.gridApi = gridApi;
+                    },
+              };
 
             $scope.MA_Cumulative_Column_Definitions =[
+                                                       {name: 'S No.', displayName: 'S No.',width:"6%",enableSorting: false, cellTemplate: '<div>{{rowRenderIndex+1}}</div>'},
                                                        { field: 'locationName',
                                                          cellTemplate:'<a class="btn primary aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
-                                                         width: '*', enableHiding: false
+                                                         width: '11%', enableHiding: false
                                                        },
-                                                       { field: 'ashasRegistered', name : 'No of Registered Asha', width:"*", enableHiding: false},
-                                                       { field: 'ashasStarted', name : ' No of Asha Started Course',  width:"*", enableHiding: false},
-                                                       { field: 'ashasNotStarted', name : ' No of Asha Not Started Course', width:"*", enableHiding: false},
-                                                       { field: 'ashasCompleted' , name : 'No of Asha Successfully Completed the Course', width:"*", enableHiding: false},
-                                                       { field: 'ashasFailed' , name : 'No of Asha who failed the course', width:"*", enableHiding: false},
-                                                       { field: 'notStartedpercentage' , name : '% Not Started Course', width:"*", enableHiding: false},
-                                                       { field: 'completedPercentage' , name : '% Successfully Completed', width:"*", enableHiding: false},
-                                                       { field: 'failedpercentage' , name : '% Failed the course', width:"*", enableHiding: false},
+                                                       { field: 'ashasRegistered', name : 'No of Registered Asha', width:"10%", enableHiding: false},
+                                                       { field: 'ashasStarted', name : ' No of Asha Started Course',  width:"10%", enableHiding: false},
+                                                       { field: 'ashasNotStarted', name : ' No of Asha Not Started Course', width:"10%", enableHiding: false},
+                                                       { field: 'ashasCompleted' , name : 'No of Asha Successfully Completed the Course', width:"13%", enableHiding: false},
+                                                       { field: 'ashasFailed' , name : 'No of Asha who failed the course', width:"11%", enableHiding: false},
+                                                       { field: 'notStartedpercentage' , name : '% Not Started Course', width:"10%", enableHiding: false},
+                                                       { field: 'completedPercentage' , name : '% Successfully Completed', width:"9%", enableHiding: false},
+                                                       { field: 'failedpercentage' , name : '% Failed the course', width:"10%", enableHiding: false},
                                                       ],
 
 
             $scope.MA_Performance_Column_Definitions =[
+                                                         {name: 'S No.', displayName: 'S No.',width:"6%", enableSorting: false, cellTemplate: '<div>{{rowRenderIndex+1}}</div>'},
                                                          { field: 'locationName',
                                                             cellTemplate:'<a class="btn primary aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
-                                                            enableHiding: false, width:"*"
+                                                            enableHiding: false, width:"11%"
                                                          },
-                                                         { field: 'ashasStarted', name: 'Number of Asha Started Course', width:"*",enableHiding: false },
-                                                         { field: 'ashasAccessed', name: 'Number of Asha Pursuing Course', width:"*", enableHiding: false },
-                                                         { field: 'ashasNotAccessed', name: 'Number of Asha not Pursuing Course', width:"*", enableHiding: false},
-                                                         { field: 'ashasCompleted', name: 'Number of Asha Successfully Completed Course', width:"*",enableHiding: false},
-                                                         { field: 'ashasFailed',  name: 'Number of Asha who Failed the Course', width:"*", enableHiding: false},
+                                                         { field: 'ashasStarted', name: 'Number of Asha Started Course', width:"15%",enableHiding: false },
+                                                         { field: 'ashasAccessed', name: 'Number of Asha Pursuing Course', width:"16%", enableHiding: false },
+                                                         { field: 'ashasNotAccessed', name: 'Number of Asha not Pursuing Course', width:"17%", enableHiding: false},
+                                                         { field: 'ashasCompleted', name: 'Number of Asha Successfully Completed Course', width:"18%",enableHiding: false},
+                                                         { field: 'ashasFailed',  name: 'Number of Asha who Failed the Course', width:"17%", enableHiding: false},
                                                         ],
 
             $scope.MA_Subscriber_Column_Definitions =[
+                                                         {name: 'S No.', displayName: 'S No.',width:"6%",enableSorting: false, cellTemplate: '<div>{{rowRenderIndex+1}}</div>'},
                                                          { field: 'locationName',
                                                             cellTemplate:'<a class="btn primary aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
-                                                            enableHiding: false,width:"*"
+                                                            enableHiding: false,width:"10%"
                                                          },
-                                                         { field: 'registeredNotCompletedStart', name: 'Number of Asha Registered But Not Completed(Period Start)',width:"*", enableHiding: false },
-                                                         { field: 'recordsReceived', name: 'Number of Asha Received Through Web Service', width:"*", enableHiding: false },
-                                                         { field: 'ashasRejected', name: 'Number of Asha Records Rejected', width:"*", enableHiding: false},
-                                                         { field: 'ashasRegistered', name: 'Number of Asha Subscriptions Added', width:"*", enableHiding: false},
-                                                         { field: 'ashasCompleted',  name: 'Number of Asha Successfully Completed the Course', width:"*", enableHiding: false},
-                                                         { field: 'registeredNotCompletedend',  name: 'Number of Asha Registered But Not Completed the Course(Period End)', width:"*", enableHiding: false},
+                                                         { field: 'registeredNotCompletedStart', name: 'Number of Asha Registered But Not Completed the Course(Period Start)',width:"16%", enableHiding: false },
+                                                         { field: 'recordsReceived', name: 'Number of Asha Received Through Web Service', width:"13%", enableHiding: false },
+                                                         { field: 'ashasRejected', name: 'Number of Asha Records Rejected', width:"13%", enableHiding: false},
+                                                         { field: 'ashasRegistered', name: 'Number of Asha Subscriptions Added', width:"13%", enableHiding: false},
+                                                         { field: 'ashasCompleted',  name: 'Number of Asha Successfully Completed the Course', width:"13%", enableHiding: false},
+                                                         { field: 'registeredNotCompletedend',  name: 'Number of Asha Registered But Not Completed the Course (Period End)', width:"16%", enableHiding: false},
                                                         ],
+
+            $scope.Kilkari_Cumulative_Summary_Definitions =[
+                                                             {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, cellTemplate: '<div>{{rowRenderIndex+1}}</div>'},
+                                                             { field: 'locationName',
+                                                                cellTemplate:'<a class="btn primary aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
+                                                                enableHiding: false,width:"*"
+                                                             },
+                                                             { field: 'uniqueBeneficiaries', name: 'Total unique beneficiaries',width:"*", enableHiding: false },
+                                                             { field: 'successfulCalls', name: 'Total successful calls', width:"*", enableHiding: false },
+                                                             { field: 'billableMinutes', name: 'Total billable minutes played', width:"*", enableHiding: false},
+                                                             { field: 'averageDuration', name: 'Average duration of call', width:"*", enableHiding: false},
+
+            ]
+
+            $scope.Kilkari_Usage_Definitions =[
+                                                 {name: 'S No.', displayName: 'S No.',width:"7%", enableSorting: false,cellTemplate: '<div>{{rowRenderIndex+1}}</div>'},
+                                                 { field: 'locationName',
+                                                    cellTemplate:'<a class="btn primary aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
+                                                    enableHiding: false,width:"*"
+                                                 },
+                                                 { field: 'beneficiariesCalled', name: 'Total beneficiaries Called',width:"*", enableHiding: false },
+                                                 { field: 'answeredCall', name: 'Beneficiaries who have answered at least one call', width:"*", enableHiding: false },
+                                                 { field: 'calls_75_100', name: 'Beneficiaries who have listened more than 75% content (avg)', width:"*", enableHiding: false},
+                                                 { field: 'calls_50_75', name: 'Beneficiaries who have listened 50 to 75% content (avg)', width:"*", enableHiding: false},
+                                                 { field: 'calls_25_50', name: 'Beneficiaries who have listened 25 to 49.9% content (avg)',width:"*", enableHiding: false },
+                                                 { field: 'calls_1_25', name: 'Beneficiaries who have listened less than 25% content (avg)', width:"*", enableHiding: false },
+                                                 { field: 'calledInbox', name: 'Beneficiaries who have called the Kilkari Inbox', width:"*", enableHiding: false},
+
+            ]
+
+            $scope.Kilkari_Aggregate_Beneficiaries_Definitions =[
+                                                     {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, cellTemplate: '<div>{{rowRenderIndex+1}}</div>'},
+                                                     { field: 'locationName',
+                                                        cellTemplate:'<a class="btn primary aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
+                                                        enableHiding: false,width:"7%"
+                                                     },
+                                                     { field: 'beneficiariesCalled', name: 'Total beneficiaries Called',width:"*", enableHiding: false },
+                                                     { field: 'answeredCall', name: 'Beneficiaries who have answered at least one call',width:"*", enableHiding: false },
+                                                     { field: 'selfDeactivated', name: 'Beneficiaries who have self-deactivated', width:"*", enableHiding: false },
+                                                     { field: 'notAnswering', name: 'Beneficiaries deactivated for not answering.', width:"*", enableHiding: false},
+                                                     { field: 'lowListenership', name: 'Beneficiaries deactivated for low listenership.', width:"*", enableHiding: false},
+                                                     { field: 'systemDeactivation', name: 'Beneficiaries deactivated by system through MCTS/RCH updates',width:"11%", enableHiding: false },
+                                                     { field: 'motherCompletion', name: 'Beneficiaries completed Mother Pack', width:"*", enableHiding: false },
+                                                     { field: 'childCompletion', name: 'Beneficiaries completed Child Pack', width:"*", enableHiding: false},
+                                                     { field: 'calledInbox', name: 'Beneficiaries who have called the Kilkari Inbox', width:"*", enableHiding: false },
+                                                     { field: 'joinedSubscription', name: 'Beneficiaries who have joined the subscription', width:"*", enableHiding: false},
+
+            ]
+
+            $scope.Kilkari_Beneficiary_Completion_Definitions = [
+                                                     {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, cellTemplate: '<div>{{rowRenderIndex+1}}</div>'},
+                                                     { field: 'locationName',
+                                                        cellTemplate:'<a class="btn primary aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
+                                                        enableHiding: false,width:"10%"
+                                                     },
+                                                     { field: 'completedBeneficiaries', name: 'Total beneficiaries Completed Program',width:"*", enableHiding: false },
+                                                     { field: 'avgWeeks', name: 'Average Number of Weeks in Service',width:"*", enableHiding: false },
+                                                     { field: 'calls_75_100', name: 'Beneficiaries who have listened more than 75% content (consolidated)', width:"*", enableHiding: false },
+                                                     { field: 'calls_50_75', name: 'Beneficiaries who have listened 50 to 75% content (consolidated)', width:"*", enableHiding: false},
+                                                     { field: 'calls_25_50', name: 'Beneficiaries who have listened 25 to 49.9% content (consolidated)',width:"*", enableHiding: false },
+                                                     { field: 'calls_1_25', name: 'Beneficiaries who have listened less than 25% content (consolidated)', width:"*", enableHiding: false },
+
+            ]
+
+            $scope.Kilkari_Listening_Matrix_Definitions =[
+                                                     { field: 'percentageCalls', name: 'Listening Percentage', width:"30%", enableHiding: false },
+                                                     { field: 'content_75_100', name: 'Listening > 75 % content', width:"15%", enableHiding: false},
+                                                     { field: 'content_50_75', name: 'Listening 50 to 75 % content',width:"15%", enableHiding: false },
+                                                     { field: 'content_25_50', name: 'Listening 25 to 50 % content', width:"15%", enableHiding: false },
+                                                     { field: 'content_1_25', name: 'Listening < 25 % content',width:"15%", enableHiding: false },
+                                                     { field: 'total', name: 'Total', width:"10%", enableHiding: false },
+
+            ]
+
+            $scope.Kilkari_Call_Report_Definitions = [
+                                                     {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, cellTemplate: '<div>{{rowRenderIndex+1}}</div>'},
+                                                     { field: 'locationName',
+                                                        cellTemplate:'<a class="btn primary aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
+                                                        enableHiding: false,width:"7%"
+                                                     },
+                                                     { field: 'successfulCalls', name: 'Total Calles Attempted',width:"*", enableHiding: false },
+                                                     { field: 'content_75_100', name: 'Total Number of Successful Calls', width:"*", enableHiding: false },
+                                                     { field: 'content_75_100', name: 'Total calls where > 75% content listened to ', width:"*", enableHiding: false},
+                                                     { field: 'content_50_75', name: 'Total calls where 50% to 75% content listened to', width:"*", enableHiding: false},
+                                                     { field: 'content_25_50', name: 'Total calls where 25% to 49.9% content listened to',width:"*", enableHiding: false },
+                                                     { field: 'content_1_25', name: 'Total calls where < 25%  content listened to',width:"*", enableHiding: false },
+                                                     { field: 'billableMinutes', name: 'Total Billable minutes', width:"*", enableHiding: false },
+                                                     { field: 'avgDuration', name: 'Average Duration of Calls', width:"*", enableHiding: false},
+                                                     { field: 'callsToInbox', name: 'Total number of calls to inbox where content is played', width:"*", enableHiding: false },
+            ]
+
+            $scope.Kilkari_Message_Matrix_Motherpack_Definitions =[
+                                                     { field: 'messageWeek', name: 'Message Week',width:"*", enableHiding: false },
+                                                     { field: 'content_75_100', name: 'Total calls where > 75% content listened to ', width:"*", enableHiding: false},
+                                                     { field: 'content_50_75', name: 'Total calls where 50% to 75% content listened to', width:"*", enableHiding: false},
+                                                     { field: 'content_25_50', name: 'Total calls where 25% to 49.9% content listened to',width:"*", enableHiding: false },
+                                                     { field: 'content_1_25', name: 'Listening < 25 % content',width:"*", enableHiding: false },
+                                                     { field: 'total', name: 'Total', width:"*", enableHiding: false },
+
+            ]
+
+            $scope.Kilkari_Message_Matrix_Childpack_Definitions =[
+                                                     { field: 'messageWeek', name: 'Message Week',width:"*", enableHiding: false },
+                                                     { field: 'content_75_100', name: 'Total calls where > 75% content listened to ', width:"*", enableHiding: false},
+                                                     { field: 'content_50_75', name: 'Total calls where 50% to 75% content listened to', width:"*", enableHiding: false},
+                                                     { field: 'content_25_50', name: 'Total calls where 25% to 49.9% content listened to',width:"*", enableHiding: false },
+                                                     { field: 'content_1_25', name: 'Listening < 25 % content',width:"*", enableHiding: false },
+                                                     { field: 'total', name: 'Total', width:"*", enableHiding: false },
+
+            ]
+
+            $scope.Kilkari_Message_Listenership_Definitions = [
+                                                     {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, cellTemplate: '<div>{{rowRenderIndex+1}}</div>'},
+                                                     { field: 'locationName',
+                                                        cellTemplate:'<a class="btn primary aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
+                                                        enableHiding: false,width:"10%"
+                                                     },
+                                                     { field: 'totalBeneficiariesCalled', name: 'Total beneficiaries Called',width:"*", enableHiding: false },
+                                                     { field: 'beneficiariesAnsweredAtleastOnce', name: 'Beneficiaries who have answered at least one call',width:"*", enableHiding: false },
+                                                     { field: 'beneficiariesAnsweredMoreThan75', name: 'Beneficiaries who have answered more than 75% content (consolidated)', width:"*", enableHiding: false },
+                                                     { field: 'beneficiariesAnswered50To75', name: 'Beneficiaries who have answered 50 to 75% content (consolidated)', width:"*", enableHiding: false},
+                                                     { field: 'beneficiariesAnswered25To50', name: 'Beneficiaries who have answered 25 to 49.9% content (consolidated)',width:"*", enableHiding: false },
+                                                     { field: 'beneficiariesAnswered1To25', name: 'Beneficiaries who have answered less than 25% content (consolidated)', width:"*", enableHiding: false },
+                                                     { field: 'beneficiariesAnsweredNoCalls', name: 'Beneficiaries who have not answered any calls', width:"*", enableHiding: false },
+            ]
+
+            $scope.Kilkari_Subscriber_Definitions = [
+                                                     {name: 'S No.', displayName: 'S No.',width:"4%",enableSorting: false, cellTemplate: '<div>{{rowRenderIndex+1}}</div>'},
+                                                     { field: 'locationName',
+                                                        cellTemplate:'<a class="btn primary aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
+                                                        enableHiding: false,width:"10%"
+                                                     },
+                                                     { field: 'totalSubscriptionsStart', name: 'Total Subscription at the start of the period',width:"12%", enableHiding: false },
+                                                     { field: 'totalBeneficiaryRecordsReceived', name: 'Total beneficiary Records Received from RCH/MCTS',width:"13%", enableHiding: false },
+                                                     { field: 'totalBeneficiaryRecordsEligible', name: 'Total beneficiary Records Found Eligible for Subscriptions', width:"13%", enableHiding: false },
+                                                     { field: 'totalBeneficiaryRecordsRejected', name: 'Total beneficiary records rejected due to wrong/duplicate mobile numbers', width:"14%", enableHiding: false},
+                                                     { field: 'totalBeneficiaryRecordsAccepted', name: 'Total beneficiary Records accepted As Subscriptions',width:"12%", enableHiding: false },
+                                                     { field: 'totalSubscriptionsCompleted', name: 'Total number of subscriptions who have completed their packs', width:"12%", enableHiding: false },
+                                                     { field: 'totalSubscriptionsEnd', name: 'Total Subscription at the end of the period', width:"10%", enableHiding: false },
+            ]
+
+            $scope.Kilkari_Thematic_Content_Definitions = [
+                                                     {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, cellTemplate: '<div>{{rowRenderIndex+1}}</div>'},
+                                                     { field: 'theme', name: 'Theme',width:"*", enableHiding: false },
+                                                     { field: 'messageWeekNumber', name: 'Message Number (Week)',width:"*", enableHiding: false },
+                                                     { field: 'uniqueBeneficiariesCalled', name: 'Number of unique beneficiaries called', width:"*", enableHiding: false },
+                                                     { field: 'callsAnswered', name: 'Number of calls answered', width:"*", enableHiding: false},
+                                                     { field: 'minutesConsumed', name: 'Number of minutes consumed ',width:"*", enableHiding: false }
+             ]
+
+            $scope.Kilkari_RepeatListener_Numberdata_Definitions =[
+                                                     { field: 'month', name: 'Month number',width:"*", enableHiding: false },
+                                                     { field: 'fiveCallsAnswered', name: '5 calls answered', width:"*", enableHiding: false},
+                                                     { field: 'fourCallsAnswered', name: '4 calls answered', width:"*", enableHiding: false},
+                                                     { field: 'threeCallsAnswered', name: '3 calls answered',width:"*", enableHiding: false },
+                                                     { field: 'twoCallsAnswered', name: '2 calls answered',width:"*", enableHiding: false },
+                                                     { field: 'oneCallAnswered', name: '1 call answered',width:"*", enableHiding: false },
+                                                     { field: 'noCallsAnswered', name: '0 calls answered',width:"*", enableHiding: false },
+                                                     { field: 'total', name: 'Total', width:"*", enableHiding: false },
+
+            ]
+
+            $scope.Kilkari_RepeatListener_Percentdata_Definitions =[
+                                                     { field: 'month', name: 'Month number',width:"*", enableHiding: false },
+                                                     { field: 'fiveCallsAnsweredPercent', name: '5 calls answered', width:"*", enableHiding: false},
+                                                     { field: 'fourCallsAnsweredPercent', name: '4 calls answered', width:"*", enableHiding: false},
+                                                     { field: 'threeCallsAnsweredPercent', name: '3 calls answered',width:"*", enableHiding: false },
+                                                     { field: 'twoCallsAnsweredPercent', name: '2 calls answered',width:"*", enableHiding: false },
+                                                     { field: 'oneCallAnsweredPercent', name: '1 call answered',width:"*", enableHiding: false },
+                                                     { field: 'noCallsAnsweredPercent', name: '0 calls answered',width:"*", enableHiding: false }
+            ]
+
+
 
             $scope.drillDownData = function(locationId,locationType){
 
@@ -1007,7 +1321,7 @@
                                     $scope.gridOptions1.data = result.data.tableData;
                                     $scope.reportBreadCrumbData = result.data.breadCrumbData;
                                     $scope.hideGrid = false;
-                                    $scope.gridOptions1.columnDefs[0].displayName = 'District Names';
+                                    $scope.gridOptions1.columnDefs[1].displayName = 'District';
                                     $scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.COLUMN );
                                 }
                                 else{
@@ -1037,7 +1351,7 @@
                                       $scope.gridOptions1.data = result.data.tableData;
                                       $scope.reportBreadCrumbData = result.data.breadCrumbData;
                                        $scope.hideGrid = false;
-                                       $scope.gridOptions1.columnDefs[0].displayName = 'State Names';
+                                       $scope.gridOptions1.columnDefs[1].displayName = 'State';
                                        $scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.COLUMN );
                                    }
                                    else{
@@ -1066,7 +1380,7 @@
                                     $scope.gridOptions1.data = result.data.tableData;
                                     $scope.reportBreadCrumbData = result.data.breadCrumbData;
                                      $scope.hideGrid = false;
-                                     $scope.gridOptions1.columnDefs[0].displayName = 'Block Names';
+                                     $scope.gridOptions1.columnDefs[1].displayName = 'Block';
                                      $scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.COLUMN );
                                  }
                                  else{
@@ -1094,7 +1408,7 @@
                                     $scope.gridOptions1.data = result.data.tableData;
                                     $scope.reportBreadCrumbData = result.data.breadCrumbData;
                                     $scope.hideGrid = false;
-                                     $scope.gridOptions1.columnDefs[0].displayName = 'Subcenter Names';
+                                     $scope.gridOptions1.columnDefs[1].displayName = 'Subcenter';
                                      $scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.COLUMN );
                                 }
                                 else{
@@ -1107,6 +1421,23 @@
                         })
                   }
             }
+
+
+            $scope.showAlert = function(message) {
+                // Appending dialog to document.body to cover sidenav in docs app
+                // Modal dialogs should fully cover application
+                // to prevent interaction outside of dialog
+                $mdDialog.show(
+                  $mdDialog.alert()
+                    .parent(angular.element(document.querySelector('#popupContainer')))
+                    .clickOutsideToClose(true)
+                    .title('MIS Alert!!')
+                    .textContent(message)
+                    .ariaLabel('Alert Dialog Demo')
+                    .ok('Got it!')
+                );
+              };
+
 
 		}])
 })()

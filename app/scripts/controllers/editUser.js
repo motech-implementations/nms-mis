@@ -1,7 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("EditUserController", ['$scope', 'UserFormFactory', '$http', '$state', '$stateParams', function($scope, UserFormFactory, $http, $state, $stateParams){
+		.controller("EditUserController", ['$scope', 'UserFormFactory', '$http', '$state', '$stateParams','$mdDialog', function($scope, UserFormFactory, $http, $state, $stateParams, $mdDialog){
 
 			UserFormFactory.isLoggedIn()
 			.then(function(result){
@@ -159,7 +159,7 @@
 						data    : $scope.editUser, //forms user object
 						headers : {'Content-Type': 'application/json'} 
 					}).then(function(result){
-						alert(result.data['0']);
+						$scope.showAlert(result.data['0']);
 						// $scope.open()
 						if(result.data['0'] == 'User Updated'){
 							$state.go('userManagement.userTable', {});
@@ -186,7 +186,7 @@
                     data    : password, //forms user object
                     headers : {'Content-Type': 'application/json'}
                 }).then(function(result){
-                    alert(result.data['0']);
+                    $scope.showAlert(result.data['0']);
                 })
 
             };
@@ -194,9 +194,24 @@
             $scope.deactivateUserSubmit = function() {
                 UserFormFactory.deactivateUser($scope.editUser.userId)
                 .then(function(result){
-                	alert(result.data['0']);
+                	$scope.showAlert(result.data['0']);
                 });
             };
+
+            $scope.showAlert = function(message) {
+                // Appending dialog to document.body to cover sidenav in docs app
+                // Modal dialogs should fully cover application
+                // to prevent interaction outside of dialog
+                $mdDialog.show(
+                  $mdDialog.alert()
+                    .parent(angular.element(document.querySelector('#popupContainer')))
+                    .clickOutsideToClose(true)
+                    .title('MIS Alert!!')
+                    .textContent(message)
+                    .ariaLabel('Alert Dialog Demo')
+                    .ok('Got it!')
+                );
+              };
 
 			// $scope.open = function () {
 			// 	$modal.open({
