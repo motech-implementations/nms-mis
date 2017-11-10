@@ -125,7 +125,7 @@
 				<div class="col-xs-offset-2 col-xs-10">
 					<button type="button" class="btn btn-sm btn-default" ui-sref="userManagement.userTable">Cancel</button>
 					<button type="button" ng-click="editUserSubmit()" class="btn btn-sm btn-primary">Update User</button>
-					<button ng-click="deactivateUserSubmit()" type="button" class="btn btn-sm btn-primary floatR">Delete User</button>
+					<button ng-click="deactivateUserSubmit()" ng-if="editUser.loggedAtLeastOnce" type="button" class="btn btn-sm btn-primary floatR">Delete User</button>
 					<button ng-click="resetPasswordSubmit()" type="button" class="btn btn-sm btn-primary floatR">Reset Password</button>
 				</div>
 			</div>

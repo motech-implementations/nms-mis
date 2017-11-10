@@ -26,6 +26,7 @@
                         headers : {'Content-Type': 'application/json'}
                     }).then(function(result){
                         $scope.showAlert(result.data['0']);
+                        $state.go('login', {});
                         $scope.clearForm();
                     })
                 }
@@ -39,10 +40,22 @@
             }
 
 			$scope.clearForm = function(){
-                $scope.password = {};
-                $scope.confirmPassword = null;
-                $scope.changePasswordForm.$setPristine();
+
+                if($scope.currentUser.default){
+                    $state.go('login', {});
+                }else {
+                    $scope.password = {};
+                    $scope.confirmPassword = null;
+                    $scope.changePasswordForm.$setPristine();
+                }
             }
+
+            UserFormFactory.downloadCurrentUser()
+            .then(function(result){
+                UserFormFactory.setCurrentUser(result.data);
+                $scope.currentUser = UserFormFactory.getCurrentUser();
+                console.log($scope.currentUser);
+            })
 
             $scope.showAlert = function(message) {
                 // Appending dialog to document.body to cover sidenav in docs app

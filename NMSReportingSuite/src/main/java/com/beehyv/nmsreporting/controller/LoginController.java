@@ -82,7 +82,7 @@ public class LoginController {
                 user.setDefault(true);
             }
             if(user.getDefault()){
-                return "redirect:"+ uiAddress +"user/resetPassword";
+                return "redirect:"+ uiAddress +"changePassword";
             }
             user.setLoggedAtLeastOnce(true);
             return "redirect:"+ uiAddress +"reports";
