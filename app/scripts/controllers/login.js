@@ -1,7 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("LoginController", ['$scope', '$http', '$location','Captcha','$mdDialog', function($scope, $http, $location, Captcha,$mdDialog){
+		.controller("LoginController", ['$scope', '$http', '$location','Captcha','$mdDialog','$document', function($scope, $http, $location, Captcha,$mdDialog,$document){
 
 			$scope.user = {};
 			$scope.user.rememberMe = false;
@@ -39,38 +39,30 @@
 //				}
 //			}
 
-			$scope.login = function(){
+			$scope.login = function(e){
 
 			    if($scope.user.username == null){
 			        $scope.showAlert("Please specify a username")
-                    return;
+                    return ;
 			    }
-			    if($scope.user.username == null){
+			    if($scope.user.password == null){
                     $scope.showAlert("Please specify a password")
-                    return;
+                    return ;
                 }
                 if($scope.user.captchaCode == null){
                     $scope.showAlert("Please enter the captchaCode")
-                    return;
+                    return ;
                 }
                 if($scope.loginForm.captchaCode.$invalid){
                     $scope.showAlert("Incorrect Captcha")
-                    return;
+                    return ;
                 }
 
-                console.log($scope.user);
-                $http({
-                    method  : 'POST',
-                    url     : backend_root + 'nms/login',
-                    data    : $scope.user, //forms user object
-                    headers : {'Content-Type': 'application/json'}
-                }).then(function (result){
-                  console.log(result);
-
-                 },function (result){
-                    $scope.showAlert("error logging in ");
-                 });
-
+                 var formElement = angular.element(e.target);
+                 console.log(formElement);
+                 formElement.attr("action", $scope.loginUrl);
+                 formElement.attr("method", "post");
+                 formElement[0].submit();
 
 
             }

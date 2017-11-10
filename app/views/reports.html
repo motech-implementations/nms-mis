@@ -97,14 +97,14 @@
 						<div class="btn-group" uib-dropdown dropdown-append-to-body>
 							<button id="btn-append-to-body-7" type="button" class="btn btn-sm btn-default" ng-disabled="disableDistrict()" uib-dropdown-toggle ng-class="{loading: districtsLoading, autoSelected}">
 								<span class="block">
-									<span>{{crop(district.districtName)}}</span>
+									<span>{{district.districtName}}</span>
 									<span ng-if="district == null">ALL</span>
 									<span class="caret"></span>
 								</span>
 							</button>
 							<ul class="dropdown-menu type-aggregate" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
 								<li role="menuitem"><a class="select_district" ng-click="clearDistrict()">ALL</a>
-								<li role="menuitem" ng-repeat="item in districts | orderBy : 'districtName'"><a ng-click='selectDistrict(item)'>{{crop(item.districtName)}}</a></li>
+								<li role="menuitem" ng-repeat="item in districts | orderBy : 'districtName'"><a ng-click='selectDistrict(item)'>{{item.districtName}}</a></li>
 							</ul>
 						</div>
 					</div>
@@ -137,7 +137,7 @@
 							</button>
 							<ul class="dropdown-menu small type-aggregate" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
 								<li role="menuitem"><a class="select_block"  ng-click="clearBlock()">ALL</a>
-								<li role="menuitem" ng-repeat="item in blocks | orderBy : 'blockName'"><a ng-click='selectBlock(item)'>{{crop(item.blockName)}}</a></li>
+								<li role="menuitem" ng-repeat="item in blocks | orderBy : 'blockName'"><a ng-click='selectBlock(item)'>{{item.blockName}}</a></li>
 							</ul>
 						</div>
 					</div>

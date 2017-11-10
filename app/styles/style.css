@@ -81,7 +81,7 @@ div.nav-bar .breadcrumb li a{
 	text-align: center;
 	padding: 12px 16px;
 	font-size: 12px;
-	cursor: default;
+	cursor: pointer;
 }
 
 .aggregate-submit{
@@ -101,12 +101,16 @@ div.nav-bar .breadcrumb li a.active{
 div.nav .aggregate-bread-crumb li a.active{
 	color: #23527c;
 	cursor:pointer ;
-	pointer-events : all;
+
 }
 
 .aggregate-bread-crumb{
     background : #eaeade !important ;
     padding : 7px 21px !important;
+}
+
+.aggregate-bread-crumb li a{
+   cursor:pointer ;
 }
 
 div.nav-bar ul.nav-menu {
@@ -543,12 +547,13 @@ color: white !important;
 }
 
 .ui-grid-header-cell .ui-grid-cell-contents {
+ padding-left : 10px;
  white-space: normal;
  -ms-text-overflow: clip;
  -o-text-overflow: clip;
  text-overflow: clip;
  overflow: visible;
- text-align : center !important;
+
  }
 
 .ui-grid-header-cell-label{
