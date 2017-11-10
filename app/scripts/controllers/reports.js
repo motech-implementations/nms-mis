@@ -454,6 +454,14 @@
 				$scope.state = null;
 				$scope.clearDistrict();
 				$scope.districts = [];
+				$scope.periodDisplayType = '';
+                $scope.dt1 = null;
+                $scope.dt2 = null;
+                $scope.hideGrid = true;
+                $scope.hideMessageMatrix = true;
+                $scope.showEmptyData = false;
+                $scope.setDateOptions();
+                $scope.clearFile();
 			}
 			$scope.selectDistrict = function(district){
 				if(district != null){
@@ -473,6 +481,14 @@
 				$scope.district = null;
 				$scope.clearBlock();
 				$scope.blocks = [];
+				$scope.periodDisplayType = '';
+                $scope.dt1 = null;
+                $scope.dt2 = null;
+                $scope.hideGrid = true;
+                $scope.hideMessageMatrix = true;
+                $scope.showEmptyData = false;
+                $scope.setDateOptions();
+                $scope.clearFile();
 			}
 			$scope.selectBlock = function(block){
 				if(block != null){
@@ -489,6 +505,14 @@
 			}
 			$scope.clearBlock = function(){
 				$scope.block = null;
+				$scope.periodDisplayType = '';
+                $scope.dt1 = null;
+                $scope.dt2 = null;
+                $scope.hideGrid = true;
+                $scope.hideMessageMatrix = true;
+                $scope.showEmptyData = false;
+                $scope.setDateOptions();
+                $scope.clearFile();
 			}
 			$scope.selectCircle = function(circle){
 				if(circle != null){
@@ -1089,14 +1113,14 @@
                                                          cellTemplate:'<a class="btn primary aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
                                                          width: '11%', enableHiding: false
                                                        },
-                                                       { field: 'ashasRegistered', name : 'No of Registered Asha', width:"10%", enableHiding: false},
-                                                       { field: 'ashasStarted', name : ' No of Asha Started Course',  width:"10%", enableHiding: false},
-                                                       { field: 'ashasNotStarted', name : ' No of Asha Not Started Course', width:"10%", enableHiding: false},
-                                                       { field: 'ashasCompleted' , name : 'No of Asha Successfully Completed the Course', width:"13%", enableHiding: false},
-                                                       { field: 'ashasFailed' , name : 'No of Asha who failed the course', width:"11%", enableHiding: false},
-                                                       { field: 'notStartedpercentage' , name : '% Not Started Course', width:"10%", enableHiding: false},
-                                                       { field: 'completedPercentage' , name : '% Successfully Completed', width:"9%", enableHiding: false},
-                                                       { field: 'failedpercentage' , name : '% Failed the course', width:"10%", enableHiding: false},
+                                                       { field: 'ashasRegistered', displayName : 'No of Registered ASHA', width:"10%", enableHiding: false},
+                                                       { field: 'ashasStarted', displayName : ' No of ASHA Started Course',  width:"10%", enableHiding: false},
+                                                       { field: 'ashasNotStarted', displayName : ' No of ASHA Not Started Course', width:"10%", enableHiding: false},
+                                                       { field: 'ashasCompleted' , displayName : 'No of ASHA Successfully Completed the Course', width:"13%", enableHiding: false},
+                                                       { field: 'ashasFailed' , displayName : 'No of ASHA who failed the course', width:"11%", enableHiding: false},
+                                                       { field: 'notStartedpercentage' , displayName : '% Not Started Course', width:"10%", enableHiding: false},
+                                                       { field: 'completedPercentage' , displayName : '% Successfully Completed', width:"9%", enableHiding: false},
+                                                       { field: 'failedpercentage' , displayName : '% Failed the course', width:"10%", enableHiding: false},
                                                       ],
 
 
@@ -1106,11 +1130,11 @@
                                                             cellTemplate:'<a class="btn primary aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
                                                             enableHiding: false, width:"11%"
                                                          },
-                                                         { field: 'ashasStarted', name: 'Number of Asha Started Course', width:"15%",enableHiding: false },
-                                                         { field: 'ashasAccessed', name: 'Number of Asha Pursuing Course', width:"16%", enableHiding: false },
-                                                         { field: 'ashasNotAccessed', name: 'Number of Asha not Pursuing Course', width:"17%", enableHiding: false},
-                                                         { field: 'ashasCompleted', name: 'Number of Asha Successfully Completed Course', width:"18%",enableHiding: false},
-                                                         { field: 'ashasFailed',  name: 'Number of Asha who Failed the Course', width:"17%", enableHiding: false},
+                                                         { field: 'ashasStarted', displayName: 'Number of ASHA Started Course', width:"15%",enableHiding: false },
+                                                         { field: 'ashasAccessed', displayName: 'Number of ASHA Pursuing Course', width:"16%", enableHiding: false },
+                                                         { field: 'ashasNotAccessed', displayName: 'Number of ASHA not Pursuing Course', width:"17%", enableHiding: false},
+                                                         { field: 'ashasCompleted', displayName: 'Number of ASHA Successfully Completed Course', width:"18%",enableHiding: false},
+                                                         { field: 'ashasFailed',  displayName: 'Number of ASHA who Failed the Course', width:"17%", enableHiding: false},
                                                         ],
 
             $scope.MA_Subscriber_Column_Definitions =[
@@ -1119,12 +1143,12 @@
                                                             cellTemplate:'<a class="btn primary aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
                                                             enableHiding: false,width:"10%"
                                                          },
-                                                         { field: 'registeredNotCompletedStart', name: 'Number of Asha Registered But Not Completed the Course(Period Start)',width:"16%", enableHiding: false },
-                                                         { field: 'recordsReceived', name: 'Number of Asha Received Through Web Service', width:"13%", enableHiding: false },
-                                                         { field: 'ashasRejected', name: 'Number of Asha Records Rejected', width:"13%", enableHiding: false},
-                                                         { field: 'ashasRegistered', name: 'Number of Asha Subscriptions Added', width:"13%", enableHiding: false},
-                                                         { field: 'ashasCompleted',  name: 'Number of Asha Successfully Completed the Course', width:"13%", enableHiding: false},
-                                                         { field: 'registeredNotCompletedend',  name: 'Number of Asha Registered But Not Completed the Course (Period End)', width:"16%", enableHiding: false},
+                                                         { field: 'registeredNotCompletedStart', displayName: 'Number of ASHA Registered But Not Completed the Course(Period Start)',width:"16%", enableHiding: false },
+                                                         { field: 'recordsReceived', displayName: 'Number of ASHA Records Received Through Web Service', width:"13%", enableHiding: false },
+                                                         { field: 'ashasRejected', displayName: 'Number of ASHA Records Rejected', width:"13%", enableHiding: false},
+                                                         { field: 'ashasRegistered', displayName: 'Number of ASHA Subscriptions Added', width:"13%", enableHiding: false},
+                                                         { field: 'ashasCompleted',  displayName: 'Number of ASHA Successfully Completed the Course', width:"13%", enableHiding: false},
+                                                         { field: 'registeredNotCompletedend',  displayName: 'Number of ASHA Registered But Not Completed the Course (Period End)', width:"16%", enableHiding: false},
                                                         ],
 
             $scope.Kilkari_Cumulative_Summary_Definitions =[
@@ -1167,7 +1191,7 @@
                                                      { field: 'selfDeactivated', name: 'Beneficiaries who have self-deactivated', width:"*", enableHiding: false },
                                                      { field: 'notAnswering', name: 'Beneficiaries deactivated for not answering.', width:"*", enableHiding: false},
                                                      { field: 'lowListenership', name: 'Beneficiaries deactivated for low listenership.', width:"*", enableHiding: false},
-                                                     { field: 'systemDeactivation', name: 'Beneficiaries deactivated by system through MCTS/RCH updates',width:"11%", enableHiding: false },
+                                                     { field: 'systemDeactivation', displayName: 'Beneficiaries deactivated by system through MCTS/RCH updates',width:"11%", enableHiding: false },
                                                      { field: 'motherCompletion', name: 'Beneficiaries completed Mother Pack', width:"*", enableHiding: false },
                                                      { field: 'childCompletion', name: 'Beneficiaries completed Child Pack', width:"*", enableHiding: false},
                                                      { field: 'calledInbox', name: 'Beneficiaries who have called the Kilkari Inbox', width:"*", enableHiding: false },
@@ -1204,7 +1228,7 @@
                                                      {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, cellTemplate: '<div>{{rowRenderIndex+1}}</div>'},
                                                      { field: 'locationName',
                                                         cellTemplate:'<a class="btn primary aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
-                                                        enableHiding: false,width:"7%"
+                                                        enableHiding: false,width:"10%"
                                                      },
                                                      { field: 'successfulCalls', name: 'Total Calles Attempted',width:"*", enableHiding: false },
                                                      { field: 'content_75_100', name: 'Total Number of Successful Calls', width:"*", enableHiding: false },
@@ -1259,7 +1283,7 @@
                                                         enableHiding: false,width:"10%"
                                                      },
                                                      { field: 'totalSubscriptionsStart', name: 'Total Subscription at the start of the period',width:"12%", enableHiding: false },
-                                                     { field: 'totalBeneficiaryRecordsReceived', name: 'Total beneficiary Records Received from RCH/MCTS',width:"13%", enableHiding: false },
+                                                     { field: 'totalBeneficiaryRecordsReceived', displayName: 'Total beneficiary Records Received from RCH/MCTS',width:"13%", enableHiding: false },
                                                      { field: 'totalBeneficiaryRecordsEligible', name: 'Total beneficiary Records Found Eligible for Subscriptions', width:"13%", enableHiding: false },
                                                      { field: 'totalBeneficiaryRecordsRejected', name: 'Total beneficiary records rejected due to wrong/duplicate mobile numbers', width:"14%", enableHiding: false},
                                                      { field: 'totalBeneficiaryRecordsAccepted', name: 'Total beneficiary Records accepted As Subscriptions',width:"12%", enableHiding: false },

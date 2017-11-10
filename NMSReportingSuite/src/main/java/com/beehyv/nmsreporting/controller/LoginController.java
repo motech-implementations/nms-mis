@@ -2,7 +2,6 @@ package com.beehyv.nmsreporting.controller;
 
 import com.beehyv.nmsreporting.business.LoginTrackerService;
 import com.beehyv.nmsreporting.business.UserService;
-import com.beehyv.nmsreporting.entity.ForgotPasswordDto;
 import com.beehyv.nmsreporting.model.LoginTracker;
 import com.beehyv.nmsreporting.model.User;
 import com.beehyv.nmsreporting.utils.LoginUser;
@@ -17,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
 
@@ -44,7 +44,7 @@ public class LoginController {
     }
 
     @RequestMapping(value={"/nms/login"}, method= RequestMethod.POST)
-    public String login(Model model,@RequestBody LoginUser loginUser, BindingResult errors) {
+    public String login( Model model, @ModelAttribute LoginUser loginUser, BindingResult errors) {
         validator.validate(loginUser, errors);
         System.out.println("username = " + loginUser.getUsername());
         System.out.println("password = " + loginUser.getPassword());
@@ -78,6 +78,13 @@ public class LoginController {
             loginTracker.setLoginSuccessful(true);
             loginTracker.setLoginTime(new Date());
             loginTrackerService.saveLoginDetails(loginTracker);
+            if(user.getDefault() == null){
+                user.setDefault(true);
+            }
+            if(user.getDefault()){
+                return "redirect:"+ uiAddress +"user/resetPassword";
+            }
+            user.setLoggedAtLeastOnce(true);
             return "redirect:"+ uiAddress +"reports";
         }
     }

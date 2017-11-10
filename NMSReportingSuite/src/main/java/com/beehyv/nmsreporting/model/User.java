@@ -76,6 +76,12 @@ public class User {
 	@Column(name = "role_name")
 	private String roleName;
 
+	@Column(name = "isLoggedOnce")
+	private Boolean loggedAtLeastOnce;
+
+	@Column(name = "isPasswordDefault")
+	private Boolean isDefault;
+
 	public Integer getUserId() {
 		return userId;
 	}
@@ -226,5 +232,21 @@ public class User {
 
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
+	}
+
+	public Boolean getLoggedAtLeastOnce() {
+		return loggedAtLeastOnce;
+	}
+
+	public void setLoggedAtLeastOnce(Boolean loggedAtLeastOnce) {
+		this.loggedAtLeastOnce = loggedAtLeastOnce;
+	}
+
+	public Boolean getDefault() {
+		return isDefault;
+	}
+
+	public void setDefault(Boolean aDefault) {
+		isDefault = aDefault;
 	}
 }
