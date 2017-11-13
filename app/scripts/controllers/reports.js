@@ -1285,7 +1285,7 @@
                                                      { field: 'totalSubscriptionsStart', name: 'Total Subscription at the start of the period',width:"12%", enableHiding: false },
                                                      { field: 'totalBeneficiaryRecordsReceived', displayName: 'Total beneficiary Records Received from RCH/MCTS',width:"13%", enableHiding: false },
                                                      { field: 'totalBeneficiaryRecordsEligible', name: 'Total beneficiary Records Found Eligible for Subscriptions', width:"13%", enableHiding: false },
-                                                     { field: 'totalBeneficiaryRecordsRejected', name: 'Total beneficiary records rejected due to wrong/duplicate mobile numbers', width:"14%", enableHiding: false},
+                                                     { field: 'totalBeneficiaryRecordsRejectedDuplicateMobileNumbers', name: 'Total beneficiary records rejected due to wrong/duplicate mobile numbers', width:"14%", enableHiding: false},
                                                      { field: 'totalBeneficiaryRecordsAccepted', name: 'Total beneficiary Records accepted As Subscriptions',width:"12%", enableHiding: false },
                                                      { field: 'totalSubscriptionsCompleted', name: 'Total number of subscriptions who have completed their packs', width:"12%", enableHiding: false },
                                                      { field: 'totalSubscriptionsEnd', name: 'Total Subscription at the end of the period', width:"10%", enableHiding: false },

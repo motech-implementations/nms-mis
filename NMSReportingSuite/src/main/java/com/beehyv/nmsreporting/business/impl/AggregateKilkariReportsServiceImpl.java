@@ -1460,7 +1460,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         aCalendar.set(Calendar.HOUR_OF_DAY, 0);
 
 
-        aCalendar.add(Calendar.DATE, -1);
+        aCalendar.add(Calendar.DATE, 0);
         Date fromDate = aCalendar.getTime();
         aCalendar.setTime(reportRequest.getToDate());
         aCalendar.set(Calendar.MILLISECOND, 0);
