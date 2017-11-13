@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class KilkariRepeatListenerMonthWisePercentDto {
     private Integer id;
-    private Integer month;
+    private String month;
     private Float fiveCallsAnsweredPercent;
     private Float fourCallsAnsweredPercent;
     private Float threeCallsAnsweredPercent;
@@ -21,11 +21,11 @@ public class KilkariRepeatListenerMonthWisePercentDto {
         this.id = id;
     }
 
-    public Integer getMonth() {
+    public String getMonth() {
         return month;
     }
 
-    public void setMonth(Integer month) {
+    public void setMonth(String month) {
         this.month = month;
     }
 

@@ -21,7 +21,7 @@ public class SubcenterDaoImpl extends AbstractDao<Integer, Subcenter> implements
     }
 
     @Override
-    public Subcenter findByLocationId(Long locationId) {
+    public Subcenter findByLocationId(Integer locationId) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.eq("locationId", locationId).ignoreCase());
         return (Subcenter) criteria.list().get(0);

@@ -8,7 +8,7 @@ import com.beehyv.nmsreporting.model.KilkariSubscriber;
 import java.util.Date;
 import java.util.List;
 
-public interface AggregateKilkariReportsDao {
+public interface KilkariSubscriberReportDao {
 
 
     KilkariSubscriber getKilkariSubscriberCounts(Integer locationId, String locationType, Date toDate);

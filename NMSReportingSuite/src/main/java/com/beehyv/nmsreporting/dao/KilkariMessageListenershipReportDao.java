@@ -6,6 +6,8 @@ package com.beehyv.nmsreporting.dao;
 
 
 import com.beehyv.nmsreporting.entity.KilkariMessageListenershipReportDto;
+import com.beehyv.nmsreporting.model.KilkariMessageListenership;
+import com.beehyv.nmsreporting.model.KilkariRepeatListenerMonthWise;
 import com.beehyv.nmsreporting.model.State;
 
 import java.math.BigInteger;
@@ -14,11 +16,5 @@ import java.util.List;
 
 public interface KilkariMessageListenershipReportDao {
 
-    List<State> getStateList();
-
-    List<Object> getAllBeneficiaryIds(Date startDate, Date endDate, Integer stateId);
-
-    Integer getTotalCallsMadeToABeneficiary(BigInteger beneficiaryId);
-
-    Integer getTotalCallsAnsweredByBeneficiary(BigInteger beneficiaryId);
+    KilkariMessageListenership getListenerData(Integer locationId, String locationType, Date date);
 }

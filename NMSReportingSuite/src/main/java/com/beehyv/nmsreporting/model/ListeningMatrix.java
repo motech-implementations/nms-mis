@@ -7,7 +7,7 @@ import java.util.Date;
  * Created by beehyv on 10/10/17.
  */
 @Entity
-@Table(name="listening_matrix")
+@Table(name="kilkari_listening_matrix")
 public class ListeningMatrix {
 
     @Id

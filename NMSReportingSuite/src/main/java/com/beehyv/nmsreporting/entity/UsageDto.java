@@ -5,16 +5,16 @@ package com.beehyv.nmsreporting.entity;
  */
 public class UsageDto {
 
-    String locationType;
-    String locationName;
-    Long locationId;
-    Long beneficiariesCalled;
-    Long calls_75_100;
-    Long calls_50_75;
-    Long calls_25_50;
-    Long calls_1_25;
-    Long answeredCall;
-    Long calledInbox;
+    private String locationType;
+    private String locationName;
+    private Long locationId;
+    private Long beneficiariesCalled;
+    private Long calls_75_100;
+    private Long calls_50_75;
+    private Long calls_25_50;
+    private Long calls_1_25;
+    private Long answeredCall;
+    private Long calledInbox;
 
     public Long getCalledInbox() {
         return calledInbox;

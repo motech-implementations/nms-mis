@@ -24,13 +24,10 @@ public class AggregateCumulativeBeneficiary {
     @Column(name="date", columnDefinition = "DATE")
     private Date date;
 
-    @Column(name="beneficiaries_called",columnDefinition = "BIGINT(20)")
-    private Long beneficiariesCalled;
-
     @Column(name="self_deactivated",columnDefinition = "BIGINT(20)")
     private Long selfDeactivated;
 
-    @Column(name="no_answer_deactivation",columnDefinition = "BIGINT(20)")
+    @Column(name="no_answer_deactivation",columnDefinition = "BIGINT(20))")
     private Long notAnswering;
 
     @Column(name="low_listener_deactivation",columnDefinition = "BIGINT(20)")
@@ -51,12 +48,11 @@ public class AggregateCumulativeBeneficiary {
     @Column(name="joined_subscription",columnDefinition = "BIGINT(20)")
     private Long joinedSubscription;
 
-    public AggregateCumulativeBeneficiary(Integer id, String locationType, Long locationId, Date date, Long beneficiariesCalled, Long selfDeactivated, Long notAnswering, Long lowListenership, Long systemDeactivation, Long motherCompletion, Long childCompletion, Long calledInbox, Long joinedSubscription) {
+    public AggregateCumulativeBeneficiary(Integer id, String locationType, Long locationId, Date date, Long selfDeactivated, Long notAnswering, Long lowListenership, Long systemDeactivation, Long motherCompletion, Long childCompletion, Long calledInbox, Long joinedSubscription) {
         this.id = id;
         this.locationType = locationType;
         this.locationId = locationId;
         this.date = date;
-        this.beneficiariesCalled = beneficiariesCalled;
         this.selfDeactivated = selfDeactivated;
         this.notAnswering = notAnswering;
         this.lowListenership = lowListenership;
@@ -101,14 +97,6 @@ public class AggregateCumulativeBeneficiary {
 
     public void setDate(Date date) {
         this.date = date;
-    }
-
-    public Long getBeneficiariesCalled() {
-        return beneficiariesCalled;
-    }
-
-    public void setBeneficiariesCalled(Long beneficiariesCalled) {
-        this.beneficiariesCalled = beneficiariesCalled;
     }
 
     public Long getSelfDeactivated() {

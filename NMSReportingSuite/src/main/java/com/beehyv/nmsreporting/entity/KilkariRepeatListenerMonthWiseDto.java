@@ -10,7 +10,7 @@ import java.util.Date;
 public class KilkariRepeatListenerMonthWiseDto {
 
     private Integer id;
-    private Integer month;
+    private String month;
     private Integer fiveCallsAnswered;
     private Integer fourCallsAnswered;
     private Integer threeCallsAnswered;
@@ -28,11 +28,11 @@ public class KilkariRepeatListenerMonthWiseDto {
         this.id = id;
     }
 
-    public Integer getMonth() {
+    public String getMonth() {
         return month;
     }
 
-    public void setMonth(Integer month) {
+    public void setMonth(String month) {
         this.month = month;
     }
 

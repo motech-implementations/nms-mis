@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by beehyv on 10/10/17.
@@ -24,27 +25,28 @@ public class ListeningMatrixDaoImpl extends AbstractDao<Integer,ListeningMatrix>
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.eq("date",date));
 
-        if(criteria.list().isEmpty()){
+        List<ListeningMatrix> result = criteria.list();
+        if(result.isEmpty()){
              return null;
         }
-       ListeningMatrix listeningMatrix= (ListeningMatrix) criteria.list().get(0);
+        ListeningMatrix listeningMatrix= result.get(0);
 
-        listeningMatrix.setCalls_1_content_1(listeningMatrix.getCalls_1_content_1()==null?0:listeningMatrix.getCalls_1_content_1());
-        listeningMatrix.setCalls_1_content_25(listeningMatrix.getCalls_1_content_25()==null?0:listeningMatrix.getCalls_1_content_25());
-        listeningMatrix.setCalls_1_content_50(listeningMatrix.getCalls_1_content_50()==null?0:listeningMatrix.getCalls_1_content_50());
-        listeningMatrix.setCalls_1_content_75(listeningMatrix.getCalls_1_content_75()==null?0:listeningMatrix.getCalls_1_content_75());
-        listeningMatrix.setCalls_25_content_1(listeningMatrix.getCalls_25_content_1()==null?0:listeningMatrix.getCalls_25_content_1());
-        listeningMatrix.setCalls_25_content_25(listeningMatrix.getCalls_25_content_25()==null?0:listeningMatrix.getCalls_25_content_25());
-        listeningMatrix.setCalls_25_content_50(listeningMatrix.getCalls_25_content_50()==null?0:listeningMatrix.getCalls_25_content_50());
-        listeningMatrix.setCalls_25_content_75(listeningMatrix.getCalls_25_content_75()==null?0:listeningMatrix.getCalls_25_content_75());
-        listeningMatrix.setCalls_50_content_1(listeningMatrix.getCalls_50_content_1()==null?0:listeningMatrix.getCalls_50_content_1());
-        listeningMatrix.setCalls_50_content_25(listeningMatrix.getCalls_50_content_25()==null?0:listeningMatrix.getCalls_50_content_25());
-        listeningMatrix.setCalls_50_content_50(listeningMatrix.getCalls_50_content_50()==null?0:listeningMatrix.getCalls_50_content_50());
-        listeningMatrix.setCalls_50_content_75(listeningMatrix.getCalls_50_content_75()==null?0:listeningMatrix.getCalls_50_content_75());
-        listeningMatrix.setCalls_75_Content_1(listeningMatrix.getCalls_75_Content_1()==null?0:listeningMatrix.getCalls_75_Content_1());
-        listeningMatrix.setCalls_75_Content_25(listeningMatrix.getCalls_75_Content_25()==null?0:listeningMatrix.getCalls_75_Content_25());
-        listeningMatrix.setCalls_75_Content_50(listeningMatrix.getCalls_75_Content_50()==null?0:listeningMatrix.getCalls_75_Content_50());
-        listeningMatrix.setCalls_75_Content_75(listeningMatrix.getCalls_75_Content_75()==null?0:listeningMatrix.getCalls_75_Content_75());
+        listeningMatrix.setCalls_1_content_1(listeningMatrix.getCalls_1_content_1() == null ? 0 : listeningMatrix.getCalls_1_content_1());
+        listeningMatrix.setCalls_1_content_25(listeningMatrix.getCalls_1_content_25() == null ? 0 : listeningMatrix.getCalls_1_content_25());
+        listeningMatrix.setCalls_1_content_50(listeningMatrix.getCalls_1_content_50() == null ? 0 : listeningMatrix.getCalls_1_content_50());
+        listeningMatrix.setCalls_1_content_75(listeningMatrix.getCalls_1_content_75() == null ? 0: listeningMatrix.getCalls_1_content_75());
+        listeningMatrix.setCalls_25_content_1(listeningMatrix.getCalls_25_content_1() == null ? 0 : listeningMatrix.getCalls_25_content_1());
+        listeningMatrix.setCalls_25_content_25(listeningMatrix.getCalls_25_content_25() == null ? 0 : listeningMatrix.getCalls_25_content_25());
+        listeningMatrix.setCalls_25_content_50(listeningMatrix.getCalls_25_content_50() == null ? 0 : listeningMatrix.getCalls_25_content_50());
+        listeningMatrix.setCalls_25_content_75(listeningMatrix.getCalls_25_content_75() == null ? 0 : listeningMatrix.getCalls_25_content_75());
+        listeningMatrix.setCalls_50_content_1(listeningMatrix.getCalls_50_content_1() == null ? 0 : listeningMatrix.getCalls_50_content_1());
+        listeningMatrix.setCalls_50_content_25(listeningMatrix.getCalls_50_content_25() == null ? 0 : listeningMatrix.getCalls_50_content_25());
+        listeningMatrix.setCalls_50_content_50(listeningMatrix.getCalls_50_content_50() == null ? 0 : listeningMatrix.getCalls_50_content_50());
+        listeningMatrix.setCalls_50_content_75(listeningMatrix.getCalls_50_content_75() == null ? 0 : listeningMatrix.getCalls_50_content_75());
+        listeningMatrix.setCalls_75_Content_1(listeningMatrix.getCalls_75_Content_1() == null ? 0 : listeningMatrix.getCalls_75_Content_1());
+        listeningMatrix.setCalls_75_Content_25(listeningMatrix.getCalls_75_Content_25() == null ? 0 : listeningMatrix.getCalls_75_Content_25());
+        listeningMatrix.setCalls_75_Content_50(listeningMatrix.getCalls_75_Content_50() == null ? 0 : listeningMatrix.getCalls_75_Content_50());
+        listeningMatrix.setCalls_75_Content_75(listeningMatrix.getCalls_75_Content_75() == null ? 0 : listeningMatrix.getCalls_75_Content_75());
         return listeningMatrix;
     }
 }

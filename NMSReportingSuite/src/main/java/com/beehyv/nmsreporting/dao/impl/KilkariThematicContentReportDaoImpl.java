@@ -36,17 +36,23 @@ public class KilkariThematicContentReportDaoImpl extends AbstractDao<Integer,Kil
         ));
 
         kilkariThematicContentData = (List<KilkariThematicContent>)criteria.list();
-        return (List<KilkariThematicContent>)kilkariThematicContentData;
+        if(kilkariThematicContentData.isEmpty()){
+            return null;
+        }
+        return kilkariThematicContentData;
     }
 
     @Override
     public String getMessageWeekNumber(Integer messageWeekNumber){
-        Query query = getSession().createSQLQuery("select md.week_id from message_duration md where md.id = :id")
+        Query query = getSession().createSQLQuery("select md.week_id from message_durations md where md.id = :id")
                       .setParameter("id",messageWeekNumber);
 
         Object result = query.uniqueResult();
-        return (String)result;
-
+        if(result == null){
+            return "";
+        }
+        String week[] = result.toString().split("_");
+        return week[0];
     }
 
     @Override
@@ -56,6 +62,9 @@ public class KilkariThematicContentReportDaoImpl extends AbstractDao<Integer,Kil
                         .setParameter("endDate",toDate)
                         .setParameter("messageId",messageId);
         BigInteger result = (BigInteger) query.uniqueResult();
+        if(result == null){
+            return 0;
+        }
         return result.intValue();
     }
 }

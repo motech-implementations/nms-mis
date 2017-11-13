@@ -8,6 +8,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by beehyv on 12/10/17.
@@ -21,13 +22,14 @@ public class MessageMatrixDaoImpl extends AbstractDao<Integer,MessageMatrix> imp
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.eq("date",date));
 
-        if(criteria.list().isEmpty()){
+        List<MessageMatrix> result = criteria.list();
+        if(result.isEmpty()){
 //            Long a = (long)0;
 //            MessageMatrix messageMatrix = new MessageMatrix(0,date,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a);
 //            return messageMatrix;
             return null;
         }
-        MessageMatrix messageMatrix = (MessageMatrix) criteria.list().get(0);
+        MessageMatrix messageMatrix = result.get(0);
 
         messageMatrix.setChild_1_6_Content_1(messageMatrix.getChild_1_6_Content_1()==null?0:messageMatrix.getChild_1_6_Content_1());
         messageMatrix.setChild_1_6_Content_25(messageMatrix.getChild_1_6_Content_25()==null?0:messageMatrix.getChild_1_6_Content_25());

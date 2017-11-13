@@ -1,7 +1,6 @@
 package com.beehyv.nmsreporting.controller;
 
 import com.beehyv.nmsreporting.business.*;
-import com.beehyv.nmsreporting.business.impl.MAPerformanceServiceImpl;
 import com.beehyv.nmsreporting.dao.BlockDao;
 import com.beehyv.nmsreporting.dao.DistrictDao;
 import com.beehyv.nmsreporting.dao.StateDao;
@@ -403,66 +402,74 @@ public class UserController {
         }
         if (reportRequest.getReportType().equals(ReportType.kilkariCumulative.getReportType())) {
             aggregateResponseDto.setBreadCrumbData(breadCrumbs);
-            List<AggregateCumulativekilkariDto> aggregateCumulativekilkariDtos = aggregateReportsService.getKilkariCumulativeSummary(reportRequest, currentUser);
-            aggregateResponseDto.setTableData(aggregateCumulativekilkariDtos);
+            List<AggregateCumulativeKilkariDto> aggregateCumulativeKilkariDtos = aggregateKilkariReportsService.getKilkariCumulativeSummary(reportRequest, currentUser);
+            aggregateResponseDto.setTableData(aggregateCumulativeKilkariDtos);
             return aggregateResponseDto;
         }
-        if (reportRequest.getReportType().equals(ReportType.beneficiaryCompletion.getReportType())) {
-            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
-            List<AggCumulativeBeneficiaryComplDto> aggCumulativeBeneficiaryComplDtos = aggregateReportsService.getCumulativeBeneficiaryCompletion(reportRequest, currentUser);
-            aggregateResponseDto.setTableData(aggCumulativeBeneficiaryComplDtos);
-            return aggregateResponseDto;
+        
+        if (reportRequest.getReportType().equals(ReportType.kilkariSubscriber.getReportType())) {
+            aggregateKilkariResponseDto.setBreadCrumbData(breadCrumbs);
+            aggregateKilkariResponseDto = aggregateKilkariReportsService.getKilkariSubscriberCountReport(reportRequest);
+            return aggregateKilkariResponseDto;
         }
+
         if (reportRequest.getReportType().equals(ReportType.beneficiary.getReportType())) {
             aggregateResponseDto.setBreadCrumbData(breadCrumbs);
-            List<AggregateBeneficiaryDto> aggregateBeneficiaryDtos = aggregateReportsService.getBeneficiaryReport(reportRequest, currentUser);
-            aggregateResponseDto.setTableData(aggregateBeneficiaryDtos);
-            return aggregateResponseDto;
-        }
-        if (reportRequest.getReportType().equals(ReportType.usage.getReportType())) {
-            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
-            List<UsageDto> kilkariUsageDtos = aggregateReportsService.getUsageReport(reportRequest, currentUser);
-            aggregateResponseDto.setTableData(kilkariUsageDtos);
-            return aggregateResponseDto;
-        }
-        if (reportRequest.getReportType().equals(ReportType.listeningMatrix.getReportType())) {
-            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
-            List<ListeningMatrixDto> listeningMatrixDtos = aggregateReportsService.getListeningMatrixReport(reportRequest, currentUser);
-            aggregateResponseDto.setTableData(listeningMatrixDtos);
-            return aggregateResponseDto;
-        }
-        if (reportRequest.getReportType().equals(ReportType.kilkariCalls.getReportType())) {
-            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
-            List<KilkariCallReportDto> kilkariCallReportDtos = aggregateReportsService.getKilkariCallReport(reportRequest, currentUser);
-            aggregateResponseDto.setTableData(kilkariCallReportDtos);
+            List<KilkariAggregateBeneficiariesDto> kilkariAggregateBeneficiariesDtos = aggregateKilkariReportsService.getBeneficiaryReport(reportRequest, currentUser);
+            aggregateResponseDto.setTableData(kilkariAggregateBeneficiariesDtos);
             return aggregateResponseDto;
         }
 
-        if (reportRequest.getReportType().equals(ReportType.messageMatrix.getReportType())) {
-            return aggregateReportsService.getMessageMatrixReport(reportRequest, currentUser);
+        if (reportRequest.getReportType().equals(ReportType.usage.getReportType())) {
+            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
+            List<UsageDto> kilkariUsageDtos = aggregateKilkariReportsService.getUsageReport(reportRequest, currentUser);
+            aggregateResponseDto.setTableData(kilkariUsageDtos);
+            return aggregateResponseDto;
         }
+
+        if (reportRequest.getReportType().equals(ReportType.kilkariMessageListenership.getReportType())) {
+            aggregateKilkariResponseDto.setBreadCrumbData(breadCrumbs);
+            aggregateKilkariResponseDto = aggregateKilkariReportsService.getKilkariMessageListenershipReport(reportRequest);
+            return aggregateKilkariResponseDto;
+        }
+
+        if (reportRequest.getReportType().equals(ReportType.beneficiaryCompletion.getReportType())) {
+            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
+            List<AggCumulativeBeneficiaryComplDto> aggCumulativeBeneficiaryComplDtos = aggregateKilkariReportsService.getCumulativeBeneficiaryCompletion(reportRequest, currentUser);
+            aggregateResponseDto.setTableData(aggCumulativeBeneficiaryComplDtos);
+            return aggregateResponseDto;
+        }
+
+        if (reportRequest.getReportType().equals(ReportType.listeningMatrix.getReportType())) {
+            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
+            List<ListeningMatrixDto> listeningMatrixDtos = aggregateKilkariReportsService.getListeningMatrixReport(reportRequest, currentUser);
+            aggregateResponseDto.setTableData(listeningMatrixDtos);
+            return aggregateResponseDto;
+        }
+
+        if (reportRequest.getReportType().equals(ReportType.kilkariThematicContent.getReportType())) {
+            aggregateKilkariResponseDto = aggregateKilkariReportsService.getKilkariThematicContentReport(reportRequest);
+            aggregateKilkariResponseDto.setBreadCrumbData(breadCrumbs);
+            return aggregateKilkariResponseDto;
+
+        }
+
+        if (reportRequest.getReportType().equals(ReportType.messageMatrix.getReportType())) {
+            return aggregateKilkariReportsService.getMessageMatrixReport(reportRequest, currentUser);
+        }
+
         if(reportRequest.getReportType().equals(ReportType.kilkariRepeatListenerMonthWise.getReportType())) {
             AggregateKilkariRepeatListenerMonthWiseDto aggregateKilkariRepeatListenerMonthWiseDto = new AggregateKilkariRepeatListenerMonthWiseDto();
             aggregateKilkariRepeatListenerMonthWiseDto = aggregateKilkariReportsService.getKilkariListenerMonthWiseReport(reportRequest);
             return aggregateKilkariRepeatListenerMonthWiseDto;
         }
 
-            if (reportRequest.getReportType().equals(ReportType.kilkariSubscriber.getReportType())) {
-                aggregateKilkariResponseDto = aggregateKilkariReportsService.getKilkariSubscriberCountReport(reportRequest);
-                aggregateKilkariResponseDto.setBreadCrumbData(breadCrumbs);
-                return aggregateKilkariResponseDto;
-            }
-            if (reportRequest.getReportType().equals(ReportType.kilkariMessageListenership.getReportType())) {
-                aggregateKilkariResponseDto = aggregateKilkariReportsService.getKilkariMessageListnershipReport(reportRequest);
-                aggregateKilkariResponseDto.setBreadCrumbData(breadCrumbs);
-                return aggregateKilkariResponseDto;
-            }
-            if (reportRequest.getReportType().equals(ReportType.kilkariThematicContent.getReportType())) {
-                aggregateKilkariResponseDto = aggregateKilkariReportsService.getKilkariThematicContentReport(reportRequest);
-                aggregateKilkariResponseDto.setBreadCrumbData(breadCrumbs);
-                return aggregateKilkariResponseDto;
-
-            }
+        if (reportRequest.getReportType().equals(ReportType.kilkariCalls.getReportType())) {
+            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
+            List<KilkariCallReportDto> kilkariCallReportDtos = aggregateKilkariReportsService.getKilkariCallReport(reportRequest, currentUser);
+            aggregateResponseDto.setTableData(kilkariCallReportDtos);
+            return aggregateResponseDto;
+        }
 
             if (reportRequest.getReportType().equals(ReportType.maPerformance.getReportType())) {
                 DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
@@ -1094,31 +1101,6 @@ public class UserController {
 
         return dateString + "_" + monthString+"_"+yearString;
 
-    }
-
-    @RequestMapping(value = "/kilkariSubscriberReport", method = RequestMethod.POST/*,produces = "application/vnd.ms-excel"*/)
-    @ResponseBody
-    @Transactional
-    public Object getKilkariSubscriberReport(@RequestBody ReportRequest reportRequest/*,HttpServletResponse response*/) throws ParseException, java.text.ParseException {
-        String reportPath = "";
-        String reportName = "";
-        String rootPath = "";
-        String place = AccessLevel.NATIONAL.getAccessLevel();
-        AggregateKilkariReportsDto aggregateKilkariResponseDto = new AggregateKilkariReportsDto();
-        User currentUser = userService.getCurrentUser();
-        List<BreadCrumbDto> breadCrumbs = breadCrumbService.getBreadCrumbs(currentUser,reportRequest);
-
-        if(reportRequest.getReportType().equals(ReportType.kilkariSubscriber.getReportType())) {
-            aggregateKilkariResponseDto = aggregateKilkariReportsService.getKilkariSubscriberCountReport(reportRequest);
-            aggregateKilkariResponseDto.setBreadCrumbData(breadCrumbs);
-        }
-        if(reportRequest.getReportType().equals(ReportType.kilkariMessageListenership.getReportType())) {
-            aggregateKilkariResponseDto = aggregateKilkariReportsService.getKilkariMessageListnershipReport(reportRequest);
-            aggregateKilkariResponseDto.setBreadCrumbData(breadCrumbs);
-            return aggregateKilkariResponseDto;
-        }
-
-        return aggregateKilkariResponseDto;
     }
 
 }

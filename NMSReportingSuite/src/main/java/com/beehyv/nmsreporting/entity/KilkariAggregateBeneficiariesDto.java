@@ -3,21 +3,30 @@ package com.beehyv.nmsreporting.entity;
 /**
  * Created by beehyv on 9/10/17.
  */
-public class AggregateBeneficiaryDto {
+public class KilkariAggregateBeneficiariesDto {
 
-    String locationType;
-    String locationName;
-    Long locationId;
-    Long beneficiariesCalled;
-    Long answeredCall;
-    Long selfDeactivated;
-    Long notAnswering;
-    Long lowListenership;
-    Long systemDeactivation;
-    Long motherCompletion;
-    Long childCompletion;
-    Long calledInbox;
-    Long joinedSubscription;
+    private Integer id;
+    private String locationType;
+    private String locationName;
+    private Long locationId;
+    private Long beneficiariesCalled;
+    private Long answeredAtleastOneCall;
+    private Long selfDeactivated;
+    private Long notAnswering;
+    private Long lowListenership;
+    private Long systemDeactivation;
+    private Long motherCompletion;
+    private Long childCompletion;
+    private Long calledInbox;
+    private Long joinedSubscription;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getLocationType() {
         return locationType;
@@ -51,12 +60,12 @@ public class AggregateBeneficiaryDto {
         this.beneficiariesCalled = beneficiariesCalled;
     }
 
-    public Long getAnsweredCall() {
-        return answeredCall;
+    public Long getAnsweredAtleastOneCall() {
+        return answeredAtleastOneCall;
     }
 
-    public void setAnsweredCall(Long answeredCall) {
-        this.answeredCall = answeredCall;
+    public void setAnsweredAtleastOneCall(Long answeredAtleastOneCall) {
+        this.answeredAtleastOneCall = answeredAtleastOneCall;
     }
 
     public Long getSelfDeactivated() {
