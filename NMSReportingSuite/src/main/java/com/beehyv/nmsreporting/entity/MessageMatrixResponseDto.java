@@ -7,8 +7,8 @@ import java.util.List;
  */
 public class MessageMatrixResponseDto {
 
-    List<MessageMatrixDto> motherData;
-    List<MessageMatrixDto> childData;
+    private List<MessageMatrixDto> motherData;
+    private List<MessageMatrixDto> childData;
 
     public List<MessageMatrixDto> getMotherData() {
         return motherData;

@@ -5,16 +5,16 @@ package com.beehyv.nmsreporting.entity;
  */
 public class AggCumulativeBeneficiaryComplDto {
 
-    int id;
-    String locationType;
-    String locationName;
-    Long locationId;
-    Long completedBeneficiaries;
-    Integer avgWeeks;
-    Long calls_75_100;
-    Long calls_50_75;
-    Long calls_25_50;
-    Long calls_1_25;
+    private int id;
+    private String locationType;
+    private String locationName;
+    private Long locationId;
+    private Long completedBeneficiaries;
+    private Integer avgWeeks;
+    private Long calls_75_100;
+    private Long calls_50_75;
+    private Long calls_25_50;
+    private Long calls_1_25;
 
 
     public int getId() {

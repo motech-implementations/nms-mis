@@ -2,8 +2,8 @@ package com.beehyv.nmsreporting.entity;
 
 public class AggregateKilkariRepeatListenerMonthWiseDto {
 
-    Object numberData;
-    Object percentData;
+    private Object numberData;
+    private Object percentData;
 
     public Object getNumberData() {
         return numberData;
