@@ -8,8 +8,8 @@ import java.util.List;
 
 public class AggregateKilkariReportsDto {
 
-    List<BreadCrumbDto> breadCrumbData;
-    Object tableData;
+    private List<BreadCrumbDto> breadCrumbData;
+    private Object tableData;
 
     public List<BreadCrumbDto> getBreadCrumbData() {
         return breadCrumbData;

@@ -5,18 +5,18 @@ package com.beehyv.nmsreporting.entity;
  */
 public class KilkariCallReportDto {
 
-    String locationType;
-    String locationName;
-    Long locationId;
-    Long callsAttempted;
-    Long content_75_100;
-    Long content_50_75;
-    Long content_25_50;
-    Long content_1_25;
-    Long successfulCalls;
-    Long billableMinutes;
-    Long callsToInbox;
-    Integer avgDuration;
+    private String locationType;
+    private String locationName;
+    private Long locationId;
+    private Long callsAttempted;
+    private Long content_75_100;
+    private Long content_50_75;
+    private Long content_25_50;
+    private Long content_1_25;
+    private Long successfulCalls;
+    private Long billableMinutes;
+    private Long callsToInbox;
+    private Integer avgDuration;
 
     public String getLocationType() {
         return locationType;

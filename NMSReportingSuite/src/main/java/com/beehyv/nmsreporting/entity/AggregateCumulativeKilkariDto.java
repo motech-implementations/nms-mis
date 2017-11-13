@@ -5,14 +5,14 @@ package com.beehyv.nmsreporting.entity;
  */
 public class AggregateCumulativeKilkariDto {
 
-    int id;
-    String locationType;
-    String locationName;
-    Integer locationId;
-    Integer uniqueBeneficiaries;
-    Integer successfulCalls;
-    Integer billableMinutes;
-    Integer averageDuration;
+    private int id;
+    private String locationType;
+    private String locationName;
+    private Integer locationId;
+    private Integer uniqueBeneficiaries;
+    private Integer successfulCalls;
+    private Integer billableMinutes;
+    private Integer averageDuration;
 
     public int getId() {
         return id;
