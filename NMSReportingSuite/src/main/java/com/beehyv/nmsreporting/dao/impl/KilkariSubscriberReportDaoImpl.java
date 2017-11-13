@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Date;
 import java.util.List;
 
-@Repository("aggregateKilkariReportsDao")
+@Repository("kilkariSubscriberReportDao")
 public class KilkariSubscriberReportDaoImpl extends AbstractDao<Integer,KilkariSubscriber> implements KilkariSubscriberReportDao {
     @Override
     public KilkariSubscriber getKilkariSubscriberCounts(Integer locationId, String locationType, Date toDate){

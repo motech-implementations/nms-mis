@@ -137,16 +137,16 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             summaryDto1.setAverageDuration(a.getSuccessfulCalls() == 0 ? 0 : a.getBillableMinutes()/a.getSuccessfulCalls());
             String locationType = a.getLocationType();
             if(locationType.equalsIgnoreCase("State")){
-                summaryDto1.setLocationName(stateDao.findByStateId(a.getLocationId()).getStateName());
+                summaryDto1.setLocationName(stateDao.findByStateId(a.getLocationId().intValue()).getStateName());
             }
             if(locationType.equalsIgnoreCase("District")){
-                summaryDto1.setLocationName(districtDao.findByDistrictId(a.getLocationId()).getDistrictName());
+                summaryDto1.setLocationName(districtDao.findByDistrictId(a.getLocationId().intValue()).getDistrictName());
             }
             if(locationType.equalsIgnoreCase("Block")){
-                summaryDto1.setLocationName(blockDao.findByblockId(a.getLocationId()).getBlockName());
+                summaryDto1.setLocationName(blockDao.findByblockId(a.getLocationId().intValue()).getBlockName());
             }
             if(locationType.equalsIgnoreCase("Subcenter")){
-                summaryDto1.setLocationName(subcenterDao.findBySubcenterId(a.getLocationId()).getSubcenterName());
+                summaryDto1.setLocationName(subcenterDao.findBySubcenterId(a.getLocationId().intValue()).getSubcenterName());
             }
             if (locationType.equalsIgnoreCase("DifferenceState")) {
                 summaryDto1.setLocationName("No District");
@@ -178,9 +178,9 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         else if(locationType.equalsIgnoreCase("District")){
                 List<District> districts = districtDao.getDistrictsOfState(locationId);
                 AggregateCumulativeKilkari stateCounts = aggregateCumulativekilkariDao.getKilkariCumulativeSummary(locationId,"State",toDate);
-                Integer uniqueBeneficiaries = 0;
-                Integer successfulCalls = 0;
-                Integer billableMinutes = 0;
+                Long uniqueBeneficiaries = (long)0;
+                Long successfulCalls = (long)0;
+                Long billableMinutes = (long)0;
                 for(District d:districts){
                     AggregateCumulativeKilkari distrcitCount = aggregateCumulativekilkariDao.getKilkariCumulativeSummary(d.getDistrictId(),locationType,toDate);
                     CumulativeSummary.add(aggregateCumulativekilkariDao.getKilkariCumulativeSummary(d.getDistrictId(),locationType,toDate));
@@ -194,14 +194,14 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 noDistrictCount.setBillableMinutes(stateCounts.getBillableMinutes()-billableMinutes);
                 noDistrictCount.setLocationType("DifferenceState");
                 noDistrictCount.setId((int)(stateCounts.getUniqueBeneficiaries()-uniqueBeneficiaries+stateCounts.getSuccessfulCalls()-successfulCalls+stateCounts.getBillableMinutes()-billableMinutes));
-                noDistrictCount.setLocationId((-1));
+                noDistrictCount.setLocationId((long)(-1));
                 CumulativeSummary.add(noDistrictCount);
         } else if(locationType.equalsIgnoreCase("Block")) {
                     List<Block> blocks = blockDao.getBlocksOfDistrict(locationId);
                     AggregateCumulativeKilkari districtCounts = aggregateCumulativekilkariDao.getKilkariCumulativeSummary(locationId,"District",toDate);
-                    Integer uniqueBeneficiaries = 0;
-                    Integer successfulCalls = 0;
-                    Integer billableMinutes = 0;
+                    Long uniqueBeneficiaries = (long)0;
+                    Long successfulCalls = (long)0;
+                    Long billableMinutes = (long)0;
                     for (Block d : blocks) {
                         AggregateCumulativeKilkari blockCount = aggregateCumulativekilkariDao.getKilkariCumulativeSummary(d.getBlockId(),locationType,toDate);
                         CumulativeSummary.add(aggregateCumulativekilkariDao.getKilkariCumulativeSummary(d.getBlockId(), locationType,toDate));
@@ -215,14 +215,14 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     noBlockCount.setBillableMinutes(districtCounts.getBillableMinutes()-billableMinutes);
                     noBlockCount.setLocationType("DifferenceDistrict");
                     noBlockCount.setId((int)(districtCounts.getUniqueBeneficiaries()-uniqueBeneficiaries+districtCounts.getSuccessfulCalls()-successfulCalls+districtCounts.getBillableMinutes()-billableMinutes));
-                    noBlockCount.setLocationId(-1);
+                    noBlockCount.setLocationId((long)-1);
                     CumulativeSummary.add(noBlockCount);
         } else {
                     List<Subcenter> subcenters = subcenterDao.getSubcentersOfBlock(locationId);
                     AggregateCumulativeKilkari blockCounts = aggregateCumulativekilkariDao.getKilkariCumulativeSummary(locationId,"block",toDate);
-                    Integer uniqueBeneficiaries = 0;
-                    Integer successfulCalls = 0;
-                    Integer billableMinutes = 0;
+                    Long uniqueBeneficiaries = (long)0;
+                    Long successfulCalls = (long)0;
+                    Long billableMinutes = (long)0;
                     for(Subcenter s: subcenters){
                         AggregateCumulativeKilkari SubcenterCount = aggregateCumulativekilkariDao.getKilkariCumulativeSummary(s.getSubcenterId(),locationType,toDate);
                         CumulativeSummary.add(SubcenterCount);
@@ -236,7 +236,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     noSubcenterCount.setBillableMinutes(blockCounts.getBillableMinutes()-billableMinutes);
                     noSubcenterCount.setLocationType("DifferenceBlock");
                     noSubcenterCount.setId((int)(blockCounts.getUniqueBeneficiaries()-uniqueBeneficiaries+blockCounts.getSuccessfulCalls()-successfulCalls+blockCounts.getBillableMinutes()-billableMinutes));
-                    noSubcenterCount.setLocationId((-1));
+                    noSubcenterCount.setLocationId((long)(-1));
                     CumulativeSummary.add(noSubcenterCount);
                 }
         return CumulativeSummary;
