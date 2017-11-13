@@ -157,11 +157,9 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             if (locationType.equalsIgnoreCase("DifferenceBlock")) {
                 summaryDto1.setLocationName("No Subcenter");
             }
-
             if(a.getId() != 0){
                 summaryDto.add(summaryDto1);
             }
-
         }
         return summaryDto;
     }
@@ -295,7 +293,6 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                         KilkariSubscriber end = kilkariSubscriberReportEnd.get(i);
                         KilkariSubscriber start = kilkariSubscriberReportStart.get(j);
                         KilkariSubscriberDto kilkariSubscriberDto = new KilkariSubscriberDto();
-                        kilkariSubscriberDto.setId(end.getId());
                         kilkariSubscriberDto.setLocationId(end.getLocationId());
                         kilkariSubscriberDto.setTotalSubscriptionsStart(start.getTotalSubscriptions());
                         kilkariSubscriberDto.setTotalSubscriptionsEnd(end.getTotalSubscriptions());
@@ -355,7 +352,6 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             for(State state:states){
                 kilkariSubscribersCountList.add(kilkariSubscriberReportDao.getKilkariSubscriberCounts(state.getStateId(),locationType, date));
             }
-
         } else if(locationType.equalsIgnoreCase("District")){
                 List<District> districts = districtDao.getDistrictsOfState(locationId);
                 KilkariSubscriber kilkariStateCounts = kilkariSubscriberReportDao.getKilkariSubscriberCounts(locationId,locationType, date);
