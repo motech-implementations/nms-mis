@@ -4,6 +4,7 @@ import com.beehyv.nmsreporting.business.LoginTrackerService;
 import com.beehyv.nmsreporting.business.UserService;
 import com.beehyv.nmsreporting.model.LoginTracker;
 import com.beehyv.nmsreporting.model.User;
+import com.beehyv.nmsreporting.utils.Global;
 import com.beehyv.nmsreporting.utils.LoginUser;
 import com.beehyv.nmsreporting.utils.LoginValidator;
 import org.apache.shiro.SecurityUtils;
@@ -20,9 +21,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import java.util.Date;
+import java.util.Properties;
 
-import static com.beehyv.nmsreporting.utils.Global.uiAddress;
+import static com.beehyv.nmsreporting.utils.Global.retrieveUiAddress;
 
 /**
  * Created by beehyv on 15/3/17.
@@ -42,7 +45,7 @@ public class LoginController {
     protected String returnLoginView(Model model, @ModelAttribute LoginUser loginUser) {
 //        System.out.println("\n\n" + SecurityUtils.getSubject().getSession()+ "!!!!!!!!!!!\n\n");
         ensureUserIsLoggedOut();
-        return "redirect:"+ uiAddress +"login";
+        return "redirect:"+ retrieveUiAddress() +"login";
     }
 
     @RequestMapping(value={"/nms/login"}, method= RequestMethod.POST)
@@ -53,7 +56,7 @@ public class LoginController {
         System.out.println("rememberme " + loginUser.isRememberMe());
         if( errors.hasErrors() ) {
             ensureUserIsLoggedOut();
-            return "redirect:"+ uiAddress +"login?error";
+            return "redirect:"+ retrieveUiAddress() +"login?error";
         }
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(loginUser.getUsername(), loginUser.getPassword(), loginUser.isRememberMe());
@@ -73,21 +76,21 @@ public class LoginController {
                 loginTrackerService.saveLoginDetails(loginTracker);
             }
             ensureUserIsLoggedOut();
-            return "redirect:"+ uiAddress +"login?error";
+            return "redirect:"+ retrieveUiAddress() +"login?error";
         } else {
             LoginTracker loginTracker=new LoginTracker();
             loginTracker.setUserId(user.getUserId());
             loginTracker.setLoginSuccessful(true);
             loginTracker.setLoginTime(new Date());
             loginTrackerService.saveLoginDetails(loginTracker);
-            return "redirect:"+ uiAddress +"reports";
+            return "redirect:"+ retrieveUiAddress() +"reports";
         }
     }
 
     @RequestMapping(value = {"/nms/index"}, method = RequestMethod.GET)
     protected String returnHomeView(Model model) {
 //        System.out.println("\n\n" + SecurityUtils.getSubject().getSession()+ "!!!!!!!!!!!\n\n");
-        return "redirect:"+ uiAddress +"userManagement";
+        return "redirect:"+ retrieveUiAddress() +"userManagement";
     }
 
     @RequestMapping(value = {"/nms/loginDummy"}, method = RequestMethod.GET)

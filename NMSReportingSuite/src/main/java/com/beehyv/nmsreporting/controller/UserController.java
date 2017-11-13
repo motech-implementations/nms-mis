@@ -10,6 +10,7 @@ import com.beehyv.nmsreporting.model.ModificationTracker;
 import com.beehyv.nmsreporting.model.Role;
 import com.beehyv.nmsreporting.model.State;
 import com.beehyv.nmsreporting.model.User;
+import com.beehyv.nmsreporting.utils.Global;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.ParseException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.DefaultValue;
@@ -27,7 +29,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
 
-import static com.beehyv.nmsreporting.utils.Global.documentsAddress;
+import static com.beehyv.nmsreporting.utils.Global.retrieveDocuments;
 import static com.beehyv.nmsreporting.utils.ServiceFunctions.StReplace;
 
 /**
@@ -55,8 +57,7 @@ public class UserController {
     private ReportService reportService;
 
     private final Date bigBang = new Date(0);
-//    private final String documents = System.getProperty("user.home") +File.separator+ "Documents/";
-    private final String documents = documentsAddress;
+    private final String documents = retrieveDocuments();
     private final String reports = documents+"Reports/";
     private Calendar c =Calendar.getInstance();
     @RequestMapping(value = {"/", "/list"}, method = RequestMethod.GET)
