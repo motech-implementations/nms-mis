@@ -16,6 +16,7 @@
                         $scope.forgotPassword = {};
                         $scope.forgotPasswordForm.$setPristine();
                         $scope.forgotPasswordForm.$setUntouched();
+                        $state.go('login', {});
 
                      },function (result){
                         $scope.showAlert("error changing password");
