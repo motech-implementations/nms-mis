@@ -25,7 +25,8 @@ public class AggregateCumulativeKilkariDaoImpl extends AbstractDao<Integer,Aggre
                 Restrictions.eq("date",toDate)
         ));
         if(criteria.list().isEmpty()){
-            AggregateCumulativeKilkari aggregateCumulativeKilkari = new AggregateCumulativeKilkari(0,locationType,locationId.longValue(),toDate,0,(long)0,(long)0);
+            Long a = (long)0;
+            AggregateCumulativeKilkari aggregateCumulativeKilkari = new AggregateCumulativeKilkari(0,locationType,locationId.longValue(),toDate,a,a,a);
             return aggregateCumulativeKilkari;
         }
 

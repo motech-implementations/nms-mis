@@ -8,11 +8,11 @@ public class AggregateCumulativeKilkariDto {
     private int id;
     private String locationType;
     private String locationName;
-    private Integer locationId;
-    private Integer uniqueBeneficiaries;
-    private Integer successfulCalls;
-    private Integer billableMinutes;
-    private Integer averageDuration;
+    private Long locationId;
+    private Long uniqueBeneficiaries;
+    private Long successfulCalls;
+    private Long billableMinutes;
+    private Long averageDuration;
 
     public int getId() {
         return id;
@@ -38,43 +38,43 @@ public class AggregateCumulativeKilkariDto {
         this.locationName = locationName;
     }
 
-    public Integer getLocationId() {
+    public Long getLocationId() {
         return locationId;
     }
 
-    public void setLocationId(Integer locationId) {
+    public void setLocationId(Long locationId) {
         this.locationId = locationId;
     }
 
-    public Integer getUniqueBeneficiaries() {
+    public Long getUniqueBeneficiaries() {
         return uniqueBeneficiaries;
     }
 
-    public void setUniqueBeneficiaries(Integer uniqueBeneficiaries) {
+    public void setUniqueBeneficiaries(Long uniqueBeneficiaries) {
         this.uniqueBeneficiaries = uniqueBeneficiaries;
     }
 
-    public Integer getSuccessfulCalls() {
+    public Long getSuccessfulCalls() {
         return successfulCalls;
     }
 
-    public void setSuccessfulCalls(Integer successfulCalls) {
+    public void setSuccessfulCalls(Long successfulCalls) {
         this.successfulCalls = successfulCalls;
     }
 
-    public Integer getBillableMinutes() {
+    public Long getBillableMinutes() {
         return billableMinutes;
     }
 
-    public void setBillableMinutes(Integer billableMinutes) {
+    public void setBillableMinutes(Long billableMinutes) {
         this.billableMinutes = billableMinutes;
     }
 
-    public Integer getAverageDuration() {
+    public Long getAverageDuration() {
         return averageDuration;
     }
 
-    public void setAverageDuration(Integer averageDuration) {
+    public void setAverageDuration(Long averageDuration) {
         this.averageDuration = averageDuration;
     }
 }

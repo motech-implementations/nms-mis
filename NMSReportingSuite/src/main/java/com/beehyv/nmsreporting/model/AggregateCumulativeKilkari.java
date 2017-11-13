@@ -18,25 +18,25 @@ public class AggregateCumulativeKilkari {
     @Column(name="location_type", columnDefinition = "VARCHAR(45)")
     private String locationType;
 
-    @Column(name="location_id", columnDefinition = "INT(11)")
-    private Integer locationId;
+    @Column(name="location_id", columnDefinition = "BIGINT(20)")
+    private Long locationId;
 
     @Column(name="date", columnDefinition = "DATE")
     private Date date;
 
-    @Column(name="total_unique_beneficiaries", columnDefinition = "INT(11)")
-    private Integer uniqueBeneficiaries;
+    @Column(name="total_unique_beneficiaries", columnDefinition = "BIGINT(20)")
+    private Long uniqueBeneficiaries;
 
-    @Column(name="total_successful_calls", columnDefinition = "INT(11)")
-    private Integer successfulCalls;
+    @Column(name="total_successful_calls", columnDefinition = "BIGINT(20)")
+    private Long successfulCalls;
 
-    @Column(name="total_billable_minutes", columnDefinition = "INT(11)")
-    private Integer billableMinutes;
+    @Column(name="total_billable_minutes", columnDefinition = "BIGINT(20)")
+    private Long billableMinutes;
 
     //Average minutes = billableMinutes/successfulCalls
 
 
-    public AggregateCumulativeKilkari(Integer id, String locationType, Integer locationId, Date date, Integer uniqueBeneficiaries, Integer successfulCalls, Integer billableMinutes) {
+    public AggregateCumulativeKilkari(Integer id, String locationType, Long locationId, Date date, Long uniqueBeneficiaries, Long successfulCalls, Long billableMinutes) {
         this.id = id;
         this.locationType = locationType;
         this.locationId = locationId;
@@ -66,11 +66,11 @@ public class AggregateCumulativeKilkari {
         this.locationType = locationType;
     }
 
-    public Integer getLocationId() {
+    public Long getLocationId() {
         return locationId;
     }
 
-    public void setLocationId(Integer locationId) {
+    public void setLocationId(Long locationId) {
         this.locationId = locationId;
     }
 
@@ -82,27 +82,27 @@ public class AggregateCumulativeKilkari {
         this.date = date;
     }
 
-    public Integer getUniqueBeneficiaries() {
+    public Long getUniqueBeneficiaries() {
         return uniqueBeneficiaries;
     }
 
-    public void setUniqueBeneficiaries(Integer uniqueBeneficiaries) {
+    public void setUniqueBeneficiaries(Long uniqueBeneficiaries) {
         this.uniqueBeneficiaries = uniqueBeneficiaries;
     }
 
-    public Integer getSuccessfulCalls() {
+    public Long getSuccessfulCalls() {
         return successfulCalls;
     }
 
-    public void setSuccessfulCalls(Integer successfulCalls) {
+    public void setSuccessfulCalls(Long successfulCalls) {
         this.successfulCalls = successfulCalls;
     }
 
-    public Integer getBillableMinutes() {
+    public Long getBillableMinutes() {
         return billableMinutes;
     }
 
-    public void setBillableMinutes(Integer billableMinutes) {
+    public void setBillableMinutes(Long billableMinutes) {
         this.billableMinutes = billableMinutes;
     }
 }
