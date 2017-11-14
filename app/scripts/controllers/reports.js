@@ -674,8 +674,16 @@
                     }
 
                     else if($scope.periodDisplayType == 'Month' ){
-                         reportRequest.fromDate = new Date($scope.dt1.getFullYear(),$scope.dt1.getMonth(),1);
-                         reportRequest.toDate = new Date($scope.dt1.getFullYear(),$scope.dt1.getMonth() + 1,0);
+                         if($scope.report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise'){
+                            reportRequest.fromDate = new Date($scope.dt1.getFullYear(),$scope.dt1.getMonth() - 6,1);
+                            reportRequest.toDate = new Date($scope.dt1.getFullYear(),$scope.dt1.getMonth() + 1,0);
+                            console.log(reportRequest.fromDate.getMonth() + " " + reportRequest.fromDate.getDate())
+
+                         }else{
+                            reportRequest.fromDate = new Date($scope.dt1.getFullYear(),$scope.dt1.getMonth(),1);
+                            reportRequest.toDate = new Date($scope.dt1.getFullYear(),$scope.dt1.getMonth() + 1,0);
+                         }
+
                     }
                     else if($scope.periodDisplayType == 'Quarter' ){
                          if($scope.quarterDisplayType == 'Q1 (Jan to Mar)'){
