@@ -59,6 +59,9 @@ public class AutoReportEmailGeneration {
     }
 
     public HashMap sendWeeklyFirstMail() {
+        HashMap errors = emailService.sendAllMails(ReportType.flwRejected);
+        System.out.println("Flw Rejected reports: ");
+        System.out.println(errors.toString());
         HashMap reports = emailService.sendAllMails(ReportType.childRejected);
         System.out.println("Child Rejected reports: ");
         System.out.println(reports.toString());

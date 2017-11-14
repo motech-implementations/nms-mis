@@ -9,14 +9,14 @@
  * Main module of the application.
  */
 var nmsReportsApp = angular
-	.module('nmsReports', ['ui.bootstrap', 'ui.validate', 'ngMessages', 'ui.router', 'ui.grid', 'ngMaterial'])
+	.module('nmsReports', ['ui.bootstrap', 'ui.validate', 'ngMessages', 'ui.router', 'ui.grid', 'ngMaterial', 'BotDetectCaptcha'])
 	.run( ['$rootScope', '$state', '$stateParams',
 		function ($rootScope, $state, $stateParams) {
 			$rootScope.$state = $state;
 			$rootScope.$stateParams = $stateParams;
 		}
 	])
-	.config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
+	.config(function ($stateProvider, $urlRouterProvider, $httpProvider,captchaSettingsProvider) {
 		$stateProvider
 		
 			.state('userManagement', {
@@ -61,9 +61,16 @@ var nmsReportsApp = angular
             	templateUrl: 'views/forgotPassword.html',
             })
 
+            .state('changePassword', {
+                url: '/changePassword',
+                templateUrl: 'views/changePassword.html',
+            })
 		$urlRouterProvider
 			.otherwise('/login')
 
+        captchaSettingsProvider.setSettings({
+            captchaEndpoint: backend_root + 'botdetectcaptcha',
+          })
 
 			
 		$httpProvider.defaults.headers.common = {};

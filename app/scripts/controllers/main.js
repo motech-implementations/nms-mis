@@ -74,6 +74,13 @@
                 		'sref': 'forgotPassword',
                 		'active': false,
                 	},
+                ],
+                'changePassword': [
+                    {
+                        'name': 'ChangePassword',
+                        'sref': 'changePassword',
+                        'active': false,
+                    },
                 ]
 			}
 
@@ -94,7 +101,11 @@
 			}
 
 			$scope.activeTab = function(tabName){
-				return $state.current.name.includes(tabName);
+				if($state.current.name.indexOf(tabName) > -1){
+				    return true;
+				}
+				else
+				    return false;
 			}
 
 			// $scope.breadCrumb = ['User Management', 'Create User'];
@@ -102,6 +113,7 @@
 			.then(function(result){
 				UserFormFactory.setCurrentUser(result.data);
 				$scope.currentUser = UserFormFactory.getCurrentUser();
+				console.log($scope.currentUser);
 			})
 
 			$scope.logoutUrl = backend_root + "nms/logout";

@@ -314,7 +314,8 @@ public class UserServiceImpl implements UserService{
         user.setCreationDate(new Date());
         user.setCreatedByUser(currentUser);
         user.setAccountStatus(AccountStatus.ACTIVE.getAccountStatus());
-
+        user.setDefault(true);
+        user.setLoggedAtLeastOnce(false);
         userDao.saveUser(user);
         String authorityError = "User Created";
         responseMap.put(rowNum, authorityError);
@@ -607,6 +608,7 @@ public class UserServiceImpl implements UserService{
             return responseMap;
         }
         entity.setPassword(passwordEncoder.encode(entity.getPhoneNumber()));
+        entity.setDefault(true);
 
         responseMap.put(rowNum, "Password changed successfully");
         return responseMap;
@@ -645,6 +647,7 @@ public class UserServiceImpl implements UserService{
             return responseMap;
         }
         currentUser.setPassword(passwordEncoder.encode(passwordDto.getNewPassword()));
+        currentUser.setDefault(false);
         String success="Password changed successfully";
         responseMap.put(rowNum, success);
         return responseMap;
@@ -684,7 +687,7 @@ public class UserServiceImpl implements UserService{
         User entity = userDao.findByUserId(userId);
         Integer rowNum = 0;
         Map<Integer, String> responseMap = new HashMap<>();
-        if((entity != null) && (getCurrentUser().equals(entity.getCreatedByUser()))) {
+        if((entity != null) && (getCurrentUser().equals(entity.getCreatedByUser())) && !(getCurrentUser().getLoggedAtLeastOnce())) {
             entity.setAccountStatus(AccountStatus.INACTIVE.getAccountStatus());
             responseMap.put(rowNum,"User deleted");
         }
