@@ -11,9 +11,9 @@ public class KilkariThematicContentReportDto {
     private Integer id;
     private String theme;
     private String messageWeekNumber;
-    private Integer uniqueBeneficiariesCalled;
-    private Integer callsAnswered;
-    private Integer minutesConsumed;
+    private Long uniqueBeneficiariesCalled;
+    private Long callsAnswered;
+    private Long minutesConsumed;
 
 
     public Integer getId() {
@@ -40,27 +40,27 @@ public class KilkariThematicContentReportDto {
         this.messageWeekNumber = messageWeekNumber;
     }
 
-    public Integer getUniqueBeneficiariesCalled() {
+    public Long getUniqueBeneficiariesCalled() {
         return uniqueBeneficiariesCalled;
     }
 
-    public void setUniqueBeneficiariesCalled(Integer uniqueBeneficiariesCalled) {
+    public void setUniqueBeneficiariesCalled(Long uniqueBeneficiariesCalled) {
         this.uniqueBeneficiariesCalled = uniqueBeneficiariesCalled;
     }
 
-    public Integer getCallsAnswered() {
+    public Long getCallsAnswered() {
         return callsAnswered;
     }
 
-    public void setCallsAnswered(Integer callsAnswered) {
+    public void setCallsAnswered(Long callsAnswered) {
         this.callsAnswered = callsAnswered;
     }
 
-    public Integer getMinutesConsumed() {
+    public Long getMinutesConsumed() {
         return minutesConsumed;
     }
 
-    public void setMinutesConsumed(Integer minutesConsumed) {
+    public void setMinutesConsumed(Long minutesConsumed) {
         this.minutesConsumed = minutesConsumed;
     }
 }

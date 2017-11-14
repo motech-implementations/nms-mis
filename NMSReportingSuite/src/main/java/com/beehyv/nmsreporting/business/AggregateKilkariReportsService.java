@@ -29,7 +29,7 @@ public interface AggregateKilkariReportsService {
 
     MessageMatrixResponseDto getMessageMatrixReport(ReportRequest reportRequest, User currentUser);
 
-    AggregateKilkariRepeatListenerMonthWiseDto getKilkariListenerMonthWiseReport(ReportRequest reportRequest);
+    AggregateKilkariRepeatListenerMonthWiseDto getKilkariRepeatListenerMonthWiseReport(ReportRequest reportRequest);
 
     List<KilkariCallReportDto> getKilkariCallReport(ReportRequest reportRequest, User currentUser);
 }

@@ -12,5 +12,5 @@ import java.util.List;
 
 public interface KilkariRepeatListenerMonthWiseDao {
 
-    List<KilkariRepeatListenerMonthWise> getListenerData(Date fromDate, Date toDate);
+    KilkariRepeatListenerMonthWise getListenerData(Date date);
 }

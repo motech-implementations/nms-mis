@@ -460,7 +460,7 @@ public class UserController {
 
         if(reportRequest.getReportType().equals(ReportType.kilkariRepeatListenerMonthWise.getReportType())) {
             AggregateKilkariRepeatListenerMonthWiseDto aggregateKilkariRepeatListenerMonthWiseDto = new AggregateKilkariRepeatListenerMonthWiseDto();
-            aggregateKilkariRepeatListenerMonthWiseDto = aggregateKilkariReportsService.getKilkariListenerMonthWiseReport(reportRequest);
+            aggregateKilkariRepeatListenerMonthWiseDto = aggregateKilkariReportsService.getKilkariRepeatListenerMonthWiseReport(reportRequest);
             return aggregateKilkariRepeatListenerMonthWiseDto;
         }
 

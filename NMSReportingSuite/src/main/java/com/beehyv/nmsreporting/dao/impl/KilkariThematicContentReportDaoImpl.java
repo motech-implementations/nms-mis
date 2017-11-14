@@ -27,19 +27,25 @@ import java.util.List;
 public class KilkariThematicContentReportDaoImpl extends AbstractDao<Integer,KilkariThematicContent> implements KilkariThematicContentReportDao{
 
     @Override
-    public List<KilkariThematicContent> getKilkariThematicContentReportData(Date toDate){
+    public KilkariThematicContent getKilkariThematicContentReportData(Date date, String week_id){
 
-        List<KilkariThematicContent> kilkariThematicContentData = new ArrayList<>();
+        KilkariThematicContent kilkariThematicContent;
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.and(
-                Restrictions.eq("date",toDate)
+                Restrictions.eq("date", date),
+                Restrictions.eq("messageWeekNumber", week_id)
         ));
 
-        kilkariThematicContentData = (List<KilkariThematicContent>)criteria.list();
-        if(kilkariThematicContentData.isEmpty()){
-            return null;
+        List<KilkariThematicContent> result = (List<KilkariThematicContent>)criteria.list();
+        if(result.isEmpty()){
+            kilkariThematicContent = new KilkariThematicContent(0,date,"",week_id,(long)0,(long)0);
+            return kilkariThematicContent;
         }
-        return kilkariThematicContentData;
+        kilkariThematicContent = result.get(0);
+        kilkariThematicContent.setCallsAnswered(kilkariThematicContent.getCallsAnswered() == null ? 0 : kilkariThematicContent.getCallsAnswered());
+        kilkariThematicContent.setMinutesConsumed(kilkariThematicContent.getMinutesConsumed() == null ? 0 : kilkariThematicContent.getMinutesConsumed());
+        kilkariThematicContent.setTheme(kilkariThematicContent.getTheme() == null ? "" : kilkariThematicContent.getTheme());
+        return kilkariThematicContent;
     }
 
     @Override
@@ -56,15 +62,15 @@ public class KilkariThematicContentReportDaoImpl extends AbstractDao<Integer,Kil
     }
 
     @Override
-    public Integer getUniqueBeneficiariesCalled(Date startDate, Date toDate, Integer messageId){
-        Query query = getSession().createSQLQuery("select count(DISTINCT bcm.pregnancy_id) from beneficiary_call_measure bcm where bcm.modificationDate >= :startDate and bcm.modificationDate <= :endDate and bcm.campaign_id = :messageId")
+    public Long getUniqueBeneficiariesCalled(Date startDate, Date toDate, String messageId){
+        Query query = getSession().createSQLQuery("select count(DISTINCT bcm.pregnancy_id) from beneficiary_call_measure bcm left join message_durations md on md.id = bcm.campaign_id where bcm.modificationDate >= :startDate and bcm.modificationDate <= :endDate and bcm.call_source = 'OBD' and substring_index(md.week_id,'_',1) = :messageId")
                         .setParameter("startDate",startDate)
                         .setParameter("endDate",toDate)
                         .setParameter("messageId",messageId);
         BigInteger result = (BigInteger) query.uniqueResult();
         if(result == null){
-            return 0;
+            return (long)0;
         }
-        return result.intValue();
+        return result.longValue();
     }
 }

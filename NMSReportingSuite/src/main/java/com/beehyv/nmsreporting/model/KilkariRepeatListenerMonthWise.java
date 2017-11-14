@@ -1,5 +1,7 @@
 package com.beehyv.nmsreporting.model;
 
+import com.beehyv.nmsreporting.entity.KilkariRepeatListenerMonthWiseDto;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -36,6 +38,21 @@ public class KilkariRepeatListenerMonthWise {
 
     @Column(name="0_calls_answered", columnDefinition = "INT(11)")
     private Integer noCallsAnswered;
+
+    public KilkariRepeatListenerMonthWise(){
+
+    }
+
+    public KilkariRepeatListenerMonthWise(Integer id, Date date, Integer fiveCallsAnswered, Integer fourCallsAnswered, Integer threeCallsAnswered, Integer twoCallsAnswered, Integer oneCallAnswered, Integer noCallsAnswered){
+        this.id = id;
+        this.date = date;
+        this.fiveCallsAnswered = fiveCallsAnswered;
+        this.fourCallsAnswered = fourCallsAnswered;
+        this.threeCallsAnswered = threeCallsAnswered;
+        this.twoCallsAnswered = twoCallsAnswered;
+        this.oneCallAnswered = oneCallAnswered;
+        this.noCallsAnswered = noCallsAnswered;
+    }
 
     public Integer getId() {
         return id;

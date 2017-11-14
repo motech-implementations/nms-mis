@@ -20,14 +20,22 @@ import java.util.List;
 @Repository("kilkariRepeatListenerMonthWiseDao")
 public class KilkariRepeatListenerMonthWiseDaoImpl extends AbstractDao<Integer,KilkariRepeatListenerMonthWise> implements KilkariRepeatListenerMonthWiseDao {
 
-    public List<KilkariRepeatListenerMonthWise> getListenerData(Date fromDate, Date toDate){
+    public KilkariRepeatListenerMonthWise getListenerData(Date date){
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("date"));
-        criteria.add(Restrictions.between("date", fromDate, toDate));
+        criteria.add(Restrictions.eq("date", date));
         List<KilkariRepeatListenerMonthWise> kilkariRepeatListenerMonthWiseList = criteria.list();
         if(kilkariRepeatListenerMonthWiseList.isEmpty()){
-            return null;
+            KilkariRepeatListenerMonthWise kilkariRepeatListenerMonthWise = new KilkariRepeatListenerMonthWise(0,date,0,0,0,0,0,0);
+            return kilkariRepeatListenerMonthWise;
         }
-        return kilkariRepeatListenerMonthWiseList;
+        KilkariRepeatListenerMonthWise kilkariRepeatListenerMonthWise = kilkariRepeatListenerMonthWiseList.get(0);
+        kilkariRepeatListenerMonthWise.setFiveCallsAnswered(kilkariRepeatListenerMonthWise.getFiveCallsAnswered() == null ? 0 : kilkariRepeatListenerMonthWise.getFiveCallsAnswered());
+        kilkariRepeatListenerMonthWise.setFourCallsAnswered(kilkariRepeatListenerMonthWise.getFourCallsAnswered() == null ? 0 : kilkariRepeatListenerMonthWise.getFourCallsAnswered());
+        kilkariRepeatListenerMonthWise.setThreeCallsAnswered(kilkariRepeatListenerMonthWise.getThreeCallsAnswered() == null ? 0 : kilkariRepeatListenerMonthWise.getThreeCallsAnswered());
+        kilkariRepeatListenerMonthWise.setTwoCallsAnswered(kilkariRepeatListenerMonthWise.getTwoCallsAnswered() == null ? 0 : kilkariRepeatListenerMonthWise.getTwoCallsAnswered());
+        kilkariRepeatListenerMonthWise.setOneCallAnswered(kilkariRepeatListenerMonthWise.getOneCallAnswered() == null ? 0 : kilkariRepeatListenerMonthWise.getOneCallAnswered());
+        kilkariRepeatListenerMonthWise.setNoCallsAnswered(kilkariRepeatListenerMonthWise.getNoCallsAnswered() == null ? 0 : kilkariRepeatListenerMonthWise.getNoCallsAnswered());
+        return kilkariRepeatListenerMonthWise;
     }
 
 }

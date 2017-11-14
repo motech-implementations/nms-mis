@@ -13,9 +13,9 @@ import java.util.List;
 
 public interface KilkariThematicContentReportDao {
 
-    List<KilkariThematicContent> getKilkariThematicContentReportData(Date toDate);
+    KilkariThematicContent getKilkariThematicContentReportData(Date date, String week_id);
 
     String getMessageWeekNumber(Integer messageWeekNumber);
 
-    Integer getUniqueBeneficiariesCalled(Date startDate, Date toDate, Integer messageId);
+    Long getUniqueBeneficiariesCalled(Date startDate, Date toDate, String messageId);
 }

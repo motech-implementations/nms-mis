@@ -987,7 +987,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         aCalendar.set(Calendar.HOUR_OF_DAY, 0);
 
 
-        aCalendar.add(Calendar.DATE, -1);
+        aCalendar.add(Calendar.DATE, 0);
         Date fromDate = aCalendar.getTime();
         aCalendar.setTime(reportRequest.getToDate());
         aCalendar.set(Calendar.MILLISECOND, 0);
@@ -1460,7 +1460,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         aCalendar.set(Calendar.HOUR_OF_DAY, 0);
 
 
-        aCalendar.add(Calendar.DATE, 0);
+        aCalendar.add(Calendar.DATE, -1);
         Date fromDate = aCalendar.getTime();
         aCalendar.setTime(reportRequest.getToDate());
         aCalendar.set(Calendar.MILLISECOND, 0);
@@ -1470,22 +1470,22 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         toDate = aCalendar.getTime();
 
         List<KilkariThematicContentReportDto> kilkariThematicContentReportDtoList = new ArrayList<>();
-        List<KilkariThematicContent> kilkariThematicContentDataStart = kilkariThematicContentReportDao.getKilkariThematicContentReportData(fromDate);
-        List<KilkariThematicContent> kilkariThematicContentDataEnd = kilkariThematicContentReportDao.getKilkariThematicContentReportData(toDate);
+        KilkariThematicContent kilkariThematicContentDataStart;
+        KilkariThematicContent kilkariThematicContentDataEnd;
 
-        if(kilkariThematicContentDataEnd != null && kilkariThematicContentDataStart != null & !(kilkariThematicContentDataEnd.isEmpty()) && !(kilkariThematicContentDataStart.isEmpty())){
-            for(int i = 0; i < kilkariThematicContentDataEnd.size(); i++) {
-                for (int j = 0; j < kilkariThematicContentDataStart.size(); j++) {
-                    if(kilkariThematicContentDataEnd.get(i).getMessageWeekNumber().equals(kilkariThematicContentDataStart.get(j).getMessageWeekNumber())){
-                        KilkariThematicContentReportDto kilkariThematicContentReportDto = new KilkariThematicContentReportDto();
-                        kilkariThematicContentReportDto.setId(kilkariThematicContentDataEnd.get(i).getId());
-                        kilkariThematicContentReportDto.setTheme(kilkariThematicContentDataEnd.get(i).getTheme());
-                        kilkariThematicContentReportDto.setMinutesConsumed(kilkariThematicContentDataEnd.get(i).getMinutesConsumed() - kilkariThematicContentDataStart.get(j).getMinutesConsumed());
-                        kilkariThematicContentReportDto.setCallsAnswered(kilkariThematicContentDataEnd.get(i).getCallsAnswered() - kilkariThematicContentDataStart.get(j).getCallsAnswered());
-                        kilkariThematicContentReportDto.setUniqueBeneficiariesCalled(kilkariThematicContentReportDao.getUniqueBeneficiariesCalled(fromDate,toDate,kilkariThematicContentDataEnd.get(i).getMessageWeekNumber()));
-                        kilkariThematicContentReportDto.setMessageWeekNumber(kilkariThematicContentReportDao.getMessageWeekNumber(kilkariThematicContentDataEnd.get(i).getMessageWeekNumber()));
-                        kilkariThematicContentReportDtoList.add(kilkariThematicContentReportDto);
-                    }
+        for(int i = 1; i <= 72; i++){
+            kilkariThematicContentDataStart = kilkariThematicContentReportDao.getKilkariThematicContentReportData(fromDate,"w"+i);
+            kilkariThematicContentDataEnd = kilkariThematicContentReportDao.getKilkariThematicContentReportData(toDate,"w"+i);
+            if(kilkariThematicContentDataEnd.getMessageWeekNumber().equals(kilkariThematicContentDataStart.getMessageWeekNumber())){
+                KilkariThematicContentReportDto kilkariThematicContentReportDto = new KilkariThematicContentReportDto();
+                kilkariThematicContentReportDto.setId(kilkariThematicContentDataEnd.getId());
+                kilkariThematicContentReportDto.setTheme(kilkariThematicContentDataEnd.getTheme());
+                kilkariThematicContentReportDto.setMinutesConsumed(kilkariThematicContentDataEnd.getMinutesConsumed() - kilkariThematicContentDataStart.getMinutesConsumed());
+                kilkariThematicContentReportDto.setCallsAnswered(kilkariThematicContentDataEnd.getCallsAnswered() - kilkariThematicContentDataStart.getCallsAnswered());
+                kilkariThematicContentReportDto.setUniqueBeneficiariesCalled(kilkariThematicContentReportDao.getUniqueBeneficiariesCalled(fromDate,toDate,kilkariThematicContentDataEnd.getMessageWeekNumber()));
+                kilkariThematicContentReportDto.setMessageWeekNumber("w"+i);
+                if(kilkariThematicContentReportDto.getCallsAnswered()+kilkariThematicContentReportDto.getMinutesConsumed()+kilkariThematicContentReportDto.getUniqueBeneficiariesCalled() > 0){
+                    kilkariThematicContentReportDtoList.add(kilkariThematicContentReportDto);
                 }
             }
         }
@@ -1665,7 +1665,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
      /*----------5.3.10. Kilkari Repeat Listener Month-Wise Report -------*/
 
     @Override
-    public AggregateKilkariRepeatListenerMonthWiseDto getKilkariListenerMonthWiseReport(ReportRequest reportRequest){
+    public AggregateKilkariRepeatListenerMonthWiseDto getKilkariRepeatListenerMonthWiseReport(ReportRequest reportRequest){
         AggregateKilkariRepeatListenerMonthWiseDto aggregateKilkariRepeatListenerMonthWiseDto = new AggregateKilkariRepeatListenerMonthWiseDto();
 
         DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
@@ -1678,7 +1678,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         aCalendar.set(Calendar.SECOND, 0);
         aCalendar.set(Calendar.MINUTE, 0);
         aCalendar.set(Calendar.HOUR_OF_DAY, 0);
-        aCalendar.add(Calendar.DATE, -1);
+        aCalendar.add(Calendar.DATE, 0);
         Date fromDate = aCalendar.getTime();
         aCalendar.setTime(reportRequest.getToDate());
         aCalendar.set(Calendar.MILLISECOND, 0);
@@ -1687,11 +1687,24 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         aCalendar.set(Calendar.HOUR_OF_DAY, 0);
         toDate = aCalendar.getTime();
 
+        Date date = fromDate;
+
         List<KilkariRepeatListenerMonthWiseDto> kilkariRepeatListenerMonthWiseDtoList = new ArrayList<>();
         List<KilkariRepeatListenerMonthWisePercentDto> kilkariRepeatListenerMonthWisePercentDtoList = new ArrayList<>();
-        List<KilkariRepeatListenerMonthWise> kilkariRepeatListenerMonthWiseList = kilkariRepeatListenerMonthWiseDao.getListenerData(fromDate,toDate);
+        List<KilkariRepeatListenerMonthWise> kilkariRepeatListenerMonthWiseList = new ArrayList<>();
+        while(date.compareTo(toDate) < 0){
+            kilkariRepeatListenerMonthWiseList.add(kilkariRepeatListenerMonthWiseDao.getListenerData(date));
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            cal.add(Calendar.MONTH, 1);
+            cal.set(Calendar.MILLISECOND, 0);
+            cal.set(Calendar.SECOND, 0);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.HOUR_OF_DAY, 0);
+            date = cal.getTime();
+        }
 
-        if(kilkariRepeatListenerMonthWiseList != null && !(kilkariRepeatListenerMonthWiseList.isEmpty())){
+        if(!(kilkariRepeatListenerMonthWiseList.isEmpty())){
             for(int i = 0; i < kilkariRepeatListenerMonthWiseList.size(); i++){
                 KilkariRepeatListenerMonthWiseDto kilkariRepeatListenerMonthWiseDto = new KilkariRepeatListenerMonthWiseDto();
                 KilkariRepeatListenerMonthWisePercentDto kilkariRepeatListenerMonthWisePercentDto = new KilkariRepeatListenerMonthWisePercentDto();
@@ -1711,12 +1724,12 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                         +kilkariRepeatListenerMonthWise1.getTwoCallsAnswered()
                         +kilkariRepeatListenerMonthWise1.getOneCallAnswered()
                         +kilkariRepeatListenerMonthWise1.getNoCallsAnswered());
-                kilkariRepeatListenerMonthWisePercentDto.setFiveCallsAnsweredPercent(((float)kilkariRepeatListenerMonthWiseDto.getFiveCallsAnswered()/(float)kilkariRepeatListenerMonthWiseDto.getTotal())*100);
-                kilkariRepeatListenerMonthWisePercentDto.setFourCallsAnsweredPercent(((float)kilkariRepeatListenerMonthWiseDto.getFourCallsAnswered()/(float)kilkariRepeatListenerMonthWiseDto.getTotal())*100);
-                kilkariRepeatListenerMonthWisePercentDto.setThreeCallsAnsweredPercent(((float)kilkariRepeatListenerMonthWiseDto.getThreeCallsAnswered()/(float)kilkariRepeatListenerMonthWiseDto.getTotal())*100);
-                kilkariRepeatListenerMonthWisePercentDto.setTwoCallsAnsweredPercent(((float)kilkariRepeatListenerMonthWiseDto.getTwoCallsAnswered()/(float)kilkariRepeatListenerMonthWiseDto.getTotal())*100);
-                kilkariRepeatListenerMonthWisePercentDto.setOneCallAnsweredPercent(((float)kilkariRepeatListenerMonthWiseDto.getOneCallAnswered()/(float)kilkariRepeatListenerMonthWiseDto.getTotal())*100);
-                kilkariRepeatListenerMonthWisePercentDto.setNoCallsAnsweredPercent(((float)kilkariRepeatListenerMonthWiseDto.getNoCallsAnswered()/(float)kilkariRepeatListenerMonthWiseDto.getTotal())*100);
+                kilkariRepeatListenerMonthWisePercentDto.setFiveCallsAnsweredPercent(kilkariRepeatListenerMonthWiseDto.getFiveCallsAnswered() == 0 ? 0 : ((float)kilkariRepeatListenerMonthWiseDto.getFiveCallsAnswered()/(float)kilkariRepeatListenerMonthWiseDto.getTotal())*100);
+                kilkariRepeatListenerMonthWisePercentDto.setFourCallsAnsweredPercent(kilkariRepeatListenerMonthWiseDto.getFourCallsAnswered() == 0 ? 0 : ((float)kilkariRepeatListenerMonthWiseDto.getFourCallsAnswered()/(float)kilkariRepeatListenerMonthWiseDto.getTotal())*100);
+                kilkariRepeatListenerMonthWisePercentDto.setThreeCallsAnsweredPercent(kilkariRepeatListenerMonthWiseDto.getThreeCallsAnswered() == 0 ? 0 : ((float)kilkariRepeatListenerMonthWiseDto.getThreeCallsAnswered()/(float)kilkariRepeatListenerMonthWiseDto.getTotal())*100);
+                kilkariRepeatListenerMonthWisePercentDto.setTwoCallsAnsweredPercent(kilkariRepeatListenerMonthWiseDto.getTwoCallsAnswered() == 0 ? 0 : ((float)kilkariRepeatListenerMonthWiseDto.getTwoCallsAnswered()/(float)kilkariRepeatListenerMonthWiseDto.getTotal())*100);
+                kilkariRepeatListenerMonthWisePercentDto.setOneCallAnsweredPercent(kilkariRepeatListenerMonthWiseDto.getOneCallAnswered() == 0 ? 0 : ((float)kilkariRepeatListenerMonthWiseDto.getOneCallAnswered()/(float)kilkariRepeatListenerMonthWiseDto.getTotal())*100);
+                kilkariRepeatListenerMonthWisePercentDto.setNoCallsAnsweredPercent(kilkariRepeatListenerMonthWiseDto.getNoCallsAnswered() == 0 ? 0 : ((float)kilkariRepeatListenerMonthWiseDto.getNoCallsAnswered()/(float)kilkariRepeatListenerMonthWiseDto.getTotal())*100);
                 kilkariRepeatListenerMonthWisePercentDto.setId(kilkariRepeatListenerMonthWise1.getId());
                 kilkariRepeatListenerMonthWisePercentDto.setMonth("Month "+(i+1));
                 kilkariRepeatListenerMonthWisePercentDto.setDate(kilkariRepeatListenerMonthWise1.getDate());
