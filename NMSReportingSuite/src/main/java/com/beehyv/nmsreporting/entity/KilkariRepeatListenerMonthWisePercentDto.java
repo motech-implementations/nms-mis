@@ -5,12 +5,12 @@ import java.util.Date;
 public class KilkariRepeatListenerMonthWisePercentDto {
     private Integer id;
     private String month;
-    private Float fiveCallsAnsweredPercent;
-    private Float fourCallsAnsweredPercent;
-    private Float threeCallsAnsweredPercent;
-    private Float twoCallsAnsweredPercent;
-    private Float oneCallAnsweredPercent;
-    private Float noCallsAnsweredPercent;
+    private Double fiveCallsAnsweredPercent;
+    private Double fourCallsAnsweredPercent;
+    private Double threeCallsAnsweredPercent;
+    private Double twoCallsAnsweredPercent;
+    private Double oneCallAnsweredPercent;
+    private Double noCallsAnsweredPercent;
     private Date date;
 
     public Integer getId() {
@@ -29,59 +29,59 @@ public class KilkariRepeatListenerMonthWisePercentDto {
         this.month = month;
     }
 
-    public Float getFiveCallsAnsweredPercent() {
-        return fiveCallsAnsweredPercent;
-    }
-
-    public void setFiveCallsAnsweredPercent(Float fiveCallsAnsweredPercent) {
-        this.fiveCallsAnsweredPercent = fiveCallsAnsweredPercent;
-    }
-
-    public Float getFourCallsAnsweredPercent() {
-        return fourCallsAnsweredPercent;
-    }
-
-    public void setFourCallsAnsweredPercent(Float fourCallsAnsweredPercent) {
-        this.fourCallsAnsweredPercent = fourCallsAnsweredPercent;
-    }
-
-    public Float getThreeCallsAnsweredPercent() {
-        return threeCallsAnsweredPercent;
-    }
-
-    public void setThreeCallsAnsweredPercent(Float threeCallsAnsweredPercent) {
-        this.threeCallsAnsweredPercent = threeCallsAnsweredPercent;
-    }
-
-    public Float getTwoCallsAnsweredPercent() {
-        return twoCallsAnsweredPercent;
-    }
-
-    public void setTwoCallsAnsweredPercent(Float twoCallsAnsweredPercent) {
-        this.twoCallsAnsweredPercent = twoCallsAnsweredPercent;
-    }
-
-    public Float getOneCallAnsweredPercent() {
-        return oneCallAnsweredPercent;
-    }
-
-    public void setOneCallAnsweredPercent(Float oneCallAnsweredPercent) {
-        this.oneCallAnsweredPercent = oneCallAnsweredPercent;
-    }
-
-    public Float getNoCallsAnsweredPercent() {
-        return noCallsAnsweredPercent;
-    }
-
-    public void setNoCallsAnsweredPercent(Float noCallsAnsweredPercent) {
-        this.noCallsAnsweredPercent = noCallsAnsweredPercent;
-    }
-
     public Date getDate() {
         return date;
     }
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Double getFiveCallsAnsweredPercent() {
+        return fiveCallsAnsweredPercent;
+    }
+
+    public void setFiveCallsAnsweredPercent(Double fiveCallsAnsweredPercent) {
+        this.fiveCallsAnsweredPercent = fiveCallsAnsweredPercent;
+    }
+
+    public Double getFourCallsAnsweredPercent() {
+        return fourCallsAnsweredPercent;
+    }
+
+    public void setFourCallsAnsweredPercent(Double fourCallsAnsweredPercent) {
+        this.fourCallsAnsweredPercent = fourCallsAnsweredPercent;
+    }
+
+    public Double getThreeCallsAnsweredPercent() {
+        return threeCallsAnsweredPercent;
+    }
+
+    public void setThreeCallsAnsweredPercent(Double threeCallsAnsweredPercent) {
+        this.threeCallsAnsweredPercent = threeCallsAnsweredPercent;
+    }
+
+    public Double getTwoCallsAnsweredPercent() {
+        return twoCallsAnsweredPercent;
+    }
+
+    public void setTwoCallsAnsweredPercent(Double twoCallsAnsweredPercent) {
+        this.twoCallsAnsweredPercent = twoCallsAnsweredPercent;
+    }
+
+    public Double getOneCallAnsweredPercent() {
+        return oneCallAnsweredPercent;
+    }
+
+    public void setOneCallAnsweredPercent(Double oneCallAnsweredPercent) {
+        this.oneCallAnsweredPercent = oneCallAnsweredPercent;
+    }
+
+    public Double getNoCallsAnsweredPercent() {
+        return noCallsAnsweredPercent;
+    }
+
+    public void setNoCallsAnsweredPercent(Double noCallsAnsweredPercent) {
+        this.noCallsAnsweredPercent = noCallsAnsweredPercent;
     }
 }
