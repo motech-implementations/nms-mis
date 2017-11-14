@@ -35,7 +35,7 @@ public enum ReportType {
     kilkariSubscriber("Kilkari_Subscriber","Kilkari Subscriber","K","Kilkari Subscriber Report"),
     kilkariMessageListenership("Kilkari_Message_Listenership","Kilkari Message Listenership","K","Kilkari Message Listenership Report"),
     kilkariThematicContent("Kilkari_Thematic_Content","Kilkari Thematic Content","K","Kilkari Thematic Content Report"),
-    kilkariRepeatListenerMonthWise("Kilkari_Repeat_Listener_Month_Wise","Kilkari Repeat Listener Month Wise","K","Kilkari_Repeat_Listener_Month_Wise Report");
+    kilkariRepeatListenerMonthWise("Kilkari_Repeat_Listener_Month_Wise","Kilkari Repeat Listener","K","Kilkari_Repeat_Listener_Month_Wise Report");
 
     private String reportType;
     private String reportName;
