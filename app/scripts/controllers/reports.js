@@ -683,7 +683,6 @@
                             reportRequest.fromDate = new Date($scope.dt1.getFullYear(),$scope.dt1.getMonth(),1);
                             reportRequest.toDate = new Date($scope.dt1.getFullYear(),$scope.dt1.getMonth() + 1,0);
                          }
-
                     }
                     else if($scope.periodDisplayType == 'Quarter' ){
                          if($scope.quarterDisplayType == 'Q1 (Jan to Mar)'){
