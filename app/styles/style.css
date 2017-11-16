@@ -547,12 +547,12 @@ color: white !important;
 }
 
 .ui-grid-header-cell .ui-grid-cell-contents {
- padding-left : 10px;
  white-space: normal;
  -ms-text-overflow: clip;
  -o-text-overflow: clip;
  text-overflow: clip;
  overflow: visible;
+ text-align : center;
 
  }
 
@@ -652,6 +652,14 @@ md-dialog{
 
 .login-submit{
     padding-top : 15px;
+}
+
+.ui-grid-cell-contents span.ui-grid-invisible{
+    display : none;
+}
+
+.serial-no{
+    padding-top : 6px;
 }
 
 /*

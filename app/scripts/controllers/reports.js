@@ -1116,7 +1116,7 @@
               };
 
             $scope.MA_Cumulative_Column_Definitions =[
-                                                       {name: 'S No.', displayName: 'S No.',width:"6%",enableSorting: false, cellTemplate: '<div>{{rowRenderIndex+1}}</div>'},
+                                                       {name: 'S No.', displayName: 'S No.',width:"6%",enableSorting: false, cellTemplate: '<p class="serial-no" >{{rowRenderIndex+1}}</p>'},
                                                        { field: 'locationName',
                                                          cellTemplate:'<a class="btn primary aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
                                                          width: '11%', enableHiding: false
@@ -1133,7 +1133,7 @@
 
 
             $scope.MA_Performance_Column_Definitions =[
-                                                         {name: 'S No.', displayName: 'S No.',width:"6%", enableSorting: false, cellTemplate: '<div>{{rowRenderIndex+1}}</div>'},
+                                                         {name: 'S No.', displayName: 'S No.',width:"6%", enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
                                                          { field: 'locationName',
                                                             cellTemplate:'<a class="btn primary aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
                                                             enableHiding: false, width:"11%"
@@ -1146,7 +1146,7 @@
                                                         ],
 
             $scope.MA_Subscriber_Column_Definitions =[
-                                                         {name: 'S No.', displayName: 'S No.',width:"6%",enableSorting: false, cellTemplate: '<div>{{rowRenderIndex+1}}</div>'},
+                                                         {name: 'S No.', displayName: 'S No.',width:"6%",enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
                                                          { field: 'locationName',
                                                             cellTemplate:'<a class="btn primary aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
                                                             enableHiding: false,width:"10%"
@@ -1160,7 +1160,7 @@
                                                         ],
 
             $scope.Kilkari_Cumulative_Summary_Definitions =[
-                                                             {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, cellTemplate: '<div>{{rowRenderIndex+1}}</div>'},
+                                                             {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
                                                              { field: 'locationName',
                                                                 cellTemplate:'<a class="btn primary aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
                                                                 enableHiding: false,width:"*"
@@ -1173,7 +1173,7 @@
             ]
 
             $scope.Kilkari_Usage_Definitions =[
-                                                 {name: 'S No.', displayName: 'S No.',width:"7%", enableSorting: false,cellTemplate: '<div>{{rowRenderIndex+1}}</div>'},
+                                                 {name: 'S No.', displayName: 'S No.',width:"7%", enableSorting: false,cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
                                                  { field: 'locationName',
                                                     cellTemplate:'<a class="btn primary aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
                                                     enableHiding: false,width:"*"
@@ -1189,7 +1189,7 @@
             ]
 
             $scope.Kilkari_Aggregate_Beneficiaries_Definitions =[
-                                                     {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, cellTemplate: '<div>{{rowRenderIndex+1}}</div>'},
+                                                     {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
                                                      { field: 'locationName',
                                                         cellTemplate:'<a class="btn primary aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
                                                         enableHiding: false,width:"7%"
@@ -1208,7 +1208,7 @@
             ]
 
             $scope.Kilkari_Beneficiary_Completion_Definitions = [
-                                                     {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, cellTemplate: '<div>{{rowRenderIndex+1}}</div>'},
+                                                     {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
                                                      { field: 'locationName',
                                                         cellTemplate:'<a class="btn primary aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
                                                         enableHiding: false,width:"10%"
@@ -1233,7 +1233,7 @@
             ]
 
             $scope.Kilkari_Call_Report_Definitions = [
-                                                     {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, cellTemplate: '<div>{{rowRenderIndex+1}}</div>'},
+                                                     {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
                                                      { field: 'locationName',
                                                         cellTemplate:'<a class="btn primary aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
                                                         enableHiding: false,width:"10%"
@@ -1270,7 +1270,7 @@
             ]
 
             $scope.Kilkari_Message_Listenership_Definitions = [
-                                                     {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, cellTemplate: '<div>{{rowRenderIndex+1}}</div>'},
+                                                     {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
                                                      { field: 'locationName',
                                                         cellTemplate:'<a class="btn primary aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
                                                         enableHiding: false,width:"10%"
@@ -1285,7 +1285,7 @@
             ]
 
             $scope.Kilkari_Subscriber_Definitions = [
-                                                     {name: 'S No.', displayName: 'S No.',width:"4%",enableSorting: false, cellTemplate: '<div>{{rowRenderIndex+1}}</div>'},
+                                                     {name: 'S No.', displayName: 'S No.',width:"4%",enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
                                                      { field: 'locationName',
                                                         cellTemplate:'<a class="btn primary aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
                                                         enableHiding: false,width:"10%"
@@ -1300,7 +1300,7 @@
             ]
 
             $scope.Kilkari_Thematic_Content_Definitions = [
-                                                     {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, cellTemplate: '<div>{{rowRenderIndex+1}}</div>'},
+                                                     {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
                                                      { field: 'theme', name: 'Theme',width:"*", enableHiding: false },
                                                      { field: 'messageWeekNumber', name: 'Message Number (Week)',width:"*", enableHiding: false },
                                                      { field: 'uniqueBeneficiariesCalled', name: 'Number of unique beneficiaries called', width:"*", enableHiding: false },

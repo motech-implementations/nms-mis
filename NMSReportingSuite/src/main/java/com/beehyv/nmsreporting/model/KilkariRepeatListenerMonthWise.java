@@ -18,7 +18,7 @@ public class KilkariRepeatListenerMonthWise {
     @Column(name="id", columnDefinition = "INT(11)")
     private Integer id;
 
-    @Column(name="date", columnDefinition = "DATETIME")
+    @Column(name="date", columnDefinition = "DATE")
     private Date date;
 
     @Column(name="5_calls_answered", columnDefinition = "INT(11)")
