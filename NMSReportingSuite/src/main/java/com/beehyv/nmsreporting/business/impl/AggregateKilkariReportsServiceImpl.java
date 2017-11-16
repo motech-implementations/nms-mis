@@ -1001,13 +1001,13 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         List<KilkariMessageListenership> kilkariMessageListenershipList = new ArrayList<>();
 
         if (reportRequest.getStateId() == 0) {
-            kilkariMessageListenershipList.addAll(getKilkariMessageListenershipData(0,"State",toDate));
+            kilkariMessageListenershipList.addAll(getKilkariMessageListenershipData(0,"State",fromDate));
         } else if (reportRequest.getDistrictId() == 0) {
-            kilkariMessageListenershipList.addAll(getKilkariMessageListenershipData(reportRequest.getStateId(),"District",toDate));
+            kilkariMessageListenershipList.addAll(getKilkariMessageListenershipData(reportRequest.getStateId(),"District",fromDate));
         } else if(reportRequest.getBlockId() == 0){
-            kilkariMessageListenershipList.addAll(getKilkariMessageListenershipData(reportRequest.getDistrictId(),"Block",toDate));
+            kilkariMessageListenershipList.addAll(getKilkariMessageListenershipData(reportRequest.getDistrictId(),"Block",fromDate));
         } else {
-            kilkariMessageListenershipList.addAll(getKilkariMessageListenershipData(reportRequest.getBlockId(),"Subcenter",toDate));
+            kilkariMessageListenershipList.addAll(getKilkariMessageListenershipData(reportRequest.getBlockId(),"Subcenter",fromDate));
         }
 
         if(!(kilkariMessageListenershipList.isEmpty())){
