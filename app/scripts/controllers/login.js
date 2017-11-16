@@ -1,7 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("LoginController", ['$scope', '$http', '$location','Captcha', function($scope, $http, $location, Captcha){
+		.controller("LoginController", ['$scope', '$http', '$location','Captcha','UserFormFactory', function($scope, $http, $location, Captcha,UserFormFactory){
 
 			$scope.user = {};
 			$scope.user.rememberMe = false;
