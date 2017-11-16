@@ -1,7 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("BulkUserController", ['$scope', '$state', 'UserFormFactory', '$http','$mdDialog', function($scope, $state, UserFormFactory, $http, $mdDialog){
+		.controller("BulkUserController", ['$scope', '$state', 'UserFormFactory', '$http', function($scope, $state, UserFormFactory, $http){
 			
 			UserFormFactory.isLoggedIn()
 			.then(function(result){
@@ -22,7 +22,7 @@
 				var fd = new FormData();
 
 				if(file == null){
-					$scope.showAlert("Please select a CSV file");
+					UserFormFactory.showAlert("Please select a CSV file");
 					return;
 				}
 
@@ -62,22 +62,6 @@
 					$scope.errorsObj.push(error);
 				}
 			}
-
-			$scope.showAlert = function(message) {
-                // Appending dialog to document.body to cover sidenav in docs app
-                // Modal dialogs should fully cover application
-                // to prevent interaction outside of dialog
-                $mdDialog.show(
-                  $mdDialog.alert()
-                    .parent(angular.element(document.querySelector('#popupContainer')))
-                    .clickOutsideToClose(true)
-                    .title('MIS Alert!!')
-                    .textContent(message)
-                    .ariaLabel('Alert Dialog Demo')
-                    .ok('Got it!')
-                );
-             };
-
 		}])
 		// .directive('ngFiles', ['$parse', function ($parse) {
 		// 	function fn_link(scope, element, attrs) {

@@ -1,7 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("ReportsController", ['$scope', '$state', '$http', 'UserFormFactory','$window','$q','uiGridConstants','$mdDialog', function($scope, $state, $http, UserFormFactory,$window,$q,uiGridConstants,$mdDialog){
+		.controller("ReportsController", ['$scope', '$state', '$http', 'UserFormFactory','$window','$q','uiGridConstants', function($scope, $state, $http, UserFormFactory,$window,$q,uiGridConstants){
 
 			UserFormFactory.isLoggedIn()
 			.then(function(result){
@@ -565,48 +565,48 @@
 			$scope.getReport = function(){
 
                 if($scope.reportCategory == null){
-                    $scope.showAlert("Please select a report category")
+                    UserFormFactory.showAlert("Please select a report category")
                     return;
                 }
 				if($scope.report == null){
-					$scope.showAlert("Please select a report")
+					UserFormFactory.showAlert("Please select a report")
 					return;
 				}
 				if($scope.dt == null && (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) ){
-					$scope.showAlert("Please select a week")
+					UserFormFactory.showAlert("Please select a week")
 					return;
 				}
 				else if($scope.dt == null && (!$scope.isAggregateReport() )){
-                	$scope.showAlert("Please select a month")
+                	UserFormFactory.showAlert("Please select a month")
 					return;
 				}
 				else if($scope.periodDisplayType == '' && ($scope.isAggregateReport() ) && $scope.report.name != 'MA Cumulative Summary'){
-                    $scope.showAlert("Please select a period type")
+                    UserFormFactory.showAlert("Please select a period type")
                     return;
                 }
 				else if($scope.dt1 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType != 'Custom Range' && $scope.periodDisplayType != 'Quarter' && $scope.report.name != 'MA Cumulative Summary') ){
-                   $scope.showAlert("Please select a " +  $scope.periodDisplayType)
+                   UserFormFactory.showAlert("Please select a " +  $scope.periodDisplayType)
                     return;
                 }
                 else if($scope.dt1 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType == 'Custom Range')){
-                    $scope.showAlert("Please select a start date")
+                    UserFormFactory.showAlert("Please select a start date")
                     return;
                 }
                  else if($scope.dt1 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType == 'Quarter')){
-                    $scope.showAlert("Please select a year")
+                    UserFormFactory.showAlert("Please select a year")
                     return;
                 }
                 else if($scope.dt2 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType == 'Custom Range' || $scope.report.name == 'MA Cumulative Summary' )){
-                    $scope.showAlert("Please select an end date")
+                    UserFormFactory.showAlert("Please select an end date")
                     return;
                 }
 
                 else if($scope.periodDisplayType == 'Quarter' && $scope.quarterDisplayType == '' && ($scope.isAggregateReport() )){
-                    $scope.showAlert("Please select a quarter type")
+                    UserFormFactory.showAlert("Please select a quarter type")
                     return;
                 }
                 else if( ($scope.periodDisplayType == 'Custom Range') && ($scope.dt2 < $scope.dt1)){
-                    $scope.showAlert("End date should be greater than start date")
+                    UserFormFactory.showAlert("End date should be greater than start date")
                     return;
                 }
 
@@ -627,7 +627,7 @@
                             reportRequest.stateId = $scope.state.stateId;
                         }
                         else{
-                            $scope.showAlert("Please select a state");
+                            UserFormFactory.showAlert("Please select a state");
                             return;
                         }
                     }
@@ -649,13 +649,13 @@
 				    	reportRequest.circleId = $scope.circle.circleId;
 				    }
                     else{
-                     	$scope.showAlert("Please select a circle");
+                     	UserFormFactory.showAlert("Please select a circle");
                      	return;
                     }
 		    	}
 
 		    	if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) && $scope.format == 'yyyy-MM'){
-                    $scope.showAlert("Please select a week");
+                    UserFormFactory.showAlert("Please select a week");
                     return;
 		    	}
 
@@ -1453,23 +1453,6 @@
                         })
                   }
             }
-
-
-            $scope.showAlert = function(message) {
-                // Appending dialog to document.body to cover sidenav in docs app
-                // Modal dialogs should fully cover application
-                // to prevent interaction outside of dialog
-                $mdDialog.show(
-                  $mdDialog.alert()
-                    .parent(angular.element(document.querySelector('#popupContainer')))
-                    .clickOutsideToClose(true)
-                    .title('MIS Alert!!')
-                    .textContent(message)
-                    .ariaLabel('Alert Dialog Demo')
-                    .ok('Got it!')
-                );
-              };
-
 
 		}])
 })()
