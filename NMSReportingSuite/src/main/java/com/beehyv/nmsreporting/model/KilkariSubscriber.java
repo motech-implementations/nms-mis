@@ -24,7 +24,7 @@ public class KilkariSubscriber {
     @Column(name="location_id", columnDefinition = "BIGINT(20)")
     private Long locationId;
 
-    @Column(name="date", columnDefinition = "DATETIME")
+    @Column(name="date", columnDefinition = "DATE")
     private Date date;
 
     @Column(name="total_subscriptions", columnDefinition = "INT(11)")

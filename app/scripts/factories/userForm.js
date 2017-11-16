@@ -1,7 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.factory( 'UserFormFactory', ['$http', function($http) {
+		.factory( 'UserFormFactory', ['$http','$mdDialog', function($http,$mdDialog) {
 			var users = [];
 			var currentUser = {};
 
@@ -72,7 +72,20 @@
 
 				getUserDto: function(id){
 					return $http.get(backend_root + 'nms/user/dto/' + id);
-				}
+				},
+
+				showAlert : function(message) {
+                    $mdDialog.show(
+                      $mdDialog.alert()
+                        .parent(angular.element(document.querySelector('#popupContainer')))
+                        .clickOutsideToClose(true)
+                        .title('MIS Alert!!')
+                        .textContent(message)
+                        .ariaLabel('Alert Dialog Demo')
+                        .ok('Got it!')
+                    );
+                }
+
 
 			};
 		}]);

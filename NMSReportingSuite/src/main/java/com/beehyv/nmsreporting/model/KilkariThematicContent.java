@@ -16,7 +16,7 @@ public class KilkariThematicContent {
     @Column(name="id", columnDefinition = "INT(11)")
     private Integer id;
 
-    @Column(name="date", columnDefinition = "DATETIME")
+    @Column(name="date", columnDefinition = "DATE")
     private Date date;
 
     @Column(name="theme", columnDefinition = "VARCHAR(45)")
