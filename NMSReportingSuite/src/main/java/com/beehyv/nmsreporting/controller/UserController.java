@@ -408,9 +408,10 @@ public class UserController {
         }
         
         if (reportRequest.getReportType().equals(ReportType.kilkariSubscriber.getReportType())) {
-            aggregateKilkariResponseDto.setBreadCrumbData(breadCrumbs);
+            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
             aggregateKilkariResponseDto = aggregateKilkariReportsService.getKilkariSubscriberCountReport(reportRequest);
-            return aggregateKilkariResponseDto;
+            aggregateResponseDto.setTableData(aggregateKilkariResponseDto);
+            return aggregateResponseDto;
         }
 
         if (reportRequest.getReportType().equals(ReportType.beneficiary.getReportType())) {
