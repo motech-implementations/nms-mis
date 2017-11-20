@@ -8,6 +8,7 @@ import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.Circle;
 import com.beehyv.nmsreporting.model.StateCircle;
 import com.beehyv.nmsreporting.model.User;
+import com.beehyv.nmsreporting.utils.Global;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import javax.transaction.Transactional;
 import java.io.File;
 import java.util.*;
 
+import static com.beehyv.nmsreporting.utils.Global.retrieveDocuments;
 import static com.beehyv.nmsreporting.utils.ServiceFunctions.StReplace;
 
 /**
@@ -42,7 +44,9 @@ public class ReportServiceImpl implements ReportService{
     @Autowired
     private ReportTypeDao reportTypeDao;
 
-    private final String documents = System.getProperty("user.home") + File.separator+ "Documents/";
+
+
+    private final String documents = retrieveDocuments();
     private final String reports = documents+"Reports/";
 
     @Override

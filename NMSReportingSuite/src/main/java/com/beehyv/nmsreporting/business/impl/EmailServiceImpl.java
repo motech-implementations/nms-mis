@@ -277,7 +277,7 @@ public class EmailServiceImpl implements EmailService{
                         + "<td>" +frontLineWorkersDao.getCountOfInactiveFrontLineWorkersForGivenDistrict(toDate, district.getDistrictId())+ "</td>"+"</tr>";
             }
         } else if(reportType.equals(ReportType.lowUsage.getReportType())){
-            body+="<pre>   </pre>Please find below the district wise count of beneficiaries have been deactivated for listening low or not answering. " +
+            body+="<pre>   </pre>Please find below the district wise count of beneficiaries who are listening to less than 25% of the content of Kilkari messages in the last calendar month. " +
                     "The line listing of the individual beneficiaries have been sent to the respective district and block users. ";
             body+= "<br><br><table width='100%' border='1' align='center'>"
                     + "<tr align='center'>"
@@ -361,10 +361,10 @@ public class EmailServiceImpl implements EmailService{
             for (District district:districts
                     ) {
                 body=body+"<tr align='center'>"+"<td>" + district.getDistrictName() + "</td>"
-                        + "<td>" +motherImportRejectionDao.getCountOFRejectedMotherImportRecordsWithDistrictId(toDate,
-                        fromDate, district.getDistrictId())+ "</td>"
-                        + "<td>" +childImportRejectionDao.getCountOfRejectedChildRecords(fromDate, toDate,
-                        district.getDistrictId())+ "</td>"+"</tr>";
+                        + "<td>" +motherImportRejectionDao.
+                        getCountOFRejectedMotherImportRecordsWithDistrictId(fromDate, toDate, district.getDistrictId())+ "</td>"
+                        + "<td>" +childImportRejectionDao.
+                        getCountOfRejectedChildRecords(fromDate, toDate, district.getDistrictId())+ "</td>"+"</tr>";
             }
 
         }
