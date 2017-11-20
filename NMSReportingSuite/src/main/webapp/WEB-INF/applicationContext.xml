@@ -134,63 +134,10 @@
             </props>
         </property>
     </bean>
-    <!--<bean id="autoReport" class="com.beehyv.nmsreporting.utils.AutoReportGeneration"/>-->
-    <!-- Spring Quartz -->
-   <!-- <bean id="AutoReportEmailGeneration" class="com.beehyv.nmsreporting.job.AutoReportEmailGeneration &lt;!&ndash;<bean id="cumulativeInactiveReport" class="com.beehyv.nmsreporting.job.cumulativeInactiveReport"/>
-    <bean id="circleWiseanonymousReport" class="com.beehyv.nmsreporting.job.circleWiseAnonymousReport"/>
-&ndash;&gt;
-    &lt;!&ndash; Quartz Job &ndash;&gt;
-    <bean name="CumulativeCourseCompletion" class="org.springframework.scheduling.quartz.JobDetailBean">
-        <property name="jobClass" value="com.beehyv.nmsreporting.job.AutoReportEmailGeneration  </bean>
-   &lt;!&ndash; <bean name="CumulativeInactive" class="org.springframework.scheduling.quartz.JobDetailBean">
-        <property name="jobClass" value="com.beehyv.nmsreporting.job.cumulativeInactiveReport" />
-    </bean>
-    <bean name="CircleWiseAnonymous" class="org.springframework.scheduling.quartz.JobDetailBean">
-        <property name="jobClass" value="com.beehyv.nmsreporting.job.circleWiseAnonymousReport" />
-    </bean>
-&ndash;&gt;
-    &lt;!&ndash; Cron Trigger, run every month &ndash;&gt;
-    <bean id="cronTriggerCourseCompletion"
-          class="org.springframework.scheduling.quartz.CronTriggerBean">
-        <property name="jobDetail" ref="CumulativeCourseCompletion" />
-        <property name="cronExpression" value="0/5 * * * * ?" />
-        <property name="misfireInstruction"
-                  value="#{T(org.quartz.CronTrigger).MISFIRE_INSTRUCTION_DO_NOTHING}"/>
-    </bean>
-    &lt;!&ndash;<bean id="cronTriggerInactive"
-          class="org.springframework.scheduling.quartz.CronTriggerBean">
-        <property name="jobDetail" ref="CumulativeInactive" />
-        <property name="cronExpression" value="0 0 1 1 * ?" />
-    </bean>
-    <bean id="cronTriggerAnonymous"
-          class="org.springframework.scheduling.quartz.CronTriggerBean">
-        <property name="jobDetail" ref="CircleWiseAnonymous" />
-        <property name="cronExpression" value="0 0 1 1 * ?" />
-    </bean>&ndash;&gt;
 
-    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-        <property name="jobDetails">
-            <list>
-                <ref bean="CumulativeCourseCompletion" />
-            </list>
-        </property>
-        <property name="triggers">
-            <list>
-                <ref bean="cronTriggerCourseCompletion" />
-                &lt;!&ndash;<ref bean="cronTriggerInactive" />
-                <ref bean="cronTriggerAnonymous" />&ndash;&gt;
-            </list>
-        </property>
-        <property name="configLocation" value="classpath:quartz.properties"/>
-        <property name="autoStartup"><value>true</value></property>
-    </bean>-->
-    <!--<bean id="dataBaseMigrationService" class="com.beehyv.nmsreporting.job.circleWiseAnonymousReport"/>-->
-    <!--<task:scheduled-tasks>-->
-        <!--<task:scheduled ref="dataBaseMigrationService" method="executeInternal" cron="0/9 * * * * ?"/>-->
-    <!--</task:scheduled-tasks>-->
-    <!--<bean id="autoReportMail" class="com.beehyv.nmsreporting.job.AutoReportEmailGeneration"/>-->
-    <!--<task:scheduled-tasks>-->
-        <!--<task:scheduled ref="autoReportMail" method="executeInternal" cron="0 0 9 1 * ?"/>-->
+    <bean id="autoReportMail" class="com.beehyv.nmsreporting.job.AutoReportEmailGeneration"/>
+    <task:scheduled-tasks>
+        <task:scheduled ref="autoReportMail" method="executeInternal" cron="0 0 9 1 * ?"/>
         <!--<task:scheduled ref="autoReportMail" method="executeInternal" cron="0 0 12 ? * MON *"/>-->
-    <!--</task:scheduled-tasks>-->
+    </task:scheduled-tasks>
 </beans>

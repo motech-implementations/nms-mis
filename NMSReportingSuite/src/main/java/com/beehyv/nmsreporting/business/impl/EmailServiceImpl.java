@@ -361,10 +361,10 @@ public class EmailServiceImpl implements EmailService{
             for (District district:districts
                     ) {
                 body=body+"<tr align='center'>"+"<td>" + district.getDistrictName() + "</td>"
-                        + "<td>" +motherImportRejectionDao.getCountOFRejectedMotherImportRecordsWithDistrictId(toDate,
-                        fromDate, district.getDistrictId())+ "</td>"
-                        + "<td>" +childImportRejectionDao.getCountOfRejectedChildRecords(fromDate, toDate,
-                        district.getDistrictId())+ "</td>"+"</tr>";
+                        + "<td>" +motherImportRejectionDao.
+                        getCountOFRejectedMotherImportRecordsWithDistrictId(fromDate, toDate, district.getDistrictId())+ "</td>"
+                        + "<td>" +childImportRejectionDao.
+                        getCountOfRejectedChildRecords(fromDate, toDate, district.getDistrictId())+ "</td>"+"</tr>";
             }
 
         }
