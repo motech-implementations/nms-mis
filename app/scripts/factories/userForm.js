@@ -1,7 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.factory( 'UserFormFactory', ['$http','$mdDialog', function($http,$mdDialog) {
+		.factory( 'UserFormFactory', ['$http','$mdDialog','$window','$document','deviceDetector', function($http,$mdDialog,$window,$document,deviceDetector) {
 			var users = [];
 			var currentUser = {};
 
@@ -82,9 +82,20 @@
                         .title('MIS Alert!!')
                         .textContent(message)
                         .ariaLabel('Alert Dialog Demo')
-                        .ok('Got it!')
+                        .ok('Ok!')
                     );
+                },
+
+                isInternetExplorer : function(){
+                    console.log(deviceDetector.browser);
+                    console.log(deviceDetector.browser_version);
+                    if(deviceDetector.browser == "ie" && (deviceDetector.browser_version = "10.0"))
+                     return true;
+                    else
+                     return false;
                 }
+
+
 
 
 			};

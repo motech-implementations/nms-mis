@@ -408,10 +408,10 @@ public class UserController {
         }
         
         if (reportRequest.getReportType().equals(ReportType.kilkariSubscriber.getReportType())) {
-            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
+
             aggregateKilkariResponseDto = aggregateKilkariReportsService.getKilkariSubscriberCountReport(reportRequest);
-            aggregateResponseDto.setTableData(aggregateKilkariResponseDto);
-            return aggregateResponseDto;
+            aggregateKilkariResponseDto.setBreadCrumbData(breadCrumbs);
+            return aggregateKilkariResponseDto;
         }
 
         if (reportRequest.getReportType().equals(ReportType.beneficiary.getReportType())) {
@@ -429,8 +429,9 @@ public class UserController {
         }
 
         if (reportRequest.getReportType().equals(ReportType.kilkariMessageListenership.getReportType())) {
-            aggregateKilkariResponseDto.setBreadCrumbData(breadCrumbs);
+
             aggregateKilkariResponseDto = aggregateKilkariReportsService.getKilkariMessageListenershipReport(reportRequest);
+            aggregateKilkariResponseDto.setBreadCrumbData(breadCrumbs);
             return aggregateKilkariResponseDto;
         }
 

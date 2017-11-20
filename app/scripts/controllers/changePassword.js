@@ -25,9 +25,19 @@
                         data    : $scope.password, //forms user object
                         headers : {'Content-Type': 'application/json'}
                     }).then(function(result){
-                        UserFormFactory.showAlert(result.data['0']);
-                        $state.go('login', {});
-                        $scope.clearForm();
+                        if(UserFormFactory.isInternetExplorer()){
+                            alert(result.data['0'])
+                            $state.go('login', {});
+                            $scope.clearForm();
+                            return;
+                        }
+                        else{
+                            UserFormFactory.showAlert(result.data['0'])
+                            $state.go('login', {});
+                            $scope.clearForm();
+                            return;
+                        }
+
                     })
                 }
                 else{

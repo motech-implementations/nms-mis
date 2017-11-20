@@ -576,49 +576,121 @@
 			$scope.getReport = function(){
 
                 if($scope.reportCategory == null){
-                    UserFormFactory.showAlert("Please select a report category")
-                    return;
+                    if(UserFormFactory.isInternetExplorer()){
+                        alert("Please select a report category")
+                         return;
+                    }
+                    else{
+                        UserFormFactory.showAlert("Please select a report category")
+                        return;
+                    }
                 }
 				if($scope.report == null){
-					UserFormFactory.showAlert("Please select a report")
-					return;
+				    if(UserFormFactory.isInternetExplorer()){
+                        alert("Please select a report")
+                         return;
+                    }
+                    else{
+                        UserFormFactory.showAlert("Please select a report")
+                        return;
+                    }
 				}
 				if($scope.dt == null && (angular.lowercase($scope.report.name).indexOf(angular.lowercase("rejected")) > -1) ){
-					UserFormFactory.showAlert("Please select a week")
-					return;
+					if(UserFormFactory.isInternetExplorer()){
+                        alert("Please select a week")
+                         return;
+                    }
+                    else{
+                        UserFormFactory.showAlert("Please select a week")
+                        return;
+                    }
+
 				}
 				else if($scope.dt == null && (!$scope.isAggregateReport() )){
-                	UserFormFactory.showAlert("Please select a month")
-					return;
+                	if(UserFormFactory.isInternetExplorer()){
+                         alert("Please select a month")
+                         return;
+                    }
+                    else{
+                        UserFormFactory.showAlert("Please select a month")
+                        return;
+                    }
 				}
 				else if($scope.periodDisplayType == '' && ($scope.isAggregateReport() ) && $scope.report.name != 'MA Cumulative Summary'){
-                    UserFormFactory.showAlert("Please select a period type")
-                    return;
+                   if(UserFormFactory.isInternetExplorer()){
+                       alert("Please select a period type")
+                       return;
+                   }
+                   else{
+                       UserFormFactory.showAlert("Please select a period type")
+                       return;
+                   }
                 }
 				else if($scope.dt1 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType != 'Custom Range' && $scope.periodDisplayType != 'Quarter' && $scope.report.name != 'MA Cumulative Summary') ){
-                   UserFormFactory.showAlert("Please select a " +  $scope.periodDisplayType)
-                    return;
+                    if(UserFormFactory.isInternetExplorer()){
+                          alert("Please select a " +  $scope.periodDisplayType)
+                          return;
+                    }
+                    else{
+                          UserFormFactory.showAlert("Please select a " +  $scope.periodDisplayType)
+                          return;
+                    }
                 }
                 else if($scope.dt1 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType == 'Custom Range')){
-                    UserFormFactory.showAlert("Please select a start date")
-                    return;
+                   if(UserFormFactory.isInternetExplorer()){
+                      alert("Please select a start date")
+                      return;
+                   }
+                   else{
+                      UserFormFactory.showAlert("Please select a start date")
+                      return;
+                   }
                 }
                  else if($scope.dt1 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType == 'Quarter')){
-                    UserFormFactory.showAlert("Please select a year")
-                    return;
+
+                   if(UserFormFactory.isInternetExplorer()){
+                         alert("Please select a year")
+                         return;
+                   }
+                   else{
+                     UserFormFactory.showAlert("Please select a year")
+                     return;
+                   }
+
                 }
                 else if($scope.dt2 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType == 'Custom Range' || $scope.report.name == 'MA Cumulative Summary' )){
-                    UserFormFactory.showAlert("Please select an end date")
-                    return;
+                   if(UserFormFactory.isInternetExplorer()){
+                         alert("Please select an end date")
+                         return;
+                   }
+                   else{
+                         UserFormFactory.showAlert("Please select an end date")
+                         return;
+                   }
+
                 }
 
                 else if($scope.periodDisplayType == 'Quarter' && $scope.quarterDisplayType == '' && ($scope.isAggregateReport() )){
-                    UserFormFactory.showAlert("Please select a quarter type")
-                    return;
+                   if(UserFormFactory.isInternetExplorer()){
+                         alert("Please select a quarter type")
+                         return;
+                   }
+                   else{
+                         UserFormFactory.showAlert("Please select a quarter type")
+                         return;
+                   }
+
                 }
                 else if( ($scope.periodDisplayType == 'Custom Range') && ($scope.dt2 < $scope.dt1)){
-                    UserFormFactory.showAlert("End date should be greater than start date")
-                    return;
+                   if(UserFormFactory.isInternetExplorer()){
+                         alert("End date should be greater than start date")
+                         return;
+                   }
+                   else{
+                         UserFormFactory.showAlert("End date should be greater than start date")
+                         return;
+                   }
+
                 }
 
 
@@ -638,8 +710,14 @@
                             reportRequest.stateId = $scope.state.stateId;
                         }
                         else{
-                            UserFormFactory.showAlert("Please select a state");
-                            return;
+                               if(UserFormFactory.isInternetExplorer()){
+                                     alert("Please select a state")
+                                     return;
+                               }
+                               else{
+                                 UserFormFactory.showAlert("Please select a state")
+                                 return;
+                               }
                         }
                     }
                     else
@@ -660,14 +738,27 @@
 				    	reportRequest.circleId = $scope.circle.circleId;
 				    }
                     else{
-                     	UserFormFactory.showAlert("Please select a circle");
-                     	return;
+                           if(UserFormFactory.isInternetExplorer()){
+                                 alert("Please select a circle")
+                                 return;
+                           }
+                           else{
+                             UserFormFactory.showAlert("Please select a circle")
+                             return;
+                           }
+
                     }
 		    	}
 
 		    	if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).indexOf(angular.lowercase("rejected")) > -1) && $scope.format == 'yyyy-MM'){
-                    UserFormFactory.showAlert("Please select a week");
-                    return;
+                   if(UserFormFactory.isInternetExplorer()){
+                         alert("Please select a week")
+                         return;
+                   }
+                   else{
+                     UserFormFactory.showAlert("Please select a week")
+                     return;
+                   }
 		    	}
 
                 if(!$scope.isAggregateReport())
@@ -1114,6 +1205,7 @@
             $scope.gridOptions1 = {
                 enableSorting: true,
                 enableVerticalScrollbar : 0,
+                excessRows :1000,
                 onRegisterApi: function(gridApi){
                       $scope.gridApi = gridApi;
                     },
@@ -1122,6 +1214,7 @@
             $scope.gridOptions2 = {
                 enableSorting: true,
                 enableVerticalScrollbar : 0,
+                excessRows :1000,
                 onRegisterApi: function(gridApi){
                       $scope.gridApi = gridApi;
                     },

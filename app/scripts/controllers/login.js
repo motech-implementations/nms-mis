@@ -42,20 +42,45 @@
 			$scope.login = function(e){
 
 			    if($scope.user.username == null){
-			        UserFormFactory.showAlert("Please specify a username")
-                    return ;
+			        if(UserFormFactory.isInternetExplorer()){
+                        alert("Please specify a username")
+                        return;
+                    }
+                    else{
+                        UserFormFactory.showAlert("Please specify a username")
+                        return;
+                    }
+
 			    }
 			    if($scope.user.password == null){
-                    UserFormFactory.showAlert("Please specify a password")
-                    return ;
+			        if(UserFormFactory.isInternetExplorer()){
+                        alert("Please specify a password")
+                        return;
+                    }
+                    else{
+                        UserFormFactory.showAlert("Please specify a password")
+                        return;
+                    }
                 }
                 if($scope.user.captchaCode == null){
-                    UserFormFactory.showAlert("Please enter the captchaCode")
-                    return ;
+                    if(UserFormFactory.isInternetExplorer()){
+                        alert("Please enter the captchaCode")
+                        return;
+                    }
+                    else{
+                        UserFormFactory.showAlert("Please enter the captchaCode")
+                        return;
+                    }
                 }
                 if($scope.loginForm.captchaCode.$invalid){
-                    UserFormFactory.showAlert("Incorrect Captcha")
-                    return ;
+                    if(UserFormFactory.isInternetExplorer()){
+                        alert("Incorrect Captcha")
+                        return;
+                    }
+                    else{
+                        UserFormFactory.showAlert("Incorrect Captcha")
+                        return;
+                    }
                 }
 
                  var formElement = angular.element(e.target);

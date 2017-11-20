@@ -36,6 +36,7 @@ public class LoginController {
     @Autowired
     private UserService userService;
 
+
     @RequestMapping(value = {"/", "/nms", "/nms/login"}, method = RequestMethod.GET)
     protected String returnLoginView(Model model, @ModelAttribute LoginUser loginUser) {
 //        System.out.println("\n\n" + SecurityUtils.getSubject().getSession()+ "!!!!!!!!!!!\n\n");
@@ -84,7 +85,7 @@ public class LoginController {
             if(user.getDefault()){
                 return "redirect:"+ uiAddress +"changePassword";
             }
-            user.setLoggedAtLeastOnce(true);
+            userService.setLoggedIn();
             return "redirect:"+ uiAddress +"reports";
         }
     }

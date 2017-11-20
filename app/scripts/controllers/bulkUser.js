@@ -22,8 +22,14 @@
 				var fd = new FormData();
 
 				if(file == null){
-					UserFormFactory.showAlert("Please select a CSV file");
-					return;
+                    if(UserFormFactory.isInternetExplorer()){
+                        alert("Please select a CSV file")
+                         return;
+                    }
+                    else{
+                        UserFormFactory.showAlert("Please select a CSV file")
+                        return;
+                    }
 				}
 
 				fd.append('bulkCsv', file);

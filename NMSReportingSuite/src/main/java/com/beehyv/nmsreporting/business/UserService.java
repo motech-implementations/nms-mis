@@ -20,6 +20,10 @@ public interface UserService {
 
     User getCurrentUser();
 
+    void saveUser(User user);
+
+    void setLoggedIn();
+
     User findUserByEmailId(String emailId);
 
     List<User> findUsersByPhoneNumber(String phoneNumber);

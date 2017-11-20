@@ -12,14 +12,29 @@
 						data    : $scope.forgotPassword, //forms user object
 						headers : {'Content-Type': 'application/json'}
 					}).then(function (result){
-                        UserFormFactory.showAlert(result.data[0]);
+                        if(UserFormFactory.isInternetExplorer()){
+                            alert(result.data['0'])
+                             return;
+                        }
+                        else{
+                            UserFormFactory.showAlert(result.data['0'])
+                            return;
+                        }
                         $scope.forgotPassword = {};
                         $scope.forgotPasswordForm.$setPristine();
                         $scope.forgotPasswordForm.$setUntouched();
                         $state.go('login', {});
 
                      },function (result){
-                        UserFormFactory.showAlert("error changing password");
+                        if(UserFormFactory.isInternetExplorer()){
+                            alert(result.data['0'])
+                             return;
+                        }
+                        else{
+                            UserFormFactory.showAlert(result.data['0'])
+                            return;
+                        }
+
                      });
 				}
 				else{

@@ -56,7 +56,15 @@
 						data    : $scope.contact, //forms user object
 						headers : {'Content-Type': 'application/json'} 
 					}).then(function(result){
-						UserFormFactory.showAlert(result.data['0']);
+                        if(UserFormFactory.isInternetExplorer()){
+                            alert(result.data['0'])
+                             return;
+                        }
+                        else{
+                            UserFormFactory.showAlert(result.data['0'])
+                            return;
+                        }
+
 					})
 				}
 				else{
@@ -84,7 +92,14 @@
 						data    : $scope.password, //forms user object
 						headers : {'Content-Type': 'application/json'} 
 					}).then(function(result){
-						UserFormFactory.showAlert(result.data['0']);
+						if(UserFormFactory.isInternetExplorer()){
+                            alert(result.data['0'])
+                             return;
+                        }
+                        else{
+                            UserFormFactory.showAlert(result.data['0'])
+                            return;
+                        }
 					})
 				}
 				else{

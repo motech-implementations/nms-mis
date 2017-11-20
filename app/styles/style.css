@@ -530,6 +530,7 @@ body *{
 }
 
 .reportheader{
+    margin-top : 20px;
     margin-left: 15px;
     color: #463f3f;
     font-weight: bold;
@@ -643,7 +644,6 @@ md-dialog{
 }
 
 .matrixHeader{
-    padding:10px;
     text-align : center;
 }
 

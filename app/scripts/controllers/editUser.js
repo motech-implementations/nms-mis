@@ -159,7 +159,14 @@
 						data    : $scope.editUser, //forms user object
 						headers : {'Content-Type': 'application/json'} 
 					}).then(function(result){
-						UserFormFactory.showAlert(result.data['0']);
+                        if(UserFormFactory.isInternetExplorer()){
+                            alert(result.data['0'])
+                             return;
+                        }
+                        else{
+                            UserFormFactory.showAlert(result.data['0'])
+                            return;
+                        }
 						// $scope.open()
 						if(result.data['0'] == 'User Updated'){
 							$state.go('userManagement.userTable', {});
@@ -186,7 +193,15 @@
                     data    : password, //forms user object
                     headers : {'Content-Type': 'application/json'}
                 }).then(function(result){
-                    UserFormFactory.showAlert(result.data['0']);
+                    if(UserFormFactory.isInternetExplorer()){
+                        alert(result.data['0'])
+                         return;
+                    }
+                    else{
+                        UserFormFactory.showAlert(result.data['0'])
+                        return;
+                    }
+
                 })
 
             };
@@ -194,7 +209,15 @@
             $scope.deactivateUserSubmit = function() {
                 UserFormFactory.deactivateUser($scope.editUser.userId)
                 .then(function(result){
-                	UserFormFactory.showAlert(result.data['0']);
+                    if(UserFormFactory.isInternetExplorer()){
+                        alert(result.data['0'])
+                         return;
+                    }
+                    else{
+                        UserFormFactory.showAlert(result.data['0'])
+                        return;
+                    }
+
                 });
             };
 

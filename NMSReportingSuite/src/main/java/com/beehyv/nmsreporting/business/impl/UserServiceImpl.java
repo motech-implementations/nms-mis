@@ -615,6 +615,17 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public  void saveUser(User user){
+        userDao.saveUser(user);
+    }
+
+    @Override
+    public void setLoggedIn(){
+        User currentUser = getCurrentUser();
+        currentUser.setLoggedAtLeastOnce(true);
+    }
+
+    @Override
     public Map<Integer, String> changePassword(PasswordDto passwordDto) {
 
         Integer rowNum = 0;
