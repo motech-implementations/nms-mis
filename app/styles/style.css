@@ -540,6 +540,11 @@ body *{
     float: right;
     margin-right: 35px;
     font-weight: 600;
+    font-size : 13px;
+}
+
+.calender-date{
+    font-family:'Roboto', sans-serif;
 }
 .ui-grid-header-cell {
 background-color:#2164b2 !important;

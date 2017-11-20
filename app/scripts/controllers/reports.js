@@ -230,7 +230,7 @@
                 }
                 else
                     $scope.periodType = ['Year','Month','Quarter', 'Custom Range'];
-                if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected")))  ){
+                if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).indexOf(angular.lowercase("rejected")) > -1)  ){
                 	$scope.datePickerContent = "Select Week";
                 }
                 else
@@ -256,6 +256,17 @@
 				}
 				return name;
 			}
+
+
+			$scope.cropAggregate = function(name){
+                if(name == null){
+                    return "";
+                }
+                if(name.length > 30){
+                    return name.substring(0, 27) + "..."
+                }
+                return name;
+            }
 
             $scope.cropState = function(name){
                 if(name == null){
@@ -542,7 +553,7 @@
                  return;
                 }
                 $scope.format = 'yyyy-MM';
-			    if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) && $scope.dt != null) {
+			    if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).indexOf(angular.lowercase("rejected")) > -1) && $scope.dt != null) {
 			    	 $scope.getSundays($scope.dt);
                      $scope.sundaysTable = true;
 			    	 $scope.popup1.opened = true;
@@ -572,7 +583,7 @@
 					UserFormFactory.showAlert("Please select a report")
 					return;
 				}
-				if($scope.dt == null && (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) ){
+				if($scope.dt == null && (angular.lowercase($scope.report.name).indexOf(angular.lowercase("rejected")) > -1) ){
 					UserFormFactory.showAlert("Please select a week")
 					return;
 				}
@@ -654,7 +665,7 @@
                     }
 		    	}
 
-		    	if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) && $scope.format == 'yyyy-MM'){
+		    	if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).indexOf(angular.lowercase("rejected")) > -1) && $scope.format == 'yyyy-MM'){
                     UserFormFactory.showAlert("Please select a week");
                     return;
 		    	}
@@ -955,7 +966,7 @@
 				var currentDate = new Date();
 
 				console.log(currentDate.getMonth() + " " + currentDate.getDate() + " " +currentDate.getFullYear());
-				if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) ){
+				if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).indexOf(angular.lowercase("rejected")) > -1) ){
 				    if(currentDate.getMonth() == startMonth && currentDate.getDate() >= startDate && currentDate.getFullYear() == 2017 && $scope.getSundays(currentDate) > 0){
 				        $scope.dateOptions.maxDate = new Date().setMonth(new Date().getMonth());
 				    }
@@ -977,7 +988,7 @@
 
 				}
 
-				if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).includes(angular.lowercase("rejected"))) && ($scope.format == 'yyyy-MM-dd' || $scope.format == 'yyyy-MM' )){
+				if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).indexOf(angular.lowercase("rejected")) > -1) && ($scope.format == 'yyyy-MM-dd' || $scope.format == 'yyyy-MM' )){
                     $scope.getSundays($scope.dt);
                     $scope.sundaysTable = true;
 
@@ -1102,6 +1113,7 @@
 
             $scope.gridOptions1 = {
                 enableSorting: true,
+                enableVerticalScrollbar : 0,
                 onRegisterApi: function(gridApi){
                       $scope.gridApi = gridApi;
                     },
@@ -1109,6 +1121,7 @@
 
             $scope.gridOptions2 = {
                 enableSorting: true,
+                enableVerticalScrollbar : 0,
                 onRegisterApi: function(gridApi){
                       $scope.gridApi = gridApi;
                     },
@@ -1120,14 +1133,14 @@
                                                          cellTemplate:'<a class="btn primary aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
                                                          width: '11%', enableHiding: false
                                                        },
-                                                       { field: 'ashasRegistered', displayName : 'No of Registered ASHA', width:"10%", enableHiding: false},
-                                                       { field: 'ashasStarted', displayName : ' No of ASHA Started Course',  width:"10%", enableHiding: false},
-                                                       { field: 'ashasNotStarted', displayName : ' No of ASHA Not Started Course', width:"10%", enableHiding: false},
+                                                       { field: 'ashasRegistered', displayName : 'No of Registered ASHA', width:"*", enableHiding: false},
+                                                       { field: 'ashasStarted', displayName : ' No of ASHA Started Course',  width:"*", enableHiding: false},
+                                                       { field: 'ashasNotStarted', displayName : ' No of ASHA Not Started Course', width:"*", enableHiding: false},
                                                        { field: 'ashasCompleted' , displayName : 'No of ASHA Successfully Completed the Course', width:"13%", enableHiding: false},
-                                                       { field: 'ashasFailed' , displayName : 'No of ASHA who failed the course', width:"11%", enableHiding: false},
-                                                       { field: 'notStartedpercentage' , displayName : '% Not Started Course', width:"10%", enableHiding: false},
-                                                       { field: 'completedPercentage' , displayName : '% Successfully Completed', width:"9%", enableHiding: false},
-                                                       { field: 'failedpercentage' , displayName : '% Failed the course', width:"10%", enableHiding: false},
+                                                       { field: 'ashasFailed' , displayName : 'No of ASHA who failed the course', width:"*", enableHiding: false},
+                                                       { field: 'notStartedpercentage' , displayName : '% Not Started Course', width:"*", enableHiding: false},
+                                                       { field: 'completedPercentage' , displayName : '% Successfully Completed', width:"*", enableHiding: false},
+                                                       { field: 'failedpercentage' , displayName : '% Failed the course', width:"*", enableHiding: false},
                                                       ],
 
 
@@ -1137,11 +1150,11 @@
                                                             cellTemplate:'<a class="btn primary aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
                                                             enableHiding: false, width:"11%"
                                                          },
-                                                         { field: 'ashasStarted', displayName: 'Number of ASHA Started Course', width:"15%",enableHiding: false },
-                                                         { field: 'ashasAccessed', displayName: 'Number of ASHA Pursuing Course', width:"16%", enableHiding: false },
-                                                         { field: 'ashasNotAccessed', displayName: 'Number of ASHA not Pursuing Course', width:"17%", enableHiding: false},
+                                                         { field: 'ashasStarted', displayName: 'Number of ASHA Started Course', width:"*",enableHiding: false },
+                                                         { field: 'ashasAccessed', displayName: 'Number of ASHA Pursuing Course', width:"*", enableHiding: false },
+                                                         { field: 'ashasNotAccessed', displayName: 'Number of ASHA not Pursuing Course', width:"*", enableHiding: false},
                                                          { field: 'ashasCompleted', displayName: 'Number of ASHA Successfully Completed Course', width:"18%",enableHiding: false},
-                                                         { field: 'ashasFailed',  displayName: 'Number of ASHA who Failed the Course', width:"17%", enableHiding: false},
+                                                         { field: 'ashasFailed',  displayName: 'Number of ASHA who Failed the Course', width:"*", enableHiding: false},
                                                         ],
 
             $scope.MA_Subscriber_Column_Definitions =[
@@ -1151,10 +1164,10 @@
                                                             enableHiding: false,width:"10%"
                                                          },
                                                          { field: 'registeredNotCompletedStart', displayName: 'Number of ASHA Registered But Not Completed the Course(Period Start)',width:"16%", enableHiding: false },
-                                                         { field: 'recordsReceived', displayName: 'Number of ASHA Records Received Through Web Service', width:"13%", enableHiding: false },
-                                                         { field: 'ashasRejected', displayName: 'Number of ASHA Records Rejected', width:"13%", enableHiding: false},
-                                                         { field: 'ashasRegistered', displayName: 'Number of ASHA Subscriptions Added', width:"13%", enableHiding: false},
-                                                         { field: 'ashasCompleted',  displayName: 'Number of ASHA Successfully Completed the Course', width:"13%", enableHiding: false},
+                                                         { field: 'recordsReceived', displayName: 'Number of ASHA Records Received Through Web Service', width:"*", enableHiding: false },
+                                                         { field: 'ashasRejected', displayName: 'Number of ASHA Records Rejected', width:"*", enableHiding: false},
+                                                         { field: 'ashasRegistered', displayName: 'Number of ASHA Subscriptions Added', width:"*", enableHiding: false},
+                                                         { field: 'ashasCompleted',  displayName: 'Number of ASHA Successfully Completed the Course', width:"*", enableHiding: false},
                                                          { field: 'registeredNotCompletedend',  displayName: 'Number of ASHA Registered But Not Completed the Course (Period End)', width:"16%", enableHiding: false},
                                                         ],
 
@@ -1223,10 +1236,10 @@
 
             $scope.Kilkari_Listening_Matrix_Definitions =[
                                                      { field: 'percentageCalls', name: 'Listening Percentage', width:"30%", enableHiding: false },
-                                                     { field: 'content_75_100', name: 'Listening > 75 % content', width:"15%", enableHiding: false},
-                                                     { field: 'content_50_75', name: 'Listening 50 to 75 % content',width:"15%", enableHiding: false },
-                                                     { field: 'content_25_50', name: 'Listening 25 to 50 % content', width:"15%", enableHiding: false },
-                                                     { field: 'content_1_25', name: 'Listening < 25 % content',width:"15%", enableHiding: false },
+                                                     { field: 'content_75_100', name: 'Listening > 75 % content', width:"*", enableHiding: false},
+                                                     { field: 'content_50_75', name: 'Listening 50 to 75 % content',width:"*", enableHiding: false },
+                                                     { field: 'content_25_50', name: 'Listening 25 to 50 % content', width:"*", enableHiding: false },
+                                                     { field: 'content_1_25', name: 'Listening < 25 % content',width:"*", enableHiding: false },
                                                      { field: 'total', name: 'Total', width:"10%", enableHiding: false },
 
             ]
@@ -1290,11 +1303,11 @@
                                                         enableHiding: false,width:"10%"
                                                      },
                                                      { field: 'totalSubscriptionsStart', name: 'Total Subscription at the start of the period',width:"12%", enableHiding: false },
-                                                     { field: 'totalBeneficiaryRecordsReceived', displayName: 'Total beneficiary Records Received from RCH/MCTS',width:"13%", enableHiding: false },
-                                                     { field: 'totalBeneficiaryRecordsEligible', name: 'Total beneficiary Records Found Eligible for Subscriptions', width:"13%", enableHiding: false },
+                                                     { field: 'totalBeneficiaryRecordsReceived', displayName: 'Total beneficiary Records Received from RCH/MCTS',width:"*", enableHiding: false },
+                                                     { field: 'totalBeneficiaryRecordsEligible', name: 'Total beneficiary Records Found Eligible for Subscriptions', width:"*", enableHiding: false },
                                                      { field: 'totalBeneficiaryRecordsRejectedDuplicateMobileNumbers', name: 'Total beneficiary records rejected due to wrong/duplicate mobile numbers', width:"14%", enableHiding: false},
-                                                     { field: 'totalBeneficiaryRecordsAccepted', name: 'Total beneficiary Records accepted As Subscriptions',width:"12%", enableHiding: false },
-                                                     { field: 'totalSubscriptionsCompleted', name: 'Total number of subscriptions who have completed their packs', width:"12%", enableHiding: false },
+                                                     { field: 'totalBeneficiaryRecordsAccepted', name: 'Total beneficiary Records accepted As Subscriptions',width:"*", enableHiding: false },
+                                                     { field: 'totalSubscriptionsCompleted', name: 'Total number of subscriptions who have completed their packs', width:"*", enableHiding: false },
                                                      { field: 'totalSubscriptionsEnd', name: 'Total Subscription at the end of the period', width:"10%", enableHiding: false },
             ]
 

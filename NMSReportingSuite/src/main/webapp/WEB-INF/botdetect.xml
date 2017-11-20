@@ -6,9 +6,9 @@
 
     <captchaStyles>
         <captchaStyle>
-            <name>exampleCaptcha</name>
+            <name>AncientMosaic</name>
             <userInputID>captchaCode</userInputID>
-            <codeLength>3-5</codeLength>
+            <codeLength>5</codeLength>
         </captchaStyle>
     </captchaStyles>
 

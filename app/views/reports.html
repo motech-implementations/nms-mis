@@ -97,14 +97,14 @@
 						<div class="btn-group" uib-dropdown dropdown-append-to-body>
 							<button id="btn-append-to-body-7" type="button" class="btn btn-sm btn-default" ng-disabled="disableDistrict()" uib-dropdown-toggle ng-class="{loading: districtsLoading, autoSelected}">
 								<span class="block">
-									<span>{{district.districtName}}</span>
+									<span>{{cropAggregate(district.districtName)}}</span>
 									<span ng-if="district == null">ALL</span>
 									<span class="caret"></span>
 								</span>
 							</button>
 							<ul class="dropdown-menu type-aggregate" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
 								<li role="menuitem"><a class="select_district" ng-click="clearDistrict()">ALL</a>
-								<li role="menuitem" ng-repeat="item in districts | orderBy : 'districtName'"><a ng-click='selectDistrict(item)'>{{item.districtName}}</a></li>
+								<li role="menuitem" ng-repeat="item in districts | orderBy : 'districtName'"><a ng-click='selectDistrict(item)'>{{cropAggregate(item.districtName)}}</a></li>
 							</ul>
 						</div>
 					</div>
@@ -130,14 +130,14 @@
 						<div class="btn-group" uib-dropdown dropdown-append-to-body>
 							<button id="btn-append-to-body-8" type="button" class="btn btn-sm btn-default" ng-disabled="disableBlock()" uib-dropdown-toggle ng-class="{loading: blocksLoading}">
 								<span class="block">
-									<span>{{block.blockName}}</span>
+									<span>{{cropAggregate(block.blockName)}}</span>
 									<span ng-if="block == null">ALL</span>
 									<span class="caret"></span>
 								</span>
 							</button>
 							<ul class="dropdown-menu small type-aggregate" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
 								<li role="menuitem"><a class="select_block"  ng-click="clearBlock()">ALL</a>
-								<li role="menuitem" ng-repeat="item in blocks | orderBy : 'blockName'"><a ng-click='selectBlock(item)'>{{item.blockName}}</a></li>
+								<li role="menuitem" ng-repeat="item in blocks | orderBy : 'blockName'"><a ng-click='selectBlock(item)'>{{cropAggregate(item.blockName)}}</a></li>
 							</ul>
 						</div>
 					</div>
@@ -313,7 +313,7 @@
 
     <div class="reportheader" ng-hide="hideGrid">
         <p class="ng-binding" style="display: inline-block;"> {{reportCategory}} - {{report.name}}</p>
-        <i class="glyphicon glyphicon-calendar aggregate-calender"> {{ headerFromDate | date:'dd/MM/y'}} <span style="font-size: 12px" ng-if=" report.name == 'MA Cumulative Summary'">Up</span>to {{headerToDate | date:'dd/MM/y'}}</i>
+		<i class="glyphicon glyphicon-calendar aggregate-calender"> <span class="calender-date">{{ headerFromDate | date:'dd/MM/y'}}</span> <span class="calender-date" style="font-size: 13px" ng-if=" report.name == 'MA Cumulative Summary'">Up</span><span class="calender-date">to</span> <span class="calender-date">{{headerToDate | date:'dd/MM/y'}}</span></i>
     </div>
 
 	<div class="reportheader matrixHeader" ng-hide="hideGrid || (report.reportEnum != 'Kilkari_Message_Matrix' && report.reportEnum != 'Kilkari_Repeat_Listener_Month_Wise')">
