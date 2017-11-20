@@ -20,7 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
 
-import static com.beehyv.nmsreporting.utils.Global.uiAddress;
+import static com.beehyv.nmsreporting.utils.Global.retrieveUiAddress;
 
 /**
  * Created by beehyv on 15/3/17.
@@ -40,7 +40,7 @@ public class LoginController {
     protected String returnLoginView(Model model, @ModelAttribute LoginUser loginUser) {
 //        System.out.println("\n\n" + SecurityUtils.getSubject().getSession()+ "!!!!!!!!!!!\n\n");
         ensureUserIsLoggedOut();
-        return "redirect:"+ uiAddress +"login";
+        return "redirect:"+ retrieveUiAddress() +"login";
     }
 
     @RequestMapping(value={"/nms/login"}, method= RequestMethod.POST)
@@ -51,7 +51,7 @@ public class LoginController {
         System.out.println("rememberme " + loginUser.isRememberMe());
         if( errors.hasErrors() ) {
             ensureUserIsLoggedOut();
-            return "redirect:"+ uiAddress +"login?error";
+            return "redirect:"+ retrieveUiAddress() +"login?error";
         }
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(loginUser.getUsername(), loginUser.getPassword(), loginUser.isRememberMe());
@@ -71,7 +71,7 @@ public class LoginController {
                 loginTrackerService.saveLoginDetails(loginTracker);
             }
             ensureUserIsLoggedOut();
-            return "redirect:"+ uiAddress +"login?error";
+            return "redirect:"+ retrieveUiAddress() +"login?error";
         } else {
             LoginTracker loginTracker=new LoginTracker();
             loginTracker.setUserId(user.getUserId());
@@ -82,17 +82,17 @@ public class LoginController {
                 user.setDefault(true);
             }
             if(user.getDefault()){
-                return "redirect:"+ uiAddress +"changePassword";
+                return "redirect:"+ retrieveUiAddress() +"changePassword";
             }
             user.setLoggedAtLeastOnce(true);
-            return "redirect:"+ uiAddress +"reports";
+            return "redirect:"+ retrieveUiAddress() +"reports";
         }
     }
 
     @RequestMapping(value = {"/nms/index"}, method = RequestMethod.GET)
     protected String returnHomeView(Model model) {
 //        System.out.println("\n\n" + SecurityUtils.getSubject().getSession()+ "!!!!!!!!!!!\n\n");
-        return "redirect:"+ uiAddress +"userManagement";
+        return "redirect:"+ retrieveUiAddress() +"userManagement";
     }
 
     @RequestMapping(value = {"/nms/loginDummy"}, method = RequestMethod.GET)

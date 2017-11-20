@@ -31,6 +31,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static com.beehyv.nmsreporting.utils.Global.retrieveDocuments;
 import static com.beehyv.nmsreporting.utils.ServiceFunctions.StReplace;
 
 /**
@@ -83,7 +84,7 @@ public class UserController {
     private BreadCrumbService breadCrumbService;
 
     private final Date bigBang = new Date(0);
-    private final String documents = System.getProperty("user.home") +File.separator+ "Documents/";
+    private final String documents = retrieveDocuments();
     private final String reports = documents+"Reports/";
     private Calendar c =Calendar.getInstance();
     @RequestMapping(value = {"/", "/list"}, method = RequestMethod.GET)

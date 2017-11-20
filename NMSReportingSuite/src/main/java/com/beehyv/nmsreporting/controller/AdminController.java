@@ -13,6 +13,8 @@ import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.ModificationTracker;
 import com.beehyv.nmsreporting.model.State;
 import com.beehyv.nmsreporting.model.User;
+import com.beehyv.nmsreporting.utils.Global;
+import com.sun.corba.se.impl.orbutil.closure.Constant;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.ParseException;
@@ -26,6 +28,7 @@ import java.util.*;
 
 import static com.beehyv.nmsreporting.enums.AccessType.MASTER_ADMIN;
 import static com.beehyv.nmsreporting.enums.ReportType.maCourse;
+import static com.beehyv.nmsreporting.utils.Global.retrieveDocuments;
 
 
 /**
@@ -50,7 +53,7 @@ public class AdminController {
     @Autowired
     private ModificationTrackerService modificationTrackerService;
 
-    private final String documents = System.getProperty("user.home") +File.separator+ "Documents/";
+    private final String documents = retrieveDocuments();
     private final String reports = documents+"Reports/";
 
     @RequestMapping(value = "/uploadFile",headers=("content-type=multipart/*"), method = RequestMethod.POST)
@@ -180,10 +183,10 @@ public class AdminController {
     @RequestMapping(value = "/generateReports/{reportType}/{relativeMonth}", method = RequestMethod.GET)
     @ResponseBody
     public String getReportsByNameAndMonth(@PathVariable("reportType") String reportType, @PathVariable("relativeMonth") Integer relativeMonth) throws ParseException, java.text.ParseException{
-        User user=userService.getCurrentUser();
-        if(user==null || ! (user.getRoleName().equals(AccessType.MASTER_ADMIN.getAccessType()))) {
-            return "You are not authorised";
-        }
+//        User user=userService.getCurrentUser();
+//        if(user==null || ! (user.getRoleName().equals(AccessType.MASTER_ADMIN.getAccessType()))) {
+//            return "You are not authorised";
+//        }
 
         ReportType tempReportType = ReportType.valueOf(reportType);
         Calendar aCalendar = Calendar.getInstance();

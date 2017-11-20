@@ -1114,6 +1114,7 @@
             $scope.gridOptions1 = {
                 enableSorting: true,
                 enableVerticalScrollbar : 0,
+                excessRows : 1000,
                 onRegisterApi: function(gridApi){
                       $scope.gridApi = gridApi;
                     },
