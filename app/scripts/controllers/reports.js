@@ -252,13 +252,13 @@
 
                 //In case of change in minDate for rejection reports, please change startMonth and startDate variable accordingly
                 if($scope.report != null && $scope.report.reportEnum == 'MA_Asha_Import_Rejects'){
-                    minDate = new Date(2017, 08, 01);
+                    minDate = new Date(2017, 10, 01);
                  }
                  if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Mother_Import_Rejects'){
-                    minDate = new Date(2017, 08, 01);
+                    minDate = new Date(2017, 10, 01);
                  }
                  if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Child_Import_Rejects'){
-                    minDate = new Date(2017, 08, 01);
+                    minDate = new Date(2017, 10, 01);
                  }
 //                var minDate = $scope.report.minDate;
 //                console.log(minDate);
@@ -503,8 +503,8 @@
 				return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
 			}
 
-            var startMonth = 8 //September
-            var startDate = 1 //Start Date
+            var startMonth = 10 //September
+            var startDate = 18 //Start Date
 
 			$scope.open1 = function() {
 				$scope.popup1.opened = true;
