@@ -94,6 +94,7 @@ public class MAPerformanceServiceImpl implements MAPerformanceService{
 
     }
 
+    @Override
     public Long getNotAccessedcount(Integer locationId, String locationType, Date fromDate, Date toDate){
 
         Long count = (long)0;
@@ -146,4 +147,59 @@ public class MAPerformanceServiceImpl implements MAPerformanceService{
             }
         }
     }
+
+    @Override
+    public Integer getAshasFailed(Integer locationId, String locationType, Date fromDate, Date toDate){
+
+        Integer count = 0;
+        Calendar aCalendar = Calendar.getInstance();
+        aCalendar.setTime(fromDate);
+        aCalendar.add(Calendar.DATE,1);
+        fromDate = aCalendar.getTime();
+        aCalendar.setTime(toDate);
+        aCalendar.add(Calendar.DATE,1);
+        toDate = aCalendar.getTime();
+        Integer addedCount = 0;
+        Integer differenceCount = 0;
+
+
+        if(locationType.equalsIgnoreCase("DifferenceState")){
+            count =  maPerformanceDao.getAshasFailed(-locationId,"State",fromDate,toDate);
+            List<District> districts = districtDao.getDistrictsOfState(-locationId);
+            for(District d:districts){
+                addedCount += maPerformanceDao.getAshasFailed(d.getDistrictId(),"District",fromDate,toDate);
+            }
+            differenceCount = count - addedCount;
+            return differenceCount;
+        }
+        else{
+            if(locationType.equalsIgnoreCase("DifferenceDistrict")){
+
+                count =  maPerformanceDao.getAshasFailed(-locationId,"District",fromDate,toDate);
+                List<Block> blocks = blockDao.getBlocksOfDistrict(-locationId);
+                for (Block d : blocks) {
+                    addedCount += maPerformanceDao.getAshasFailed(d.getBlockId(),"Block",fromDate,toDate);
+                }
+                differenceCount = count - addedCount;
+                return differenceCount;
+            }
+            else{
+                if(locationType.equalsIgnoreCase("DifferenceBlock")) {
+
+                    count =  maPerformanceDao.getAshasFailed(-locationId,"Block",fromDate,toDate);
+                    List<Subcenter> subcenters = subcenterDao.getSubcentersOfBlock(-locationId);
+                    for(Subcenter s: subcenters){
+                        addedCount += maPerformanceDao.getAshasFailed(s.getSubcenterId(),"Subcenter",fromDate,toDate);
+                    }
+                    differenceCount = count - addedCount;
+                    return differenceCount;
+                }
+                else{
+                    count =  maPerformanceDao.getAshasFailed(locationId,locationType,fromDate,toDate);
+                    return count;
+                }
+            }
+        }
+    }
+
 }

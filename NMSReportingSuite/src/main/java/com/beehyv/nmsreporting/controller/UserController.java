@@ -530,7 +530,7 @@ public class UserController {
                             summaryDto1.setId(a.getId());
                             summaryDto1.setLocationId(a.getLocationId());
                             summaryDto1.setAshasCompleted(a.getAshasCompleted() - b.getAshasCompleted());
-                            summaryDto1.setAshasFailed(a.getAshasFailed() - b.getAshasFailed());
+//                            summaryDto1.setAshasFailed(a.getAshasFailed() - b.getAshasFailed());
                             summaryDto1.setAshasStarted(a.getAshasStarted() - b.getAshasStarted());
                             summaryDto1.setLocationType(a.getLocationType());
 
@@ -561,6 +561,7 @@ public class UserController {
                                 summaryDto1.setLocationId((long) -1);
 
                             }
+                            summaryDto1.setAshasFailed(maPerformanceService.getAshasFailed(a.getLocationId().intValue(), a.getLocationType(), fromDate, toDate));
                             summaryDto1.setAshasAccessed(maPerformanceService.getAccessedCount(a.getLocationId().intValue(), a.getLocationType(), fromDate, toDate));
 //                        summaryDto1.setCompletedPercentage(a.getAshasCompleted()*100/a.getAshasStarted());
 //                        summaryDto1.setFailedpercentage(a.getAshasFailed()*100/a.getAshasStarted());
@@ -742,7 +743,7 @@ public class UserController {
                     summaryDto1.setLocationType(a.getLocationType());
                     summaryDto1.setCompletedPercentage((float) (a.getAshasStarted() == 0 ? 0 : (a.getAshasCompleted() * 10000 / a.getAshasStarted())) / 100);
                     summaryDto1.setFailedpercentage((float) (a.getAshasStarted() == 0 ? 0 : (a.getAshasFailed() * 10000 / a.getAshasStarted())) / 100);
-                    summaryDto1.setNotStartedpercentage((float) (a.getAshasRegistered() == 0 ? 0 : (a.getAshasStarted() * 10000 / a.getAshasRegistered())) / 100);
+                    summaryDto1.setNotStartedpercentage((float) (a.getAshasRegistered() == 0 ? 0 : (a.getAshasNotStarted() * 10000 / a.getAshasRegistered())) / 100);
                     String locationType = a.getLocationType();
                     if (locationType.equalsIgnoreCase("State")) {
                         summaryDto1.setLocationName(stateDao.findByStateId(a.getLocationId().intValue()).getStateName());
@@ -957,11 +958,18 @@ public class UserController {
                 ReportType.selfDeactivated.getReportType(),
                 "images/drop-down-3.png",
                 ReportType.selfDeactivated.getServiceType())
-        );kList.add(new Report(
+        );
+        kList.add(new Report(
                 ReportType.motherRejected.getReportName(),
                 ReportType.motherRejected.getReportType(),
                 "images/drop-down-3.png",
                 ReportType.motherRejected.getServiceType())
+        );
+        kList.add(new Report(
+                ReportType.childRejected.getReportName(),
+                ReportType.childRejected.getReportType(),
+                "images/drop-down-3.png",
+                ReportType.childRejected.getServiceType())
         );
         kList.add(new Report(
                 ReportType.kilkariCumulative.getReportName(),
