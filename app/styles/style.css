@@ -569,10 +569,6 @@ color: white !important;
  text-align : center;
 }
 
-.aggregate-location{
- text-align : left !important;
-}
-
 .ui-grid, .ui-grid-viewport, .ui-grid-canvas {
   height: auto !important;
 }

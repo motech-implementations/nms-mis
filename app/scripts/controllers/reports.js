@@ -621,7 +621,7 @@
                         return;
                     }
 				}
-				else if($scope.periodDisplayType == '' && ($scope.isAggregateReport() ) && $scope.report.name != 'MA Cumulative Summary'){
+				else if($scope.periodDisplayType == '' && ($scope.isAggregateReport() ) && ($scope.report.name != 'MA Cumulative Summary' && $scope.report.reportEnum != 'Kilkari_Cumulative_Summary')){
                    if(UserFormFactory.isInternetExplorer()){
                        alert("Please select a period type")
                        return;
@@ -631,7 +631,7 @@
                        return;
                    }
                 }
-				else if($scope.dt1 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType != 'Custom Range' && $scope.periodDisplayType != 'Quarter' && $scope.report.name != 'MA Cumulative Summary') ){
+				else if($scope.dt1 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType != 'Custom Range' && $scope.periodDisplayType != 'Quarter' && $scope.report.name != 'MA Cumulative Summary' && $scope.report.reportEnum != 'Kilkari_Cumulative_Summary') ){
                     if(UserFormFactory.isInternetExplorer()){
                           alert("Please select a " +  $scope.periodDisplayType)
                           return;
@@ -663,7 +663,7 @@
                    }
 
                 }
-                else if($scope.dt2 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType == 'Custom Range' || $scope.report.name == 'MA Cumulative Summary' )){
+                else if($scope.dt2 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType == 'Custom Range' || $scope.report.name == 'MA Cumulative Summary' || $scope.report.reportEnum == 'Kilkari_Cumulative_Summary' )){
                    if(UserFormFactory.isInternetExplorer()){
                          alert("Please select an end date")
                          return;
@@ -1285,7 +1285,7 @@
             $scope.Kilkari_Usage_Definitions =[
                                                  {name: 'S No.', displayName: 'S No.',width:"7%", enableSorting: false,cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
                                                  { field: 'locationName',
-                                                    cellTemplate:'<a class="btn primary aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
+                                                    cellTemplate:'<a  ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
                                                     enableHiding: false,width:"*"
                                                  },
                                                  { field: 'beneficiariesCalled', name: 'Total beneficiaries Called',width:"*", enableHiding: false },
