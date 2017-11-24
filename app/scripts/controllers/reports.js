@@ -382,7 +382,12 @@
 
 
 			$scope.setDateOptions =function(){
-                var minDate = new Date(2015, 09, 01);
+			    if($scope.isAggregateReport()){
+			        var minDate = new Date(2016, 11, 01);
+			    }
+                else{
+                    var minDate = new Date(2015, 09, 01);
+                }
 				if($scope.report != null && $scope.report.service == 'M'){
 					minDate = new Date(2015, 10, 01);
 				}
@@ -401,13 +406,13 @@
 
                 //In case of change in minDate for rejection reports, please change startMonth and startDate variable accordingly
                 if($scope.report != null && $scope.report.reportEnum == 'MA_Asha_Import_Rejects'){
-                    minDate = new Date(2017, 08, 01);
+                    minDate = new Date(2017, 10, 01);
                  }
                  if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Mother_Import_Rejects'){
-                    minDate = new Date(2017, 08, 01);
+                    minDate = new Date(2017, 10, 01);
                  }
                  if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Child_Import_Rejects'){
-                    minDate = new Date(2017, 08, 01);
+                    minDate = new Date(2017, 10, 01);
                  }
 //                var minDate = $scope.report.minDate;
 //                console.log(minDate);
@@ -1049,8 +1054,8 @@
 				return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
 			}
 
-            var startMonth = 8 //September
-            var startDate = 1 //Start Date
+            var startMonth = 10 //September
+            var startDate = 18 //Start Date
 
 			$scope.open1 = function() {
 				$scope.popup1.opened = true;
@@ -1443,6 +1448,7 @@
                     reportRequest.stateId = locationId;
                     reportRequest.districtId = 0;
                     reportRequest.blockId = 0;
+                    $scope.waiting = true;
 
                     $http({
                             method  : 'POST',
@@ -1474,6 +1480,7 @@
                        reportRequest.stateId = 0;
                        reportRequest.districtId = 0;
                        reportRequest.blockId = 0;
+                       $scope.waiting = true;
                        $http({
                                method  : 'POST',
                                url     : $scope.getReportUrl,
@@ -1503,6 +1510,7 @@
                   else if(angular.lowercase(locationType) == "district"){
                      reportRequest.districtId = locationId;
                      reportRequest.blockId = 0;
+                     $scope.waiting = true;
                      $http({
                              method  : 'POST',
                              url     : $scope.getReportUrl,
@@ -1531,6 +1539,7 @@
                   }
                   else if(angular.lowercase(locationType) == "block"){
                     reportRequest.blockId = locationId;
+                    $scope.waiting = true;
                     $http({
                             method  : 'POST',
                             url     : $scope.getReportUrl,

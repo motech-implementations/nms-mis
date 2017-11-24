@@ -65,7 +65,7 @@ public class BeneficiaryCallMeasure {
     @Column(name="subscription_start_date", columnDefinition = "DATETIME")
     private Integer subscriptionStartDate;
 
-    @Column(name="message_duration", columnDefinition = "INT(11)")
+    @Column(name="msg_duration", columnDefinition = "INT(11)")
     private Integer messageDuration;
 
     @Column(name="call_duration", columnDefinition = "INT(11)")
@@ -74,7 +74,7 @@ public class BeneficiaryCallMeasure {
     @Column(name="requestId", columnDefinition = "VARCHAR(45)")
     private String requestId;
 
-    @Column(name="modification_date", columnDefinition = "DATETIME")
+    @Column(name="modificationDate", columnDefinition = "DATETIME")
     private Integer modificationDate;
 
     @Column(name="subscriptionId", columnDefinition = "VARCHAR(45)")
