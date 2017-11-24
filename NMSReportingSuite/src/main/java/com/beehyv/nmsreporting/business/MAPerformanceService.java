@@ -11,4 +11,6 @@ public interface MAPerformanceService {
 
     Long getNotAccessedcount(Integer locationId, String locationType, Date fromDate, Date toDate);
 
+    Integer getAshasFailed(Integer locationId, String locationType, Date fromDate, Date toDate);
+
 }

@@ -382,7 +382,12 @@
 
 
 			$scope.setDateOptions =function(){
-                var minDate = new Date(2015, 09, 01);
+			    if($scope.isAggregateReport()){
+			        var minDate = new Date(2016, 11, 01);
+			    }
+                else{
+                    var minDate = new Date(2015, 09, 01);
+                }
 				if($scope.report != null && $scope.report.service == 'M'){
 					minDate = new Date(2015, 10, 01);
 				}
@@ -1443,6 +1448,7 @@
                     reportRequest.stateId = locationId;
                     reportRequest.districtId = 0;
                     reportRequest.blockId = 0;
+                    $scope.waiting = true;
 
                     $http({
                             method  : 'POST',
@@ -1474,6 +1480,7 @@
                        reportRequest.stateId = 0;
                        reportRequest.districtId = 0;
                        reportRequest.blockId = 0;
+                       $scope.waiting = true;
                        $http({
                                method  : 'POST',
                                url     : $scope.getReportUrl,
@@ -1503,6 +1510,7 @@
                   else if(angular.lowercase(locationType) == "district"){
                      reportRequest.districtId = locationId;
                      reportRequest.blockId = 0;
+                     $scope.waiting = true;
                      $http({
                              method  : 'POST',
                              url     : $scope.getReportUrl,
@@ -1531,6 +1539,7 @@
                   }
                   else if(angular.lowercase(locationType) == "block"){
                     reportRequest.blockId = locationId;
+                    $scope.waiting = true;
                     $http({
                             method  : 'POST',
                             url     : $scope.getReportUrl,
