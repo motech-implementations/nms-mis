@@ -3,12 +3,12 @@
 		.module('nmsReports')
 		.controller("ChangePassword", ['$scope', '$state','$http', 'UserFormFactory', function($scope, $state, $http, UserFormFactory){
 
-			UserFormFactory.isAdminLoggedIn()
-			.then(function(result){
-				if(!result.data){
-					$state.go('login', {});
-				}
-			})
+			UserFormFactory.isLoggedIn()
+            .then(function(result){
+                if(!result.data){
+                    $state.go('login', {});
+                }
+            })
 
             $http.get(backend_root + 'nms/user/profile')
             .then(function(result){
