@@ -87,6 +87,11 @@
 			$scope.disableState = function(){
 				return $scope.states[0]  == null || $scope.userHasState() || $scope.report == null;
 			}
+
+			$scope.disableStateIfNoLocation = function(){
+                return $scope.states[0]  == null || $scope.userHasState() || $scope.report == null || $scope.report.reportEnum == 'Kilkari_Message_Matrix' || $scope.report.reportEnum == 'Kilkari_Listening_Matrix' || $scope.report.reportEnum == 'Kilkari_Thematic_Content' || $scope.report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise';
+            }
+
 			$scope.disableDistrict = function(){
 				return $scope.districts[0]  == null || $scope.userHasDistrict();	
 			}
@@ -918,6 +923,7 @@
                         if($scope.report.reportEnum == 'Kilkari_Listening_Matrix'){
                             if(result.data.tableData.length >0){
                                  $scope.gridOptions1.data = result.data.tableData;
+                                 $scope.gridOptions1.showColumnFooter = false;
                                  $scope.reportBreadCrumbData = result.data.breadCrumbData;
                                  $scope.hideGrid = false;
                             }
@@ -941,6 +947,7 @@
                             console.log(result.data.motherData.length);
                             if(result.data.motherData.length >0){
                                 $scope.gridOptions1.data = result.data.motherData;
+                                $scope.gridOptions1.showColumnFooter = false;
                                 $scope.hideGrid = false;
                                 $scope.matrixContent1 ='Kilkari MotherPack Data';
 
@@ -951,6 +958,7 @@
                             }
                             if(result.data.childData.length >0){
                                 $scope.gridOptions2.data = result.data.childData;
+                                $scope.gridOptions1.showColumnFooter = false;
                                 $scope.hideMessageMatrix = false;
                                 $scope.matrixContent2 ='Kilkari ChildPack Data';
                             }
@@ -961,6 +969,7 @@
                        if($scope.report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise'){
                             if(result.data.numberData.length >0){
                                 $scope.gridOptions1.data = result.data.numberData;
+                                $scope.gridOptions1.showColumnFooter = false;
                                 $scope.hideGrid = false;
                                 $scope.matrixContent1 ='Beneficiary Count';
                             }
@@ -970,6 +979,7 @@
                             }
                             if(result.data.percentData.length >0){
                                 $scope.gridOptions2.data = result.data.percentData;
+                                $scope.gridOptions1.showColumnFooter = false;
                                 $scope.hideMessageMatrix = false;
                                 $scope.matrixContent2 ='Beneficiary Percentage';
                             }
@@ -1209,6 +1219,7 @@
 
             $scope.gridOptions1 = {
                 enableSorting: true,
+                 showColumnFooter: true,
                 enableVerticalScrollbar : 0,
                 excessRows :1000,
                 onRegisterApi: function(gridApi){
@@ -1218,6 +1229,7 @@
 
             $scope.gridOptions2 = {
                 enableSorting: true,
+                showColumnFooter: true,
                 enableVerticalScrollbar : 0,
                 excessRows :1000,
                 onRegisterApi: function(gridApi){
@@ -1227,108 +1239,110 @@
 
             $scope.MA_Cumulative_Column_Definitions =[
                                                        {name: 'S No.', displayName: 'S No.',width:"6%",enableSorting: false, cellTemplate: '<p class="serial-no" >{{rowRenderIndex+1}}</p>'},
-                                                       { field: 'locationName',
-                                                         cellTemplate:'<a class="aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
-                                                         width: '11%', enableHiding: false
+                                                       { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',
+                                                         cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}"  ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
+                                                         width: '12%', enableHiding: false,
                                                        },
-                                                       { field: 'ashasRegistered', displayName : 'No of Registered ASHA', width:"*", enableHiding: false},
-                                                       { field: 'ashasStarted', displayName : ' No of ASHA Started Course',  width:"*", enableHiding: false},
-                                                       { field: 'ashasNotStarted', displayName : ' No of ASHA Not Started Course', width:"*", enableHiding: false},
-                                                       { field: 'ashasCompleted' , displayName : 'No of ASHA Successfully Completed the Course', width:"13%", enableHiding: false},
-                                                       { field: 'ashasFailed' , displayName : 'No of ASHA who failed the course', width:"*", enableHiding: false},
-                                                       { field: 'notStartedpercentage' , displayName : '% Not Started Course', width:"*", enableHiding: false},
-                                                       { field: 'completedPercentage' , displayName : '% Successfully Completed', width:"*", enableHiding: false},
-                                                       { field: 'failedpercentage' , displayName : '% Failed the course', width:"*", enableHiding: false},
+                                                       { field: 'ashasRegistered', displayName : 'No of Registered ASHA', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                       { field: 'ashasStarted', displayName : ' No of ASHA Started Course',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                       { field: 'ashasNotStarted', displayName : ' No of ASHA Not Started Course', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                       { field: 'ashasCompleted' , displayName : 'No of ASHA Successfully Completed the Course', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"13%", enableHiding: false},
+                                                       { field: 'ashasFailed' , displayName : 'No of ASHA who failed the course', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                       { field: 'notStartedpercentage' , displayName : '% Not Started Course', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                       { field: 'completedPercentage' , displayName : '% Successfully Completed', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                       { field: 'failedpercentage' , displayName : '% Failed the course', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
                                                       ],
 
 
             $scope.MA_Performance_Column_Definitions =[
                                                          {name: 'S No.', displayName: 'S No.',width:"6%", enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
-                                                         { field: 'locationName',
-                                                            cellTemplate:'<a class="aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
-                                                            enableHiding: false, width:"11%"
+                                                         { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents">Total</div>',
+                                                            cellTemplate:'<a class=" btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
+                                                            enableHiding: false, width:"12%",
+
                                                          },
-                                                         { field: 'ashasStarted', displayName: 'Number of ASHA Started Course', width:"*",enableHiding: false },
-                                                         { field: 'ashasAccessed', displayName: 'Number of ASHA Pursuing Course', width:"*", enableHiding: false },
-                                                         { field: 'ashasNotAccessed', displayName: 'Number of ASHA not Pursuing Course', width:"*", enableHiding: false},
-                                                         { field: 'ashasCompleted', displayName: 'Number of ASHA Successfully Completed Course', width:"18%",enableHiding: false},
-                                                         { field: 'ashasFailed',  displayName: 'Number of ASHA who Failed the Course', width:"*", enableHiding: false},
+                                                         { field: 'ashasStarted', displayName: 'Number of ASHA Started Course', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*",enableHiding: false },
+                                                         { field: 'ashasAccessed', displayName: 'Number of ASHA Pursuing Course', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                         { field: 'ashasNotAccessed', displayName: 'Number of ASHA not Pursuing Course', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                         { field: 'ashasCompleted', displayName: 'Number of ASHA Successfully Completed Course', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"18%",enableHiding: false},
+                                                         { field: 'ashasFailed',  displayName: 'Number of ASHA who Failed the Course', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
                                                         ],
 
             $scope.MA_Subscriber_Column_Definitions =[
-                                                         {name: 'S No.', displayName: 'S No.',width:"6%",enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
-                                                         { field: 'locationName',
-                                                            cellTemplate:'<a class="aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
-                                                            enableHiding: false,width:"10%"
+                                                         {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
+                                                         { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',
+                                                            cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
+                                                            enableHiding: false,width:"14%",
+
                                                          },
-                                                         { field: 'registeredNotCompletedStart', displayName: 'Number of ASHA Registered But Not Completed the Course(Period Start)',width:"16%", enableHiding: false },
-                                                         { field: 'recordsReceived', displayName: 'Number of ASHA Records Received Through Web Service', width:"*", enableHiding: false },
-                                                         { field: 'ashasRejected', displayName: 'Number of ASHA Records Rejected', width:"*", enableHiding: false},
-                                                         { field: 'ashasRegistered', displayName: 'Number of ASHA Subscriptions Added', width:"*", enableHiding: false},
-                                                         { field: 'ashasCompleted',  displayName: 'Number of ASHA Successfully Completed the Course', width:"*", enableHiding: false},
-                                                         { field: 'registeredNotCompletedend',  displayName: 'Number of ASHA Registered But Not Completed the Course (Period End)', width:"16%", enableHiding: false},
+                                                         { field: 'registeredNotCompletedStart', displayName: 'Number of ASHA Registered But Not Completed the Course(Period Start)', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"16%", enableHiding: false },
+                                                         { field: 'recordsReceived', displayName: 'Number of ASHA Records Received Through Web Service', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                         { field: 'ashasRejected', displayName: 'Number of ASHA Records Rejected', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                         { field: 'ashasRegistered', displayName: 'Number of ASHA Subscriptions Added', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                         { field: 'ashasCompleted',  displayName: 'Number of ASHA Successfully Completed the Course', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                         { field: 'registeredNotCompletedend',  displayName: 'Number of ASHA Registered But Not Completed the Course (Period End)', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"16%", enableHiding: false},
                                                         ],
 
             $scope.Kilkari_Cumulative_Summary_Definitions =[
                                                              {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
-                                                             { field: 'locationName',
-                                                                cellTemplate:'<a class="aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
-                                                                enableHiding: false,width:"*"
+                                                             { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',
+                                                                cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
+                                                                enableHiding: false, width:"*",
                                                              },
-                                                             { field: 'uniqueBeneficiaries', name: 'Total unique beneficiaries',width:"*", enableHiding: false },
-                                                             { field: 'successfulCalls', name: 'Total successful calls', width:"*", enableHiding: false },
-                                                             { field: 'billableMinutes', name: 'Total billable minutes played', width:"*", enableHiding: false},
-                                                             { field: 'averageDuration', name: 'Average duration of call', width:"*", enableHiding: false},
+                                                             { field: 'uniqueBeneficiaries', name: 'Total unique beneficiaries',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                             { field: 'successfulCalls', name: 'Total successful calls',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                             { field: 'billableMinutes', name: 'Total billable minutes played',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
+                                                             { field: 'averageDuration', name: 'Average duration of call',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
 
             ]
 
             $scope.Kilkari_Usage_Definitions =[
-                                                 {name: 'S No.', displayName: 'S No.',width:"7%", enableSorting: false,cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
-                                                 { field: 'locationName',
-                                                    cellTemplate:'<a  ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
-                                                    enableHiding: false,width:"*"
+                                                 {name: 'S No.', displayName: 'S No.',width:"5%", enableSorting: false,cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
+                                                 { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',
+                                                    cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
+                                                    enableHiding: false, width:"*",
                                                  },
-                                                 { field: 'beneficiariesCalled', name: 'Total beneficiaries Called',width:"*", enableHiding: false },
-                                                 { field: 'answeredCall', name: 'Beneficiaries who have answered at least one call', width:"*", enableHiding: false },
-                                                 { field: 'calls_75_100', name: 'Beneficiaries who have listened more than 75% content (avg)', width:"*", enableHiding: false},
-                                                 { field: 'calls_50_75', name: 'Beneficiaries who have listened 50 to 75% content (avg)', width:"*", enableHiding: false},
-                                                 { field: 'calls_25_50', name: 'Beneficiaries who have listened 25 to 49.9% content (avg)',width:"*", enableHiding: false },
-                                                 { field: 'calls_1_25', name: 'Beneficiaries who have listened less than 25% content (avg)', width:"*", enableHiding: false },
-                                                 { field: 'calledInbox', name: 'Beneficiaries who have called the Kilkari Inbox', width:"*", enableHiding: false},
+                                                 { field: 'beneficiariesCalled', name: 'Total beneficiaries Called', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                 { field: 'answeredCall', name: 'Beneficiaries who have answered at least one call', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                 { field: 'calls_75_100', name: 'Beneficiaries who have listened more than 75% content (avg)', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
+                                                 { field: 'calls_50_75', name: 'Beneficiaries who have listened 50 to 75% content (avg)', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
+                                                 { field: 'calls_25_50', name: 'Beneficiaries who have listened 25 to 49.9% content (avg)', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
+                                                 { field: 'calls_1_25', name: 'Beneficiaries who have listened less than 25% content (avg)', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                 { field: 'calledInbox', name: 'Beneficiaries who have called the Kilkari Inbox', width:"*",  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, enableHiding: false},
 
             ]
 
             $scope.Kilkari_Aggregate_Beneficiaries_Definitions =[
                                                      {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
-                                                     { field: 'locationName',
-                                                        cellTemplate:'<a class="aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
-                                                        enableHiding: false,width:"7%"
+                                                     { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',
+                                                        cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
+                                                        enableHiding: false, width:"7%"
                                                      },
-                                                     { field: 'beneficiariesCalled', name: 'Total beneficiaries Called',width:"*", enableHiding: false },
-                                                     { field: 'answeredCall', name: 'Beneficiaries who have answered at least one call',width:"*", enableHiding: false },
-                                                     { field: 'selfDeactivated', name: 'Beneficiaries who have self-deactivated', width:"*", enableHiding: false },
-                                                     { field: 'notAnswering', name: 'Beneficiaries deactivated for not answering.', width:"*", enableHiding: false},
-                                                     { field: 'lowListenership', name: 'Beneficiaries deactivated for low listenership.', width:"*", enableHiding: false},
-                                                     { field: 'systemDeactivation', displayName: 'Beneficiaries deactivated by system through MCTS/RCH updates',width:"11%", enableHiding: false },
-                                                     { field: 'motherCompletion', name: 'Beneficiaries completed Mother Pack', width:"*", enableHiding: false },
-                                                     { field: 'childCompletion', name: 'Beneficiaries completed Child Pack', width:"*", enableHiding: false},
-                                                     { field: 'calledInbox', name: 'Beneficiaries who have called the Kilkari Inbox', width:"*", enableHiding: false },
-                                                     { field: 'joinedSubscription', name: 'Beneficiaries who have joined the subscription', width:"*", enableHiding: false},
+                                                     { field: 'beneficiariesCalled', name: 'Total beneficiaries Called',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'answeredCall', name: 'Beneficiaries who have answered at least one call',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'selfDeactivated', name: 'Beneficiaries who have self-deactivated',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
+                                                     { field: 'notAnswering', name: 'Beneficiaries deactivated for not answering.',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                     { field: 'lowListenership', name: 'Beneficiaries deactivated for low listenership.',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
+                                                     { field: 'systemDeactivation', displayName: 'Beneficiaries deactivated by system through MCTS/RCH updates',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"11%", enableHiding: false },
+                                                     { field: 'motherCompletion', name: 'Beneficiaries completed Mother Pack',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
+                                                     { field: 'childCompletion', name: 'Beneficiaries completed Child Pack',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                     { field: 'calledInbox', name: 'Beneficiaries who have called the Kilkari Inbox',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'joinedSubscription', name: 'Beneficiaries who have joined the subscription',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
 
             ]
 
             $scope.Kilkari_Beneficiary_Completion_Definitions = [
-                                                     {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
-                                                     { field: 'locationName',
-                                                        cellTemplate:'<a class="aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
-                                                        enableHiding: false,width:"10%"
+                                                     {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
+                                                     { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',
+                                                        cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
+                                                        enableHiding: false, width:"12%"
                                                      },
-                                                     { field: 'completedBeneficiaries', name: 'Total beneficiaries Completed Program',width:"*", enableHiding: false },
-                                                     { field: 'avgWeeks', name: 'Average Number of Weeks in Service',width:"*", enableHiding: false },
-                                                     { field: 'calls_75_100', name: 'Beneficiaries who have listened more than 75% content (consolidated)', width:"*", enableHiding: false },
-                                                     { field: 'calls_50_75', name: 'Beneficiaries who have listened 50 to 75% content (consolidated)', width:"*", enableHiding: false},
-                                                     { field: 'calls_25_50', name: 'Beneficiaries who have listened 25 to 49.9% content (consolidated)',width:"*", enableHiding: false },
-                                                     { field: 'calls_1_25', name: 'Beneficiaries who have listened less than 25% content (consolidated)', width:"*", enableHiding: false },
+                                                     { field: 'completedBeneficiaries', name: 'Total beneficiaries Completed Program',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'avgWeeks', name: 'Average Number of Weeks in Service',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'calls_75_100', name: 'Beneficiaries who have listened more than 75% content (consolidated)',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'calls_50_75', name: 'Beneficiaries who have listened 50 to 75% content (consolidated)',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                     { field: 'calls_25_50', name: 'Beneficiaries who have listened 25 to 49.9% content (consolidated)',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'calls_1_25', name: 'Beneficiaries who have listened less than 25% content (consolidated)',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
 
             ]
 
@@ -1344,19 +1358,19 @@
 
             $scope.Kilkari_Call_Report_Definitions = [
                                                      {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
-                                                     { field: 'locationName',
-                                                        cellTemplate:'<a class="aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
-                                                        enableHiding: false,width:"10%"
+                                                     { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',
+                                                        cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
+                                                        enableHiding: false, width:"12%"
                                                      },
-                                                     { field: 'successfulCalls', name: 'Total Calles Attempted',width:"*", enableHiding: false },
-                                                     { field: 'content_75_100', name: 'Total Number of Successful Calls', width:"*", enableHiding: false },
-                                                     { field: 'content_75_100', name: 'Total calls where > 75% content listened to ', width:"*", enableHiding: false},
-                                                     { field: 'content_50_75', name: 'Total calls where 50% to 75% content listened to', width:"*", enableHiding: false},
-                                                     { field: 'content_25_50', name: 'Total calls where 25% to 49.9% content listened to',width:"*", enableHiding: false },
-                                                     { field: 'content_1_25', name: 'Total calls where < 25%  content listened to',width:"*", enableHiding: false },
-                                                     { field: 'billableMinutes', name: 'Total Billable minutes', width:"*", enableHiding: false },
-                                                     { field: 'avgDuration', name: 'Average Duration of Calls', width:"*", enableHiding: false},
-                                                     { field: 'callsToInbox', name: 'Total number of calls to inbox where content is played', width:"*", enableHiding: false },
+                                                     { field: 'successfulCalls', name: 'Total Calles Attempted',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'content_75_100', name: 'Total Number of Successful Calls',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
+                                                     { field: 'content_75_100', name: 'Total calls where > 75% content listened to ',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
+                                                     { field: 'content_50_75', name: 'Total calls where 50% to 75% content listened to',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
+                                                     { field: 'content_25_50', name: 'Total calls where 25% to 49.9% content listened to',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'content_1_25', name: 'Total calls where < 25%  content listened to',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'billableMinutes', name: 'Total Billable minutes',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
+                                                     { field: 'avgDuration', name: 'Average Duration of Calls',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
+                                                     { field: 'callsToInbox', name: 'Total number of calls to inbox where content is played',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
             ]
 
             $scope.Kilkari_Message_Matrix_Motherpack_Definitions =[
@@ -1380,42 +1394,42 @@
             ]
 
             $scope.Kilkari_Message_Listenership_Definitions = [
-                                                     {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
-                                                     { field: 'locationName',
-                                                        cellTemplate:'<a class="aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
-                                                        enableHiding: false,width:"10%"
+                                                     {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
+                                                     { field: 'locationName',footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',
+                                                        cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
+                                                        enableHiding: false, width:"12%"
                                                      },
-                                                     { field: 'totalBeneficiariesCalled', name: 'Total beneficiaries Called',width:"*", enableHiding: false },
-                                                     { field: 'beneficiariesAnsweredAtleastOnce', name: 'Beneficiaries who have answered at least one call',width:"*", enableHiding: false },
-                                                     { field: 'beneficiariesAnsweredMoreThan75', name: 'Beneficiaries who have answered more than 75% content (consolidated)', width:"*", enableHiding: false },
-                                                     { field: 'beneficiariesAnswered50To75', name: 'Beneficiaries who have answered 50 to 75% content (consolidated)', width:"*", enableHiding: false},
-                                                     { field: 'beneficiariesAnswered25To50', name: 'Beneficiaries who have answered 25 to 49.9% content (consolidated)',width:"*", enableHiding: false },
-                                                     { field: 'beneficiariesAnswered1To25', name: 'Beneficiaries who have answered less than 25% content (consolidated)', width:"*", enableHiding: false },
-                                                     { field: 'beneficiariesAnsweredNoCalls', name: 'Beneficiaries who have not answered any calls', width:"*", enableHiding: false },
+                                                     { field: 'totalBeneficiariesCalled', name: 'Total beneficiaries Called',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'beneficiariesAnsweredAtleastOnce', name: 'Beneficiaries who have answered at least one call',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'beneficiariesAnsweredMoreThan75', name: 'Beneficiaries who have answered more than 75% content (consolidated)',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'beneficiariesAnswered50To75', name: 'Beneficiaries who have answered 50 to 75% content (consolidated)',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                     { field: 'beneficiariesAnswered25To50', name: 'Beneficiaries who have answered 25 to 49.9% content (consolidated)',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'beneficiariesAnswered1To25', name: 'Beneficiaries who have answered less than 25% content (consolidated)',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'beneficiariesAnsweredNoCalls', name: 'Beneficiaries who have not answered any calls',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
             ]
 
             $scope.Kilkari_Subscriber_Definitions = [
                                                      {name: 'S No.', displayName: 'S No.',width:"4%",enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
-                                                     { field: 'locationName',
-                                                        cellTemplate:'<a class="aggregate-location" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
+                                                     { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents">Total</div>',
+                                                        cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
                                                         enableHiding: false,width:"10%"
                                                      },
-                                                     { field: 'totalSubscriptionsStart', name: 'Total Subscription at the start of the period',width:"12%", enableHiding: false },
-                                                     { field: 'totalBeneficiaryRecordsReceived', displayName: 'Total beneficiary Records Received from RCH/MCTS',width:"*", enableHiding: false },
-                                                     { field: 'totalBeneficiaryRecordsEligible', name: 'Total beneficiary Records Found Eligible for Subscriptions', width:"*", enableHiding: false },
-                                                     { field: 'totalBeneficiaryRecordsRejectedDuplicateMobileNumbers', name: 'Total beneficiary records rejected due to wrong/duplicate mobile numbers', width:"14%", enableHiding: false},
-                                                     { field: 'totalBeneficiaryRecordsAccepted', name: 'Total beneficiary Records accepted As Subscriptions',width:"*", enableHiding: false },
-                                                     { field: 'totalSubscriptionsCompleted', name: 'Total number of subscriptions who have completed their packs', width:"*", enableHiding: false },
-                                                     { field: 'totalSubscriptionsEnd', name: 'Total Subscription at the end of the period', width:"10%", enableHiding: false },
+                                                     { field: 'totalSubscriptionsStart', name: 'Total Subscription at the start of the period',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"12%", enableHiding: false },
+                                                     { field: 'totalBeneficiaryRecordsReceived', displayName: 'Total beneficiary Records Received from RCH/MCTS',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'totalBeneficiaryRecordsEligible', name: 'Total beneficiary Records Found Eligible for Subscriptions',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'totalBeneficiaryRecordsRejectedDuplicateMobileNumbers', name: 'Total beneficiary records rejected due to wrong/duplicate mobile numbers',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"14%", enableHiding: false},
+                                                     { field: 'totalBeneficiaryRecordsAccepted', name: 'Total beneficiary Records accepted As Subscriptions',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'totalSubscriptionsCompleted', name: 'Total number of subscriptions who have completed their packs',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'totalSubscriptionsEnd', name: 'Total Subscription at the end of the period', width:"10%",  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, enableHiding: false },
             ]
 
             $scope.Kilkari_Thematic_Content_Definitions = [
                                                      {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
-                                                     { field: 'theme', name: 'Theme',width:"*", enableHiding: false },
-                                                     { field: 'messageWeekNumber', name: 'Message Number (Week)',width:"*", enableHiding: false },
-                                                     { field: 'uniqueBeneficiariesCalled', name: 'Number of unique beneficiaries called', width:"*", enableHiding: false },
-                                                     { field: 'callsAnswered', name: 'Number of calls answered', width:"*", enableHiding: false},
-                                                     { field: 'minutesConsumed', name: 'Number of minutes consumed ',width:"*", enableHiding: false }
+                                                     { field: 'theme', name: 'Theme', width:"*", enableHiding: false },
+                                                     { field: 'messageWeekNumber', name: 'Message Number (Week)', footerCellTemplate: '<div class="ui-grid-cell-contents">Total</div>', width:"*", enableHiding: false },
+                                                     { field: 'uniqueBeneficiariesCalled', name: 'Number of unique beneficiaries called', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
+                                                     { field: 'callsAnswered', name: 'Number of calls answered', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
+                                                     { field: 'minutesConsumed', name: 'Number of minutes consumed ', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false }
              ]
 
             $scope.Kilkari_RepeatListener_Numberdata_Definitions =[
