@@ -134,7 +134,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             summaryDto1.setSuccessfulCalls(a.getSuccessfulCalls());
             summaryDto1.setBillableMinutes(a.getBillableMinutes());
             summaryDto1.setLocationType(a.getLocationType());
-            summaryDto1.setAverageDuration(a.getSuccessfulCalls() == 0 ? 0 : a.getBillableMinutes()/a.getSuccessfulCalls());
+            summaryDto1.setAverageDuration(a.getSuccessfulCalls() == 0 ? 0 : (float) (a.getBillableMinutes()/a.getSuccessfulCalls()));
             String locationType = a.getLocationType();
             if(locationType.equalsIgnoreCase("State")){
                 summaryDto1.setLocationName(stateDao.findByStateId(a.getLocationId().intValue()).getStateName());

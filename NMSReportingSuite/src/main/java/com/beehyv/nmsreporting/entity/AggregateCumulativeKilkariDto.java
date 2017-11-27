@@ -12,7 +12,7 @@ public class AggregateCumulativeKilkariDto {
     private Long uniqueBeneficiaries;
     private Long successfulCalls;
     private Long billableMinutes;
-    private Long averageDuration;
+    private Float averageDuration;
 
     public int getId() {
         return id;
@@ -70,11 +70,11 @@ public class AggregateCumulativeKilkariDto {
         this.billableMinutes = billableMinutes;
     }
 
-    public Long getAverageDuration() {
+    public Float getAverageDuration() {
         return averageDuration;
     }
 
-    public void setAverageDuration(Long averageDuration) {
+    public void setAverageDuration(Float averageDuration) {
         this.averageDuration = averageDuration;
     }
 }
