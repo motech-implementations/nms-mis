@@ -1376,7 +1376,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         aCalendar.set(Calendar.HOUR_OF_DAY, 0);
 
 
-        aCalendar.add(Calendar.DATE, -1);
+//        aCalendar.add(Calendar.DATE, -1);
         Date fromDate = aCalendar.getTime();
         aCalendar.setTime(reportRequest.getToDate());
         aCalendar.set(Calendar.MILLISECOND, 0);
@@ -1387,7 +1387,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
 
 
         List<ListeningMatrixDto> matrixDto = new ArrayList<>();
-        ListeningMatrix listeningMatrix = listeningMatrixReportDao.getListeningMatrix(toDate);
+        ListeningMatrix listeningMatrix = listeningMatrixReportDao.getListeningMatrix(fromDate);
 
         if(listeningMatrix==null){
             return matrixDto;
@@ -1509,7 +1509,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         aCalendar.set(Calendar.HOUR_OF_DAY, 0);
 
 
-        aCalendar.add(Calendar.DATE, -1);
+//        aCalendar.add(Calendar.DATE, -1);
         Date fromDate = aCalendar.getTime();
         aCalendar.setTime(reportRequest.getToDate());
         aCalendar.set(Calendar.MILLISECOND, 0);
@@ -1522,7 +1522,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         List<MessageMatrixDto> motherMatrixDto = new ArrayList<>();
         List<MessageMatrixDto> childMatrixDto = new ArrayList<>();
 
-        MessageMatrix messageMatrix= messageMatrixDao.getMessageMatrixData(toDate);
+        MessageMatrix messageMatrix= messageMatrixDao.getMessageMatrixData(fromDate);
         if(messageMatrix == null){
             messageMatrixResponseDto.setChildData(childMatrixDto);
             messageMatrixResponseDto.setMotherData(motherMatrixDto);
