@@ -19,7 +19,8 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
         criteria.add(Restrictions.lt("modificationDate", toDate))
                 .add(Restrictions.ge("modificationDate", fromDate))
                 .add(Restrictions.eq("accepted", false))
-                .add(Restrictions.ne("rejectionReason","INVALID_LMP_DATE"));
+                .add(Restrictions.ne("rejectionReason","INVALID_LMP_DATE"))
+                .add(Restrictions.ne("rejectionReason","UPDATED_RECORD_ALREADY_EXISTS"));
 
         return criteria.list();
     }
@@ -31,7 +32,8 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
                 .add(Restrictions.ge("modificationDate", fromDate))
                 .add(Restrictions.eq("accepted", false))
                 .add(Restrictions.eq("stateId", stateId))
-                .add(Restrictions.ne("rejectionReason","INVALID_LMP_DATE"));
+                .add(Restrictions.ne("rejectionReason","INVALID_LMP_DATE"))
+                .add(Restrictions.ne("rejectionReason","UPDATED_RECORD_ALREADY_EXISTS"));
 
         return criteria.list();
     }
@@ -43,7 +45,8 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
                 .add(Restrictions.ge("modificationDate", fromDate))
                 .add(Restrictions.eq("accepted", false))
                 .add(Restrictions.eq("districtId", districtId))
-                .add(Restrictions.ne("rejectionReason","INVALID_LMP_DATE"));
+                .add(Restrictions.ne("rejectionReason","INVALID_LMP_DATE"))
+                .add(Restrictions.ne("rejectionReason","UPDATED_RECORD_ALREADY_EXISTS"));
 
         return criteria.list();
     }
@@ -55,7 +58,8 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
                 .add(Restrictions.ge("modificationDate", fromDate))
                 .add(Restrictions.eq("accepted", false))
                 .add(Restrictions.eq("healthBlockId", blockId))
-                .add(Restrictions.ne("rejectionReason","INVALID_LMP_DATE"));
+                .add(Restrictions.ne("rejectionReason","INVALID_LMP_DATE"))
+                .add(Restrictions.ne("rejectionReason","UPDATED_RECORD_ALREADY_EXISTS"));
 
         return criteria.list();
     }
@@ -68,6 +72,7 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
                 .add(Restrictions.eq("accepted", false))
                 .add(Restrictions.eq("districtId", districtId))
                 .add(Restrictions.ne("rejectionReason","INVALID_LMP_DATE"))
+                .add(Restrictions.ne("rejectionReason","UPDATED_RECORD_ALREADY_EXISTS"))
                 .setProjection(Projections.rowCount());
 
         return (Long) criteria.uniqueResult();

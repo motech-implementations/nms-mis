@@ -18,7 +18,10 @@ public class FlwImportRejectionDaoImpl extends AbstractDao<Long, FlwImportReject
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.lt("modificationDate", toDate))
                 .add(Restrictions.ge("modificationDate",fromDate))
-                .add(Restrictions.eq("accepted", false));
+                .add(Restrictions.eq("accepted", false))
+                .add(Restrictions.ne("rejectionReason","UPDATED_RECORD_ALREADY_EXISTS"))
+                .add(Restrictions.ne("rejectionReason","FLW_TYPE_NOT_ASHA"))
+                .add(Restrictions.ne("rejectionReason","GF_STATUS_INACTIVE"));
 
         return criteria.list();
     }
@@ -29,7 +32,10 @@ public class FlwImportRejectionDaoImpl extends AbstractDao<Long, FlwImportReject
         criteria.add(Restrictions.lt("modificationDate", toDate))
                 .add(Restrictions.ge("modificationDate",fromDate))
                 .add(Restrictions.eq("accepted", false))
-                .add(Restrictions.eq("stateId", stateId));
+                .add(Restrictions.eq("stateId", stateId))
+                .add(Restrictions.ne("rejectionReason","UPDATED_RECORD_ALREADY_EXISTS"))
+                .add(Restrictions.ne("rejectionReason","FLW_TYPE_NOT_ASHA"))
+                .add(Restrictions.ne("rejectionReason","GF_STATUS_INACTIVE"));
         return criteria.list();
     }
     @Override
@@ -38,7 +44,10 @@ public class FlwImportRejectionDaoImpl extends AbstractDao<Long, FlwImportReject
         criteria.add(Restrictions.lt("modificationDate", toDate))
                 .add(Restrictions.ge("modificationDate",fromDate))
                 .add(Restrictions.eq("accepted", false))
-                .add(Restrictions.eq("districtId", districtId));
+                .add(Restrictions.eq("districtId", districtId))
+                .add(Restrictions.ne("rejectionReason","UPDATED_RECORD_ALREADY_EXISTS"))
+                .add(Restrictions.ne("rejectionReason","FLW_TYPE_NOT_ASHA"))
+                .add(Restrictions.ne("rejectionReason","GF_STATUS_INACTIVE"));
 
         return criteria.list();
     }
@@ -49,7 +58,10 @@ public class FlwImportRejectionDaoImpl extends AbstractDao<Long, FlwImportReject
         criteria.add(Restrictions.lt("modificationDate", toDate))
                 .add(Restrictions.ge("modificationDate",fromDate))
                 .add(Restrictions.eq("accepted", false))
-                .add(Restrictions.eq("healthBlockId", blockId));
+                .add(Restrictions.eq("healthBlockId", blockId))
+                .add(Restrictions.ne("rejectionReason","UPDATED_RECORD_ALREADY_EXISTS"))
+                .add(Restrictions.ne("rejectionReason","FLW_TYPE_NOT_ASHA"))
+                .add(Restrictions.ne("rejectionReason","GF_STATUS_INACTIVE"));
 
         return criteria.list();
     }
@@ -61,6 +73,9 @@ public class FlwImportRejectionDaoImpl extends AbstractDao<Long, FlwImportReject
                 .add(Restrictions.ge("modificationDate",fromDate))
                 .add(Restrictions.eq("accepted", false))
                 .add(Restrictions.eq("districtId", districtId))
+                .add(Restrictions.ne("rejectionReason","UPDATED_RECORD_ALREADY_EXISTS"))
+                .add(Restrictions.ne("rejectionReason","FLW_TYPE_NOT_ASHA"))
+                .add(Restrictions.ne("rejectionReason","GF_STATUS_INACTIVE"))
                 .setProjection(Projections.rowCount());
 
         return (Long) criteria.uniqueResult();
