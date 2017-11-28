@@ -51,6 +51,13 @@
       <param-value>true</param-value>
     </init-param>
   </filter>
+
+  <!--<filter>-->
+    <!--<filter-name>TimeOutFilter</filter-name>-->
+    <!--<filter-class>-->
+      <!--com.beehyv.nmsreporting.job.TimeOutFilter-->
+    <!--</filter-class>-->
+  <!--</filter>-->
   <!--<filter>-->
     <!--<filter-name>CorsFilter</filter-name>-->
     <!--<filter-class>org.apache.catalina.filters.CorsFilter</filter-class>-->
@@ -98,6 +105,15 @@
     <url-pattern>/botdetectcaptcha</url-pattern>
   </servlet-mapping>
 
+  <!--<filter-mapping>-->
+    <!--<filter-name>TimeOutFilter</filter-name>-->
+    <!--<url-pattern>*.html</url-pattern>-->
+  <!--</filter-mapping>-->
+
+  <!--<filter-mapping>-->
+    <!--<filter-name>TimeOutFilter</filter-name>-->
+    <!--<servlet-name>Faces Servlet</servlet-name>-->
+  <!--</filter-mapping>-->
   <!-- ===================================================================
    -  Welcome file list
    -  =================================================================== -->
