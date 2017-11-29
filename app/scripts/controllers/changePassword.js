@@ -26,16 +26,35 @@
                         headers : {'Content-Type': 'application/json'}
                     }).then(function(result){
                         if(UserFormFactory.isInternetExplorer()){
-                            alert(result.data['0'])
-                            $state.go('login', {});
-                            $scope.clearForm();
-                            return;
+
+                            if(result.data['0'] != "Current Password is incorrect"){
+                                alert(result.data['0']);
+                                $state.go('login', {});
+                                return;
+                            }
+                            else{
+                                alert(result.data['0']);
+                                $scope.password = {};
+                                $scope.password.newPassword = null;
+                                $scope.confirmPassword = null;
+                                $scope.changePasswordForm.$setPristine();
+                            }
                         }
                         else{
-                            UserFormFactory.showAlert(result.data['0'])
-                            $state.go('login', {});
-                            $scope.clearForm();
-                            return;
+
+                            if(result.data['0'] != "Current Password is incorrect"){
+                                UserFormFactory.showAlert(result.data['0'])
+                                $state.go('login', {});
+                                return;
+                            }
+                            else{
+                                 UserFormFactory.showAlert(result.data['0'])
+                                 $scope.password = {};
+                                 $scope.password.newPassword = null;
+                                 $scope.confirmPassword = null;
+                                 $scope.changePasswordForm.$setPristine();
+                            }
+
                         }
 
                     })
@@ -51,10 +70,20 @@
 
 			$scope.clearForm = function(){
 
-                if($scope.currentUser.default){
-                    $state.go('login', {});
+                if($scope.currentUser.default || $scope.currentUser.default == null){
+                    if(UserFormFactory.isInternetExplorer()){
+                         alert("Login and Change your Password");
+                         $state.go('login', {});
+                    }
+                    else{
+                         UserFormFactory.showAlert("Login and Change your Password")
+                         $state.go('login', {});
+                    }
+
+
                 }else {
                     $scope.password = {};
+                    $scope.password.newPassword = null;
                     $scope.confirmPassword = null;
                     $scope.changePasswordForm.$setPristine();
                 }

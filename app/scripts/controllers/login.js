@@ -40,6 +40,9 @@
 //			}
 
 			$scope.login = function(e){
+               var captcha = document.getElementById("captchaCode");
+                console.log(captcha);
+                captcha.blur();
 
 			    if($scope.user.username == null){
 			        if(UserFormFactory.isInternetExplorer()){
@@ -90,6 +93,13 @@
                  formElement[0].submit();
 
 
+            }
+
+            $scope.inputKeyUp = function(e) {
+                e.which = e.which || e.keyCode;
+                if(e.which == 13) {
+                   console.log("pressed enter");
+                }
             }
 
 		}])
