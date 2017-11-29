@@ -19,7 +19,7 @@ public class KilkariThematicContent {
     @Column(name="date", columnDefinition = "DATE")
     private Date date;
 
-    @Column(name="theme", columnDefinition = "VARCHAR(45)")
+    @Column(name="theme", columnDefinition = "VARCHAR(90)")
     private String theme;
 
     @Column(name="message_week_number", columnDefinition = "VARCHAR(45)")

@@ -537,7 +537,6 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             List<State> states = stateDao.getStatesByServiceType("K");
             for(State s:states){
                 AggregateCumulativeBeneficiary stateCounts = (aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary((long)s.getStateId(),locationType,toDate));
-                kilkariAggregateBeneficiariesDto.setCalledInbox(stateCounts.getCalledInbox());
                 kilkariAggregateBeneficiariesDto.setId(stateCounts.getId());
                 kilkariAggregateBeneficiariesDto.setChildCompletion(stateCounts.getChildCompletion());
                 kilkariAggregateBeneficiariesDto.setLocationId(stateCounts.getLocationId());
@@ -548,6 +547,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 kilkariAggregateBeneficiariesDto.setNotAnswering(stateCounts.getNotAnswering());
                 kilkariAggregateBeneficiariesDto.setSelfDeactivated(stateCounts.getSelfDeactivated());
                 kilkariAggregateBeneficiariesDto.setSystemDeactivation(stateCounts.getSystemDeactivation());
+                kilkariAggregateBeneficiariesDto.setCalledInbox(aggregateCumulativeBeneficiaryDao.getCalledKilkariInboxCount((long)s.getStateId(),locationType,toDate));
                 kilkariAggregateBeneficiariesDto.setBeneficiariesCalled(aggregateCumulativeBeneficiaryDao.getTotalBeneficiariesCalled((long)s.getStateId(),locationType,toDate));
                 kilkariAggregateBeneficiariesDto.setAnsweredAtleastOneCall(aggregateCumulativeBeneficiaryDao.getTotalBeneficiariesAnsweredAtleastOnce((long)s.getStateId(),locationType,toDate));
                 CumulativeBeneficiary.add(kilkariAggregateBeneficiariesDto);
@@ -556,7 +556,6 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 List<District> districts = districtDao.getDistrictsOfState(locationId);
                 AggregateCumulativeBeneficiary stateCounts = (aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary((long)locationId,locationType,toDate));
                 KilkariAggregateBeneficiariesDto stateDto = new KilkariAggregateBeneficiariesDto();
-                stateDto.setCalledInbox(stateCounts.getCalledInbox());
                 stateDto.setId(stateCounts.getId());
                 stateDto.setChildCompletion(stateCounts.getChildCompletion());
                 stateDto.setLocationId(stateCounts.getLocationId());
@@ -567,6 +566,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 stateDto.setNotAnswering(stateCounts.getNotAnswering());
                 stateDto.setSelfDeactivated(stateCounts.getSelfDeactivated());
                 stateDto.setSystemDeactivation(stateCounts.getSystemDeactivation());
+                stateDto.setCalledInbox(aggregateCumulativeBeneficiaryDao.getCalledKilkariInboxCount((long)locationId,locationType,toDate));
                 stateDto.setBeneficiariesCalled(aggregateCumulativeBeneficiaryDao.getTotalBeneficiariesCalled((long)locationId,locationType,toDate));
                 stateDto.setAnsweredAtleastOneCall(aggregateCumulativeBeneficiaryDao.getTotalBeneficiariesAnsweredAtleastOnce((long)locationId,locationType,toDate));
                 Long beneficiariesCalled = (long)0;
@@ -582,7 +582,6 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 for(District d:districts){
                     AggregateCumulativeBeneficiary districtCount = aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary((long)d.getDistrictId(),locationType,toDate);
                     KilkariAggregateBeneficiariesDto districtDto = new KilkariAggregateBeneficiariesDto();
-                    districtDto.setCalledInbox(districtCount.getCalledInbox());
                     districtDto.setId(districtCount.getId());
                     districtDto.setChildCompletion(districtCount.getChildCompletion());
                     districtDto.setLocationId(districtCount.getLocationId());
@@ -593,6 +592,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     districtDto.setNotAnswering(districtCount.getNotAnswering());
                     districtDto.setSelfDeactivated(districtCount.getSelfDeactivated());
                     districtDto.setSystemDeactivation(districtCount.getSystemDeactivation());
+                    districtDto.setCalledInbox(aggregateCumulativeBeneficiaryDao.getCalledKilkariInboxCount((long)locationId,locationType,toDate));
                     districtDto.setBeneficiariesCalled(aggregateCumulativeBeneficiaryDao.getTotalBeneficiariesCalled((long)d.getDistrictId(),locationType,toDate));
                     districtDto.setAnsweredAtleastOneCall(aggregateCumulativeBeneficiaryDao.getTotalBeneficiariesAnsweredAtleastOnce((long)d.getDistrictId(),locationType,toDate));
                     CumulativeBeneficiary.add(districtDto);
@@ -627,7 +627,6 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     List<Block> blocks = blockDao.getBlocksOfDistrict(locationId);
                     AggregateCumulativeBeneficiary districtCounts = aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary((long)locationId,"District",toDate);
                     KilkariAggregateBeneficiariesDto districtDto = new KilkariAggregateBeneficiariesDto();
-                    districtDto.setCalledInbox(districtCounts.getCalledInbox());
                     districtDto.setId(districtCounts.getId());
                     districtDto.setChildCompletion(districtCounts.getChildCompletion());
                     districtDto.setLocationId(districtCounts.getLocationId());
@@ -638,6 +637,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     districtDto.setNotAnswering(districtCounts.getNotAnswering());
                     districtDto.setSelfDeactivated(districtCounts.getSelfDeactivated());
                     districtDto.setSystemDeactivation(districtCounts.getSystemDeactivation());
+                    districtDto.setCalledInbox(aggregateCumulativeBeneficiaryDao.getCalledKilkariInboxCount((long)locationId,locationType,toDate));
                     districtDto.setBeneficiariesCalled(aggregateCumulativeBeneficiaryDao.getTotalBeneficiariesCalled((long)locationId,locationType,toDate));
                     districtDto.setAnsweredAtleastOneCall(aggregateCumulativeBeneficiaryDao.getTotalBeneficiariesAnsweredAtleastOnce((long)locationId,locationType,toDate));
                     Long beneficiariesCalled = (long)0;
@@ -653,7 +653,6 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     for (Block d : blocks) {
                         AggregateCumulativeBeneficiary blockCount = aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary((long)d.getBlockId(),locationType,toDate);
                         KilkariAggregateBeneficiariesDto blockDto = new KilkariAggregateBeneficiariesDto();
-                        blockDto.setCalledInbox(blockCount.getCalledInbox());
                         blockDto.setId(blockCount.getId());
                         blockDto.setChildCompletion(blockCount.getChildCompletion());
                         blockDto.setLocationId(blockCount.getLocationId());
@@ -664,6 +663,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                         blockDto.setNotAnswering(blockCount.getNotAnswering());
                         blockDto.setSelfDeactivated(blockCount.getSelfDeactivated());
                         blockDto.setSystemDeactivation(blockCount.getSystemDeactivation());
+                        blockDto.setCalledInbox(aggregateCumulativeBeneficiaryDao.getCalledKilkariInboxCount((long)locationId,locationType,toDate));
                         blockDto.setBeneficiariesCalled(aggregateCumulativeBeneficiaryDao.getTotalBeneficiariesCalled((long)d.getBlockId(),locationType,toDate));
                         blockDto.setAnsweredAtleastOneCall(aggregateCumulativeBeneficiaryDao.getTotalBeneficiariesAnsweredAtleastOnce((long)d.getBlockId(),locationType,toDate));
                         CumulativeBeneficiary.add(blockDto);
@@ -697,7 +697,6 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     List<Subcenter> subcenters = subcenterDao.getSubcentersOfBlock(locationId);
                     AggregateCumulativeBeneficiary blockCounts = aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary((long)locationId,"block",toDate);
                     KilkariAggregateBeneficiariesDto blockDto = new KilkariAggregateBeneficiariesDto();
-                    blockDto.setCalledInbox(blockCounts.getCalledInbox());
                     blockDto.setId(blockCounts.getId());
                     blockDto.setChildCompletion(blockCounts.getChildCompletion());
                     blockDto.setLocationId(blockCounts.getLocationId());
@@ -708,6 +707,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     blockDto.setNotAnswering(blockCounts.getNotAnswering());
                     blockDto.setSelfDeactivated(blockCounts.getSelfDeactivated());
                     blockDto.setSystemDeactivation(blockCounts.getSystemDeactivation());
+                    blockDto.setCalledInbox(aggregateCumulativeBeneficiaryDao.getCalledKilkariInboxCount((long)locationId,locationType,toDate));
                     blockDto.setBeneficiariesCalled(aggregateCumulativeBeneficiaryDao.getTotalBeneficiariesCalled((long)locationId,locationType,toDate));
                     blockDto.setAnsweredAtleastOneCall(aggregateCumulativeBeneficiaryDao.getTotalBeneficiariesAnsweredAtleastOnce((long)locationId,locationType,toDate));
                     Long beneficiariesCalled = (long)0;
@@ -723,7 +723,6 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     for(Subcenter s: subcenters){
                         AggregateCumulativeBeneficiary subcenterCount = aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary((long)s.getSubcenterId(),locationType,toDate);
                         KilkariAggregateBeneficiariesDto subcenterDto = new KilkariAggregateBeneficiariesDto();
-                        subcenterDto.setCalledInbox(subcenterCount.getCalledInbox());
                         subcenterDto.setId(subcenterCount.getId());
                         subcenterDto.setChildCompletion(subcenterCount.getChildCompletion());
                         subcenterDto.setLocationId(subcenterCount.getLocationId());
@@ -734,6 +733,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                         subcenterDto.setNotAnswering(subcenterCount.getNotAnswering());
                         subcenterDto.setSelfDeactivated(subcenterCount.getSelfDeactivated());
                         subcenterDto.setSystemDeactivation(subcenterCount.getSystemDeactivation());
+                        subcenterDto.setCalledInbox(aggregateCumulativeBeneficiaryDao.getCalledKilkariInboxCount((long)locationId,locationType,toDate));
                         subcenterDto.setBeneficiariesCalled(aggregateCumulativeBeneficiaryDao.getTotalBeneficiariesCalled((long)s.getSubcenterId(),locationType,toDate));
                         subcenterDto.setAnsweredAtleastOneCall(aggregateCumulativeBeneficiaryDao.getTotalBeneficiariesAnsweredAtleastOnce((long)s.getSubcenterId(),locationType,toDate));
                         CumulativeBeneficiary.add(subcenterDto);
