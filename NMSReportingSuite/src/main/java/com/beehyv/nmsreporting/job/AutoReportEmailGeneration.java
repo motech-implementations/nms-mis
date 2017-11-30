@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import static com.beehyv.nmsreporting.enums.ReportType.maCourse;
+import static com.beehyv.nmsreporting.utils.Global.isAutoGenerate;
 
 /**
  * Created by beehyv on 31/5/17.
@@ -22,68 +23,73 @@ public class AutoReportEmailGeneration {
     @Autowired
     EmailService emailService;
     public boolean executeInternal() {
+        if(isAutoGenerate()) {
+            Calendar aCalendar = Calendar.getInstance();
+            aCalendar.add(Calendar.MONTH, -1);
+            aCalendar.set(Calendar.DATE, 1);
+            aCalendar.set(Calendar.MILLISECOND, 0);
+            aCalendar.set(Calendar.SECOND, 0);
+            aCalendar.set(Calendar.MINUTE, 0);
+            aCalendar.set(Calendar.HOUR_OF_DAY, 0);
 
-        Calendar aCalendar = Calendar.getInstance();
-        aCalendar.add(Calendar.MONTH, -1);
-        aCalendar.set(Calendar.DATE, 1);
-        aCalendar.set(Calendar.MILLISECOND, 0);
-        aCalendar.set(Calendar.SECOND, 0);
-        aCalendar.set(Calendar.MINUTE, 0);
-        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+            Date fromDate = aCalendar.getTime();
 
-        Date fromDate = aCalendar.getTime();
+            aCalendar.add(Calendar.MONTH, 1);
 
-        aCalendar.add(Calendar.MONTH, 1);
+            Date toDate = aCalendar.getTime();
 
-        Date toDate = aCalendar.getTime();
-
-        Date startDate=new Date(0);
+            Date startDate = new Date(0);
         /*adminService.getCircleWiseAnonymousFiles(fromDate,toDate);*/
-        System.out.println("Report generation started");
-        adminService.createFiles(maCourse.getReportType());
-        adminService.createFolders(ReportType.maAnonymous.getReportType());
-        adminService.createFiles(ReportType.maInactive.getReportType());
-        adminService.createFiles(ReportType.lowUsage.getReportType());
-        adminService.createFiles(ReportType.selfDeactivated.getReportType());
-        adminService.createFiles(ReportType.sixWeeks.getReportType());
-        adminService.createFiles(ReportType.lowListenership.getReportType());
+            System.out.println("Report generation started");
+            adminService.createFiles(maCourse.getReportType());
+            adminService.createFolders(ReportType.maAnonymous.getReportType());
+            adminService.createFiles(ReportType.maInactive.getReportType());
+            adminService.createFiles(ReportType.lowUsage.getReportType());
+            adminService.createFiles(ReportType.selfDeactivated.getReportType());
+            adminService.createFiles(ReportType.sixWeeks.getReportType());
+            adminService.createFiles(ReportType.lowListenership.getReportType());
 
-        adminService.getCircleWiseAnonymousFiles(fromDate,toDate);
-        System.out.println("MA_Anonymous reports generated");
-        adminService.getCumulativeCourseCompletionFiles(toDate);
-        System.out.println("MA_Course_Completion reports generated");
-        adminService.getCumulativeInactiveFiles(toDate);
-        System.out.println("MA_Inactive reports generated");
-        adminService.getKilkariSixWeekNoAnswerFiles(fromDate,toDate);
-        System.out.println("KilkariSixWeekNoAnswer reports generated");
-        adminService.getKilkariLowListenershipDeactivationFiles(fromDate,toDate);
-        System.out.println("LowListenershipDeactivation reports generated");
-        adminService.getKilkariSelfDeactivationFiles(fromDate,toDate);
-        System.out.println("KilkariSelfDeactivation reports generated");
-        adminService.getKilkariLowUsageFiles(fromDate,toDate);
-        System.out.println("KilkariLowUsage reports generated");
-        System.out.println("Report generation done");
+            adminService.getCircleWiseAnonymousFiles(fromDate, toDate);
+            System.out.println("MA_Anonymous reports generated");
+            adminService.getCumulativeCourseCompletionFiles(toDate);
+            System.out.println("MA_Course_Completion reports generated");
+            adminService.getCumulativeInactiveFiles(toDate);
+            System.out.println("MA_Inactive reports generated");
+            adminService.getKilkariSixWeekNoAnswerFiles(fromDate, toDate);
+            System.out.println("KilkariSixWeekNoAnswer reports generated");
+            adminService.getKilkariLowListenershipDeactivationFiles(fromDate, toDate);
+            System.out.println("LowListenershipDeactivation reports generated");
+            adminService.getKilkariSelfDeactivationFiles(fromDate, toDate);
+            System.out.println("KilkariSelfDeactivation reports generated");
+            adminService.getKilkariLowUsageFiles(fromDate, toDate);
+            System.out.println("KilkariLowUsage reports generated");
+            System.out.println("Report generation done");
 
-        return true;
+            return true;
+        }
+        return false;
     }
 
     public boolean executeWeekly() {
-        Calendar aCalendar = Calendar.getInstance();
-        aCalendar.add( Calendar.DAY_OF_WEEK, -(aCalendar.get(Calendar.DAY_OF_WEEK)-1));
-        Date toDate=aCalendar.getTime();
+        if(isAutoGenerate()) {
+            Calendar aCalendar = Calendar.getInstance();
+            aCalendar.add(Calendar.DAY_OF_WEEK, -(aCalendar.get(Calendar.DAY_OF_WEEK) - 1));
+            Date toDate = aCalendar.getTime();
 
-        adminService.createFiles(ReportType.flwRejected.getReportType());
-        adminService.createFiles(ReportType.motherRejected.getReportType());
-        adminService.createFiles(ReportType.childRejected.getReportType());
+            adminService.createFiles(ReportType.flwRejected.getReportType());
+            adminService.createFiles(ReportType.motherRejected.getReportType());
+            adminService.createFiles(ReportType.childRejected.getReportType());
 
-        adminService.createFlwImportRejectedFiles(toDate);
-        System.out.println("FLW_Rejection reports generated");
-        adminService.createMotherImportRejectedFiles(toDate);
-        System.out.println("Mother_Rejection reports generated");
-        adminService.createChildImportRejectedFiles(toDate);
-        System.out.println("Child_Rejection reports generated");
+            adminService.createFlwImportRejectedFiles(toDate);
+            System.out.println("FLW_Rejection reports generated");
+            adminService.createMotherImportRejectedFiles(toDate);
+            System.out.println("Mother_Rejection reports generated");
+            adminService.createChildImportRejectedFiles(toDate);
+            System.out.println("Child_Rejection reports generated");
 
-        return true;
+            return true;
+        }
+        return false;
     }
 
     public HashMap sendFirstMail() {

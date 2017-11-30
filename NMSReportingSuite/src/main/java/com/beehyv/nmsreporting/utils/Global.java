@@ -60,4 +60,28 @@ public  final class Global {
         return uiAddress;
     }
 
+    public static boolean isAutoGenerate() {
+        Properties prop = new Properties();
+        InputStream input = null;
+        boolean uiAddress = false;
+        try {
+            File file = new File("../webapps/NMSReportingSuite/WEB-INF/classes/app.properties");
+            input = new FileInputStream(file);
+            // load a properties file
+            prop.load(input);
+            uiAddress =  prop.getProperty("cron").equals("1");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return uiAddress;
+    }
+
 }
