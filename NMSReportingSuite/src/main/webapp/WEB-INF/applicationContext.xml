@@ -138,6 +138,7 @@
     <bean id="autoReportMail" class="com.beehyv.nmsreporting.job.AutoReportEmailGeneration"/>
     <task:scheduled-tasks>
         <task:scheduled ref="autoReportMail" method="executeInternal" cron="0 0 9 1 * ?"/>
-        <!--<task:scheduled ref="autoReportMail" method="executeInternal" cron="0 0 12 ? * MON *"/>-->
+        <task:scheduled ref="autoReportMail" method="executeWeekly" cron="0 0 12 ? * MON"/>
+        <!--<task:scheduled ref="autoReportMail" method="test" cron="${cron.test}"  />-->
     </task:scheduled-tasks>
 </beans>
