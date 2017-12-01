@@ -40,10 +40,6 @@
 //			}
 
 			$scope.login = function(e){
-               var captcha = document.getElementById("captchaCode");
-                console.log(captcha);
-                captcha.blur();
-
 			    if($scope.user.username == null){
 			        if(UserFormFactory.isInternetExplorer()){
                         alert("Please specify a username")

@@ -1017,13 +1017,6 @@
 
 			$scope.reset =function(){
 
-
-                  console.log($scope.gridApi.grid);
-//                  alert($scope.gridApi.grid.columns[2].getAggregationValue());
-//                }
-//
-
-
 				$scope.report = null;
 				$scope.reportCategory = null;
 
