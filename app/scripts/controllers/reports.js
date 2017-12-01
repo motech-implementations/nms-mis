@@ -503,8 +503,8 @@
 				return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
 			}
 
-            var startMonth = 10 //September
-            var startDate = 18 //Start Date
+            var startMonth = 10 //November
+            var startDate = 25 //Start Date
 
 			$scope.open1 = function() {
 				$scope.popup1.opened = true;
