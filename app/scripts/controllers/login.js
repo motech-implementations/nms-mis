@@ -40,7 +40,8 @@
 //			}
 
 			$scope.login = function(e){
-			    if($scope.user.username == null){
+			    console.log($scope.user);
+			    if($scope.user.username == null || $scope.user.username == ""){
 			        if(UserFormFactory.isInternetExplorer()){
                         alert("Please specify a username")
                         return;
@@ -51,7 +52,7 @@
                     }
 
 			    }
-			    if($scope.user.password == null){
+			    if($scope.user.password == null || $scope.user.password == ""){
 			        if(UserFormFactory.isInternetExplorer()){
                         alert("Please specify a password")
                         return;
@@ -61,7 +62,7 @@
                         return;
                     }
                 }
-                if($scope.user.captchaCode == null){
+                if($scope.user.captchaCode == null || $scope.user.captchaCode == ""){
                     if(UserFormFactory.isInternetExplorer()){
                         alert("Please enter the captchaCode")
                         return;
