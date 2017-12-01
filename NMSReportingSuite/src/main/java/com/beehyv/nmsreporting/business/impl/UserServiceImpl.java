@@ -698,7 +698,7 @@ public class UserServiceImpl implements UserService{
         User entity = userDao.findByUserId(userId);
         Integer rowNum = 0;
         Map<Integer, String> responseMap = new HashMap<>();
-        if((entity != null) && (getCurrentUser().equals(entity.getCreatedByUser())) && !(getCurrentUser().getLoggedAtLeastOnce())) {
+        if((entity != null) && (getCurrentUser().equals(entity.getCreatedByUser())) && !(entity.getLoggedAtLeastOnce())) {
             entity.setAccountStatus(AccountStatus.INACTIVE.getAccountStatus());
             responseMap.put(rowNum,"User deleted");
         }

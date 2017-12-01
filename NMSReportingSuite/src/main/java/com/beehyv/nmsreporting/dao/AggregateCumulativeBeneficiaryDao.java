@@ -14,4 +14,6 @@ public interface AggregateCumulativeBeneficiaryDao {
     Long getTotalBeneficiariesCalled(Long locationId, String locationType, Date date);
 
     Long getTotalBeneficiariesAnsweredAtleastOnce(Long locationId, String locationType, Date date);
+
+    Long getCalledKilkariInboxCount(Long locationId, String locationType, Date date);
 }
