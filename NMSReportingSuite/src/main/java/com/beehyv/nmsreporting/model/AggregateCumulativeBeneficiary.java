@@ -42,13 +42,10 @@ public class AggregateCumulativeBeneficiary {
     @Column(name="child_completed",columnDefinition = "BIGINT(20)")
     private Long childCompletion;
 
-    @Column(name="called_kilkari_inbox",columnDefinition = "BIGINT(20)")
-    private Long calledInbox;
-
     @Column(name="joined_subscription",columnDefinition = "BIGINT(20)")
     private Long joinedSubscription;
 
-    public AggregateCumulativeBeneficiary(Integer id, String locationType, Long locationId, Date date, Long selfDeactivated, Long notAnswering, Long lowListenership, Long systemDeactivation, Long motherCompletion, Long childCompletion, Long calledInbox, Long joinedSubscription) {
+    public AggregateCumulativeBeneficiary(Integer id, String locationType, Long locationId, Date date, Long selfDeactivated, Long notAnswering, Long lowListenership, Long systemDeactivation, Long motherCompletion, Long childCompletion, Long joinedSubscription) {
         this.id = id;
         this.locationType = locationType;
         this.locationId = locationId;
@@ -59,7 +56,6 @@ public class AggregateCumulativeBeneficiary {
         this.systemDeactivation = systemDeactivation;
         this.motherCompletion = motherCompletion;
         this.childCompletion = childCompletion;
-        this.calledInbox = calledInbox;
         this.joinedSubscription = joinedSubscription;
     }
 
@@ -145,14 +141,6 @@ public class AggregateCumulativeBeneficiary {
 
     public void setChildCompletion(Long childCompletion) {
         this.childCompletion = childCompletion;
-    }
-
-    public Long getCalledInbox() {
-        return calledInbox;
-    }
-
-    public void setCalledInbox(Long calledInbox) {
-        this.calledInbox = calledInbox;
     }
 
     public Long getJoinedSubscription() {
