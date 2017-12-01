@@ -2,7 +2,6 @@ package com.beehyv.nmsreporting.dao.impl;
 
 import com.beehyv.nmsreporting.dao.AbstractDao;
 import com.beehyv.nmsreporting.dao.KilkariSubscriberReportDao;
-import com.beehyv.nmsreporting.model.KilkariRepeatListenerMonthWise;
 import com.beehyv.nmsreporting.model.KilkariSubscriber;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
@@ -36,7 +35,7 @@ public class KilkariSubscriberReportDaoImpl extends AbstractDao<Integer,KilkariS
         kilkariSubscriber.setTotalBeneficiaryRecordsRejected(kilkariSubscriber.getTotalBeneficiaryRecordsRejected() == null ? 0 : kilkariSubscriber.getTotalBeneficiaryRecordsRejected());
         kilkariSubscriber.setRecordsRejectedButEligible(kilkariSubscriber.getRecordsRejectedButEligible() == null ? 0 : kilkariSubscriber.getRecordsRejectedButEligible());
         kilkariSubscriber.setTotalSubscriptionsCompleted(kilkariSubscriber.getTotalSubscriptionsCompleted() == null ? 0 : kilkariSubscriber.getTotalSubscriptionsCompleted());
-        kilkariSubscriber.setRecordsRejectedDuplicateMobileNumbers(kilkariSubscriber.getRecordsRejectedDuplicateMobileNumbers() == null ? 0 : kilkariSubscriber.getRecordsRejectedDuplicateMobileNumbers());
+        kilkariSubscriber.setRecordsDeactivated(kilkariSubscriber.getRecordsDeactivated() == null ? 0 : kilkariSubscriber.getRecordsDeactivated());
         kilkariSubscriber.setTotalSubscriptions(kilkariSubscriber.getTotalSubscriptions() == null ? 0 : kilkariSubscriber.getTotalSubscriptions());
         return kilkariSubscriber;
     }

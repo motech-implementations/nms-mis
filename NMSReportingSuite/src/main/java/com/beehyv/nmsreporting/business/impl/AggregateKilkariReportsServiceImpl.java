@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -296,11 +295,11 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                         kilkariSubscriberDto.setLocationId(end.getLocationId());
                         kilkariSubscriberDto.setTotalSubscriptionsStart(start.getTotalSubscriptions());
                         kilkariSubscriberDto.setTotalSubscriptionsEnd(end.getTotalSubscriptions());
-                        kilkariSubscriberDto.setTotalBeneficiaryRecordsAccepted(end.getTotalSubscriptions()- start.getTotalSubscriptions());
+                        kilkariSubscriberDto.setTotalRecordsRejected(end.getTotalBeneficiaryRecordsRejected()- start.getTotalBeneficiaryRecordsRejected());
+                        kilkariSubscriberDto.setTotalSubscriptionsCompleted(end.getTotalSubscriptionsCompleted()- start.getTotalSubscriptionsCompleted());
+                        kilkariSubscriberDto.setTotalBeneficiaryRecordsAccepted(end.getTotalSubscriptions()- start.getTotalSubscriptions() + kilkariSubscriberDto.getTotalSubscriptionsCompleted() + end.getRecordsDeactivated() - start.getRecordsDeactivated());
                         kilkariSubscriberDto.setTotalBeneficiaryRecordsEligible(end.getRecordsRejectedButEligible()  - start.getRecordsRejectedButEligible() + kilkariSubscriberDto.getTotalBeneficiaryRecordsAccepted());
                         kilkariSubscriberDto.setTotalBeneficiaryRecordsReceived(kilkariSubscriberDto.getTotalBeneficiaryRecordsEligible() + end.getTotalBeneficiaryRecordsRejected() - start.getTotalBeneficiaryRecordsRejected());
-                        kilkariSubscriberDto.setTotalBeneficiaryRecordsRejectedDuplicateMobileNumbers(end.getRecordsRejectedDuplicateMobileNumbers()- start.getRecordsRejectedDuplicateMobileNumbers());
-                        kilkariSubscriberDto.setTotalSubscriptionsCompleted(end.getTotalSubscriptionsCompleted()- start.getTotalSubscriptionsCompleted());
                         kilkariSubscriberDto.setLocationType(end.getLocationType());
                         String locationType = end.getLocationType();
                         if(locationType.equalsIgnoreCase("State")){
@@ -332,7 +331,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
 
                         if((kilkariSubscriberDto.getTotalSubscriptionsEnd() + kilkariSubscriberDto.getTotalSubscriptionsStart() + kilkariSubscriberDto.getTotalBeneficiaryRecordsReceived()
                                 + kilkariSubscriberDto.getTotalBeneficiaryRecordsEligible() + kilkariSubscriberDto.getTotalBeneficiaryRecordsAccepted()
-                                + kilkariSubscriberDto.getTotalBeneficiaryRecordsRejectedDuplicateMobileNumbers() + kilkariSubscriberDto.getTotalSubscriptionsCompleted()) != 0){
+                                + kilkariSubscriberDto.getTotalRecordsRejected() + kilkariSubscriberDto.getTotalSubscriptionsCompleted()) != 0){
                             kilkariSubscriberDtoList.add(kilkariSubscriberDto);
                         }
                     }
@@ -357,7 +356,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 KilkariSubscriber kilkariStateCounts = kilkariSubscriberReportDao.getKilkariSubscriberCounts(locationId,locationType, date);
                 Integer totalSubscriptions = 0;
                 Integer totalBeneficiaryRecordsRejected = 0;
-                Integer recordsRejectedDuplicateMobileNumbers = 0;
+                Integer recordsDeactivated = 0;
                 Integer totalSubscriptionsCompleted = 0;
                 Integer recordsRejectedButEligible = 0;
                 for(District district:districts){
@@ -365,14 +364,14 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     kilkariSubscribersCountList.add(kilkariDistrictCount);
                     totalSubscriptions += kilkariDistrictCount.getTotalSubscriptions();
                     totalBeneficiaryRecordsRejected += kilkariDistrictCount.getTotalBeneficiaryRecordsRejected();
-                    recordsRejectedDuplicateMobileNumbers += kilkariDistrictCount.getRecordsRejectedDuplicateMobileNumbers();
+                    recordsDeactivated += kilkariDistrictCount.getRecordsDeactivated();
                     totalSubscriptionsCompleted += kilkariDistrictCount.getTotalSubscriptionsCompleted();
                     recordsRejectedButEligible += kilkariDistrictCount.getTotalBeneficiaryRecordsRejected();
                 }
                 KilkariSubscriber kilkariNoDistrictCount = new KilkariSubscriber();
                 kilkariNoDistrictCount.setTotalSubscriptions(kilkariStateCounts.getTotalSubscriptions()- totalSubscriptions);
                 kilkariNoDistrictCount.setTotalBeneficiaryRecordsRejected(kilkariStateCounts.getTotalBeneficiaryRecordsRejected()- totalBeneficiaryRecordsRejected);
-                kilkariNoDistrictCount.setRecordsRejectedDuplicateMobileNumbers(kilkariStateCounts.getRecordsRejectedDuplicateMobileNumbers()- recordsRejectedDuplicateMobileNumbers);
+                kilkariNoDistrictCount.setRecordsDeactivated(kilkariStateCounts.getRecordsDeactivated()- recordsDeactivated);
                 kilkariNoDistrictCount.setTotalSubscriptionsCompleted(kilkariStateCounts.getTotalSubscriptionsCompleted()- totalSubscriptionsCompleted);
                 kilkariNoDistrictCount.setRecordsRejectedButEligible(kilkariStateCounts.getRecordsRejectedButEligible()- recordsRejectedButEligible);
                 kilkariNoDistrictCount.setLocationType("DifferenceState");
@@ -391,14 +390,14 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                         kilkariSubscribersCountList.add(kilkariBlockCount);
                         totalSubscriptions += kilkariBlockCount.getTotalSubscriptions();
                         totalBeneficiaryRecordsRejected += kilkariBlockCount.getTotalBeneficiaryRecordsRejected();
-                        recordsRejectedDuplicateMobileNumbers += kilkariBlockCount.getRecordsRejectedDuplicateMobileNumbers();
+                        recordsRejectedDuplicateMobileNumbers += kilkariBlockCount.getRecordsDeactivated();
                         totalSubscriptionsCompleted += kilkariBlockCount.getTotalSubscriptionsCompleted();
                         recordsRejectedButEligible += kilkariBlockCount.getTotalBeneficiaryRecordsRejected();
                     }
                     KilkariSubscriber kilkariNoBlockCount = new KilkariSubscriber();
                     kilkariNoBlockCount.setTotalSubscriptions(kilkariDistrictCounts.getTotalSubscriptions()- totalSubscriptions);
                     kilkariNoBlockCount.setTotalBeneficiaryRecordsRejected(kilkariDistrictCounts.getTotalBeneficiaryRecordsRejected()- totalBeneficiaryRecordsRejected);
-                    kilkariNoBlockCount.setRecordsRejectedDuplicateMobileNumbers(kilkariDistrictCounts.getRecordsRejectedDuplicateMobileNumbers()- recordsRejectedDuplicateMobileNumbers);
+                    kilkariNoBlockCount.setRecordsDeactivated(kilkariDistrictCounts.getRecordsDeactivated()- recordsRejectedDuplicateMobileNumbers);
                     kilkariNoBlockCount.setTotalSubscriptionsCompleted(kilkariDistrictCounts.getTotalSubscriptionsCompleted()- totalSubscriptionsCompleted);
                     kilkariNoBlockCount.setRecordsRejectedButEligible(kilkariDistrictCounts.getRecordsRejectedButEligible()- recordsRejectedButEligible);
                     kilkariNoBlockCount.setLocationType("DifferenceDistrict");
@@ -417,14 +416,14 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                         kilkariSubscribersCountList.add(kilkariSubcenterCount);
                         totalSubscriptions += kilkariSubcenterCount.getTotalSubscriptions();
                         totalBeneficiaryRecordsRejected += kilkariSubcenterCount.getTotalBeneficiaryRecordsRejected();
-                        recordsRejectedDuplicateMobileNumbers += kilkariSubcenterCount.getRecordsRejectedDuplicateMobileNumbers();
+                        recordsRejectedDuplicateMobileNumbers += kilkariSubcenterCount.getRecordsDeactivated();
                         totalSubscriptionsCompleted += kilkariSubcenterCount.getTotalSubscriptionsCompleted();
                         recordsRejectedButEligible += kilkariSubcenterCount.getTotalBeneficiaryRecordsRejected();
                     }
                     KilkariSubscriber kilkariNoSubcenterCount = new KilkariSubscriber();
                     kilkariNoSubcenterCount.setTotalSubscriptions(blockCounts.getTotalSubscriptions()- totalSubscriptions);
                     kilkariNoSubcenterCount.setTotalBeneficiaryRecordsRejected(blockCounts.getTotalBeneficiaryRecordsRejected()- totalBeneficiaryRecordsRejected);
-                    kilkariNoSubcenterCount.setRecordsRejectedDuplicateMobileNumbers(blockCounts.getRecordsRejectedDuplicateMobileNumbers()- recordsRejectedDuplicateMobileNumbers);
+                    kilkariNoSubcenterCount.setRecordsDeactivated(blockCounts.getRecordsDeactivated()- recordsRejectedDuplicateMobileNumbers);
                     kilkariNoSubcenterCount.setTotalSubscriptionsCompleted(blockCounts.getTotalSubscriptionsCompleted()- totalSubscriptionsCompleted);
                     kilkariNoSubcenterCount.setRecordsRejectedButEligible(blockCounts.getRecordsRejectedButEligible()- recordsRejectedButEligible);
                     kilkariNoSubcenterCount.setLocationType("DifferenceBlock");
