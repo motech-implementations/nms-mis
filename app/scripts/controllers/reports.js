@@ -990,16 +990,9 @@
                             }
                        }
 
-
-
-
                          $scope.gridOptions = $scope.gridOptions1;
                          $scope.gridOptions_Message_Matrix = $scope.gridOptions2;
 
-                                           console.log($scope.gridApi.grid.appscope);
-                                                //                  alert($scope.gridApi.grid.columns[2].getAggregationValue());
-                                                //                }
-                                                //
                     }
                 }
 
@@ -1023,13 +1016,6 @@
 			}
 
 			$scope.reset =function(){
-
-
-                  console.log($scope.gridApi.grid);
-//                  alert($scope.gridApi.grid.columns[2].getAggregationValue());
-//                }
-//
-
 
 				$scope.report = null;
 				$scope.reportCategory = null;
@@ -1256,7 +1242,7 @@
 
             $scope.MA_Cumulative_Column_Definitions =[
                                                        {name: 'S No.', displayName: 'S No.',width:"6%",enableSorting: false, cellTemplate: '<p class="serial-no" >{{rowRenderIndex+1}}</p>'},
-                                                       { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',
+                                                       { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>', sort: { direction: 'asc', priority: 0 },
                                                          cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}"  ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
                                                          width: '12%', enableHiding: false,
                                                        },
@@ -1265,15 +1251,15 @@
                                                        { field: 'ashasNotStarted', displayName : ' No of ASHA Not Started Course', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
                                                        { field: 'ashasCompleted' , displayName : 'No of ASHA Successfully Completed the Course', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"13%", enableHiding: false},
                                                        { field: 'ashasFailed' , displayName : 'No of ASHA who failed the course', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
-                                                       { field: 'notStartedpercentage' , displayName : '% Not Started Course', footerCellTemplate: '<div class="ui-grid-cell-contents" >{{grid.columns[4].getAggregationValue()/grid.columns[2].getAggregationValue() | number:2}}</div>', width:"*", enableHiding: false},
-                                                       { field: 'completedPercentage' , displayName : '% Successfully Completed', footerCellTemplate: '<div class="ui-grid-cell-contents" >{{grid.columns[5].getAggregationValue()/grid.columns[2].getAggregationValue() | number:2}}</div>', width:"*", enableHiding: false},
-                                                       { field: 'failedpercentage' , displayName : '% Failed the course', footerCellTemplate: '<div class="ui-grid-cell-contents" >{{grid.columns[6].getAggregationValue()/grid.columns[2].getAggregationValue() | number:2}}</div>', width:"*", enableHiding: false},
+                                                       { field: 'notStartedpercentage' , displayName : '% Not Started Course', footerCellTemplate: '<div class="ui-grid-cell-contents" >{{(grid.columns[4].getAggregationValue()/grid.columns[2].getAggregationValue()) *100 | number:4}}</div>', width:"*", enableHiding: false},
+                                                       { field: 'completedPercentage' , displayName : '% Successfully Completed', footerCellTemplate: '<div class="ui-grid-cell-contents" >{{(grid.columns[5].getAggregationValue()/grid.columns[2].getAggregationValue())*100 | number:4}}</div>', width:"*", enableHiding: false},
+                                                       { field: 'failedpercentage' , displayName : '% Failed the course', footerCellTemplate: '<div class="ui-grid-cell-contents" >{{(grid.columns[6].getAggregationValue()/grid.columns[2].getAggregationValue()) *100 | number:4}}</div>', width:"*", enableHiding: false},
                                                       ],
 
 
             $scope.MA_Performance_Column_Definitions =[
                                                          {name: 'S No.', displayName: 'S No.',width:"6%", enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
-                                                         { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents">Total</div>',
+                                                         { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents">Total</div>',sort: { direction: 'asc', priority: 0 },
                                                             cellTemplate:'<a class=" btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
                                                             enableHiding: false, width:"12%",
 
@@ -1386,7 +1372,7 @@
                                                      { field: 'content_25_50', name: 'Total calls where 25% to 49.9% content listened to',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                      { field: 'content_1_25', name: 'Total calls where < 25%  content listened to',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                      { field: 'billableMinutes', name: 'Total Billable minutes',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
-                                                     { field: 'avgDuration', name: 'Average Duration of Calls',footerCellTemplate: '<div class="ui-grid-cell-contents" >{{grid.columns[8].getAggregationValue()/grid.columns[3].getAggregationValue() | number:2}}</div>', width:"*", enableHiding: false},
+                                                     { field: 'avgDuration', name: 'Average Duration of Calls',footerCellTemplate: '<div class="ui-grid-cell-contents" >{{grid.columns[8].getAggregationValue()/grid.columns[3].getAggregationValue() | number:3}}</div>', width:"*", enableHiding: false},
                                                      { field: 'callsToInbox', name: 'Total number of calls to inbox where content is played',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
             ]
 

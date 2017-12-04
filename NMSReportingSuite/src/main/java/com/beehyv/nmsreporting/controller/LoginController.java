@@ -2,10 +2,15 @@ package com.beehyv.nmsreporting.controller;
 
 import com.beehyv.nmsreporting.business.LoginTrackerService;
 import com.beehyv.nmsreporting.business.UserService;
+import com.beehyv.nmsreporting.entity.BasicValidationResult;
 import com.beehyv.nmsreporting.model.LoginTracker;
 import com.beehyv.nmsreporting.model.User;
 import com.beehyv.nmsreporting.utils.LoginUser;
 import com.beehyv.nmsreporting.utils.LoginValidator;
+import com.captcha.botdetect.web.servlet.SimpleCaptcha;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -18,7 +23,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Date;
+import java.util.Map;
 
 import static com.beehyv.nmsreporting.utils.Global.retrieveUiAddress;
 
@@ -26,7 +38,7 @@ import static com.beehyv.nmsreporting.utils.Global.retrieveUiAddress;
  * Created by beehyv on 15/3/17.
  */
 @Controller
-public class LoginController {
+public class LoginController extends HttpServlet{
 
     private LoginValidator validator = new LoginValidator();
 
@@ -100,6 +112,40 @@ public class LoginController {
 //        System.out.println("\n\n" + SecurityUtils.getSubject().getSession()+ "!!!!!!!!!!!\n\n");
         return new LoginUser();
     }
+
+    @Override
+    @RequestMapping(value={"/nms/captcha"}, method= RequestMethod.POST)
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
+        Gson gson = new Gson();
+
+        response.setContentType("application/json; charset=utf-8");
+
+
+        JsonParser parser = new JsonParser();
+        JsonObject formDataObj = (JsonObject) parser.parse(request.getReader());
+        String captchaId = formDataObj.get("captchaId").getAsString();
+        String captchaCode = formDataObj.get("captchaCode").getAsString();
+
+        // validate captcha
+        SimpleCaptcha captcha = SimpleCaptcha.load(request);
+        boolean isHuman = captcha.validate(captchaCode, captchaId);
+       // the object that stores validation result
+        BasicValidationResult validationResult = new BasicValidationResult();
+        validationResult.setSuccess(isHuman);
+
+        try {
+            // write the validation result as json string for sending it back to client
+            out.write(gson.toJson(validationResult));
+        } catch(Exception ex) {
+            out.write(ex.getMessage());
+        } finally {
+            out.close();
+        }
+
+    }
+
 
     private void ensureUserIsLoggedOut() {
         try {

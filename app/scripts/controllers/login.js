@@ -40,11 +40,8 @@
 //			}
 
 			$scope.login = function(e){
-               var captcha = document.getElementById("captchaCode");
-                console.log(captcha);
-                captcha.blur();
-
-			    if($scope.user.username == null){
+			    console.log($scope.user);
+			    if($scope.user.username == null || $scope.user.username == ""){
 			        if(UserFormFactory.isInternetExplorer()){
                         alert("Please specify a username")
                         return;
@@ -55,7 +52,7 @@
                     }
 
 			    }
-			    if($scope.user.password == null){
+			    if($scope.user.password == null || $scope.user.password == ""){
 			        if(UserFormFactory.isInternetExplorer()){
                         alert("Please specify a password")
                         return;
@@ -65,7 +62,7 @@
                         return;
                     }
                 }
-                if($scope.user.captchaCode == null){
+                if($scope.user.captchaCode == null || $scope.user.captchaCode == ""){
                     if(UserFormFactory.isInternetExplorer()){
                         alert("Please enter the captchaCode")
                         return;
@@ -75,31 +72,48 @@
                         return;
                     }
                 }
-                if($scope.loginForm.captchaCode.$invalid){
-                    if(UserFormFactory.isInternetExplorer()){
-                        alert("Incorrect Captcha")
-                        return;
-                    }
-                    else{
-                        UserFormFactory.showAlert("Incorrect Captcha")
-                        return;
-                    }
-                }
 
-                 var formElement = angular.element(e.target);
-                 console.log(formElement);
-                 formElement.attr("action", $scope.loginUrl);
-                 formElement.attr("method", "post");
-                 formElement[0].submit();
+                var captcha = new Captcha();
 
+                // captcha id for validating captcha at server-side
+                var captchaId = captcha.captchaId;
 
-            }
+                // captcha code input value for validating captcha at server-side
+                var captchaCode = angular.uppercase($scope.user.captchaCode);
 
-            $scope.inputKeyUp = function(e) {
-                e.which = e.which || e.keyCode;
-                if(e.which == 13) {
-                   console.log("pressed enter");
-                }
+                var postData = {
+                  captchaId: captchaId,
+                  captchaCode: captchaCode
+                };
+
+                $http({
+                    method  : 'POST',
+                    url     : backend_root + 'nms/captcha',
+                    data    : postData, //forms user object
+                    headers : {'Content-Type': 'application/json'}
+                }).then(function(response){
+                      console.log(response.data.success);
+                      if(response.data.success){
+                         var formElement = angular.element(e.target);
+                         console.log(formElement);
+                         formElement.attr("action", $scope.loginUrl);
+                         formElement.attr("method", "post");
+                         formElement[0].submit();
+
+                      }
+                      else{
+                        if(UserFormFactory.isInternetExplorer()){
+                            alert("Incorrect Captcha")
+                            return;
+                        }
+                        else{
+                            UserFormFactory.showAlert("Incorrect Captcha")
+                            return;
+                        }
+
+                      }
+                })
+
             }
 
 		}])
