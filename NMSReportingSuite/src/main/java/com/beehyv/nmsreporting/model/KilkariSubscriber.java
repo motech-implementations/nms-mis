@@ -33,8 +33,8 @@ public class KilkariSubscriber {
     @Column(name="total_beneficiary_records_rejected", columnDefinition = "INT(11)")
     private Integer totalBeneficiaryRecordsRejected;
 
-    @Column(name="records_rejected_duplicate_mobile_numbers", columnDefinition = "INT(11)")
-    private Integer recordsRejectedDuplicateMobileNumbers;
+    @Column(name="records_deactivated", columnDefinition = "INT(11)")
+    private Integer recordsDeactivated;
 
     @Column(name="records_rejected_but_eligible", columnDefinition = "INT(11)")
     private Integer recordsRejectedButEligible;
@@ -43,14 +43,14 @@ public class KilkariSubscriber {
     private Integer totalSubscriptionsCompleted;
 
 
-    public KilkariSubscriber(Integer id, String locationType, Long locationId, Date date, Integer totalSubscriptions, Integer totalBeneficiaryRecordsRejected, Integer recordsRejectedDuplicateMobileNumbers, Integer recordsRejectedButEligible, Integer totalSubscriptionsCompleted){
+    public KilkariSubscriber(Integer id, String locationType, Long locationId, Date date, Integer totalSubscriptions, Integer totalBeneficiaryRecordsRejected, Integer recordsDeactivated, Integer recordsRejectedButEligible, Integer totalSubscriptionsCompleted){
         this.id = id;
         this.locationType = locationType;
         this.locationId = locationId;
         this.date = date;
         this.totalSubscriptions = totalSubscriptions;
         this.totalBeneficiaryRecordsRejected = totalBeneficiaryRecordsRejected;
-        this.recordsRejectedDuplicateMobileNumbers = recordsRejectedDuplicateMobileNumbers;
+        this.recordsDeactivated = recordsDeactivated;
         this.recordsRejectedButEligible = recordsRejectedButEligible;
         this.totalSubscriptionsCompleted = totalSubscriptionsCompleted;
     }
@@ -107,12 +107,12 @@ public class KilkariSubscriber {
         this.totalBeneficiaryRecordsRejected = totalBeneficiaryRecordsRejected;
     }
 
-    public Integer getRecordsRejectedDuplicateMobileNumbers() {
-        return recordsRejectedDuplicateMobileNumbers;
+    public Integer getRecordsDeactivated() {
+        return recordsDeactivated;
     }
 
-    public void setRecordsRejectedDuplicateMobileNumbers(Integer recordsRejectedDuplicateMobileNumbers) {
-        this.recordsRejectedDuplicateMobileNumbers = recordsRejectedDuplicateMobileNumbers;
+    public void setRecordsDeactivated(Integer recordsDeactivated) {
+        this.recordsDeactivated = recordsDeactivated;
     }
 
     public Integer getRecordsRejectedButEligible() {
