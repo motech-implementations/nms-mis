@@ -1223,12 +1223,15 @@
 
             $scope.gridOptions1 = {
                 enableSorting: true,
-                 showColumnFooter: true,
+                showColumnFooter: true,
+                enableGridMenu: true,
                 enableVerticalScrollbar : 0,
+                exporterExcelFilename: 'myFile.xlsx',
+                exporterExcelSheetName: 'Sheet1',
                 excessRows :1000,
                 onRegisterApi: function(gridApi){
                       $scope.gridApi = gridApi;
-                    },
+                },
               };
 
             $scope.gridOptions2 = {
