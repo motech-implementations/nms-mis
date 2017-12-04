@@ -133,7 +133,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             summaryDto1.setSuccessfulCalls(a.getSuccessfulCalls());
             summaryDto1.setBillableMinutes(a.getBillableMinutes());
             summaryDto1.setLocationType(a.getLocationType());
-            summaryDto1.setAverageDuration(a.getSuccessfulCalls() == 0 ? 0 : (float) (a.getBillableMinutes()/a.getSuccessfulCalls()));
+            summaryDto1.setAverageDuration(a.getSuccessfulCalls() == 0 ? 0 : (float)Math.round(((float) a.getBillableMinutes()/(float) a.getSuccessfulCalls()) * 100)/100);
             String locationType = a.getLocationType();
             if(locationType.equalsIgnoreCase("State")){
                 summaryDto1.setLocationName(stateDao.findByStateId(a.getLocationId().intValue()).getStateName());
@@ -783,7 +783,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         aCalendar.set(Calendar.HOUR_OF_DAY, 0);
 
 
-        aCalendar.add(Calendar.DATE, -1);
+        aCalendar.add(Calendar.DATE, 0);
         Date fromDate = aCalendar.getTime();
         aCalendar.setTime(reportRequest.getToDate());
         aCalendar.set(Calendar.MILLISECOND, 0);
@@ -796,15 +796,15 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         List<KilkariUsage> kilkariUsageList = new ArrayList<>();
 
         if (reportRequest.getStateId() == 0) {
-            kilkariUsageList.addAll(this.getKilkariUsage(0,"State",toDate));
+            kilkariUsageList.addAll(this.getKilkariUsage(0,"State",fromDate));
         }
         else if (reportRequest.getDistrictId() == 0) {
-            kilkariUsageList.addAll(this.getKilkariUsage(reportRequest.getStateId(),"District",toDate));
+            kilkariUsageList.addAll(this.getKilkariUsage(reportRequest.getStateId(),"District",fromDate));
         } else if(reportRequest.getBlockId() == 0){
-            kilkariUsageList.addAll(this.getKilkariUsage(reportRequest.getDistrictId(),"Block",toDate));
+            kilkariUsageList.addAll(this.getKilkariUsage(reportRequest.getDistrictId(),"Block",fromDate));
         }
         else {
-            kilkariUsageList.addAll(this.getKilkariUsage(reportRequest.getBlockId(),"Subcenter",toDate));
+            kilkariUsageList.addAll(this.getKilkariUsage(reportRequest.getBlockId(),"Subcenter",fromDate));
         }
 
         if(!(kilkariUsageList.isEmpty())){
