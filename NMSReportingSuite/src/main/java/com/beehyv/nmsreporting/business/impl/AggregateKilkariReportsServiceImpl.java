@@ -1198,58 +1198,72 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
 
 
         List<AggCumulativeBeneficiaryComplDto> summaryDto = new ArrayList<>();
-        List<AggregateCumulativeBeneficiaryCompletion> cumulativeCompletionReportEnd = new ArrayList<>();
-
+        List<AggregateCumulativeBeneficiaryCompletion> aggBeneficiaryCompletionStart = new ArrayList<>();
+        List<AggregateCumulativeBeneficiaryCompletion> aggBeneficiaryCompletionEnd = new ArrayList<>();
 
         if (reportRequest.getStateId() == 0) {
-            cumulativeCompletionReportEnd.addAll(this.getCumulativeBeneficiaryCompletionData(0,"State",toDate));
+            aggBeneficiaryCompletionStart.addAll(this.getCumulativeBeneficiaryCompletionData(0, "State", fromDate));
+            aggBeneficiaryCompletionEnd.addAll(this.getCumulativeBeneficiaryCompletionData(0, "State", toDate));
         } else if (reportRequest.getDistrictId() == 0) {
-            cumulativeCompletionReportEnd.addAll(this.getCumulativeBeneficiaryCompletionData(reportRequest.getStateId(),"District",toDate));
-        } else if(reportRequest.getBlockId() == 0){
-            cumulativeCompletionReportEnd.addAll(this.getCumulativeBeneficiaryCompletionData(reportRequest.getDistrictId(),"Block",toDate));
+            aggBeneficiaryCompletionStart.addAll(this.getCumulativeBeneficiaryCompletionData(reportRequest.getStateId(), "District", fromDate));
+            aggBeneficiaryCompletionEnd.addAll(this.getCumulativeBeneficiaryCompletionData(reportRequest.getStateId(), "District", toDate));
+        } else if (reportRequest.getBlockId() == 0) {
+            aggBeneficiaryCompletionStart.addAll(this.getCumulativeBeneficiaryCompletionData(reportRequest.getDistrictId(), "Block", fromDate));
+            aggBeneficiaryCompletionEnd.addAll(this.getCumulativeBeneficiaryCompletionData(reportRequest.getDistrictId(), "Block", toDate));
         } else {
-            cumulativeCompletionReportEnd.addAll(this.getCumulativeBeneficiaryCompletionData(reportRequest.getBlockId(),"Subcenter",toDate));
+            aggBeneficiaryCompletionStart.addAll(this.getCumulativeBeneficiaryCompletionData(reportRequest.getBlockId(), "Subcenter", fromDate));
+            aggBeneficiaryCompletionEnd.addAll(this.getCumulativeBeneficiaryCompletionData(reportRequest.getBlockId(), "Subcenter", toDate));
         }
 
+        if (!(aggBeneficiaryCompletionEnd.isEmpty()) && !(aggBeneficiaryCompletionStart.isEmpty())) {
+            for (int i = 0; i < aggBeneficiaryCompletionEnd.size(); i++) {
+                for (int j = 0; j < aggBeneficiaryCompletionStart.size(); j++) {
+                    if (aggBeneficiaryCompletionEnd.get(i).getLocationId().equals(aggBeneficiaryCompletionStart.get(j).getLocationId())) {
+                        AggregateCumulativeBeneficiaryCompletion end = aggBeneficiaryCompletionEnd.get(i);
+                        AggregateCumulativeBeneficiaryCompletion start = aggBeneficiaryCompletionStart.get(j);
+                        AggCumulativeBeneficiaryComplDto aggCumulativeBeneficiaryComplDto = new AggCumulativeBeneficiaryComplDto();
+                        aggCumulativeBeneficiaryComplDto.setLocationId(end.getLocationId());
+                        aggCumulativeBeneficiaryComplDto.setCalls_1_25(end.getCalls_1_25() - start.getCalls_1_25());
+                        aggCumulativeBeneficiaryComplDto.setCalls_25_50(end.getCalls_25_50() - start.getCalls_25_50());
+                        aggCumulativeBeneficiaryComplDto.setCalls_50_75(end.getCalls_50_75() - start.getCalls_50_75());
+                        aggCumulativeBeneficiaryComplDto.setCalls_75_100(end.getCalls_75_100() - start.getCalls_75_100());
+                        aggCumulativeBeneficiaryComplDto.setCompletedBeneficiaries(end.getCompletedBeneficiaries() - start.getCompletedBeneficiaries());
+                        aggCumulativeBeneficiaryComplDto.setAvgWeeks((float)Math.round((float)(end.getTotalAge() - start.getTotalAge())/(float)aggCumulativeBeneficiaryComplDto.getCompletedBeneficiaries()* 100)/100);
+                        aggCumulativeBeneficiaryComplDto.setLocationType(end.getLocationType());
+                        String locationType = end.getLocationType();
+                        if (locationType.equalsIgnoreCase("State")) {
+                            aggCumulativeBeneficiaryComplDto.setLocationName(stateDao.findByStateId(end.getLocationId().intValue()).getStateName());
+                        }
+                        if (locationType.equalsIgnoreCase("District")) {
+                            aggCumulativeBeneficiaryComplDto.setLocationName(districtDao.findByDistrictId(end.getLocationId().intValue()).getDistrictName());
+                        }
+                        if (locationType.equalsIgnoreCase("Block")) {
+                            aggCumulativeBeneficiaryComplDto.setLocationName(blockDao.findByblockId(end.getLocationId().intValue()).getBlockName());
+                        }
+                        if (locationType.equalsIgnoreCase("Subcenter")) {
+                            aggCumulativeBeneficiaryComplDto.setLocationName(subcenterDao.findBySubcenterId(end.getLocationId().intValue()).getSubcenterName());
+                        }
+                        if (locationType.equalsIgnoreCase("DifferenceState")) {
+                            aggCumulativeBeneficiaryComplDto.setLocationName("No District Count");
+                            aggCumulativeBeneficiaryComplDto.setLocationId((long) -1);
+                        }
+                        if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
+                            aggCumulativeBeneficiaryComplDto.setLocationName("No Block Count");
+                            aggCumulativeBeneficiaryComplDto.setLocationId((long) -1);
 
-        if(!(cumulativeCompletionReportEnd.isEmpty())){
-            for(int i=0;i<cumulativeCompletionReportEnd.size();i++){
-                AggregateCumulativeBeneficiaryCompletion a = cumulativeCompletionReportEnd.get(i);
-                AggCumulativeBeneficiaryComplDto summaryDto1 = new AggCumulativeBeneficiaryComplDto();
-                summaryDto1.setId(a.getId());
-                summaryDto1.setLocationId(a.getLocationId());
-                summaryDto1.setCompletedBeneficiaries(a.getCompletedBeneficiaries());
-                summaryDto1.setCalls_75_100(a.getCalls_75_100());
-                summaryDto1.setCalls_50_75(a.getCalls_50_75());
-                summaryDto1.setCalls_25_50(a.getCalls_25_50());
-                summaryDto1.setCalls_1_25(a.getCalls_1_25());
-                summaryDto1.setLocationType(a.getLocationType());
-                summaryDto1.setAvgWeeks(a.getTotalAge());
-                String locationType = a.getLocationType();
-                if(locationType.equalsIgnoreCase("State")){
-                    summaryDto1.setLocationName(stateDao.findByStateId(a.getLocationId().intValue()).getStateName());
-                }
-                if(locationType.equalsIgnoreCase("District")){
-                    summaryDto1.setLocationName(districtDao.findByDistrictId(a.getLocationId().intValue()).getDistrictName());
-                }
-                if(locationType.equalsIgnoreCase("Block")){
-                    summaryDto1.setLocationName(blockDao.findByblockId(a.getLocationId().intValue()).getBlockName());
-                }
-                if(locationType.equalsIgnoreCase("Subcenter")){
-                    summaryDto1.setLocationName(subcenterDao.findBySubcenterId(a.getLocationId().intValue()).getSubcenterName());
-                }
-                if (locationType.equalsIgnoreCase("DifferenceState")) {
-                    summaryDto1.setLocationName("No District");
-                }
-                if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
-                    summaryDto1.setLocationName("No Block");
-                }
-                if (locationType.equalsIgnoreCase("DifferenceBlock")) {
-                    summaryDto1.setLocationName("No Subcenter");
-                }
+                        }
+                        if (locationType.equalsIgnoreCase("DifferenceBlock")) {
+                            aggCumulativeBeneficiaryComplDto.setLocationName("No Subcenter Count");
+                            aggCumulativeBeneficiaryComplDto.setLocationId((long) -1);
 
-                if(a.getId()!=0){
-                    summaryDto.add(summaryDto1);
+                        }
+
+                        if ((aggCumulativeBeneficiaryComplDto.getCompletedBeneficiaries() + aggCumulativeBeneficiaryComplDto.getCalls_1_25() + aggCumulativeBeneficiaryComplDto.getCalls_25_50()
+                                + aggCumulativeBeneficiaryComplDto.getCalls_50_75() + aggCumulativeBeneficiaryComplDto.getCalls_75_100()
+                                + aggCumulativeBeneficiaryComplDto.getAvgWeeks()) != 0) {
+                            summaryDto.add(aggCumulativeBeneficiaryComplDto);
+                        }
+                    }
                 }
             }
         }
@@ -1746,12 +1760,12 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
     /*----------5.3.11. Kilkari Call Report -------*/
 
     @Override
-    public List<KilkariCallReportDto> getKilkariCallReport(ReportRequest reportRequest, User currentUser){
+    public List<KilkariCallReportDto> getKilkariCallReport(ReportRequest reportRequest, User currentUser) {
 
         DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
         Calendar calendar = Calendar.getInstance();
         Date toDate = new Date();
-        Date startDate=new Date(0);
+        Date startDate = new Date(0);
         Calendar aCalendar = Calendar.getInstance();
         aCalendar.setTime(reportRequest.getFromDate());
         aCalendar.set(Calendar.MILLISECOND, 0);
@@ -1770,56 +1784,76 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         toDate = aCalendar.getTime();
 
         List<KilkariCallReportDto> callReportDtos = new ArrayList<>();
-        List<KilkariCalls> kilkariCallList = new ArrayList<>();
+        List<KilkariCalls> kilkariCallStart = new ArrayList<>();
+        List<KilkariCalls> kilkariCallEnd = new ArrayList<>();
 
         if (reportRequest.getStateId() == 0) {
-            kilkariCallList.addAll(this.getKilkariCallReport(0,"State",toDate));
+            kilkariCallStart.addAll(this.getKilkariCallReport(0, "State", fromDate));
+            kilkariCallEnd.addAll(this.getKilkariCallReport(0, "State", toDate));
         } else if (reportRequest.getDistrictId() == 0) {
-            kilkariCallList.addAll(this.getKilkariCallReport(reportRequest.getStateId(),"District",toDate));
-        } else if(reportRequest.getBlockId() == 0){
-            kilkariCallList.addAll(this.getKilkariCallReport(reportRequest.getDistrictId(),"Block",toDate));
+            kilkariCallStart.addAll(this.getKilkariCallReport(reportRequest.getStateId(), "District", fromDate));
+            kilkariCallEnd.addAll(this.getKilkariCallReport(reportRequest.getStateId(), "District", toDate));
+        } else if (reportRequest.getBlockId() == 0) {
+            kilkariCallStart.addAll(this.getKilkariCallReport(reportRequest.getDistrictId(), "Block", fromDate));
+            kilkariCallEnd.addAll(this.getKilkariCallReport(reportRequest.getDistrictId(), "Block", toDate));
         } else {
-            kilkariCallList.addAll(this.getKilkariCallReport(reportRequest.getBlockId(),"Subcenter",toDate));
+            kilkariCallStart.addAll(this.getKilkariCallReport(reportRequest.getBlockId(), "Subcenter", fromDate));
+            kilkariCallEnd.addAll(this.getKilkariCallReport(reportRequest.getBlockId(), "Subcenter", toDate));
         }
 
-        if(!(kilkariCallList.isEmpty())){
-            for(KilkariCalls a:kilkariCallList){
-                KilkariCallReportDto summaryDto1 = new KilkariCallReportDto();
-                summaryDto1.setLocationId(a.getLocationId());
-                summaryDto1.setBillableMinutes(a.getBillableMinutes());
-                summaryDto1.setContent_1_25(a.getContent_1_25());
-                summaryDto1.setContent_75_100(a.getContent_75_100());
-                summaryDto1.setContent_50_75(a.getContent_50_75());
-                summaryDto1.setLocationType(a.getLocationType());
-                summaryDto1.setContent_25_50(a.getContent_25_50());
-                summaryDto1.setAvgDuration(a.getAvgDuration());
-                summaryDto1.setCallsAttempted(a.getCallsAttempted());
-                summaryDto1.setCallsToInbox(a.getCallsToInbox());
-                summaryDto1.setSuccessfulCalls(a.getSuccessfulCalls());
-                String locationType = a.getLocationType();
-                if(locationType.equalsIgnoreCase("State")){
-                    summaryDto1.setLocationName(stateDao.findByStateId(a.getLocationId().intValue()).getStateName());
-                }
-                if(locationType.equalsIgnoreCase("District")){
-                    summaryDto1.setLocationName(districtDao.findByDistrictId(a.getLocationId().intValue()).getDistrictName());
-                }
-                if(locationType.equalsIgnoreCase("Block")){
-                    summaryDto1.setLocationName(blockDao.findByblockId(a.getLocationId().intValue()).getBlockName());
-                }
-                if(locationType.equalsIgnoreCase("Subcenter")){
-                    summaryDto1.setLocationName(subcenterDao.findBySubcenterId(a.getLocationId().intValue()).getSubcenterName());
-                }
-                if (locationType.equalsIgnoreCase("DifferenceState")) {
-                    summaryDto1.setLocationName("No District");
-                }
-                if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
-                    summaryDto1.setLocationName("No Block");
-                }
-                if (locationType.equalsIgnoreCase("DifferenceBlock")) {
-                    summaryDto1.setLocationName("No Subcenter");
-                }
-                if(a.getId()!=0){
-                    callReportDtos.add(summaryDto1);
+        if (!(kilkariCallEnd.isEmpty()) && !(kilkariCallStart.isEmpty())) {
+            for (int i = 0; i < kilkariCallEnd.size(); i++) {
+                for (int j = 0; j < kilkariCallStart.size(); j++) {
+                    if (kilkariCallEnd.get(i).getLocationId().equals(kilkariCallStart.get(j).getLocationId())) {
+                        KilkariCalls end = kilkariCallEnd.get(i);
+                        KilkariCalls start = kilkariCallStart.get(j);
+                        KilkariCallReportDto kilkariCallReportDto = new KilkariCallReportDto();
+                        kilkariCallReportDto.setLocationId(end.getLocationId());
+                        kilkariCallReportDto.setContent_1_25(end.getContent_1_25() - start.getContent_1_25());
+                        kilkariCallReportDto.setContent_25_50(end.getContent_25_50() - start.getContent_25_50());
+                        kilkariCallReportDto.setContent_50_75(end.getContent_50_75() - start.getContent_50_75());
+                        kilkariCallReportDto.setContent_75_100(end.getContent_75_100() - start.getContent_75_100());
+                        kilkariCallReportDto.setBillableMinutes(end.getBillableMinutes() - start.getBillableMinutes());
+                        kilkariCallReportDto.setCallsAttempted(end.getCallsAttempted() - start.getCallsAttempted());
+                        kilkariCallReportDto.setCallsToInbox(end.getCallsToInbox() - start.getCallsToInbox());
+                        kilkariCallReportDto.setSuccessfulCalls(end.getSuccessfulCalls() - start.getSuccessfulCalls());
+                        kilkariCallReportDto.setAvgDuration((float) Math.round((float) kilkariCallReportDto.getBillableMinutes() / (float) kilkariCallReportDto.getSuccessfulCalls() * 100) / 100);
+                        kilkariCallReportDto.setLocationType(end.getLocationType());
+                        String locationType = end.getLocationType();
+                        if (locationType.equalsIgnoreCase("State")) {
+                            kilkariCallReportDto.setLocationName(stateDao.findByStateId(end.getLocationId().intValue()).getStateName());
+                        }
+                        if (locationType.equalsIgnoreCase("District")) {
+                            kilkariCallReportDto.setLocationName(districtDao.findByDistrictId(end.getLocationId().intValue()).getDistrictName());
+                        }
+                        if (locationType.equalsIgnoreCase("Block")) {
+                            kilkariCallReportDto.setLocationName(blockDao.findByblockId(end.getLocationId().intValue()).getBlockName());
+                        }
+                        if (locationType.equalsIgnoreCase("Subcenter")) {
+                            kilkariCallReportDto.setLocationName(subcenterDao.findBySubcenterId(end.getLocationId().intValue()).getSubcenterName());
+                        }
+                        if (locationType.equalsIgnoreCase("DifferenceState")) {
+                            kilkariCallReportDto.setLocationName("No District Count");
+                            kilkariCallReportDto.setLocationId((long) -1);
+                        }
+                        if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
+                            kilkariCallReportDto.setLocationName("No Block Count");
+                            kilkariCallReportDto.setLocationId((long) -1);
+
+                        }
+                        if (locationType.equalsIgnoreCase("DifferenceBlock")) {
+                            kilkariCallReportDto.setLocationName("No Subcenter Count");
+                            kilkariCallReportDto.setLocationId((long) -1);
+
+                        }
+
+                        if ((kilkariCallReportDto.getSuccessfulCalls() + kilkariCallReportDto.getBillableMinutes() + kilkariCallReportDto.getCallsAttempted()
+                                + kilkariCallReportDto.getCallsToInbox() + kilkariCallReportDto.getContent_1_25()
+                                + kilkariCallReportDto.getContent_25_50() + kilkariCallReportDto.getContent_50_75()
+                                + kilkariCallReportDto.getContent_75_100()) != 0) {
+                            callReportDtos.add(kilkariCallReportDto);
+                        }
+                    }
                 }
             }
         }
@@ -1827,7 +1861,8 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
     }
 
 
-    private List<KilkariCalls> getKilkariCallReport(Integer locationId,String locationType,Date toDate){
+
+    private List<KilkariCalls> getKilkariCallReport(Integer locationId,String locationType, Date toDate){
         List<KilkariCalls> kilkariCall = new ArrayList<>();
         if(locationType.equalsIgnoreCase("State")){
             List<State> states=stateDao.getStatesByServiceType("K");
