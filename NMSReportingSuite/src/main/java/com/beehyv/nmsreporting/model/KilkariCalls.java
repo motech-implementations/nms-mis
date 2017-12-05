@@ -45,13 +45,10 @@ public class KilkariCalls {
     @Column(name="billable_minutes", columnDefinition = "BIGINT(20)")
     private Long billableMinutes;
 
-    @Column(name="avg_duration", columnDefinition = "INT(11)")
-    private Integer avgDuration;
-
     @Column(name="calls_to_inbox", columnDefinition = "BIGINT(20)")
     private Long callsToInbox;
 
-    public KilkariCalls(Integer id, String locationType, Long locationId, Date date, Long content_75_100, Long content_50_75, Long content_25_50, Long content_1_25, Long callsAttempted, Long successfulCalls, Long billableMinutes, Integer avgDuration, Long callsToInbox) {
+    public KilkariCalls(Integer id, String locationType, Long locationId, Date date, Long content_75_100, Long content_50_75, Long content_25_50, Long content_1_25, Long callsAttempted, Long successfulCalls, Long billableMinutes, Long callsToInbox) {
         this.id = id;
         this.locationType = locationType;
         this.locationId = locationId;
@@ -63,7 +60,6 @@ public class KilkariCalls {
         this.callsAttempted = callsAttempted;
         this.successfulCalls = successfulCalls;
         this.billableMinutes = billableMinutes;
-        this.avgDuration = avgDuration;
         this.callsToInbox = callsToInbox;
     }
 
@@ -157,14 +153,6 @@ public class KilkariCalls {
 
     public void setBillableMinutes(Long billableMinutes) {
         this.billableMinutes = billableMinutes;
-    }
-
-    public Integer getAvgDuration() {
-        return avgDuration;
-    }
-
-    public void setAvgDuration(Integer avgDuration) {
-        this.avgDuration = avgDuration;
     }
 
     public Long getCallsToInbox() {

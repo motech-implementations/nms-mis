@@ -31,7 +31,7 @@ public class KilkariCallReportDaoImpl extends AbstractDao<Integer,KilkariCalls> 
         List<KilkariCalls> result = criteria.list();
         if(result.isEmpty()){
             Long a=(long)0;
-            KilkariCalls kilkariCalls = new KilkariCalls(0,locationType,locationId.longValue(),toDate,a,a,a,a,a,a,a,0,a);
+            KilkariCalls kilkariCalls = new KilkariCalls(0,locationType,locationId.longValue(),toDate,a,a,a,a,a,a,a,a);
             return kilkariCalls;
         }
 
@@ -41,7 +41,6 @@ public class KilkariCallReportDaoImpl extends AbstractDao<Integer,KilkariCalls> 
         kilkariCalls.setContent_25_50(kilkariCalls.getContent_25_50() == null ? 0 : kilkariCalls.getContent_25_50());
         kilkariCalls.setContent_50_75(kilkariCalls.getContent_50_75() == null ? 0 : kilkariCalls.getContent_50_75());
         kilkariCalls.setContent_75_100(kilkariCalls.getContent_75_100() == null ? 0 : kilkariCalls.getContent_75_100());
-        kilkariCalls.setAvgDuration(kilkariCalls.getAvgDuration() == null ? 0 : kilkariCalls.getAvgDuration());
         kilkariCalls.setCallsAttempted(kilkariCalls.getCallsAttempted() == null ? 0 : kilkariCalls.getCallsAttempted());
         kilkariCalls.setCallsToInbox(kilkariCalls.getCallsToInbox() == null ? 0 : kilkariCalls.getCallsToInbox());
         kilkariCalls.setSuccessfulCalls(kilkariCalls.getSuccessfulCalls() == null ? 0 : kilkariCalls.getSuccessfulCalls());
