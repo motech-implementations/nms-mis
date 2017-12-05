@@ -645,8 +645,8 @@ public class UserController {
                             summaryDto1.setAshasStarted(a.getAshasStarted() - b.getAshasStarted());
                             summaryDto1.setAshasRejected(a.getAshasRejected() - b.getAshasRejected());
                             summaryDto1.setLocationType(a.getLocationType());
-                            summaryDto1.setRegisteredNotCompletedStart(b.getAshasRegistered() - b.getAshasCompleted() - b.getAshasFailed());
-                            summaryDto1.setRegisteredNotCompletedend(a.getAshasRegistered() - a.getAshasCompleted() - a.getAshasFailed());
+                            summaryDto1.setRegisteredNotCompletedStart(b.getAshasRegistered() - b.getAshasCompleted());
+                            summaryDto1.setRegisteredNotCompletedend(a.getAshasRegistered() - a.getAshasCompleted());
                             summaryDto1.setRecordsReceived((a.getAshasRegistered() + a.getAshasRejected()) - (b.getAshasRejected() + b.getAshasRegistered()));
                             String locationType = a.getLocationType();
                             if (locationType.equalsIgnoreCase("State")) {
