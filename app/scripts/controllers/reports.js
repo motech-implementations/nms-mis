@@ -1,7 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("ReportsController", ['$scope', '$state', '$http', 'UserFormFactory','$window','$q','uiGridConstants', function($scope, $state, $http, UserFormFactory,$window,$q,uiGridConstants){
+		.controller("ReportsController", ['$scope', '$state', '$http', 'UserFormFactory','$window','$q','uiGridConstants','exportUiGridService', function($scope, $state, $http, UserFormFactory,$window,$q,uiGridConstants,exportUiGridService){
 
 			UserFormFactory.isLoggedIn()
 			.then(function(result){
@@ -49,6 +49,8 @@
             $scope.matrixContent2 = '';
             var parentScope = $scope.$parent;
             parentScope.child = $scope;
+            var fileName;
+            var dateString;
 
             $scope.popup2 = {
                 opened: false
@@ -783,17 +785,21 @@
                     if($scope.periodDisplayType == 'Year' ){
                          reportRequest.fromDate = new Date($scope.dt1.getFullYear(),0,1);
                          reportRequest.toDate = new Date($scope.dt1.getFullYear(),11,31);
+                         dateString = $scope.dt1.getFullYear();
                     }
 
                     else if($scope.periodDisplayType == 'Month' ){
                          if($scope.report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise'){
                             reportRequest.fromDate = new Date($scope.dt1.getFullYear(),$scope.dt1.getMonth() - 6,1);
                             reportRequest.toDate = new Date($scope.dt1.getFullYear(),$scope.dt1.getMonth() + 1,0);
-                            console.log(reportRequest.fromDate.getMonth() + " " + reportRequest.fromDate.getDate())
+                            console.log(reportRequest.fromDate.getMonth() + " " + reportRequest.fromDate.getDate());
+                            dateString = (reportRequest.fromDate.getMonth() + 1 ) + "_" + reportRequest.fromDate.getFullYear() + "to" + reportRequest.toDate.getMonth() +
+                                         "_" + reportRequest.toDate.getFullYear();
 
                          }else{
                             reportRequest.fromDate = new Date($scope.dt1.getFullYear(),$scope.dt1.getMonth(),1);
                             reportRequest.toDate = new Date($scope.dt1.getFullYear(),$scope.dt1.getMonth() + 1,0);
+                            dateString = (reportRequest.fromDate.getMonth()+ 1 ) + "_" + reportRequest.fromDate.getFullYear();
                          }
                     }
                     else if($scope.periodDisplayType == 'Quarter' ){
@@ -814,10 +820,15 @@
                          reportRequest.toDate = new Date($scope.dt1.getFullYear(),11,31);
                          }
 
+                         dateString = (reportRequest.fromDate.getMonth() + 1) + "_" + reportRequest.fromDate.getFullYear() + "to" + (reportRequest.toDate.getMonth() + 1)  +
+                                         "_" + reportRequest.toDate.getFullYear();
+
                     }
                     else{
                         reportRequest.fromDate = $scope.dt1;
                         reportRequest.toDate = $scope.dt2;
+                        dateString = reportRequest.fromDate.getDate() + "_" + (reportRequest.fromDate.getMonth() + 1 ) + "_" + reportRequest.fromDate.getFullYear() + "to" + reportRequest.fromDate.getDate() + "_" +  ( reportRequest.toDate.getMonth() + 1 ) +
+                                     "_" + reportRequest.toDate.getFullYear();
                     }
                 }
 
@@ -921,6 +932,8 @@
                                 $scope.showEmptyData = true;
                             }
 
+                            fileName = $scope.report.reportEnum + "_" + $scope.reportBreadCrumbData[$scope.reportBreadCrumbData.length -1].locationName ;
+
                         }
                         if($scope.report.reportEnum == 'Kilkari_Listening_Matrix'){
                             if(result.data.tableData.length >0){
@@ -928,17 +941,20 @@
                                  $scope.gridOptions1.showColumnFooter = false;
                                  $scope.reportBreadCrumbData = result.data.breadCrumbData;
                                  $scope.hideGrid = false;
+                                 fileName = $scope.report.reportEnum;
                             }
                             else{
                                 $scope.hideGrid = true;
                                 $scope.showEmptyData = true;
                             }
+
                         }
                         if($scope.report.reportEnum == 'Kilkari_Thematic_Content'){
                             if(result.data.tableData.length >0){
                                  $scope.gridOptions1.data = result.data.tableData;
                                  $scope.reportBreadCrumbData = result.data.breadCrumbData;
                                  $scope.hideGrid = false;
+                                 fileName = $scope.report.reportEnum;
                             }
                             else{
                                 $scope.hideGrid = true;
@@ -967,6 +983,7 @@
                             else{
                                 $scope.hideMessageMatrix = true;
                             }
+                            fileName = $scope.report.reportEnum;
                         }
                        if($scope.report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise'){
                             if(result.data.numberData.length >0){
@@ -988,10 +1005,13 @@
                             else{
                                 $scope.hideMessageMatrix = true;
                             }
+                            fileName = $scope.report.reportEnum;
                        }
 
+                         $scope.gridOptions1.exporterExcelFilename = fileName + "_" + dateString;
                          $scope.gridOptions = $scope.gridOptions1;
                          $scope.gridOptions_Message_Matrix = $scope.gridOptions2;
+
 
                     }
                 }
@@ -1220,18 +1240,33 @@
             });
 
             var canceler = $q.defer();
-
             $scope.gridOptions1 = {
                 enableSorting: true,
                 showColumnFooter: true,
                 enableGridMenu: true,
                 enableVerticalScrollbar : 0,
-                exporterExcelFilename: 'myFile.xlsx',
-                exporterExcelSheetName: 'Sheet1',
+                exporterExcelFilename: fileName,
+                exporterExcelSheetName: "sheet1",
                 excessRows :1000,
                 onRegisterApi: function(gridApi){
                       $scope.gridApi = gridApi;
                 },
+                gridMenuCustomItems: [{
+                                    title: 'Export all data as EXCEL',
+                                    action: function ($event) {
+                                        exportUiGridService.exportToExcel('sheet 1', $scope.gridApi, 'all', 'all');
+                                    },
+                                    order: 110
+                                },
+                                {
+                                    title: 'Export visible data as EXCEL',
+                                    action: function ($event) {
+                                        exportUiGridService.exportToExcel('sheet 1', $scope.gridApi, 'visible', 'visible');
+                                    },
+                                    order: 111
+                                }
+                            ]
+
               };
 
             $scope.gridOptions2 = {

@@ -16,8 +16,6 @@
     "angular-material": "^1.1.5",
     "angularjs-captcha": "^1.2.0",
     "ng-device-detector": "^4.0.3",
-    "lodash": "^4.17.4",
-    "jszip": "2.6.1",
-    "excel-builder-js": "excelbuilder#^2.0.2"
+    "js-xlsx": "^0.11.12"
   }
 }
