@@ -16,7 +16,7 @@ public class KilkariCallReportDto {
     private Long successfulCalls;
     private Long billableMinutes;
     private Long callsToInbox;
-    private Integer avgDuration;
+    private Float avgDuration;
 
     public String getLocationType() {
         return locationType;
@@ -106,11 +106,11 @@ public class KilkariCallReportDto {
         this.callsToInbox = callsToInbox;
     }
 
-    public Integer getAvgDuration() {
+    public Float getAvgDuration() {
         return avgDuration;
     }
 
-    public void setAvgDuration(Integer avgDuration) {
+    public void setAvgDuration(Float avgDuration) {
         this.avgDuration = avgDuration;
     }
 }

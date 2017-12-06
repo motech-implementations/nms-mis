@@ -1,5 +1,7 @@
 package com.beehyv.nmsreporting.model;
 
+import javassist.bytecode.annotation.LongMemberValue;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -45,7 +47,16 @@ public class AggregateCumulativeBeneficiary {
     @Column(name="joined_subscription",columnDefinition = "BIGINT(20)")
     private Long joinedSubscription;
 
-    public AggregateCumulativeBeneficiary(Integer id, String locationType, Long locationId, Date date, Long selfDeactivated, Long notAnswering, Long lowListenership, Long systemDeactivation, Long motherCompletion, Long childCompletion, Long joinedSubscription) {
+    @Column(name="total_beneficiaries_called",columnDefinition = "BIGINT(20)")
+    private Long totalBeneficiariesCalled;
+
+    @Column(name="beneficiaries_answered_atleast_once",columnDefinition = "BIGINT(20)")
+    private Long answeredAtleastOnce;
+
+    @Column(name="beneficiaries_called_inbox",columnDefinition = "BIGINT(20)")
+    private Long calledKilkariInbox;
+
+    public AggregateCumulativeBeneficiary(Integer id, String locationType, Long locationId, Date date, Long selfDeactivated, Long notAnswering, Long lowListenership, Long systemDeactivation, Long motherCompletion, Long childCompletion, Long joinedSubscription, Long totalBeneficiariesCalled, Long answeredAtleastOnce, Long calledKilkariInbox) {
         this.id = id;
         this.locationType = locationType;
         this.locationId = locationId;
@@ -57,6 +68,9 @@ public class AggregateCumulativeBeneficiary {
         this.motherCompletion = motherCompletion;
         this.childCompletion = childCompletion;
         this.joinedSubscription = joinedSubscription;
+        this.totalBeneficiariesCalled = totalBeneficiariesCalled;
+        this.answeredAtleastOnce = answeredAtleastOnce;
+        this.calledKilkariInbox = calledKilkariInbox;
     }
 
     public AggregateCumulativeBeneficiary(){
@@ -149,5 +163,29 @@ public class AggregateCumulativeBeneficiary {
 
     public void setJoinedSubscription(Long joinedSubscription) {
         this.joinedSubscription = joinedSubscription;
+    }
+
+    public Long getTotalBeneficiariesCalled() {
+        return totalBeneficiariesCalled;
+    }
+
+    public void setTotalBeneficiariesCalled(Long totalBeneficiariesCalled) {
+        this.totalBeneficiariesCalled = totalBeneficiariesCalled;
+    }
+
+    public Long getAnsweredAtleastOnce() {
+        return answeredAtleastOnce;
+    }
+
+    public void setAnsweredAtleastOnce(Long answeredAtleastOnce) {
+        this.answeredAtleastOnce = answeredAtleastOnce;
+    }
+
+    public Long getCalledKilkariInbox() {
+        return calledKilkariInbox;
+    }
+
+    public void setCalledKilkariInbox(Long calledKilkariInbox) {
+        this.calledKilkariInbox = calledKilkariInbox;
     }
 }

@@ -25,6 +25,9 @@ public class KilkariThematicContent {
     @Column(name="message_week_number", columnDefinition = "VARCHAR(45)")
     private String messageWeekNumber;
 
+    @Column(name="unique_beneficiaries_called", columnDefinition = "BIGINT(20)")
+    private Long uniqueBeneficiariesCalled;
+
     @Column(name="calls_answered", columnDefinition = "BIGINT(20)")
     private Long callsAnswered;
 
@@ -35,11 +38,12 @@ public class KilkariThematicContent {
 
     }
 
-    public KilkariThematicContent(Integer id, Date date, String theme, String messageWeekNumber, Long callsAnswered, Long minutesConsumed){
+    public KilkariThematicContent(Integer id, Date date, String theme, String messageWeekNumber, Long uniqueBeneficiariesCalled, Long callsAnswered, Long minutesConsumed){
         this.id = id;
         this.date = date;
         this.theme = theme;
         this.messageWeekNumber = messageWeekNumber;
+        this.uniqueBeneficiariesCalled = uniqueBeneficiariesCalled;
         this.callsAnswered = callsAnswered;
         this.minutesConsumed = minutesConsumed;
     }
@@ -74,6 +78,14 @@ public class KilkariThematicContent {
 
     public void setMessageWeekNumber(String messageWeekNumber) {
         this.messageWeekNumber = messageWeekNumber;
+    }
+
+    public Long getUniqueBeneficiariesCalled() {
+        return uniqueBeneficiariesCalled;
+    }
+
+    public void setUniqueBeneficiariesCalled(Long uniqueBeneficiariesCalled) {
+        this.uniqueBeneficiariesCalled = uniqueBeneficiariesCalled;
     }
 
     public Long getCallsAnswered() {

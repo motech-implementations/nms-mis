@@ -38,12 +38,13 @@ public class KilkariThematicContentReportDaoImpl extends AbstractDao<Integer,Kil
 
         List<KilkariThematicContent> result = (List<KilkariThematicContent>)criteria.list();
         if(result.isEmpty()){
-            kilkariThematicContent = new KilkariThematicContent(0,date,"",week_id,(long)0,(long)0);
+            kilkariThematicContent = new KilkariThematicContent(0,date,"",week_id,(long)0,(long)0,(long)0);
             return kilkariThematicContent;
         }
         kilkariThematicContent = result.get(0);
         kilkariThematicContent.setCallsAnswered(kilkariThematicContent.getCallsAnswered() == null ? 0 : kilkariThematicContent.getCallsAnswered());
         kilkariThematicContent.setMinutesConsumed(kilkariThematicContent.getMinutesConsumed() == null ? 0 : kilkariThematicContent.getMinutesConsumed());
+        kilkariThematicContent.setUniqueBeneficiariesCalled(kilkariThematicContent.getUniqueBeneficiariesCalled() == null ? 0 : kilkariThematicContent.getUniqueBeneficiariesCalled());
         kilkariThematicContent.setTheme(kilkariThematicContent.getTheme() == null ? "" : kilkariThematicContent.getTheme());
         return kilkariThematicContent;
     }
