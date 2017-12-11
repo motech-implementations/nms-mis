@@ -824,11 +824,16 @@
                                          "_" + reportRequest.toDate.getFullYear();
 
                     }
-                    else{
+                    else if($scope.periodDisplayType == 'Custom Range' ){
                         reportRequest.fromDate = $scope.dt1;
                         reportRequest.toDate = $scope.dt2;
                         dateString = reportRequest.fromDate.getDate() + "_" + (reportRequest.fromDate.getMonth() + 1 ) + "_" + reportRequest.fromDate.getFullYear() + "to" + reportRequest.fromDate.getDate() + "_" +  ( reportRequest.toDate.getMonth() + 1 ) +
                                      "_" + reportRequest.toDate.getFullYear();
+                    }
+                    else{
+                        reportRequest.toDate = $scope.dt2;
+                        dateString =   "till_" + reportRequest.toDate.getDate() + "_" +  ( reportRequest.toDate.getMonth() + 1 ) +
+                                                             "_" + reportRequest.toDate.getFullYear();
                     }
                 }
 
@@ -1239,33 +1244,94 @@
                 $scope.sundaysTable = false;
             });
 
+            $scope.exportToExcel = function(){
+                exportUiGridService.exportToExcel('sheet 1', $scope.gridApi, 'all', 'all');
+                $scope.grid
+            }
+
             var canceler = $q.defer();
             $scope.gridOptions1 = {
                 enableSorting: true,
+                enableGridMenu : true,
                 showColumnFooter: true,
-                enableGridMenu: true,
                 enableVerticalScrollbar : 0,
                 exporterExcelFilename: fileName,
                 exporterExcelSheetName: "sheet1",
                 excessRows :1000,
+                exporterExcelCustomFormatters: function ( grid, workbook, docDefinition ) {
+
+                      var stylesheet = workbook.getStyleSheet();
+                      var aFormatDefn = {
+                        "font": { "size": 9, "fontName": "Calibri", "bold": true },
+                        "alignment": { "wrapText": true }
+                      };
+                      var formatter = stylesheet.createFormat(aFormatDefn);
+                      // save the formatter
+                      $scope.formatters['bold'] = formatter;
+
+                      aFormatDefn = {
+                        "font": { "size": 9, "fontName": "Calibri" },
+                        "fill": { "type": "pattern", "patternType": "solid", "fgColor": "FFFFC7CE" },
+                        "alignment": { "wrapText": true }
+                      };
+                      formatter = stylesheet.createFormat(aFormatDefn);
+                      // save the formatter
+                      $scope.formatters['red'] = formatter;
+
+                      Object.assign(docDefinition.styles , $scope.formatters);
+
+                      return docDefinition;
+                    },
+                 exporterExcelHeader: function (grid, workbook, sheet, docDefinition) {
+                        // this can be defined outside this method
+                        var stylesheet = workbook.getStyleSheet();
+                        var aFormatDefn = {
+                                "font": { "size": 9, "fontName": "Calibri", "bold": true },
+                                "alignment": { "wrapText": true }
+                              };
+                        var formatterId = stylesheet.createFormat(aFormatDefn);
+
+                        sheet.mergeCells('B1', 'C1');
+                        var cols = [];
+                        cols.push({ value: '' });
+                        cols.push({ value: 'My header that is long enough to wrap', metadata: {style: formatterId.id} });
+                        sheet.data.push(cols);
+                    },
+
+                  exporterFieldFormatCallback: function(grid, row, gridCol, cellValue) {
+                       // set metadata on export data to set format id. See exportExcelHeader config above for example of creating
+                       // a formatter and obtaining the id
+                       console.log("hdjfh");
+
+                       var formatterId = null;
+                       if (cellValue && cellValue.startsWith('H')) {
+                         formatterId = $scope.formatters['red'].id;
+                       }
+
+                       if (formatterId) {
+                         return {metadata: {style: formatterId}};
+                       } else {
+                         return null;
+                       }
+                     },
                 onRegisterApi: function(gridApi){
                       $scope.gridApi = gridApi;
                 },
-                gridMenuCustomItems: [{
-                                    title: 'Export all data as EXCEL',
-                                    action: function ($event) {
-                                        exportUiGridService.exportToExcel('sheet 1', $scope.gridApi, 'all', 'all');
-                                    },
-                                    order: 110
-                                },
-                                {
-                                    title: 'Export visible data as EXCEL',
-                                    action: function ($event) {
-                                        exportUiGridService.exportToExcel('sheet 1', $scope.gridApi, 'visible', 'visible');
-                                    },
-                                    order: 111
-                                }
-                            ]
+//                gridMenuCustomItems: [{
+//                                    title: 'Export all data as EXCEL',
+//                                    action: function ($event) {
+//                                        exportUiGridService.exportToExcel('sheet 1', $scope.gridApi, 'all', 'all');
+//                                    },
+//                                    order: 110
+//                                },
+//                                {
+//                                    title: 'Export visible data as EXCEL',
+//                                    action: function ($event) {
+//                                        exportUiGridService.exportToExcel('sheet 1', $scope.gridApi, 'visible', 'visible');
+//                                    },
+//                                    order: 111
+//                                }
+//                            ]
 
               };
 
@@ -1279,7 +1345,7 @@
               };
 
             $scope.MA_Cumulative_Column_Definitions =[
-                                                       {name: 'S No.', displayName: 'S No.',width:"6%",enableSorting: false, cellTemplate: '<p class="serial-no" >{{rowRenderIndex+1}}</p>'},
+                                                       {name: 'S No.', displayName: 'S No.',width:"6%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no" >{{rowRenderIndex+1}}</p>'},
                                                        { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>', sort: { direction: 'asc', priority: 0 },
                                                          cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}"  ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
                                                          width: '12%', enableHiding: false,
@@ -1296,7 +1362,7 @@
 
 
             $scope.MA_Performance_Column_Definitions =[
-                                                         {name: 'S No.', displayName: 'S No.',width:"6%", enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
+                                                         {name: 'S No.', displayName: 'S No.',width:"6%", enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
                                                          { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents">Total</div>',sort: { direction: 'asc', priority: 0 },
                                                             cellTemplate:'<a class=" btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
                                                             enableHiding: false, width:"12%",
@@ -1310,7 +1376,7 @@
                                                         ],
 
             $scope.MA_Subscriber_Column_Definitions =[
-                                                         {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
+                                                         {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
                                                          { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',sort: { direction: 'asc', priority: 0 },
                                                             cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
                                                             enableHiding: false,width:"14%",
@@ -1325,7 +1391,7 @@
                                                         ],
 
             $scope.Kilkari_Cumulative_Summary_Definitions =[
-                                                             {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
+                                                             {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
                                                              { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',sort: { direction: 'asc', priority: 0 },
                                                                 cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
                                                                 enableHiding: false, width:"*",
@@ -1338,7 +1404,7 @@
             ]
 
             $scope.Kilkari_Usage_Definitions =[
-                                                 {name: 'S No.', displayName: 'S No.',width:"5%", enableSorting: false,cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
+                                                 {name: 'S No.', displayName: 'S No.',width:"5%", enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
                                                  { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',sort: { direction: 'asc', priority: 0 },
                                                     cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
                                                     enableHiding: false, width:"*",
@@ -1354,7 +1420,7 @@
             ]
 
             $scope.Kilkari_Aggregate_Beneficiaries_Definitions =[
-                                                     {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
+                                                     {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
                                                      { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',sort: { direction: 'asc', priority: 0 },
                                                         cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
                                                         enableHiding: false, width:"7%"
@@ -1373,7 +1439,7 @@
             ]
 
             $scope.Kilkari_Beneficiary_Completion_Definitions = [
-                                                     {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
+                                                     {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
                                                      { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',sort: { direction: 'asc', priority: 0 },
                                                         cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
                                                         enableHiding: false, width:"12%"
@@ -1398,7 +1464,7 @@
             ]
 
             $scope.Kilkari_Call_Report_Definitions = [
-                                                     {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
+                                                     {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
                                                      { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',sort: { direction: 'asc', priority: 0 },
                                                         cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
                                                         enableHiding: false, width:"12%"
@@ -1435,7 +1501,7 @@
             ]
 
             $scope.Kilkari_Message_Listenership_Definitions = [
-                                                     {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
+                                                     {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
                                                      { field: 'locationName',footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',sort: { direction: 'asc', priority: 0 },
                                                         cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
                                                         enableHiding: false, width:"12%"
@@ -1450,7 +1516,7 @@
             ]
 
             $scope.Kilkari_Subscriber_Definitions = [
-                                                     {name: 'S No.', displayName: 'S No.',width:"4%",enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
+                                                     {name: 'S No.', displayName: 'S No.',width:"4%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
                                                      { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents">Total</div>',sort: { direction: 'asc', priority: 0 },
                                                         cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
                                                         enableHiding: false,width:"10%"
@@ -1465,7 +1531,7 @@
             ]
 
             $scope.Kilkari_Thematic_Content_Definitions = [
-                                                     {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
+                                                     {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
                                                      { field: 'theme', name: 'Theme', width:"*", enableHiding: false },
                                                      { field: 'messageWeekNumber', name: 'Message Number (Week)', footerCellTemplate: '<div class="ui-grid-cell-contents">Total</div>', width:"*", enableHiding: false },
                                                      { field: 'uniqueBeneficiariesCalled', name: 'Number of unique beneficiaries called', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },

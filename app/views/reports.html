@@ -310,7 +310,11 @@
 
     <div class="reportheader" ng-hide="hideGrid">
         <p class="ng-binding" style="display: inline-block;"> {{reportCategory}} - {{report.name}}</p>
-		<i class="glyphicon glyphicon-calendar aggregate-calender"> <span class="calender-date">{{ headerFromDate | date:'dd/MM/y'}}</span> <span class="calender-date" style="font-size: 13px" ng-if=" report.name == 'MA Cumulative Summary' || report.reportEnum == 'Kilkari_Cumulative_Summary' ">Up</span><span class="calender-date">to</span> <span class="calender-date">{{headerToDate | date:'dd/MM/y'}}</span></i>
+		<div style="display: inline-block;float: right">
+			<i class="glyphicon glyphicon-calendar aggregate-calender"> <span class="calender-date">{{ headerFromDate | date:'dd/MM/y'}}</span> <span class="calender-date" style="font-size: 13px" ng-if=" report.name == 'MA Cumulative Summary' || report.reportEnum == 'Kilkari_Cumulative_Summary' ">Up</span><span class="calender-date">to</span> <span class="calender-date">{{headerToDate | date:'dd/MM/y'}}</span></i>
+			<img ng-click = "exportToExcel()" style="float: right;margin-right: 7px; cursor : pointer" src="images/export3.png">
+		</div>
+
     </div>
 
 	<div class="reportheader matrixHeader" ng-hide="hideGrid || (report.reportEnum != 'Kilkari_Message_Matrix' && report.reportEnum != 'Kilkari_Repeat_Listener_Month_Wise')">
