@@ -15,12 +15,13 @@ public class ChildImportRejectionDaoImpl extends AbstractDao<Long, ChildImportRe
 
     @Override
     public Long getCountOfRejectedChildRecords(Date fromDate, Date toDate, Integer districtId) {
-        Criteria criteria = createEntityCriteria();
-        criteria.add(Restrictions.lt("modificationDate", toDate))
-                .add(Restrictions.ge("modificationDate", fromDate))
-                .add(Restrictions.eq("accepted", false))
-                .add(Restrictions.eq("districtId", districtId))
-                .add(Restrictions.ne("rejectionReason", "INVALID_DOB"))
+        Criteria criteria=createEntityCriteria();
+        criteria.add(Restrictions.lt("modificationDate",toDate))
+                .add(Restrictions.ge("modificationDate",fromDate))
+                .add(Restrictions.eq("accepted",false))
+                .add(Restrictions.eq("districtId",districtId))
+                .add(Restrictions.ne("rejectionReason","INVALID_DOB"))
+                .add(Restrictions.ne("rejectionReason","UPDATED_RECORD_ALREADY_EXISTS"))
                 .setProjection(Projections.rowCount());
 
         return (Long) criteria.uniqueResult();
