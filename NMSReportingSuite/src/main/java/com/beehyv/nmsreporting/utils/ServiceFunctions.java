@@ -30,4 +30,19 @@ public class ServiceFunctions {
         return monthString+"_"+yearString;
     }
 
+
+    public static Date dateAdder(Date testDate, int value){
+        Calendar aCalendar = Calendar.getInstance();
+        aCalendar.setTime(testDate);
+        aCalendar.set(Calendar.MILLISECOND, 0);
+        aCalendar.set(Calendar.SECOND, 0);
+        aCalendar.set(Calendar.MINUTE, 0);
+        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+
+
+        aCalendar.add(Calendar.DATE, value);
+        testDate = aCalendar.getTime();
+        return testDate;
+    }
+
 }
