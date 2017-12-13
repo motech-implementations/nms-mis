@@ -1,7 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("ReportsController", ['$scope', '$state', '$http', 'UserFormFactory','$window','$q','uiGridConstants','exportUiGridService', function($scope, $state, $http, UserFormFactory,$window,$q,uiGridConstants,exportUiGridService){
+		.controller("ReportsController", ['$scope', '$state', '$http', 'UserFormFactory','$window','$q','uiGridConstants','exportUiGridService','uiGridExporterConstants', function($scope, $state, $http, UserFormFactory,$window,$q,uiGridConstants,exportUiGridService,uiGridExporterConstants){
 
 			UserFormFactory.isLoggedIn()
 			.then(function(result){
@@ -43,6 +43,7 @@
 			$scope.periodTypeContent = "";
             $scope.dateFormat = '';
             $scope.reportBreadCrumbData = [];
+            $scope.formatters = [];
             $scope.headerFromDate = '';
             $scope.headerToDate = '';
             $scope.matrixContent1 = '';
@@ -1013,7 +1014,7 @@
                             fileName = $scope.report.reportEnum;
                        }
 
-                         $scope.gridOptions1.exporterExcelFilename = fileName + "_" + dateString;
+                         $scope.gridOptions1.exporterExcelFilename = fileName + "_" + dateString + ".xlsx";
                          $scope.gridOptions = $scope.gridOptions1;
                          $scope.gridOptions_Message_Matrix = $scope.gridOptions2;
 
@@ -1245,17 +1246,15 @@
             });
 
             $scope.exportToExcel = function(){
-                exportUiGridService.exportToExcel('sheet 1', $scope.gridApi, 'all', 'all');
-                $scope.grid
+                $scope.gridApi.exporter.excelExport(uiGridExporterConstants.ALL,uiGridExporterConstants.ALL);
             }
 
             var canceler = $q.defer();
             $scope.gridOptions1 = {
                 enableSorting: true,
-                enableGridMenu : true,
                 showColumnFooter: true,
                 enableVerticalScrollbar : 0,
-                exporterExcelFilename: fileName,
+                exporterExcelFilename: "sheet",
                 exporterExcelSheetName: "sheet1",
                 excessRows :1000,
                 exporterExcelCustomFormatters: function ( grid, workbook, docDefinition ) {
@@ -1282,57 +1281,38 @@
 
                       return docDefinition;
                     },
-                 exporterExcelHeader: function (grid, workbook, sheet, docDefinition) {
+                exporterExcelHeader: function (grid, workbook, sheet, docDefinition) {
                         // this can be defined outside this method
                         var stylesheet = workbook.getStyleSheet();
                         var aFormatDefn = {
-                                "font": { "size": 9, "fontName": "Calibri", "bold": true },
+                                "font": { "size": 13, "fontName": "Calibri", "bold": true },
                                 "alignment": { "wrapText": true }
                               };
                         var formatterId = stylesheet.createFormat(aFormatDefn);
 
                         sheet.mergeCells('B1', 'C1');
                         var cols = [];
-                        cols.push({ value: '' });
+                        cols.push({ value: 'ghjhgjhgjhgj gfjh' , metadata: {style: formatterId.id} });
                         cols.push({ value: 'My header that is long enough to wrap', metadata: {style: formatterId.id} });
                         sheet.data.push(cols);
                     },
-
-                  exporterFieldFormatCallback: function(grid, row, gridCol, cellValue) {
-                       // set metadata on export data to set format id. See exportExcelHeader config above for example of creating
-                       // a formatter and obtaining the id
-                       console.log("hdjfh");
-
-                       var formatterId = null;
-                       if (cellValue && cellValue.startsWith('H')) {
-                         formatterId = $scope.formatters['red'].id;
-                       }
-
-                       if (formatterId) {
-                         return {metadata: {style: formatterId}};
-                       } else {
-                         return null;
-                       }
-                     },
+//                exporterFieldFormatCallback: function(grid, row, gridCol, cellValue) {
+//                     // set metadata on export data to set format id. See exportExcelHeader config above for example of creating
+//                     // a formatter and obtaining the id
+//                     var formatterId = null;
+//                     if (cellValue && cellValue.startsWith('W')) {
+//                       formatterId = $scope.formatters['red'].id;
+//                     }
+//
+//                     if (formatterId) {
+//                       return {metadata: {style: formatterId}};
+//                     } else {
+//                       return null;
+//                     }
+//                   },
                 onRegisterApi: function(gridApi){
                       $scope.gridApi = gridApi;
-                },
-//                gridMenuCustomItems: [{
-//                                    title: 'Export all data as EXCEL',
-//                                    action: function ($event) {
-//                                        exportUiGridService.exportToExcel('sheet 1', $scope.gridApi, 'all', 'all');
-//                                    },
-//                                    order: 110
-//                                },
-//                                {
-//                                    title: 'Export visible data as EXCEL',
-//                                    action: function ($event) {
-//                                        exportUiGridService.exportToExcel('sheet 1', $scope.gridApi, 'visible', 'visible');
-//                                    },
-//                                    order: 111
-//                                }
-//                            ]
-
+                    },
               };
 
             $scope.gridOptions2 = {
