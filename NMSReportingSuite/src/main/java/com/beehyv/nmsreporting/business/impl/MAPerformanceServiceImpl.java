@@ -43,13 +43,6 @@ public class MAPerformanceServiceImpl implements MAPerformanceService{
     public Long getAccessedCount(Integer locationId, String locationType, Date fromDate, Date toDate){
 
         Long count = (long)0;
-        Calendar aCalendar = Calendar.getInstance();
-        aCalendar.setTime(fromDate);
-        aCalendar.add(Calendar.DATE,1);
-        fromDate = aCalendar.getTime();
-        aCalendar.setTime(toDate);
-        aCalendar.add(Calendar.DATE,1);
-        toDate = aCalendar.getTime();
         Long addedCount = (long)0;
         Long differenceCount = (long)0;
 
@@ -98,13 +91,6 @@ public class MAPerformanceServiceImpl implements MAPerformanceService{
     public Long getNotAccessedcount(Integer locationId, String locationType, Date fromDate, Date toDate){
 
         Long count = (long)0;
-        Calendar aCalendar = Calendar.getInstance();
-        aCalendar.setTime(fromDate);
-        aCalendar.add(Calendar.DATE,1);
-        fromDate = aCalendar.getTime();
-        aCalendar.setTime(toDate);
-        aCalendar.add(Calendar.DATE,1);
-        toDate = aCalendar.getTime();
         Long addedCount = (long)0;
         Long differenceCount = (long)0;
 
@@ -152,13 +138,6 @@ public class MAPerformanceServiceImpl implements MAPerformanceService{
     public Integer getAshasFailed(Integer locationId, String locationType, Date fromDate, Date toDate){
 
         Integer count = 0;
-        Calendar aCalendar = Calendar.getInstance();
-        aCalendar.setTime(fromDate);
-        aCalendar.add(Calendar.DATE,1);
-        fromDate = aCalendar.getTime();
-        aCalendar.setTime(toDate);
-        aCalendar.add(Calendar.DATE,1);
-        toDate = aCalendar.getTime();
         Integer addedCount = 0;
         Integer differenceCount = 0;
 

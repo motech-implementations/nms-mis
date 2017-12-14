@@ -20,7 +20,10 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
                 .add(Restrictions.ge("modificationDate", fromDate))
                 .add(Restrictions.eq("accepted", false))
                 .add(Restrictions.eq("districtId", districtId))
-                .add(Restrictions.ne("rejectionReason", "INVALID_LMP_DATE"))
+                .add(Restrictions.ne("rejectionReason","INVALID_LMP_DATE"))
+                .add(Restrictions.ne("rejectionReason","ACTIVE_CHILD_PRESENT"))
+                .add(Restrictions.ne("rejectionReason","ABORT_STILLBIRTH_DEATH"))
+                .add(Restrictions.ne("rejectionReason","UPDATED_RECORD_ALREADY_EXISTS"))
                 .setProjection(Projections.rowCount());
 
         return (Long) criteria.uniqueResult();

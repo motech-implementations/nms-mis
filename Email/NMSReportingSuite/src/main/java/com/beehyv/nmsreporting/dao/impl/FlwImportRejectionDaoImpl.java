@@ -20,6 +20,10 @@ public class FlwImportRejectionDaoImpl extends AbstractDao<Long, FlwImportReject
                 .add(Restrictions.ge("modificationDate", fromDate))
                 .add(Restrictions.eq("accepted", false))
                 .add(Restrictions.eq("districtId", districtId))
+                .add(Restrictions.ne("rejectionReason","UPDATED_RECORD_ALREADY_EXISTS"))
+                .add(Restrictions.ne("rejectionReason","FLW_TYPE_NOT_ASHA"))
+                .add(Restrictions.ne("rejectionReason","FLW_IMPORT_ERROR"))
+                .add(Restrictions.ne("rejectionReason","GF_STATUS_INACTIVE"))
                 .setProjection(Projections.rowCount());
 
         return (Long) criteria.uniqueResult();

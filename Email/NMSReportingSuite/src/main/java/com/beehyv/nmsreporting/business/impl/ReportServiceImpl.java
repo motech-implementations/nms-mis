@@ -15,6 +15,7 @@ import javax.transaction.Transactional;
 import java.io.File;
 import java.util.*;
 
+import static com.beehyv.nmsreporting.utils.Global.retrieveDocuments;
 import static com.beehyv.nmsreporting.utils.ServiceFunctions.StReplace;
 
 /**
@@ -24,8 +25,7 @@ import static com.beehyv.nmsreporting.utils.ServiceFunctions.StReplace;
 @Transactional
 public class ReportServiceImpl implements ReportService {
 
-    private final String documents = System.getProperty("user.home") + File.separator;
-    private final String reports = documents + "Reports/";
+
     @Autowired
     private StateDao stateDao;
     @Autowired
@@ -38,6 +38,11 @@ public class ReportServiceImpl implements ReportService {
     private StateCircleDao stateCircleDao;
     @Autowired
     private ReportTypeDao reportTypeDao;
+
+
+
+    private final String documents = retrieveDocuments();
+    private final String reports = documents+"Reports/";
 
     @Override
     public List<String> getReportPathName(ReportRequest reportRequest) {

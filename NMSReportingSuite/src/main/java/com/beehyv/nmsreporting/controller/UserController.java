@@ -33,6 +33,7 @@ import java.util.*;
 
 import static com.beehyv.nmsreporting.utils.Global.retrieveDocuments;
 import static com.beehyv.nmsreporting.utils.ServiceFunctions.StReplace;
+import static com.beehyv.nmsreporting.utils.ServiceFunctions.dateAdder;
 
 /**
  * Created by beehyv on 15/3/17.
@@ -475,26 +476,10 @@ public class UserController {
         }
 
             if (reportRequest.getReportType().equals(ReportType.maPerformance.getReportType())) {
-                DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-                Calendar calendar = Calendar.getInstance();
-                Date toDate = new Date();
-                Date startDate = new Date(0);
-                Calendar aCalendar = Calendar.getInstance();
-                aCalendar.setTime(reportRequest.getFromDate());
-                aCalendar.set(Calendar.MILLISECOND, 0);
-                aCalendar.set(Calendar.SECOND, 0);
-                aCalendar.set(Calendar.MINUTE, 0);
-                aCalendar.set(Calendar.HOUR_OF_DAY, 0);
 
+                Date fromDate = dateAdder(reportRequest.getFromDate(),0);
 
-                aCalendar.add(Calendar.DATE, -1);
-                Date fromDate = aCalendar.getTime();
-                aCalendar.setTime(reportRequest.getToDate());
-                aCalendar.set(Calendar.MILLISECOND, 0);
-                aCalendar.set(Calendar.SECOND, 0);
-                aCalendar.set(Calendar.MINUTE, 0);
-                aCalendar.set(Calendar.HOUR_OF_DAY, 0);
-                toDate = aCalendar.getTime();
+                Date toDate = dateAdder(reportRequest.getToDate(),1);
 
 
                 List<MAPerformanceDto> summaryDto = new ArrayList<>();
@@ -580,28 +565,9 @@ public class UserController {
             }
 
             if (reportRequest.getReportType().equals(ReportType.maSubscriber.getReportType())) {
-                DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-                Calendar calendar = Calendar.getInstance();
-                Date toDate = new Date();
-                Date startDate = new Date(0);
-                Calendar aCalendar = Calendar.getInstance();
-                aCalendar.setTime(reportRequest.getFromDate());
-                aCalendar.set(Calendar.MILLISECOND, 0);
-                aCalendar.set(Calendar.SECOND, 0);
-                aCalendar.set(Calendar.MINUTE, 0);
-                aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+                Date fromDate = dateAdder(reportRequest.getFromDate(),0);
 
-//          aCalendar.add(Calendar.MONTH, -1);
-                aCalendar.add(Calendar.DATE, -1);
-                Date fromDate = aCalendar.getTime();
-
-
-                aCalendar.setTime(reportRequest.getToDate());
-                aCalendar.set(Calendar.MILLISECOND, 0);
-                aCalendar.set(Calendar.SECOND, 0);
-                aCalendar.set(Calendar.MINUTE, 0);
-                aCalendar.set(Calendar.HOUR_OF_DAY, 0);
-                toDate = aCalendar.getTime();
+                Date toDate = dateAdder(reportRequest.getToDate(),1);
 
 
                 List<MASubscriberDto> summaryDto = new ArrayList<>();
@@ -697,21 +663,8 @@ public class UserController {
             }
 
             if (reportRequest.getReportType().equals(ReportType.maCumulative.getReportType())) {
-//            List<Map<String,String>> summaryReport = new ArrayList<>();
-                DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-                Calendar calendar = Calendar.getInstance();
-                Date toDate = new Date();
-                Date startDate = new Date(0);
-                Calendar aCalendar = Calendar.getInstance();
-                aCalendar.setTime(reportRequest.getToDate());
-                aCalendar.set(Calendar.MILLISECOND, 0);
-                aCalendar.set(Calendar.SECOND, 0);
-                aCalendar.set(Calendar.MINUTE, 0);
-                aCalendar.set(Calendar.HOUR_OF_DAY, 0);
 
-//        aCalendar.add(Calendar.MONTH, -1);
-
-                toDate = aCalendar.getTime();
+                Date toDate = dateAdder(reportRequest.getToDate(),1);
                 List<AggregateCumulativeMADto> summaryDto = new ArrayList<>();
                 List<AggregateCumulativeMA> cumulativesummaryReport = new ArrayList<>();
 
