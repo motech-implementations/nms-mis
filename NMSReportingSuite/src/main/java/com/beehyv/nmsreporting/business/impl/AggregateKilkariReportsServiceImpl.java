@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.text.DateFormat;
+import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -1611,7 +1612,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 KilkariRepeatListenerMonthWisePercentDto kilkariRepeatListenerMonthWisePercentDto = new KilkariRepeatListenerMonthWisePercentDto();
                 KilkariRepeatListenerMonthWise kilkariRepeatListenerMonthWise1 = kilkariRepeatListenerMonthWiseList.get(i);
                 kilkariRepeatListenerMonthWiseDto.setId(kilkariRepeatListenerMonthWise1.getId());
-                kilkariRepeatListenerMonthWiseDto.setMonth("Month "+(i+1));
+                kilkariRepeatListenerMonthWiseDto.setMonth(new DateFormatSymbols().getMonths()[(fromDate.getMonth() + i)%12]);
                 kilkariRepeatListenerMonthWiseDto.setDate(kilkariRepeatListenerMonthWise1.getDate());
                 kilkariRepeatListenerMonthWiseDto.setFiveCallsAnswered(kilkariRepeatListenerMonthWise1.getFiveCallsAnswered());
                 kilkariRepeatListenerMonthWiseDto.setFourCallsAnswered(kilkariRepeatListenerMonthWise1.getFourCallsAnswered());
@@ -1632,7 +1633,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 kilkariRepeatListenerMonthWisePercentDto.setOneCallAnsweredPercent(kilkariRepeatListenerMonthWiseDto.getOneCallAnswered() == 0 ? 0 :  Math.round((((float)kilkariRepeatListenerMonthWiseDto.getOneCallAnswered()/(float)kilkariRepeatListenerMonthWiseDto.getTotal())*100)*1000.0)/1000.0);
                 kilkariRepeatListenerMonthWisePercentDto.setNoCallsAnsweredPercent(kilkariRepeatListenerMonthWiseDto.getNoCallsAnswered() == 0 ? 0 :  Math.round((((float)kilkariRepeatListenerMonthWiseDto.getNoCallsAnswered()/(float)kilkariRepeatListenerMonthWiseDto.getTotal())*100)*1000.0)/1000.0);
                 kilkariRepeatListenerMonthWisePercentDto.setId(kilkariRepeatListenerMonthWise1.getId());
-                kilkariRepeatListenerMonthWisePercentDto.setMonth("Month "+(i+1));
+                kilkariRepeatListenerMonthWisePercentDto.setMonth(new DateFormatSymbols().getMonths()[(fromDate.getMonth() + i)%12]);
                 kilkariRepeatListenerMonthWisePercentDto.setDate(kilkariRepeatListenerMonthWise1.getDate());
                 kilkariRepeatListenerMonthWiseDtoList.add(kilkariRepeatListenerMonthWiseDto);
                 kilkariRepeatListenerMonthWisePercentDtoList.add(kilkariRepeatListenerMonthWisePercentDto);

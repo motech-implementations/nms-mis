@@ -1436,7 +1436,7 @@
              ]
 
             $scope.Kilkari_RepeatListener_Numberdata_Definitions =[
-                                                     { field: 'month', name: 'Month number',width:"*", enableHiding: false },
+                                                     { field: 'month', name: 'Month',width:"*", enableHiding: false },
                                                      { field: 'fiveCallsAnswered', name: '5 calls answered', width:"*", enableHiding: false},
                                                      { field: 'fourCallsAnswered', name: '4 calls answered', width:"*", enableHiding: false},
                                                      { field: 'threeCallsAnswered', name: '3 calls answered',width:"*", enableHiding: false },
@@ -1448,7 +1448,7 @@
             ]
 
             $scope.Kilkari_RepeatListener_Percentdata_Definitions =[
-                                                     { field: 'month', name: 'Month number',width:"*", enableHiding: false },
+                                                     { field: 'month', name: 'Month',width:"*", enableHiding: false },
                                                      { field: 'fiveCallsAnsweredPercent', name: '5 calls answered', width:"*", enableHiding: false},
                                                      { field: 'fourCallsAnsweredPercent', name: '4 calls answered', width:"*", enableHiding: false},
                                                      { field: 'threeCallsAnsweredPercent', name: '3 calls answered',width:"*", enableHiding: false },
