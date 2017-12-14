@@ -48,10 +48,18 @@
             $scope.headerToDate = '';
             $scope.matrixContent1 = '';
             $scope.matrixContent2 = '';
+            $scope.state = "";
+            $scope.district = "";
             var parentScope = $scope.$parent;
             parentScope.child = $scope;
             var fileName;
             var dateString;
+            var excelHeaderName = {
+                stateName : "ALL",
+                districtName : "ALL",
+                blockName : "ALL"
+
+            };
 
             $scope.popup2 = {
                 opened: false
@@ -170,7 +178,7 @@
                     $scope.datePickerOptions.minMode = '';
                     $scope.datePickerOptions.maxDate = new Date().setDate(new Date().getDate() - 1);
                 }
-                console.log($scope.datePickerOptions);
+                console.log(excelHeaderName);
 
             }
 
@@ -252,6 +260,10 @@
                 if($scope.report.name == 'MA Cumulative Summary' || $scope.report.reportEnum == 'Kilkari_Cumulative_Summary'){
                     $scope.dateFormat = 'yyyy-MM-dd';
                 }
+
+                $scope.gridOptions1.exporterExcelSheetName = $scope.report.name;
+                excelHeaderName.reportName = $scope.report.name;
+
 
 			}
 
@@ -464,6 +476,7 @@
 					$scope.getDistricts(state.stateId);
 					$scope.clearState();
 					$scope.state = state;
+					excelHeaderName.stateName = state.stateName;
 				}
 				$scope.periodDisplayType = '';
                 $scope.dt1 = null;
@@ -492,6 +505,7 @@
 					$scope.getBlocks(district.districtId);
 					$scope.clearDistrict()
 					$scope.district = district;
+					excelHeaderName.districtName = district.districtName;
 				}
                 $scope.periodDisplayType = '';
 				$scope.dt1 = null;
@@ -518,6 +532,7 @@
 				if(block != null){
 					$scope.clearBlock();
 					$scope.block = block;
+					excelHeaderName.blockName = block.blockName;
 				}
 				$scope.periodDisplayType = '';
                 $scope.dt1 = null;
@@ -787,6 +802,7 @@
                          reportRequest.fromDate = new Date($scope.dt1.getFullYear(),0,1);
                          reportRequest.toDate = new Date($scope.dt1.getFullYear(),11,31);
                          dateString = $scope.dt1.getFullYear();
+                         excelHeaderName.timePeriod = dateString;
                     }
 
                     else if($scope.periodDisplayType == 'Month' ){
@@ -796,11 +812,14 @@
                             console.log(reportRequest.fromDate.getMonth() + " " + reportRequest.fromDate.getDate());
                             dateString = (reportRequest.fromDate.getMonth() + 1 ) + "_" + reportRequest.fromDate.getFullYear() + "to" + reportRequest.toDate.getMonth() +
                                          "_" + reportRequest.toDate.getFullYear();
+                            excelHeaderName.timePeriod = (reportRequest.fromDate.getMonth() + 1 ) + "-" + reportRequest.fromDate.getFullYear() + " to " + reportRequest.toDate.getMonth() +
+                                         "-" + reportRequest.toDate.getFullYear();
 
                          }else{
                             reportRequest.fromDate = new Date($scope.dt1.getFullYear(),$scope.dt1.getMonth(),1);
                             reportRequest.toDate = new Date($scope.dt1.getFullYear(),$scope.dt1.getMonth() + 1,0);
                             dateString = (reportRequest.fromDate.getMonth()+ 1 ) + "_" + reportRequest.fromDate.getFullYear();
+                            excelHeaderName.timePeriod = (reportRequest.fromDate.getMonth()+ 1 ) + "-" + reportRequest.fromDate.getFullYear();
                          }
                     }
                     else if($scope.periodDisplayType == 'Quarter' ){
@@ -823,6 +842,10 @@
 
                          dateString = (reportRequest.fromDate.getMonth() + 1) + "_" + reportRequest.fromDate.getFullYear() + "to" + (reportRequest.toDate.getMonth() + 1)  +
                                          "_" + reportRequest.toDate.getFullYear();
+                         excelHeaderName.timePeriod = (reportRequest.fromDate.getMonth() + 1) + "-" + reportRequest.fromDate.getFullYear() + " to " + (reportRequest.toDate.getMonth() + 1)  +
+                                         "-" + reportRequest.toDate.getFullYear();
+
+
 
                     }
                     else if($scope.periodDisplayType == 'Custom Range' ){
@@ -830,15 +853,19 @@
                         reportRequest.toDate = $scope.dt2;
                         dateString = reportRequest.fromDate.getDate() + "_" + (reportRequest.fromDate.getMonth() + 1 ) + "_" + reportRequest.fromDate.getFullYear() + "to" + reportRequest.fromDate.getDate() + "_" +  ( reportRequest.toDate.getMonth() + 1 ) +
                                      "_" + reportRequest.toDate.getFullYear();
+                        excelHeaderName.timePeriod = reportRequest.fromDate.getDate() + "-" + (reportRequest.fromDate.getMonth() + 1 ) + "-" + reportRequest.fromDate.getFullYear() + " to " + reportRequest.fromDate.getDate() + "-" +  ( reportRequest.toDate.getMonth() + 1 ) +
+                                                                                          "-" + reportRequest.toDate.getFullYear();
                     }
                     else{
                         reportRequest.toDate = $scope.dt2;
                         dateString =   "till_" + reportRequest.toDate.getDate() + "_" +  ( reportRequest.toDate.getMonth() + 1 ) +
                                                              "_" + reportRequest.toDate.getFullYear();
+                        excelHeaderName.timePeriod = "till " + reportRequest.toDate.getDate() + "-" +  ( reportRequest.toDate.getMonth() + 1 ) +
+                                                      "-" + reportRequest.toDate.getFullYear();
                     }
                 }
 
-                console.log(reportRequest);
+                console.log(excelHeaderName);
 			    $scope.waiting = true;
 
                 $scope.headerFromDate = reportRequest.fromDate;
@@ -1015,6 +1042,7 @@
                        }
 
                          $scope.gridOptions1.exporterExcelFilename = fileName + "_" + dateString + ".xlsx";
+                         $scope.gridOptions1.exporterExcelSheetName = $scope.report.name;
                          $scope.gridOptions = $scope.gridOptions1;
                          $scope.gridOptions_Message_Matrix = $scope.gridOptions2;
 
@@ -1246,7 +1274,14 @@
             });
 
             $scope.exportToExcel = function(){
-                $scope.gridApi.exporter.excelExport(uiGridExporterConstants.ALL,uiGridExporterConstants.ALL);
+//                $scope.gridApi.exporter.excelExport(uiGridExporterConstants.ALL,uiGridExporterConstants.ALL);
+
+                   exportUiGridService.exportToExcel('sheet 1', $scope.gridApi, 'all', 'all', excelHeaderName);
+
+                   console.log($scope.gridApi.grid.columns[2].getAggregationValue() );
+
+
+
             }
 
             var canceler = $q.defer();
@@ -1254,48 +1289,46 @@
                 enableSorting: true,
                 showColumnFooter: true,
                 enableVerticalScrollbar : 0,
-                exporterExcelFilename: "sheet",
-                exporterExcelSheetName: "sheet1",
                 excessRows :1000,
-                exporterExcelCustomFormatters: function ( grid, workbook, docDefinition ) {
-
-                      var stylesheet = workbook.getStyleSheet();
-                      var aFormatDefn = {
-                        "font": { "size": 9, "fontName": "Calibri", "bold": true },
-                        "alignment": { "wrapText": true }
-                      };
-                      var formatter = stylesheet.createFormat(aFormatDefn);
-                      // save the formatter
-                      $scope.formatters['bold'] = formatter;
-
-                      aFormatDefn = {
-                        "font": { "size": 9, "fontName": "Calibri" },
-                        "fill": { "type": "pattern", "patternType": "solid", "fgColor": "FFFFC7CE" },
-                        "alignment": { "wrapText": true }
-                      };
-                      formatter = stylesheet.createFormat(aFormatDefn);
-                      // save the formatter
-                      $scope.formatters['red'] = formatter;
-
-                      Object.assign(docDefinition.styles , $scope.formatters);
-
-                      return docDefinition;
-                    },
-                exporterExcelHeader: function (grid, workbook, sheet, docDefinition) {
-                        // this can be defined outside this method
-                        var stylesheet = workbook.getStyleSheet();
-                        var aFormatDefn = {
-                                "font": { "size": 13, "fontName": "Calibri", "bold": true },
-                                "alignment": { "wrapText": true }
-                              };
-                        var formatterId = stylesheet.createFormat(aFormatDefn);
-
-                        sheet.mergeCells('B1', 'C1');
-                        var cols = [];
-                        cols.push({ value: 'ghjhgjhgjhgj gfjh' , metadata: {style: formatterId.id} });
-                        cols.push({ value: 'My header that is long enough to wrap', metadata: {style: formatterId.id} });
-                        sheet.data.push(cols);
-                    },
+//                exporterExcelCustomFormatters: function ( grid, workbook, docDefinition ) {
+//
+//                      var stylesheet = workbook.getStyleSheet();
+//                      var aFormatDefn = {
+//                        "font": { "size": 9, "fontName": "Calibri", "bold": true },
+//                        "alignment": { "wrapText": true }
+//                      };
+//                      var formatter = stylesheet.createFormat(aFormatDefn);
+//                      // save the formatter
+//                      $scope.formatters['bold'] = formatter;
+//
+//                      aFormatDefn = {
+//                        "font": { "size": 9, "fontName": "Calibri" },
+//                        "fill": { "type": "pattern", "patternType": "solid", "fgColor": "FFFFC7CE" },
+//                        "alignment": { "wrapText": true }
+//                      };
+//                      formatter = stylesheet.createFormat(aFormatDefn);
+//                      // save the formatter
+//                      $scope.formatters['red'] = formatter;
+//
+//                      Object.assign(docDefinition.styles , $scope.formatters);
+//
+//                      return docDefinition;
+//                    },
+//                exporterExcelHeader: function (grid, workbook, sheet, docDefinition) {
+//                        // this can be defined outside this method
+//                        var stylesheet = workbook.getStyleSheet();
+//                        var aFormatDefn = {
+//                                "font": { "size": 11, "fontName": "Calibri", "bold": true },
+//                                "alignment": { "wrapText": true }
+//                              };
+//                        var formatterId = stylesheet.createFormat(aFormatDefn);
+//
+//                        sheet.mergeCells('A1', 'C1');
+//
+//                        var cols = [];
+//                        cols.push({ value: excelHeaderName, metadata: {style: formatterId.id} });
+//                        sheet.data.push(cols);
+//                    },
 //                exporterFieldFormatCallback: function(grid, row, gridCol, cellValue) {
 //                     // set metadata on export data to set format id. See exportExcelHeader config above for example of creating
 //                     // a formatter and obtaining the id
