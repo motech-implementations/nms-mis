@@ -3,10 +3,6 @@
 		.module('nmsReports')
 		.factory( 'UserTableFactory', ['$http', function($http) {
 			var users = []
-			// $http.get(backend_root + 'nms/user/list')
-			// .then(function(data){
-			// 	console.log(JSON.stringify(data));
-			// })
 			return {
 				getUsers: function() {
 					return $http.get(backend_root + 'nms/user/tableList')
