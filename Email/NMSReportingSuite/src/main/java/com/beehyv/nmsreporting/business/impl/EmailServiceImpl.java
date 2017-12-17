@@ -347,9 +347,9 @@ public class EmailServiceImpl implements EmailService{
         else if(reportType.equals(ReportType.motherRejected.getReportType()) ||
                 reportType.equals(ReportType.childRejected.getReportType())){
             body+= "<pre>   </pre>Please find attached the following files:<br>"
-                    + "1. The following List of mother records are deactivated for one of the following rejection reasons" +
+                    + "1. The following List of mother records are rejected for one of the following rejection reasons" +
                     " viz., Subscription Rejected,MSISDN already in use,Record already exists,Active child present,Invalid case no.<br>"
-                    +  "2. The following List of child records are deactivated for one of the following rejection reasons " +
+                    +  "2. The following List of child records are rejected for one of the following rejection reasons " +
                     "viz., MSISDN already in use,Subscription Rejected,Mother id error,Record already exists";
 
             body+=" <br><br><table width='100%' border='1' align='center'>"
