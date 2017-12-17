@@ -147,9 +147,7 @@
 			$scope.resetFilters();
 
 			$scope.$watch('numPerPage', $scope.resetPage);
-//            $scope.$watch('filterData', function(value){
-//            console.log(value);
-//            });
+
 			
 			$scope.dropdownOpen =function(){
 				return (
@@ -187,7 +185,6 @@
 			
 
 			$scope.editUser = function(userId){
-				console.log("edit");
 				$state.go('userManagement.editUser');
 			}
 
