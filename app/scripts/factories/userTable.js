@@ -2,19 +2,18 @@
 	var nmsReportsApp = angular
 		.module('nmsReports')
 		.factory( 'UserTableFactory', ['$http', function($http) {
-			var users = []
+			var users = [];
 			return {
 				getUsers: function() {
-					return $http.get(backend_root + 'nms/user/tableList')
-					// return $http.get('newUser.json');
+					return $http.get(backend_root + 'nms/user/tableList');
 				},
-				setUsers: function(values){
+				setUsers: function(values) {
 					users = values;
 				},
 				getAllUsers: function() {   
 					return users;
 				},
-				clearAllUsers: function(){
+				clearAllUsers: function() {
 					users = [];
 				}
 			};

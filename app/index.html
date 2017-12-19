@@ -91,7 +91,7 @@
 						<a ui-sref="profile">My Profile</a>
 					</li>
 					<li ng-class="{active: activeTab('userManagement')}" ng-if="currentUser.roleId!= null && currentUser.roleName != 'USER'">
-						<a ui-sref="userManagement.userTable">User Management</a>
+						<a ui-sref="userManagement.userTable({pageNum: 1})">User Management</a>
 					</li>
 					<li ng-class="{active: activeTab('reports')}">
 						<a ui-sref="reports">Reports</a>

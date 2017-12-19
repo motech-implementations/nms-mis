@@ -15,7 +15,7 @@
 					itemsPerPage: '=',
 					currentPage: '='
 				},
-				templateUrl: 'views/pagination.html',
+				templateUrl: 'views/pagination.html'
 				/*
 				link: function(scope) {
 
