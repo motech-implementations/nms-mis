@@ -107,6 +107,9 @@ div.nav .aggregate-bread-crumb li a.active{
 .aggregate-bread-crumb{
     background : #eaeade !important ;
     padding : 7px 21px !important;
+    width : 97.5%;
+    margin-left : 20px;
+
 }
 
 .aggregate-bread-crumb li a{
@@ -525,15 +528,16 @@ body *{
 }
 
 .grid {
-  width: 97%;
+  width: 95.5%;
   margin : auto;
 }
 
 .reportheader{
     margin-top : 20px;
-    margin-left: 15px;
+    margin-left: 22px;
     color: #463f3f;
     font-weight: bold;
+    width : 98%;
 }
 
 .aggregate-calender{

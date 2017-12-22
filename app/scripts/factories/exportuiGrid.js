@@ -157,6 +157,15 @@
                            else if(ft.displayName == "Average Duration Of Calls" && excelHeaderName.reportName == "Kilkari Call"){
                                v = gridApi.grid.columns[8].getAggregationValue()/gridApi.grid.columns[3].getAggregationValue();
                            }
+                           else if(ft.displayName == "% Not Started Course" && excelHeaderName.reportName == "MA Cumulative Summary"){
+                              v = gridApi.grid.columns[4].getAggregationValue()/gridApi.grid.columns[2].getAggregationValue();
+                           }
+                           else if(ft.displayName == "% Successfully Completed" && excelHeaderName.reportName == "MA Cumulative Summary"){
+                              v = gridApi.grid.columns[5].getAggregationValue()/gridApi.grid.columns[2].getAggregationValue();
+                           }
+                           else if(ft.displayName == "% Failed the course" && excelHeaderName.reportName == "MA Cumulative Summary"){
+                              v = gridApi.grid.columns[6].getAggregationValue()/gridApi.grid.columns[2].getAggregationValue();
+                           }
                            else{
                                v = ft.getAggregationValue();
                            }
