@@ -15,18 +15,21 @@ var nmsReportsApp = angular
 			$rootScope.$state = $state;
 			$rootScope.$stateParams = $stateParams;
 		}
-	])
-	.config(function ($stateProvider, $urlRouterProvider, $httpProvider,captchaSettingsProvider) {
+	]).config(function ($stateProvider, $urlRouterProvider, $httpProvider,captchaSettingsProvider) {
 		$stateProvider
 		
 			.state('userManagement', {
 				url: '/userManagement',
 				abstract: true,
-				templateUrl: 'views/userManagement.html',
+				templateUrl: 'views/userManagement.html'
 			})
 			.state('userManagement.userTable', {
-				url: '',
-				templateUrl: 'views/userTable.html'
+				url: '/:pageNum',
+				templateUrl: 'views/userTable.html',
+                reloadOnSearch: false,
+                controller: function($scope, $stateParams) {
+                    $scope.currentPageNo = $stateParams.pageNum;
+                }
 			})
 			.state('userManagement.bulkUpload', {
 				url: '/bulkUpload',
@@ -43,34 +46,34 @@ var nmsReportsApp = angular
 
 			.state('login', {
 				url: '/login',
-				templateUrl: 'views/login.html',
+				templateUrl: 'views/login.html'
 			})
 
 			.state('reports', {
 				url: '/reports',
-				templateUrl: 'views/reports.html',
+				templateUrl: 'views/reports.html'
 			})
 			
 			.state('profile', {
 				url: '/profile',
-				templateUrl: 'views/profile.html',
+				templateUrl: 'views/profile.html'
 			})
 
 			.state('forgotPassword', {
             	url: '/forgotPassword',
-            	templateUrl: 'views/forgotPassword.html',
+            	templateUrl: 'views/forgotPassword.html'
             })
 
             .state('changePassword', {
                 url: '/changePassword',
-                templateUrl: 'views/changePassword.html',
-            })
+                templateUrl: 'views/changePassword.html'
+            });
 		$urlRouterProvider
-			.otherwise('/login')
+			.otherwise('/login');
 
         captchaSettingsProvider.setSettings({
-            captchaEndpoint: backend_root + 'botdetectcaptcha',
-          })
+            captchaEndpoint: backend_root + 'botdetectcaptcha'
+        });
 
 			
 		$httpProvider.defaults.headers.common = {};
