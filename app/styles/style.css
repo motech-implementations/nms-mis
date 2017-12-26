@@ -538,8 +538,7 @@ body *{
 
 .aggregate-calender{
     color: #2164b2;
-    float: right;
-    margin-right: 35px;
+    margin-right: 25px;
     font-weight: 600;
     font-size : 13px;
 }
@@ -629,10 +628,6 @@ color: white !important;
 .md-button.md-default-theme.md-primary, .md-button.md-primary {
     color : rgb(248, 249, 255);
     background-color: #2164b2 !important;
-}
-
-.md-button.md-default-theme.md-primary, .md-button.md-primary{
-    background-color:##2164b2 !important;
 }
 
 md-dialog{

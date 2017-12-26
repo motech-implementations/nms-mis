@@ -1,7 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("ReportsController", ['$scope', '$state', '$http', 'UserFormFactory','$window','$q','uiGridConstants', function($scope, $state, $http, UserFormFactory,$window,$q,uiGridConstants){
+		.controller("ReportsController", ['$scope', '$state', '$http', 'UserFormFactory','$window','$q','uiGridConstants','exportUiGridService','uiGridExporterConstants', function($scope, $state, $http, UserFormFactory,$window,$q,uiGridConstants,exportUiGridService,uiGridExporterConstants){
 
 			UserFormFactory.isLoggedIn()
 			.then(function(result){
@@ -43,12 +43,23 @@
 			$scope.periodTypeContent = "";
             $scope.dateFormat = '';
             $scope.reportBreadCrumbData = [];
+            $scope.formatters = [];
             $scope.headerFromDate = '';
             $scope.headerToDate = '';
             $scope.matrixContent1 = '';
             $scope.matrixContent2 = '';
+            $scope.state = "";
+            $scope.district = "";
             var parentScope = $scope.$parent;
             parentScope.child = $scope;
+            var fileName;
+            var dateString;
+            var excelHeaderName = {
+                stateName : "ALL",
+                districtName : "ALL",
+                blockName : "ALL"
+
+            };
 
             $scope.popup2 = {
                 opened: false
@@ -167,7 +178,7 @@
                     $scope.datePickerOptions.minMode = '';
                     $scope.datePickerOptions.maxDate = new Date().setDate(new Date().getDate() - 1);
                 }
-                console.log($scope.datePickerOptions);
+
 
             }
 
@@ -210,7 +221,6 @@
 
 			$scope.selectReport = function(item){
 				$scope.report = item;
-                console.log($scope.report.reportEnum);
 				if(!$scope.userHasState()){
 					$scope.clearState();
 				}
@@ -249,6 +259,10 @@
                 if($scope.report.name == 'MA Cumulative Summary' || $scope.report.reportEnum == 'Kilkari_Cumulative_Summary'){
                     $scope.dateFormat = 'yyyy-MM-dd';
                 }
+
+                $scope.gridOptions1.exporterExcelSheetName = $scope.report.name;
+                excelHeaderName.reportName = $scope.report.name;
+
 
 			}
 
@@ -419,16 +433,12 @@
                  if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Child_Import_Rejects'){
                     minDate = new Date(2017, 10, 01);
                  }
-//                var minDate = $scope.report.minDate;
-//                console.log(minDate);
+
 				if(!$scope.isCircleReport() && $scope.state != null && Date.parse($scope.state.serviceStartDate) > minDate){
 					minDate = $scope.state.serviceStartDate;
-//					console.log($scope.state.serviceStartDate);
-//					console.log(minDate);
 				}
 				if($scope.isCircleReport() && $scope.circle != null && Date.parse($scope.circle.serviceStartDate) > minDate){
 					minDate = $scope.circle.serviceStartDate;
-//					console.log(minDate);
 				}
 
 
@@ -461,6 +471,7 @@
 					$scope.getDistricts(state.stateId);
 					$scope.clearState();
 					$scope.state = state;
+					excelHeaderName.stateName = state.stateName;
 				}
 				$scope.periodDisplayType = '';
                 $scope.dt1 = null;
@@ -489,6 +500,7 @@
 					$scope.getBlocks(district.districtId);
 					$scope.clearDistrict()
 					$scope.district = district;
+					excelHeaderName.districtName = district.districtName;
 				}
                 $scope.periodDisplayType = '';
 				$scope.dt1 = null;
@@ -515,6 +527,7 @@
 				if(block != null){
 					$scope.clearBlock();
 					$scope.block = block;
+					excelHeaderName.blockName = block.blockName;
 				}
 				$scope.periodDisplayType = '';
                 $scope.dt1 = null;
@@ -783,17 +796,24 @@
                     if($scope.periodDisplayType == 'Year' ){
                          reportRequest.fromDate = new Date($scope.dt1.getFullYear(),0,1);
                          reportRequest.toDate = new Date($scope.dt1.getFullYear(),11,31);
+                         dateString = $scope.dt1.getFullYear();
+                         excelHeaderName.timePeriod = dateString;
                     }
 
                     else if($scope.periodDisplayType == 'Month' ){
                          if($scope.report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise'){
                             reportRequest.fromDate = new Date($scope.dt1.getFullYear(),$scope.dt1.getMonth() - 6,1);
                             reportRequest.toDate = new Date($scope.dt1.getFullYear(),$scope.dt1.getMonth() + 1,0);
-                            console.log(reportRequest.fromDate.getMonth() + " " + reportRequest.fromDate.getDate())
+                            dateString = reportRequest.fromDate.getDate() + "_" +(reportRequest.fromDate.getMonth() + 1 ) + "_" + reportRequest.fromDate.getFullYear() + "to" + reportRequest.toDate.getDate() + "-" +(reportRequest.toDate.getMonth() + 1) +
+                                         "_" + reportRequest.toDate.getFullYear();
+                            excelHeaderName.timePeriod = reportRequest.fromDate.getDate() + "-" + (reportRequest.fromDate.getMonth() + 1 ) + "-" + reportRequest.fromDate.getFullYear() + " to " + reportRequest.toDate.getDate() + "-" + (reportRequest.toDate.getMonth() + 1) +
+                                         "-" + reportRequest.toDate.getFullYear();
 
                          }else{
                             reportRequest.fromDate = new Date($scope.dt1.getFullYear(),$scope.dt1.getMonth(),1);
                             reportRequest.toDate = new Date($scope.dt1.getFullYear(),$scope.dt1.getMonth() + 1,0);
+                            dateString = (reportRequest.fromDate.getMonth()+ 1 ) + "_" + reportRequest.fromDate.getFullYear();
+                            excelHeaderName.timePeriod = (reportRequest.fromDate.getMonth()+ 1 ) + "-" + reportRequest.fromDate.getFullYear();
                          }
                     }
                     else if($scope.periodDisplayType == 'Quarter' ){
@@ -814,14 +834,32 @@
                          reportRequest.toDate = new Date($scope.dt1.getFullYear(),11,31);
                          }
 
+                         dateString = (reportRequest.fromDate.getMonth() + 1) + "_" + reportRequest.fromDate.getFullYear() + "to" + (reportRequest.toDate.getMonth() + 1)  +
+                                         "_" + reportRequest.toDate.getFullYear();
+                         excelHeaderName.timePeriod = (reportRequest.fromDate.getMonth() + 1) + "-" + reportRequest.fromDate.getFullYear() + " to " + (reportRequest.toDate.getMonth() + 1)  +
+                                         "-" + reportRequest.toDate.getFullYear();
+
+
+
                     }
-                    else{
+                    else if($scope.periodDisplayType == 'Custom Range' ){
                         reportRequest.fromDate = $scope.dt1;
                         reportRequest.toDate = $scope.dt2;
+                        dateString = reportRequest.fromDate.getDate() + "_" + (reportRequest.fromDate.getMonth() + 1 ) + "_" + reportRequest.fromDate.getFullYear() + "to" + reportRequest.toDate.getDate() + "_" +  ( reportRequest.toDate.getMonth() + 1 ) +
+                                     "_" + reportRequest.toDate.getFullYear();
+                        excelHeaderName.timePeriod = reportRequest.fromDate.getDate() + "-" + (reportRequest.fromDate.getMonth() + 1 ) + "-" + reportRequest.fromDate.getFullYear() + " to " + reportRequest.toDate.getDate() + "-" +  ( reportRequest.toDate.getMonth() + 1 ) +
+                                                                                          "-" + reportRequest.toDate.getFullYear();
+                    }
+                    else{
+                        reportRequest.toDate = $scope.dt2;
+                        dateString =   "till_" + reportRequest.toDate.getDate() + "_" +  ( reportRequest.toDate.getMonth() + 1 ) +
+                                                             "_" + reportRequest.toDate.getFullYear();
+                        excelHeaderName.timePeriod = "till " + reportRequest.toDate.getDate() + "-" +  ( reportRequest.toDate.getMonth() + 1 ) +
+                                                      "-" + reportRequest.toDate.getFullYear();
                     }
                 }
 
-                console.log(reportRequest);
+
 			    $scope.waiting = true;
 
                 $scope.headerFromDate = reportRequest.fromDate;
@@ -834,7 +872,7 @@
 					headers : {'Content-Type': 'application/json'} 
 				})
 				.then(function(result){
-                    console.log(result);
+
 					if(!$scope.isAggregateReport()){
 					    $scope.waiting = false;
                         $scope.status = result.data.status;
@@ -921,6 +959,8 @@
                                 $scope.showEmptyData = true;
                             }
 
+                            fileName = $scope.report.reportEnum + "_" + $scope.reportBreadCrumbData[$scope.reportBreadCrumbData.length -1].locationName ;
+
                         }
                         if($scope.report.reportEnum == 'Kilkari_Listening_Matrix'){
                             if(result.data.tableData.length >0){
@@ -928,17 +968,20 @@
                                  $scope.gridOptions1.showColumnFooter = false;
                                  $scope.reportBreadCrumbData = result.data.breadCrumbData;
                                  $scope.hideGrid = false;
+                                 fileName = $scope.report.reportEnum;
                             }
                             else{
                                 $scope.hideGrid = true;
                                 $scope.showEmptyData = true;
                             }
+
                         }
                         if($scope.report.reportEnum == 'Kilkari_Thematic_Content'){
                             if(result.data.tableData.length >0){
                                  $scope.gridOptions1.data = result.data.tableData;
                                  $scope.reportBreadCrumbData = result.data.breadCrumbData;
                                  $scope.hideGrid = false;
+                                 fileName = $scope.report.reportEnum;
                             }
                             else{
                                 $scope.hideGrid = true;
@@ -946,7 +989,7 @@
                             }
                         }
                         if($scope.report.reportEnum == 'Kilkari_Message_Matrix'){
-                            console.log(result.data.motherData.length);
+
                             if(result.data.motherData.length >0){
                                 $scope.gridOptions1.data = result.data.motherData;
                                 $scope.gridOptions1.showColumnFooter = false;
@@ -967,6 +1010,7 @@
                             else{
                                 $scope.hideMessageMatrix = true;
                             }
+                            fileName = $scope.report.reportEnum;
                         }
                        if($scope.report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise'){
                             if(result.data.numberData.length >0){
@@ -988,10 +1032,18 @@
                             else{
                                 $scope.hideMessageMatrix = true;
                             }
+                            fileName = $scope.report.reportEnum;
                        }
 
+                         $scope.gridOptions1.exporterExcelFilename = fileName + "_" + dateString;
+                         $scope.gridOptions1.exporterExcelSheetName = $scope.report.name;
                          $scope.gridOptions = $scope.gridOptions1;
                          $scope.gridOptions_Message_Matrix = $scope.gridOptions2;
+                         excelHeaderName.stateName ="ALL";
+                         excelHeaderName.stateName ="ALL";
+                         excelHeaderName.stateName ="ALL";
+
+
 
                     }
                 }
@@ -1075,7 +1127,6 @@
 				$scope.popup1.opened = true;
 				var currentDate = new Date();
 
-				console.log(currentDate.getMonth() + " " + currentDate.getDate() + " " +currentDate.getFullYear());
 				if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).indexOf(angular.lowercase("rejected")) > -1) ){
 				    if(currentDate.getMonth() == startMonth && currentDate.getDate() >= startDate && currentDate.getFullYear() == 2017 && $scope.getSundays(currentDate) > 0){
 				        $scope.dateOptions.maxDate = new Date().setMonth(new Date().getMonth());
@@ -1191,7 +1242,6 @@
                       var getTot = new Date(d.getFullYear(),d.getMonth()+1,0).getDate();
                     }
 
-                    console.log(getTot);
                      //Get total days in a month
                     var sun = new Array();   //Declaring array for inserting Sundays
                     for(var i=1;i<=getTot;i++){    //looping through days in month
@@ -1219,11 +1269,16 @@
                 $scope.sundaysTable = false;
             });
 
-            var canceler = $q.defer();
+            $scope.exportToExcel = function(){
 
+                   exportUiGridService.exportToExcel('sheet 1', $scope.gridApi,$scope.gridApi1, 'all', 'all', excelHeaderName);
+
+            }
+
+            var canceler = $q.defer();
             $scope.gridOptions1 = {
                 enableSorting: true,
-                 showColumnFooter: true,
+                showColumnFooter: true,
                 enableVerticalScrollbar : 0,
                 excessRows :1000,
                 onRegisterApi: function(gridApi){
@@ -1236,14 +1291,14 @@
                 enableVerticalScrollbar : 0,
                 excessRows :1000,
                 onRegisterApi: function(gridApi){
-                      $scope.gridApi = gridApi;
+                      $scope.gridApi1 = gridApi;
                     },
               };
 
             $scope.MA_Cumulative_Column_Definitions =[
-                                                       {name: 'S No.', displayName: 'S No.',width:"6%",enableSorting: false, cellTemplate: '<p class="serial-no" >{{rowRenderIndex+1}}</p>'},
-                                                       { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>', sort: { direction: 'asc', priority: 0 },
-                                                         cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}"  ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
+                                                       {name: 'S No.', displayName: 'S No.',width:"6%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no" >{{rowRenderIndex+1}}</p>'},
+                                                       { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>', defaultSort: { direction: uiGridConstants.ASC },
+                                                         cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}"  ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a>',
                                                          width: '12%', enableHiding: false,
                                                        },
                                                        { field: 'ashasRegistered', displayName : 'No of Registered ASHA', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
@@ -1258,9 +1313,9 @@
 
 
             $scope.MA_Performance_Column_Definitions =[
-                                                         {name: 'S No.', displayName: 'S No.',width:"6%", enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
-                                                         { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents">Total</div>',sort: { direction: 'asc', priority: 0 },
-                                                            cellTemplate:'<a class=" btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
+                                                         {name: 'S No.', displayName: 'S No.',width:"6%", enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
+                                                         { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents">Total</div>',defaultSort: { direction: uiGridConstants.ASC },
+                                                            cellTemplate:'<a class=" btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a>',
                                                             enableHiding: false, width:"12%",
 
                                                          },
@@ -1272,9 +1327,9 @@
                                                         ],
 
             $scope.MA_Subscriber_Column_Definitions =[
-                                                         {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
-                                                         { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',sort: { direction: 'asc', priority: 0 },
-                                                            cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
+                                                         {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
+                                                         { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',defaultSort: { direction: uiGridConstants.ASC },
+                                                            cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a>',
                                                             enableHiding: false,width:"14%",
 
                                                          },
@@ -1287,9 +1342,9 @@
                                                         ],
 
             $scope.Kilkari_Cumulative_Summary_Definitions =[
-                                                             {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
-                                                             { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',sort: { direction: 'asc', priority: 0 },
-                                                                cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
+                                                             {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
+                                                             { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',defaultSort: { direction: uiGridConstants.ASC },
+                                                                cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a>',
                                                                 enableHiding: false, width:"*",
                                                              },
                                                              { field: 'uniqueBeneficiaries', name: 'Total unique beneficiaries',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
@@ -1300,9 +1355,9 @@
             ]
 
             $scope.Kilkari_Usage_Definitions =[
-                                                 {name: 'S No.', displayName: 'S No.',width:"5%", enableSorting: false,cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
-                                                 { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',sort: { direction: 'asc', priority: 0 },
-                                                    cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
+                                                 {name: 'S No.', displayName: 'S No.',width:"5%", enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
+                                                 { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',defaultSort: { direction: uiGridConstants.ASC },
+                                                    cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a>',
                                                     enableHiding: false, width:"*",
                                                  },
                                                  { field: 'beneficiariesCalled', name: 'Total beneficiaries Called', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
@@ -1316,16 +1371,16 @@
             ]
 
             $scope.Kilkari_Aggregate_Beneficiaries_Definitions =[
-                                                     {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
-                                                     { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',sort: { direction: 'asc', priority: 0 },
-                                                        cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
+                                                     {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
+                                                     { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',defaultSort: { direction: uiGridConstants.ASC },
+                                                        cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a>',
                                                         enableHiding: false, width:"7%"
                                                      },
                                                      { field: 'beneficiariesCalled', name: 'Total beneficiaries Called',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                      { field: 'answeredAtleastOneCall', name: 'Beneficiaries who have answered at least one call',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                      { field: 'selfDeactivated', name: 'Beneficiaries who have self-deactivated',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
-                                                     { field: 'notAnswering', name: 'Beneficiaries deactivated for not answering.',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
-                                                     { field: 'lowListenership', name: 'Beneficiaries deactivated for low listenership.',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
+                                                     { field: 'notAnswering', name: 'Beneficiaries deactivated for not answering',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                     { field: 'lowListenership', name: 'Beneficiaries deactivated for low listenership',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
                                                      { field: 'systemDeactivation', displayName: 'Beneficiaries deactivated by system through MCTS/RCH updates',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"11%", enableHiding: false },
                                                      { field: 'motherCompletion', name: 'Beneficiaries completed Mother Pack',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
                                                      { field: 'childCompletion', name: 'Beneficiaries completed Child Pack',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
@@ -1335,9 +1390,9 @@
             ]
 
             $scope.Kilkari_Beneficiary_Completion_Definitions = [
-                                                     {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
-                                                     { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',sort: { direction: 'asc', priority: 0 },
-                                                        cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
+                                                     {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
+                                                     { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',defaultSort: { direction: uiGridConstants.ASC },
+                                                        cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a>',
                                                         enableHiding: false, width:"12%"
                                                      },
                                                      { field: 'completedBeneficiaries', name: 'Total beneficiaries Completed Program',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
@@ -1350,24 +1405,24 @@
             ]
 
             $scope.Kilkari_Listening_Matrix_Definitions =[
-                                                     { field: 'percentageCalls', name: 'Listening Percentage', width:"30%", enableHiding: false },
-                                                     { field: 'content_75_100', name: 'Listening > 75 % content', width:"*", enableHiding: false},
-                                                     { field: 'content_50_75', name: 'Listening 50 to 75 % content',width:"*", enableHiding: false },
-                                                     { field: 'content_25_50', name: 'Listening 25 to 50 % content', width:"*", enableHiding: false },
-                                                     { field: 'content_1_25', name: 'Listening < 25 % content',width:"*", enableHiding: false },
-                                                     { field: 'total', name: 'Total', width:"10%", enableHiding: false },
+                                                     { field: 'percentageCalls', name: 'Listening Percentage', enableSorting: false,width:"30%", enableHiding: false },
+                                                     { field: 'content_75_100', name: 'Listening > 75 % content', enableSorting: false,width:"*", enableHiding: false},
+                                                     { field: 'content_50_75', name: 'Listening 50 to 75 % content',enableSorting: false,width:"*", enableHiding: false },
+                                                     { field: 'content_25_50', name: 'Listening 25 to 50 % content', enableSorting: false,width:"*", enableHiding: false },
+                                                     { field: 'content_1_25', name: 'Listening < 25 % content',enableSorting: false,width:"*", enableHiding: false },
+                                                     { field: 'total', name: 'Total', enableSorting: false,width:"10%", enableHiding: false },
 
             ]
 
             $scope.Kilkari_Call_Report_Definitions = [
-                                                     {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
-                                                     { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',sort: { direction: 'asc', priority: 0 },
-                                                        cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
+                                                     {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
+                                                     { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',defaultSort: { direction: uiGridConstants.ASC },
+                                                        cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a>',
                                                         enableHiding: false, width:"12%"
                                                      },
-                                                     { field: 'successfulCalls', name: 'Total Calles Attempted',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'successfulCalls', name: 'Total Calls Attempted',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                      { field: 'content_75_100', name: 'Total Number of Successful Calls',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
-                                                     { field: 'content_75_100', name: 'Total calls where > 75% content listened to ',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
+                                                     { field: 'content_75_100', name: 'Total calls where > 75% content listened to',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
                                                      { field: 'content_50_75', name: 'Total calls where 50% to 75% content listened to',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
                                                      { field: 'content_25_50', name: 'Total calls where 25% to 49.9% content listened to',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                      { field: 'content_1_25', name: 'Total calls where < 25%  content listened to',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
@@ -1377,29 +1432,29 @@
             ]
 
             $scope.Kilkari_Message_Matrix_Motherpack_Definitions =[
-                                                     { field: 'messageWeek', name: 'Message Week',width:"*", enableHiding: false },
-                                                     { field: 'content_75_100', name: 'Total calls where > 75% content listened to ', width:"*", enableHiding: false},
-                                                     { field: 'content_50_75', name: 'Total calls where 50% to 75% content listened to', width:"*", enableHiding: false},
-                                                     { field: 'content_25_50', name: 'Total calls where 25% to 49.9% content listened to',width:"*", enableHiding: false },
-                                                     { field: 'content_1_25', name: 'Listening < 25 % content',width:"*", enableHiding: false },
-                                                     { field: 'total', name: 'Total', width:"*", enableHiding: false },
+                                                     { field: 'messageWeek', name: 'Message Week',enableSorting: false,width:"*", enableHiding: false },
+                                                     { field: 'content_75_100', name: 'Total calls where > 75% content listened to', enableSorting: false,width:"*", enableHiding: false},
+                                                     { field: 'content_50_75', name: 'Total calls where 50% to 75% content listened to', enableSorting: false,width:"*", enableHiding: false},
+                                                     { field: 'content_25_50', name: 'Total calls where 25% to 49.9% content listened to',enableSorting: false,width:"*", enableHiding: false },
+                                                     { field: 'content_1_25', name: 'Listening < 25 % content',enableSorting: false,width:"*", enableHiding: false },
+                                                     { field: 'total', name: 'Total', enableSorting: false,width:"*", enableHiding: false },
 
             ]
 
             $scope.Kilkari_Message_Matrix_Childpack_Definitions =[
-                                                     { field: 'messageWeek', name: 'Message Week',width:"*", enableHiding: false },
-                                                     { field: 'content_75_100', name: 'Total calls where > 75% content listened to ', width:"*", enableHiding: false},
-                                                     { field: 'content_50_75', name: 'Total calls where 50% to 75% content listened to', width:"*", enableHiding: false},
-                                                     { field: 'content_25_50', name: 'Total calls where 25% to 49.9% content listened to',width:"*", enableHiding: false },
-                                                     { field: 'content_1_25', name: 'Listening < 25 % content',width:"*", enableHiding: false },
-                                                     { field: 'total', name: 'Total', width:"*", enableHiding: false },
+                                                     { field: 'messageWeek', name: 'Message Week',enableSorting: false,width:"*", enableHiding: false },
+                                                     { field: 'content_75_100', name: 'Total calls where > 75% content listened to', enableSorting: false,width:"*", enableHiding: false},
+                                                     { field: 'content_50_75', name: 'Total calls where 50% to 75% content listened to',enableSorting: false, width:"*", enableHiding: false},
+                                                     { field: 'content_25_50', name: 'Total calls where 25% to 49.9% content listened to',enableSorting: false,width:"*", enableHiding: false },
+                                                     { field: 'content_1_25', name: 'Listening < 25 % content',enableSorting: false,width:"*", enableHiding: false },
+                                                     { field: 'total', name: 'Total', enableSorting: false,width:"*", enableHiding: false },
 
             ]
 
             $scope.Kilkari_Message_Listenership_Definitions = [
-                                                     {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
-                                                     { field: 'locationName',footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',sort: { direction: 'asc', priority: 0 },
-                                                        cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
+                                                     {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
+                                                     { field: 'locationName',footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',defaultSort: { direction: uiGridConstants.ASC },
+                                                        cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a>',
                                                         enableHiding: false, width:"12%"
                                                      },
                                                      { field: 'totalBeneficiariesCalled', name: 'Total beneficiaries Called',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
@@ -1412,9 +1467,9 @@
             ]
 
             $scope.Kilkari_Subscriber_Definitions = [
-                                                     {name: 'S No.', displayName: 'S No.',width:"4%",enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
-                                                     { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents">Total</div>',sort: { direction: 'asc', priority: 0 },
-                                                        cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType)">{{ COL_FIELD }}</a>',
+                                                     {name: 'S No.', displayName: 'S No.',width:"4%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
+                                                     { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents">Total</div>',defaultSort: { direction: uiGridConstants.ASC },
+                                                        cellTemplate:'<a class="btn aggregate-location" title="{{COL_FIELD}}" ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a>',
                                                         enableHiding: false,width:"10%"
                                                      },
                                                      { field: 'totalSubscriptionsStart', name: 'Total Subscription at the start of the period',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"12%", enableHiding: false },
@@ -1427,38 +1482,38 @@
             ]
 
             $scope.Kilkari_Thematic_Content_Definitions = [
-                                                     {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
+                                                     {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
                                                      { field: 'theme', name: 'Theme', width:"*", enableHiding: false },
                                                      { field: 'messageWeekNumber', name: 'Message Number (Week)', footerCellTemplate: '<div class="ui-grid-cell-contents">Total</div>', width:"*", enableHiding: false },
                                                      { field: 'uniqueBeneficiariesCalled', name: 'Number of unique beneficiaries called', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
                                                      { field: 'callsAnswered', name: 'Number of calls answered', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
-                                                     { field: 'minutesConsumed', name: 'Number of minutes consumed ', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false }
+                                                     { field: 'minutesConsumed', name: 'Number of minutes consumed', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false }
              ]
 
             $scope.Kilkari_RepeatListener_Numberdata_Definitions =[
-                                                     { field: 'month', name: 'Month',width:"*", enableHiding: false },
-                                                     { field: 'fiveCallsAnswered', name: '5 calls answered', width:"*", enableHiding: false},
-                                                     { field: 'fourCallsAnswered', name: '4 calls answered', width:"*", enableHiding: false},
-                                                     { field: 'threeCallsAnswered', name: '3 calls answered',width:"*", enableHiding: false },
-                                                     { field: 'twoCallsAnswered', name: '2 calls answered',width:"*", enableHiding: false },
-                                                     { field: 'oneCallAnswered', name: '1 call answered',width:"*", enableHiding: false },
-                                                     { field: 'noCallsAnswered', name: '0 calls answered',width:"*", enableHiding: false },
-                                                     { field: 'total', name: 'Total', width:"*", enableHiding: false },
+                                                     { field: 'month', enableSorting: false,name: 'Month number',width:"*", enableHiding: false },
+                                                     { field: 'fiveCallsAnswered',enableSorting: false, name: '5 calls answered', width:"*", enableHiding: false},
+                                                     { field: 'fourCallsAnswered',enableSorting: false, name: '4 calls answered', width:"*", enableHiding: false},
+                                                     { field: 'threeCallsAnswered', enableSorting: false,name: '3 calls answered',width:"*", enableHiding: false },
+                                                     { field: 'twoCallsAnswered', enableSorting: false,name: '2 calls answered',width:"*", enableHiding: false },
+                                                     { field: 'oneCallAnswered', enableSorting: false,name: '1 call answered',width:"*", enableHiding: false },
+                                                     { field: 'noCallsAnswered', enableSorting: false,name: '0 calls answered',width:"*", enableHiding: false },
+                                                     { field: 'total', enableSorting: false,name: 'Total', width:"*", enableHiding: false },
 
             ]
 
             $scope.Kilkari_RepeatListener_Percentdata_Definitions =[
-                                                     { field: 'month', name: 'Month',width:"*", enableHiding: false },
-                                                     { field: 'fiveCallsAnsweredPercent', name: '5 calls answered', width:"*", enableHiding: false},
-                                                     { field: 'fourCallsAnsweredPercent', name: '4 calls answered', width:"*", enableHiding: false},
-                                                     { field: 'threeCallsAnsweredPercent', name: '3 calls answered',width:"*", enableHiding: false },
-                                                     { field: 'twoCallsAnsweredPercent', name: '2 calls answered',width:"*", enableHiding: false },
-                                                     { field: 'oneCallAnsweredPercent', name: '1 call answered',width:"*", enableHiding: false },
-                                                     { field: 'noCallsAnsweredPercent', name: '0 calls answered',width:"*", enableHiding: false }
+                                                     { field: 'month', enableSorting: false,name: 'Month number',width:"*", enableHiding: false },
+                                                     { field: 'fiveCallsAnsweredPercent', enableSorting: false,name: '5 calls answered', width:"*", enableHiding: false},
+                                                     { field: 'fourCallsAnsweredPercent', enableSorting: false,name: '4 calls answered', width:"*", enableHiding: false},
+                                                     { field: 'threeCallsAnsweredPercent', enableSorting: false,name: '3 calls answered',width:"*", enableHiding: false },
+                                                     { field: 'twoCallsAnsweredPercent', enableSorting: false,name: '2 calls answered',width:"*", enableHiding: false },
+                                                     { field: 'oneCallAnsweredPercent', enableSorting: false,name: '1 call answered',width:"*", enableHiding: false },
+                                                     { field: 'noCallsAnsweredPercent', enableSorting: false,name: '0 calls answered',width:"*", enableHiding: false }
             ]
 
 
-            $scope.drillDownData = function(locationId,locationType){
+            $scope.drillDownData = function(locationId,locationType,locationName){
 
                   if(angular.lowercase(locationType) == "state"){
                     reportRequest.stateId = locationId;
@@ -1488,6 +1543,9 @@
                                     $scope.hideGrid = true;
                                 }
                                 $scope.gridOptions = $scope.gridOptions1;
+                                excelHeaderName.stateName = locationName;
+                                excelHeaderName.districtName = "ALL";
+                                excelHeaderName.blockName = "ALL";
                             }
 
                         })
@@ -1519,6 +1577,9 @@
                                        $scope.hideGrid = true;
                                    }
                                    $scope.gridOptions = $scope.gridOptions1;
+                                    excelHeaderName.stateName = "ALL";
+                                    excelHeaderName.districtName = "ALL";
+                                    excelHeaderName.blockName = "ALL";
                                }
 
                            })
@@ -1549,6 +1610,8 @@
                                      $scope.hideGrid = true;
                                  }
                                  $scope.gridOptions = $scope.gridOptions1;
+                                 excelHeaderName.districtName = locationName;
+                                 excelHeaderName.blockName = "ALL";
                              }
 
                          })
@@ -1578,6 +1641,7 @@
                                      $scope.hideGrid = true;
                                 }
                                 $scope.gridOptions = $scope.gridOptions1;
+                                excelHeaderName.blockName = locationName;
                             }
 
                         })

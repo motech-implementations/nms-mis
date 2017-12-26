@@ -93,7 +93,6 @@
             .then(function(result){
                 UserFormFactory.setCurrentUser(result.data);
                 $scope.currentUser = UserFormFactory.getCurrentUser();
-                console.log($scope.currentUser);
             })
 
 

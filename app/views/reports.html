@@ -303,14 +303,18 @@
     <div class="nav">
 	<ul class="breadcrumb aggregate-bread-crumb"  ng-hide = "hideGrid || report.reportEnum == 'Kilkari_Message_Matrix' || report.reportEnum == 'Kilkari_Listening_Matrix' || report.reportEnum == 'Kilkari_Thematic_Content' || report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise'">
 		<li ng-repeat="item in reportBreadCrumbData">
-			<a  ng-click = "drillDownData(item.locationId,item.locationType)" ng-class="{'active': item.status }" >{{item.locationName}}</a>
+			<a  ng-click = "drillDownData(item.locationId,item.locationType,item.locationName)" ng-class="{'active': item.status }" >{{item.locationName}}</a>
 		</li>
 	</ul>
     </div>
 
     <div class="reportheader" ng-hide="hideGrid">
         <p class="ng-binding" style="display: inline-block;"> {{reportCategory}} - {{report.name}}</p>
-		<i class="glyphicon glyphicon-calendar aggregate-calender"> <span class="calender-date">{{ headerFromDate | date:'dd/MM/y'}}</span> <span class="calender-date" style="font-size: 13px" ng-if=" report.name == 'MA Cumulative Summary' || report.reportEnum == 'Kilkari_Cumulative_Summary' ">Up</span><span class="calender-date">to</span> <span class="calender-date">{{headerToDate | date:'dd/MM/y'}}</span></i>
+		<div style="display: inline-block;float: right">
+			<i class="glyphicon glyphicon-calendar aggregate-calender"> <span ng-if=" report.name != 'MA Cumulative Summary' && report.reportEnum != 'Kilkari_Cumulative_Summary' " class="calender-date">{{ headerFromDate | date:'dd/MM/y'}}</span> <span class="calender-date" style="font-size: 13px" ng-if=" report.name == 'MA Cumulative Summary' || report.reportEnum == 'Kilkari_Cumulative_Summary' ">Up</span><span class="calender-date">to</span> <span class="calender-date">{{headerToDate | date:'dd/MM/y'}}</span></i>
+			<img ng-click = "exportToExcel()" style="float: right;margin-right: 7px; cursor : pointer" src="images/export3.png">
+		</div>
+
     </div>
 
 	<div class="reportheader matrixHeader" ng-hide="hideGrid || (report.reportEnum != 'Kilkari_Message_Matrix' && report.reportEnum != 'Kilkari_Repeat_Listener_Month_Wise')">
@@ -323,7 +327,7 @@
 			<p>Aggregate Report is being generated...</p>
 		</div>
 		<div >
-			<div id="grid1" ui-grid=gridOptions class="grid" ng-if ="!hideGrid && !waiting" ui-grid-infinite-scroll></div>
+			<div id="grid1" ui-grid=gridOptions class="grid" ng-if ="!hideGrid && !waiting" ui-grid-exporter  ui-grid-infinite-scroll></div>
 		</div>
 	</div>
 
@@ -337,7 +341,7 @@
 			<p>Aggregate Report is being generated...</p>
 		</div>
 		<div >
-			<div id="grid2" ui-grid=gridOptions_Message_Matrix class="grid" ng-if ="!hideMessageMatrix && !waiting" ui-grid-infinite-scroll></div>
+			<div id="grid2" ui-grid=gridOptions_Message_Matrix class="grid" ng-if ="!hideMessageMatrix && !waiting" ui-grid-exporter ui-grid-infinite-scroll></div>
 		</div>
 	</div>
 

@@ -11,9 +11,6 @@
 			var url = $location.absUrl();
 			var error = url.split('?')[1]
 
-			console.log(url.split('?')[0])
-			console.log(error)
-
 			$scope.errorMessage = "";
 			if(error == null){
 				$scope.errorMessage = "";
@@ -40,7 +37,6 @@
 //			}
 
 			$scope.login = function(e){
-			    console.log($scope.user);
 			    if($scope.user.username == null || $scope.user.username == ""){
 			        if(UserFormFactory.isInternetExplorer()){
                         alert("Please specify a username")
@@ -92,10 +88,9 @@
                     data    : postData, //forms user object
                     headers : {'Content-Type': 'application/json'}
                 }).then(function(response){
-                      console.log(response.data.success);
+
                       if(response.data.success){
                          var formElement = angular.element(e.target);
-                         console.log(formElement);
                          formElement.attr("action", $scope.loginUrl);
                          formElement.attr("method", "post");
                          formElement[0].submit();

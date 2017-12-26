@@ -87,16 +87,11 @@
                 },
 
                 isInternetExplorer : function(){
-                    console.log(deviceDetector.browser);
-                    console.log(deviceDetector.browser_version);
                     if(deviceDetector.browser == "ie" && (deviceDetector.browser_version = "10.0"))
                      return true;
                     else
                      return false;
                 }
-
-
-
 
 			};
 		}]);

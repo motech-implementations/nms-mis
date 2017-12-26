@@ -7,14 +7,14 @@
 				'userManagement.userTable': [
 					{
 						'name': 'User Management',
-						'sref': 'userManagement.userTable',
+						'sref': 'userManagement.userTable({pageNum: 1})',
 						'active': false,
 					}
 				],
 				'userManagement.createUser': [
 					{
 						'name': 'User Management',
-						'sref': 'userManagement.userTable',
+						'sref': 'userManagement.userTable({pageNum: 1})',
 						'active': true,
 					},
 					{
@@ -26,19 +26,19 @@
 				'userManagement.editUser': [
 					{
 						'name': 'User Management',
-						'sref': 'userManagement.userTable',
+						'sref': 'userManagement.userTable({pageNum: 1})',
 						'active': true,
 					},
 					{
 						'name': 'Edit User',
-						'sref': 'userManagement.editUser',
+						'sref': 'userManagement.editUser({pageNum: 1})',
 						'active': false,
 					},
 				], 
 				'userManagement.bulkUpload': [
 					{
 						'name': 'User Management',
-						'sref': 'userManagement.userTable',
+						'sref': 'userManagement.userTable({pageNum: 1})',
 						'active': true,
 					},
 					{
@@ -113,7 +113,6 @@
 			.then(function(result){
 				UserFormFactory.setCurrentUser(result.data);
 				$scope.currentUser = UserFormFactory.getCurrentUser();
-				console.log($scope.currentUser);
 			})
 
 			$scope.logoutUrl = backend_root + "nms/logout";
