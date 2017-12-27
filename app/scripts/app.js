@@ -9,27 +9,19 @@
  * Main module of the application.
  */
 var nmsReportsApp = angular
-	.module('nmsReports', ['ui.bootstrap', 'ui.validate', 'ngMessages', 'ui.router', 'ui.grid', 'ngMaterial', 'BotDetectCaptcha','ng.deviceDetector','ui.grid.exporter'])
+	.module('nmsReports', ['ui.bootstrap', 'ui.validate', 'ngMessages', 'ui.router', 'ui.grid', 'ngMaterial', 'BotDetectCaptcha','ng.deviceDetector','ui.grid.exporter', 'ngStorage'])
 	.run( ['$rootScope', '$state', '$stateParams',
 		function ($rootScope, $state, $stateParams) {
 			$rootScope.$state = $state;
 			$rootScope.$stateParams = $stateParams;
 		}
-	]).config(function ($stateProvider, $urlRouterProvider, $httpProvider,captchaSettingsProvider) {
+	]).config(function ($stateProvider, $urlRouterProvider, $httpProvider, captchaSettingsProvider) {
 		$stateProvider
 		
 			.state('userManagement', {
 				url: '/userManagement',
 				abstract: true,
 				templateUrl: 'views/userManagement.html'
-			})
-			.state('userManagement.userTable', {
-				url: '/:pageNum',
-				templateUrl: 'views/userTable.html',
-                reloadOnSearch: false,
-                controller: function($scope, $stateParams) {
-                    $scope.currentPageNo = $stateParams.pageNum;
-                }
 			})
 			.state('userManagement.bulkUpload', {
 				url: '/bulkUpload',
@@ -39,14 +31,30 @@ var nmsReportsApp = angular
 				url: '/create',
 				templateUrl: 'views/createUser.html'
 			})
-			.state('userManagement.editUser', {
-				url: '/edit/{id}',
-				templateUrl: 'views/editUser.html'
-			})
+            .state('userManagement.userTable', {
+                url: '/:pageNum',
+                templateUrl: 'views/userTable.html',
+                reloadOnSearch: false,
+                controller: function($scope, $stateParams) {
+                    $scope.currentPageNo = $stateParams.pageNum;
+                }
+            })
+            .state('userManagement.editUser', {
+                url: '/:pageNum/edit/:id',
+                templateUrl: 'views/editUser.html'
+            })
 
 			.state('login', {
 				url: '/login',
-				templateUrl: 'views/login.html'
+				templateUrl: 'views/login.html',
+				resolve: {
+					load: function($q, UserFormFactory) {
+                        UserFormFactory.isLoggedIn().then(function(res) {
+                        	// console.log(!(res.data));
+							return !(res.data);
+						});
+					}
+				}
 			})
 
 			.state('reports', {

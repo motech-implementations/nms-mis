@@ -1,7 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("UserTableController", ['$scope', '$state', '$filter', 'UserTableFactory', function($scope, $state, $filter, UserTableFactory){
+		.controller("UserTableController", ['$scope', '$state', '$filter', 'UserTableFactory', '$localStorage', function($scope, $state, $filter, UserTableFactory, $localStorage) {
             var selectedPage = $scope.currentPageNo;
             var lessRecordsFilter = false;
 			$scope.numPerPageList = [10, 20];
@@ -9,6 +9,19 @@
 
 			function init() {
 				$scope.numPerPage = $scope.numPerPageList[0];
+                var filter = $localStorage.filter;
+				if (filter) {
+					for (key in filter) {
+						if (filter[key]) {
+							$scope[key] = filter[key];
+							if (key === 'filterText') {
+								console.log(filter[key]);
+								$scope.filterText = filter[key];
+							}
+						}
+					}
+				}
+                delete $localStorage.filter;
 			}
 
 			UserTableFactory.clearAllUsers();
@@ -142,9 +155,7 @@
 				$scope.blockName = '';
 				$scope.accType = '';
 				$scope.accLevel = '';
-
 				$scope.filterText = '';
-
 				$scope.sorter = 'id';
 				$scope.reverse = false;
 			};
@@ -189,12 +200,26 @@
 			};
 
 			$scope.editUser = function(userId) {
-				$state.go('userManagement.editUser');
+				$localStorage.filter = {
+                    filterText: $scope.filterText ? $scope.filterText : null,
+					reverse: $scope.reverse ? $scope.reverse : null,
+					sorter: $scope.sorter ? $scope.sorter : null,
+					accLevel: $scope.accLevel ? $scope.accLevel : null,
+					accType: $scope.accType ? $scope.accType : null,
+                    stateName: $scope.stateName ? $scope.stateName : null,
+                    districtName: $scope.districtName ? $scope.districtName : null,
+                    blockName: $scope.blockName ? $scope.blockName : null
+				};
+				$state.go("userManagement.editUser", { pageNum: $scope.currentPageNo, id: userId});
 			};
 
 			$scope.deleteUser = function(user) {
-				console.log(user);
+
 			};
+
+			$scope.createUser = function() {
+
+			}
 
 		}])
 })();

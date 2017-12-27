@@ -116,39 +116,12 @@
 
 			</div>
 			<hr>
-<!-- 
-			<div class="form-group" ng-class="{'has-error':createUserForm.newPassword.$invalid && !createUserForm.newPassword.$pristine}">
-				<label class="control-label col-xs-2">New Password</label>
-				<div class="col-xs-10">
-					<input name="newPassword" id="newPassword" type="password" class="form-control input input-sm" ng-model="newUser.newPassword" placeholder="New Password" required
-					tooltip-placement="top" uib-tooltip="Errors: {{createUserForm.newPassword.$error|json}}">
-				</div>
-			</div>
-
-			<div class="form-group" ng-class="{'has-error':createUserForm.confirmPassword.$invalid && !createUserForm.confirmPassword.$pristine && (createUserForm.newPassword != createUserForm.confirmPassword)}">
-				<label class="control-label col-xs-2">Confirm Password</label>
-				<div class="col-xs-10">
-					<input name="confirmPassword" id="confirmPassword" type="password" class="form-control input input-sm" ng-model="confirmPassword" placeholder="Confirm Password" required 
-					ui-validate="'$value==newUser.newPassword'" ui-validate-watch=" 'newPassword'"
-					tooltip-placement="top" uib-tooltip="Errors: {{createUserForm.confirmPassword.$error|json}}">
-				</div>
-			</div>
- -->
 			<div class="form-group">
 				<div class="col-xs-offset-2 col-xs-10">
-					<button  type="button" class="btn btn-sm btn-default" ui-sref="userManagement.userTable">Cancel</button>
+					<button  type="button" class="btn btn-sm btn-default" ui-sref="userManagement.userTable({pageNum: 1})">Cancel</button>
 					<button  type="button" ng-click="createUserSubmit()" class="btn btn-sm btn-primary">Create New User</button>
 				</div>
 			</div>
-<!-- 
-			<div class="form-group">
-				<div class="col-xs-offset-2 col-xs-10">
-					<button class="btn btn-sm btn-default" ui-sref="userManagement.userTable">Cancel</button>
-					<button ng-click="editUserSubmit()" class="btn btn-sm btn-primary">Update User</button>
-				</div>
-			</div>
- -->
-
 		</form>
 	</div>
 </div>
