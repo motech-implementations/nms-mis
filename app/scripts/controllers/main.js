@@ -1,7 +1,7 @@
  (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("MainController", ['$scope', '$state', '$http', '$localStorage', 'UserFormFactory', function($scope, $state, $http, $localStorage, UserFormFactory) {
+		.controller("MainController", ['$scope', '$state', '$http', '$localStorage', '$rootScope', 'UserFormFactory', function($scope, $state, $http, $localStorage, $rootScope, UserFormFactory) {
 			
 			$scope.breadCrumbDict = {
 				'userManagement.userTable': [
@@ -116,6 +116,16 @@
 			});
 
 			$scope.logoutUrl = backend_root + "nms/logout";
+
+			$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+			    if (toState.name === 'login') {
+			        UserFormFactory.isLoggedIn().then(function(res) {
+                        if (res.data) {
+                            $state.go('reports');
+                        }
+                    });
+                }
+            });
 		}
 	])}
 
