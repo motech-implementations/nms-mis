@@ -264,6 +264,9 @@ public class EmailServiceImpl implements EmailService{
             body+="<pre>   </pre>Please find below the district wise count of ASHAs who have not yet started the Mobile Academy course." +
                     " The line listing of the ASHAs have been sent to the respective district and block users.";
 
+            body+="<br><br><pre>   </pre>You are requested to kindly instruct your field level workers and ask them to start accessing the Mobile Academy " +
+                    "course and complete the course which has been designed to provide effective training for their operations.";
+
             body+="<br><br><table width='100%' border='1' align='center'>"
                     + "<tr align='center'>"
                     + "<td><b>District Name<b></td>"
@@ -279,6 +282,12 @@ public class EmailServiceImpl implements EmailService{
         } else if(reportType.equals(ReportType.lowUsage.getReportType())){
             body+="<pre>   </pre>Please find below the district wise count of beneficiaries who are listening to less than 25% of the content of Kilkari messages in the last calendar month. " +
                     "The line listing of the individual beneficiaries have been sent to the respective district and block users. ";
+
+            body+="<br><br><pre>   </pre>You are requested to kindly instruct your field level workers to contact the beneficiaries personally" +
+                    " and ask them to listen to the Kilkari content for the complete duration of 90 secs." +
+                    " These Kilkari messages contains valuable information on the best practices of health, nutrition" +
+                    " and immunizations that they need to follow during their pregnancy period and child care.";
+
             body+= "<br><br><table width='100%' border='1' align='center'>"
                     + "<tr align='center'>"
                     + "<td><b>District Name<b></td>"
@@ -297,6 +306,16 @@ public class EmailServiceImpl implements EmailService{
             body+="<pre>   </pre>Please find below the district wise count of beneficiaries who have deactivated themselves from the " +
                     "Kilkari system. The line listing of the individual beneficiaries have been sent to the respective " +
                     "district and block users. ";
+
+            body+="<br><br><pre>   </pre>You are requested to kindly instruct your field level workers to contact the beneficiaries personally " +
+                    "and understand why they have deactivated from the system. If the mobile number belongs to the correct beneficiary" +
+                    " then they should be motivated to reactivate their Kilkari Subscription and listen to the Kilkari content" +
+                    " for the complete duration of 90 secs. If the mobile number does not belong to the correct beneficiary" +
+                    " then ask them to provide their mobile numbers through which they could receive the Kilkari messages" +
+                    " and update those mobile numbers in the RCH application. These Kilkari messages contains valuable information" +
+                    " on the best practices of health, nutrition and immunizations that they need to follow during their pregnancy period" +
+                    " and child care.";
+
             body+="<br><br><table width='100%' border='1' align='center'>"
                     + "<tr align='center'>"
                     + "<td><b>District Name<b></td>"
@@ -314,6 +333,16 @@ public class EmailServiceImpl implements EmailService{
                 reportType.equals(ReportType.lowListenership.getReportType())){
             body+= "<pre>   </pre>Please find below the district wise count of beneficiaries have been deactivated for listening low or not answering. " +
                     "The line listing of the individual beneficiaries have been sent to the respective district and block users.";
+
+            body+= "<br><br><pre>   </pre>You are requested to kindly instruct your field level workers to contact the beneficiaries personally" +
+                    " and understand why they are not listening to the Kilkari calls. If the mobile number belongs to the correct beneficiary" +
+                    " then they should be motivated to reactivate their Kilkari Subscription and listen to the Kilkari content" +
+                    " for the complete duration of 90 secs. If the mobile number does not belong to the correct beneficiary" +
+                    " then ask them to provide their mobile numbers through which they could receive the Kilkari messages" +
+                    " and update those mobile numbers in the RCH application. These Kilkari messages contains valuable information" +
+                    " on the best practices of health, nutrition and immunizations that they need to follow during their pregnancy period" +
+                    " and child care.";
+
             body+="<br><br><table width='100%' border='1' align='center'>"
                     + "<tr align='center'>"
                     + "<td><b>District Name<b></td>"
@@ -328,8 +357,12 @@ public class EmailServiceImpl implements EmailService{
             }
 
         } else if(reportType.equals(ReportType.flwRejected.getReportType())){
-            body+="<pre>   </pre>Please find attached the list of ASHAs rejected due to one of the following rejection reasons " +
-                    "viz.,MSISDN_ALREADY_IN_USE,FLW_TYPE_NOT_ASHA,FLW_IMPORT_ERROR,RECORD_ALREADY_EXISTS";
+            body+="<pre>   </pre>Please find below the district wise count of ASHAs whose mobile numbers registered" +
+                    " at the RCH application are either incorrect or not unique. The line listing of the ASHAs" +
+                    " have been sent to the respective district and block users.";
+
+            body+="<br><br><pre>   </pre>You are requested to kindly instruct your field level workers and ask them to provide their mobile numbers" +
+                    " through which they could call the Mobile Academy course and update those mobile numbers in the RCH application.";
 
             body+= "<br><br><table width='100%' border='1' align='center'>"
                     + "<tr align='center'>"
@@ -346,11 +379,13 @@ public class EmailServiceImpl implements EmailService{
         }
         else if(reportType.equals(ReportType.motherRejected.getReportType()) ||
                 reportType.equals(ReportType.childRejected.getReportType())){
-            body+= "<pre>   </pre>Please find attached the following files:<br>"
-                    + "1. The following List of mother records are rejected for one of the following rejection reasons" +
-                    " viz., Subscription Rejected,MSISDN already in use,Record already exists,Active child present,Invalid case no.<br>"
-                    +  "2. The following List of child records are rejected for one of the following rejection reasons " +
-                    "viz., MSISDN already in use,Subscription Rejected,Mother id error,Record already exists";
+            body+= "<pre>   </pre>Please find below the district wise count of beneficiaries whose mobile numbers registered" +
+                    " at the RCH application are either incorrect or not unique. The line listing of the beneficiaries " +
+                    "have been sent to the respective district and block users.";
+
+            body+= "<br><br><pre>   </pre>You are requested to kindly instruct your field level workers to contact the beneficiaries personally" +
+                    " and ask them to provide their mobile numbers through which they could receive the Kilkari messages" +
+                    " and update those mobile numbers in the RCH application.";
 
             body+=" <br><br><table width='100%' border='1' align='center'>"
                     + "<tr align='center'>"
