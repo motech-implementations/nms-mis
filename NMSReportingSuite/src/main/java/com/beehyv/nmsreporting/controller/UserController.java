@@ -949,18 +949,34 @@ public class UserController {
                 ReportType.kilkariCalls.getServiceType())
         );
 
-        kList.add(new Report(
-                ReportType.messageMatrix.getReportName(),
-                ReportType.messageMatrix.getReportType(),
-                "images/drop-down-2.png",
-                ReportType.messageMatrix.getServiceType())
-        );
-        kList.add(new Report(
-                ReportType.listeningMatrix.getReportName(),
-                ReportType.listeningMatrix.getReportType(),
-                "images/drop-down-2.png",
-                ReportType.listeningMatrix.getServiceType())
-        );
+        if(currentUser.getAccessLevel().equals(AccessLevel.NATIONAL.getAccessLevel())){
+            kList.add(new Report(
+                    ReportType.messageMatrix.getReportName(),
+                    ReportType.messageMatrix.getReportType(),
+                    "images/drop-down-2.png",
+                    ReportType.messageMatrix.getServiceType())
+            );
+            kList.add(new Report(
+                    ReportType.listeningMatrix.getReportName(),
+                    ReportType.listeningMatrix.getReportType(),
+                    "images/drop-down-2.png",
+                    ReportType.listeningMatrix.getServiceType())
+            );
+            kList.add(new Report(
+                    ReportType.kilkariThematicContent.getReportName(),
+                    ReportType.kilkariThematicContent.getReportType(),
+                    "images/drop-down-2.png",
+                    ReportType.kilkariThematicContent.getServiceType())
+            );
+            kList.add(new Report(
+                    ReportType.kilkariRepeatListenerMonthWise.getReportName(),
+                    ReportType.kilkariRepeatListenerMonthWise.getReportType(),
+                    "images/drop-down-2.png",
+                    ReportType.kilkariRepeatListenerMonthWise.getServiceType())
+            );
+        }
+
+
         kList.add(new Report(
                 ReportType.kilkariSubscriber.getReportName(),
                 ReportType.kilkariSubscriber.getReportType(),
@@ -973,18 +989,7 @@ public class UserController {
                 "images/drop-down-2.png",
                 ReportType.kilkariMessageListenership.getServiceType())
         );
-        kList.add(new Report(
-                ReportType.kilkariThematicContent.getReportName(),
-                ReportType.kilkariThematicContent.getReportType(),
-                "images/drop-down-2.png",
-                ReportType.kilkariThematicContent.getServiceType())
-        );
-        kList.add(new Report(
-                ReportType.kilkariRepeatListenerMonthWise.getReportName(),
-                ReportType.kilkariRepeatListenerMonthWise.getReportType(),
-                "images/drop-down-2.png",
-                ReportType.kilkariRepeatListenerMonthWise.getServiceType())
-        );
+
         kList.add(new Report(
                 ReportType.beneficiary.getReportName(),
                 ReportType.beneficiary.getReportType(),

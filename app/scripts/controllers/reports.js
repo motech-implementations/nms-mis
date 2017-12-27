@@ -495,6 +495,7 @@
 			}
 			$scope.clearState = function(){
 				$scope.state = null;
+				excelHeaderName.stateName = "ALL";
 				$scope.clearDistrict();
 				$scope.districts = [];
 				$scope.periodDisplayType = '';
@@ -523,6 +524,7 @@
 			}
 			$scope.clearDistrict = function(){
 				$scope.district = null;
+				excelHeaderName.districtName = "ALL";
 				$scope.clearBlock();
 				$scope.blocks = [];
 				$scope.periodDisplayType = '';
@@ -550,6 +552,7 @@
 			}
 			$scope.clearBlock = function(){
 				$scope.block = null;
+				excelHeaderName.blockName = "ALL";
 				$scope.periodDisplayType = '';
                 $scope.dt1 = null;
                 $scope.dt2 = null;
@@ -962,8 +965,8 @@
                                      $scope.gridOptions1.columnDefs[1].displayName = 'Block';
 
                                  }
-                                 else if(angular.lowercase(result.data.tableData[0].locationType) == 'subcenter' || angular.lowercase(result.data.tableData[0].locationType) == 'diferenceblock'){
-                                     $scope.gridOptions1.columnDefs[1].displayName = 'SubCenter';
+                                 else if(angular.lowercase(result.data.tableData[0].locationType) == 'subcenter' || angular.lowercase(result.data.tableData[0].locationType) == 'differenceblock'){
+                                     $scope.gridOptions1.columnDefs[1].displayName = 'Subcenter';
                                  }
                             }
                             else{

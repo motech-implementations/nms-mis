@@ -81,7 +81,7 @@ div.nav-bar .breadcrumb li a{
 	text-align: center;
 	padding: 12px 16px;
 	font-size: 12px;
-	cursor: pointer;
+	cursor: default;
 }
 
 .aggregate-submit{
@@ -586,13 +586,13 @@ color: white !important;
     padding : 10px 25px !important;
 }
 .report-type{
-    width : 221px;
+    width : 14%;
 }
 .non-aggregate{
-    width : 180px;
+    width : 11%;
 }
 .report-dropdown-menu, .type-aggregate{
-    width : 264px;
+    width : 17%;
 }
 .type-aggregate>li>a{
     padding : 5px 20px !important;
