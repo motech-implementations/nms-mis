@@ -200,16 +200,7 @@
 			};
 
 			$scope.editUser = function(userId) {
-				$localStorage.filter = {
-                    filterText: $scope.filterText ? $scope.filterText : null,
-					reverse: $scope.reverse ? $scope.reverse : null,
-					sorter: $scope.sorter ? $scope.sorter : null,
-					accLevel: $scope.accLevel ? $scope.accLevel : null,
-					accType: $scope.accType ? $scope.accType : null,
-                    stateName: $scope.stateName ? $scope.stateName : null,
-                    districtName: $scope.districtName ? $scope.districtName : null,
-                    blockName: $scope.blockName ? $scope.blockName : null
-				};
+			    setFilterInLocalStorage();
 				$state.go("userManagement.editUser", { pageNum: $scope.currentPageNo, id: userId});
 			};
 
@@ -218,8 +209,22 @@
 			};
 
 			$scope.createUser = function() {
+                setFilterInLocalStorage();
+                $state.go('userManagement.createUser');
+			};
 
-			}
+			function setFilterInLocalStorage() {
+                $localStorage.filter = {
+                    filterText: $scope.filterText ? $scope.filterText : null,
+                    reverse: $scope.reverse ? $scope.reverse : null,
+                    sorter: $scope.sorter ? $scope.sorter : null,
+                    accLevel: $scope.accLevel ? $scope.accLevel : null,
+                    accType: $scope.accType ? $scope.accType : null,
+                    stateName: $scope.stateName ? $scope.stateName : null,
+                    districtName: $scope.districtName ? $scope.districtName : null,
+                    blockName: $scope.blockName ? $scope.blockName : null
+                };
+            }
 
 		}])
 })();

@@ -46,15 +46,7 @@ var nmsReportsApp = angular
 
 			.state('login', {
 				url: '/login',
-				templateUrl: 'views/login.html',
-				resolve: {
-					load: function($q, UserFormFactory) {
-                        UserFormFactory.isLoggedIn().then(function(res) {
-                        	// console.log(!(res.data));
-							return !(res.data);
-						});
-					}
-				}
+				templateUrl: 'views/login.html'
 			})
 
 			.state('reports', {
