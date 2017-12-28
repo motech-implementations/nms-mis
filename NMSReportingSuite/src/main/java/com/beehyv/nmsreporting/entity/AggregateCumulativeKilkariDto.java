@@ -3,7 +3,7 @@ package com.beehyv.nmsreporting.entity;
 /**
  * Created by beehyv on 3/10/17.
  */
-public class AggregateCumulativeKilkariDto {
+public class AggregateCumulativeKilkariDto implements Comparable<AggregateCumulativeKilkariDto>{
 
     private int id;
     private String locationType;
@@ -76,5 +76,11 @@ public class AggregateCumulativeKilkariDto {
 
     public void setAverageDuration(Float averageDuration) {
         this.averageDuration = averageDuration;
+    }
+
+    @Override
+    public int compareTo(AggregateCumulativeKilkariDto compareDto) {
+        String location1 = compareDto.getLocationName();
+        return this.locationName.compareTo(location1);
     }
 }

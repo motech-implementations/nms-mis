@@ -1299,6 +1299,7 @@
 
             $scope.gridOptions2 = {
                 enableSorting: true,
+                useExternalSorting: true,
                 enableVerticalScrollbar : 0,
                 excessRows :1000,
                 onRegisterApi: function(gridApi){
