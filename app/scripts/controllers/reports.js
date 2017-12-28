@@ -1282,7 +1282,7 @@
 
             $scope.exportToExcel = function(){
 
-                   exportUiGridService.exportToExcel('sheet 1', $scope.gridApi,$scope.gridApi1, 'all', 'all', excelHeaderName);
+                   exportUiGridService.exportToExcel('sheet 1', $scope.gridApi,$scope.gridApi1, 'visible', 'visible', excelHeaderName);
 
             }
 
