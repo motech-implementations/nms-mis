@@ -591,8 +591,12 @@ color: white !important;
 .non-aggregate{
     width : 11%;
 }
-.report-dropdown-menu, .type-aggregate{
+.report-dropdown-menu, .type-aggregate-state{
     width : 17%;
+}
+
+.type-aggregate-district, .type-aggregate-block{
+    width : 18.5%;
 }
 .type-aggregate>li>a{
     padding : 5px 20px !important;
