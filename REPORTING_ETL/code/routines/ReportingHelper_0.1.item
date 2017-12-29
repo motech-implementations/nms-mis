@@ -59,7 +59,7 @@ public class ReportingHelper {
         Long operatorId = null;
         try {
             stmt1 = reportDBConn
-                    .prepareStatement("SELECT ID FROM operator_dimension where operator_code=?");
+                    .prepareStatement("SELECT ID FROM dim_operator where operator_code=?");
             stmt1.setString(1, operatorCode);
             rs1 = stmt1.executeQuery();
             if (rs1 != null && rs1.next()) {
@@ -68,7 +68,7 @@ public class ReportingHelper {
                 // Insert record
                 stmt2 = reportDBConn
                         .prepareStatement(
-                                "INSERT INTO operator_dimension(Operator,operator_code,DW_LastUpdatedDtim) VALUES(?, ?, now())",
+                                "INSERT INTO dim_operator(Operator,operator_code,DW_LastUpdatedDtim) VALUES(?, ?, now())",
                                 Statement.RETURN_GENERATED_KEYS);
                 stmt2.setString(1, operatorCode);
                 stmt2.setString(2, operatorCode);

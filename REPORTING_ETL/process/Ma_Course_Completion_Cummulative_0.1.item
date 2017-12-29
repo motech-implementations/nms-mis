@@ -286,7 +286,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" value="" show="false"/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select * from (select flw.flw_id,flw.flw_msisdn,flw.state_id,flw.district_id,flw.taluka_id,flw.village_id,&#xA;flw.block_id,flw.healthfacility_id,flw.healthsubfacility_id,&#xA;flw.flw_name,flw.external_flw_id,flw.creation_date,flw.job_status,&#xA;mcc.last_modified,mcc.sent_notification from ma_course_completion mcc&#xA;join front_line_worker flw on flw.flw_id = mcc.flw_id&#xA;where flw.flw_designation = 'ASHA'&#xA;and mcc.has_passed = 1&#xA;and flw.job_status = 'ACTIVE') a&#xA;group by a.flw_id&#xA;having min(a.last_modified)&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select flw.flw_id,flw.flw_msisdn,flw.state_id,flw.district_id,flw.taluka_id,flw.village_id,&#xA;flw.block_id,flw.healthfacility_id,flw.healthsubfacility_id,&#xA;flw.flw_name,flw.external_flw_id,flw.creation_date,flw.job_status,&#xA;min(mcc.creationDate) as first_completion,mcc.sent_notification from ma_course_completion mcc&#xA;join front_line_worker flw on flw.flw_id = mcc.flw_id&#xA;where flw.flw_designation = 'ASHA'&#xA;and mcc.has_passed = 1&#xA;and flw.job_status = 'ACTIVE' group by flw.flw_id&quot;"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" value="&quot;&quot;" show="false"/>
@@ -323,7 +323,7 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="job_status"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="last_modified"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="first_completion"/>
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="sent_notification"/>
       <elementValue elementRef="TRIM" value="false"/>
@@ -343,7 +343,7 @@
       <column comment="" key="false" length="-1" name="external_flw_id" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="creation_date" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="job_status" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="last_modified" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="first_completion" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="sent_notification" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_Boolean" usefulColumn="true"/>
     </metadata>
   </node>
@@ -393,7 +393,7 @@
         <mapperTableEntries name="external_flw_id" expression="row4.external_flw_id " type="id_String" nullable="true"/>
         <mapperTableEntries name="creation_date" expression="row4.creation_date " type="id_String" nullable="true"/>
         <mapperTableEntries name="job_status" expression="row4.job_status " type="id_String" nullable="true"/>
-        <mapperTableEntries name="first_completion" expression="row4.last_modified " type="id_String" nullable="true"/>
+        <mapperTableEntries name="first_completion" expression="row4.first_completion " type="id_String" nullable="true"/>
         <mapperTableEntries name="sent_notification" expression="row4.sent_notification " type="id_Boolean" nullable="true"/>
       </outputTables>
       <inputTables sizeState="INTERMEDIATE" name="row4" matchingMode="UNIQUE_MATCH" lookupMode="LOAD_ONCE">
@@ -410,7 +410,7 @@
         <mapperTableEntries name="external_flw_id" type="id_String" nullable="true"/>
         <mapperTableEntries name="creation_date" type="id_String" nullable="true"/>
         <mapperTableEntries name="job_status" type="id_String" nullable="true"/>
-        <mapperTableEntries name="last_modified" type="id_String" nullable="true"/>
+        <mapperTableEntries name="first_completion" type="id_String" nullable="true"/>
         <mapperTableEntries name="sent_notification" type="id_Boolean" nullable="true"/>
       </inputTables>
     </nodeData>
