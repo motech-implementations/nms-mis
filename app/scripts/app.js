@@ -49,6 +49,11 @@ var nmsReportsApp = angular
 				templateUrl: 'views/login.html'
 			})
 
+            .state('logout', {
+                url: '/login',
+                templateUrl: 'views/login.html'
+            })
+
 			.state('reports', {
 				url: '/reports',
 				templateUrl: 'views/reports.html'
@@ -72,7 +77,7 @@ var nmsReportsApp = angular
 			.otherwise('/login');
 
         captchaSettingsProvider.setSettings({
-            captchaEndpoint: backend_root + 'botdetectcaptcha'
+            captchaEndpoint: backend_root + 'botdetectcaptcha/'
         });
 
 			

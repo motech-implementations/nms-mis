@@ -29,9 +29,13 @@
 
                             if(result.data['0'] != "Current Password is incorrect"){
                                 alert(result.data['0']);
-                                $state.go('login', {});
+                                UserFormFactory.logoutUser().then(function(result){
+                                    if(result.data){
+                                        $state.go('logout', {});
+                                    }
+                                })
                                 return;
-                            }
+                        }
                             else{
                                 alert(result.data['0']);
                                 $scope.password = {};
@@ -44,7 +48,11 @@
 
                             if(result.data['0'] != "Current Password is incorrect"){
                                 UserFormFactory.showAlert(result.data['0'])
-                                $state.go('login', {});
+                                UserFormFactory.logoutUser().then(function(result){
+                                    if(result.data){
+                                        $state.go('logout', {});
+                                    }
+                                })
                                 return;
                             }
                             else{
@@ -73,11 +81,21 @@
                 if($scope.currentUser.default || $scope.currentUser.default == null){
                     if(UserFormFactory.isInternetExplorer()){
                          alert("Login and Change your Password");
-                         $state.go('login', {});
+                         UserFormFactory.logoutUser().then(function(result){
+                             if(result.data){
+                                 $state.go('logout', {});
+                             }
+                         })
+                         return;
                     }
                     else{
                          UserFormFactory.showAlert("Login and Change your Password")
-                         $state.go('login', {});
+                         UserFormFactory.logoutUser().then(function(result){
+                             if(result.data){
+                                 $state.go('logout', {});
+                             }
+                         })
+                         return;
                     }
 
 

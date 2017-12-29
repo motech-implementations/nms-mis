@@ -24,6 +24,10 @@
 					return $http.get(backend_root + 'nms/user/isLoggedIn');
 				},
 
+				logoutUser: function(){
+                    return $http.get(backend_root + 'nms/logout');
+                },
+
 				isAdminLoggedIn: function(){
 					return $http.get(backend_root + 'nms/user/isAdminLoggedIn');
 				},
