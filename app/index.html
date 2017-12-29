@@ -21,6 +21,7 @@
 	<script type="text/javascript" src="bower_components/angularjs-captcha/dist/angularjs-captcha.min.js"></script>
 	<script type="text/javascript" src="bower_components/re-tree/re-tree.js"></script>
 	<script type="text/javascript" src="bower_components/ng-device-detector/ng-device-detector.js"></script>
+	<script type="text/javascript" src="bower_components/ngstorage/ngStorage.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.9.12/xlsx.full.min.js"></script>
     <script src="https://fastcdn.org/FileSaver.js/1.1.20151003/FileSaver.min.js"></script>
 
@@ -76,9 +77,10 @@
 			<div class="nav">
 				<ul class="breadcrumb" ng-hide='$state.current.name=="login" || $state.current.name=="forgotPassword" || currentUser.default || currentUser.default == null'>
 					<li ng-repeat="item in getBreadCrumb($state.current.name)">
-						<a ui-sref='{{item.sref}}' ng-class="{'active': {{item.active}} }" >{{item.name}} </a>
+						<a ng-if="item.name != 'User Management' && item.name != 'Edit User'" ui-sref='{{item.sref}}' ng-class="{'active': {{item.active}} }" >{{item.name}} </a>
+						<a class="pointer" ng-click="goToUserTable()" ng-if="item.name == 'User Management'" ng-class="{'active': {{item.active}} }" >{{item.name}} </a>
+                        <a class="pointer" ng-if="item.name == 'Edit User'" ng-class="{'active': {{item.active}} }" >{{item.name}} </a>
 					</li>
-
 				</ul>
 				<ul class="nav-menu" ng-hide='$state.current.name=="login" || $state.current.name=="forgotPassword" || currentUser.default  || currentUser.default == null '>
 					<li>
@@ -91,7 +93,7 @@
 						<a ui-sref="profile">My Profile</a>
 					</li>
 					<li ng-class="{active: activeTab('userManagement')}" ng-if="currentUser.roleId!= null && currentUser.roleName != 'USER'">
-						<a ui-sref="userManagement.userTable({pageNum: 1})">User Management</a>
+						<a class="pointer" ng-click="goToUserTable()">User Management</a>
 					</li>
 					<li ng-class="{active: activeTab('reports')}">
 						<a ui-sref="reports">Reports</a>
