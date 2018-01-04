@@ -148,6 +148,7 @@ public class EmailServiceImpl implements EmailService{
             BodyPart messageBodyPart = new MimeBodyPart();
             messageBodyPart.setText(mailInfo.getBody());
             Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(messageBodyPart);
             List<String> filePaths=new ArrayList<>();
             filePaths.add(mailInfo.getRootPath());
             filePaths.add(mailInfo.getRootPath2());
@@ -218,6 +219,22 @@ public class EmailServiceImpl implements EmailService{
                     " numbers in the RCH application. These Kilkari messages contains valuable information on the " +
                     "best practices of health, nutrition and immunizations that they need to follow during their " +
                     "pregnancy period and child care.\n\n";
+        } else if(reportName.equalsIgnoreCase(ReportType.flwRejected.getReportName())){
+            body+="\tPlease find attached the list of ASHAs rejected due to one of the following rejection reasons " +
+                    "viz.,MSISDN_ALREADY_IN_USE,FLW_TYPE_NOT_ASHA,FLW_IMPORT_ERROR,RECORD_ALREADY_EXISTS\n";
+            body+="\tYou are requested to kindly instruct your field level workers and ask them to provide their mobile numbers" +
+                    " through which they could call the Mobile Academy course and update those mobile numbers in the RCH application.\n\n";
+
+        } else if(reportName.equalsIgnoreCase(ReportType.childRejected.getReportName())||reportName.equalsIgnoreCase(ReportType.motherRejected.getReportName())){
+            body+= "\tPlease find attached the following files:\n"
+                    + "1. The following List of mother records are deactivated for one of the following rejection reasons" +
+                    " viz., Subscription Rejected,MSISDN already in use,Record already exists,Active child present,Invalid case no.\n"
+                    +  "2. The following List of child records are deactivated for one of the following rejection reasons " +
+                    "viz., MSISDN already in use,Subscription Rejected,Mother id error,Record already exists\n";
+            body+= "\tYou are requested to kindly instruct your field level workers to contact the beneficiaries personally" +
+                    " and ask them to provide their mobile numbers through which they could receive the Kilkari messages" +
+                    " and update those mobile numbers in the RCH application.\n";
+
         }
         body+="Regards\n";
         body+= "NSP Support Team \n \n \n";
@@ -531,7 +548,7 @@ public class EmailServiceImpl implements EmailService{
                         newMail.setFileName2(file2Name);
                         newMail.setRootPath(file1Path);
                         newMail.setRootPath2(file2Path);
-                        newMail.setSubject("Rejected Mother and child Records for " +reportService.getDateMonthYear(c.getTime()));
+                        newMail.setSubject("Rejected Mother and Child Records for " +reportService.getDateMonthYear(c.getTime()));
 
                         //getBody should change
 

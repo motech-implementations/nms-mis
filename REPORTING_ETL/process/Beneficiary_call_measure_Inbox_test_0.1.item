@@ -384,7 +384,7 @@
         <mapperTableEntries name="state_id" expression="row3.state_id " type="id_Long" nullable="true"/>
         <mapperTableEntries name="call_status" expression="ReportingHelper.CallStatusInbox.getFor(row3.Call_Status) " type="id_String" nullable="true"/>
         <mapperTableEntries name="duration" expression="row3.Duration " type="id_Integer" nullable="true"/>
-        <mapperTableEntries name="percentage_listened" expression="row3.Percentage_Listened " type="id_Integer" nullable="true"/>
+        <mapperTableEntries name="percentage_listened" expression="" type="id_Integer" nullable="true"/>
         <mapperTableEntries name="call_source" expression="row3.Call_Source " type="id_String" nullable="true"/>
         <mapperTableEntries name="subscription_status" expression="row3.Subscription_Status " type="id_String" nullable="true"/>
         <mapperTableEntries name="duration_in_pulse" expression="row3.Duration_In_Pulses " type="id_Integer" nullable="true"/>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<talendfile:ProcessType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.talend.org/mapper" xmlns:talendfile="platform:/resource/org.talend.model/model/TalendFile.xsd" defaultContext="Default">
+<talendfile:ProcessType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.talend.org/mapper" xmlns:talendfile="platform:/resource/org.talend.model/model/TalendFile.xsd" defaultContext="Default" jobType="Standard">
   <context confirmationNeeded="false" name="Default">
     <contextParameter comment="" name="motech_server" prompt="motech_server?" promptNeeded="false" type="id_String" value="null"/>
     <contextParameter comment="" name="motech_password" prompt="motech_password?" promptNeeded="false" type="id_Password" value="RRyLGfljUdg="/>
@@ -258,7 +258,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" value="" show="false"/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select a.beneficiary_id as 'beneficiary_id',&#xA;a.subscription_id as 'subscription_id',&#xA;b.ms_isdn as 'msisdn',&#xA;a.mother_beneficiary as 'mother_beneficiary',&#xA;case when ((b.Subscription_Status='COMPLETED' or b.Subscription_Status='DEACTIVATED') and b.last_modified &lt;= DATE_FORMAT(NOW() ,'%Y-%m-01')) then (DATEDIFF(b.last_modified, b.activation_date))/7 else (DATEDIFF(DATE_FORMAT(NOW() ,'%Y-%m-01'), b.activation_date)-1)/7 end as 'age_on_service',&#xA;bf.name as 'name',&#xA;bf.state_id as 'state_id',&#xA;bf.district_id as 'district_id',&#xA;bf.healthBlock_id as 'block_id',&#xA;bf.healthSubFacility_id as 'hsubcenter_id',&#xA;bf.village_id as 'village_id',&#xA;Case when a.call_status ='SUCCESS' then MAX(a.modificationDate) END as 'modificationDate',&#xA;bf.mcts_id as 'mcts_id',&#xA;bf.rch_id as 'rch_id',&#xA;date_format(NOW() - interval 1 month,'%m_%y') as 'for_month'&#xA;from beneficiary_call_measure a&#xA;LEFT JOIN subscriptions b on a.subscription_id=b.subscription_id&#xA;LEFT JOIN dim_campaign d on a.campaign_id=d.id&#xA;left JOIN Beneficiary bf on bf.id = a.beneficiary_id&#xA;where a.modificationDate like DATE_FORMAT(NOW() - interval 1 month ,'%Y-%m%') and a.call_status = 'SUCCESS'&#xA;group by a.subscription_id &#xA;having ((SUM(case when a.modificationDate like DATE_FORMAT(NOW() - interval 1 month ,'%Y-%m%') and a.call_status = 'SUCCESS' and a.call_source = 'OBD' THEN a.msg_duration END)/SUM(CASE WHEN a.modificationDate like DATE_FORMAT(NOW() - interval 1 month ,'%Y-%m%') and a.call_status = 'SUCCESS' and a.call_source = 'OBD' THEN d.message_duration END))*100 &lt;= 25)&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select a.beneficiary_id as 'beneficiary_id',&#xA;a.subscription_id as 'subscription_id',&#xA;b.ms_isdn as 'msisdn',&#xA;a.mother_beneficiary as 'mother_beneficiary',&#xA;case when ((b.Subscription_Status='COMPLETED' or b.Subscription_Status='DEACTIVATED') and b.last_modified &lt;= DATE_FORMAT(NOW() ,'%Y-%m-01')) then (DATEDIFF(b.last_modified, b.activation_date))/7 else (DATEDIFF(DATE_FORMAT(NOW() ,'%Y-%m-01'), b.activation_date)-1)/7 end as 'age_on_service',&#xA;bf.name as 'name',&#xA;bf.state_id as 'state_id',&#xA;bf.district_id as 'district_id',&#xA;bf.healthBlock_id as 'block_id',&#xA;bf.healthSubFacility_id as 'hsubcenter_id',&#xA;bf.village_id as 'village_id',&#xA;Case when a.call_status ='SUCCESS' then MAX(a.modificationDate) END as 'modificationDate',&#xA;bf.mcts_id as 'mcts_id',&#xA;bf.rch_id as 'rch_id',&#xA;date_format(NOW() - interval 1 month,'%m_%y') as 'for_month'&#xA;from beneficiary_call_measure a&#xA;LEFT JOIN subscriptions b on a.subscription_id=b.subscription_id&#xA;LEFT JOIN message_durations d on a.campaign_id=d.id&#xA;left JOIN Beneficiary bf on bf.id = a.beneficiary_id&#xA;where a.modificationDate like DATE_FORMAT(NOW() - interval 1 month ,'%Y-%m%') and a.call_status = 'SUCCESS'&#xA;group by a.subscription_id &#xA;having ((SUM(case when a.modificationDate like DATE_FORMAT(NOW() - interval 1 month ,'%Y-%m%') and a.call_status = 'SUCCESS' and a.call_source = 'OBD' THEN a.msg_duration END)/SUM(CASE WHEN a.modificationDate like DATE_FORMAT(NOW() - interval 1 month ,'%Y-%m%') and a.call_status = 'SUCCESS' and a.call_source = 'OBD' THEN d.message_duration END))*100 &lt;= 25)&quot;"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" value="&quot;&quot;" show="false"/>
@@ -327,6 +327,7 @@
     <elementParameter field="IMAGE" name="PREVIEW" value="_vrme8DWTEeeS5MClhXu9XA-tMap_1-PREVIEW.bmp"/>
     <elementParameter field="CHECK" name="DIE_ON_ERROR" value="true" show="false"/>
     <elementParameter field="CHECK" name="LKUP_PARALLELIZE" value="false" show="false"/>
+    <elementParameter field="CHECK" name="ENABLE_AUTO_CONVERT_TYPE" value="false" show="false"/>
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="false"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
@@ -349,7 +350,7 @@
       <column comment="" key="false" length="-1" name="for_month" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="MapperData">
-      <uiProperties shellMaximized="true"/>
+      <uiProperties/>
       <varTables sizeState="INTERMEDIATE" name="Var"/>
       <outputTables sizeState="INTERMEDIATE" name="Kilkari_self_deactivated_data">
         <mapperTableEntries name="id" type="id_Integer" nullable="true"/>
