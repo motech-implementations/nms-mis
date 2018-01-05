@@ -158,13 +158,16 @@
                                v = gridApi.grid.columns[8].getAggregationValue()/gridApi.grid.columns[3].getAggregationValue();
                            }
                            else if(ft.displayName == "% Not Started Course" && excelHeaderName.reportName == "MA Cumulative Summary"){
-                              v = Math.round((gridApi.grid.columns[4].getAggregationValue()/gridApi.grid.columns[2].getAggregationValue())*10000)/100;
+                              var temp = gridApi.grid.columns[2].getAggregationValue()==0?0.00: (gridApi.grid.columns[4].getAggregationValue()/gridApi.grid.columns[2].getAggregationValue())*100;
+                              v = temp.toFixed(2);
                            }
                            else if(ft.displayName == "% Successfully Completed" && excelHeaderName.reportName == "MA Cumulative Summary"){
-                              v = Math.round((gridApi.grid.columns[5].getAggregationValue()/gridApi.grid.columns[3].getAggregationValue())*10000)/100;
+                              var temp = gridApi.grid.columns[3].getAggregationValue()==0?0.00:(gridApi.grid.columns[5].getAggregationValue()/gridApi.grid.columns[3].getAggregationValue())*100;
+                              v = temp.toFixed(2);
                            }
                            else if(ft.displayName == "% Failed the course" && excelHeaderName.reportName == "MA Cumulative Summary"){
-                              v = Math.round((gridApi.grid.columns[6].getAggregationValue()/gridApi.grid.columns[3].getAggregationValue())*10000)/100;
+                              var temp = gridApi.grid.columns[3].getAggregationValue()==0?0.00:(gridApi.grid.columns[6].getAggregationValue()/gridApi.grid.columns[3].getAggregationValue())*100;
+                              v = temp.toFixed(2);
                            }
                            else{
                                v = ft.getAggregationValue();
