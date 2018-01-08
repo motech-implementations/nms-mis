@@ -1549,6 +1549,9 @@
                                     $scope.hideGrid = false;
                                     $scope.gridOptions1.columnDefs[1].displayName = 'District';
                                     $scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.COLUMN );
+                                    fileName = $scope.report.reportEnum + "_" + $scope.reportBreadCrumbData[$scope.reportBreadCrumbData.length -1].locationName ;
+                                    $scope.gridOptions1.exporterExcelFilename = fileName + "_" + dateString;
+
                                 }
                                 else{
                                     $scope.showEmptyData = true;
@@ -1583,6 +1586,9 @@
                                        $scope.hideGrid = false;
                                        $scope.gridOptions1.columnDefs[1].displayName = 'State';
                                        $scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.COLUMN );
+                                       fileName = $scope.report.reportEnum + "_" + $scope.reportBreadCrumbData[$scope.reportBreadCrumbData.length -1].locationName ;
+                                       $scope.gridOptions1.exporterExcelFilename = fileName + "_" + dateString;
+
                                    }
                                    else{
                                        $scope.showEmptyData = true;
@@ -1616,6 +1622,9 @@
                                      $scope.hideGrid = false;
                                      $scope.gridOptions1.columnDefs[1].displayName = 'Block';
                                      $scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.COLUMN );
+                                     fileName = $scope.report.reportEnum + "_" + $scope.reportBreadCrumbData[$scope.reportBreadCrumbData.length -1].locationName ;
+                                     $scope.gridOptions1.exporterExcelFilename = fileName + "_" + dateString;
+
                                  }
                                  else{
                                      $scope.showEmptyData = true;
@@ -1647,6 +1656,8 @@
                                     $scope.hideGrid = false;
                                      $scope.gridOptions1.columnDefs[1].displayName = 'Subcenter';
                                      $scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.COLUMN );
+                                     fileName = $scope.report.reportEnum + "_" + $scope.reportBreadCrumbData[$scope.reportBreadCrumbData.length -1].locationName ;
+                                     $scope.gridOptions1.exporterExcelFilename = fileName + "_" + dateString;
                                 }
                                 else{
                                      $scope.showEmptyData = true;
