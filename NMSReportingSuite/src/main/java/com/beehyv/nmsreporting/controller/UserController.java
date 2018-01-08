@@ -694,9 +694,9 @@ public class UserController {
                     summaryDto1.setAshasNotStarted(a.getAshasNotStarted());
                     summaryDto1.setAshasStarted(a.getAshasStarted());
                     summaryDto1.setLocationType(a.getLocationType());
-                    summaryDto1.setCompletedPercentage((float) (a.getAshasStarted() == 0 ? 0 : (a.getAshasCompleted() * 10000 / a.getAshasStarted())) / 100);
-                    summaryDto1.setFailedpercentage((float) (a.getAshasStarted() == 0 ? 0 : (a.getAshasFailed() * 10000 / a.getAshasStarted())) / 100);
-                    summaryDto1.setNotStartedpercentage((float) (a.getAshasRegistered() == 0 ? 0 : (a.getAshasNotStarted() * 10000 / a.getAshasRegistered())) / 100);
+                    summaryDto1.setCompletedPercentage((float) (a.getAshasStarted() == 0 ? 0 : (Math.round((a.getAshasCompleted() * 10000.0f/ a.getAshasStarted())))) / 100f);
+                    summaryDto1.setFailedpercentage((float) (a.getAshasStarted() == 0 ? 0 : (Math.round((a.getAshasFailed() * 10000.0f / a.getAshasStarted())))) / 100f);
+                    summaryDto1.setNotStartedpercentage((float) (a.getAshasRegistered() == 0 ? 0 : (Math.round((a.getAshasNotStarted() * 10000.0f / a.getAshasRegistered())))) / 100f);
                     String locationType = a.getLocationType();
                     if (locationType.equalsIgnoreCase("State")) {
                         summaryDto1.setLocationName(stateDao.findByStateId(a.getLocationId().intValue()).getStateName());

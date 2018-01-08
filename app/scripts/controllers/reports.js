@@ -1321,7 +1321,7 @@
                                                        { field: 'notStartedpercentage' , displayName : '% Not Started Course',cellFilter: 'number: 2', footerCellTemplate: '<div class="ui-grid-cell-contents" >{{grid.columns[2].getAggregationValue()==0 ? 0.00:(grid.columns[4].getAggregationValue()/grid.columns[2].getAggregationValue()) *100 | number:2}}</div>', width:"*", enableHiding: false},
                                                        { field: 'completedPercentage' , displayName : '% Successfully Completed',cellFilter: 'number: 2', footerCellTemplate: '<div class="ui-grid-cell-contents" >{{grid.columns[3].getAggregationValue()==0 ? 0.00:(grid.columns[5].getAggregationValue()/grid.columns[3].getAggregationValue())*100 | number:2}}</div>', width:"*", enableHiding: false},
                                                        { field: 'failedpercentage' , displayName : '% Failed the course',cellFilter: 'number: 2', footerCellTemplate: '<div class="ui-grid-cell-contents" >{{grid.columns[3].getAggregationValue()==0 ? 0.00:(grid.columns[6].getAggregationValue()/grid.columns[3].getAggregationValue()) *100 | number:2}}</div>', width:"*", enableHiding: false},
-                                                      ],
+                                                     ],
 
 
             $scope.MA_Performance_Column_Definitions =[
