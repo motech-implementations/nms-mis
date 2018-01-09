@@ -951,6 +951,7 @@
                         if($scope.report.reportEnum != 'Kilkari_Message_Matrix' && $scope.report.reportEnum != 'Kilkari_Listening_Matrix' && $scope.report.reportEnum != 'Kilkari_Repeat_Listener_Month_Wise' && $scope.report.reportEnum != 'Kilkari_Thematic_Content' ){
                             if(result.data.tableData.length >0){
                              $scope.gridOptions1.data = result.data.tableData;
+                             $scope.gridOptions1.showColumnFooter = true;
                              $scope.reportBreadCrumbData = result.data.breadCrumbData;
                              $scope.hideGrid = false;
                              console.log(angular.lowercase(result.data.tableData[0].locationType));
