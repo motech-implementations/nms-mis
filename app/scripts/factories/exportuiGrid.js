@@ -190,13 +190,16 @@
                                v = "Total";
 
                            else if(ft.displayName == "Average Duration Of Call" && excelHeaderName.reportName == "Kilkari Cumulative Summary"){
-                               v = gridApi.grid.columns[4].getAggregationValue()/gridApi.grid.columns[3].getAggregationValue();
+                               var temp = gridApi.grid.columns[3].getAggregationValue()==0?0.00: (gridApi.grid.columns[4].getAggregationValue()/gridApi.grid.columns[3].getAggregationValue());
+                               v = Number(temp.toFixed(2));
                            }
                            else if(ft.displayName == "Average Number of Weeks in Service" && excelHeaderName.reportName == "Kilkari Beneficiary Completion"){
-                               v = gridApi.grid.columns[3].getAggregationValue()/gridApi.grid.columns.length;
+                               var temp = gridApi.grid.columns.length==0?0.00: (gridApi.grid.columns[3].getAggregationValue()/gridApi.grid.columns.length);
+                               v = Number(temp.toFixed(2));
                            }
                            else if(ft.displayName == "Average Duration Of Calls" && excelHeaderName.reportName == "Kilkari Call"){
-                               v = gridApi.grid.columns[8].getAggregationValue()/gridApi.grid.columns[3].getAggregationValue();
+                               var temp = gridApi.grid.columns[3].getAggregationValue()==0?0.00: (gridApi.grid.columns[8].getAggregationValue()/gridApi.grid.columns[3].getAggregationValue());
+                               v = Number(temp.toFixed(2));
                            }
                            else if(ft.displayName == "% Not Started Course" && excelHeaderName.reportName == "MA Cumulative Summary"){
                               var temp = gridApi.grid.columns[2].getAggregationValue()==0?0.00: (gridApi.grid.columns[4].getAggregationValue()/gridApi.grid.columns[2].getAggregationValue())*100;
