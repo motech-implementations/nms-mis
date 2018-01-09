@@ -25,6 +25,7 @@
                         var data1 = uiGridExporterService.getData(gridApi1.grid, rowTypes, colTypes);
                     }
                     var fileName = gridApi.grid.options.exporterExcelFilename ? gridApi.grid.options.exporterExcelFilename : 'dokuman';
+                    fileName = fileName.replace("*","");
                     fileName += '.xlsx';
                     var wb = new Workbook(),
                         ws = sheetFromArrayUiGrid(data, columns,data1,columns1,excelHeaderName,gridApi,gridApi1,rowTypes, colTypes);
