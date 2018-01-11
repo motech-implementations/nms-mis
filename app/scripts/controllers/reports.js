@@ -248,7 +248,7 @@
 				if($scope.userHasOneCircle()){
                 	$scope.selectCircle($scope.circles[0]);
                 }
-                if($scope.report.reportEnum == 'Kilkari_Message_Matrix' || $scope.report.reportEnum == 'Kilkari_Listening_Matrix' || $scope.report.reportEnum == 'Kilkari_Usage' || $scope.report.reportEnum == 'Kilkari_Message_Listenership' || $scope.report.reportEnum == 'Kilkari_Thematic_Content' || $scope.report.reportEnum == 'Kilkari_Beneficiary'){
+                if($scope.report.reportEnum == 'Kilkari_Message_Matrix' || $scope.report.reportEnum == 'Kilkari_Listening_Matrix' || $scope.report.reportEnum == 'Kilkari_Usage' || $scope.report.reportEnum == 'Kilkari_Message_Listenership' || $scope.report.reportEnum == 'Kilkari_Thematic_Content' || $scope.report.reportEnum == 'Kilkari_Aggregate_Beneficiary'){
                     $scope.periodType = ['Year','Month','Quarter'];
                 }
                 else if($scope.report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise'){
@@ -919,7 +919,7 @@
 					    }
 					    else if($scope.report.reportEnum == 'Kilkari_Usage')
 					        $scope.gridOptions1.columnDefs = $scope.Kilkari_Usage_Definitions;
-					    else if($scope.report.reportEnum == 'Kilkari_Beneficiary'){
+					    else if($scope.report.reportEnum == 'Kilkari_Aggregate_Beneficiary'){
 					        $scope.gridOptions1.columnDefs = $scope.Kilkari_Aggregate_Beneficiaries_Definitions;
 					    }
 					    else if($scope.report.reportEnum == 'Kilkari_Beneficiary_Completion'){
