@@ -995,6 +995,7 @@
                         if($scope.report.reportEnum == 'Kilkari_Thematic_Content'){
                             if(result.data.tableData.length >0){
                                  $scope.gridOptions1.data = result.data.tableData;
+                                 $scope.gridOptions1.showColumnFooter = true;
                                  $scope.reportBreadCrumbData = result.data.breadCrumbData;
                                  $scope.hideGrid = false;
                                  fileName = $scope.report.reportEnum;
