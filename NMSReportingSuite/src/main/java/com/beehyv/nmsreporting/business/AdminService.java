@@ -41,4 +41,6 @@ public interface AdminService {
 
   void createFlwImportRejectedFiles(Date toDate);
 
+  void modifySpecificReport(ReportRequest reportRequest);
+
 }

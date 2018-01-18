@@ -60,4 +60,12 @@ public class MACourseAttemptDaoImpl extends AbstractDao<Integer, User> implement
         return (Long) criteria.uniqueResult();
 
     }
+
+    @Override
+    public MACourseFirstCompletion getSuccessFulCompletionByExtrnalFlwId(Date toDate, Long Extr_Flw_Id){
+        Criteria criteria = getSession().createCriteria(MACourseFirstCompletion.class);
+        criteria.add(Restrictions.lt("firstCompletionDate",toDate))
+                .add(Restrictions.eq("externalFlwId",Extr_Flw_Id));
+        return (MACourseFirstCompletion) criteria.uniqueResult();
+    }
 }

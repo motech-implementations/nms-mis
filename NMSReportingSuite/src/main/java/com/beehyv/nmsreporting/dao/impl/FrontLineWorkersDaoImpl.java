@@ -81,4 +81,19 @@ public class FrontLineWorkersDaoImpl extends AbstractDao<Integer,FrontLineWorker
         )).setProjection(Projections.rowCount());
         return (Long) criteria.uniqueResult();
     }
+
+    @Override
+    public FrontLineWorkers getINactiveFrontLineWorkerByExternalFlwID(Date toDate, String Ext_Flw_Id){
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.and(
+                Restrictions.eq("status","INACTIVE").ignoreCase(),
+                Restrictions.lt("creationDate",toDate),
+                Restrictions.eq("jobStatus","ACTIVE").ignoreCase(),
+                Restrictions.eq("designation","ASHA").ignoreCase(),
+                Restrictions.eq("externalFlwId",Ext_Flw_Id)
+        ));
+        return (FrontLineWorkers) criteria.uniqueResult();
+
+
+    }
 }

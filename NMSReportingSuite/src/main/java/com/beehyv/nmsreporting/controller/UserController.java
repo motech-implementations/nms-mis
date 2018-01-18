@@ -790,6 +790,10 @@ public class UserController {
                 adminService.createSpecificReport(reportRequest);
             }
 
+            if ((file.exists())) {
+                adminService.modifySpecificReport(reportRequest);
+            }
+
             m.put("status", "success");
             m.put("file", reportName);
             m.put("path", reportRequest.getReportType() + "/" + rootPath);
