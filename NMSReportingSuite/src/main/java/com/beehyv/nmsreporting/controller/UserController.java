@@ -786,12 +786,14 @@ public class UserController {
             reportName = filename;
 
             File file = new File(reportPath + reportName);
-            if (!(file.exists())) {
-                adminService.createSpecificReport(reportRequest);
-            }
 
             if ((file.exists())) {
                 adminService.modifySpecificReport(reportRequest);
+            }
+
+
+            if (!(file.exists())) {
+                adminService.createSpecificReport(reportRequest);
             }
 
             m.put("status", "success");

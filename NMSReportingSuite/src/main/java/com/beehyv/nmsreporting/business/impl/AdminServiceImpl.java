@@ -1398,8 +1398,6 @@ public class AdminServiceImpl implements AdminService {
                     if (cell7.getStringCellValue().equalsIgnoreCase("No Village") && maCourseFirstCompletion.getVillageId() != null) {
                         cell7.setCellValue(villageDao.findByVillageId(maCourseFirstCompletion.getVillageId()).getVillageName());
                     }
-
-                    rowcount++;
                 }
                 file.close();
 
@@ -1602,8 +1600,6 @@ public class AdminServiceImpl implements AdminService {
                 if (cell7.getStringCellValue().equalsIgnoreCase("No Village") && frontLineWorker.getVillage() != null) {
                     cell7.setCellValue(villageDao.findByVillageId(frontLineWorker.getVillage()).getVillageName());
                 }
-
-                rowcount++;
             }
             file.close();
 
