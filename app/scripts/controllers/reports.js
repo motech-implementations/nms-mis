@@ -36,7 +36,7 @@
 			$scope.districts = [];
 			$scope.blocks = [];
 			$scope.circles = [];
-			$scope.datePickerContent = "Select Month";
+			$scope.datePickerContent = " Month";
 			$scope.reportDisplayType = 'TABLE';
 			$scope.gridOptions = {};
 			$scope.gridOptions1 = {};
@@ -167,7 +167,7 @@
                 $scope.hideMessageMatrix = true;
                 $scope.showEmptyData = false;
                 if($scope.periodDisplayType == 'Year' || $scope.periodDisplayType == 'Quarter' ){
-                    $scope.periodTypeContent = "Select year";
+                    $scope.periodTypeContent = " year";
                     $scope.dateFormat = "yyyy";
                     $scope.datePickerOptions.minMode = '';
                     $scope.datePickerOptions.datepickerMode = 'year';
@@ -175,7 +175,7 @@
                     $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear() -1);
                 }
                 if($scope.periodDisplayType == 'Month'){
-                    $scope.periodTypeContent = "Select month";
+                    $scope.periodTypeContent = " month";
                     $scope.dateFormat = "yyyy-MM";
                      $scope.datePickerOptions.minMode = '';
                     $scope.datePickerOptions.datepickerMode = 'month';
@@ -260,7 +260,7 @@
                 	$scope.datePickerContent = "Select Week";
                 }
                 else
-                    $scope.datePickerContent = "Select Month";
+                    $scope.datePickerContent = " Month";
                 $scope.periodDisplayType = '';
                 $scope.dt1 = null;
                 $scope.dt2 = null;
@@ -1097,7 +1097,7 @@
 				$scope.clearCircle();
 				$scope.clearFile();
 				$scope.dt = null;
-				$scope.datePickerContent = "Select Month";
+				$scope.datePickerContent = " Month";
 				$scope.dt1 = null;
 				$scope.dt2 = null;
 				$scope.hideGrid = true;
