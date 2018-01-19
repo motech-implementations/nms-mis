@@ -17,9 +17,13 @@ public interface AdminService {
 
   void getCumulativeCourseCompletionFiles( Date toDate);
 
+  void modifyCumulativeCourseCompletionFiles(Date toDate, Integer stateIdRequest);
+
   void getCircleWiseAnonymousFiles(Date fromDate,Date toDate);
 
   void getCumulativeInactiveFiles(Date toDate);
+
+  void modifyCumulativeInactiveFiles(Date toDate, Integer stateIdRequest);
 
   void getKilkariSixWeekNoAnswerFiles(Date fromDate, Date toDate);
 

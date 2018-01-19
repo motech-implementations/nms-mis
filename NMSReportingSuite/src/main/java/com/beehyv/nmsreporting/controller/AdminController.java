@@ -259,6 +259,45 @@ public class AdminController {
         return "Reports Generated";
     }
 
+    @RequestMapping(value = "/updateReports/{reportType}/{stateId}/{relativeMonth}", method = RequestMethod.GET)
+    @ResponseBody
+    public String updateReportsByNameStateAndMonth(@PathVariable("reportType") String reportType, @PathVariable("relativeMonth") Integer relativeMonth,@PathVariable("stateId") Integer stateId) throws ParseException, java.text.ParseException{
+//        User user=userService.getCurrentUser();
+//        if(user==null || ! (user.getRoleName().equals(AccessType.MASTER_ADMIN.getAccessType()))) {
+//            return "You are not authorised";
+//        }
+
+        ReportType tempReportType = ReportType.valueOf(reportType);
+        Calendar aCalendar = Calendar.getInstance();
+        Date toDate;
+
+            aCalendar.add(Calendar.MONTH, (-1) * relativeMonth);
+            aCalendar.set(Calendar.DATE, 1);
+            aCalendar.set(Calendar.MILLISECOND, 0);
+            aCalendar.set(Calendar.SECOND, 0);
+            aCalendar.set(Calendar.MINUTE, 0);
+            aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+            aCalendar.add(Calendar.MONTH, 1);
+
+            toDate = aCalendar.getTime();
+
+
+        switch (tempReportType) {
+            case maCourse: {
+                adminService.modifyCumulativeCourseCompletionFiles(toDate,stateId);
+                break;
+            }
+
+            case maInactive:{
+                adminService.modifyCumulativeInactiveFiles(toDate,stateId);
+                break;
+            }
+
+        }
+        return "Reports Updated";
+    }
+
+
     @RequestMapping(value = {"/state/{serviceType}"}, method = RequestMethod.GET)
     public @ResponseBody
     List<State> getStatesByServiceType(@PathVariable("serviceType") String serviceType) {
