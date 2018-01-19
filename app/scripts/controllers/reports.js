@@ -1497,11 +1497,11 @@
 
             $scope.Kilkari_Thematic_Content_Definitions = [
                                                      {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
-                                                     { field: 'theme', name: 'Theme', width:"*", enableHiding: false },
+                                                     { field: 'theme',  cellTooltip: true, name: 'Theme', width:"*", enableHiding: false },
                                                      { field: 'messageWeekNumber', name: 'Message Number (Week)', footerCellTemplate: '<div class="ui-grid-cell-contents">Total</div>', width:"*", enableHiding: false },
                                                      { field: 'uniqueBeneficiariesCalled', name: 'Number of unique beneficiaries called', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
                                                      { field: 'callsAnswered', name: 'Number of calls answered', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
-                                                     { field: 'minutesConsumed', name: 'Number of minutes consumed', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false }
+                                                     { field: 'minutesConsumed', name: 'Number of minutes consumed', cellFilter: 'number: 2', footerCellFilter: 'number:2',aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false }
              ]
 
             $scope.Kilkari_RepeatListener_Numberdata_Definitions =[

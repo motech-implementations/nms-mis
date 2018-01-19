@@ -14,6 +14,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,13 +38,14 @@ public class KilkariThematicContentReportDaoImpl extends AbstractDao<Integer,Kil
         ));
 
         List<KilkariThematicContent> result = (List<KilkariThematicContent>)criteria.list();
+        BigDecimal d = new BigDecimal(0.00);
         if(result.isEmpty()){
-            kilkariThematicContent = new KilkariThematicContent(0,date,"",week_id,(long)0,(long)0,(long)0);
+            kilkariThematicContent = new KilkariThematicContent(0,date,"",week_id,(long)0,(long)0,d);
             return kilkariThematicContent;
         }
         kilkariThematicContent = result.get(0);
         kilkariThematicContent.setCallsAnswered(kilkariThematicContent.getCallsAnswered() == null ? 0 : kilkariThematicContent.getCallsAnswered());
-        kilkariThematicContent.setMinutesConsumed(kilkariThematicContent.getMinutesConsumed() == null ? 0 : kilkariThematicContent.getMinutesConsumed());
+        kilkariThematicContent.setMinutesConsumed(kilkariThematicContent.getMinutesConsumed() == null ? d : kilkariThematicContent.getMinutesConsumed());
         kilkariThematicContent.setUniqueBeneficiariesCalled(kilkariThematicContent.getUniqueBeneficiariesCalled() == null ? 0 : kilkariThematicContent.getUniqueBeneficiariesCalled());
         kilkariThematicContent.setTheme(kilkariThematicContent.getTheme() == null ? "" : kilkariThematicContent.getTheme());
         return kilkariThematicContent;

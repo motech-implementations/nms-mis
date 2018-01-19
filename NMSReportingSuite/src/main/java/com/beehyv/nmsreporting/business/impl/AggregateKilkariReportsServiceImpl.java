@@ -1384,7 +1384,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             kilkariThematicContentReportDto.setCallsAnswered(kilkariThematicContentData.getCallsAnswered());
             kilkariThematicContentReportDto.setUniqueBeneficiariesCalled(kilkariThematicContentData.getUniqueBeneficiariesCalled());
             kilkariThematicContentReportDto.setMessageWeekNumber("w"+i);
-            if(kilkariThematicContentReportDto.getCallsAnswered()+kilkariThematicContentReportDto.getMinutesConsumed()+kilkariThematicContentReportDto.getUniqueBeneficiariesCalled() > 0){
+            if(kilkariThematicContentReportDto.getCallsAnswered()+kilkariThematicContentReportDto.getMinutesConsumed().floatValue()+kilkariThematicContentReportDto.getUniqueBeneficiariesCalled() > 0){
                 kilkariThematicContentReportDtoList.add(kilkariThematicContentReportDto);
             }
         }
