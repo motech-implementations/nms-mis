@@ -1518,12 +1518,12 @@
 
             $scope.Kilkari_RepeatListener_Percentdata_Definitions =[
                                                      { field: 'month', enableSorting: false,name: 'Month',width:"*", enableHiding: false },
-                                                     { field: 'fiveCallsAnsweredPercent', enableSorting: false,name: '5 calls answered', width:"*", enableHiding: false},
-                                                     { field: 'fourCallsAnsweredPercent', enableSorting: false,name: '4 calls answered', width:"*", enableHiding: false},
-                                                     { field: 'threeCallsAnsweredPercent', enableSorting: false,name: '3 calls answered',width:"*", enableHiding: false },
-                                                     { field: 'twoCallsAnsweredPercent', enableSorting: false,name: '2 calls answered',width:"*", enableHiding: false },
-                                                     { field: 'oneCallAnsweredPercent', enableSorting: false,name: '1 call answered',width:"*", enableHiding: false },
-                                                     { field: 'noCallsAnsweredPercent', enableSorting: false,name: '0 calls answered',width:"*", enableHiding: false }
+                                                     { field: 'fiveCallsAnsweredPercent', cellFilter: 'number: 2', enableSorting: false,name: '5 calls answered', width:"*", enableHiding: false},
+                                                     { field: 'fourCallsAnsweredPercent',cellFilter: 'number: 2', enableSorting: false,name: '4 calls answered', width:"*", enableHiding: false},
+                                                     { field: 'threeCallsAnsweredPercent', cellFilter: 'number: 2', enableSorting: false,name: '3 calls answered',width:"*", enableHiding: false },
+                                                     { field: 'twoCallsAnsweredPercent', cellFilter: 'number: 2', enableSorting: false,name: '2 calls answered',width:"*", enableHiding: false },
+                                                     { field: 'oneCallAnsweredPercent',cellFilter: 'number: 2', enableSorting: false,name: '1 call answered',width:"*", enableHiding: false },
+                                                     { field: 'noCallsAnsweredPercent', cellFilter: 'number: 2', enableSorting: false,name: '0 calls answered',width:"*", enableHiding: false }
             ]
 
 
