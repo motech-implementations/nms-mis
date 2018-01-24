@@ -167,7 +167,7 @@
                 $scope.hideMessageMatrix = true;
                 $scope.showEmptyData = false;
                 if($scope.periodDisplayType == 'Year' || $scope.periodDisplayType == 'Quarter' ){
-                    $scope.periodTypeContent = " year";
+                    $scope.periodTypeContent = " Year";
                     $scope.dateFormat = "yyyy";
                     $scope.datePickerOptions.minMode = '';
                     $scope.datePickerOptions.datepickerMode = 'year';
@@ -175,7 +175,7 @@
                     $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear() -1);
                 }
                 if($scope.periodDisplayType == 'Month'){
-                    $scope.periodTypeContent = " month";
+                    $scope.periodTypeContent = " Month";
                     $scope.dateFormat = "yyyy-MM";
                      $scope.datePickerOptions.minMode = '';
                     $scope.datePickerOptions.datepickerMode = 'month';
