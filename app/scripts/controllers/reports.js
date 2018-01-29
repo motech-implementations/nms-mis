@@ -6,7 +6,7 @@
 			UserFormFactory.isLoggedIn()
 			.then(function(result){
 				if(!result.data){
-					$state.go('login', {});
+		.go('login', {});
 				}
 				else{
 					UserFormFactory.downloadCurrentUser()

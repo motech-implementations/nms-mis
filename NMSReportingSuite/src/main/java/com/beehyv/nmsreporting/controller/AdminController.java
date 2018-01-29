@@ -283,14 +283,18 @@ public class AdminController {
 
 
         switch (tempReportType) {
-            case maCourse: {
-                adminService.modifyCumulativeCourseCompletionFiles(toDate,stateId);
-                break;
-            }
+//            case maCourse: {
+//                adminService.modifyCumulativeCourseCompletionFiles(toDate,stateId);
+//                break;
+//            }
 
             case maInactive:{
                 adminService.modifyCumulativeInactiveFiles(toDate,stateId);
                 break;
+            }
+
+            default:{
+                return "Incorrect Report Type";
             }
 
         }
@@ -314,6 +318,16 @@ public class AdminController {
 
         return locationService.getServiceStartdateForState(stateId, serviceType);
     }
+
+    @RequestMapping(value = "/updateBeneficiaryCallMeasure", method = RequestMethod.GET)
+    @ResponseBody
+    public String updateBeneficiaryCallMeasureUsingCsv() throws ParseException, java.text.ParseException{
+
+
+
+        return "Database updated";
+    }
+
 
 
 }
