@@ -1596,7 +1596,8 @@ public class AdminServiceImpl implements AdminService {
 
     private void updateCumulativeInactiveUsers(List<FrontLineWorkers> inactiveCandidates, String rootPath, String place, Date toDate, ReportRequest reportRequest) {
 
-        if(! inactiveCandidates.isEmpty()) {
+        if(! inactiveCandidates.isEmpty())
+        {
         try {
             boolean create =false;
 
@@ -1699,9 +1700,9 @@ public class AdminServiceImpl implements AdminService {
                         FrontLineWorkers frontLineWorker = frontLineWorkersHashMap.get(ext_flw_id);
                         //Update the value of cell
 
-                        if (frontLineWorker == null) {
-                            continue;
-                        }
+//                        if (frontLineWorker == null) {
+//                            continue;
+//                        }
                         cell3 = sheetrow.getCell(3);
                         if (cell3.getStringCellValue() != null && cell3.getStringCellValue().equalsIgnoreCase("No Block") && frontLineWorker.getBlock() != null) {
                             String temp =blockDao.findByblockId(frontLineWorker.getBlock()).getBlockName();

@@ -147,12 +147,15 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             }
             if (locationType.equalsIgnoreCase("DifferenceState")) {
                 summaryDto1.setLocationName("No District");
+                summaryDto1.setLink(true);
             }
             if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
                 summaryDto1.setLocationName("No Block");
+                summaryDto1.setLink(true);
             }
             if (locationType.equalsIgnoreCase("DifferenceBlock")) {
                 summaryDto1.setLocationName("No Subcenter");
+                summaryDto1.setLink(true);
             }
             if(a.getId() != 0){
                 summaryDto.add(summaryDto1);
@@ -314,15 +317,18 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                         }
                         if (locationType.equalsIgnoreCase("DifferenceState")) {
                             kilkariSubscriberDto.setLocationName("No District Count");
+                            kilkariSubscriberDto.setLink(true);
                             kilkariSubscriberDto.setLocationId((long)-1);
                         }
                         if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
                             kilkariSubscriberDto.setLocationName("No Block Count");
+                            kilkariSubscriberDto.setLink(true);
                             kilkariSubscriberDto.setLocationId((long)-1);
 
                         }
                         if (locationType.equalsIgnoreCase("DifferenceBlock")) {
                             kilkariSubscriberDto.setLocationName("No Subcenter Count");
+                            kilkariSubscriberDto.setLink(true);
                             kilkariSubscriberDto.setLocationId((long)-1);
 
                         }
@@ -503,12 +509,15 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 }
                 if (locationType.equalsIgnoreCase("DifferenceState")) {
                     summaryDto1.setLocationName("No District");
+                    summaryDto1.setLink(true);
                 }
                 if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
                     summaryDto1.setLocationName("No Block");
+                    summaryDto1.setLink(true);
                 }
                 if (locationType.equalsIgnoreCase("DifferenceBlock")) {
                     summaryDto1.setLocationName("No Subcenter");
+                    summaryDto1.setLink(true);
                 }
                 if (a.getId() != 0) {
                     summaryDto.add(summaryDto1);
@@ -724,12 +733,15 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 }
                 if (locationType.equalsIgnoreCase("DifferenceState")) {
                     summaryDto1.setLocationName("No District");
+                    summaryDto1.setLink(true);
                 }
                 if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
                     summaryDto1.setLocationName("No Block");
+                    summaryDto1.setLink(true);
                 }
                 if (locationType.equalsIgnoreCase("DifferenceBlock")) {
                     summaryDto1.setLocationName("No Subcenter");
+                    summaryDto1.setLink(true);
                 }
 
                 if(a.getId()!=0){
@@ -926,12 +938,15 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 }
                 if (locationType.equalsIgnoreCase("DifferenceState")) {
                     kilkariMessageListenershipReportDto.setLocationName("No District");
+                    kilkariMessageListenershipReportDto.setLink(true);
                 }
                 if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
                     kilkariMessageListenershipReportDto.setLocationName("No Block");
+                    kilkariMessageListenershipReportDto.setLink(true);
                 }
                 if (locationType.equalsIgnoreCase("DifferenceBlock")) {
                     kilkariMessageListenershipReportDto.setLocationName("No Subcenter");
+                    kilkariMessageListenershipReportDto.setLink(true);
                 }
                 if(a.getId()!=0){
                     kilkariMessageListenershipReportDtoList.add(kilkariMessageListenershipReportDto);
@@ -1135,15 +1150,18 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                         }
                         if (locationType.equalsIgnoreCase("DifferenceState")) {
                             aggCumulativeBeneficiaryComplDto.setLocationName("No District Count");
+                            aggCumulativeBeneficiaryComplDto.setLink(true);
                             aggCumulativeBeneficiaryComplDto.setLocationId((long) -1);
                         }
                         if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
                             aggCumulativeBeneficiaryComplDto.setLocationName("No Block Count");
+                            aggCumulativeBeneficiaryComplDto.setLink(true);
                             aggCumulativeBeneficiaryComplDto.setLocationId((long) -1);
 
                         }
                         if (locationType.equalsIgnoreCase("DifferenceBlock")) {
                             aggCumulativeBeneficiaryComplDto.setLocationName("No Subcenter Count");
+                            aggCumulativeBeneficiaryComplDto.setLink(true);
                             aggCumulativeBeneficiaryComplDto.setLocationId((long) -1);
 
                         }
@@ -1720,15 +1738,18 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                         }
                         if (locationType.equalsIgnoreCase("DifferenceState")) {
                             kilkariCallReportDto.setLocationName("No District Count");
+                            kilkariCallReportDto.setLink(true);
                             kilkariCallReportDto.setLocationId((long) -1);
                         }
                         if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
                             kilkariCallReportDto.setLocationName("No Block Count");
+                            kilkariCallReportDto.setLink(true);
                             kilkariCallReportDto.setLocationId((long) -1);
 
                         }
                         if (locationType.equalsIgnoreCase("DifferenceBlock")) {
                             kilkariCallReportDto.setLocationName("No Subcenter Count");
+                            kilkariCallReportDto.setLink(true);
                             kilkariCallReportDto.setLocationId((long) -1);
 
                         }

@@ -19,6 +19,7 @@ public class KilkariAggregateBeneficiariesDto {
     private Long childCompletion;
     private Long calledInbox;
     private Long joinedSubscription;
+    private boolean link;
 
     public Integer getId() {
         return id;
@@ -130,5 +131,13 @@ public class KilkariAggregateBeneficiariesDto {
 
     public void setJoinedSubscription(Long joinedSubscription) {
         this.joinedSubscription = joinedSubscription;
+    }
+
+    public boolean isLink() {
+        return link;
+    }
+
+    public void setLink(boolean link) {
+        this.link = link;
     }
 }

@@ -13,6 +13,7 @@ public class AggregateCumulativeKilkariDto{
     private Long successfulCalls;
     private Long billableMinutes;
     private Float averageDuration;
+    private boolean link = false;
 
     public int getId() {
         return id;
@@ -78,5 +79,11 @@ public class AggregateCumulativeKilkariDto{
         this.averageDuration = averageDuration;
     }
 
+    public boolean isLink() {
+        return link;
+    }
 
+    public void setLink(boolean link) {
+        this.link = link;
+    }
 }
