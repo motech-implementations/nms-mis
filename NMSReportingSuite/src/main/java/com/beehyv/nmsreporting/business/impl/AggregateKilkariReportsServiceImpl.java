@@ -1002,7 +1002,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         }
         else if(locationType.equalsIgnoreCase("Block")) {
             List<Block> blocks = blockDao.getBlocksOfDistrict(locationId);
-            KilkariMessageListenership districtCounts = kilkariMessageListenershipReportDao.getListenerData(locationId,locationType,date);
+            KilkariMessageListenership districtCounts = kilkariMessageListenershipReportDao.getListenerData(locationId,"district",date);
             Long answeredAtleastOneCall = (long)0;
             Long answeredMoreThan75Per = (long)0;
             Long answered50To75Per = (long)0;
@@ -1030,7 +1030,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             noBlockCount.setAnsweredMoreThan75Per(districtCounts.getAnsweredMoreThan75Per() - answeredMoreThan75Per);
             noBlockCount.setAnsweredNoCalls(districtCounts.getAnsweredNoCalls() - answeredNoCalls);
             noBlockCount.setTotalBeneficiariesCalled(districtCounts.getTotalBeneficiariesCalled() - totalBeneficiariesCalled);
-            noBlockCount.setLocationType("DifferenceState");
+            noBlockCount.setLocationType("DifferenceDistrict");
             noBlockCount.setId((int)(noBlockCount.getAnswered1To25Per()+noBlockCount.getAnswered25To50Per()+noBlockCount.getAnswered50To75Per()+noBlockCount.getAnsweredAtleastOneCall()+noBlockCount.getAnsweredMoreThan75Per()+noBlockCount.getAnsweredNoCalls()+noBlockCount.getTotalBeneficiariesCalled()));
             noBlockCount.setLocationId((long)(-1));
             kilkariMessageListenershipList.add(noBlockCount);
@@ -1066,7 +1066,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             noSubcenterCount.setAnsweredMoreThan75Per(blockCounts.getAnsweredMoreThan75Per() - answeredMoreThan75Per);
             noSubcenterCount.setAnsweredNoCalls(blockCounts.getAnsweredNoCalls() - answeredNoCalls);
             noSubcenterCount.setTotalBeneficiariesCalled(blockCounts.getTotalBeneficiariesCalled() - totalBeneficiariesCalled);
-            noSubcenterCount.setLocationType("DifferenceState");
+            noSubcenterCount.setLocationType("DifferenceBlock");
             noSubcenterCount.setId((int)(noSubcenterCount.getAnswered1To25Per()+noSubcenterCount.getAnswered25To50Per()+noSubcenterCount.getAnswered50To75Per()+noSubcenterCount.getAnsweredAtleastOneCall()+noSubcenterCount.getAnsweredMoreThan75Per()+noSubcenterCount.getAnsweredNoCalls()+noSubcenterCount.getTotalBeneficiariesCalled()));
             noSubcenterCount.setLocationId((long)(-1));
             kilkariMessageListenershipList.add(noSubcenterCount);
