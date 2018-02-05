@@ -20,9 +20,13 @@ import java.util.List;
 @Repository("kilkariRepeatListenerMonthWiseDao")
 public class KilkariRepeatListenerMonthWiseDaoImpl extends AbstractDao<Integer,KilkariRepeatListenerMonthWise> implements KilkariRepeatListenerMonthWiseDao {
 
-    public KilkariRepeatListenerMonthWise getListenerData(Date date){
+    public KilkariRepeatListenerMonthWise getListenerData(Integer locationId, String locationType,Date date){
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("date"));
-        criteria.add(Restrictions.eq("date", date));
+        criteria.add(Restrictions.and(
+                Restrictions.eq("locationId",locationId.longValue()),
+                Restrictions.eq("locationType",locationType),
+                Restrictions.eq("date", date)
+        ));
         List<KilkariRepeatListenerMonthWise> kilkariRepeatListenerMonthWiseList = criteria.list();
         if(kilkariRepeatListenerMonthWiseList.isEmpty()){
             KilkariRepeatListenerMonthWise kilkariRepeatListenerMonthWise = new KilkariRepeatListenerMonthWise(0,date,0,0,0,0,0,0);

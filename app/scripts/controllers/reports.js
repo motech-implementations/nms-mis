@@ -110,10 +110,6 @@
 				return $scope.states[0]  == null || $scope.userHasState() || $scope.report == null;
 			}
 
-			$scope.disableStateIfNoLocation = function(){
-                return $scope.states[0]  == null || $scope.userHasState() || $scope.report == null || $scope.report.reportEnum == 'Kilkari_Message_Matrix' || $scope.report.reportEnum == 'Kilkari_Listening_Matrix' || $scope.report.reportEnum == 'Kilkari_Thematic_Content' || $scope.report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise';
-            }
-
 			$scope.disableDistrict = function(){
 				return $scope.districts[0]  == null || $scope.userHasDistrict();	
 			}

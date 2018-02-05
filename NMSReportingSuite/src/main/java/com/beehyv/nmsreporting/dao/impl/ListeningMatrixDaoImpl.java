@@ -20,10 +20,14 @@ import java.util.List;
 public class ListeningMatrixDaoImpl extends AbstractDao<Integer,ListeningMatrix> implements ListeningMatrixDao{
 
     @Override
-    public ListeningMatrix getListeningMatrix(Date date){
+    public ListeningMatrix getListeningMatrix(Integer locationId, String locationType, Date date){
 
         Criteria criteria = createEntityCriteria();
-        criteria.add(Restrictions.eq("date",date));
+        criteria.add(Restrictions.and(
+                Restrictions.eq("locationId",locationId.longValue()),
+                Restrictions.eq("locationType",locationType),
+                Restrictions.eq("date", date)
+        ));
 
         List<ListeningMatrix> result = criteria.list();
         if(result.isEmpty()){
