@@ -106,7 +106,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         aCalendar.set(Calendar.MINUTE, 0);
         aCalendar.set(Calendar.HOUR_OF_DAY, 0);
 
-//        aCalendar.add(Calendar.MONTH, -1);
+        aCalendar.add(Calendar.DATE, 1);
 
         toDate = aCalendar.getTime();
         List<AggregateCumulativeKilkariDto> summaryDto = new ArrayList<>();
@@ -157,7 +157,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 summaryDto1.setLocationName("No Subcenter");
                 summaryDto1.setLink(true);
             }
-            if(a.getId() != 0){
+            if(a.getId() != 0 && !locationType.equalsIgnoreCase("DifferenceState")){
                 summaryDto.add(summaryDto1);
             }
         }
@@ -335,7 +335,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
 
                         if((kilkariSubscriberDto.getTotalSubscriptionsEnd() + kilkariSubscriberDto.getTotalSubscriptionsStart() + kilkariSubscriberDto.getTotalBeneficiaryRecordsReceived()
                                 + kilkariSubscriberDto.getTotalBeneficiaryRecordsEligible() + kilkariSubscriberDto.getTotalBeneficiaryRecordsAccepted()
-                                + kilkariSubscriberDto.getTotalRecordsRejected() + kilkariSubscriberDto.getTotalSubscriptionsCompleted()) != 0){
+                                + kilkariSubscriberDto.getTotalRecordsRejected() + kilkariSubscriberDto.getTotalSubscriptionsCompleted()) != 0 && !locationType.equalsIgnoreCase("DifferenceState")){
                             kilkariSubscriberDtoList.add(kilkariSubscriberDto);
                         }
                     }
@@ -519,7 +519,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     summaryDto1.setLocationName("No Subcenter");
                     summaryDto1.setLink(true);
                 }
-                if (a.getId() != 0) {
+                if (a.getId() != 0 && !locationType.equalsIgnoreCase("DifferenceState")) {
                     summaryDto.add(summaryDto1);
                 }
             }
@@ -537,7 +537,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             }
         } else if(locationType.equalsIgnoreCase("District")){
                 List<District> districts = districtDao.getDistrictsOfState(locationId);
-                AggregateCumulativeBeneficiary stateCounts = (aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary((long)locationId,locationType,toDate));
+                AggregateCumulativeBeneficiary stateCounts = (aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary((long)locationId,"State",toDate));
                 Long beneficiariesCalled = (long)0;
                 Long beneficiariesAnsweredAtleastOnce = (long)0;
                 Long selfDeactivated = (long)0;
@@ -744,7 +744,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     summaryDto1.setLink(true);
                 }
 
-                if(a.getId()!=0){
+                if(a.getId()!=0&& !locationType.equalsIgnoreCase("DifferenceState")){
                     summaryDto.add(summaryDto1);
                 }
             }
@@ -948,7 +948,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     kilkariMessageListenershipReportDto.setLocationName("No Subcenter");
                     kilkariMessageListenershipReportDto.setLink(true);
                 }
-                if(a.getId()!=0){
+                if(a.getId()!=0 && !locationType.equalsIgnoreCase("DifferenceState")){
                     kilkariMessageListenershipReportDtoList.add(kilkariMessageListenershipReportDto);
                 }
             }
@@ -1168,7 +1168,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
 
                         if ((aggCumulativeBeneficiaryComplDto.getCompletedBeneficiaries() + aggCumulativeBeneficiaryComplDto.getCalls_1_25() + aggCumulativeBeneficiaryComplDto.getCalls_25_50()
                                 + aggCumulativeBeneficiaryComplDto.getCalls_50_75() + aggCumulativeBeneficiaryComplDto.getCalls_75_100()
-                                + aggCumulativeBeneficiaryComplDto.getAvgWeeks()) != 0) {
+                                + aggCumulativeBeneficiaryComplDto.getAvgWeeks()) != 0 && !locationType.equalsIgnoreCase("DifferenceState")) {
                             summaryDto.add(aggCumulativeBeneficiaryComplDto);
                         }
                     }
@@ -1721,7 +1721,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                         kilkariCallReportDto.setCallsAttempted(end.getCallsAttempted() - start.getCallsAttempted());
                         kilkariCallReportDto.setCallsToInbox(end.getCallsToInbox() - start.getCallsToInbox());
                         kilkariCallReportDto.setSuccessfulCalls(end.getSuccessfulCalls() - start.getSuccessfulCalls());
-                        kilkariCallReportDto.setAvgDuration((float) Math.round((float) kilkariCallReportDto.getBillableMinutes() / (float) kilkariCallReportDto.getSuccessfulCalls() * 100) / 100);
+                        kilkariCallReportDto.setAvgDuration((float)((kilkariCallReportDto.getSuccessfulCalls()==0)?0.00 : (float) Math.round((float) kilkariCallReportDto.getBillableMinutes() / (float) kilkariCallReportDto.getSuccessfulCalls() * 100) / 100));
                         kilkariCallReportDto.setLocationType(end.getLocationType());
                         String locationType = end.getLocationType();
                         if (locationType.equalsIgnoreCase("State")) {
@@ -1757,7 +1757,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                         if ((kilkariCallReportDto.getSuccessfulCalls() + kilkariCallReportDto.getBillableMinutes() + kilkariCallReportDto.getCallsAttempted()
                                 + kilkariCallReportDto.getCallsToInbox() + kilkariCallReportDto.getContent_1_25()
                                 + kilkariCallReportDto.getContent_25_50() + kilkariCallReportDto.getContent_50_75()
-                                + kilkariCallReportDto.getContent_75_100()) != 0) {
+                                + kilkariCallReportDto.getContent_75_100()) != 0 && !locationType.equalsIgnoreCase("DifferenceState")) {
                             callReportDtos.add(kilkariCallReportDto);
                         }
                     }

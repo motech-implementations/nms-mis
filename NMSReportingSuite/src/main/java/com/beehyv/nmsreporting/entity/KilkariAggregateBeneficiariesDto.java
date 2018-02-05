@@ -19,7 +19,7 @@ public class KilkariAggregateBeneficiariesDto {
     private Long childCompletion;
     private Long calledInbox;
     private Long joinedSubscription;
-    private boolean link;
+    private boolean link = false;
 
     public Integer getId() {
         return id;
