@@ -19,6 +19,7 @@ public class KilkariMessageListenershipReportDto {
     private Long beneficiariesAnswered25To50;
     private Long beneficiariesAnswered1To25;
     private Long beneficiariesAnsweredNoCalls;
+    private boolean link = false;
 
     public int getId() {
         return id;
@@ -106,5 +107,13 @@ public class KilkariMessageListenershipReportDto {
 
     public void setBeneficiariesAnsweredNoCalls(Long beneficiariesAnsweredNoCalls) {
         this.beneficiariesAnsweredNoCalls = beneficiariesAnsweredNoCalls;
+    }
+
+    public boolean isLink() {
+        return link;
+    }
+
+    public void setLink(boolean link) {
+        this.link = link;
     }
 }

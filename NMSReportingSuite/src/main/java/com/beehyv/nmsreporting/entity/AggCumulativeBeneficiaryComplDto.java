@@ -15,6 +15,7 @@ public class AggCumulativeBeneficiaryComplDto {
     private Long calls_50_75;
     private Long calls_25_50;
     private Long calls_1_25;
+    private boolean link =false;
 
 
     public int getId() {
@@ -95,5 +96,13 @@ public class AggCumulativeBeneficiaryComplDto {
 
     public void setCalls_1_25(Long calls_1_25) {
         this.calls_1_25 = calls_1_25;
+    }
+
+    public boolean isLink() {
+        return link;
+    }
+
+    public void setLink(boolean link) {
+        this.link = link;
     }
 }

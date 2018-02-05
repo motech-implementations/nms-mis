@@ -16,6 +16,7 @@ public class MAPerformanceDto {
     Long ashasAccessed;
     Integer ashasCompleted;
     Integer ashasFailed;
+    boolean link = false;
 //    Integer ashasRejected;
 //    Integer recordsReceived;
 //    Integer registeredNotCompletedStart;
@@ -92,5 +93,13 @@ public class MAPerformanceDto {
 
     public void setAshasFailed(Integer ashasFailed) {
         this.ashasFailed = ashasFailed;
+    }
+
+    public boolean isLink() {
+        return link;
+    }
+
+    public void setLink(boolean link) {
+        this.link = link;
     }
 }

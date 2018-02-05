@@ -96,4 +96,24 @@ public class FrontLineWorkersDaoImpl extends AbstractDao<Integer,FrontLineWorker
 
 
     }
+
+    @Override
+    public FrontLineWorkers getINactiveFrontLineWorkerByExternalFlwIDAndStateId(Date toDate, String Ext_Flw_Id, Integer stateId) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.and(
+                Restrictions.eq("state", stateId),
+                Restrictions.eq("externalFlwId",Ext_Flw_Id)
+        ));
+        return (FrontLineWorkers) criteria.uniqueResult();
+    }
+
+    @Override
+    public List<FrontLineWorkers> getAllFrontLineWorkers(Date toDate, Integer stateId) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.and(
+                Restrictions.lt("creationDate",toDate),
+                Restrictions.eq("state", stateId)
+        ));
+        return (List<FrontLineWorkers>) criteria.list();
+    }
 }

@@ -17,6 +17,7 @@ public class KilkariCallReportDto {
     private Long billableMinutes;
     private Long callsToInbox;
     private Float avgDuration;
+    private boolean link =false;
 
     public String getLocationType() {
         return locationType;
@@ -112,5 +113,13 @@ public class KilkariCallReportDto {
 
     public void setAvgDuration(Float avgDuration) {
         this.avgDuration = avgDuration;
+    }
+
+    public boolean isLink() {
+        return link;
+    }
+
+    public void setLink(boolean link) {
+        this.link = link;
     }
 }

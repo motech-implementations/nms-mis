@@ -5,6 +5,7 @@ import com.beehyv.nmsreporting.dao.*;
 import com.beehyv.nmsreporting.entity.ReportRequest;
 import com.beehyv.nmsreporting.enums.*;
 import com.beehyv.nmsreporting.model.*;
+import com.opencsv.CSVReader;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -14,6 +15,7 @@ import org.apache.poi.xssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import sun.rmi.runtime.Log;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
@@ -1019,6 +1021,27 @@ public class AdminServiceImpl implements AdminService {
 
     }
 
+    @Override
+    public void updateCDRDetailsInDatabase() throws IOException {
+        CSVReader reader = new CSVReader(new FileReader("emps.csv"), ',');
+
+        // read line by line
+        String[] record = null;
+
+//        while ((record = reader.readNext()) != null) {
+//            Employee emp = new Employee();
+//            emp.setId(record[0]);
+//            emp.setName(record[1]);
+//            emp.setAge(record[2]);
+//            emp.setCountry(record[3]);
+//            emps.add(emp);
+//        }
+//
+//        System.out.println(emps);
+
+        reader.close();
+    }
+
     private void getCumulativeRejectedChildImports(List<ChildImportRejection> rejectedChildImports, String rootPath,
                                                    String place, Date toDate, ReportRequest reportRequest) {
         XSSFWorkbook workbook = new XSSFWorkbook();
@@ -1355,8 +1378,8 @@ public class AdminServiceImpl implements AdminService {
     }
 
     private void updateCumulativeCourseCompletion(List<MACourseFirstCompletion> successfulCandidates, String rootPath, String place, Date toDate, ReportRequest reportRequest) {
-
-        if(! successfulCandidates.isEmpty()) {
+        if(successfulCandidates != null && ! successfulCandidates.isEmpty()) {
+            int stateId = successfulCandidates.get(0).getStateId();
             try {
                 boolean create = false;
                 FileInputStream file = new FileInputStream(rootPath + ReportType.maCourse.getReportType() + "_" + place + "_" + getMonthYear(toDate) + ".xlsx");
@@ -1381,8 +1404,11 @@ public class AdminServiceImpl implements AdminService {
                         break;
                     } else {
                         Long ext_flw_id = (long) parseInt(cell9.getStringCellValue());
-                        MACourseFirstCompletion maCourseFirstCompletion = maCourseAttemptDao.getSuccessFulCompletionByExtrnalFlwId(toDate, ext_flw_id);
+                        MACourseFirstCompletion maCourseFirstCompletion = maCourseAttemptDao.getSuccessFulCompletionByExtrnalFlwId(toDate, ext_flw_id, stateId);
 
+                        if (maCourseFirstCompletion == null) {
+                            continue;
+                        }
                         //Update the value of cell
                         cell3 = sheetrow.getCell(3);
                         if (cell3.getStringCellValue().equalsIgnoreCase("No Block") && maCourseFirstCompletion.getBlockId() != null) {
@@ -1570,7 +1596,8 @@ public class AdminServiceImpl implements AdminService {
 
     private void updateCumulativeInactiveUsers(List<FrontLineWorkers> inactiveCandidates, String rootPath, String place, Date toDate, ReportRequest reportRequest) {
 
-        if(! inactiveCandidates.isEmpty()) {
+        if(! inactiveCandidates.isEmpty())
+        {
         try {
             boolean create =false;
 
@@ -1580,21 +1607,18 @@ public class AdminServiceImpl implements AdminService {
             XSSFSheet sheet = workbook.getSheetAt(0);
             Cell cell3,cell4,cell5,cell6,cell7, cell9 = null;
 
-            for (Integer rowcount = 5; rowcount< inactiveCandidates.size()+5; rowcount++) {
+            for (Integer rowcount = 5; ; rowcount++) {
 
 
                 //Retrieve the row and check for null
                 XSSFRow sheetrow = sheet.getRow(rowcount);
                 if (sheetrow == null) {
-                    sheetrow = sheet.createRow(rowcount);
+                    break;
                 }
 
                 cell9 = sheetrow.getCell(9);
                 if (cell9 == null) {
-                    workbook.removeSheetAt(0);
-                    getCumulativeInactiveUsers(inactiveCandidates, rootPath, place, toDate, reportRequest);
-                    create =true;
-                    break;
+                    continue;
 
                 } else {
                     String ext_flw_id = cell9.getStringCellValue();
@@ -1639,6 +1663,85 @@ public class AdminServiceImpl implements AdminService {
             e.printStackTrace();
         }
        }
+    }
+
+    private void updateCumulativeInactiveUsersInExcel(HashMap<String, FrontLineWorkers> frontLineWorkersHashMap, Integer stateId, String rootPath, String place, Date toDate) {
+
+        if(stateId != null) {
+            State state = stateDao.findByStateId(stateId);
+            String stateName = state.getStateName();
+            try {
+                boolean create =false;
+
+                FileInputStream file = new FileInputStream(rootPath + ReportType.maInactive.getReportType() + "_" + place + "_" + getMonthYear(toDate) + ".xlsx");
+
+                System.out.println("Accessed File " + rootPath + ReportType.maInactive.getReportType() + "_" + place + "_" + getMonthYear(toDate) + ".xlsx");
+
+                XSSFWorkbook workbook = new XSSFWorkbook(file);
+                XSSFSheet sheet = workbook.getSheetAt(0);
+                Cell cell1, cell3, cell4, cell5, cell6, cell7, cell9 = null;
+
+                for (Integer rowcount = 5; ; rowcount++) {
+
+                    //Retrieve the row and check for null
+                    XSSFRow sheetrow = sheet.getRow(rowcount);
+                    if (sheetrow == null) {
+                        break;
+                    }
+
+                    cell1 = sheetrow.getCell(1);
+
+                    cell9 = sheetrow.getCell(9);
+                    if (cell9 == null || cell9.getStringCellValue() == null) {
+                        continue;
+
+                    } else if (cell1.getStringCellValue().equalsIgnoreCase(stateName)) {
+                        String ext_flw_id = cell9.getStringCellValue();
+                        FrontLineWorkers frontLineWorker = frontLineWorkersHashMap.get(ext_flw_id);
+                        //Update the value of cell
+
+//                        if (frontLineWorker == null) {
+//                            continue;
+//                        }
+                        cell3 = sheetrow.getCell(3);
+                        if (cell3.getStringCellValue() != null && cell3.getStringCellValue().equalsIgnoreCase("No Block") && frontLineWorker.getBlock() != null) {
+                            String temp =blockDao.findByblockId(frontLineWorker.getBlock()).getBlockName();
+                            cell3.setCellValue(temp);
+                        }
+                        cell4 = sheetrow.getCell(4);
+                        if (cell4.getStringCellValue() != null && cell4.getStringCellValue().equalsIgnoreCase("No Taluka") && frontLineWorker.getTaluka() != null) {
+                            cell4.setCellValue(talukaDao.findByTalukaId(frontLineWorker.getTaluka()).getTalukaName());
+                        }
+                        cell5 = sheetrow.getCell(5);
+                        if (cell5.getStringCellValue() != null && cell5.getStringCellValue().equalsIgnoreCase("No Health Facility") && frontLineWorker.getFacility() != null) {
+                            cell5.setCellValue(healthFacilityDao.findByHealthFacilityId(frontLineWorker.getFacility()).getHealthFacilityName());
+                        }
+                        cell6 = sheetrow.getCell(6);
+                        if (cell6.getStringCellValue() != null && cell6.getStringCellValue().equalsIgnoreCase("No Health Subfacility") && frontLineWorker.getSubfacility() != null) {
+                            cell6.setCellValue(healthSubFacilityDao.findByHealthSubFacilityId(frontLineWorker.getSubfacility()).getHealthSubFacilityName());
+                        }
+                        cell7 = sheetrow.getCell(7);
+                        if (cell7.getStringCellValue() != null && cell7.getStringCellValue().equalsIgnoreCase("No Village") && frontLineWorker.getVillage() != null) {
+                            cell7.setCellValue(villageDao.findByVillageId(frontLineWorker.getVillage()).getVillageName());
+                        }
+                    }
+                }
+                if(!create) {
+                    file.close();
+
+                    FileOutputStream outFile = new FileOutputStream(new File(rootPath + ReportType.maInactive.getReportType() + "_" + place + "_" + getMonthYear(toDate) + ".xlsx"));
+                    workbook.write(outFile);
+                    outFile.close();
+                    workbook = new XSSFWorkbook(new FileInputStream(rootPath + ReportType.maInactive.getReportType() + "_" + place + "_" + getMonthYear(toDate) + ".xlsx"));
+                }
+
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void getKilkariSixWeekNoAnswer(List<KilkariDeactivationOther> kilkariSixWeeksNoAnswersList, String rootPath, String place, Date toDate, ReportRequest reportRequest){
@@ -2339,6 +2442,7 @@ public class AdminServiceImpl implements AdminService {
     public void modifyCumulativeCourseCompletionFiles(Date toDate, Integer stateIdRequest) {
 
         String rootPath = reports+ReportType.maCourse.getReportType()+ "/";
+//        String rootPath = "/home/grameen/home/MA_Cumulative_Course_Completion/";
         List<MACourseFirstCompletion> successFullcandidates = maCourseAttemptDao.getSuccessFulCompletion(toDate);
         ReportRequest reportRequest=new ReportRequest();
         reportRequest.setFromDate(toDate);
@@ -2484,58 +2588,37 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void modifyCumulativeInactiveFiles(Date toDate, Integer stateIdRequest) {
         //List<State> states = stateDao.getStatesByServiceType(ReportType.maInactive.getServiceType());
-        String rootPath = reports+ReportType.maInactive.getReportType()+ "/";
-        List<FrontLineWorkers> inactiveFrontLineWorkers = frontLineWorkersDao.getInactiveFrontLineWorkers(toDate);
-        ReportRequest reportRequest=new ReportRequest();
-        reportRequest.setFromDate(toDate);
-        reportRequest.setBlockId(0);
-        reportRequest.setDistrictId(0);
-        reportRequest.setStateId(0);
-        reportRequest.setReportType(ReportType.maInactive.getReportType());
-        updateCumulativeInactiveUsers(inactiveFrontLineWorkers, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate, reportRequest);
+//        String rootPath = reports+ReportType.maInactive.getReportType()+ "/";
+        String rootPath = "/home/grameen/home/MA_Cumulative_Inactive_Users/";
+        List<FrontLineWorkers> allFrontLineWorkers = frontLineWorkersDao.getAllFrontLineWorkers(toDate, stateIdRequest);
+
+        HashMap<String, FrontLineWorkers> frontLineWorkersMap = new HashMap<>();
+
+        for (FrontLineWorkers frontLineWorkers : allFrontLineWorkers) {
+            frontLineWorkersMap.put(frontLineWorkers.getExternalFlwId(), frontLineWorkers);
+        }
+
+        updateCumulativeInactiveUsersInExcel(frontLineWorkersMap, stateIdRequest, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
         State state = stateDao.findByStateId(stateIdRequest);
 
             String stateName = StReplace(state.getStateName());
             String rootPathState = rootPath + stateName+ "/";
-            int stateId = state.getStateId();
-            List<FrontLineWorkers> candidatesFromThisState = new ArrayList<>();
-            for (FrontLineWorkers asha : inactiveFrontLineWorkers) {
-                if (asha.getState() == stateId) {
-                    candidatesFromThisState.add(asha);
-                }
-            }
-            reportRequest.setStateId(stateId);
-            reportRequest.setBlockId(0);
-            reportRequest.setDistrictId(0);
-            updateCumulativeInactiveUsers(candidatesFromThisState, rootPathState, stateName, toDate, reportRequest);
-            List<District> districts = districtDao.getDistrictsOfState(stateId);
+
+            updateCumulativeInactiveUsersInExcel(frontLineWorkersMap, stateIdRequest, rootPathState, stateName, toDate);
+            List<District> districts = districtDao.getDistrictsOfState(stateIdRequest);
             for (District district : districts) {
                 String districtName = StReplace(district.getDistrictName());
                 String rootPathDistrict = rootPathState  + districtName+ "/";
                 int districtId = district.getDistrictId();
-                List<FrontLineWorkers> candidatesFromThisDistrict = new ArrayList<>();
-                for (FrontLineWorkers asha : candidatesFromThisState) {
-                    if (asha.getDistrict() == districtId) {
-                        candidatesFromThisDistrict.add(asha);
-                    }
-                }
-                reportRequest.setDistrictId(districtId);
-                reportRequest.setBlockId(0);
-                updateCumulativeInactiveUsers(candidatesFromThisDistrict, rootPathDistrict, districtName, toDate, reportRequest);
+
+                updateCumulativeInactiveUsersInExcel(frontLineWorkersMap, stateIdRequest, rootPathDistrict, districtName, toDate);
                 List<Block> Blocks = blockDao.getBlocksOfDistrict(districtId);
                 for (Block block : Blocks) {
+
                     String blockName = StReplace(block.getBlockName());
                     String rootPathblock = rootPathDistrict  + blockName+ "/";
 
-                    int blockId = block.getBlockId();
-                    List<FrontLineWorkers> candidatesFromThisBlock = new ArrayList<>();
-                    for (FrontLineWorkers asha : candidatesFromThisDistrict) {
-                        if ((asha.getBlock()!=null)&&(asha.getBlock() == blockId)) {
-                            candidatesFromThisBlock.add(asha);
-                        }
-                    }
-                    reportRequest.setBlockId(blockId);
-                    updateCumulativeInactiveUsers(candidatesFromThisBlock, rootPathblock, blockName, toDate, reportRequest);
+                    updateCumulativeInactiveUsersInExcel(frontLineWorkersMap, stateIdRequest, rootPathblock, blockName, toDate);
                 }
             }
 

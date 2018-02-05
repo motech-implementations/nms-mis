@@ -20,6 +20,7 @@ public class MASubscriberDto {
     Integer recordsReceived;
     Integer registeredNotCompletedStart;
     Integer registeredNotCompletedend;
+    private boolean link = false;
 
 
     public Integer getRegisteredNotCompletedStart() {
@@ -124,5 +125,13 @@ public class MASubscriberDto {
 
     public void setRecordsReceived(Integer recordsReceived) {
         this.recordsReceived = recordsReceived;
+    }
+
+    public boolean isLink() {
+        return link;
+    }
+
+    public void setLink(boolean link) {
+        this.link = link;
     }
 }
