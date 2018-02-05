@@ -357,7 +357,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             }
         } else if(locationType.equalsIgnoreCase("District")){
                 List<District> districts = districtDao.getDistrictsOfState(locationId);
-                KilkariSubscriber kilkariStateCounts = kilkariSubscriberReportDao.getKilkariSubscriberCounts(locationId,locationType, date);
+                KilkariSubscriber kilkariStateCounts = kilkariSubscriberReportDao.getKilkariSubscriberCounts(locationId,"State", date);
                 Integer totalSubscriptions = 0;
                 Integer totalBeneficiaryRecordsRejected = 0;
                 Integer recordsDeactivated = 0;
@@ -383,7 +383,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 kilkariSubscribersCountList.add(kilkariNoDistrictCount);
             } else if(locationType.equalsIgnoreCase("Block")) {
                     List<Block> blocks = blockDao.getBlocksOfDistrict(locationId);
-                    KilkariSubscriber kilkariDistrictCounts = kilkariSubscriberReportDao.getKilkariSubscriberCounts(locationId,locationType, date);
+                    KilkariSubscriber kilkariDistrictCounts = kilkariSubscriberReportDao.getKilkariSubscriberCounts(locationId,"District", date);
                     Integer totalSubscriptions = 0;
                     Integer totalBeneficiaryRecordsRejected = 0;
                     Integer recordsRejectedDuplicateMobileNumbers = 0;
