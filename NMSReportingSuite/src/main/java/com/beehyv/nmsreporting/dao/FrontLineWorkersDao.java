@@ -18,4 +18,11 @@ public interface FrontLineWorkersDao {
     List<FrontLineWorkers> getInactiveFrontLineWorkersWithBlockId(Date toDate, Integer blockId);
 
     Long getCountOfInactiveFrontLineWorkersForGivenDistrict(Date toDate, Integer districtId);
+
+    public FrontLineWorkers getINactiveFrontLineWorkerByExternalFlwID(Date toDate, String Ext_Flw_Id);
+
+    public FrontLineWorkers getINactiveFrontLineWorkerByExternalFlwIDAndStateId(Date toDate, String Ext_Flw_Id, Integer stateId);
+
+    public List<FrontLineWorkers> getAllFrontLineWorkers(Date toDate, Integer stateId);
+
 }

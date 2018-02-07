@@ -3,6 +3,8 @@ package com.beehyv.nmsreporting.business;
 import com.beehyv.nmsreporting.entity.ReportRequest;
 import com.beehyv.nmsreporting.model.User;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -20,6 +22,8 @@ public interface AdminService {
   void getCircleWiseAnonymousFiles(Date fromDate,Date toDate);
 
   void getCumulativeInactiveFiles(Date toDate);
+
+  void modifyCumulativeInactiveFiles(Date toDate, Integer stateIdRequest);
 
   void getKilkariSixWeekNoAnswerFiles(Date fromDate, Date toDate);
 

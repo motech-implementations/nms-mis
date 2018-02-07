@@ -1406,6 +1406,156 @@ public class AdminServiceImpl implements AdminService {
         }
     }
 
+    private void updateCumulativeInactiveUsers(List<FrontLineWorkers> inactiveCandidates, String rootPath, String place, Date toDate, ReportRequest reportRequest) {
+
+        if(! inactiveCandidates.isEmpty())
+        {
+        try {
+            boolean create =false;
+
+            FileInputStream file = new FileInputStream(rootPath + ReportType.maInactive.getReportType() + "_" + place + "_" + getMonthYear(toDate) + ".xlsx");
+
+            XSSFWorkbook workbook = new XSSFWorkbook(file);
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            Cell cell3,cell4,cell5,cell6,cell7, cell9 = null;
+
+            for (Integer rowcount = 5; ; rowcount++) {
+
+
+                //Retrieve the row and check for null
+                XSSFRow sheetrow = sheet.getRow(rowcount);
+                if (sheetrow == null) {
+                    break;
+                }
+
+                cell9 = sheetrow.getCell(9);
+                if (cell9 == null) {
+                    continue;
+
+                } else {
+                    String ext_flw_id = cell9.getStringCellValue();
+                    FrontLineWorkers frontLineWorker = frontLineWorkersDao.getINactiveFrontLineWorkerByExternalFlwID(toDate, ext_flw_id);
+                    //Update the value of cell
+                    cell3 = sheetrow.getCell(3);
+                    if (cell3.getStringCellValue().equalsIgnoreCase("No Block") && frontLineWorker.getBlock() != null) {
+                        String temp =blockDao.findByblockId(frontLineWorker.getBlock()).getBlockName();
+                        cell3.setCellValue(temp);
+                    }
+                    cell4 = sheetrow.getCell(4);
+                    if (cell4.getStringCellValue().equalsIgnoreCase("No Taluka") && frontLineWorker.getTaluka() != null) {
+                        cell4.setCellValue(talukaDao.findByTalukaId(frontLineWorker.getTaluka()).getTalukaName());
+                    }
+                    cell5 = sheetrow.getCell(5);
+                    if (cell5.getStringCellValue().equalsIgnoreCase("No Health Facility") && frontLineWorker.getFacility() != null) {
+                        cell5.setCellValue(healthFacilityDao.findByHealthFacilityId(frontLineWorker.getFacility()).getHealthFacilityName());
+                    }
+                    cell6 = sheetrow.getCell(6);
+                    if (cell6.getStringCellValue().equalsIgnoreCase("No Health Subfacility") && frontLineWorker.getSubfacility() != null) {
+                        cell6.setCellValue(healthSubFacilityDao.findByHealthSubFacilityId(frontLineWorker.getSubfacility()).getHealthSubFacilityName());
+                    }
+                    cell7 = sheetrow.getCell(7);
+                    if (cell7.getStringCellValue().equalsIgnoreCase("No Village") && frontLineWorker.getVillage() != null) {
+                        cell7.setCellValue(villageDao.findByVillageId(frontLineWorker.getVillage()).getVillageName());
+                    }
+                }
+            }
+            if(!create) {
+                file.close();
+
+                FileOutputStream outFile = new FileOutputStream(new File(rootPath + ReportType.maInactive.getReportType() + "_" + place + "_" + getMonthYear(toDate) + ".xlsx"));
+                workbook.write(outFile);
+                outFile.close();
+                workbook = new XSSFWorkbook(new FileInputStream(rootPath + ReportType.maInactive.getReportType() + "_" + place + "_" + getMonthYear(toDate) + ".xlsx"));
+            }
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+       }
+    }
+
+    private void updateCumulativeInactiveUsersInExcel(HashMap<String, FrontLineWorkers> frontLineWorkersHashMap, Integer stateId, String rootPath, String place, Date toDate) {
+
+        if(stateId != null) {
+            State state = stateDao.findByStateId(stateId);
+            String stateName = state.getStateName();
+            try {
+                boolean create =false;
+
+                FileInputStream file = new FileInputStream(rootPath + ReportType.maInactive.getReportType() + "_" + place + "_" + getMonthYear(toDate) + ".xlsx");
+
+                System.out.println("Accessed File " + rootPath + ReportType.maInactive.getReportType() + "_" + place + "_" + getMonthYear(toDate) + ".xlsx");
+
+                XSSFWorkbook workbook = new XSSFWorkbook(file);
+                XSSFSheet sheet = workbook.getSheetAt(0);
+                Cell cell1, cell3, cell4, cell5, cell6, cell7, cell9 = null;
+
+                for (Integer rowcount = 5; ; rowcount++) {
+
+                    //Retrieve the row and check for null
+                    XSSFRow sheetrow = sheet.getRow(rowcount);
+                    if (sheetrow == null) {
+                        break;
+                    }
+
+                    cell1 = sheetrow.getCell(1);
+
+                    cell9 = sheetrow.getCell(9);
+                    if (cell9 == null || cell9.getStringCellValue() == null) {
+                        continue;
+
+                    } else if (cell1.getStringCellValue().equalsIgnoreCase(stateName)) {
+                        String ext_flw_id = cell9.getStringCellValue();
+                        FrontLineWorkers frontLineWorker = frontLineWorkersHashMap.get(ext_flw_id);
+                        //Update the value of cell
+
+//                        if (frontLineWorker == null) {
+//                            continue;
+//                        }
+                        cell3 = sheetrow.getCell(3);
+                        if (cell3.getStringCellValue() != null && cell3.getStringCellValue().equalsIgnoreCase("No Block") && frontLineWorker.getBlock() != null) {
+                            String temp =blockDao.findByblockId(frontLineWorker.getBlock()).getBlockName();
+                            cell3.setCellValue(temp);
+                        }
+                        cell4 = sheetrow.getCell(4);
+                        if (cell4.getStringCellValue() != null && cell4.getStringCellValue().equalsIgnoreCase("No Taluka") && frontLineWorker.getTaluka() != null) {
+                            cell4.setCellValue(talukaDao.findByTalukaId(frontLineWorker.getTaluka()).getTalukaName());
+                        }
+                        cell5 = sheetrow.getCell(5);
+                        if (cell5.getStringCellValue() != null && cell5.getStringCellValue().equalsIgnoreCase("No Health Facility") && frontLineWorker.getFacility() != null) {
+                            cell5.setCellValue(healthFacilityDao.findByHealthFacilityId(frontLineWorker.getFacility()).getHealthFacilityName());
+                        }
+                        cell6 = sheetrow.getCell(6);
+                        if (cell6.getStringCellValue() != null && cell6.getStringCellValue().equalsIgnoreCase("No Health Subfacility") && frontLineWorker.getSubfacility() != null) {
+                            cell6.setCellValue(healthSubFacilityDao.findByHealthSubFacilityId(frontLineWorker.getSubfacility()).getHealthSubFacilityName());
+                        }
+                        cell7 = sheetrow.getCell(7);
+                        if (cell7.getStringCellValue() != null && cell7.getStringCellValue().equalsIgnoreCase("No Village") && frontLineWorker.getVillage() != null) {
+                            cell7.setCellValue(villageDao.findByVillageId(frontLineWorker.getVillage()).getVillageName());
+                        }
+                    }
+                }
+                if(!create) {
+                    file.close();
+
+                    FileOutputStream outFile = new FileOutputStream(new File(rootPath + ReportType.maInactive.getReportType() + "_" + place + "_" + getMonthYear(toDate) + ".xlsx"));
+                    workbook.write(outFile);
+                    outFile.close();
+                    workbook = new XSSFWorkbook(new FileInputStream(rootPath + ReportType.maInactive.getReportType() + "_" + place + "_" + getMonthYear(toDate) + ".xlsx"));
+                }
+
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private void getKilkariSixWeekNoAnswer(List<KilkariDeactivationOther> kilkariSixWeeksNoAnswersList, String rootPath, String place, Date toDate, ReportRequest reportRequest){
         XSSFWorkbook workbook = new XSSFWorkbook();
         //Create a blank sheet
@@ -2185,6 +2335,60 @@ public class AdminServiceImpl implements AdminService {
                 }
             }
         }
+    }
+
+    @Override
+    public void modifyCumulativeInactiveFiles(Date toDate, Integer stateIdRequest) {
+        //List<State> states = stateDao.getStatesByServiceType(ReportType.maInactive.getServiceType());
+        String rootPath = reports+ReportType.maInactive.getReportType()+ "/";
+
+        List<FrontLineWorkers> allFrontLineWorkers = frontLineWorkersDao.getAllFrontLineWorkers(toDate, stateIdRequest);
+
+        HashMap<String, FrontLineWorkers> frontLineWorkersMap = new HashMap<>();
+
+        for (FrontLineWorkers frontLineWorkers : allFrontLineWorkers) {
+            frontLineWorkersMap.put(frontLineWorkers.getExternalFlwId(), frontLineWorkers);
+        }
+
+        updateCumulativeInactiveUsersInExcel(frontLineWorkersMap, stateIdRequest, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
+        State state = stateDao.findByStateId(stateIdRequest);
+
+            String stateName = StReplace(state.getStateName());
+            String rootPathState = rootPath + stateName+ "/";
+
+            updateCumulativeInactiveUsersInExcel(frontLineWorkersMap, stateIdRequest, rootPathState, stateName, toDate);
+            List<District> districts = districtDao.getDistrictsOfState(stateIdRequest);
+            for (District district : districts) {
+                List<FrontLineWorkers> candidatesFromThisDistrict = new ArrayList<>();
+                HashMap<String, FrontLineWorkers> candidatesFromThisDistrictMap = new HashMap<>();
+                for (FrontLineWorkers asha : allFrontLineWorkers) {
+                    if (asha.getDistrict() == district.getDistrictId()) {
+                        candidatesFromThisDistrict.add(asha);
+                        candidatesFromThisDistrictMap.put(asha.getExternalFlwId(), asha);
+                    }
+                }
+
+                String districtName = StReplace(district.getDistrictName());
+                String rootPathDistrict = rootPathState  + districtName+ "/";
+                int districtId = district.getDistrictId();
+
+                updateCumulativeInactiveUsersInExcel(candidatesFromThisDistrictMap, stateIdRequest, rootPathDistrict, districtName, toDate);
+                List<Block> Blocks = blockDao.getBlocksOfDistrict(districtId);
+                for (Block block : Blocks) {
+
+                    String blockName = StReplace(block.getBlockName());
+                    String rootPathblock = rootPathDistrict  + blockName+ "/";
+
+                    HashMap<String, FrontLineWorkers> candidatesFromThisBlockMap = new HashMap<>();
+                    for (FrontLineWorkers asha : candidatesFromThisDistrict) {
+                        if (asha.getBlock() == block.getBlockId()) {
+                            candidatesFromThisBlockMap.put(asha.getExternalFlwId(), asha);
+                        }
+                    }
+                    updateCumulativeInactiveUsersInExcel(candidatesFromThisBlockMap, stateIdRequest, rootPathblock, blockName, toDate);
+                }
+            }
+
     }
 
     @Override
