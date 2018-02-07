@@ -58,7 +58,22 @@ var nmsReportsApp = angular
 				url: '/reports',
 				templateUrl: 'views/reports.html'
 			})
-			
+
+			.state('MA Cumulative Summary', {
+            	url: '/maCumulative',
+            	templateUrl: 'views/reports.html'
+            })
+
+			.state('MA Subscriber', {
+            	url: '/maSubscriber',
+            	templateUrl: 'views/reports.html'
+            })
+
+			.state('MA Performance', {
+            	url: '/maPerformance',
+            	templateUrl: 'views/reports.html'
+            })
+
 			.state('profile', {
 				url: '/profile',
 				templateUrl: 'views/profile.html'

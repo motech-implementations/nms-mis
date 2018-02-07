@@ -2588,8 +2588,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void modifyCumulativeInactiveFiles(Date toDate, Integer stateIdRequest) {
         //List<State> states = stateDao.getStatesByServiceType(ReportType.maInactive.getServiceType());
-//        String rootPath = reports+ReportType.maInactive.getReportType()+ "/";
-        String rootPath = "/home/grameen/home/MA_Cumulative_Inactive_Users/";
+        String rootPath = reports+ReportType.maInactive.getReportType()+ "/";
         List<FrontLineWorkers> allFrontLineWorkers = frontLineWorkersDao.getAllFrontLineWorkers(toDate, stateIdRequest);
 
         HashMap<String, FrontLineWorkers> frontLineWorkersMap = new HashMap<>();

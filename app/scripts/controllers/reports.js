@@ -24,7 +24,10 @@
                             excelHeaderName.districtName = result.data.districtName;
                             excelHeaderName.blockName = result.data.blockName;
                         }
-						$scope.getStatesByService(null);
+
+                        if((($state.current.name)===("reports"))){
+                            $scope.getStatesByService(null);
+                        }
 					})
 				}
 			})
@@ -72,6 +75,7 @@
 
             };
 
+
             $scope.popup2 = {
                 opened: false
             };
@@ -97,10 +101,10 @@
             };
 
 			$scope.disableReportCategory = function(){
-				return $scope.reports[0] == null;
+				return ($scope.reports[0] == null || !(($state.current.name)===("reports")));
 			}
 			$scope.disableReport = function(){
-				return $scope.reportCategory == null;
+				return ($scope.reportCategory == null || !(($state.current.name)===("reports")));
 			}
 
 			$scope.disableDate = function(){
@@ -146,6 +150,10 @@
 				if($scope.reports.length == 1){
 				    $scope.selectReportCategory($scope.reports[0]);
 				}
+
+				if(!(($state.current.name)===("reports"))){
+                    $scope.selectReportCategory ($scope.reports[0]);
+                }
 			})
 
 			$scope.reportCategory=null;
@@ -225,10 +233,30 @@
 				$scope.hideMessageMatrix = true;
 				$scope.showEmptyData = false;
 				$scope.clearFile();
-
 				$scope.getStatesByService(item.service);
 				$scope.getCirclesByService(item.service);
+                if(!(($state.current.name)===("reports"))){
+                switch($state.current.name){
+                case "MA Cumulative Summary":
+                case "MA Subscriber":
+                case "MA Performance":
+                    var reportCategorytemp = $scope.getArrayElementByName($scope.reports,"Mobile Academy Reports");
+                    $scope.selectReport ($scope.getArrayElementByName(reportCategorytemp.options,$state.current.name));
+                    break;
+                    }
+                    //console.log();
+                }
 			}
+
+			$scope.getArrayElementByName = function(arr, value) {
+                var element = [];
+              for (var i=0 ; i<arr.length; i++) {
+
+                if (arr[i].name === value)
+                 element.push(arr[i]);
+              }
+              return element[0];
+            }
 
 			$scope.selectReport = function(item){
 				$scope.report = item;
@@ -322,6 +350,7 @@
 			    $scope.statesLoading = true;
 			    $scope.states = [];
 			    $scope.clearState();
+
                 if(service == null){
                     return UserFormFactory.getStates()
                     .then(function(result){
