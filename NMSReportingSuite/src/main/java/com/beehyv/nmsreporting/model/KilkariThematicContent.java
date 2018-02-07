@@ -17,6 +17,14 @@ public class KilkariThematicContent {
     @Column(name="id", columnDefinition = "INT(11)")
     private Integer id;
 
+
+    @Column(name="location_type", columnDefinition = "VARCHAR(45)")
+    private String locationType;
+
+    @Column(name="location_id", columnDefinition = "BIGINT(20)")
+    private Long locationId;
+
+
     @Column(name="date", columnDefinition = "DATE")
     private Date date;
 
@@ -51,6 +59,22 @@ public class KilkariThematicContent {
 
     public Integer getId() {
         return id;
+    }
+
+    public String getLocationType() {
+        return locationType;
+    }
+
+    public void setLocationType(String locationType) {
+        this.locationType = locationType;
+    }
+
+    public Long getLocationId() {
+        return locationId;
+    }
+
+    public void setLocationId(Long locationId) {
+        this.locationId = locationId;
     }
 
     public void setId(Integer id) {

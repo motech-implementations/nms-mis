@@ -60,7 +60,7 @@
 					<div class="form-group col-xs-4" ng-if = "isAggregateReport()">
 						<label for="name"> State</label><br>
 						<div class="btn-group" uib-dropdown dropdown-append-to-body>
-							<button id="btn-append-to-body-5" type="button" class="btn btn-sm btn-default" ng-disabled="disableStateIfNoLocation()" uib-dropdown-toggle ng-class="{loading: statesLoading}">
+							<button id="btn-append-to-body-5" type="button" class="btn btn-sm btn-default" ng-disabled="disableState()" uib-dropdown-toggle ng-class="{loading: statesLoading}">
 								<span class="block">
 									<span>{{state.stateName}}</span>
 									<span ng-if="state == null">ALL</span>

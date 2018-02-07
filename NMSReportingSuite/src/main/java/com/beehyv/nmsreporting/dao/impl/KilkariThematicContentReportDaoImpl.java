@@ -28,11 +28,13 @@ import java.util.List;
 public class KilkariThematicContentReportDaoImpl extends AbstractDao<Integer,KilkariThematicContent> implements KilkariThematicContentReportDao{
 
     @Override
-    public KilkariThematicContent getKilkariThematicContentReportData(Date date, String week_id){
+    public KilkariThematicContent getKilkariThematicContentReportData(Integer locationId, String locationType,Date date, String week_id){
 
         KilkariThematicContent kilkariThematicContent;
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.and(
+                Restrictions.eq("locationId",locationId.longValue()),
+                Restrictions.eq("locationType",locationType),
                 Restrictions.eq("date", date),
                 Restrictions.eq("messageWeekNumber", week_id)
         ));

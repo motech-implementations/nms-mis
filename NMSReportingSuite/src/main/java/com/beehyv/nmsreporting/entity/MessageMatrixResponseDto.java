@@ -7,8 +7,17 @@ import java.util.List;
  */
 public class MessageMatrixResponseDto {
 
+    private List<BreadCrumbDto> breadCrumbData;
     private List<MessageMatrixDto> motherData;
     private List<MessageMatrixDto> childData;
+
+    public List<BreadCrumbDto> getBreadCrumbData() {
+        return breadCrumbData;
+    }
+
+    public void setBreadCrumbData(List<BreadCrumbDto> breadCrumbData) {
+        this.breadCrumbData = breadCrumbData;
+    }
 
     public List<MessageMatrixDto> getMotherData() {
         return motherData;
