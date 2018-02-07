@@ -1310,16 +1310,16 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
 
         if (reportRequest.getStateId() == 0) {
             locationId = 0;
-            locationType = "State";
+            locationType = "National";
         } else if (reportRequest.getDistrictId() == 0) {
             locationId = reportRequest.getStateId();
-            locationType = "District";
+            locationType = "State";
         } else if(reportRequest.getBlockId() == 0){
             locationId = reportRequest.getDistrictId();
-            locationType = "Block";
+            locationType = "District";
         } else {
             locationId = reportRequest.getBlockId();
-            locationType = "Subcentre";
+            locationType = "Block";
         }
 
 
@@ -1413,16 +1413,16 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
 
         if (reportRequest.getStateId() == 0) {
             locationId = 0;
-            locationType = "State";
+            locationType = "National";
         } else if (reportRequest.getDistrictId() == 0) {
             locationId = reportRequest.getStateId();
-            locationType = "District";
+            locationType = "State";
         } else if(reportRequest.getBlockId() == 0){
             locationId = reportRequest.getDistrictId();
-            locationType = "Block";
+            locationType = "District";
         } else {
             locationId = reportRequest.getBlockId();
-            locationType = "Subcentre";
+            locationType = "Block";
         }
 
 
@@ -1473,16 +1473,16 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
 
         if (reportRequest.getStateId() == 0) {
             locationId = 0;
-            locationType = "State";
+            locationType = "National";
         } else if (reportRequest.getDistrictId() == 0) {
             locationId = reportRequest.getStateId();
-            locationType = "District";
+            locationType = "State";
         } else if(reportRequest.getBlockId() == 0){
             locationId = reportRequest.getDistrictId();
-            locationType = "Block";
+            locationType = "District";
         } else {
             locationId = reportRequest.getBlockId();
-            locationType = "Subcentre";
+            locationType = "Block";
         }
 
         MessageMatrixResponseDto messageMatrixResponseDto = new MessageMatrixResponseDto();
@@ -1663,16 +1663,16 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         List<KilkariRepeatListenerMonthWise> kilkariRepeatListenerMonthWiseList = new ArrayList<>();
         if (reportRequest.getStateId() == 0) {
             locationId = 0;
-            locationType = "State";
+            locationType = "National";
         } else if (reportRequest.getDistrictId() == 0) {
             locationId = reportRequest.getStateId();
-            locationType = "District";
+            locationType = "State";
         } else if(reportRequest.getBlockId() == 0){
             locationId = reportRequest.getDistrictId();
-            locationType = "Block";
+            locationType = "District";
         } else {
             locationId = reportRequest.getBlockId();
-            locationType = "Subcentre";
+            locationType = "Block";
         }
         while(date.compareTo(toDate) < 0){
             kilkariRepeatListenerMonthWiseList.add(kilkariRepeatListenerMonthWiseDao.getListenerData(locationId,locationType,date));

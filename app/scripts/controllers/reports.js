@@ -980,7 +980,7 @@
                                  $scope.gridOptions1.showColumnFooter = false;
                                  $scope.reportBreadCrumbData = result.data.breadCrumbData;
                                  $scope.hideGrid = false;
-                                 fileName = $scope.report.reportEnum;
+                                 fileName = $scope.report.reportEnum + "_" + $scope.reportBreadCrumbData[$scope.reportBreadCrumbData.length -1].locationName ;
                             }
                             else{
                                 $scope.hideGrid = true;
@@ -994,7 +994,7 @@
                                  $scope.gridOptions1.showColumnFooter = true;
                                  $scope.reportBreadCrumbData = result.data.breadCrumbData;
                                  $scope.hideGrid = false;
-                                 fileName = $scope.report.reportEnum;
+                                 fileName = $scope.report.reportEnum + "_" + $scope.reportBreadCrumbData[$scope.reportBreadCrumbData.length -1].locationName ;
                             }
                             else{
                                 $scope.hideGrid = true;
@@ -1002,7 +1002,7 @@
                             }
                         }
                         if($scope.report.reportEnum == 'Kilkari_Message_Matrix'){
-
+                            $scope.reportBreadCrumbData = result.data.breadCrumbData;
                             if(result.data.motherData.length >0){
                                 $scope.gridOptions1.data = result.data.motherData;
                                 $scope.gridOptions1.showColumnFooter = false;
@@ -1023,9 +1023,10 @@
                             else{
                                 $scope.hideMessageMatrix = true;
                             }
-                            fileName = $scope.report.reportEnum;
+                            fileName = $scope.report.reportEnum + "_" + $scope.reportBreadCrumbData[$scope.reportBreadCrumbData.length -1].locationName;
                         }
                        if($scope.report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise'){
+                            $scope.reportBreadCrumbData = result.data.breadCrumbData;
                             if(result.data.numberData.length >0){
                                 $scope.gridOptions1.data = result.data.numberData;
                                 $scope.gridOptions1.showColumnFooter = false;
@@ -1045,7 +1046,7 @@
                             else{
                                 $scope.hideMessageMatrix = true;
                             }
-                            fileName = $scope.report.reportEnum;
+                            fileName = $scope.report.reportEnum + "_" + $scope.reportBreadCrumbData[$scope.reportBreadCrumbData.length -1].locationName;
                        }
 
                          $scope.gridOptions1.exporterExcelFilename = fileName + "_" + dateString;

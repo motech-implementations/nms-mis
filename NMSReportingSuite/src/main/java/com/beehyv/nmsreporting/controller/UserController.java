@@ -387,7 +387,7 @@ public class UserController {
         List<BreadCrumbDto> breadCrumbs = breadCrumbService.getBreadCrumbs(currentUser, reportRequest);
         AggregateResponseDto aggregateResponseDto = new AggregateResponseDto();
 
-        MessageMatrixResponseDto messageMatrixResponseDto = new MessageMatrixResponseDto();
+
 
         AggregateKilkariReportsDto aggregateKilkariResponseDto = new AggregateKilkariReportsDto();
         if (currentUser.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel()) && !currentUser.getStateId().equals(reportRequest.getStateId())) {
@@ -459,12 +459,16 @@ public class UserController {
         }
 
         if (reportRequest.getReportType().equals(ReportType.messageMatrix.getReportType())) {
-            return aggregateKilkariReportsService.getMessageMatrixReport(reportRequest, currentUser);
+            MessageMatrixResponseDto messageMatrixResponseDto = new MessageMatrixResponseDto();
+            messageMatrixResponseDto = aggregateKilkariReportsService.getMessageMatrixReport(reportRequest, currentUser);
+            messageMatrixResponseDto.setBreadCrumbData(breadCrumbs);
+            return messageMatrixResponseDto;
         }
 
         if(reportRequest.getReportType().equals(ReportType.kilkariRepeatListenerMonthWise.getReportType())) {
             AggregateKilkariRepeatListenerMonthWiseDto aggregateKilkariRepeatListenerMonthWiseDto = new AggregateKilkariRepeatListenerMonthWiseDto();
             aggregateKilkariRepeatListenerMonthWiseDto = aggregateKilkariReportsService.getKilkariRepeatListenerMonthWiseReport(reportRequest);
+            aggregateKilkariRepeatListenerMonthWiseDto.setBreadCrumbData(breadCrumbs);
             return aggregateKilkariRepeatListenerMonthWiseDto;
         }
 
@@ -960,7 +964,6 @@ public class UserController {
                 ReportType.kilkariCalls.getServiceType())
         );
 
-        if(currentUser.getAccessLevel().equals(AccessLevel.NATIONAL.getAccessLevel())){
             kList.add(new Report(
                     ReportType.messageMatrix.getReportName(),
                     ReportType.messageMatrix.getReportType(),
@@ -985,8 +988,6 @@ public class UserController {
                     "images/drop-down-2.png",
                     ReportType.kilkariRepeatListenerMonthWise.getServiceType())
             );
-        }
-
 
         kList.add(new Report(
                 ReportType.kilkariSubscriber.getReportName(),
