@@ -15,6 +15,7 @@ public class UsageDto {
     private Long calls_1_25;
     private Long answeredCall;
     private Long calledInbox;
+    private boolean link = false;
 
     public Long getCalledInbox() {
         return calledInbox;
@@ -94,5 +95,13 @@ public class UsageDto {
 
     public void setAnsweredCall(Long answeredCall) {
         this.answeredCall = answeredCall;
+    }
+
+    public boolean isLink() {
+        return link;
+    }
+
+    public void setLink(boolean link) {
+        this.link = link;
     }
 }

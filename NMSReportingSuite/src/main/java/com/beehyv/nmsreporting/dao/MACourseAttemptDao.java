@@ -19,4 +19,8 @@ public interface MACourseAttemptDao {
    List<MACourseFirstCompletion> getSuccessFulCompletionWithBlockId(Date toDate, Integer blockId);
 
    Long getCountForGivenDistrict(Date toDate,Integer districtId);
+
+   public MACourseFirstCompletion getSuccessFulCompletionByExtrnalFlwId(Date toDate, Long Extr_Flw_Id, Integer state_id);
+
+   public void updateMACourseFirstCompletion(MACourseFirstCompletion maCourseFirstCompletion);
 }

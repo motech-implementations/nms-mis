@@ -16,6 +16,7 @@ public class KilkariSubscriberDto {
     private Integer totalRecordsRejected;
     private Integer totalSubscriptionsCompleted;
     private Integer totalSubscriptionsEnd;
+    private boolean link = false;
 
     public int getId() {
         return id;
@@ -103,5 +104,13 @@ public class KilkariSubscriberDto {
 
     public void setTotalSubscriptionsCompleted(Integer totalSubscriptionsCompleted) {
         this.totalSubscriptionsCompleted = totalSubscriptionsCompleted;
+    }
+
+    public boolean isLink() {
+        return link;
+    }
+
+    public void setLink(boolean link) {
+        this.link = link;
     }
 }

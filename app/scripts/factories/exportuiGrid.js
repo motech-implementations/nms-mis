@@ -25,6 +25,7 @@
                         var data1 = uiGridExporterService.getData(gridApi1.grid, rowTypes, colTypes);
                     }
                     var fileName = gridApi.grid.options.exporterExcelFilename ? gridApi.grid.options.exporterExcelFilename : 'dokuman';
+                    fileName = fileName.replace("*","");
                     fileName += '.xlsx';
                     var wb = new Workbook(),
                         ws = sheetFromArrayUiGrid(data, columns,data1,columns1,excelHeaderName,gridApi,gridApi1,rowTypes, colTypes);
@@ -62,7 +63,7 @@
 
                     };
 
-                    if(excelHeaderName.reportName == "Kilkari Message Matrix" || excelHeaderName.reportName == "Kilkari Repeat Listener"){
+                    if(excelHeaderName.reportName == "Kilkari Message Matrix"){
 
                             var ws = {
                                                   B1:{t:'s', v:excelHeaderName.reportName + " (Kilkari MotherPack Data)"},
@@ -74,6 +75,46 @@
                                                   H1:{t:'s', v:"Period:"},
                                                   A15:{t:'s', v:"Report:"},
                                                   B15:{t:'s', v:excelHeaderName.reportName + " (Kilkari ChildPack Data)" },
+                                                  B17:{t:'s', v:excelHeaderName.stateName},
+                                                  F17:{t:'s', v:excelHeaderName.districtName},
+                                                  A17:{t:'s', v:"State:"},
+                                                  E17:{t:'s', v:"District:"},
+                                                  I17:{t:'s', v:"Block:"},
+                                                  H15:{t:'s', v:"Period:"},
+                                                "!merges":[
+                                                			   {s:{r:0,c:0},e:{r:1,c:0}}, /* A1:A2 */
+                                                               {s:{r:0,c:1},e:{r:1,c:5}}, /* B1:F2 */
+                                                               {s:{r:0,c:7},e:{r:1,c:7}}, /* B1:F2 */
+                                                               {s:{r:0,c:8},e:{r:1,c:11}}, /* B1:F2 */
+                                                               {s:{r:2,c:1},e:{r:2,c:3}}, /* B1:F2 */
+                                                               {s:{r:2,c:5},e:{r:2,c:7}}, /* B1:F2 */
+                                                               {s:{r:2,c:9},e:{r:2,c:11}}, /* B1:F2 */
+                                                               {s:{r:14,c:0},e:{r:15,c:0}}, /* A1:A2 */
+                                                               {s:{r:14,c:1},e:{r:15,c:5}}, /* B1:F2 */
+                                                               {s:{r:14,c:7},e:{r:15,c:7}}, /* B1:F2 */
+                                                               {s:{r:14,c:8},e:{r:15,c:11}}, /* B1:F2 */
+                                                               {s:{r:16,c:1},e:{r:16,c:3}}, /* B1:F2 */
+                                                               {s:{r:16,c:5},e:{r:16,c:7}}, /* B1:F2 */
+                                                               {s:{r:16,c:9},e:{r:16,c:11}}
+
+                                                ]
+
+                            };
+
+                    }
+
+                    if(excelHeaderName.reportName == "Kilkari Repeat Listener"){
+
+                            var ws = {
+                                                  B1:{t:'s', v:excelHeaderName.reportName + " (Beneficiary Count)"},
+                                                  B3:{t:'s', v:excelHeaderName.stateName},
+                                                  F3:{t:'s', v:excelHeaderName.districtName},
+                                                  A3:{t:'s', v:"State:"},
+                                                  E3:{t:'s', v:"District:"},
+                                                  I3:{t:'s', v:"Block:"},
+                                                  H1:{t:'s', v:"Period:"},
+                                                  A15:{t:'s', v:"Report:"},
+                                                  B15:{t:'s', v:excelHeaderName.reportName + " (Beneficiary Percentage)" },
                                                   B17:{t:'s', v:excelHeaderName.stateName},
                                                   F17:{t:'s', v:excelHeaderName.districtName},
                                                   A17:{t:'s', v:"State:"},
@@ -149,25 +190,28 @@
                                v = "Total";
 
                            else if(ft.displayName == "Average Duration Of Call" && excelHeaderName.reportName == "Kilkari Cumulative Summary"){
-                               v = gridApi.grid.columns[4].getAggregationValue()/gridApi.grid.columns[3].getAggregationValue();
+                               var temp = gridApi.grid.columns[3].getAggregationValue()==0?0.00: (gridApi.grid.columns[4].getAggregationValue()/gridApi.grid.columns[3].getAggregationValue());
+                               v = Number(temp.toFixed(2));
                            }
                            else if(ft.displayName == "Average Number of Weeks in Service" && excelHeaderName.reportName == "Kilkari Beneficiary Completion"){
-                               v = gridApi.grid.columns[3].getAggregationValue()/gridApi.grid.columns.length;
+                               var temp = gridApi.grid.columns.length==0?0.00: (gridApi.grid.columns[3].getAggregationValue()/gridApi.grid.columns.length);
+                               v = Number(temp.toFixed(2));
                            }
                            else if(ft.displayName == "Average Duration Of Calls" && excelHeaderName.reportName == "Kilkari Call"){
-                               v = gridApi.grid.columns[8].getAggregationValue()/gridApi.grid.columns[3].getAggregationValue();
+                               var temp = gridApi.grid.columns[3].getAggregationValue()==0?0.00: (gridApi.grid.columns[8].getAggregationValue()/gridApi.grid.columns[3].getAggregationValue());
+                               v = Number(temp.toFixed(2));
                            }
                            else if(ft.displayName == "% Not Started Course" && excelHeaderName.reportName == "MA Cumulative Summary"){
                               var temp = gridApi.grid.columns[2].getAggregationValue()==0?0.00: (gridApi.grid.columns[4].getAggregationValue()/gridApi.grid.columns[2].getAggregationValue())*100;
-                              v = temp.toFixed(2);
+                              v = Number(temp.toFixed(2));
                            }
                            else if(ft.displayName == "% Successfully Completed" && excelHeaderName.reportName == "MA Cumulative Summary"){
                               var temp = gridApi.grid.columns[3].getAggregationValue()==0?0.00:(gridApi.grid.columns[5].getAggregationValue()/gridApi.grid.columns[3].getAggregationValue())*100;
-                              v = temp.toFixed(2);
+                              v = Number(temp.toFixed(2));
                            }
                            else if(ft.displayName == "% Failed the course" && excelHeaderName.reportName == "MA Cumulative Summary"){
                               var temp = gridApi.grid.columns[3].getAggregationValue()==0?0.00:(gridApi.grid.columns[6].getAggregationValue()/gridApi.grid.columns[3].getAggregationValue())*100;
-                              v = temp.toFixed(2);
+                              v = Number(temp.toFixed(2));
                            }
                            else{
                                v = ft.getAggregationValue();

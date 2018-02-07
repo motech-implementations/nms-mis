@@ -534,15 +534,18 @@ public class UserController {
                             }
                             if (locationType.equalsIgnoreCase("DifferenceState")) {
                                 summaryDto1.setLocationName("No District Count");
+                                summaryDto1.setLink(true);
                                 summaryDto1.setLocationId((long) -1);
                             }
                             if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
                                 summaryDto1.setLocationName("No Block Count");
+                                summaryDto1.setLink(true);
                                 summaryDto1.setLocationId((long) -1);
 
                             }
                             if (locationType.equalsIgnoreCase("DifferenceBlock")) {
                                 summaryDto1.setLocationName("No Subcenter Count");
+                                summaryDto1.setLink(true);
                                 summaryDto1.setLocationId((long) -1);
 
                             }
@@ -553,7 +556,7 @@ public class UserController {
 //                        summaryDto1.setNotStartedpercentage(a.getAshasNotStarted()*100/a.getAshasRegistered());
                             summaryDto1.setAshasNotAccessed(maPerformanceService.getNotAccessedcount(a.getLocationId().intValue(), a.getLocationType(), fromDate, toDate));
 
-                            if (summaryDto1.getAshasCompleted() + summaryDto1.getAshasFailed() + summaryDto1.getAshasStarted() + summaryDto1.getAshasAccessed() + summaryDto1.getAshasNotAccessed() != 0) {
+                            if (summaryDto1.getAshasCompleted() + summaryDto1.getAshasFailed() + summaryDto1.getAshasStarted() + summaryDto1.getAshasAccessed() + summaryDto1.getAshasNotAccessed() != 0 &&!locationType.equalsIgnoreCase("DifferenceState")) {
                                 summaryDto.add(summaryDto1);
                             }
                         }
@@ -629,23 +632,26 @@ public class UserController {
                             }
                             if (locationType.equalsIgnoreCase("DifferenceState")) {
                                 summaryDto1.setLocationName("No District Count");
+                                summaryDto1.setLink(true);
                                 summaryDto1.setLocationId((long) -1);
 
                             }
                             if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
                                 summaryDto1.setLocationName("No Block Count");
+                                summaryDto1.setLink(true);
                                 summaryDto1.setLocationId((long) -1);
 
                             }
                             if (locationType.equalsIgnoreCase("DifferenceBlock")) {
                                 summaryDto1.setLocationName("No Subcenter Count");
+                                summaryDto1.setLink(true);
                                 summaryDto1.setLocationId((long) -1);
 
                             }
                             notAvailable = false;
                             if (summaryDto1.getAshasCompleted() + summaryDto1.getAshasStarted() + summaryDto1.getAshasFailed() + summaryDto1.getAshasRejected()
                                     + summaryDto1.getAshasRegistered() + summaryDto1.getRegisteredNotCompletedend()
-                                    + summaryDto1.getRegisteredNotCompletedStart() + summaryDto1.getRecordsReceived() + summaryDto1.getAshasNotStarted() != 0) {
+                                    + summaryDto1.getRegisteredNotCompletedStart() + summaryDto1.getRecordsReceived() + summaryDto1.getAshasNotStarted() != 0 &&!locationType.equalsIgnoreCase("DifferenceState")) {
                                 summaryDto.add(summaryDto1);
                             }
 
@@ -694,9 +700,9 @@ public class UserController {
                     summaryDto1.setAshasNotStarted(a.getAshasNotStarted());
                     summaryDto1.setAshasStarted(a.getAshasStarted());
                     summaryDto1.setLocationType(a.getLocationType());
-                    summaryDto1.setCompletedPercentage((float) (a.getAshasStarted() == 0 ? 0 : (a.getAshasCompleted() * 10000 / a.getAshasStarted())) / 100);
-                    summaryDto1.setFailedpercentage((float) (a.getAshasStarted() == 0 ? 0 : (a.getAshasFailed() * 10000 / a.getAshasStarted())) / 100);
-                    summaryDto1.setNotStartedpercentage((float) (a.getAshasRegistered() == 0 ? 0 : (a.getAshasNotStarted() * 10000 / a.getAshasRegistered())) / 100);
+                    summaryDto1.setCompletedPercentage((float) (a.getAshasStarted() == 0 ? 0 : (Math.round((a.getAshasCompleted() * 10000.0f/ a.getAshasStarted())))) / 100f);
+                    summaryDto1.setFailedpercentage((float) (a.getAshasStarted() == 0 ? 0 : (Math.round((a.getAshasFailed() * 10000.0f / a.getAshasStarted())))) / 100f);
+                    summaryDto1.setNotStartedpercentage((float) (a.getAshasRegistered() == 0 ? 0 : (Math.round((a.getAshasNotStarted() * 10000.0f / a.getAshasRegistered())))) / 100f);
                     String locationType = a.getLocationType();
                     if (locationType.equalsIgnoreCase("State")) {
                         summaryDto1.setLocationName(stateDao.findByStateId(a.getLocationId().intValue()).getStateName());
@@ -712,21 +718,24 @@ public class UserController {
                     }
                     if (locationType.equalsIgnoreCase("DifferenceState")) {
                         summaryDto1.setLocationName("No District");
+                        summaryDto1.setLink(true);
                         summaryDto1.setLocationId((long) -1);
 
                     }
                     if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
                         summaryDto1.setLocationName("No Block");
+                        summaryDto1.setLink(true);
                         summaryDto1.setLocationId((long) -1);
 
                     }
                     if (locationType.equalsIgnoreCase("DifferenceBlock")) {
                         summaryDto1.setLocationName("No Subcenter");
+                        summaryDto1.setLink(true);
                         summaryDto1.setLocationId((long) -1);
 
                     }
 
-                    if (a.getId() != 0) {
+                    if (a.getId() != 0 && !locationType.equalsIgnoreCase("DifferenceState")) {
                         summaryDto.add(summaryDto1);
                     }
 
@@ -786,6 +795,8 @@ public class UserController {
             reportName = filename;
 
             File file = new File(reportPath + reportName);
+
+
             if (!(file.exists())) {
                 adminService.createSpecificReport(reportRequest);
             }

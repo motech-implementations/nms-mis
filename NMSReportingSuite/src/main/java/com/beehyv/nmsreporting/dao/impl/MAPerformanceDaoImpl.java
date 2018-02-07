@@ -105,7 +105,7 @@ public class MAPerformanceDaoImpl extends AbstractDao<Integer, User> implements 
 //        fromDate = dateAdder(fromDate,1);
         if(locationType.equalsIgnoreCase("state")) {
             Query query = getSession().createSQLQuery("select count(*) from front_line_worker f  " +
-                    "where f.flw_id not in  (select distinct m.flw_id  from ma_course_completion m  where m.has_passed = 1 and m.creationDate < :fromDate)  " +
+                    "where f.flw_id not in  (select distinct m.flw_id  from ma_course_completion m  where m.has_passed = 1 and m.creationDate < :toDate)  " +
                     "and f.flw_id in  (select distinct m1.flw_id from ma_call_detail_measure m1 where m1.start_time between :fromDate and :toDate) " +
                     "and f.flw_id in (select distinct m2.flw_id from ma_call_detail_measure m2 where m2.start_time < :fromDate) " +
                     "and f.flw_designation = 'ASHA' and f.flw_status = 'ACTIVE' and f.job_status = 'ACTIVE' and f.state_id = :locationId");
@@ -116,7 +116,7 @@ public class MAPerformanceDaoImpl extends AbstractDao<Integer, User> implements 
         }
         if(locationType.equalsIgnoreCase("district")){
             Query query = getSession().createSQLQuery("select count(*) from front_line_worker f  " +
-                    "where f.flw_id not in  (select distinct m.flw_id  from ma_course_completion m  where m.has_passed = 1 and m.creationDate < :fromDate)  " +
+                    "where f.flw_id not in  (select distinct m.flw_id  from ma_course_completion m  where m.has_passed = 1 and m.creationDate < :toDate)  " +
                     "and f.flw_id in  (select distinct m1.flw_id from ma_call_detail_measure m1 where m1.start_time between :fromDate and :toDate) " +
                     "and f.flw_id in (select distinct m2.flw_id from ma_call_detail_measure m2 where m2.start_time < :fromDate) " +
                     "and f.flw_designation = 'ASHA' and f.flw_status = 'ACTIVE' and f.job_status = 'ACTIVE' and f.district_id = :locationId");
@@ -127,7 +127,7 @@ public class MAPerformanceDaoImpl extends AbstractDao<Integer, User> implements 
         }
         if(locationType.equalsIgnoreCase("block")){
             Query query = getSession().createSQLQuery("select count(*) from front_line_worker f  " +
-                    "where f.flw_id not in  (select distinct m.flw_id  from ma_course_completion m  where m.has_passed = 1 and m.creationDate < :fromDate)  " +
+                    "where f.flw_id not in  (select distinct m.flw_id  from ma_course_completion m  where m.has_passed = 1 and m.creationDate < :toDate)  " +
                     "and f.flw_id in  (select distinct m1.flw_id from ma_call_detail_measure m1 where m1.start_time between :fromDate and :toDate) " +
                     "and f.flw_id in (select distinct m2.flw_id from ma_call_detail_measure m2 where m2.start_time < :fromDate) " +
                     "and f.flw_designation = 'ASHA' and f.flw_status = 'ACTIVE' and f.job_status = 'ACTIVE' and f.block_id = :locationId");
@@ -138,7 +138,7 @@ public class MAPerformanceDaoImpl extends AbstractDao<Integer, User> implements 
         }
         if(locationType.equalsIgnoreCase("subcenter")) {
             Query query = getSession().createSQLQuery("select count(*) from front_line_worker f  " +
-                    "where f.flw_id not in  (select distinct m.flw_id  from ma_course_completion m  where m.has_passed = 1 and m.creationDate < :fromDate)  " +
+                    "where f.flw_id not in  (select distinct m.flw_id  from ma_course_completion m  where m.has_passed = 1 and m.creationDate < :toDate)  " +
                     "and f.flw_id in  (select distinct m1.flw_id from ma_call_detail_measure m1 where m1.start_time between :fromDate and :toDate) " +
                     "and f.flw_id in (select distinct m2.flw_id from ma_call_detail_measure m2 where m2.start_time < :fromDate) " +
                     "and f.flw_designation = 'ASHA' and f.flw_status = 'ACTIVE' and f.job_status = 'ACTIVE' and f.healthsubfacility_id = :locationId");

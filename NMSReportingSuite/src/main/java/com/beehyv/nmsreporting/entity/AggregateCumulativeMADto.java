@@ -20,6 +20,7 @@ public class AggregateCumulativeMADto {
     float notStartedpercentage;
     float completedPercentage;
     float failedpercentage;
+    private boolean link = false;
 
     public Integer getRecordsReceived() {
         return recordsReceived;
@@ -131,5 +132,13 @@ public class AggregateCumulativeMADto {
 
     public void setAshasFailed(Integer ashasFailed) {
         this.ashasFailed = ashasFailed;
+    }
+
+    public boolean isLink() {
+        return link;
+    }
+
+    public void setLink(boolean link) {
+        this.link = link;
     }
 }

@@ -14,7 +14,7 @@ public enum ReportType {
     messageMatrix("Kilkari_Message_Matrix","Kilkari Message Matrix","K","Kilkari Message Matrix Report"),
     kilkariCalls("Kilkari_Call","Kilkari Call","K","Kilkari Call Report"),
     listeningMatrix("Kilkari_Listening_Matrix","Kilkari Listening Matrix","K","Kilkari Listening Matrix Report"),
-    beneficiary("Kilkari_Beneficiary","Kilkari Beneficiary","K","Kilkari Aggregate Beneficiary Report"),
+    beneficiary("Kilkari_Aggregate_Beneficiary","Kilkari Aggregate Beneficiary","K","Kilkari Aggregate Beneficiary Report"),
     usage("Kilkari_Usage","Kilkari Usage","K","Kilkari Usage Report"),
     beneficiaryCompletion("Kilkari_Beneficiary_Completion","Kilkari Beneficiary Completion","K","Kilkari Beneficiary Completion Report"),
     kilkariCumulative("Kilkari_Cumulative_Summary","Kilkari Cumulative Summary","K","Kilkari Cumulative Summery Aggregate Report"),
