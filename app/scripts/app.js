@@ -74,6 +74,63 @@ var nmsReportsApp = angular
             	templateUrl: 'views/reports.html'
             })
 
+			.state('Kikari Cumulative Summary', {
+            	url: '/kilkariCumulative',
+            	templateUrl: 'views/reports.html'
+            })
+
+
+			.state('Kilkari Beneficiary Completion', {
+            	url: '/beneficiaryCompletion',
+            	templateUrl: 'views/reports.html'
+            })
+
+			.state('Kilkari Usage', {
+            	url: '/usage',
+            	templateUrl: 'views/reports.html'
+            })
+
+			.state('Kilkari Call', {
+            	url: '/kilkariCalls',
+            	templateUrl: 'views/reports.html'
+            })
+
+			.state('Kilkari Message Matrix', {
+            	url: '/messageMatrix',
+            	templateUrl: 'views/reports.html'
+            })
+
+
+			.state('Kilkari Listening Matrix', {
+            	url: '/listeningMatrix',
+            	templateUrl: 'views/reports.html'
+            })
+
+			.state('Kilkari Thematic Content', {
+            	url: '/kilkariThematicContent',
+            	templateUrl: 'views/reports.html'
+            })
+
+			.state('Kilkari Repeat Listener', {
+            	url: '/kilkariRepeatListenerMonthWise',
+            	templateUrl: 'views/reports.html'
+            })
+
+			.state('Kilkari Subscriber', {
+            	url: '/kilkariSubscriber',
+            	templateUrl: 'views/reports.html'
+            })
+
+			.state('Kilkari Message Listenership', {
+            	url: '/kilkariMessageListenership',
+            	templateUrl: 'views/reports.html'
+            })
+
+			.state('Kilkari Aggregate Beneficiary', {
+            	url: '/beneficiary',
+            	templateUrl: 'views/reports.html'
+            })
+
 			.state('profile', {
 				url: '/profile',
 				templateUrl: 'views/profile.html'
