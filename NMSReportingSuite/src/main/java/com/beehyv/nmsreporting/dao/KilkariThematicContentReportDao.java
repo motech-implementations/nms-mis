@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface KilkariThematicContentReportDao {
 
-    KilkariThematicContent getKilkariThematicContentReportData(Date date, String week_id);
+    KilkariThematicContent getKilkariThematicContentReportData(Integer locationId,String locationType,Date date, String week_id);
 
     String getMessageWeekNumber(Integer messageWeekNumber);
 

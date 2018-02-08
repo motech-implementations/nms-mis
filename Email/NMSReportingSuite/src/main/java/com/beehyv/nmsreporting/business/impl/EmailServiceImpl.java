@@ -220,17 +220,17 @@ public class EmailServiceImpl implements EmailService{
                     "best practices of health, nutrition and immunizations that they need to follow during their " +
                     "pregnancy period and child care.\n\n";
         } else if(reportName.equalsIgnoreCase(ReportType.flwRejected.getReportName())){
-            body+="\tPlease find attached the list of ASHAs rejected due to one of the following rejection reasons " +
-                    "viz.,MSISDN_ALREADY_IN_USE,FLW_TYPE_NOT_ASHA,FLW_IMPORT_ERROR,RECORD_ALREADY_EXISTS\n";
+            body+="\tPlease find attached the list of ASHAs rejected for the following reasons -\n" +
+                    "invalid or duplicate mobile number and missing information.\n";
             body+="\tYou are requested to kindly instruct your field level workers and ask them to provide their mobile numbers" +
                     " through which they could call the Mobile Academy course and update those mobile numbers in the RCH application.\n\n";
 
         } else if(reportName.equalsIgnoreCase(ReportType.childRejected.getReportName())||reportName.equalsIgnoreCase(ReportType.motherRejected.getReportName())){
-            body+= "\tPlease find attached the following files:\n"
-                    + "1. The following List of mother records are deactivated for one of the following rejection reasons" +
-                    " viz., Subscription Rejected,MSISDN already in use,Record already exists,Active child present,Invalid case no.\n"
-                    +  "2. The following List of child records are deactivated for one of the following rejection reasons " +
-                    "viz., MSISDN already in use,Subscription Rejected,Mother id error,Record already exists\n";
+            body+= "\tPlease find attached the following files:\n " +
+                    "1. Please find attached the list of mother beneficiaries who were rejected for the following reasons - " +
+                    "Invalid or Duplicate mobile number and Invalid Case No (RCH).\n " +
+                    "2. Please find attached the list of child beneficiaries who were rejected for the following reasons - " +
+                    "Invalid or Duplicate mobile numbers and child linked to a different mother.\n";
             body+= "\tYou are requested to kindly instruct your field level workers to contact the beneficiaries personally" +
                     " and ask them to provide their mobile numbers through which they could receive the Kilkari messages" +
                     " and update those mobile numbers in the RCH application.\n";
@@ -363,7 +363,7 @@ public class EmailServiceImpl implements EmailService{
             body+="<br><br><table width='100%' border='1' align='center'>"
                     + "<tr align='center'>"
                     + "<td><b>District Name<b></td>"
-                    + "<td><b>Count of deactivated records for answering a single call for six consecutive weeks<b></td>"
+                    + "<td><b>Count of deactivated records for not answering a single call for six consecutive weeks<b></td>"
                     + "<td><b>Count of deactivated records for Low Listenership.<b></td>"
                     + "</tr>";
             for (District district:districts
@@ -374,9 +374,9 @@ public class EmailServiceImpl implements EmailService{
             }
 
         } else if(reportType.equals(ReportType.flwRejected.getReportType())){
-            body+="<pre>   </pre>Please find below the district wise count of ASHAs whose mobile numbers registered" +
-                    " at the RCH application are either incorrect or not unique. The line listing of the ASHAs" +
-                    " have been sent to the respective district and block users.";
+            body+="<pre>   </pre>Please find below the district wise count of ASHAs who were rejected for the following reasons -" +
+                    "<br>invalid or duplicate mobile number and missing information. " +
+                    "<br>The line listing of the ASHAs have been sent to the respective district and block users.";
 
             body+="<br><br><pre>   </pre>You are requested to kindly instruct your field level workers and ask them to provide their mobile numbers" +
                     " through which they could call the Mobile Academy course and update those mobile numbers in the RCH application.";
@@ -396,9 +396,12 @@ public class EmailServiceImpl implements EmailService{
         }
         else if(reportType.equals(ReportType.motherRejected.getReportType()) ||
                 reportType.equals(ReportType.childRejected.getReportType())){
-            body+= "<pre>   </pre>Please find below the district wise count of beneficiaries whose mobile numbers registered" +
-                    " at the RCH application are either incorrect or not unique. The line listing of the beneficiaries " +
-                    "have been sent to the respective district and block users.";
+            body+= " <br> " +
+                    "1. Please find below the district wise count of mother beneficiaries who were rejected for the following reasons -" +
+                    "Invalid or Duplicate mobile number and Invalid Case No (RCH).<br>  " +
+                    "2. Please find below the district wise count of child beneficiaries who were rejected for the following reasons -" +
+                    " Invalid or Duplicate mobile numbers and child linked to a different mother. <br>";
+            body+= " The line listing of the beneficiaries have been sent to the respective district and block users.";
 
             body+= "<br><br><pre>   </pre>You are requested to kindly instruct your field level workers to contact the beneficiaries personally" +
                     " and ask them to provide their mobile numbers through which they could receive the Kilkari messages" +

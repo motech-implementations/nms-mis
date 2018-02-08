@@ -17,10 +17,14 @@ import java.util.List;
 public class MessageMatrixDaoImpl extends AbstractDao<Integer,MessageMatrix> implements MessageMatrixDao {
 
     @Override
-    public MessageMatrix getMessageMatrixData(Date date){
+    public MessageMatrix getMessageMatrixData(Integer locationId,String locationType,Date date){
 
         Criteria criteria = createEntityCriteria();
-        criteria.add(Restrictions.eq("date",date));
+        criteria.add(Restrictions.and(
+                Restrictions.eq("locationId",locationId.longValue()),
+                Restrictions.eq("locationType",locationType),
+                Restrictions.eq("date", date)
+        ));
 
         List<MessageMatrix> result = criteria.list();
         if(result.isEmpty()){

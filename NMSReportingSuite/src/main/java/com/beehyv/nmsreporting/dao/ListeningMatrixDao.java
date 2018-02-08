@@ -9,5 +9,5 @@ import java.util.Date;
  */
 public interface ListeningMatrixDao {
 
-    ListeningMatrix getListeningMatrix(Date date);
+    ListeningMatrix getListeningMatrix(Integer locationDate, String locationType,Date date);
 }

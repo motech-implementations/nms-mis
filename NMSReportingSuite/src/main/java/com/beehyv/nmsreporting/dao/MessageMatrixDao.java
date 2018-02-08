@@ -8,5 +8,5 @@ import java.util.Date;
  * Created by beehyv on 12/10/17.
  */
 public interface MessageMatrixDao {
-    MessageMatrix getMessageMatrixData(Date date);
+    MessageMatrix getMessageMatrixData(Integer locationId,String locationType,Date date);
 }
