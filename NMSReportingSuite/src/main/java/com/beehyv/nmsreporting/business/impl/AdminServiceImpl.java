@@ -2362,7 +2362,7 @@ public class AdminServiceImpl implements AdminService {
                 List<FrontLineWorkers> candidatesFromThisDistrict = new ArrayList<>();
                 HashMap<String, FrontLineWorkers> candidatesFromThisDistrictMap = new HashMap<>();
                 for (FrontLineWorkers asha : allFrontLineWorkers) {
-                    if (asha.getDistrict() == district.getDistrictId()) {
+                    if (asha.getDistrict()!=null && asha.getDistrict() == district.getDistrictId()) {
                         candidatesFromThisDistrict.add(asha);
                         candidatesFromThisDistrictMap.put(asha.getExternalFlwId(), asha);
                     }
@@ -2381,7 +2381,7 @@ public class AdminServiceImpl implements AdminService {
 
                     HashMap<String, FrontLineWorkers> candidatesFromThisBlockMap = new HashMap<>();
                     for (FrontLineWorkers asha : candidatesFromThisDistrict) {
-                        if (asha.getBlock() == block.getBlockId()) {
+                        if (asha.getBlock()!= null && asha.getBlock() == block.getBlockId()) {
                             candidatesFromThisBlockMap.put(asha.getExternalFlwId(), asha);
                         }
                     }
