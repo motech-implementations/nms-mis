@@ -847,6 +847,8 @@ public class UserController {
     public @ResponseBody List<Map<String, Object>> getReportsMenu() {
         User currentUser = userService.getCurrentUser();
         Map<String, Object> maMenu = new HashMap<>();
+        boolean showAggregateReports = false;
+        boolean showLinelistingReports =true;
         maMenu.put("name", "Mobile Academy Reports");
         maMenu.put("icon", "images/drop-down-3.png");
 
@@ -855,43 +857,43 @@ public class UserController {
                 ReportType.maCourse.getReportName(),
                 ReportType.maCourse.getReportType(),
                 "images/drop-down-3.png",
-                ReportType.maCourse.getServiceType())
+                ReportType.maCourse.getServiceType(),showLinelistingReports)
         );
         maList.add(new Report(
                 ReportType.maAnonymous.getReportName(),
                 ReportType.maAnonymous.getReportType(),
                 "images/drop-down-3.png",
-                ReportType.maAnonymous.getServiceType())
+                ReportType.maAnonymous.getServiceType(),showLinelistingReports)
         );
         maList.add(new Report(
                 ReportType.maInactive.getReportName(),
                 ReportType.maInactive.getReportType(),
                 "images/drop-down-3.png",
-                ReportType.maInactive.getServiceType())
+                ReportType.maInactive.getServiceType(),showLinelistingReports)
         );
         maList.add(new Report(
                 ReportType.flwRejected.getReportName(),
                 ReportType.flwRejected.getReportType(),
                 "images/drop-down-3.png",
-                ReportType.flwRejected.getServiceType())
+                ReportType.flwRejected.getServiceType(),showLinelistingReports)
         );
         maList.add(new Report(
                 ReportType.maPerformance.getReportName(),
                 ReportType.maPerformance.getReportType(),
                 "images/drop-down-2.png",
-                ReportType.maPerformance.getServiceType())
+                ReportType.maPerformance.getServiceType(),showAggregateReports)
         );
         maList.add(new Report(
                 ReportType.maSubscriber.getReportName(),
                 ReportType.maSubscriber.getReportType(),
                 "images/drop-down-2.png",
-                ReportType.maSubscriber.getServiceType())
+                ReportType.maSubscriber.getServiceType(),showAggregateReports)
         );
         maList.add(new Report(
                 ReportType.maCumulative.getReportName(),
                 ReportType.maCumulative.getReportType(),
                 "images/drop-down-2.png",
-                ReportType.maCumulative.getServiceType())
+                ReportType.maCumulative.getServiceType(),showAggregateReports)
         );
 
         maMenu.put("service", maList.get(0).getService());
@@ -907,106 +909,106 @@ public class UserController {
                 ReportType.sixWeeks.getReportName(),
                 ReportType.sixWeeks.getReportType(),
                 "images/drop-down-3.png",
-                ReportType.sixWeeks.getServiceType())
+                ReportType.sixWeeks.getServiceType(),showLinelistingReports)
         );
         kList.add(new Report(
                 ReportType.lowListenership.getReportName(),
                 ReportType.lowListenership.getReportType(),
                 "images/drop-down-3.png",
-                ReportType.lowListenership.getServiceType())
+                ReportType.lowListenership.getServiceType(),showLinelistingReports)
         );
         kList.add(new Report(
                 ReportType.lowUsage.getReportName(),
                 ReportType.lowUsage.getReportType(),
                 "images/drop-down-3.png",
-                ReportType.lowUsage.getServiceType())
+                ReportType.lowUsage.getServiceType(),showLinelistingReports)
         );
         kList.add(new Report(
                 ReportType.selfDeactivated.getReportName(),
                 ReportType.selfDeactivated.getReportType(),
                 "images/drop-down-3.png",
-                ReportType.selfDeactivated.getServiceType())
+                ReportType.selfDeactivated.getServiceType(),showLinelistingReports)
         );
         kList.add(new Report(
                 ReportType.motherRejected.getReportName(),
                 ReportType.motherRejected.getReportType(),
                 "images/drop-down-3.png",
-                ReportType.motherRejected.getServiceType())
+                ReportType.motherRejected.getServiceType(),showLinelistingReports)
         );
         kList.add(new Report(
                 ReportType.childRejected.getReportName(),
                 ReportType.childRejected.getReportType(),
                 "images/drop-down-3.png",
-                ReportType.childRejected.getServiceType())
+                ReportType.childRejected.getServiceType(),showLinelistingReports)
         );
         kList.add(new Report(
                 ReportType.kilkariCumulative.getReportName(),
                 ReportType.kilkariCumulative.getReportType(),
                 "images/drop-down-2.png",
-                ReportType.kilkariCumulative.getServiceType())
+                ReportType.kilkariCumulative.getServiceType(),showAggregateReports)
         );
         kList.add(new Report(
                 ReportType.beneficiaryCompletion.getReportName(),
                 ReportType.beneficiaryCompletion.getReportType(),
                 "images/drop-down-2.png",
-                ReportType.beneficiaryCompletion.getServiceType())
+                ReportType.beneficiaryCompletion.getServiceType(),showAggregateReports)
         );
         kList.add(new Report(
                 ReportType.usage.getReportName(),
                 ReportType.usage.getReportType(),
                 "images/drop-down-2.png",
-                ReportType.usage.getServiceType())
+                ReportType.usage.getServiceType(),showAggregateReports)
         );
         kList.add(new Report(
                 ReportType.kilkariCalls.getReportName(),
                 ReportType.kilkariCalls.getReportType(),
                 "images/drop-down-2.png",
-                ReportType.kilkariCalls.getServiceType())
+                ReportType.kilkariCalls.getServiceType(),showAggregateReports)
         );
 
             kList.add(new Report(
                     ReportType.messageMatrix.getReportName(),
                     ReportType.messageMatrix.getReportType(),
                     "images/drop-down-2.png",
-                    ReportType.messageMatrix.getServiceType())
+                    ReportType.messageMatrix.getServiceType(),showAggregateReports)
             );
             kList.add(new Report(
                     ReportType.listeningMatrix.getReportName(),
                     ReportType.listeningMatrix.getReportType(),
                     "images/drop-down-2.png",
-                    ReportType.listeningMatrix.getServiceType())
+                    ReportType.listeningMatrix.getServiceType(),showAggregateReports)
             );
             kList.add(new Report(
                     ReportType.kilkariThematicContent.getReportName(),
                     ReportType.kilkariThematicContent.getReportType(),
                     "images/drop-down-2.png",
-                    ReportType.kilkariThematicContent.getServiceType())
+                    ReportType.kilkariThematicContent.getServiceType(),showAggregateReports)
             );
             kList.add(new Report(
                     ReportType.kilkariRepeatListenerMonthWise.getReportName(),
                     ReportType.kilkariRepeatListenerMonthWise.getReportType(),
                     "images/drop-down-2.png",
-                    ReportType.kilkariRepeatListenerMonthWise.getServiceType())
+                    ReportType.kilkariRepeatListenerMonthWise.getServiceType(),showAggregateReports)
             );
 
         kList.add(new Report(
                 ReportType.kilkariSubscriber.getReportName(),
                 ReportType.kilkariSubscriber.getReportType(),
                 "images/drop-down-2.png",
-                ReportType.kilkariSubscriber.getServiceType())
+                ReportType.kilkariSubscriber.getServiceType(),showAggregateReports)
         );
         kList.add(new Report(
                 ReportType.kilkariMessageListenership.getReportName(),
                 ReportType.kilkariMessageListenership.getReportType(),
                 "images/drop-down-2.png",
-                ReportType.kilkariMessageListenership.getServiceType())
+                ReportType.kilkariMessageListenership.getServiceType(),showAggregateReports)
         );
 
         kList.add(new Report(
                 ReportType.beneficiary.getReportName(),
                 ReportType.beneficiary.getReportType(),
                 "images/drop-down-2.png",
-                ReportType.beneficiary.getServiceType())
+                ReportType.beneficiary.getServiceType(),showAggregateReports)
         );
 
 

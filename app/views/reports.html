@@ -31,7 +31,7 @@
 							</button>
 							<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
 								<li role="menuitem" ng-repeat="item in reportNames">
-									<a class="select_report" ng-click='selectReport(item)'>
+									<a ng-if="item.showItem" class="select_report" ng-click='selectReport(item)'>
 										<img class='block' src="{{item.icon}}">
 										<span>{{item.name}}</span>
 									</a>

@@ -1121,10 +1121,10 @@
 			}
 
 			$scope.reset =function(){
-
-				$scope.report = null;
-				$scope.reportCategory = null;
-
+                if((($state.current.name)===("reports"))){
+                    $scope.report = null;
+                    $scope.reportCategory = null;
+                }
 				if(!$scope.userHasState()){
 					$scope.clearState();
 				}

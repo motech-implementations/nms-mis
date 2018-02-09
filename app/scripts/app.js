@@ -74,7 +74,7 @@ var nmsReportsApp = angular
             	templateUrl: 'views/reports.html'
             })
 
-			.state('Kikari Cumulative Summary', {
+			.state('Kilkari Cumulative Summary', {
             	url: '/kilkariCumulative',
             	templateUrl: 'views/reports.html'
             })
