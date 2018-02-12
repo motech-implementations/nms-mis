@@ -1447,7 +1447,6 @@ public class AdminServiceImpl implements AdminService {
 //                            continue;
 //                        }
                         cell3 = sheetrow.getCell(3);
-                        System.out.println(rowcount);
                         if ( cell3.getStringCellValue() != null && cell3.getStringCellValue().equalsIgnoreCase("No Block") && frontLineWorker.getBlock()!=null) {
                             String temp =blockDao.findByblockId(frontLineWorker.getBlock()).getBlockName();
                             cell3.setCellValue(temp);
@@ -2282,7 +2281,7 @@ public class AdminServiceImpl implements AdminService {
             frontLineWorkersMap.put(frontLineWorkers.getExternalFlwId(), frontLineWorkers);
         }
 
-        //updateCumulativeInactiveUsersInExcel(frontLineWorkersMap, stateIdRequest, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
+        updateCumulativeInactiveUsersInExcel(frontLineWorkersMap, stateIdRequest, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
         State state = stateDao.findByStateId(stateIdRequest);
 
             String stateName = StReplace(state.getStateName());
@@ -2304,7 +2303,7 @@ public class AdminServiceImpl implements AdminService {
                 String rootPathDistrict = rootPathState  + districtName+ "/";
                 int districtId = district.getDistrictId();
 
-                //updateCumulativeInactiveUsersInExcel(candidatesFromThisDistrictMap, stateIdRequest, rootPathDistrict, districtName, toDate);
+                updateCumulativeInactiveUsersInExcel(candidatesFromThisDistrictMap, stateIdRequest, rootPathDistrict, districtName, toDate);
                 List<Block> Blocks = blockDao.getBlocksOfDistrict(districtId);
                 for (Block block : Blocks) {
 
@@ -2317,7 +2316,7 @@ public class AdminServiceImpl implements AdminService {
                             candidatesFromThisBlockMap.put(asha.getExternalFlwId(), asha);
                         }
                     }
-                   // updateCumulativeInactiveUsersInExcel(candidatesFromThisBlockMap, stateIdRequest, rootPathblock, blockName, toDate);
+                    updateCumulativeInactiveUsersInExcel(candidatesFromThisBlockMap, stateIdRequest, rootPathblock, blockName, toDate);
                 }
             }
 
