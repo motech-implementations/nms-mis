@@ -60,74 +60,74 @@ var nmsReportsApp = angular
 			})
 
 			.state('MA Cumulative Summary', {
-            	url: '/maCumulative',
+            	url: '/reports/ma/cumulative-summary-report',
             	templateUrl: 'views/reports.html'
             })
 
 			.state('MA Subscriber', {
-            	url: '/maSubscriber',
+            	url: '/reports/ma/subscriber-report',
             	templateUrl: 'views/reports.html'
             })
 
 			.state('MA Performance', {
-            	url: '/maPerformance',
+            	url: '/reports/ma/performance-report',
             	templateUrl: 'views/reports.html'
             })
 
 			.state('Kilkari Cumulative Summary', {
-            	url: '/kilkariCumulative',
+            	url: '/reports/kilkari/cumulative-summary-report',
             	templateUrl: 'views/reports.html'
             })
 
 
 			.state('Kilkari Beneficiary Completion', {
-            	url: '/beneficiaryCompletion',
+            	url: '/reports/kilkari/beneficiary-completion-report',
             	templateUrl: 'views/reports.html'
             })
 
 			.state('Kilkari Usage', {
-            	url: '/usage',
+            	url: '/reports/kilkari/usage-report',
             	templateUrl: 'views/reports.html'
             })
 
 			.state('Kilkari Call', {
-            	url: '/kilkariCalls',
+            	url: '/reports/kilkari/call-report',
             	templateUrl: 'views/reports.html'
             })
 
 			.state('Kilkari Message Matrix', {
-            	url: '/messageMatrix',
+            	url: '/reports/kilkari/message-matrix-report',
             	templateUrl: 'views/reports.html'
             })
 
 
 			.state('Kilkari Listening Matrix', {
-            	url: '/listeningMatrix',
+            	url: '/reports/kilkari/listening-matrix-report',
             	templateUrl: 'views/reports.html'
             })
 
 			.state('Kilkari Thematic Content', {
-            	url: '/kilkariThematicContent',
+            	url: '/reports/kilkari/thematic-content-report',
             	templateUrl: 'views/reports.html'
             })
 
 			.state('Kilkari Repeat Listener', {
-            	url: '/kilkariRepeatListenerMonthWise',
+            	url: '/reports/kilkari/repeat-listener-report',
             	templateUrl: 'views/reports.html'
             })
 
 			.state('Kilkari Subscriber', {
-            	url: '/kilkariSubscriber',
+            	url: '/reports/kilkari/subscriber-report',
             	templateUrl: 'views/reports.html'
             })
 
 			.state('Kilkari Message Listenership', {
-            	url: '/kilkariMessageListenership',
+            	url: '/reports/kilkari/message-listenership-report',
             	templateUrl: 'views/reports.html'
             })
 
 			.state('Kilkari Aggregate Beneficiary', {
-            	url: '/beneficiary',
+            	url: '/reports/kilkari/aggregate-beneficiary-report',
             	templateUrl: 'views/reports.html'
             })
 
