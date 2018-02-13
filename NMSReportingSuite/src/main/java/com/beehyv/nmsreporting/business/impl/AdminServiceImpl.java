@@ -1443,9 +1443,9 @@ public class AdminServiceImpl implements AdminService {
                         FrontLineWorkers frontLineWorker = frontLineWorkersHashMap.get(ext_flw_id);
                         //Update the value of cell
 
-//                        if (frontLineWorker == null) {
-//                            continue;
-//                        }
+                        if (frontLineWorker == null) {
+                            continue;
+                        }
                         cell3 = sheetrow.getCell(3);
                         if ( cell3.getStringCellValue() != null && cell3.getStringCellValue().equalsIgnoreCase("No Block") && frontLineWorker.getBlock()!=null) {
                             String temp =blockDao.findByblockId(frontLineWorker.getBlock()).getBlockName();
@@ -2290,33 +2290,20 @@ public class AdminServiceImpl implements AdminService {
             updateCumulativeInactiveUsersInExcel(frontLineWorkersMap, stateIdRequest, rootPathState, stateName, toDate);
             List<District> districts = districtDao.getDistrictsOfState(stateIdRequest);
             for (District district : districts) {
-                List<FrontLineWorkers> candidatesFromThisDistrict = new ArrayList<>();
-                HashMap<String, FrontLineWorkers> candidatesFromThisDistrictMap = new HashMap<>();
-                for (FrontLineWorkers asha : allFrontLineWorkers) {
-                    if (asha.getDistrict()!=null && asha.getDistrict().equals(district.getDistrictId())) {
-                        candidatesFromThisDistrict.add(asha);
-                        candidatesFromThisDistrictMap.put(asha.getExternalFlwId(), asha);
-                    }
-                }
+
 
                 String districtName = StReplace(district.getDistrictName());
                 String rootPathDistrict = rootPathState  + districtName+ "/";
                 int districtId = district.getDistrictId();
 
-                updateCumulativeInactiveUsersInExcel(candidatesFromThisDistrictMap, stateIdRequest, rootPathDistrict, districtName, toDate);
+               updateCumulativeInactiveUsersInExcel(frontLineWorkersMap, stateIdRequest, rootPathDistrict, districtName, toDate);
                 List<Block> Blocks = blockDao.getBlocksOfDistrict(districtId);
                 for (Block block : Blocks) {
 
                     String blockName = StReplace(block.getBlockName());
                     String rootPathblock = rootPathDistrict  + blockName+ "/";
 
-                    HashMap<String, FrontLineWorkers> candidatesFromThisBlockMap = new HashMap<>();
-                    for (FrontLineWorkers asha : candidatesFromThisDistrict) {
-                        if (asha.getBlock()!= null && asha.getBlock().equals(block.getBlockId())) {
-                            candidatesFromThisBlockMap.put(asha.getExternalFlwId(), asha);
-                        }
-                    }
-                    updateCumulativeInactiveUsersInExcel(candidatesFromThisBlockMap, stateIdRequest, rootPathblock, blockName, toDate);
+                    updateCumulativeInactiveUsersInExcel(frontLineWorkersMap, stateIdRequest, rootPathblock, blockName, toDate);
                 }
             }
 
