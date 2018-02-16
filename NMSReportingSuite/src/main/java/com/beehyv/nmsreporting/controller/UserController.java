@@ -739,7 +739,8 @@ public class UserController {
 
                     }
 
-                    if (a.getId() != 0 && !locationType.equalsIgnoreCase("DifferenceState")) {
+                    if (summaryDto1.getAshasRegistered()+summaryDto1.getAshasCompleted()+summaryDto1.getAshasNotStarted()+summaryDto1.getAshasStarted()
+                        +summaryDto1.getAshasFailed() !=0 && a.getId() != 0 && !locationType.equalsIgnoreCase("DifferenceState")) {
                         summaryDto.add(summaryDto1);
                     }
 
