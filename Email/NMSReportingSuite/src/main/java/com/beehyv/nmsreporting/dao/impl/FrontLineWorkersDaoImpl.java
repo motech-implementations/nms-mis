@@ -21,8 +21,9 @@ public class FrontLineWorkersDaoImpl extends AbstractDao<Integer, FrontLineWorke
     public Long getCountOfInactiveFrontLineWorkersForGivenDistrict(Date toDate, Integer districtId) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.and(
-                Restrictions.eq("status", "INACTIVE").ignoreCase(),
-                Restrictions.lt("creationDate", toDate),
+                Restrictions.eq("status","INACTIVE").ignoreCase(),
+                Restrictions.lt("creationDate",toDate),
+                Restrictions.gt("courseStartDate",toDate),
                 Restrictions.eq("jobStatus","ACTIVE").ignoreCase(),
                 Restrictions.eq("designation", "ASHA").ignoreCase(),
                 Restrictions.eq("district", districtId)
