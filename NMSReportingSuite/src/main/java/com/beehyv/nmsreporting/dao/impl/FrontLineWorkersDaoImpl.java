@@ -24,6 +24,7 @@ public class FrontLineWorkersDaoImpl extends AbstractDao<Integer,FrontLineWorker
         criteria.add(Restrictions.and(
                 Restrictions.eq("status","INACTIVE").ignoreCase(),
                 Restrictions.lt("creationDate",toDate),
+                Restrictions.gt("courseStartDate",toDate),
                 Restrictions.eq("jobStatus","ACTIVE").ignoreCase(),
                 Restrictions.eq("designation","ASHA").ignoreCase()
         ));
@@ -36,6 +37,7 @@ public class FrontLineWorkersDaoImpl extends AbstractDao<Integer,FrontLineWorker
         criteria.add(Restrictions.and(
                 Restrictions.eq("status","INACTIVE").ignoreCase(),
                 Restrictions.lt("creationDate",toDate),
+                Restrictions.gt("courseStartDate",toDate),
                 Restrictions.eq("jobStatus","ACTIVE").ignoreCase(),
                 Restrictions.eq("designation","ASHA").ignoreCase(),
                 Restrictions.eq("state",stateId)
@@ -49,6 +51,7 @@ public class FrontLineWorkersDaoImpl extends AbstractDao<Integer,FrontLineWorker
         criteria.add(Restrictions.and(
                 Restrictions.eq("status","INACTIVE").ignoreCase(),
                 Restrictions.lt("creationDate",toDate),
+                Restrictions.gt("courseStartDate",toDate),
                 Restrictions.eq("jobStatus","ACTIVE").ignoreCase(),
                 Restrictions.eq("designation","ASHA").ignoreCase(),
                 Restrictions.eq("district",districtId)
@@ -62,6 +65,7 @@ public class FrontLineWorkersDaoImpl extends AbstractDao<Integer,FrontLineWorker
         criteria.add(Restrictions.and(
                 Restrictions.eq("status","INACTIVE").ignoreCase(),
                 Restrictions.lt("creationDate",toDate),
+                Restrictions.gt("courseStartDate",toDate),
                 Restrictions.eq("jobStatus","ACTIVE").ignoreCase(),
                 Restrictions.eq("designation","ASHA").ignoreCase(),
                 Restrictions.eq("block",blockId)
@@ -75,6 +79,7 @@ public class FrontLineWorkersDaoImpl extends AbstractDao<Integer,FrontLineWorker
         criteria.add(Restrictions.and(
                 Restrictions.eq("status","INACTIVE").ignoreCase(),
                 Restrictions.lt("creationDate",toDate),
+                Restrictions.gt("courseStartDate",toDate),
                 Restrictions.eq("jobStatus","ACTIVE").ignoreCase(),
                 Restrictions.eq("designation","ASHA").ignoreCase(),
                 Restrictions.eq("district",districtId)
@@ -88,6 +93,7 @@ public class FrontLineWorkersDaoImpl extends AbstractDao<Integer,FrontLineWorker
         criteria.add(Restrictions.and(
                 Restrictions.eq("status","INACTIVE").ignoreCase(),
                 Restrictions.lt("creationDate",toDate),
+                Restrictions.gt("courseStartDate",toDate),
                 Restrictions.eq("jobStatus","ACTIVE").ignoreCase(),
                 Restrictions.eq("designation","ASHA").ignoreCase(),
                 Restrictions.eq("externalFlwId",Ext_Flw_Id)
