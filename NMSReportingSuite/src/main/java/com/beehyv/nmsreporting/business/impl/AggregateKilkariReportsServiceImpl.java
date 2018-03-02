@@ -1489,140 +1489,179 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         List<MessageMatrixDto> motherMatrixDto = new ArrayList<>();
         List<MessageMatrixDto> childMatrixDto = new ArrayList<>();
 
-        MessageMatrix messageMatrix= messageMatrixDao.getMessageMatrixData(locationId,locationType,fromDate);
-        if(messageMatrix == null){
+        List<MessageMatrix> messagelist= messageMatrixDao.getMessageMatrixData(locationId,locationType,fromDate);
+        Long Mother_1_25=0L,Mother_25_50=0L,Mother_50_75=0L,Mother_75_100=0L,Child_1_25=0L,Child_25_50=0L,Child_50_75=0L,Child_75_100=0L;
+        if(messagelist == null){
             messageMatrixResponseDto.setChildData(childMatrixDto);
             messageMatrixResponseDto.setMotherData(motherMatrixDto);
             return  messageMatrixResponseDto;
         }
 
-        MessageMatrixDto matrixDto1 = new MessageMatrixDto();
-        matrixDto1.setMessageWeek("Message Week 1-6");
-        matrixDto1.setContent_1_25(messageMatrix.getMother_1_6_Content_1());
-        matrixDto1.setContent_25_50(messageMatrix.getMother_1_6_Content_25());
-        matrixDto1.setContent_50_75(messageMatrix.getMother_1_6_Content_50());
-        matrixDto1.setContent_75_100(messageMatrix.getMother_1_6_Content_75());
-        matrixDto1.setTotal(messageMatrix.getMother_1_6_Content_1()+messageMatrix.getMother_1_6_Content_25()+messageMatrix.getMother_1_6_Content_50()+messageMatrix.getMother_1_6_Content_75());
+        for(int count =0; count< messagelist.size();count++) {
+            MessageMatrixDto matrixDto1 = new MessageMatrixDto();
 
-        MessageMatrixDto matrixDto2 = new MessageMatrixDto();
-        matrixDto2.setMessageWeek("Message Week 7-12");
-        matrixDto2.setContent_1_25(messageMatrix.getMother_7_12_Content_1());
-        matrixDto2.setContent_25_50(messageMatrix.getMother_7_12_Content_25());
-        matrixDto2.setContent_50_75(messageMatrix.getMother_7_12_Content_50());
-        matrixDto2.setContent_75_100(messageMatrix.getMother_7_12_Content_75());
-        matrixDto2.setTotal(messageMatrix.getMother_7_12_Content_1()+messageMatrix.getMother_7_12_Content_25()+messageMatrix.getMother_7_12_Content_50()+messageMatrix.getMother_7_12_Content_75());
+            matrixDto1.setContent_1_25(messagelist.get(count).getListened_lessthan25());
 
-        MessageMatrixDto matrixDto3 = new MessageMatrixDto();
-        matrixDto3.setMessageWeek("Message Week 13-18");
-        matrixDto3.setContent_1_25(messageMatrix.getMother_13_18_Content_1());
-        matrixDto3.setContent_25_50(messageMatrix.getMother_13_18_Content_25());
-        matrixDto3.setContent_50_75(messageMatrix.getMother_13_18_Content_50());
-        matrixDto3.setContent_75_100(messageMatrix.getMother_13_18_Content_75());
-        matrixDto3.setTotal(messageMatrix.getMother_13_18_Content_1()+messageMatrix.getMother_13_18_Content_25()+messageMatrix.getMother_13_18_Content_50()+messageMatrix.getMother_13_18_Content_75());
+            matrixDto1.setContent_25_50(messagelist.get(count).getListened_25_50());
 
-        MessageMatrixDto matrixDto4 = new MessageMatrixDto();
-        matrixDto4.setMessageWeek("Message Week 19-24");
-        matrixDto4.setContent_1_25(messageMatrix.getMother_19_24_Content_1());
-        matrixDto4.setContent_25_50(messageMatrix.getMother_19_24_Content_25());
-        matrixDto4.setContent_50_75(messageMatrix.getMother_19_24_Content_50());
-        matrixDto4.setContent_75_100(messageMatrix.getMother_19_24_Content_75());
-        matrixDto4.setTotal(messageMatrix.getMother_19_24_Content_1()+messageMatrix.getMother_19_24_Content_25()+messageMatrix.getMother_19_24_Content_50()+messageMatrix.getMother_19_24_Content_75());
+            matrixDto1.setContent_50_75(messagelist.get(count).getListened_50_75());
+
+            matrixDto1.setContent_75_100(messagelist.get(count).getListened_morethan75());
+
+            matrixDto1.setTotal(messagelist.get(count).getListened_lessthan25() + messagelist.get(count).getListened_25_50() + messagelist.get(count).getListened_50_75() + messagelist.get(count).getListened_morethan75());
+
+            switch (messagelist.get(count).getMessageWeek()){
+                case "mother_week_1_6":
+                {
+                    matrixDto1.setMessageWeek("Message Week 1-6");
+                    Mother_1_25 += messagelist.get(count).getListened_lessthan25();
+                    Mother_25_50 += messagelist.get(count).getListened_25_50();
+                    Mother_50_75 += messagelist.get(count).getListened_50_75();
+                    Mother_75_100 += messagelist.get(count).getListened_morethan75();
+                    motherMatrixDto.add(matrixDto1);
+                    break;
+                }
+                case "mother_week_7_12":
+                {
+                    matrixDto1.setMessageWeek("Message Week 7-12");
+                    Mother_1_25 += messagelist.get(count).getListened_lessthan25();
+                    Mother_25_50 += messagelist.get(count).getListened_25_50();
+                    Mother_50_75 += messagelist.get(count).getListened_50_75();
+                    Mother_75_100 += messagelist.get(count).getListened_morethan75();
+                    motherMatrixDto.add(matrixDto1);
+                    break;
+                }
+                case "mother_week_13_18":
+                {
+                    matrixDto1.setMessageWeek("Message Week 13-18");
+                    Mother_1_25 += messagelist.get(count).getListened_lessthan25();
+                    Mother_25_50 += messagelist.get(count).getListened_25_50();
+                    Mother_50_75 += messagelist.get(count).getListened_50_75();
+                    Mother_75_100 += messagelist.get(count).getListened_morethan75();
+                    motherMatrixDto.add(matrixDto1);
+                    break;
+                }
+                case "mother_week_19_24":
+                {
+                    matrixDto1.setMessageWeek("Message Week 19-24");
+                    Mother_1_25 += messagelist.get(count).getListened_lessthan25();
+                    Mother_25_50 += messagelist.get(count).getListened_25_50();
+                    Mother_50_75 += messagelist.get(count).getListened_50_75();
+                    Mother_75_100 += messagelist.get(count).getListened_morethan75();
+                    motherMatrixDto.add(matrixDto1);
+                    break;
+                }
+
+
+
+
+                case "child_week_1_6": {
+                    matrixDto1.setMessageWeek("Message Week 1-6");
+                    Child_1_25 += messagelist.get(count).getListened_lessthan25();
+                    Child_25_50 += messagelist.get(count).getListened_25_50();
+                    Child_50_75 += messagelist.get(count).getListened_50_75();
+                    Child_75_100 += messagelist.get(count).getListened_morethan75();
+                    childMatrixDto.add(matrixDto1);
+                    break;
+                }
+
+                case "child_week_7_12": {
+                    matrixDto1.setMessageWeek("Message Week 7-12");
+                    Child_1_25 += messagelist.get(count).getListened_lessthan25();
+                    Child_25_50 += messagelist.get(count).getListened_25_50();
+                    Child_50_75 += messagelist.get(count).getListened_50_75();
+                    Child_75_100 += messagelist.get(count).getListened_morethan75();
+                    childMatrixDto.add(matrixDto1);
+                    break;
+                }
+
+                case "child_week_13_18": {
+                    matrixDto1.setMessageWeek("Message Week 13-18");
+                    Child_1_25 += messagelist.get(count).getListened_lessthan25();
+                    Child_25_50 += messagelist.get(count).getListened_25_50();
+                    Child_50_75 += messagelist.get(count).getListened_50_75();
+                    Child_75_100 += messagelist.get(count).getListened_morethan75();
+                    childMatrixDto.add(matrixDto1);
+                    break;
+                }
+
+                case "child_week_19_24": {
+                    matrixDto1.setMessageWeek("Message Week 19-24");
+                    Child_1_25 += messagelist.get(count).getListened_lessthan25();
+                    Child_25_50 += messagelist.get(count).getListened_25_50();
+                    Child_50_75 += messagelist.get(count).getListened_50_75();
+                    Child_75_100 += messagelist.get(count).getListened_morethan75();
+                    childMatrixDto.add(matrixDto1);
+                    break;
+                }
+
+                case "child_week_25_30": {
+                    matrixDto1.setMessageWeek("Message Week 25-30");
+                    Child_1_25 += messagelist.get(count).getListened_lessthan25();
+                    Child_25_50 += messagelist.get(count).getListened_25_50();
+                    Child_50_75 += messagelist.get(count).getListened_50_75();
+                    Child_75_100 += messagelist.get(count).getListened_morethan75();
+                    childMatrixDto.add(matrixDto1);
+                    break;
+                }
+
+                case "child_week_31_36": {
+                    matrixDto1.setMessageWeek("Message Week 31-36");
+                    Child_1_25 += messagelist.get(count).getListened_lessthan25();
+                    Child_25_50 += messagelist.get(count).getListened_25_50();
+                    Child_50_75 += messagelist.get(count).getListened_50_75();
+                    Child_75_100 += messagelist.get(count).getListened_morethan75();
+                    childMatrixDto.add(matrixDto1);
+                    break;
+                }
+
+                case "child_week_37_42":{
+                    matrixDto1.setMessageWeek("Message Week 37-42");
+                    Child_1_25 += messagelist.get(count).getListened_lessthan25();
+                    Child_25_50 += messagelist.get(count).getListened_25_50();
+                    Child_50_75 += messagelist.get(count).getListened_50_75();
+                    Child_75_100 += messagelist.get(count).getListened_morethan75();
+                    childMatrixDto.add(matrixDto1);
+                    break;
+                }
+
+
+                case "child_week_43_48": {
+                    matrixDto1.setMessageWeek("Message Week 43-48");
+                    Child_1_25 += messagelist.get(count).getListened_lessthan25();
+                    Child_25_50 += messagelist.get(count).getListened_25_50();
+                    Child_50_75 += messagelist.get(count).getListened_50_75();
+                    Child_75_100 += messagelist.get(count).getListened_morethan75();
+                    childMatrixDto.add(matrixDto1);
+                    break;
+                }
+
+
+            }
+
+
+        }
 
         MessageMatrixDto matrixDto5 = new MessageMatrixDto();
         matrixDto5.setMessageWeek("Total");
-        matrixDto5.setContent_1_25(messageMatrix.getMother_1_6_Content_1()+messageMatrix.getMother_7_12_Content_1()+messageMatrix.getMother_13_18_Content_1()+messageMatrix.getMother_19_24_Content_1());
-        matrixDto5.setContent_25_50(messageMatrix.getMother_1_6_Content_25()+messageMatrix.getMother_7_12_Content_25()+messageMatrix.getMother_13_18_Content_25()+messageMatrix.getMother_19_24_Content_25());
-        matrixDto5.setContent_50_75(messageMatrix.getMother_19_24_Content_50()+messageMatrix.getMother_1_6_Content_50()+messageMatrix.getMother_7_12_Content_50()+messageMatrix.getMother_13_18_Content_50());
-        matrixDto5.setContent_75_100(messageMatrix.getMother_19_24_Content_75()+messageMatrix.getMother_1_6_Content_75()+messageMatrix.getMother_7_12_Content_75()+messageMatrix.getMother_13_18_Content_75());
-        matrixDto5.setTotal(matrixDto1.getTotal()+matrixDto2.getTotal()+matrixDto3.getTotal()+matrixDto4.getTotal());
-
-        motherMatrixDto.add(matrixDto1);
-        motherMatrixDto.add(matrixDto2);
-        motherMatrixDto.add(matrixDto3);
-        motherMatrixDto.add(matrixDto4);
+        matrixDto5.setContent_1_25(Mother_1_25);
+        matrixDto5.setContent_25_50(Mother_25_50);
+        matrixDto5.setContent_50_75(Mother_50_75);
+        matrixDto5.setContent_75_100(Mother_75_100);
+        matrixDto5.setTotal(Mother_1_25 + Mother_25_50 + Mother_50_75 + Mother_75_100);
         motherMatrixDto.add(matrixDto5);
-
-        MessageMatrixDto matrixDto6 = new MessageMatrixDto();
-        matrixDto6.setMessageWeek("Message Week 1-6");
-        matrixDto6.setContent_1_25(messageMatrix.getChild_1_6_Content_1());
-        matrixDto6.setContent_25_50(messageMatrix.getChild_1_6_Content_25());
-        matrixDto6.setContent_50_75(messageMatrix.getChild_1_6_Content_50());
-        matrixDto6.setContent_75_100(messageMatrix.getChild_1_6_Content_75());
-        matrixDto6.setTotal(messageMatrix.getChild_1_6_Content_1()+messageMatrix.getChild_1_6_Content_25()+messageMatrix.getChild_1_6_Content_50()+messageMatrix.getChild_1_6_Content_75());
-
-        MessageMatrixDto matrixDto7 = new MessageMatrixDto();
-        matrixDto7.setMessageWeek("Message Week 7-12");
-        matrixDto7.setContent_1_25(messageMatrix.getChild_7_12_Content_1());
-        matrixDto7.setContent_25_50(messageMatrix.getChild_7_12_Content_25());
-        matrixDto7.setContent_50_75(messageMatrix.getChild_7_12_Content_50());
-        matrixDto7.setContent_75_100(messageMatrix.getChild_7_12_Content_75());
-        matrixDto7.setTotal(messageMatrix.getChild_7_12_Content_1()+messageMatrix.getChild_7_12_Content_25()+messageMatrix.getChild_7_12_Content_50()+messageMatrix.getChild_7_12_Content_75());
-
-        MessageMatrixDto matrixDto8 = new MessageMatrixDto();
-        matrixDto8.setMessageWeek("Message Week 13-18");
-        matrixDto8.setContent_1_25(messageMatrix.getChild_13_18_Content_1());
-        matrixDto8.setContent_25_50(messageMatrix.getChild_13_18_Content_25());
-        matrixDto8.setContent_50_75(messageMatrix.getChild_13_18_Content_50());
-        matrixDto8.setContent_75_100(messageMatrix.getChild_13_18_Content_75());
-        matrixDto8.setTotal(messageMatrix.getChild_13_18_Content_1()+messageMatrix.getChild_13_18_Content_25()+messageMatrix.getChild_13_18_Content_50()+messageMatrix.getChild_13_18_Content_75());
-
-        MessageMatrixDto matrixDto9 = new MessageMatrixDto();
-        matrixDto9.setMessageWeek("Message Week 19-24");
-        matrixDto9.setContent_1_25(messageMatrix.getChild_19_24_Content_1());
-        matrixDto9.setContent_25_50(messageMatrix.getChild_19_24_Content_25());
-        matrixDto9.setContent_50_75(messageMatrix.getChild_19_24_Content_50());
-        matrixDto9.setContent_75_100(messageMatrix.getChild_19_24_Content_75());
-        matrixDto9.setTotal(messageMatrix.getChild_19_24_Content_1()+messageMatrix.getChild_19_24_Content_25()+messageMatrix.getChild_19_24_Content_50()+messageMatrix.getChild_19_24_Content_75());
-
-        MessageMatrixDto matrixDto10 = new MessageMatrixDto();
-        matrixDto10.setMessageWeek("Message Week 25-30");
-        matrixDto10.setContent_1_25(messageMatrix.getChild_25_30_Content_1());
-        matrixDto10.setContent_25_50(messageMatrix.getChild_25_30_Content_25());
-        matrixDto10.setContent_50_75(messageMatrix.getChild_25_30_Content_50());
-        matrixDto10.setContent_75_100(messageMatrix.getChild_25_30_Content_75());
-        matrixDto10.setTotal(messageMatrix.getChild_25_30_Content_1()+messageMatrix.getChild_25_30_Content_25()+messageMatrix.getChild_25_30_Content_50()+messageMatrix.getChild_25_30_Content_75());
-
-        MessageMatrixDto matrixDto11 = new MessageMatrixDto();
-        matrixDto11.setMessageWeek("Message Week 31-36");
-        matrixDto11.setContent_1_25(messageMatrix.getChild_31_36_Content_1());
-        matrixDto11.setContent_25_50(messageMatrix.getChild_31_36_Content_25());
-        matrixDto11.setContent_50_75(messageMatrix.getChild_31_36_Content_50());
-        matrixDto11.setContent_75_100(messageMatrix.getChild_31_36_Content_75());
-        matrixDto11.setTotal(messageMatrix.getChild_31_36_Content_1()+messageMatrix.getChild_31_36_Content_25()+messageMatrix.getChild_31_36_Content_50()+messageMatrix.getChild_31_36_Content_75());
-
-        MessageMatrixDto matrixDto12 = new MessageMatrixDto();
-        matrixDto12.setMessageWeek("Message Week 37-42");
-        matrixDto12.setContent_1_25(messageMatrix.getChild_37_42_Content_1());
-        matrixDto12.setContent_25_50(messageMatrix.getChild_37_42_Content_25());
-        matrixDto12.setContent_50_75(messageMatrix.getChild_37_42_Content_50());
-        matrixDto12.setContent_75_100(messageMatrix.getChild_37_42_Content_75());
-        matrixDto12.setTotal(messageMatrix.getChild_37_42_Content_1()+messageMatrix.getChild_37_42_Content_25()+messageMatrix.getChild_37_42_Content_50()+messageMatrix.getChild_37_42_Content_75());
-
-        MessageMatrixDto matrixDto13 = new MessageMatrixDto();
-        matrixDto13.setMessageWeek("Message Week 43-48");
-        matrixDto13.setContent_1_25(messageMatrix.getChild_43_48_Content_1());
-        matrixDto13.setContent_25_50(messageMatrix.getChild_43_48_Content_25());
-        matrixDto13.setContent_50_75(messageMatrix.getChild_43_48_Content_50());
-        matrixDto13.setContent_75_100(messageMatrix.getChild_43_48_Content_75());
-        matrixDto13.setTotal(messageMatrix.getChild_43_48_Content_1()+messageMatrix.getChild_43_48_Content_25()+messageMatrix.getChild_43_48_Content_50()+messageMatrix.getChild_43_48_Content_75());
 
         MessageMatrixDto matrixDto14 = new MessageMatrixDto();
         matrixDto14.setMessageWeek("Total");
-        matrixDto14.setContent_1_25(messageMatrix.getChild_1_6_Content_1()+messageMatrix.getChild_7_12_Content_1()+messageMatrix.getChild_13_18_Content_1()+messageMatrix.getChild_19_24_Content_1()+messageMatrix.getChild_25_30_Content_1()+messageMatrix.getChild_31_36_Content_1()+messageMatrix.getChild_37_42_Content_1()+messageMatrix.getChild_43_48_Content_1());
-        matrixDto14.setContent_25_50(messageMatrix.getChild_1_6_Content_25()+messageMatrix.getChild_7_12_Content_25()+messageMatrix.getChild_13_18_Content_25()+messageMatrix.getChild_19_24_Content_25()+messageMatrix.getChild_25_30_Content_25()+messageMatrix.getChild_31_36_Content_25()+messageMatrix.getChild_37_42_Content_25()+messageMatrix.getChild_43_48_Content_25());
-        matrixDto14.setContent_50_75(messageMatrix.getChild_1_6_Content_50()+messageMatrix.getChild_7_12_Content_50()+messageMatrix.getChild_13_18_Content_50()+messageMatrix.getChild_19_24_Content_50()+messageMatrix.getChild_25_30_Content_50()+messageMatrix.getChild_31_36_Content_50()+messageMatrix.getChild_37_42_Content_50()+messageMatrix.getChild_43_48_Content_50());
-        matrixDto14.setContent_75_100(messageMatrix.getChild_1_6_Content_75()+messageMatrix.getChild_7_12_Content_75()+messageMatrix.getChild_13_18_Content_75()+messageMatrix.getChild_19_24_Content_75()+messageMatrix.getChild_25_30_Content_75()+messageMatrix.getChild_31_36_Content_75()+messageMatrix.getChild_37_42_Content_75()+messageMatrix.getChild_43_48_Content_75());
-        matrixDto14.setTotal(matrixDto6.getTotal()+matrixDto7.getTotal()+matrixDto8.getTotal()+matrixDto9.getTotal()+matrixDto10.getTotal()+matrixDto11.getTotal()+matrixDto12.getTotal()+matrixDto13.getTotal());
+        matrixDto14.setContent_1_25(Child_1_25);
+        matrixDto14.setContent_25_50(Child_25_50);
+        matrixDto14.setContent_50_75(Child_50_75);
+        matrixDto14.setContent_75_100(Child_75_100);
+        matrixDto14.setTotal(Child_1_25 + Child_25_50 +Child_50_75 + Child_75_100);
 
-        childMatrixDto.add(matrixDto6);
-        childMatrixDto.add(matrixDto7);
-        childMatrixDto.add(matrixDto8);
-        childMatrixDto.add(matrixDto9);
-        childMatrixDto.add(matrixDto10);
-        childMatrixDto.add(matrixDto11);
-        childMatrixDto.add(matrixDto12);
-        childMatrixDto.add(matrixDto13);
         childMatrixDto.add(matrixDto14);
+
+
 
         messageMatrixResponseDto.setChildData(childMatrixDto);
         messageMatrixResponseDto.setMotherData(motherMatrixDto);

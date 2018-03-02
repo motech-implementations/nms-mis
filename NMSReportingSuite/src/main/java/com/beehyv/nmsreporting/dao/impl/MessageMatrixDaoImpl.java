@@ -17,7 +17,7 @@ import java.util.List;
 public class MessageMatrixDaoImpl extends AbstractDao<Integer,MessageMatrix> implements MessageMatrixDao {
 
     @Override
-    public MessageMatrix getMessageMatrixData(Integer locationId,String locationType,Date date){
+    public List<MessageMatrix> getMessageMatrixData(Integer locationId,String locationType,Date date){
 
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.and(
@@ -33,57 +33,18 @@ public class MessageMatrixDaoImpl extends AbstractDao<Integer,MessageMatrix> imp
 //            return messageMatrix;
             return null;
         }
-        MessageMatrix messageMatrix = result.get(0);
 
-        messageMatrix.setChild_1_6_Content_1(messageMatrix.getChild_1_6_Content_1()==null?0:messageMatrix.getChild_1_6_Content_1());
-        messageMatrix.setChild_1_6_Content_25(messageMatrix.getChild_1_6_Content_25()==null?0:messageMatrix.getChild_1_6_Content_25());
-        messageMatrix.setChild_1_6_Content_50(messageMatrix.getChild_1_6_Content_50()==null?0:messageMatrix.getChild_1_6_Content_50());
-        messageMatrix.setChild_1_6_Content_75(messageMatrix.getChild_1_6_Content_75()==null?0:messageMatrix.getChild_1_6_Content_75());
-        messageMatrix.setChild_7_12_Content_1(messageMatrix.getChild_7_12_Content_1()==null?0:messageMatrix.getChild_7_12_Content_1());
-        messageMatrix.setChild_7_12_Content_25(messageMatrix.getChild_7_12_Content_25()==null?0:messageMatrix.getChild_7_12_Content_25());
-        messageMatrix.setChild_7_12_Content_50(messageMatrix.getChild_7_12_Content_50()==null?0:messageMatrix.getChild_7_12_Content_50());
-        messageMatrix.setChild_7_12_Content_75(messageMatrix.getChild_7_12_Content_75()==null?0:messageMatrix.getChild_7_12_Content_75());
-        messageMatrix.setChild_13_18_Content_1(messageMatrix.getChild_13_18_Content_1()==null?0:messageMatrix.getChild_13_18_Content_1());
-        messageMatrix.setChild_13_18_Content_25(messageMatrix.getChild_13_18_Content_25()==null?0:messageMatrix.getChild_13_18_Content_25());
-        messageMatrix.setChild_13_18_Content_50(messageMatrix.getChild_13_18_Content_50()==null?0:messageMatrix.getChild_13_18_Content_50());
-        messageMatrix.setChild_13_18_Content_75(messageMatrix.getChild_13_18_Content_75()==null?0:messageMatrix.getChild_13_18_Content_75());
-        messageMatrix.setChild_19_24_Content_1(messageMatrix.getChild_19_24_Content_1()==null?0:messageMatrix.getChild_19_24_Content_1());
-        messageMatrix.setChild_19_24_Content_25(messageMatrix.getChild_19_24_Content_25()==null?0:messageMatrix.getChild_19_24_Content_25());
-        messageMatrix.setChild_19_24_Content_50(messageMatrix.getChild_19_24_Content_50()==null?0:messageMatrix.getChild_19_24_Content_50());
-        messageMatrix.setChild_19_24_Content_75(messageMatrix.getChild_19_24_Content_75()==null?0:messageMatrix.getChild_19_24_Content_75());
-        messageMatrix.setChild_25_30_Content_1(messageMatrix.getChild_25_30_Content_1()==null?0:messageMatrix.getChild_25_30_Content_1());
-        messageMatrix.setChild_25_30_Content_25(messageMatrix.getChild_25_30_Content_25()==null?0:messageMatrix.getChild_25_30_Content_25());
-        messageMatrix.setChild_25_30_Content_50(messageMatrix.getChild_25_30_Content_50()==null?0:messageMatrix.getChild_25_30_Content_50());
-        messageMatrix.setChild_25_30_Content_75(messageMatrix.getChild_25_30_Content_75()==null?0:messageMatrix.getChild_25_30_Content_75());
-        messageMatrix.setChild_31_36_Content_1(messageMatrix.getChild_31_36_Content_1()==null?0:messageMatrix.getChild_31_36_Content_1());
-        messageMatrix.setChild_31_36_Content_25(messageMatrix.getChild_31_36_Content_25()==null?0:messageMatrix.getChild_31_36_Content_25());
-        messageMatrix.setChild_31_36_Content_50(messageMatrix.getChild_31_36_Content_50()==null?0:messageMatrix.getChild_31_36_Content_50());
-        messageMatrix.setChild_31_36_Content_75(messageMatrix.getChild_31_36_Content_75()==null?0:messageMatrix.getChild_31_36_Content_75());
-        messageMatrix.setChild_37_42_Content_1(messageMatrix.getChild_37_42_Content_1()==null?0:messageMatrix.getChild_37_42_Content_1());
-        messageMatrix.setChild_37_42_Content_25(messageMatrix.getChild_37_42_Content_25()==null?0:messageMatrix.getChild_37_42_Content_25());
-        messageMatrix.setChild_37_42_Content_50(messageMatrix.getChild_37_42_Content_50()==null?0:messageMatrix.getChild_37_42_Content_50());
-        messageMatrix.setChild_37_42_Content_75(messageMatrix.getChild_37_42_Content_75()==null?0:messageMatrix.getChild_37_42_Content_75());
-        messageMatrix.setChild_43_48_Content_1(messageMatrix.getChild_43_48_Content_1()==null?0:messageMatrix.getChild_43_48_Content_1());
-        messageMatrix.setChild_43_48_Content_25(messageMatrix.getChild_43_48_Content_25()==null?0:messageMatrix.getChild_43_48_Content_25());
-        messageMatrix.setChild_43_48_Content_50(messageMatrix.getChild_43_48_Content_50()==null?0:messageMatrix.getChild_43_48_Content_50());
-        messageMatrix.setChild_43_48_Content_75(messageMatrix.getChild_43_48_Content_75()==null?0:messageMatrix.getChild_43_48_Content_75());
-        messageMatrix.setMother_1_6_Content_1(messageMatrix.getMother_1_6_Content_1()==null?0:messageMatrix.getMother_1_6_Content_1());
-        messageMatrix.setMother_1_6_Content_25(messageMatrix.getMother_1_6_Content_25()==null?0:messageMatrix.getMother_1_6_Content_25());
-        messageMatrix.setMother_1_6_Content_50(messageMatrix.getMother_1_6_Content_50()==null?0:messageMatrix.getMother_1_6_Content_50());
-        messageMatrix.setMother_1_6_Content_75(messageMatrix.getMother_1_6_Content_75()==null?0:messageMatrix.getMother_1_6_Content_75());
-        messageMatrix.setMother_7_12_Content_1(messageMatrix.getMother_7_12_Content_1()==null?0:messageMatrix.getMother_7_12_Content_1());
-        messageMatrix.setMother_7_12_Content_25(messageMatrix.getMother_7_12_Content_25()==null?0:messageMatrix.getMother_7_12_Content_25());
-        messageMatrix.setMother_7_12_Content_50(messageMatrix.getMother_7_12_Content_50()==null?0:messageMatrix.getMother_7_12_Content_50());
-        messageMatrix.setMother_7_12_Content_75(messageMatrix.getMother_7_12_Content_75()==null?0:messageMatrix.getMother_7_12_Content_75());
-        messageMatrix.setMother_13_18_Content_1(messageMatrix.getMother_13_18_Content_1()==null?0:messageMatrix.getMother_13_18_Content_1());
-        messageMatrix.setMother_13_18_Content_25(messageMatrix.getMother_13_18_Content_25()==null?0:messageMatrix.getMother_13_18_Content_25());
-        messageMatrix.setMother_13_18_Content_50(messageMatrix.getMother_13_18_Content_50()==null?0:messageMatrix.getMother_13_18_Content_50());
-        messageMatrix.setMother_13_18_Content_75(messageMatrix.getMother_13_18_Content_75()==null?0:messageMatrix.getMother_13_18_Content_75());
-        messageMatrix.setMother_19_24_Content_1(messageMatrix.getMother_19_24_Content_1()==null?0:messageMatrix.getMother_19_24_Content_1());
-        messageMatrix.setMother_19_24_Content_25(messageMatrix.getMother_19_24_Content_25()==null?0:messageMatrix.getMother_19_24_Content_25());
-        messageMatrix.setMother_19_24_Content_50(messageMatrix.getMother_19_24_Content_50()==null?0:messageMatrix.getMother_19_24_Content_50());
-        messageMatrix.setMother_19_24_Content_75(messageMatrix.getMother_19_24_Content_75()==null?0:messageMatrix.getMother_19_24_Content_75());
-        return messageMatrix;
+        for(int i=0; i<result.size();i++) {
+            MessageMatrix messageMatrix = result.get(i);
+
+            messageMatrix.setListened_25_50(messageMatrix.getListened_25_50() == null ? 0 : messageMatrix.getListened_25_50());
+            messageMatrix.setListened_50_75(messageMatrix.getListened_50_75() == null ? 0 : messageMatrix.getListened_50_75());
+            messageMatrix.setListened_lessthan25(messageMatrix.getListened_lessthan25() == null ? 0 : messageMatrix.getListened_lessthan25());
+            messageMatrix.setListened_morethan75(messageMatrix.getListened_morethan75() == null ? 0 : messageMatrix.getListened_morethan75());
+            result.set(i,messageMatrix);
+        }
+
+        return result;
 
     }
 
