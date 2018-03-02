@@ -12,11 +12,14 @@ public class Report {
 
     private String service;
 
-    public Report(String name, String reportEnum, String icon, String service){
+    private boolean showItem;
+
+    public Report(String name, String reportEnum, String icon, String service, boolean showItem){
         this.name = name;
         this.reportEnum = reportEnum;
         this.icon = icon;
         this.service = service;
+        this.showItem = showItem;
     }
 
     public String getName() {
@@ -49,5 +52,13 @@ public class Report {
 
     public void setService(String service) {
         this.service = service;
+    }
+
+    public boolean isShowItem() {
+        return showItem;
+    }
+
+    public void setShowItem(boolean showItem) {
+        this.showItem = showItem;
     }
 }
