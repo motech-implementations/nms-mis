@@ -7,7 +7,7 @@ import java.util.Date;
  * Created by beehyv on 11/10/17.
  */
 @Entity
-@Table(name="kilkari_call_report")
+@Table(name="agg_kilkari_call_report")
 public class KilkariCalls {
 
     @Id

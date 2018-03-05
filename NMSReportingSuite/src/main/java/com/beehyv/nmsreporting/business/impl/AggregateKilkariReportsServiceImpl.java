@@ -1782,13 +1782,14 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         aCalendar.set(Calendar.HOUR_OF_DAY, 0);
 
 
-        aCalendar.add(Calendar.DATE, -1);
+        //aCalendar.add(Calendar.DATE, -1);
         Date fromDate = aCalendar.getTime();
         aCalendar.setTime(reportRequest.getToDate());
         aCalendar.set(Calendar.MILLISECOND, 0);
         aCalendar.set(Calendar.SECOND, 0);
         aCalendar.set(Calendar.MINUTE, 0);
         aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        aCalendar.add(Calendar.DATE, 1);
         toDate = aCalendar.getTime();
 
         List<KilkariCallReportDto> callReportDtos = new ArrayList<>();

@@ -1,7 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("ReportsController", ['$scope', '$state', '$http', 'UserFormFactory','$window','$q','uiGridConstants','exportUiGridService','uiGridExporterConstants', function($scope, $state, $http, UserFormFactory,$window,$q,uiGridConstants,exportUiGridService,uiGridExporterConstants){
+		.controller("ReportsController", ['$scope', '$state', '$http', 'UserFormFactory','$window','$q','uiGridConstants','exportUiGridService','uiGridExporterService','uiGridExporterConstants', function($scope, $state, $http, UserFormFactory,$window,$q,uiGridConstants,exportUiGridService,uiGridExporterService,uiGridExporterConstants){
 
 			UserFormFactory.isLoggedIn()
 			.then(function(result){
@@ -1327,6 +1327,33 @@
                    exportUiGridService.exportToExcel('sheet 1', $scope.gridApi,$scope.gridApi1, 'visible', 'visible', excelHeaderName);
 
             }
+
+            $scope.exportCsv = function() {
+              var fileName = $scope.gridApi.grid.options.exporterExcelFilename ? $scope.gridApi.grid.options.exporterExcelFilename : 'dokuman';
+                 fileName = fileName.replace("*","");
+                 fileName += '.csv';
+            $scope.gridOptions.exporterCsvFilename = fileName;
+              var grid = $scope.gridApi.grid;
+              var rowTypes = uiGridExporterConstants.ALL;
+              var colTypes = uiGridExporterConstants.ALL;
+              uiGridExporterService.csvExport(grid, rowTypes, colTypes);
+            };
+
+            $scope.exportPdf = function() {
+              var grid = $scope.gridApi.grid;
+              var rowTypes = uiGridExporterConstants.ALL;
+              var colTypes = uiGridExporterConstants.ALL;
+              var exportColumnHeaders = uiGridExporterService.getColumnHeaders(this.grid, uiGridExporterConstants.ALL);
+                              var exportData = uiGridExporterService.getData(this.grid, uiGridExporterConstants.ALL, uiGridExporterConstants.ALL, true);
+                              var docDefinition = uiGridExporterService.prepareAsPdf(this.grid, exportColumnHeaders, exportData);
+
+                              if (uiGridExporterService.isIE() || navigator.appVersion.indexOf("Edge") !== -1) {
+                                uiGridExporterService.downloadPDF(this.grid.options.exporterPdfFilename, docDefinition);
+                              } else {
+                                pdfMake.createPdf(docDefinition).download();
+                              }
+              uiGridExporterService.pdfExport(grid, rowTypes, colTypes);
+            };
 
             var canceler = $q.defer();
             $scope.gridOptions1 = {
