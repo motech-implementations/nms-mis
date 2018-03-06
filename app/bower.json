@@ -18,8 +18,5 @@
     "angularjs-captcha": "^1.2.0",
     "ng-device-detector": "^4.0.3",
     "ngstorage": "^0.3.11"
-  },
-  "resolutions": {
-    "angular": ">=1.4.0 1.5.x"
   }
 }

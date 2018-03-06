@@ -14,7 +14,7 @@ public class KilkariCallReportDto {
     private Long content_25_50;
     private Long content_1_25;
     private Long successfulCalls;
-    private Long billableMinutes;
+    private Float billableMinutes;
     private Long callsToInbox;
     private Float avgDuration;
     private boolean link =false;
@@ -91,11 +91,11 @@ public class KilkariCallReportDto {
         this.successfulCalls = successfulCalls;
     }
 
-    public Long getBillableMinutes() {
+    public Float getBillableMinutes() {
         return billableMinutes;
     }
 
-    public void setBillableMinutes(Long billableMinutes) {
+    public void setBillableMinutes(Float billableMinutes) {
         this.billableMinutes = billableMinutes;
     }
 

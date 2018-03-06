@@ -1497,6 +1497,8 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             return  messageMatrixResponseDto;
         }
 
+        while(motherMatrixDto.size() < 5) motherMatrixDto.add(new MessageMatrixDto());
+        while(childMatrixDto.size() < 9) childMatrixDto.add(new MessageMatrixDto());
         for(int count =0; count< messagelist.size();count++) {
             MessageMatrixDto matrixDto1 = new MessageMatrixDto();
 
@@ -1518,7 +1520,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     Mother_25_50 += messagelist.get(count).getListened_25_50();
                     Mother_50_75 += messagelist.get(count).getListened_50_75();
                     Mother_75_100 += messagelist.get(count).getListened_morethan75();
-                    motherMatrixDto.add(matrixDto1);
+                    motherMatrixDto.set(0,matrixDto1);
                     break;
                 }
                 case "mother_week_7_12":
@@ -1528,7 +1530,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     Mother_25_50 += messagelist.get(count).getListened_25_50();
                     Mother_50_75 += messagelist.get(count).getListened_50_75();
                     Mother_75_100 += messagelist.get(count).getListened_morethan75();
-                    motherMatrixDto.add(matrixDto1);
+                    motherMatrixDto.set(1,matrixDto1);
                     break;
                 }
                 case "mother_week_13_18":
@@ -1538,7 +1540,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     Mother_25_50 += messagelist.get(count).getListened_25_50();
                     Mother_50_75 += messagelist.get(count).getListened_50_75();
                     Mother_75_100 += messagelist.get(count).getListened_morethan75();
-                    motherMatrixDto.add(matrixDto1);
+                    motherMatrixDto.set(2,matrixDto1);
                     break;
                 }
                 case "mother_week_19_24":
@@ -1548,7 +1550,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     Mother_25_50 += messagelist.get(count).getListened_25_50();
                     Mother_50_75 += messagelist.get(count).getListened_50_75();
                     Mother_75_100 += messagelist.get(count).getListened_morethan75();
-                    motherMatrixDto.add(matrixDto1);
+                    motherMatrixDto.set(3,matrixDto1);
                     break;
                 }
 
@@ -1561,7 +1563,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     Child_25_50 += messagelist.get(count).getListened_25_50();
                     Child_50_75 += messagelist.get(count).getListened_50_75();
                     Child_75_100 += messagelist.get(count).getListened_morethan75();
-                    childMatrixDto.add(matrixDto1);
+                    childMatrixDto.set(0,matrixDto1);
                     break;
                 }
 
@@ -1571,7 +1573,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     Child_25_50 += messagelist.get(count).getListened_25_50();
                     Child_50_75 += messagelist.get(count).getListened_50_75();
                     Child_75_100 += messagelist.get(count).getListened_morethan75();
-                    childMatrixDto.add(matrixDto1);
+                    childMatrixDto.set(1,matrixDto1);
                     break;
                 }
 
@@ -1581,7 +1583,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     Child_25_50 += messagelist.get(count).getListened_25_50();
                     Child_50_75 += messagelist.get(count).getListened_50_75();
                     Child_75_100 += messagelist.get(count).getListened_morethan75();
-                    childMatrixDto.add(matrixDto1);
+                    childMatrixDto.set(2,matrixDto1);
                     break;
                 }
 
@@ -1591,7 +1593,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     Child_25_50 += messagelist.get(count).getListened_25_50();
                     Child_50_75 += messagelist.get(count).getListened_50_75();
                     Child_75_100 += messagelist.get(count).getListened_morethan75();
-                    childMatrixDto.add(matrixDto1);
+                    childMatrixDto.set(3,matrixDto1);
                     break;
                 }
 
@@ -1601,7 +1603,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     Child_25_50 += messagelist.get(count).getListened_25_50();
                     Child_50_75 += messagelist.get(count).getListened_50_75();
                     Child_75_100 += messagelist.get(count).getListened_morethan75();
-                    childMatrixDto.add(matrixDto1);
+                    childMatrixDto.set(4,matrixDto1);
                     break;
                 }
 
@@ -1611,7 +1613,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     Child_25_50 += messagelist.get(count).getListened_25_50();
                     Child_50_75 += messagelist.get(count).getListened_50_75();
                     Child_75_100 += messagelist.get(count).getListened_morethan75();
-                    childMatrixDto.add(matrixDto1);
+                    childMatrixDto.set(5,matrixDto1);
                     break;
                 }
 
@@ -1621,7 +1623,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     Child_25_50 += messagelist.get(count).getListened_25_50();
                     Child_50_75 += messagelist.get(count).getListened_50_75();
                     Child_75_100 += messagelist.get(count).getListened_morethan75();
-                    childMatrixDto.add(matrixDto1);
+                    childMatrixDto.set(6,matrixDto1);
                     break;
                 }
 
@@ -1632,7 +1634,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     Child_25_50 += messagelist.get(count).getListened_25_50();
                     Child_50_75 += messagelist.get(count).getListened_50_75();
                     Child_75_100 += messagelist.get(count).getListened_morethan75();
-                    childMatrixDto.add(matrixDto1);
+                    childMatrixDto.set(7,matrixDto1);
                     break;
                 }
 
@@ -1649,7 +1651,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         matrixDto5.setContent_50_75(Mother_50_75);
         matrixDto5.setContent_75_100(Mother_75_100);
         matrixDto5.setTotal(Mother_1_25 + Mother_25_50 + Mother_50_75 + Mother_75_100);
-        motherMatrixDto.add(matrixDto5);
+        motherMatrixDto.set(4,matrixDto5);
 
         MessageMatrixDto matrixDto14 = new MessageMatrixDto();
         matrixDto14.setMessageWeek("Total");
@@ -1659,7 +1661,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         matrixDto14.setContent_75_100(Child_75_100);
         matrixDto14.setTotal(Child_1_25 + Child_25_50 +Child_50_75 + Child_75_100);
 
-        childMatrixDto.add(matrixDto14);
+        childMatrixDto.set(8,matrixDto14);
 
 
 
@@ -1887,7 +1889,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 KilkariCalls stateCounts = kilkariCallReportDao.getKilkariCallreport(locationId,"State",toDate);
                 Long callsAttempted = (long)0;
                 Long successfulCalls = (long)0;
-                Long billableMinutes = (long)0;
+                Float billableMinutes = 0f;
                 Long callsToInbox = (long)0;
                 Long content_75_100 = (long)0;
                 Long content_50_75 = (long)0;
@@ -1923,7 +1925,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     KilkariCalls districtCounts = kilkariCallReportDao.getKilkariCallreport(locationId,"District",toDate);
                     Long callsAttempted = (long)0;
                     Long successfulCalls = (long)0;
-                    Long billableMinutes = (long)0;
+                    Float billableMinutes = 0f;
                     Long callsToInbox = (long)0;
                     Long content_75_100 = (long)0;
                     Long content_50_75 = (long)0;
@@ -1959,7 +1961,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     KilkariCalls blockCounts = kilkariCallReportDao.getKilkariCallreport(locationId,"block",toDate);
                     Long callsAttempted = (long)0;
                     Long successfulCalls = (long)0;
-                    Long billableMinutes = (long)0;
+                    Float billableMinutes = 0f;
                     Long callsToInbox = (long)0;
                     Long content_75_100 = (long)0;
                     Long content_50_75 = (long)0;
