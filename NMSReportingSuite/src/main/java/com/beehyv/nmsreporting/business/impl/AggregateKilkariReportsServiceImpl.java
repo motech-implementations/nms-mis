@@ -1828,7 +1828,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                         kilkariCallReportDto.setCallsAttempted(end.getCallsAttempted() - start.getCallsAttempted());
                         kilkariCallReportDto.setCallsToInbox(end.getCallsToInbox() - start.getCallsToInbox());
                         kilkariCallReportDto.setSuccessfulCalls(end.getSuccessfulCalls() - start.getSuccessfulCalls());
-                        kilkariCallReportDto.setAvgDuration((float)((kilkariCallReportDto.getSuccessfulCalls()==0)?0.00 : (float) Math.round((float) kilkariCallReportDto.getBillableMinutes() / (float) kilkariCallReportDto.getSuccessfulCalls() * 100) / 100));
+                        kilkariCallReportDto.setAvgDuration((float)((kilkariCallReportDto.getSuccessfulCalls()==0)?0.00 : (float) Math.round( kilkariCallReportDto.getBillableMinutes() / (float) kilkariCallReportDto.getSuccessfulCalls() * 100) / 100));
                         kilkariCallReportDto.setLocationType(end.getLocationType());
                         String locationType = end.getLocationType();
                         if (locationType.equalsIgnoreCase("State")) {
@@ -1889,7 +1889,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 KilkariCalls stateCounts = kilkariCallReportDao.getKilkariCallreport(locationId,"State",toDate);
                 Long callsAttempted = (long)0;
                 Long successfulCalls = (long)0;
-                Float billableMinutes = 0f;
+                Double billableMinutes = 0.00;
                 Long callsToInbox = (long)0;
                 Long content_75_100 = (long)0;
                 Long content_50_75 = (long)0;
@@ -1925,7 +1925,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     KilkariCalls districtCounts = kilkariCallReportDao.getKilkariCallreport(locationId,"District",toDate);
                     Long callsAttempted = (long)0;
                     Long successfulCalls = (long)0;
-                    Float billableMinutes = 0f;
+                    Double billableMinutes = 0.00;
                     Long callsToInbox = (long)0;
                     Long content_75_100 = (long)0;
                     Long content_50_75 = (long)0;
@@ -1961,7 +1961,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     KilkariCalls blockCounts = kilkariCallReportDao.getKilkariCallreport(locationId,"block",toDate);
                     Long callsAttempted = (long)0;
                     Long successfulCalls = (long)0;
-                    Float billableMinutes = 0f;
+                    Double billableMinutes = 0.00;
                     Long callsToInbox = (long)0;
                     Long content_75_100 = (long)0;
                     Long content_50_75 = (long)0;

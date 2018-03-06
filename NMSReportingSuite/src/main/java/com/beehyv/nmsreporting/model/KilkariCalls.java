@@ -43,12 +43,12 @@ public class KilkariCalls {
     private Long successfulCalls;
 
     @Column(name="billable_minutes", columnDefinition = "BIGINT(20)")
-    private Float billableMinutes;
+    private Double billableMinutes;
 
     @Column(name="calls_to_inbox", columnDefinition = "BIGINT(20)")
     private Long callsToInbox;
 
-    public KilkariCalls(Integer id, String locationType, Long locationId, Date date, Long content_75_100, Long content_50_75, Long content_25_50, Long content_1_25, Long callsAttempted, Long successfulCalls, Float billableMinutes, Long callsToInbox) {
+    public KilkariCalls(Integer id, String locationType, Long locationId, Date date, Long content_75_100, Long content_50_75, Long content_25_50, Long content_1_25, Long callsAttempted, Long successfulCalls, Double billableMinutes, Long callsToInbox) {
         this.id = id;
         this.locationType = locationType;
         this.locationId = locationId;
@@ -147,11 +147,11 @@ public class KilkariCalls {
         this.successfulCalls = successfulCalls;
     }
 
-    public Float getBillableMinutes() {
+    public Double getBillableMinutes() {
         return billableMinutes;
     }
 
-    public void setBillableMinutes(Float billableMinutes) {
+    public void setBillableMinutes(Double billableMinutes) {
         this.billableMinutes = billableMinutes;
     }
 

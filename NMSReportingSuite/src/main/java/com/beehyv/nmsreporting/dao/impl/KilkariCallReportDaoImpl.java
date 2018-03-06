@@ -31,7 +31,7 @@ public class KilkariCallReportDaoImpl extends AbstractDao<Integer,KilkariCalls> 
         List<KilkariCalls> result = criteria.list();
         if(result.isEmpty()){
             Long a=(long)0;
-            KilkariCalls kilkariCalls = new KilkariCalls(0,locationType,locationId.longValue(),toDate,a,a,a,a,a,a,0f,a);
+            KilkariCalls kilkariCalls = new KilkariCalls(0,locationType,locationId.longValue(),toDate,a,a,a,a,a,a,0.00,a);
             return kilkariCalls;
         }
 
