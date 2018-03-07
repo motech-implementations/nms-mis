@@ -98,13 +98,58 @@
 					return "Please Wait...";
 				}
 			};
+$scope.goToReports = function() {
+delete $localStorage.filter;
+if(!(($state.current.name)===("reports"))&&!(($state.current.name)===("profile"))&&!
+                (($state.current.name)===("forgotPassword"))&&!(($state.current.name)===("changePassword"))&&!
+                (($state.current.name)===("userManagement.bulkUpload"))&&!(($state.current.name)===("userManagement"))&&!
+                (($state.current.name)===("userManagement.createUser"))&&!(($state.current.name)===("userManagement.userTable"))&&!
+                (($state.current.name)===("userManagement.editUser"))){
+			    return false;}
+			    if ($state.current.name !== 'reports') {
+                                    $state.go('reports', {pageNum: 1});
+                                }
+};
 
 			$scope.goToUserTable = function() {
 			    delete $localStorage.filter;
+			    if(!(($state.current.name)===("reports"))&&!(($state.current.name)===("profile"))&&!
+                (($state.current.name)===("forgotPassword"))&&!(($state.current.name)===("changePassword"))&&!
+                (($state.current.name)===("userManagement.bulkUpload"))&&!(($state.current.name)===("userManagement"))&&!
+                (($state.current.name)===("userManagement.createUser"))&&!(($state.current.name)===("userManagement.userTable"))&&!
+                (($state.current.name)===("userManagement.editUser"))){
+			    return false;}
                 if ($state.current.name !== 'userManagement.userTable') {
                     $state.go('userManagement.userTable', {pageNum: 1});
                 }
 			};
+
+
+			$scope.goToProfile = function() {
+            			    delete $localStorage.filter;
+            			    if(!(($state.current.name)===("reports"))&&!(($state.current.name)===("profile"))&&!
+                            (($state.current.name)===("forgotPassword"))&&!(($state.current.name)===("changePassword"))&&!
+                            (($state.current.name)===("userManagement.bulkUpload"))&&!(($state.current.name)===("userManagement"))&&!
+                            (($state.current.name)===("userManagement.createUser"))&&!(($state.current.name)===("userManagement.userTable"))&&!
+                            (($state.current.name)===("userManagement.editUser"))){
+            			    return false;}
+                            if ($state.current.name !== 'profile') {
+                                $state.go('profile', {pageNum: 1});
+                            }
+            			};
+
+            			$scope.goToChangePassword = function() {
+                                    			    delete $localStorage.filter;
+                                    			    if(!(($state.current.name)===("reports"))&&!(($state.current.name)===("profile"))&&!
+                                                    (($state.current.name)===("forgotPassword"))&&!(($state.current.name)===("changePassword"))&&!
+                                                    (($state.current.name)===("userManagement.bulkUpload"))&&!(($state.current.name)===("userManagement"))&&!
+                                                    (($state.current.name)===("userManagement.createUser"))&&!(($state.current.name)===("userManagement.userTable"))&&!
+                                                    (($state.current.name)===("userManagement.editUser"))){
+                                    			    return false;}
+                                                    if ($state.current.name !== 'changePassword') {
+                                                        $state.go('changePassword', {pageNum: 1});
+                                                    }
+                                    			};
 
 			$scope.activeTab = function(tabName){
 				return ($state.current.name.indexOf(tabName) > -1);
