@@ -94,16 +94,52 @@
 						<a href={{logoutUrl}}>Logout</a>
 					</li>
                     <li ng-class="{active: activeTab('changePassword')}">
-                        <a ui-sref="changePassword">Change Password</a>
+						<a ng-hide='(!(($state.current.name)===("reports"))&&!(($state.current.name)===("profile"))&&!
+                (($state.current.name)===("forgotPassword"))&&!(($state.current.name)===("changePassword"))&&!
+                (($state.current.name)===("userManagement.bulkUpload"))&&!(($state.current.name)===("userManagement"))&&!
+                (($state.current.name)===("userManagement.createUser"))&&!(($state.current.name)===("userManagement.userTable"))&&!
+                (($state.current.name)===("userManagement.editUser")))'ng-click="goToChangePassword()" >Change Password</a>
+                        <a ng-hide='!(!(($state.current.name)===("reports"))&&!(($state.current.name)===("profile"))&&!
+                (($state.current.name)===("forgotPassword"))&&!(($state.current.name)===("changePassword"))&&!
+                (($state.current.name)===("userManagement.bulkUpload"))&&!(($state.current.name)===("userManagement"))&&!
+                (($state.current.name)===("userManagement.createUser"))&&!(($state.current.name)===("userManagement.userTable"))&&!
+                (($state.current.name)===("userManagement.editUser")))'ng-click="goToChangePassword()" style="cursor:not-allowed">Change Password</a>
                     </li>
 					<li ng-class="{active: activeTab('profile')}">
-						<a ui-sref="profile">My Profile</a>
+						<a ng-hide='(!(($state.current.name)===("reports"))&&!(($state.current.name)===("profile"))&&!
+                (($state.current.name)===("forgotPassword"))&&!(($state.current.name)===("changePassword"))&&!
+                (($state.current.name)===("userManagement.bulkUpload"))&&!(($state.current.name)===("userManagement"))&&!
+                (($state.current.name)===("userManagement.createUser"))&&!(($state.current.name)===("userManagement.userTable"))&&!
+                (($state.current.name)===("userManagement.editUser")))' ng-click="goToProfile()">My Profile</a>
+						<a ng-hide='!(!(($state.current.name)===("reports"))&&!(($state.current.name)===("profile"))&&!
+                (($state.current.name)===("forgotPassword"))&&!(($state.current.name)===("changePassword"))&&!
+                (($state.current.name)===("userManagement.bulkUpload"))&&!(($state.current.name)===("userManagement"))&&!
+                (($state.current.name)===("userManagement.createUser"))&&!(($state.current.name)===("userManagement.userTable"))&&!
+                (($state.current.name)===("userManagement.editUser")))' ng-click="goToProfile()" style="cursor:not-allowed">My Profile</a>
 					</li>
 					<li ng-class="{active: activeTab('userManagement')}" ng-if="currentUser.roleId!= null && currentUser.roleName != 'USER'">
-						<a class="pointer" ng-click="goToUserTable()">User Management</a>
+						<a ng-hide='(!(($state.current.name)===("reports"))&&!(($state.current.name)===("profile"))&&!
+                (($state.current.name)===("forgotPassword"))&&!(($state.current.name)===("changePassword"))&&!
+                (($state.current.name)===("userManagement.bulkUpload"))&&!(($state.current.name)===("userManagement"))&&!
+                (($state.current.name)===("userManagement.createUser"))&&!(($state.current.name)===("userManagement.userTable"))&&!
+                (($state.current.name)===("userManagement.editUser")))'class="pointer"  ng-click="goToUserTable()" >User Management</a>
+						<a ng-hide='!(!(($state.current.name)===("reports"))&&!(($state.current.name)===("profile"))&&!
+                (($state.current.name)===("forgotPassword"))&&!(($state.current.name)===("changePassword"))&&!
+                (($state.current.name)===("userManagement.bulkUpload"))&&!(($state.current.name)===("userManagement"))&&!
+                (($state.current.name)===("userManagement.createUser"))&&!(($state.current.name)===("userManagement.userTable"))&&!
+                (($state.current.name)===("userManagement.editUser")))'class="pointer" style="cursor:not-allowed" ng-click="goToUserTable()" >User Management</a>
 					</li>
 					<li ng-class="{active: activeTab('reports')}">
-						<a ui-sref="reports">Reports</a>
+						<a ng-hide='(!(($state.current.name)===("reports"))&&!(($state.current.name)===("profile"))&&!
+                (($state.current.name)===("forgotPassword"))&&!(($state.current.name)===("changePassword"))&&!
+                (($state.current.name)===("userManagement.bulkUpload"))&&!(($state.current.name)===("userManagement"))&&!
+                (($state.current.name)===("userManagement.createUser"))&&!(($state.current.name)===("userManagement.userTable"))&&!
+                (($state.current.name)===("userManagement.editUser")))' ng-click="goToReports()">Reports</a>
+						<a ng-hide='!(!(($state.current.name)===("reports"))&&!(($state.current.name)===("profile"))&&!
+                (($state.current.name)===("forgotPassword"))&&!(($state.current.name)===("changePassword"))&&!
+                (($state.current.name)===("userManagement.bulkUpload"))&&!(($state.current.name)===("userManagement"))&&!
+                (($state.current.name)===("userManagement.createUser"))&&!(($state.current.name)===("userManagement.userTable"))&&!
+                (($state.current.name)===("userManagement.editUser")))' ng-click="goToReports()" style="cursor:not-allowed">Reports</a>
 					</li>
 				</ul>
 			</div>
