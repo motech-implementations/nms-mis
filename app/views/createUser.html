@@ -1,4 +1,4 @@
-<div ng-controller="CreateUserController" class="createUser">
+<div data-ng-controller="CreateUserController" class="createUser">
 	<div class="block">
 		<div class="block">
 			<h1>Create new User</h1>
@@ -6,111 +6,111 @@
 
 		<form name="createUserForm" class="form-horizontal" novalidate>
 
-			<div class="form-group" ng-class="{'has-error':createUserForm.fullName.$invalid && !createUserForm.fullName.$pristine}">
+			<div class="form-group" data-ng-class="{'has-error':createUserForm.fullName.$invalid && !createUserForm.fullName.$pristine}">
 				<label class="control-label col-xs-2">Full Name</label>
 				<div class="col-xs-10">
-					<input name="fullName" id="fullName" type="text" class="form-control input input-sm" placeholder="Full Name" ng-model="newUser.fullName" required 
-					ng-pattern="/^[A-Za-z ]*$/" ng-minlength="3">
+					<input name="fullName" id="fullName" type="text" class="form-control input input-sm" placeholder="Full Name" data-ng-model="newUser.fullName" required
+					data-ng-pattern="/^[A-Za-z ]*$/" data-ng-minlength="3">
 
-					<div class="errorMessage" ng-messages="createUserForm.fullName.$error" role="alert" ng-show="!createUserForm.fullName.$pristine">
-						<div ng-message="required">This field cannot be empty</div>
-						<div ng-message="pattern">Name should only contain alphabetical characters</div>
-						<div ng-message="minlength">Name is too short</div>
+					<div class="errorMessage" data-ng-messages="createUserForm.fullName.$error" role="alert" data-ng-show="!createUserForm.fullName.$pristine">
+						<div data-ng-message="required">This field cannot be empty</div>
+						<div data-ng-message="pattern">Name should only contain alphabetical characters</div>
+						<div data-ng-message="minlength">Name is too short</div>
 					</div>
 				</div>
 			</div>
 
-			<div class="form-group" ng-class="{'has-error':createUserForm.username.$invalid && !createUserForm.username.$pristine}">
+			<div class="form-group" data-ng-class="{'has-error':createUserForm.username.$invalid && !createUserForm.username.$pristine}">
 				<label class="control-label col-xs-2">Username</label>
 				<div class="col-xs-10">
-					<input name="username" id="username" type="text" class="form-control input input-sm" placeholder="Username" ng-model="newUser.username" required 
-					ng-pattern="/^[A-Za-z0-9]*$/" ng-minlength="5">
+					<input name="username" id="username" type="text" class="form-control input input-sm" placeholder="Username" data-ng-model="newUser.username" required
+					data-ng-pattern="/^[A-Za-z0-9]*$/" data-ng-minlength="5">
 
-					<div class="errorMessage" ng-messages="createUserForm.username.$error" role="alert" ng-show="!createUserForm.username.$pristine">
-						<div ng-message="required">This field cannot be empty</div>
-						<div ng-message="pattern">Username should not contain specoal characters or spaces</div>
-						<div ng-message="minlength">Username is too short</div>
+					<div class="errorMessage" data-ng-messages="createUserForm.username.$error" role="alert" data-ng-show="!createUserForm.username.$pristine">
+						<div data-ng-message="required">This field cannot be empty</div>
+						<div data-ng-message="pattern">Username should not contain specoal characters or spaces</div>
+						<div data-ng-message="minlength">Username is too short</div>
 					</div>
 				</div>
 			</div>
 
 			<hr>
 
-			<div class="form-group" ng-class="{'has-error':createUserForm.accessType.$invalid && !createUserForm.accessType.$pristine}">
+			<div class="form-group" data-ng-class="{'has-error':createUserForm.accessType.$invalid && !createUserForm.accessType.$pristine}">
 				<label class="control-label col-xs-2">Access Type</label>
 				<div class="col-xs-10">
-					<select name="accessType" id="accessType" class="form-control input input-sm" ng-class="{'loading': roleLoading}" ng-model="newUser.roleId" ng-options="item.roleId as item.roleDescription for item in accessTypeList | filter:filterAccessType" required>
+					<select name="accessType" id="accessType" class="form-control input input-sm" data-ng-class="{'loading': roleLoading}" data-ng-model="newUser.roleId" data-ng-options="item.roleId as item.roleDescription for item in accessTypeList | filter:filterAccessType" required>
 					</select>
 
-					<div class="errorMessage" ng-messages="createUserForm.accessType.$error" role="alert" ng-show="!createUserForm.accessType.$pristine">
-						<div ng-message="required">Select an option</div>
+					<div class="errorMessage" data-ng-messages="createUserForm.accessType.$error" role="alert" data-ng-show="!createUserForm.accessType.$pristine">
+						<div data-ng-message="required">Select an option</div>
 					</div>
 				</div>
 			</div>
 
-			<div class="form-group" ng-class="{'has-error':createUserForm.accessLevel.$invalid && !createUserForm.accessLevel.$pristine}">
+			<div class="form-group" data-ng-class="{'has-error':createUserForm.accessLevel.$invalid && !createUserForm.accessLevel.$pristine}">
 				<label class="control-label col-xs-2">Access Level</label>
 				<div class="col-xs-10">
-					<select name="accessLevel" id="accessLevel" class="form-control input input-sm"  ng-model="newUser.accessLevel" ng-options="item for item in accessLevelList | filter: filterAccessLevel" required>
+					<select name="accessLevel" id="accessLevel" class="form-control input input-sm"  data-ng-model="newUser.accessLevel" data-ng-options="item for item in accessLevelList | filter: filterAccessLevel" required>
 					</select>
 
-					<div class="errorMessage" ng-messages="createUserForm.accessLevel.$error" role="alert" ng-show="!createUserForm.accessLevel.$pristine">
-						<div ng-message="required">Select an option</div>
+					<div class="errorMessage" data-ng-messages="createUserForm.accessLevel.$error" role="alert" data-ng-show="!createUserForm.accessLevel.$pristine">
+						<div data-ng-message="required">Select an option</div>
 					</div>
 				</div>
 			</div>
 
 			<hr>
 
-			<div class="form-group" ng-class="{'has-error':createUserForm.state.$invalid && !createUserForm.state.$pristine}">
+			<div class="form-group" data-ng-class="{'has-error':createUserForm.state.$invalid && !createUserForm.state.$pristine}">
 				<label class="control-label col-xs-2">State</label>
 				<div class="col-xs-10">
-					<select name="state" id="state" class="form-control input input-sm" ng-class="{'loading': stateLoading}" ng-model="newUser.stateId" ng-options="item.stateId as item.stateName for item in states | orderBy : 'stateName'" ng-disabled="getAccessLevel(1)" ng-required="!getAccessLevel(1)">
+					<select name="state" id="state" class="form-control input input-sm" data-ng-class="{'loading': stateLoading}" data-ng-model="newUser.stateId" data-ng-options="item.stateId as item.stateName for item in states | orderBy : 'stateName'" data-ng-disabled="getAccessLevel(1)" data-ng-required="!getAccessLevel(1)">
 					</select>
 				</div>
 			</div>
 
-			<div class="form-group" ng-class="{'has-error':createUserForm.district.$invalid && !createUserForm.district.$pristine}">
+			<div class="form-group" data-ng-class="{'has-error':createUserForm.district.$invalid && !createUserForm.district.$pristine}">
 				<label class="control-label col-xs-2">District</label>
 				<div class="col-xs-10">
-					<select name="district" id="district" class="form-control input input-sm" ng-class="{'loading': stateLoading}" ng-model="newUser.districtId" ng-options="item.districtId as item.districtName for item in districts | orderBy : 'districtName'" ng-disabled="getAccessLevel(2)" ng-required="!getAccessLevel(2)">
+					<select name="district" id="district" class="form-control input input-sm" data-ng-class="{'loading': stateLoading}" data-ng-model="newUser.districtId" data-ng-options="item.districtId as item.districtName for item in districts | orderBy : 'districtName'" data-ng-disabled="getAccessLevel(2)" data-ng-required="!getAccessLevel(2)">
 					</select>
 				</div>
 			</div>
 
-			<div class="form-group" ng-class="{'has-error':createUserForm.block.$invalid && !createUserForm.block.$pristine}">
+			<div class="form-group" data-ng-class="{'has-error':createUserForm.block.$invalid && !createUserForm.block.$pristine}">
 				<label class="control-label col-xs-2">Block</label>
 				<div class="col-xs-10">
-					<select name="block" id="block" class="form-control input input-sm" ng-class="{'loading': stateLoading}" ng-model="newUser.blockId"	ng-options="item.blockId as item.blockName for item in blocks | orderBy : 'districtName'" ng-disabled="getAccessLevel(3)" ng-required="!getAccessLevel(3)">
+					<select name="block" id="block" class="form-control input input-sm" data-ng-class="{'loading': stateLoading}" data-ng-model="newUser.blockId" data-ng-options="item.blockId as item.blockName for item in blocks | orderBy : 'districtName'" data-ng-disabled="getAccessLevel(3)" data-ng-required="!getAccessLevel(3)">
 					</select>
 				</div>
 			</div>
 
 			<hr>
 
-			<div class="form-group" ng-class="{'has-error':createUserForm.emailId.$invalid && !createUserForm.emailId.$pristine}">
+			<div class="form-group" data-ng-class="{'has-error':createUserForm.emailId.$invalid && !createUserForm.emailId.$pristine}">
 				<label class="control-label col-xs-2">Email</label>
 				<div class="col-xs-10">
-					<input name="emailId" id="emailId" type="email" class="form-control input input-sm" class="form-control input input-sm" ng-model="newUser.emailId" placeholder="Email" required>
+					<input name="emailId" id="emailId" type="email" class="form-control input input-sm" data-ng-model="newUser.emailId" placeholder="Email" required>
 
-					<div class="errorMessage" ng-messages="createUserForm.emailId.$error" role="alert" ng-show="!createUserForm.emailId.$pristine">
-						<div ng-message="required">This field cannot be empty</div>
-						<div ng-message="email">Enter a valid email</div>
+					<div class="errorMessage" data-ng-messages="createUserForm.emailId.$error" role="alert" data-ng-show="!createUserForm.emailId.$pristine">
+						<div data-ng-message="required">This field cannot be empty</div>
+						<div data-ng-message="email">Enter a valid email</div>
 					</div>
 				</div>
 			</div>
 
-			<div class="form-group" ng-class="{'has-error':createUserForm.phoneNumber.$invalid && !createUserForm.phoneNumber.$pristine}">
+			<div class="form-group" data-ng-class="{'has-error':createUserForm.phoneNumber.$invalid && !createUserForm.phoneNumber.$pristine}">
 				<label class="control-label col-xs-2">Contact no.</label>
 				<div class="col-xs-10">
-					<input name="phoneNumber" id="phoneNumber" type="text" class="form-control input input-sm" ng-model="newUser.phoneNumber" placeholder="Contact no." required
-					ng-pattern="/^[0-9]*$/" ng-minlength="10" ng-maxlength="10">
+					<input name="phoneNumber" id="phoneNumber" type="text" class="form-control input input-sm" data-ng-model="newUser.phoneNumber" placeholder="Contact no." required
+					data-ng-pattern="/^[0-9]*$/" data-ng-minlength="10" data-ng-maxlength="10">
 
-					<div class="errorMessage" ng-messages="createUserForm.phoneNumber.$error" role="alert" ng-show="!createUserForm.phoneNumber.$pristine">
-						<div ng-message="required">This field cannot be empty</div>
-						<div ng-message="pattern">Input contains non-numeric characters</div>
-						<div ng-message="minlength">Number is too short</div>
-						<div ng-message="maxlength">Number is too long</div>
+					<div class="errorMessage" data-ng-messages="createUserForm.phoneNumber.$error" role="alert" data-ng-show="!createUserForm.phoneNumber.$pristine">
+						<div data-ng-message="required">This field cannot be empty</div>
+						<div data-ng-message="pattern">Input contains non-numeric characters</div>
+						<div data-ng-message="minlength">Number is too short</div>
+						<div data-ng-message="maxlength">Number is too long</div>
 					</div>
 				</div>
 
@@ -118,8 +118,8 @@
 			<hr>
 			<div class="form-group">
 				<div class="col-xs-offset-2 col-xs-10">
-					<button  type="button" class="btn btn-sm btn-default" ui-sref="userManagement.userTable({pageNum: 1})">Cancel</button>
-					<button  type="button" ng-click="createUserSubmit()" class="btn btn-sm btn-primary">Create New User</button>
+					<button  type="button" class="btn btn-sm btn-default" data-ui-sref="userManagement.userTable({pageNum: 1})">Cancel</button>
+					<button  type="button" data-ng-click="createUserSubmit()" class="btn btn-sm btn-primary">Create New User</button>
 				</div>
 			</div>
 		</form>
