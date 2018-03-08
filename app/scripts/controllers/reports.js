@@ -1329,14 +1329,15 @@
             }
 
             $scope.exportCsv = function() {
-              var fileName = $scope.gridApi.grid.options.exporterExcelFilename ? $scope.gridApi.grid.options.exporterExcelFilename : 'dokuman';
-                 fileName = fileName.replace("*","");
-                 fileName += '.csv';
-            $scope.gridOptions.exporterCsvFilename = fileName;
-              var grid = $scope.gridApi.grid;
-              var rowTypes = uiGridExporterConstants.ALL;
-              var colTypes = uiGridExporterConstants.ALL;
-              uiGridExporterService.csvExport(grid, rowTypes, colTypes);
+
+//              $scope.gridOptions.exporterCsvFilename = fileName;
+//              var grid = $scope.gridApi.grid;
+//              var rowTypes = uiGridExporterConstants.ALL;
+//              var colTypes = uiGridExporterConstants.ALL;
+//              uiGridExporterService.csvExport(grid, rowTypes, colTypes);
+
+              exportUiGridService.exportToCsv1($scope.gridApi,$scope.gridApi1, 'visible', 'visible', excelHeaderName);
+
             };
 
             $scope.exportPdf = function() {
