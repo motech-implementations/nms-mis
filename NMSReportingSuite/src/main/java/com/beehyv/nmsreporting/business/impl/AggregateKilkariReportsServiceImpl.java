@@ -713,6 +713,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 summaryDto1.setCalls_75_100(a.getCalls_75_100());
                 summaryDto1.setCalls_50_75(a.getCalls_50_75());
                 summaryDto1.setCalls_25_50(a.getCalls_25_50());
+
                 summaryDto1.setCalls_1_25(a.getCalls_1_25());
                 summaryDto1.setLocationType(a.getLocationType());
                 summaryDto1.setCalledInbox(a.getCalledInbox());
