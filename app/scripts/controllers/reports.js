@@ -650,6 +650,11 @@
 			}
 
 			$scope.getReport = function(){
+			return	UserFormFactory.isLoggedIn()
+            .then(function(result){
+            	if(!result.data){
+            		$state.go('login', {});
+            	}else{
 
                 if($scope.reportCategory == null){
                     if(UserFormFactory.isInternetExplorer()){
@@ -1104,6 +1109,9 @@
 				)
 			}
 
+			})
+			}
+
 			$scope.getReportUrl = backend_root + 'nms/user/getReport';
 			$scope.$watch('pathName', function(){
 			    $scope.downloadReportUrl = backend_root + 'nms/user/downloadReport?fileName='+
@@ -1121,6 +1129,13 @@
 			}
 
 			$scope.reset =function(){
+
+			return	UserFormFactory.isLoggedIn()
+            .then(function(result){
+            	if(!result.data){
+            		$state.go('login', {});
+            	}else{
+
                 if((($state.current.name)===("reports"))){
                     $scope.report = null;
                     $scope.reportCategory = null;
@@ -1144,6 +1159,8 @@
 				$scope.hideMessageMatrix = true;
 				$scope.periodDisplayType = '';
 				$scope.showEmptyData = false;
+				}
+			})
 			}
 
 			// datepicker stuff
