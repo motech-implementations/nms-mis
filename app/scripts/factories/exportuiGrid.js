@@ -59,7 +59,12 @@
 
                                     //2nd loop will extract each column and convert it in string comma-seprated
                                     for (var index in data[i]) {
-                                        row +=  data[i][index].value + ',';
+                                        var temp = data[i][index].value;
+                                        if(index == "7" && excelHeaderName.reportName == "Kilkari Call"){
+                                            temp = Number(temp.toFixed(2));
+                                        }
+
+                                        row +=  temp + ',';
                                     }
 
                                     row = row.slice(0,- 1);
@@ -86,6 +91,14 @@
                                    }
                                    else if(ft.displayName == "Average Duration Of Calls" && excelHeaderName.reportName == "Kilkari Call"){
                                        var temp = gridApi.grid.columns[3].getAggregationValue()==0?0.00: (gridApi.grid.columns[8].getAggregationValue()/gridApi.grid.columns[3].getAggregationValue());
+                                       v = Number(temp.toFixed(2));
+                                   }
+                                   else if(ft.displayName == "Total Billable Minutes" && excelHeaderName.reportName == "Kilkari Call"){
+                                       var temp = ft.getAggregationValue();
+                                       v = Number(temp.toFixed(2));
+                                   }
+                                   else if(ft.displayName == "Number Of Minutes Consumed" && excelHeaderName.reportName == "Kilkari Thematic Content"){
+                                       var temp = ft.getAggregationValue();
                                        v = Number(temp.toFixed(2));
                                    }
                                    else if(ft.displayName == "% Not Started Course" && excelHeaderName.reportName == "MA Cumulative Summary"){
