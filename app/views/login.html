@@ -27,8 +27,9 @@
 					<div id="tapa" style="background-color: #ffffff; height: 10px;width: 250px;position: relative;top: -10px;"></div>
 					<p style="color: #337ab7">Please enter the captcha code</p>
 					<input type="text" id="captchaCode"  class ="captchaCode" name="captchaCode" data-ng-model="user.captchaCode" correct-captcha>
-
 				</div>
+
+				<input type="hidden" name="fromUrl" data-ng-model="user.fromUrl" value={{preUrl}}>
 
 
 				<!--<div class="form-group">-->

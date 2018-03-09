@@ -10,6 +10,8 @@ public class LoginUser {
 
     private boolean rememberMe;
 
+    private String fromUrl;
+
     public String getUsername() {
         return username;
     }
@@ -32,5 +34,13 @@ public class LoginUser {
 
     public void setRememberMe(boolean rememberMe) {
         this.rememberMe = rememberMe;
+    }
+
+    public String getFromUrl() {
+        return fromUrl;
+    }
+
+    public void setFromUrl(String fromUrl) {
+        this.fromUrl = fromUrl;
     }
 }
