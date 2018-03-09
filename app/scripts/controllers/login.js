@@ -1,7 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("LoginController", ['$scope', '$http', '$location','Captcha','UserFormFactory', function($scope, $http, $location, Captcha,UserFormFactory){
+		.controller("LoginController", ['$rootScope','$scope', '$http', '$location','Captcha','UserFormFactory', function($rootScope, $scope, $http, $location, Captcha,UserFormFactory){
 
 			$scope.user = {};
 			$scope.user.rememberMe = false;
@@ -10,7 +10,7 @@
 
 			var url = $location.absUrl();
 			var error = url.split('?')[1]
-
+            $scope.preUrl = "";
 			$scope.errorMessage = "";
 			if(error == null){
 				$scope.errorMessage = "";
@@ -35,6 +35,10 @@
 //					});
 //				}
 //			}
+
+            $rootScope.$on('$locationChangeStart', function (event, current, previous) {
+                   $scope.preUrl  = previous;
+            });
 
 			$scope.login = function(e){
 			    if($scope.user.username == null || $scope.user.username == ""){

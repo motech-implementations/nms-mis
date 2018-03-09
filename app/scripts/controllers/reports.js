@@ -650,6 +650,11 @@
 			}
 
 			$scope.getReport = function(){
+			return	UserFormFactory.isLoggedIn()
+            .then(function(result){
+            	if(!result.data){
+            		$state.go('login', {});
+            	}else{
 
                 if($scope.reportCategory == null){
                     if(UserFormFactory.isInternetExplorer()){
@@ -1104,6 +1109,9 @@
 				)
 			}
 
+			})
+			}
+
 			$scope.getReportUrl = backend_root + 'nms/user/getReport';
 			$scope.$watch('pathName', function(){
 			    $scope.downloadReportUrl = backend_root + 'nms/user/downloadReport?fileName='+
@@ -1121,6 +1129,13 @@
 			}
 
 			$scope.reset =function(){
+
+			return	UserFormFactory.isLoggedIn()
+            .then(function(result){
+            	if(!result.data){
+            		$state.go('login', {});
+            	}else{
+
                 if((($state.current.name)===("reports"))){
                     $scope.report = null;
                     $scope.reportCategory = null;
@@ -1144,6 +1159,8 @@
 				$scope.hideMessageMatrix = true;
 				$scope.periodDisplayType = '';
 				$scope.showEmptyData = false;
+				}
+			})
 			}
 
 			// datepicker stuff
@@ -1329,14 +1346,15 @@
             }
 
             $scope.exportCsv = function() {
-              var fileName = $scope.gridApi.grid.options.exporterExcelFilename ? $scope.gridApi.grid.options.exporterExcelFilename : 'dokuman';
-                 fileName = fileName.replace("*","");
-                 fileName += '.csv';
-            $scope.gridOptions.exporterCsvFilename = fileName;
-              var grid = $scope.gridApi.grid;
-              var rowTypes = uiGridExporterConstants.ALL;
-              var colTypes = uiGridExporterConstants.ALL;
-              uiGridExporterService.csvExport(grid, rowTypes, colTypes);
+
+//              $scope.gridOptions.exporterCsvFilename = fileName;
+//              var grid = $scope.gridApi.grid;
+//              var rowTypes = uiGridExporterConstants.ALL;
+//              var colTypes = uiGridExporterConstants.ALL;
+//              uiGridExporterService.csvExport(grid, rowTypes, colTypes);
+
+              exportUiGridService.exportToCsv1($scope.gridApi,$scope.gridApi1, 'visible', 'visible', excelHeaderName);
+
             };
 
             $scope.exportPdf = function() {
@@ -1507,7 +1525,7 @@
                                                      { field: 'content_50_75', name: 'Total calls where 50% to 75% content listened to',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
                                                      { field: 'content_25_50', name: 'Total calls where 25% to 50% content listened to',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                      { field: 'content_1_25', name: 'Total calls where < 25%  content listened to',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'billableMinutes', name: 'Total Billable minutes',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
+                                                     { field: 'billableMinutes', name: 'Total Billable minutes',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, footerCellFilter: 'number:2', width:"*", enableHiding: false },
                                                      { field: 'avgDuration', name: 'Average Duration of Calls',cellFilter: 'number: 2',footerCellTemplate: '<div class="ui-grid-cell-contents" >{{(grid.columns[3].getAggregationValue()==0)?0.00: grid.columns[8].getAggregationValue()/grid.columns[3].getAggregationValue() | number:2}}</div>', width:"*", enableHiding: false},
                                                      { field: 'callsToInbox', name: 'Total number of calls to inbox where content is played',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
             ]
