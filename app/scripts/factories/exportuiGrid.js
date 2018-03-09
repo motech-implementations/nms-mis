@@ -6,7 +6,9 @@
             exportUiGridService.inject = ['uiGridExporterService'];
             function exportUiGridService(uiGridExporterService) {
                 var service = {
-                    exportToExcel: exportToExcel
+                    exportToExcel: exportToExcel,
+                    exportToCsv1: exportToCsv1
+
                 };
 
                 return service;
@@ -16,6 +18,156 @@
                     this.SheetNames = [];
                     this.Sheets = {};
                 }
+                function exportToCsv1( gridApi,gridApi1, rowTypes, colTypes, excelHeaderName) {
+
+                                    var columns = gridApi.grid.options.showHeader ? uiGridExporterService.getColumnHeaders(gridApi.grid, colTypes) : [];
+                                    var data = uiGridExporterService.getData(gridApi.grid, rowTypes, colTypes);
+                                    if(excelHeaderName.reportName == "Kilkari Message Matrix" || excelHeaderName.reportName == "Kilkari Repeat Listener"){
+                                        var columns1 = gridApi1.grid.options.showHeader ? uiGridExporterService.getColumnHeaders(gridApi1.grid, colTypes) : [];
+                                        var data1 = uiGridExporterService.getData(gridApi1.grid, rowTypes, colTypes);
+                                    }
+
+
+                                var CSV = '';
+                                //Set Report title in first row or line
+                                if(excelHeaderName.reportName == "Kilkari Message Matrix" ){
+                                    CSV += 'Kilkari Mother Pack Data\r\n\n';
+                                }
+                                if(excelHeaderName.reportName == "Kilkari Repeat Listener"){
+                                    CSV += 'Beneficiary Count\r\n\n';
+                                }
+                                //This condition will generate the Label/Header
+                                if (true) {
+                                    var row = "";
+
+                                    //This loop will extract the label from 1st index of on array
+                                    for (var index in columns) {
+
+                                        //Now convert each value to string and comma-seprated
+                                        row += columns[index].displayName + ',';
+                                    }
+
+                                    row = row.slice(0, -1);
+
+                                    //append Label row with line break
+                                    CSV += row + '\r\n';
+                                }
+
+                                //1st loop is to extract each row
+                                for (var i = 0; i < data.length; i++) {
+                                    var row = "";
+
+                                    //2nd loop will extract each column and convert it in string comma-seprated
+                                    for (var index in data[i]) {
+                                        row +=  data[i][index].value + ',';
+                                    }
+
+                                    row = row.slice(0,- 1);
+
+                                    //add a line break after each row
+                                    CSV += row + '\r\n';
+                                }
+
+                            var v;
+                            var row = "";
+                            if(excelHeaderName.reportName != "Kilkari Message Matrix" && excelHeaderName.reportName != "Kilkari Listening Matrix" && excelHeaderName.reportName != "Kilkari Repeat Listener"){
+                                gridApi.grid.columns.forEach(function (ft) {
+
+                                   if(ft.displayName == "State" || ft.displayName == "District" || ft.displayName == "Block" || ft.displayName == "Subcenter" || ft.displayName == "Message Number (Week)" )
+                                       v = "Total";
+
+                                   else if(ft.displayName == "Average Duration Of Call" && excelHeaderName.reportName == "Kilkari Cumulative Summary"){
+                                       var temp = gridApi.grid.columns[3].getAggregationValue()==0?0.00: (gridApi.grid.columns[4].getAggregationValue()/gridApi.grid.columns[3].getAggregationValue());
+                                       v = Number(temp.toFixed(2));
+                                   }
+                                   else if(ft.displayName == "Average Number of Weeks in Service" && excelHeaderName.reportName == "Kilkari Beneficiary Completion"){
+                                       var temp = gridApi.grid.columns.length==0?0.00: (gridApi.grid.columns[3].getAggregationValue()/gridApi.grid.columns.length);
+                                       v = Number(temp.toFixed(2));
+                                   }
+                                   else if(ft.displayName == "Average Duration Of Calls" && excelHeaderName.reportName == "Kilkari Call"){
+                                       var temp = gridApi.grid.columns[3].getAggregationValue()==0?0.00: (gridApi.grid.columns[8].getAggregationValue()/gridApi.grid.columns[3].getAggregationValue());
+                                       v = Number(temp.toFixed(2));
+                                   }
+                                   else if(ft.displayName == "% Not Started Course" && excelHeaderName.reportName == "MA Cumulative Summary"){
+                                      var temp = gridApi.grid.columns[2].getAggregationValue()==0?0.00: (gridApi.grid.columns[4].getAggregationValue()/gridApi.grid.columns[2].getAggregationValue())*100;
+                                      v = Number(temp.toFixed(2));
+                                   }
+                                   else if(ft.displayName == "% Successfully Completed" && excelHeaderName.reportName == "MA Cumulative Summary"){
+                                      var temp = gridApi.grid.columns[3].getAggregationValue()==0?0.00:(gridApi.grid.columns[5].getAggregationValue()/gridApi.grid.columns[3].getAggregationValue())*100;
+                                      v = Number(temp.toFixed(2));
+                                   }
+                                   else if(ft.displayName == "% Failed the course" && excelHeaderName.reportName == "MA Cumulative Summary"){
+                                      var temp = gridApi.grid.columns[3].getAggregationValue()==0?0.00:(gridApi.grid.columns[6].getAggregationValue()/gridApi.grid.columns[3].getAggregationValue())*100;
+                                      v = Number(temp.toFixed(2));
+                                   }
+                                   else{
+                                       v = ft.getAggregationValue();
+                                   }
+
+                                   if(ft.displayName != "S No."){
+                                        row +=  v + ',';
+                                   }
+
+                               }, this);
+                                    row = row.slice(0,- 1);
+                                    CSV += row ;
+                               }
+                                if(excelHeaderName.reportName == "Kilkari Message Matrix" ){
+                                    CSV += '\n\nKilkari Child Pack Data\r\n\n';
+                                }
+                                if(excelHeaderName.reportName == "Kilkari Repeat Listener"){
+                                    CSV += '\n\nBeneficiary Percentage\r\n\n';
+                                }
+                            if(excelHeaderName.reportName == "Kilkari Message Matrix" ||  excelHeaderName.reportName == "Kilkari Repeat Listener"){
+                                    var row = "";
+                                    columns1.forEach(function (c) {
+                                        var v = c.displayName || c.value || columns[i].name;
+                                        row +=  v + ',';
+                                    }, this);
+                                    row = row.slice(0, -1);
+                                    CSV += row + '\r\n';
+                                    data1.forEach(function (ds) {
+                                    var row = "";
+                                        ds.forEach(function (d) {
+                                            var v = d.value;
+                                            row +=  v + ',';
+                                        });
+                                        row = row.slice(0, -1);
+                                        CSV += row + '\r\n';
+                                    }, this);
+
+
+                               }
+
+                                if (CSV == '') {
+                                    alert("Invalid data");
+                                    return;
+                                }
+
+                                var fileName = gridApi.grid.options.exporterExcelFilename ? gridApi.grid.options.exporterExcelFilename : 'dokuman';
+                                // fileName = fileName.replace("*","");
+
+                                //Initialize file format you want csv or xls
+                                var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
+
+                                // Now the little tricky part.
+                                // you can use either>> window.open(uri);
+                                // but this will not work in some browsers
+                                // or you will not get the correct file extension
+
+                                //this trick will generate a temp <a /> tag
+                                var link = document.createElement("a");
+                                link.href = uri;
+
+                                //set the visibility hidden so it will not effect on your web-layout
+                                link.style = "visibility:hidden";
+                                link.download = fileName + ".csv";
+
+                                //this part will append the anchor tag and remove it after automatic click
+                                document.body.appendChild(link);
+                                link.click();
+                                document.body.removeChild(link);
+                            }
 
                 function exportToExcel(sheetName, gridApi,gridApi1, rowTypes, colTypes, excelHeaderName) {
                     var columns = gridApi.grid.options.showHeader ? uiGridExporterService.getColumnHeaders(gridApi.grid, colTypes) : [];
@@ -291,5 +443,9 @@
 
                     ws[cell_ref] = cell;
                 }
+
+
             }
+
+
 })()

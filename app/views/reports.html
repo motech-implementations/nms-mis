@@ -312,9 +312,9 @@
         <p class="ng-binding" style="display: inline-block;"> {{reportCategory}} - {{report.name}}</p>
 		<div style="display: inline-block;float: right">
 			<i class="glyphicon glyphicon-calendar aggregate-calender"> <span ng-if=" report.name != 'MA Cumulative Summary' && report.reportEnum != 'Kilkari_Cumulative_Summary' " class="calender-date">{{ headerFromDate | date:'dd/MM/y'}}</span> <span class="calender-date" style="font-size: 13px" ng-if=" report.name == 'MA Cumulative Summary' || report.reportEnum == 'Kilkari_Cumulative_Summary' ">Up</span><span class="calender-date">to</span> <span class="calender-date">{{headerToDate | date:'dd/MM/y'}}</span></i>
-			<img ng-click = "exportToExcel()" style="float: right;margin-right: 7px; cursor : pointer" src="images/export3.png" alt = "ExportToExcel">
-			<!--<img ng-click = "exportCsv()" style="float: right;margin-right: 7px; cursor : pointer" src="images/export1.png">
-			<img ng-click = "exportPdf()" style="float: right;margin-right: 7px; cursor : pointer" src="images/export2.png">-->
+			<img ng-click = "exportToExcel()" style="float: right;margin-right: 7px; cursor : pointer" src="images/export3.png">
+			<img ng-click = "exportCsv()" style="float: right;margin-right: 7px; cursor : pointer" src="images/export1.png">
+			<!--<img ng-click = "exportPdf()" style="float: right;margin-right: 7px; cursor : pointer" src="images/export2.png">-->
 		</div>
 
     </div>
@@ -325,7 +325,7 @@
 
 	<div class="row">
 		<div class="block reports-body loading" ng-if="waiting && isAggregateReport()">
-			<img src="images/pageloader.gif" alt="loading...">
+			<img src="images/pageloader.gif">
 			<p>Aggregate Report is being generated...</p>
 		</div>
 		<div >
@@ -339,7 +339,7 @@
 
 	<div class="row">
 		<div class="block reports-body loading" ng-if="waiting && (report.reportEnum == 'Kilkari_Message_Matrix' && report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise')">
-			<img src="images/pageloader.gif" alt="loading...">
+			<img src="images/pageloader.gif">
 			<p>Aggregate Report is being generated...</p>
 		</div>
 		<div >
@@ -348,7 +348,7 @@
 	</div>
 
 	<div class="block reports-body loading" ng-if="waiting && !isAggregateReport()">
-		<img src="images/pageloader.gif" alt="loading...">
+		<img src="images/pageloader.gif">
 		<p>Report is being generated...</p>
 	</div>
 
