@@ -124,6 +124,34 @@
 				return $scope.circles[0]  == null || $scope.userHasOneCircle();
 			}
 
+			$scope.disableChangePassword = function(){
+                                    				            return (!(($state.current.name)===("reports")));
+
+                                    			            }
+
+                                    			$scope.disableProfile = function(){
+                                                				return (!(($state.current.name)===("reports"))||!(($state.current.name)===("profile"))||!
+                                                				(($state.current.name)===("forgotPassword"))||!(($state.current.name)===("changePassword"))||!
+                                                				(($state.current.name)===("userManagement.bulkUpload"))||!(($state.current.name)===("userManagement"))||!
+                                                				(($state.current.name)===("userManagement.createUser"))||!(($state.current.name)===("userManagement.userTable"))||!
+                                                				(($state.current.name)===("userManagement.editUser")));
+                                                			}
+
+                                                $scope.disableUserManagement = function(){
+                                                            				return (!(($state.current.name)===("reports"))||!(($state.current.name)===("profile"))||!
+                                                            				(($state.current.name)===("forgotPassword"))||!(($state.current.name)===("changePassword"))||!
+                                                            				(($state.current.name)===("userManagement.bulkUpload"))||!(($state.current.name)===("userManagement"))||!
+                                                            				(($state.current.name)===("userManagement.createUser"))||!(($state.current.name)===("userManagement.userTable"))||!
+                                                            				(($state.current.name)===("userManagement.editUser")));
+                                                            			}
+                                                $scope.disableReportTab = function(){
+                                                            				return (!(($state.current.name)===("reports"))||!(($state.current.name)===("profile"))||!
+                                                            				(($state.current.name)===("forgotPassword"))||!(($state.current.name)===("changePassword"))||!
+                                                            				(($state.current.name)===("userManagement.bulkUpload"))||!(($state.current.name)===("userManagement"))||!
+                                                            				(($state.current.name)===("userManagement.createUser"))||!(($state.current.name)===("userManagement.userTable"))||!
+                                                            				(($state.current.name)===("userManagement.editUser")));
+                                                            			}
+
 
 			$scope.userHasState = function(){
 				return UserFormFactory.getCurrentUser().stateId != null;
@@ -1358,26 +1386,18 @@
             };
 
             $scope.exportPdf = function() {
-              var grid = $scope.gridApi.grid;
-              var rowTypes = uiGridExporterConstants.ALL;
-              var colTypes = uiGridExporterConstants.ALL;
-              var exportColumnHeaders = uiGridExporterService.getColumnHeaders(this.grid, uiGridExporterConstants.ALL);
-                              var exportData = uiGridExporterService.getData(this.grid, uiGridExporterConstants.ALL, uiGridExporterConstants.ALL, true);
-                              var docDefinition = uiGridExporterService.prepareAsPdf(this.grid, exportColumnHeaders, exportData);
-
-                              if (uiGridExporterService.isIE() || navigator.appVersion.indexOf("Edge") !== -1) {
-                                uiGridExporterService.downloadPDF(this.grid.options.exporterPdfFilename, docDefinition);
-                              } else {
-                                pdfMake.createPdf(docDefinition).download();
-                              }
-              uiGridExporterService.pdfExport(grid, rowTypes, colTypes);
+            var fileName1 = $scope.gridApi.grid.options.exporterExcelFilename ? $scope.gridApi.grid.options.exporterExcelFilename : 'dokuman';
+                             fileName1 = fileName1.replace("*","");
+                             fileName1 += '.pdf';
+            exportUiGridService.exportToPdf1($scope.gridApi,$scope.gridApi1,excelHeaderName,$scope.reportCategory,$scope.matrixContent1,$scope.matrixContent2,uiGridExporterConstants,fileName1);
             };
 
             var canceler = $q.defer();
             $scope.gridOptions1 = {
                 enableSorting: true,
+                showGridFooter: true,
                 showColumnFooter: true,
-                enableVerticalScrollbar : 0,
+                enableVerticalScrollbar : 0,git
                 excessRows :1000,
                 onRegisterApi: function(gridApi){
                       $scope.gridApi = gridApi;
@@ -1757,6 +1777,7 @@
                         })
                   }
             }
+
 
 		}])
 })()
