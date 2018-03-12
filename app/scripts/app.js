@@ -144,7 +144,33 @@ var nmsReportsApp = angular
             .state('changePassword', {
                 url: '/changePassword',
                 templateUrl: 'views/changePassword.html'
+            })
+            .state('userManual', {
+                url: '/userManual',
+                templateUrl: 'views/userManual.html'
+            })
+
+            .state('userManual.kilkari', {
+                url: '/kilkari',
+                templateUrl: 'views/kilkari.html'
+            })
+            .state('userManual.websiteInformation', {
+                url: '/',
+                templateUrl: 'views/websiteInformation.html'
+            })
+            .state('userManual.mobileAcademy', {
+                url: '/mobileAcademy',
+                templateUrl: 'views/mobileAcademy.html'
+            })
+            .state('userManual.userManual_Management', {
+                url: '/userManual_Management',
+                templateUrl: 'views/userManual_Management.html'
+            })
+            .state('userManual.userManual_Profile', {
+                url: '/userManual_Profile',
+                templateUrl: 'views/userManual_Profile.html'
             });
+
 		$urlRouterProvider
 			.otherwise('/login');
 

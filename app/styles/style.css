@@ -689,6 +689,41 @@ a.adisabled:hover { text-decoration: none; }
 a.adisabled:focus { text-decoration: none; }
 a.adisabled:active { text-decoration: none; }
 
+.block12{
+	background-color: #0071bc;
+	height: 100px;
+	padding: 13px 0px 0px 8px;
+    margin: 0 0 41px 0; 
+}
+.block12 p{
+	padding: 5px 0px 2px 29px;
+	color:white;
+}
+
+.user-manual div {
+    margin: -4px 0 14px 0;
+    background-color: #f2f2f2;
+    padding: 6px 0px 5px 11px;
+    font-size : 15px;
+}
+
+.user-manual{
+    text-align : left !important;
+    color : #4d4d4d;
+}
+
+.user-manual-right{
+	font-size: 16px;
+	color: #0071bc;
+}
+.user-manual-header{
+	font-size: 24px;
+	color: #333333;
+}
+/*a:active{
+    background-color blue;
+    color:white
+}*/
 /*
 Copyright 2016 Google Inc. All Rights Reserved.
 Use of this source code is governed by an MIT-style license that can be foundin the LICENSE file at http://material.angularjs.org/HEAD/license.
