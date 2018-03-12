@@ -7,7 +7,7 @@ import java.util.Date;
  * Created by beehyv on 10/10/17.
  */
 @Entity
-@Table(name="kilkari_listening_matrix")
+@Table(name="agg_kilkari_listening_matrix")
 public class ListeningMatrix {
 
     @Id
@@ -26,53 +26,35 @@ public class ListeningMatrix {
     @Column(name="date", columnDefinition = "DATE")
     private Date date;
 
-    @Column(name="calls_75_Content_75", columnDefinition = "BIGINT(20)")
-    private Long calls_75_Content_75;
+    @Column(name="calls_listened_percentage", columnDefinition = "BIGINT(20)")
+    private String calls_listened_percentage;
 
-    @Column(name="calls_50_content_75", columnDefinition = "BIGINT(20)")
-    private Long calls_50_content_75;
+    @Column(name="contentListened_morethan75", columnDefinition = "BIGINT(20)")
+    private Long contentListened_morethan75;
 
-    @Column(name="calls_25_content_75", columnDefinition = "BIGINT(20)")
-    private Long calls_25_content_75;
+    @Column(name="contentListened_50_75", columnDefinition = "BIGINT(20)")
+    private Long contentListened_50_75;
 
-    @Column(name="calls_1_content_75", columnDefinition = "BIGINT(20)")
-    private Long calls_1_content_75;
+    @Column(name="contentListened_25_50", columnDefinition = "BIGINT(20)")
+    private Long contentListened_25_50;
 
-    @Column(name="calls_75_Content_50", columnDefinition = "BIGINT(20)")
-    private Long calls_75_Content_50;
+    @Column(name="contentListened_lessthan25", columnDefinition = "BIGINT(20)")
+    private Long contentListened_lessthan25;
 
-    @Column(name="calls_50_content_50", columnDefinition = "BIGINT(20)")
-    private Long calls_50_content_50;
+    public ListeningMatrix() {
+    }
 
-    @Column(name="calls_25_content_50", columnDefinition = "BIGINT(20)")
-    private Long calls_25_content_50;
-
-    @Column(name="calls_1_content_50", columnDefinition = "BIGINT(20)")
-    private Long calls_1_content_50;
-
-    @Column(name="calls_75_Content_25", columnDefinition = "BIGINT(20)")
-    private Long calls_75_Content_25;
-
-    @Column(name="calls_50_content_25", columnDefinition = "BIGINT(20)")
-    private Long calls_50_content_25;
-
-    @Column(name="calls_25_content_25", columnDefinition = "BIGINT(20)")
-    private Long calls_25_content_25;
-
-    @Column(name="calls_1_content_25", columnDefinition = "BIGINT(20)")
-    private Long calls_1_content_25;
-
-    @Column(name="calls_75_Content_1", columnDefinition = "BIGINT(20)")
-    private Long calls_75_Content_1;
-
-    @Column(name="calls_50_content_1", columnDefinition = "BIGINT(20)")
-    private Long calls_50_content_1;
-
-    @Column(name="calls_25_content_1", columnDefinition = "BIGINT(20)")
-    private Long calls_25_content_1;
-
-    @Column(name="calls_1_content_1", columnDefinition = "BIGINT(20)")
-    private Long calls_1_content_1;
+    public ListeningMatrix(Integer id, String locationType, Long locationId, Date date, String calls_listened_percentage, Long contentListened_morethan75, Long contentListened_50_75, Long contentListened_25_50, Long contentListened_lessthan25) {
+        this.id = id;
+        this.locationType = locationType;
+        this.locationId = locationId;
+        this.date = date;
+        this.calls_listened_percentage = calls_listened_percentage;
+        this.contentListened_morethan75 = contentListened_morethan75;
+        this.contentListened_50_75 = contentListened_50_75;
+        this.contentListened_25_50 = contentListened_25_50;
+        this.contentListened_lessthan25 = contentListened_lessthan25;
+    }
 
     public Integer getId() {
         return id;
@@ -106,131 +88,43 @@ public class ListeningMatrix {
         this.date = date;
     }
 
-    public Long getCalls_75_Content_75() {
-        return calls_75_Content_75;
+    public String getCalls_listened_percentage() {
+        return calls_listened_percentage;
     }
 
-    public void setCalls_75_Content_75(Long calls_75_Content_75) {
-        this.calls_75_Content_75 = calls_75_Content_75;
+    public void setCalls_listened_percentage(String calls_listened_percentage) {
+        this.calls_listened_percentage = calls_listened_percentage;
     }
 
-    public Long getCalls_50_content_75() {
-        return calls_50_content_75;
+    public Long getContentListened_morethan75() {
+        return contentListened_morethan75;
     }
 
-    public void setCalls_50_content_75(Long calls_50_content_75) {
-        this.calls_50_content_75 = calls_50_content_75;
+    public void setContentListened_morethan75(Long contentListened_morethan75) {
+        this.contentListened_morethan75 = contentListened_morethan75;
     }
 
-    public Long getCalls_25_content_75() {
-        return calls_25_content_75;
+    public Long getContentListened_50_75() {
+        return contentListened_50_75;
     }
 
-    public void setCalls_25_content_75(Long calls_25_content_75) {
-        this.calls_25_content_75 = calls_25_content_75;
+    public void setContentListened_50_75(Long contentListened_50_75) {
+        this.contentListened_50_75 = contentListened_50_75;
     }
 
-    public Long getCalls_1_content_75() {
-        return calls_1_content_75;
+    public Long getContentListened_25_50() {
+        return contentListened_25_50;
     }
 
-    public void setCalls_1_content_75(Long calls_1_content_75) {
-        this.calls_1_content_75 = calls_1_content_75;
+    public void setContentListened_25_50(Long contentListened_25_50) {
+        this.contentListened_25_50 = contentListened_25_50;
     }
 
-    public Long getCalls_75_Content_50() {
-        return calls_75_Content_50;
+    public Long getContentListened_lessthan25() {
+        return contentListened_lessthan25;
     }
 
-    public void setCalls_75_Content_50(Long calls_75_Content_50) {
-        this.calls_75_Content_50 = calls_75_Content_50;
-    }
-
-    public Long getCalls_50_content_50() {
-        return calls_50_content_50;
-    }
-
-    public void setCalls_50_content_50(Long calls_50_content_50) {
-        this.calls_50_content_50 = calls_50_content_50;
-    }
-
-    public Long getCalls_25_content_50() {
-        return calls_25_content_50;
-    }
-
-    public void setCalls_25_content_50(Long calls_25_content_50) {
-        this.calls_25_content_50 = calls_25_content_50;
-    }
-
-    public Long getCalls_1_content_50() {
-        return calls_1_content_50;
-    }
-
-    public void setCalls_1_content_50(Long calls_1_content_50) {
-        this.calls_1_content_50 = calls_1_content_50;
-    }
-
-    public Long getCalls_75_Content_25() {
-        return calls_75_Content_25;
-    }
-
-    public void setCalls_75_Content_25(Long calls_75_Content_25) {
-        this.calls_75_Content_25 = calls_75_Content_25;
-    }
-
-    public Long getCalls_50_content_25() {
-        return calls_50_content_25;
-    }
-
-    public void setCalls_50_content_25(Long calls_50_content_25) {
-        this.calls_50_content_25 = calls_50_content_25;
-    }
-
-    public Long getCalls_25_content_25() {
-        return calls_25_content_25;
-    }
-
-    public void setCalls_25_content_25(Long calls_25_content_25) {
-        this.calls_25_content_25 = calls_25_content_25;
-    }
-
-    public Long getCalls_1_content_25() {
-        return calls_1_content_25;
-    }
-
-    public void setCalls_1_content_25(Long calls_1_content_25) {
-        this.calls_1_content_25 = calls_1_content_25;
-    }
-
-    public Long getCalls_75_Content_1() {
-        return calls_75_Content_1;
-    }
-
-    public void setCalls_75_Content_1(Long calls_75_Content_1) {
-        this.calls_75_Content_1 = calls_75_Content_1;
-    }
-
-    public Long getCalls_50_content_1() {
-        return calls_50_content_1;
-    }
-
-    public void setCalls_50_content_1(Long calls_50_content_1) {
-        this.calls_50_content_1 = calls_50_content_1;
-    }
-
-    public Long getCalls_25_content_1() {
-        return calls_25_content_1;
-    }
-
-    public void setCalls_25_content_1(Long calls_25_content_1) {
-        this.calls_25_content_1 = calls_25_content_1;
-    }
-
-    public Long getCalls_1_content_1() {
-        return calls_1_content_1;
-    }
-
-    public void setCalls_1_content_1(Long calls_1_content_1) {
-        this.calls_1_content_1 = calls_1_content_1;
+    public void setContentListened_lessthan25(Long contentListened_lessthan25) {
+        this.contentListened_lessthan25 = contentListened_lessthan25;
     }
 }

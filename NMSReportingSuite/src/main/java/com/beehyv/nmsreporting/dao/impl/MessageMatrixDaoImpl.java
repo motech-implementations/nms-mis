@@ -78,7 +78,6 @@ public class MessageMatrixDaoImpl extends AbstractDao<Integer,MessageMatrix> imp
             messageMatrix.setListened_50_75(messageMatrix.getListened_50_75() == null ? 0 : messageMatrix.getListened_50_75());
             messageMatrix.setListened_lessthan25(messageMatrix.getListened_lessthan25() == null ? 0 : messageMatrix.getListened_lessthan25());
             messageMatrix.setListened_morethan75(messageMatrix.getListened_morethan75() == null ? 0 : messageMatrix.getListened_morethan75());
-            result.set(i,messageMatrix);
             EmptyMatrix.put(messageMatrix.getMessageWeek(),messageMatrix);
         }
         List<MessageMatrix> finalMatrix = new ArrayList<>();
