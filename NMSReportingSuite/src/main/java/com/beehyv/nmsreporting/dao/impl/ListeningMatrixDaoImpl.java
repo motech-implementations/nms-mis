@@ -9,7 +9,9 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -20,7 +22,7 @@ import java.util.List;
 public class ListeningMatrixDaoImpl extends AbstractDao<Integer,ListeningMatrix> implements ListeningMatrixDao{
 
     @Override
-    public ListeningMatrix getListeningMatrix(Integer locationId, String locationType, Date date){
+    public HashMap<String,ListeningMatrix> getListeningMatrix(Integer locationId, String locationType, Date date){
 
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.and(
@@ -33,24 +35,40 @@ public class ListeningMatrixDaoImpl extends AbstractDao<Integer,ListeningMatrix>
         if(result.isEmpty()){
              return null;
         }
-        ListeningMatrix listeningMatrix= result.get(0);
 
-        listeningMatrix.setCalls_1_content_1(listeningMatrix.getCalls_1_content_1() == null ? 0 : listeningMatrix.getCalls_1_content_1());
-        listeningMatrix.setCalls_1_content_25(listeningMatrix.getCalls_1_content_25() == null ? 0 : listeningMatrix.getCalls_1_content_25());
-        listeningMatrix.setCalls_1_content_50(listeningMatrix.getCalls_1_content_50() == null ? 0 : listeningMatrix.getCalls_1_content_50());
-        listeningMatrix.setCalls_1_content_75(listeningMatrix.getCalls_1_content_75() == null ? 0: listeningMatrix.getCalls_1_content_75());
-        listeningMatrix.setCalls_25_content_1(listeningMatrix.getCalls_25_content_1() == null ? 0 : listeningMatrix.getCalls_25_content_1());
-        listeningMatrix.setCalls_25_content_25(listeningMatrix.getCalls_25_content_25() == null ? 0 : listeningMatrix.getCalls_25_content_25());
-        listeningMatrix.setCalls_25_content_50(listeningMatrix.getCalls_25_content_50() == null ? 0 : listeningMatrix.getCalls_25_content_50());
-        listeningMatrix.setCalls_25_content_75(listeningMatrix.getCalls_25_content_75() == null ? 0 : listeningMatrix.getCalls_25_content_75());
-        listeningMatrix.setCalls_50_content_1(listeningMatrix.getCalls_50_content_1() == null ? 0 : listeningMatrix.getCalls_50_content_1());
-        listeningMatrix.setCalls_50_content_25(listeningMatrix.getCalls_50_content_25() == null ? 0 : listeningMatrix.getCalls_50_content_25());
-        listeningMatrix.setCalls_50_content_50(listeningMatrix.getCalls_50_content_50() == null ? 0 : listeningMatrix.getCalls_50_content_50());
-        listeningMatrix.setCalls_50_content_75(listeningMatrix.getCalls_50_content_75() == null ? 0 : listeningMatrix.getCalls_50_content_75());
-        listeningMatrix.setCalls_75_Content_1(listeningMatrix.getCalls_75_Content_1() == null ? 0 : listeningMatrix.getCalls_75_Content_1());
-        listeningMatrix.setCalls_75_Content_25(listeningMatrix.getCalls_75_Content_25() == null ? 0 : listeningMatrix.getCalls_75_Content_25());
-        listeningMatrix.setCalls_75_Content_50(listeningMatrix.getCalls_75_Content_50() == null ? 0 : listeningMatrix.getCalls_75_Content_50());
-        listeningMatrix.setCalls_75_Content_75(listeningMatrix.getCalls_75_Content_75() == null ? 0 : listeningMatrix.getCalls_75_Content_75());
+        HashMap<String,ListeningMatrix> listeningMatrix= new HashMap<>();
+        for(int count =0; count<4; count++){
+            Long a = (long)0;
+            ListeningMatrix listeningMatrixempty = new ListeningMatrix();
+            String callPercent="";
+            switch (count){
+                case 0: {callPercent = "callsListened_morethan75";
+                    listeningMatrixempty = new ListeningMatrix(0,"",a,date,callPercent,a,a,a,a);break;}
+                case 1: {callPercent = "callsListened_50_75";
+                    listeningMatrixempty = new ListeningMatrix(0,"",a,date,callPercent,a,a,a,a);break;}
+                case 2: {callPercent = "callsListened_25_50";
+                    listeningMatrixempty = new ListeningMatrix(0,"",a,date,callPercent,a,a,a,a);break;}
+                case 3: {callPercent = "callsListened_lessthan25";
+                    listeningMatrixempty = new ListeningMatrix(0,"",a,date,callPercent,a,a,a,a);break;}
+
+            }
+            listeningMatrix.put(callPercent,listeningMatrixempty);
+
+        }
+
+        for(int i=0; i<result.size();i++) {
+
+            ListeningMatrix listeningMatrixtemp = result.get(i);
+
+            listeningMatrixtemp.setContentListened_morethan75(listeningMatrixtemp.getContentListened_morethan75() == null ? 0 : listeningMatrixtemp.getContentListened_morethan75());
+            listeningMatrixtemp.setContentListened_50_75(listeningMatrixtemp.getContentListened_50_75() == null ? 0 : listeningMatrixtemp.getContentListened_50_75());
+            listeningMatrixtemp.setContentListened_25_50(listeningMatrixtemp.getContentListened_25_50() == null ? 0 : listeningMatrixtemp.getContentListened_25_50());
+            listeningMatrixtemp.setContentListened_lessthan25(listeningMatrixtemp.getContentListened_lessthan25() == null ? 0 : listeningMatrixtemp.getContentListened_lessthan25());
+            listeningMatrix.put(listeningMatrixtemp.getCalls_listened_percentage(),listeningMatrixtemp);
+        }
+
+
+
         return listeningMatrix;
     }
 }

@@ -1324,49 +1324,65 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
 
 
         List<ListeningMatrixDto> matrixDto = new ArrayList<>();
-        ListeningMatrix listeningMatrix = listeningMatrixReportDao.getListeningMatrix(locationId,locationType,fromDate);
+        HashMap<String,ListeningMatrix> listeningMatrix = listeningMatrixReportDao.getListeningMatrix(locationId,locationType,fromDate);
 
         if(listeningMatrix==null){
             return matrixDto;
         }
         ListeningMatrixDto matrixDto1 = new ListeningMatrixDto();
         matrixDto1.setPercentageCalls("Beneficiaries Listening > 75%calls");
-        matrixDto1.setContent_1_25(listeningMatrix.getCalls_75_Content_1());
-        matrixDto1.setContent_25_50(listeningMatrix.getCalls_75_Content_25());
-        matrixDto1.setContent_50_75(listeningMatrix.getCalls_75_Content_50());
-        matrixDto1.setContent_75_100(listeningMatrix.getCalls_75_Content_75());
-        matrixDto1.setTotal(listeningMatrix.getCalls_75_Content_1()+listeningMatrix.getCalls_75_Content_25()+listeningMatrix.getCalls_75_Content_50()+listeningMatrix.getCalls_75_Content_75());
+        matrixDto1.setContent_1_25(listeningMatrix.get("callsListened_morethan75").getContentListened_lessthan25());
+        matrixDto1.setContent_25_50(listeningMatrix.get("callsListened_morethan75").getContentListened_25_50());
+        matrixDto1.setContent_50_75(listeningMatrix.get("callsListened_morethan75").getContentListened_50_75());
+        matrixDto1.setContent_75_100(listeningMatrix.get("callsListened_morethan75").getContentListened_morethan75());
+        matrixDto1.setTotal(listeningMatrix.get("callsListened_morethan75").getContentListened_lessthan25()+listeningMatrix.get("callsListened_morethan75").getContentListened_25_50()+listeningMatrix.get("callsListened_morethan75").getContentListened_50_75()+listeningMatrix.get("callsListened_morethan75").getContentListened_morethan75());
 
         ListeningMatrixDto matrixDto2 = new ListeningMatrixDto();
         matrixDto2.setPercentageCalls("Beneficiaries Listening 50 to 75 % calls");
-        matrixDto2.setContent_1_25(listeningMatrix.getCalls_50_content_1());
-        matrixDto2.setContent_25_50(listeningMatrix.getCalls_50_content_25());
-        matrixDto2.setContent_50_75(listeningMatrix.getCalls_50_content_50());
-        matrixDto2.setContent_75_100(listeningMatrix.getCalls_50_content_75());
-        matrixDto2.setTotal(listeningMatrix.getCalls_50_content_1()+listeningMatrix.getCalls_50_content_25()+listeningMatrix.getCalls_50_content_50()+listeningMatrix.getCalls_50_content_75());
+        matrixDto2.setContent_1_25(listeningMatrix.get("callsListened_50_75").getContentListened_lessthan25());
+        matrixDto2.setContent_25_50(listeningMatrix.get("callsListened_50_75").getContentListened_25_50());
+        matrixDto2.setContent_50_75(listeningMatrix.get("callsListened_50_75").getContentListened_50_75());
+        matrixDto2.setContent_75_100(listeningMatrix.get("callsListened_50_75").getContentListened_morethan75());
+        matrixDto2.setTotal(listeningMatrix.get("callsListened_50_75").getContentListened_lessthan25()+listeningMatrix.get("callsListened_50_75").getContentListened_25_50()+listeningMatrix.get("callsListened_50_75").getContentListened_50_75()+listeningMatrix.get("callsListened_50_75").getContentListened_morethan75());
 
         ListeningMatrixDto matrixDto3 = new ListeningMatrixDto();
         matrixDto3.setPercentageCalls("Beneficiaries Listening 25 to 50 % calls");
-        matrixDto3.setContent_1_25(listeningMatrix.getCalls_25_content_1());
-        matrixDto3.setContent_25_50(listeningMatrix.getCalls_25_content_25());
-        matrixDto3.setContent_50_75(listeningMatrix.getCalls_25_content_50());
-        matrixDto3.setContent_75_100(listeningMatrix.getCalls_25_content_75());
-        matrixDto3.setTotal(listeningMatrix.getCalls_25_content_1()+listeningMatrix.getCalls_25_content_25()+listeningMatrix.getCalls_25_content_50()+listeningMatrix.getCalls_25_content_75());
+        matrixDto3.setContent_1_25(listeningMatrix.get("callsListened_25_50").getContentListened_lessthan25());
+        matrixDto3.setContent_25_50(listeningMatrix.get("callsListened_25_50").getContentListened_25_50());
+        matrixDto3.setContent_50_75(listeningMatrix.get("callsListened_25_50").getContentListened_50_75());
+        matrixDto3.setContent_75_100(listeningMatrix.get("callsListened_25_50").getContentListened_morethan75());
+        matrixDto3.setTotal(listeningMatrix.get("callsListened_25_50").getContentListened_lessthan25()+listeningMatrix.get("callsListened_25_50").getContentListened_25_50()+listeningMatrix.get("callsListened_25_50").getContentListened_50_75()+listeningMatrix.get("callsListened_25_50").getContentListened_morethan75());
 
         ListeningMatrixDto matrixDto4 = new ListeningMatrixDto();
         matrixDto4.setPercentageCalls("Beneficiaries Listening < 25% calls");
-        matrixDto4.setContent_1_25(listeningMatrix.getCalls_1_content_1());
-        matrixDto4.setContent_25_50(listeningMatrix.getCalls_1_content_25());
-        matrixDto4.setContent_50_75(listeningMatrix.getCalls_1_content_50());
-        matrixDto4.setContent_75_100(listeningMatrix.getCalls_1_content_75());
-        matrixDto4.setTotal(listeningMatrix.getCalls_1_content_1()+listeningMatrix.getCalls_1_content_25()+listeningMatrix.getCalls_1_content_50()+listeningMatrix.getCalls_1_content_75());
+        matrixDto4.setContent_1_25(listeningMatrix.get("callsListened_lessthan25").getContentListened_lessthan25());
+        matrixDto4.setContent_25_50(listeningMatrix.get("callsListened_lessthan25").getContentListened_25_50());
+        matrixDto4.setContent_50_75(listeningMatrix.get("callsListened_lessthan25").getContentListened_50_75());
+        matrixDto4.setContent_75_100(listeningMatrix.get("callsListened_lessthan25").getContentListened_morethan75());
+        matrixDto4.setTotal(listeningMatrix.get("callsListened_lessthan25").getContentListened_lessthan25()+listeningMatrix.get("callsListened_lessthan25").getContentListened_25_50()+listeningMatrix.get("callsListened_lessthan25").getContentListened_50_75()+listeningMatrix.get("callsListened_lessthan25").getContentListened_morethan75());
 
         ListeningMatrixDto matrixDto5 = new ListeningMatrixDto();
         matrixDto5.setPercentageCalls("Total");
-        matrixDto5.setContent_1_25(listeningMatrix.getCalls_75_Content_1()+listeningMatrix.getCalls_25_content_1()+listeningMatrix.getCalls_50_content_1()+listeningMatrix.getCalls_1_content_1());
-        matrixDto5.setContent_25_50(listeningMatrix.getCalls_1_content_25()+listeningMatrix.getCalls_25_content_25()+listeningMatrix.getCalls_50_content_25()+listeningMatrix.getCalls_75_Content_25());
-        matrixDto5.setContent_50_75(listeningMatrix.getCalls_1_content_50()+listeningMatrix.getCalls_25_content_50()+listeningMatrix.getCalls_50_content_50()+listeningMatrix.getCalls_75_Content_50());
-        matrixDto5.setContent_75_100(listeningMatrix.getCalls_1_content_75()+listeningMatrix.getCalls_75_Content_75()+listeningMatrix.getCalls_25_content_75()+listeningMatrix.getCalls_50_content_75());
+        matrixDto5.setContent_1_25(listeningMatrix.get("callsListened_lessthan25").getContentListened_lessthan25()+
+                                    listeningMatrix.get("callsListened_25_50").getContentListened_lessthan25()+
+                                    listeningMatrix.get("callsListened_50_75").getContentListened_lessthan25()+
+                                    listeningMatrix.get("callsListened_morethan75").getContentListened_lessthan25());
+
+        matrixDto5.setContent_25_50(listeningMatrix.get("callsListened_lessthan25").getContentListened_25_50()+
+                                    listeningMatrix.get("callsListened_25_50").getContentListened_25_50()+
+                                    listeningMatrix.get("callsListened_50_75").getContentListened_25_50()+
+                                    listeningMatrix.get("callsListened_morethan75").getContentListened_25_50());
+
+        matrixDto5.setContent_50_75(listeningMatrix.get("callsListened_lessthan25").getContentListened_50_75()+
+                                    listeningMatrix.get("callsListened_25_50").getContentListened_50_75()+
+                                    listeningMatrix.get("callsListened_50_75").getContentListened_50_75()+
+                                    listeningMatrix.get("callsListened_morethan75").getContentListened_50_75());
+
+        matrixDto5.setContent_75_100(listeningMatrix.get("callsListened_lessthan25").getContentListened_morethan75()+
+                                    listeningMatrix.get("callsListened_25_50").getContentListened_morethan75()+
+                                    listeningMatrix.get("callsListened_50_75").getContentListened_morethan75()+
+                                    listeningMatrix.get("callsListened_morethan75").getContentListened_morethan75());
+
         matrixDto5.setTotal(matrixDto1.getTotal()+matrixDto2.getTotal()+matrixDto3.getTotal()+matrixDto4.getTotal());
 
         matrixDto.add(matrixDto1);
