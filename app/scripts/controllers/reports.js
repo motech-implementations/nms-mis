@@ -124,34 +124,6 @@
 				return $scope.circles[0]  == null || $scope.userHasOneCircle();
 			}
 
-			$scope.disableChangePassword = function(){
-                                    				            return (!(($state.current.name)===("reports")));
-
-                                    			            }
-
-                                    			$scope.disableProfile = function(){
-                                                				return (!(($state.current.name)===("reports"))||!(($state.current.name)===("profile"))||!
-                                                				(($state.current.name)===("forgotPassword"))||!(($state.current.name)===("changePassword"))||!
-                                                				(($state.current.name)===("userManagement.bulkUpload"))||!(($state.current.name)===("userManagement"))||!
-                                                				(($state.current.name)===("userManagement.createUser"))||!(($state.current.name)===("userManagement.userTable"))||!
-                                                				(($state.current.name)===("userManagement.editUser")));
-                                                			}
-
-                                                $scope.disableUserManagement = function(){
-                                                            				return (!(($state.current.name)===("reports"))||!(($state.current.name)===("profile"))||!
-                                                            				(($state.current.name)===("forgotPassword"))||!(($state.current.name)===("changePassword"))||!
-                                                            				(($state.current.name)===("userManagement.bulkUpload"))||!(($state.current.name)===("userManagement"))||!
-                                                            				(($state.current.name)===("userManagement.createUser"))||!(($state.current.name)===("userManagement.userTable"))||!
-                                                            				(($state.current.name)===("userManagement.editUser")));
-                                                            			}
-                                                $scope.disableReportTab = function(){
-                                                            				return (!(($state.current.name)===("reports"))||!(($state.current.name)===("profile"))||!
-                                                            				(($state.current.name)===("forgotPassword"))||!(($state.current.name)===("changePassword"))||!
-                                                            				(($state.current.name)===("userManagement.bulkUpload"))||!(($state.current.name)===("userManagement"))||!
-                                                            				(($state.current.name)===("userManagement.createUser"))||!(($state.current.name)===("userManagement.userTable"))||!
-                                                            				(($state.current.name)===("userManagement.editUser")));
-                                                            			}
-
 
 			$scope.userHasState = function(){
 				return UserFormFactory.getCurrentUser().stateId != null;
@@ -1375,12 +1347,6 @@
 
             $scope.exportCsv = function() {
 
-//              $scope.gridOptions.exporterCsvFilename = fileName;
-//              var grid = $scope.gridApi.grid;
-//              var rowTypes = uiGridExporterConstants.ALL;
-//              var colTypes = uiGridExporterConstants.ALL;
-//              uiGridExporterService.csvExport(grid, rowTypes, colTypes);
-
               exportUiGridService.exportToCsv1($scope.gridApi,$scope.gridApi1, 'visible', 'visible', excelHeaderName);
 
             };
@@ -1395,9 +1361,8 @@
             var canceler = $q.defer();
             $scope.gridOptions1 = {
                 enableSorting: true,
-                showGridFooter: true,
                 showColumnFooter: true,
-                enableVerticalScrollbar : 0,git
+                enableVerticalScrollbar : 0,
                 excessRows :1000,
                 onRegisterApi: function(gridApi){
                       $scope.gridApi = gridApi;
