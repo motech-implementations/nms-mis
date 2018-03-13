@@ -1347,30 +1347,15 @@
 
             $scope.exportCsv = function() {
 
-//              $scope.gridOptions.exporterCsvFilename = fileName;
-//              var grid = $scope.gridApi.grid;
-//              var rowTypes = uiGridExporterConstants.ALL;
-//              var colTypes = uiGridExporterConstants.ALL;
-//              uiGridExporterService.csvExport(grid, rowTypes, colTypes);
-
               exportUiGridService.exportToCsv1($scope.gridApi,$scope.gridApi1, 'visible', 'visible', excelHeaderName);
 
             };
 
             $scope.exportPdf = function() {
-              var grid = $scope.gridApi.grid;
-              var rowTypes = uiGridExporterConstants.ALL;
-              var colTypes = uiGridExporterConstants.ALL;
-              var exportColumnHeaders = uiGridExporterService.getColumnHeaders(this.grid, uiGridExporterConstants.ALL);
-                              var exportData = uiGridExporterService.getData(this.grid, uiGridExporterConstants.ALL, uiGridExporterConstants.ALL, true);
-                              var docDefinition = uiGridExporterService.prepareAsPdf(this.grid, exportColumnHeaders, exportData);
-
-                              if (uiGridExporterService.isIE() || navigator.appVersion.indexOf("Edge") !== -1) {
-                                uiGridExporterService.downloadPDF(this.grid.options.exporterPdfFilename, docDefinition);
-                              } else {
-                                pdfMake.createPdf(docDefinition).download();
-                              }
-              uiGridExporterService.pdfExport(grid, rowTypes, colTypes);
+            var fileName1 = $scope.gridApi.grid.options.exporterExcelFilename ? $scope.gridApi.grid.options.exporterExcelFilename : 'dokuman';
+                             fileName1 = fileName1.replace("*","");
+                             fileName1 += '.pdf';
+            exportUiGridService.exportToPdf1($scope.gridApi,$scope.gridApi1,excelHeaderName,$scope.reportCategory,$scope.matrixContent1,$scope.matrixContent2,uiGridExporterConstants,fileName1);
             };
 
             var canceler = $q.defer();
@@ -1757,6 +1742,7 @@
                         })
                   }
             }
+
 
 		}])
 })()
