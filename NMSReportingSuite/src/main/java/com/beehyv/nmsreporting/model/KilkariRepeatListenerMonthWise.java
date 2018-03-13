@@ -10,7 +10,7 @@ import java.util.Date;
  */
 
 @Entity
-@Table(name="kilkari_repeat_listener_month_wise")
+@Table(name="agg_kilkari_repeat_listener_month_wise")
 public class KilkariRepeatListenerMonthWise {
 
     @Id
