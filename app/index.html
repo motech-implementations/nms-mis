@@ -91,7 +91,7 @@
 				</ul>
 				<ul class="nav-menu" data-ng-hide='$state.current.name=="login" || $state.current.name=="forgotPassword" || currentUser.default  || currentUser.default == null '>
 					<li>
-						<a href={{logoutUrl}}>Logout</a>
+						<a data-ng-href={{logoutUrl}}>Logout</a>
 					</li>
                     <li data-ng-class="{active: activeTab('changePassword')}">
 						<a data-ng-hide='(!(($state.current.name)===("reports"))&&!(($state.current.name)===("profile"))&&!
