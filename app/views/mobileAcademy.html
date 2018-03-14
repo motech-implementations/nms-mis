@@ -1,4 +1,10 @@
 <div class="container-fluid" ng-controller="mobileAcademyController">
     <div ui-view></div>
-    <h2>Mobile Academy</h2>
+    <h2>{{excelHeaderName.reportName}}</h2>
+    <h2>
+        {{serviceReport}}</h2>
+    <ul>
+        <li ng-repeat="item in mobileAcademyReports">{{item}}</li>
+    </ul>
+
 </div>

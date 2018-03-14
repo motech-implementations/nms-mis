@@ -9,7 +9,7 @@
  * Main module of the application.
  */
 var nmsReportsApp = angular
-	.module('nmsReports', ['ui.bootstrap', 'ui.validate', 'ngMessages', 'ui.router', 'ui.grid', 'ngMaterial', 'BotDetectCaptcha','ng.deviceDetector','ui.grid.exporter', 'ngStorage'])
+	.module('nmsReports', ['ui.bootstrap', 'ui.validate', 'ngMessages', 'ui.router', 'ui.grid', 'ngMaterial', 'BotDetectCaptcha','ng.deviceDetector','ui.grid.exporter', 'ngStorage','ngAnimate'])
 	.run( ['$rootScope', '$state', '$stateParams',
 		function ($rootScope, $state, $stateParams) {
 			$rootScope.$state = $state;
@@ -169,7 +169,33 @@ var nmsReportsApp = angular
             .state('userManual.userManual_Profile', {
                 url: '/userManual_Profile',
                 templateUrl: 'views/userManual_Profile.html'
-            });
+            })
+
+            .state('faq', {
+                url: '/faq',
+                templateUrl: 'views/faq.html'
+            })
+            .state('faq.faqKilkari', {
+                url: '/Kilkari',
+                templateUrl: 'views/faqKilkari.html'
+            })
+            .state('faq.faqMobileAcademy', {
+                url: '/MobileAcademy',
+                templateUrl: 'views/faqMobileAcademy.html'
+            })
+            .state('faq.faqWebsiteInformation', {
+                url: '/WebsiteInformation',
+                templateUrl: 'views/faqWebsiteInformation.html'
+            })
+
+            .state('faq.faqProfile', {
+                url: '/Profile',
+                templateUrl: 'views/faqProfile.html'
+            })
+             .state('faq.faqUserManagement', {
+                 url: '/UserManagement',
+                 templateUrl: 'views/faqUserManagement.html'
+             });
 
 		$urlRouterProvider
 			.otherwise('/login');

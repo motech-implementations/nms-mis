@@ -2,7 +2,7 @@
 	var nmsReportsApp = angular
 		.module('nmsReports')
 		.controller("MainController", ['$scope', '$state', '$http', '$localStorage', '$rootScope', 'UserFormFactory', function($scope, $state, $http, $localStorage, $rootScope, UserFormFactory) {
-			
+			$scope.isCollapsed = true;
 			$scope.breadCrumbDict = {
 				'userManagement.userTable': [
 					{

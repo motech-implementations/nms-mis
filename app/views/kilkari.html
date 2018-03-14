@@ -1,18 +1,38 @@
 <div class="container-fluid" ng-controller="kilkariController">
+    <div ui-view></div>
+    <h2>{{excelHeaderName.reportName}}</h2>
+    <h2>
+        {{serviceReport}}</h2>
+    <ul>
+        <li ng-repeat="item in mobileAcademyReports">{{item.name}}</li>
+    </ul>
+
+</div>
+
+<!--
+<div class="container-fluid" ng-controller="kilkariController">
 <div ui-view></div>
     <h2>Kilkari Report</h2>
 <div>
-    <p><a>Aggrgate Beneficiary Report</a></p>
-    <p><a>Beneficiary listen to 25%</a></p>
-    <p><a>beneficiaries who deactivated themselves</a></p>
-    <p><a>Beneficiary listenership report</a></p>
-    <p><a>cumulative summary report</a></p>
-    <p><a>Deactivation for not answering</a></p>
-    <p><a>Monthly Thematic Report</a>
-    <p><a>Repeat Listenership report</a></p>
-    <p><a>Kilkari subscriber report</a></p>
-    <p><a>Kilkari message listenership report</a></p>
-    <p><a>Kilkari beneficiary completion report</a></p>
-    <p><a>Kilkari Listener matrix report</a></p>
+
+&lt;!&ndash;
+    <div class="wrapper">
+        <p ng-hide="showme">It will appear here!</p>
+        <h2 ng-show="showme">This is mah content, yo!</h2>
+    </div>&ndash;&gt;
+    <div ng-if="show"><img alt="header" src="images/header.png"></div>
+    <p ng-if="show"><a ng-click="showAg()">Aggrgate Beneficiary Report</a></p>
+    <p ng-if="show2"><a ng-click="showBn()">Beneficiary listen to 25%</a></p>
+    <p ng-if="show3"><a ng-click="showBd()">beneficiaries who deactivated themselves</a></p>
+    &lt;!&ndash;<p><a>Beneficiary listenership report</a></p>&ndash;&gt;
+    &lt;!&ndash;<p><a>cumulative summary report</a></p>&ndash;&gt;
+    &lt;!&ndash;<p><a>Deactivation for not answering</a></p>&ndash;&gt;
+    &lt;!&ndash;<p><a>Monthly Thematic Report</a>&ndash;&gt;
+    &lt;!&ndash;<p><a>Repeat Listenership report</a></p>&ndash;&gt;
+    &lt;!&ndash;<p><a>Kilkari subscriber report</a></p>&ndash;&gt;
+    &lt;!&ndash;<p><a>Kilkari message listenership report</a></p>&ndash;&gt;
+    &lt;!&ndash;<p><a>Kilkari beneficiary completion report</a></p>&ndash;&gt;
+    &lt;!&ndash;<p><a>Kilkari Listener matrix report</a></p>&ndash;&gt;
 </div>
 </div>
+-->
