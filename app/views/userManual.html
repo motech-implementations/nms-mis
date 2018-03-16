@@ -10,20 +10,21 @@
     </div>
     <div class="col-md-3 user-manual">
 
-        <div>Website Information
-            <div class="glyphicon glyphicon-plus" style="float: right;"></div>
+
+        <div ng-click="active1='wi'; func('wi')" ng-class="{'checking123': active1 =='wi'}">Website Information
+            <span class="glyphicon glyphicon-plus plusSign"></span>
         </div>
-        <div>Kilkari Report
-            <div class="glyphicon glyphicon-plus" style="float: right;"></div>
+        <div ng-click="active1='kr';func('kr')" ng-class="{'checking123': active1 =='kr'}">Kilkari Report
+            <span class="glyphicon glyphicon-plus plusSign" ></span>
         </div>
-        <div>Mobile Academy Report
-            <div class="glyphicon glyphicon-plus" style="float: right;"></div>
+        <div ng-click="active1='ma';func('ma')" ng-class="{'checking123': active1 =='ma'}">Mobile Academy Report
+            <span class="glyphicon glyphicon-plus plusSign"></span>
         </div>
-        <div>User Management
-            <div class="glyphicon glyphicon-plus" style="float: right;"></div>
+        <div ng-click="active1='um';func('um')" ng-class="{'checking123': active1 =='um'}">User Management
+            <span class="glyphicon glyphicon-plus plusSign"></span>
         </div>
-        <div>Profile
-            <div class="glyphicon glyphicon-plus" style="float: right;"></div>
+        <div ng-click="active1='pr';func('pr')" ng-class="{'checking123': active1 =='pr'}">Profile
+            <span class="glyphicon glyphicon-plus plusSign" ></span>
         </div>
     </div>
     <div class="col-md-9" style="background-color: #f2f2f2;">

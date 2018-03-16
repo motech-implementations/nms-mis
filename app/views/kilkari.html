@@ -1,16 +1,103 @@
 <div class="container-fluid" ng-controller="kilkariController">
     <div ui-view></div>
-    <h2>{{excelHeaderName.reportName}}</h2>
-    <h2>
-        {{serviceReport}}</h2>
-    <ul>
-        <li ng-repeat="item in mobileAcademyReports">{{item.name}}</li>
-    </ul>
 
+    <div ng-hide="flag">
+        <h2>Kilkari Report</h2>
+        <p><a ng-click="func('abr')">Aggrgate Beneficiary Report</a></p>
+        <p><a ng-click="func('bl')">Beneficiary listen to 25%</a></p>
+        <p><a ng-click="func('bwd')">beneficiaries who deactivated themselves</a></p>
+        <p><a ng-click="func('blr')">Beneficiary listenership report</a></p>
+        <p><a ng-click="func('kcsr')">Kilkari Cumulative Summary report</a></p>
+        <p><a ng-click="func('dfna')">Deactivation for not answering</a></p>
+        <p><a ng-click="func('dfll')">Deactivated for Low Listenership</a></p>
+        <p><a ng-click="func('mtr')">Monthly Thematic Report</a></p>
+        <p><a ng-click="func('rlr')">Repeat Listenership report</a></p>
+        <p><a ng-click="func('ksr')">Kilkari subscriber report</a></p>
+        <p><a ng-click="func('kmlr')">Kilkari message listenership report</a></p>
+        <p><a ng-click="func('kbcr')">Kilkari beneficiary completion report</a></p>
+        <p><a ng-click="func('klmr')">Kilkari Listener matrix report</a></p>
+        <p><a ng-click="func('mrr')">Mother Rejected Records</a></p>
+        <p><a ng-click="func('crr')">Child Rejected Records</a></p>
+        <p><a ng-click="func('ku')">Kilkari Usage</a></p>
+        <p><a ng-click="func('kc')">Kilkari Call</a></p>
+        <p><a ng-click="func('kmm')">Kilkari Message Matrix</a></p>
+        <p><a ng-click="func('krl')">Kilkari Repeat Listener</a></p>
+    </div>
+    <div ng-hide="!flag">
+        <p>Kilkari Reports</p>
+        <div><p><img src="./images/back.png" ng-click="flag=!flag">Kilkari Report</p>
+
+        <div ng-hide="param!=='abr'" >
+            <h1>Aggregate_Beneficiary_Report</h1>
+            <img src="./images/Screenshot1.png" style="max-width: 960px">
+        </div>
+
+        <div  ng-hide="param!=='bl'" >
+            <h1>Beneficiary listen to 25%</h1>
+            <img src="./images/Screenshot2.png" style="max-width: 960px">
+        </div>
+        <div ng-hide="param!=='bwd'">
+            <h1>beneficiaries who deactivated themselves</h1>
+            <img src="./images/Screenshot3.png" style="max-width: 960px">
+        </div>
+        <div ng-hide="param!=='blr'">
+            <h1>Beneficiary listenership report</h1>
+            <img src="./images/Screenshot4.png" style="max-width: 960px">
+        </div>
+        <div  ng-hide="param!=='kcsr'" >
+            <h1>Kilkari Cumulative Summary report</h1>
+            <img src="./images/Screenshot5.png" style="max-width: 960px">
+        </div>
+        <div ng-hide="param!=='dfna'">
+            <h1>Deactivation for not answering</h1>
+        </div>
+        <div ng-hide="param!=='dfll'">
+            <h1>Deactivation for Low Listenership</h1>
+        </div>
+        <div ng-hide="param!=='mtr'">
+            <h1>Monthly Thematic Report</h1>
+        </div>
+        <div  ng-hide="param!=='rlr'" >
+            <h1>Repeat Listenership report</h1>
+        </div>
+        <div ng-hide="param!=='ksr'">
+            <h1>Kilkari subscriber report</h1>
+        </div>
+        <div ng-hide="param!=='kmlr'">
+            <h1>Kilkari message listenership report</h1>
+        </div>
+        <div  ng-hide="param!=='kbcr'" >
+            <h1>Kilkari beneficiary completion report</h1>
+        </div>
+        <div ng-hide="param!=='klmr'">
+            <h1>Kilkari Listener matrix report</h1>
+        </div>
+        <div ng-hide="param!=='mrr'">
+            <h1>Mother Rejected Records</h1>
+        </div>
+        <div  ng-hide="param!=='crr'" >
+            <h1>Child Rejected Records</h1>
+        </div>
+        <div ng-hide="param!=='ku'">
+            <h1>Kilkari Usage</h1>
+        </div>
+        <div ng-hide="param!=='kc'">
+            <h1>Kilkari Call</h1>
+        </div>
+        <div ng-hide="param!=='kmm'">
+            <h1>Kilkari Message Matrix</h1>
+        </div>
+        <div ng-hide="param!=='krl'">
+            <h1>Kilkari Repeat Listener</h1>
+        </div>
+
+        </div>
+
+    </div>
 </div>
 
 <!--
-<div class="container-fluid" ng-controller="kilkariController">
+<div class="container-fluid" ng-controller="kilkariController">cd
 <div ui-view></div>
     <h2>Kilkari Report</h2>
 <div>
@@ -24,15 +111,14 @@
     <p ng-if="show"><a ng-click="showAg()">Aggrgate Beneficiary Report</a></p>
     <p ng-if="show2"><a ng-click="showBn()">Beneficiary listen to 25%</a></p>
     <p ng-if="show3"><a ng-click="showBd()">beneficiaries who deactivated themselves</a></p>
-    &lt;!&ndash;<p><a>Beneficiary listenership report</a></p>&ndash;&gt;
-    &lt;!&ndash;<p><a>cumulative summary report</a></p>&ndash;&gt;
-    &lt;!&ndash;<p><a>Deactivation for not answering</a></p>&ndash;&gt;
-    &lt;!&ndash;<p><a>Monthly Thematic Report</a>&ndash;&gt;
-    &lt;!&ndash;<p><a>Repeat Listenership report</a></p>&ndash;&gt;
-    &lt;!&ndash;<p><a>Kilkari subscriber report</a></p>&ndash;&gt;
-    &lt;!&ndash;<p><a>Kilkari message listenership report</a></p>&ndash;&gt;
-    &lt;!&ndash;<p><a>Kilkari beneficiary completion report</a></p>&ndash;&gt;
-    &lt;!&ndash;<p><a>Kilkari Listener matrix report</a></p>&ndash;&gt;
+
+Mother Rejected Records
+Child Rejected Records
+Kilkari Usage
+Kilkari Call
+Kilkari Message Matrix
+Kilkari Repeat Listener
+
 </div>
 </div>
 -->

@@ -702,9 +702,9 @@ a.adisabled:active { text-decoration: none; }
 
 .user-manual div {
     margin: -4px 0 14px 0;
-    background-color: #f2f2f2;
-    padding: 6px 0px 5px 11px;
+    padding: 6px 5px 5px 11px;
     font-size : 15px;
+    background-color: #f2f2f2;
 }
 
 .user-manual{
@@ -736,6 +736,7 @@ a.adisabled:active { text-decoration: none; }
 .panel-heading .accordion-toggle.collapsed:after {
     /* symbol for "collapsed" panels */
     content: "\e080";    /* adjust as needed, taken from bootstrap.css */
+
 }
 
 
@@ -854,13 +855,18 @@ animation:*/
   -webkit-animation-timing-function: ease-out;
 }
 .checking123{
-    background-color:blue !important;
+    background-color:#1f6e91 !important;
     color:white;
+
 }
 /*a:active{
-    background-color blue;
+    background-color: #1f6e91;
     color:white
 }*/
+.plusSign{
+	float: right;
+	color: black;
+}
 /*
 Copyright 2016 Google Inc. All Rights Reserved.
 Use of this source code is governed by an MIT-style license that can be foundin the LICENSE file at http://material.angularjs.org/HEAD/license.

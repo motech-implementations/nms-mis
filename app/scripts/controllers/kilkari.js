@@ -47,25 +47,14 @@
 				if(!result.data){
 					$state.go('login', {});
 				}
-			})
-			 $scope.mobileAcademyReports = [];
+			});
 
-            			UserFormFactory.getReportsMenu()
-            			.then(function(result){
-                            if(result.data[1].service == "K"){
-
-                                    $scope.serviceReport = result.data[1].name;
-                                    console.log($scope.serviceReport);
-                                    $scope.mobileAcademyReports = result.data[1].options;
-
-                                }
-                            else {
-                                $scope.mobileAcademyReports = result.data[0].options;
-                            }
-            			})
-
-
-
-            		}])
-            })();
+			$scope.param = '';
+			$scope.flag = false;
+            $scope.func = function (val) {
+                $scope.flag = true;
+                $scope.param = val;
+            }
+		}])
+})();
 

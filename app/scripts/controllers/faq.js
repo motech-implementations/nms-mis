@@ -9,10 +9,23 @@
 					$state.go('login', {});
 				}
 			})
-            $scope.active1 = true;
-            $scope.active2 = true;
-            $scope.active3 = true;
-            $scope.active4 = true;
-            $scope.active5 = true;
+            $scope.active1 = 'wi';
+            $scope.func = function (val) {
+                if(val == 'wi'){
+                    $state.go('faq.faqWebsiteInformation');
+                }
+                else if(val== 'kr'){
+                    $state.go('faq.faqKilkari')
+                }
+                else if(val== 'ma'){
+                    $state.go('faq.faqMobileAcademy')
+                }
+                else if(val== 'um'){
+                    $state.go('faq.faqUserManagement')
+                }
+                else if(val== 'pr'){
+                    $state.go('faq.faqProfile')
+                }
+            }
 		}])
 })();
