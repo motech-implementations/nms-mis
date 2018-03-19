@@ -61,8 +61,12 @@
                                     //2nd loop will extract each column and convert it in string comma-seprated
                                     for (var index in data[i]) {
                                         var temp = data[i][index].value;
-                                        if(index == "7" && excelHeaderName.reportName == "Kilkari Call"){
-                                            temp = Number(temp.toFixed(2));
+                                        if((excelHeaderName.reportName == "Kilkari Call" && (index == "7"||index == "8") )||
+                                           (excelHeaderName.reportName == "MA Cumulative Summary" && (index == "6"||index == "7"||index == "8"))||
+                                           (excelHeaderName.reportName == "Kilkari Cumulative Summary" && (index == "4") )||
+                                           (excelHeaderName.reportName == "Kilkari Thematic Content" && (index == "4") )||
+                                           (excelHeaderName.reportName == "Kilkari Beneficiary Completion" && (index == "2") )){
+                                            temp = (temp.toFixed(2));
                                         }
 
                                         row +=  temp + ',';
@@ -84,41 +88,42 @@
 
                                    else if(ft.displayName == "Average Duration Of Call" && excelHeaderName.reportName == "Kilkari Cumulative Summary"){
                                        var temp = gridApi.grid.columns[3].getAggregationValue()==0?0.00: (gridApi.grid.columns[4].getAggregationValue()/gridApi.grid.columns[3].getAggregationValue());
-                                       v = Number(temp.toFixed(2));
+                                       v = (temp.toFixed(2));
                                    }
                                    else if(ft.displayName == "Average Number of Weeks in Service" && excelHeaderName.reportName == "Kilkari Beneficiary Completion"){
                                        var temp = gridApi.grid.columns.length==0?0.00: (gridApi.grid.columns[3].getAggregationValue()/gridApi.grid.columns.length);
-                                       v = Number(temp.toFixed(2));
+                                       v = (temp.toFixed(2));
                                    }
                                    else if(ft.displayName == "Average Duration Of Calls" && excelHeaderName.reportName == "Kilkari Call"){
                                        var temp = gridApi.grid.columns[3].getAggregationValue()==0?0.00: (gridApi.grid.columns[8].getAggregationValue()/gridApi.grid.columns[3].getAggregationValue());
-                                       v = Number(temp.toFixed(2));
+                                       v = (temp.toFixed(2));
                                    }
                                    else if(ft.displayName == "Total Billable Minutes" && excelHeaderName.reportName == "Kilkari Call"){
                                        var temp = ft.getAggregationValue();
-                                       v = Number(temp.toFixed(2));
+                                       v = (temp.toFixed(2));
                                    }
                                    else if(ft.displayName == "Number Of Minutes Consumed" && excelHeaderName.reportName == "Kilkari Thematic Content"){
                                        var temp = ft.getAggregationValue();
-                                       v = Number(temp.toFixed(2));
+                                       v = (temp.toFixed(2));
                                    }
                                    else if(ft.displayName == "% Not Started Course" && excelHeaderName.reportName == "MA Cumulative Summary"){
                                       var temp = gridApi.grid.columns[2].getAggregationValue()==0?0.00: (gridApi.grid.columns[4].getAggregationValue()/gridApi.grid.columns[2].getAggregationValue())*100;
-                                      v = Number(temp.toFixed(2));
+                                      v = (temp.toFixed(2));
                                    }
                                    else if(ft.displayName == "% Successfully Completed" && excelHeaderName.reportName == "MA Cumulative Summary"){
                                       var temp = gridApi.grid.columns[3].getAggregationValue()==0?0.00:(gridApi.grid.columns[5].getAggregationValue()/gridApi.grid.columns[3].getAggregationValue())*100;
-                                      v = Number(temp.toFixed(2));
+                                      v = (temp.toFixed(2));
                                    }
                                    else if(ft.displayName == "% Failed the course" && excelHeaderName.reportName == "MA Cumulative Summary"){
                                       var temp = gridApi.grid.columns[3].getAggregationValue()==0?0.00:(gridApi.grid.columns[6].getAggregationValue()/gridApi.grid.columns[3].getAggregationValue())*100;
-                                      v = Number(temp.toFixed(2));
+                                      v = (temp.toFixed(2));
                                    }
                                    else{
                                        v = ft.getAggregationValue();
                                    }
 
                                    if(ft.displayName != "S No."){
+                                        if(v == undefined){v="";}
                                         row +=  v + ',';
                                    }
 
@@ -161,6 +166,11 @@
                                 var fileName = gridApi.grid.options.exporterExcelFilename ? gridApi.grid.options.exporterExcelFilename : 'dokuman';
                                 // fileName = fileName.replace("*","");
 
+                                if (navigator.msSaveBlob)
+                                { // IE 10+
+                                navigator.msSaveBlob(new Blob([CSV], { type: 'text/csv;charset=utf-8;' }), fileName + ".csv");
+                                }
+                                else{
                                 //Initialize file format you want csv or xls
                                 var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
 
@@ -180,7 +190,7 @@
                                 //this part will append the anchor tag and remove it after automatic click
                                 document.body.appendChild(link);
                                 link.click();
-                                document.body.removeChild(link);
+                                document.body.removeChild(link);}
                             }
 
 
