@@ -5,8 +5,10 @@ import com.beehyv.nmsreporting.business.LocationService;
 import com.beehyv.nmsreporting.business.ReportService;
 import com.beehyv.nmsreporting.business.UserService;
 import com.beehyv.nmsreporting.entity.EmailInfo;
+import com.beehyv.nmsreporting.entity.EmailTest;
 import com.beehyv.nmsreporting.enums.ReportType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,6 +55,19 @@ public class EmailController {
         return emailService.sendMail(newMail);
     }
 
+
+    @RequestMapping(value = "/sendEmail", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public @ResponseBody String send(@ModelAttribute EmailTest mailInfo){
+        EmailTest newMail = new EmailTest();
+        newMail.setFrom("nsp-reports@beehyv.com");
+        newMail.setTo(mailInfo.getTo());
+        Calendar c = Calendar.getInstance();   // this takes current date
+        c.add(Calendar.MONTH, -1);
+        c.set(Calendar.DATE, 1);
+        newMail.setSubject(mailInfo.getSubject());
+        newMail.setBody(mailInfo.getBody());
+        return emailService.sendMailTest(newMail);
+    }
 
     /*@RequestMapping(value = "/test", method =RequestMethod.GET )
     @ResponseBody

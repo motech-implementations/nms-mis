@@ -2,6 +2,7 @@ package com.beehyv.nmsreporting.entity;
 
 public class EmailTest {
 
+    private String name = "";
     private String from = "";
     private String to = "";
     private String  subject = "";
@@ -37,5 +38,13 @@ public class EmailTest {
 
     public void setTo(String to) {
         this.to = to;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
