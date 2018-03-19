@@ -732,12 +732,14 @@ var tempHeader=[];
                               }
                               //docDefinition = uiGridExporterService.prepareAsPdf(grid, exportColumnHeaders, exportData);
 
-                                              if (uiGridExporterService.isIE() || navigator.appVersion.indexOf("Edge") !== -1) {
-                                                uiGridExporterService.downloadPDF(grid.options.exporterPdfFilename, docDefinition);
-                                              } else {
-                                                pdfMake.createPdf(docDefinition).download(fileName1);
-                                              }
-
+   if (window.navigator.msSaveBlob) {
+       pdfMake.createPdf(docDefinition).getBlob(function (result) {
+           window.navigator.msSaveBlob(result, fileName1);
+       });
+   }
+   else {
+       pdfMake.createPdf(docDefinition).download(fileName1);
+   }
 
 
                 }
