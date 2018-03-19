@@ -74,6 +74,10 @@
 					return $http.get(backend_root + 'nms/user/user/' + id);
 				},
 
+				sendMail: function(){
+                    return $http.post(backend_root + 'nms/sendEmail');
+                },
+
 				getUserDto: function(id){
 					return $http.get(backend_root + 'nms/user/dto/' + id);
 				},

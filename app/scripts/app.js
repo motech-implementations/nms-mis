@@ -141,6 +141,16 @@ var nmsReportsApp = angular
             	templateUrl: 'views/forgotPassword.html'
             })
 
+            .state('feedbackForm', {
+            	url: '/feedbackForm',
+            	templateUrl: 'views/feedbackForm.html'
+            })
+
+            .state('contactUs', {
+                 url: '/contactUs',
+                 templateUrl: 'views/contactUs.html'
+            })
+
             .state('changePassword', {
                 url: '/changePassword',
                 templateUrl: 'views/changePassword.html'

@@ -1,0 +1,78 @@
+<div class="container-fluid feedback-form" data-ng-controller="FeedbackFormController">
+    <div data-ui-view></div>
+
+    <div style="padding: 0 0 38px 0;"></div>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4" style="background-color : #f2f2f2">
+            <div class="row" style="background-color: #0071bc;height: 30px;color: white;padding-top: 5px;">
+                <div class=" col-md-1">
+                <span><img src="images/feedback.png"></span>
+                </div>
+                <div class=" col-md-11">
+                <span>Feedback Form</span>
+                </div>
+            </div>
+            <div>
+                <form name="FeedbackForm" class="form-horizontal" data-ng-submit="feedback($event)">
+
+                    <div class="form-group row" style="padding-top :15px">
+                        <div class=" col-md-1"></div>
+                        <div class=" col-md-2">
+                        <label for="name">Name<span style="color : red">*</span></label>
+                        </div>
+                        <div class=" col-md-9">
+                        <input id="name" type="text" name="name" ng-model="email.name" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class=" col-md-1"></div>
+                        <div class=" col-md-2">
+                        <label for="subject">Subject<span style="color : red">*</span></label>
+                        </div>
+                        <div class=" col-md-9">
+                        <input id="subject" type="text" name="subject" ng-model="email.subject" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class=" col-md-1"></div>
+                        <div class=" col-md-2">
+                        <label for="email">Email<span style="color : red">*</span></label>
+                        </div>
+                        <div class=" col-md-9">
+                        <input id="email" type="email" name="to" ng-model="email.to" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class=" col-md-1"></div>
+                        <div class=" col-md-2">
+                        <label>Feedback<span style="color : red">*</span></label>
+                        </div>
+                        <div class=" col-md-9">
+                            <textarea name="body" ng-model="email.body"></textarea>
+                        <!--<input id="feedback" type="textarea" name="feedback" ng-model="feedback" required>-->
+                        </div>
+                    </div>
+                    <input type="hidden" name="from" ng-model="email.from" value="nsp-reports@beehyv.com">
+
+                    <div class="captcha captcha1" style="text-align: center">
+                        <div style="text-align : center; padding: 5px 0px 0px 87px;">
+                        <botdetect-captcha styleName="AncientMosaic"></botdetect-captcha>
+                        </div>
+                        <div id="tapa" style="background-color: #ffffff; height: 10px;width: 250px;position: relative;top: -10px;"></div>
+                        <p style="color: #337ab7">Please enter the captcha code</p>
+                        <input type="text" id="captchaCode"  class ="captchaCode" name="captchaCode" data-ng-model="feedback.captchaCode" correct-captcha>
+                    </div>
+
+
+                    <div class="form-group" style="text-align: center; padding: 15px 18px 0px 0px;">
+                        <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+</div>
+
