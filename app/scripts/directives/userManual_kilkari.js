@@ -2,10 +2,10 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.directive('websiteInformation', function() {
+		.directive('kilkari', function() {
 			return {
 				restrict: 'AC',
-				templateUrl: '../views/websiteInformation.html',
+				templateUrl: '../views/userManual_kilkari.html',
 			};
 		})
 

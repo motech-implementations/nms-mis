@@ -42,12 +42,12 @@
 		.module('nmsReports')
 		.controller("kilkariController", ['$scope', '$state', 'UserFormFactory', function($scope, $state, UserFormFactory){
 
-			UserFormFactory.isLoggedIn()
+/*			UserFormFactory.isLoggedIn()
 			.then(function(result){
 				if(!result.data){
 					$state.go('login', {});
 				}
-			});
+			});*/
 
 			$scope.param = '';
 			$scope.flag = false;

@@ -1,17 +1,18 @@
 <div class="container-fluid" ng-controller="faqWebsiteInformationController">
-    <div ui-view></div>
-    <h2>Website Information</h2>
-    <div class="blockFAQ">
-        <div class="panel-group" id="accordion">
+    <div ui-view ></div>
+
+    <h2 style="font-size: 24px"><b>FAQ's Website Information</b></h2>
+    <div>
+        <div class="panel-group">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" target="_self">
-                            Collapsible Group Item #1
-                        </a>
+                        <div ng-click="active = !active" ng-class="{'expandcollapse-heading-collapsed': active, 'expandcollapse-heading-expanded': !active}" style="outline:0px"><span ng-class="{'glyphicon glyphicon-chevron-down': active, 'glyphicon glyphicon-chevron-up':!active}"></span>
+                            <p>Item 1</p>
+                        </div>
                     </h4>
                 </div>
-                <div id="collapseOne" class="panel-collapse collapse in glyphicon glyphicon-chevron-up">
+                <div ng-hide="active" class="panel-collapse collapse in slideDown">
                     <div class="panel-body">
                         Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
                         3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt
@@ -26,12 +27,12 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" target="_self" href="#collapseTwo">
-                            Collapsible Group Item #2
-                        </a>
+                        <div ng-click="active1 = !active1" ng-class="{'expandcollapse-heading-collapsed': active1, 'expandcollapse-heading-expanded': !active1}" style="outline: 0px"><span ng-class="{'glyphicon glyphicon-chevron-down': active1, 'glyphicon glyphicon-chevron-up':!active1}"></span>
+                            <p>Item 2</p>
+                        </div>
                     </h4>
                 </div>
-                <div id="collapseTwo" class="panel-collapse collapse glyphicon glyphicon-chevron-up">
+                <div ng-hide="active1" class="panel-collapse slideDown">
                     <div class="panel-body">
                         Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
                         3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt
@@ -46,12 +47,12 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" target="_self" href="#collapseThree">
-                            Collapsible Group Item #3
-                        </a>
+                        <div ng-click="active2 = !active2" ng-class="{'expandcollapse-heading-collapsed': active2, 'expandcollapse-heading-expanded': !active2}" style="outline:0px"><span ng-class="{'glyphicon glyphicon-chevron-down': active2, 'glyphicon glyphicon-chevron-up':!active2}"></span>
+                            <p>Item 3</p>
+                        </div>
                     </h4>
                 </div>
-                <div id="collapseThree" class="panel-collapse collapse glyphicon glyphicon-chevron-up">
+                <div ng-hide="active2" class="panel-collapse slideDown">
                     <div class="panel-body">
                         Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
                         3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt

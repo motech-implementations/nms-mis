@@ -3,12 +3,15 @@
 		.module('nmsReports')
 		.controller("faqWebsiteInformationController", ['$scope', '$state', 'UserFormFactory', function($scope, $state, UserFormFactory){
 
-			UserFormFactory.isLoggedIn()
+/*			UserFormFactory.isLoggedIn()
 			.then(function(result){
 				if(!result.data){
 					$state.go('login', {});
 				}
-			})
+			})*/
+            $scope.active = true;
+            $scope.active1 = true;
+            $scope.active2 = true;
 
 		}])
 })();

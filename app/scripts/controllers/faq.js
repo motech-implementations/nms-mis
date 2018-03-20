@@ -3,13 +3,23 @@
 		.module('nmsReports')
 		.controller("faqController", ['$scope', '$state', 'UserFormFactory', function($scope, $state, UserFormFactory){
             $scope.isCollapsed = true;
-			UserFormFactory.isLoggedIn()
+
+/*			UserFormFactory.isLoggedIn()
 			.then(function(result){
 				if(!result.data){
 					$state.go('login', {});
 				}
-			})
-            $scope.active1 = 'wi';
+			})*/
+
+
+            switch($state.current.name){
+                case "faq.faqKilkari":$scope.active1 = 'kr';break;
+                case "faq.faqMobileAcademy":$scope.active1 = 'ma';break;
+                case "faq.faqProfile":$scope.active1 = 'pr';break;
+                case "faq.faqUserManagement":$scope.active1 = 'um';break;
+                default :$scope.active1 = 'wi';break;
+            }
+
             $scope.func = function (val) {
                 if(val == 'wi'){
                     $state.go('faq.faqWebsiteInformation');

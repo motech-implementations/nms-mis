@@ -3,13 +3,16 @@
 		.module('nmsReports')
 		.controller("mobileAcademyController", ['$scope', '$state', 'UserFormFactory', function($scope, $state, UserFormFactory){
 
+/*
 			UserFormFactory.isLoggedIn()
 			.then(function(result){
 				if(!result.data){
 					$state.go('login', {});
 				}
 			})
+*/
 
+/*
             $scope.mobileAcademyReports = [];
 
 			UserFormFactory.getReportsMenu()
@@ -26,7 +29,14 @@
                 }
 			})
 
+*/
 
+            $scope.param = '';
+            $scope.flag = false;
+            $scope.func = function (val) {
+                $scope.flag = true;
+                $scope.param = val;
+            }
 
 		}])
 })();

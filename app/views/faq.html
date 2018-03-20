@@ -1,24 +1,26 @@
-<div class="container-fluid" ng-controller="faqController" style="padding:0 0 0 0">
+<div class="container-fluid" ng-controller="faqController" style="margin: 0px 50px 0px -12px;">
 
-<div><h1>FAQ</h1></div>
+    <div><h1>FAQ</h1></div>
+
     <div class="col-md-3 user-manual">
 
-        <div ng-click="active1='wi'; func('wi')" ng-class="{'checking123': active1 =='wi'}">Website Information
+        <div ng-click="active1='wi'; func('wi')" ng-class="{'sideNavbar': active1 =='wi'}">Website Information
             <span class="glyphicon glyphicon-plus plusSign"></span>
         </div>
-        <div ng-click="active1='kr'; func('kr')" ng-class="{'checking123': active1 =='kr'}">Kilkari Report
+        <div ng-click="active1='kr'; func('kr')" ng-class="{'sideNavbar': active1 =='kr'}">Kilkari Reports
             <span class="glyphicon glyphicon-plus plusSign" ></span>
         </div>
-        <div ng-click="active1='ma'; func('ma')" ng-class="{'checking123': active1 =='ma'}">Mobile Academy Report
+        <div ng-click="active1='ma'; func('ma')" ng-class="{'sideNavbar': active1 =='ma'}">Mobile Academy Reports
             <span class="glyphicon glyphicon-plus plusSign"></span>
         </div>
-        <div ng-click="active1='um'; func('um')" ng-class="{'checking123': active1 =='um'}">User Management
+        <div ng-click="active1='um'; func('um')" ng-class="{'sideNavbar': active1 =='um'}">User Management
             <span class="glyphicon glyphicon-plus plusSign"></span>
         </div>
-        <div ng-click="active1='pr'; func('pr')" ng-class="{'checking123': active1 =='pr'}">Profile
+        <div ng-click="active1='pr'; func('pr')" ng-class="{'sideNavbar': active1 =='pr'}">Profile Section
             <span class="glyphicon glyphicon-plus plusSign" ></span>
         </div>
     </div>
+
     <div class="col-md-9" style="background-color: #f2f2f2;">
         <div ng-app="myApp">
 

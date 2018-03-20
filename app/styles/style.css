@@ -691,25 +691,30 @@ a.adisabled:active { text-decoration: none; }
 
 .block12{
 	background-color: #0071bc;
-	height: 100px;
+	height: 120px;
 	padding: 13px 0px 0px 8px;
-    margin: 0 0 41px 0; 
+    margin: 0 0 55px 0;
 }
 .block12 p{
-	padding: 5px 0px 2px 29px;
+	padding: 4px 32px 4px 32px;
 	color:white;
+	font-family: 'Roboto', sans-serif;
+	font-size: 16px;
 }
 
 .user-manual div {
-    margin: -4px 0 14px 0;
-    padding: 6px 5px 5px 11px;
+    margin:  0px 4px 13px 36px;
+    padding: 11px 8px 11px 20px;
     font-size : 15px;
     background-color: #f2f2f2;
+
 }
 
 .user-manual{
     text-align : left !important;
     color : #4d4d4d;
+    margin: 1px 0px 0px 0px;
+	font-size: 15px;
 }
 
 .user-manual-right{
@@ -721,7 +726,7 @@ a.adisabled:active { text-decoration: none; }
 	color: #333333;
 }
 .blockFAQ{
-    background-color: #dddddd !important;
+    background-color: #f2f2f2 !important;
     font-size: 15px;
     padding: 0 0 0 0;
     margin: 0 0 0 0;
@@ -731,14 +736,23 @@ a.adisabled:active { text-decoration: none; }
     font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
     content: "\e114";    /* adjust as needed, taken from bootstrap.css */
     float: right;        /* adjust as needed */
-    color: grey;         /* adjust as needed */
+    background-color: #dddddd;         /* adjust as needed */
 }
 .panel-heading .accordion-toggle.collapsed:after {
     /* symbol for "collapsed" panels */
     content: "\e080";    /* adjust as needed, taken from bootstrap.css */
 
 }
+.panel-heading {
+    background-color: #dddddd !important;
+}
 
+.panel-group .panel {
+	margin-bottom: 10px !important;
+	border-radius: 4px;
+	border: 0px;
+	-webkit-box-shadow:0px 0px 0px;
+}
 
 /*test*/
 .container {
@@ -753,11 +767,11 @@ a.adisabled:active { text-decoration: none; }
 
 .expandcollapse-heading-collapsed {
   cursor: pointer;
-  padding: 15px 20px;
+  padding: 09px 20px;
   position: relative;
   z-index: 100000000;
   color: black;
-  background-color: #f2f2f2;
+  background-color: #dddddd;
 
 }
 
@@ -777,10 +791,10 @@ a.adisabled:active { text-decoration: none; }
 .expandcollapse-heading-expanded {
   cursor: pointer;
   z-index: 100000000;
-  padding: 15px 20px;
+  padding: 09px 20px;
   position: relative;
   color: black;
-  background-color: #f2f2f2;
+  background-color: #dddddd;
 }
 
 .expandcollapse-heading-expanded p{
@@ -792,7 +806,7 @@ a.adisabled:active { text-decoration: none; }
 .expandcollapse-heading-collapsed > span,
 .expandcollapse-heading-expanded > span {
   position:absolute;
-  top: 25px;
+  top: 20px;
   right: 15px;
   font-size: 20px;
   line-height: 0px;
@@ -800,7 +814,7 @@ a.adisabled:active { text-decoration: none; }
 
 .expand-collapse-content {
   padding: 20px;
-  background-color: white;
+  background-color: #f2f2f2;
 }
 
 
@@ -815,10 +829,11 @@ animation:*/
 }
 
 .slideDown {
-  height:141px;
+  height: fit-content;
   transition:height 0.35s ease;
   overflow:hidden;
   position:relative;
+	background-color: #f2f2f2;
 }
 
 .slideDown.ng-hide-remove,
@@ -854,7 +869,7 @@ animation:*/
   animation-timing-function: ease-out;
   -webkit-animation-timing-function: ease-out;
 }
-.checking123{
+.sideNavbar{
     background-color:#1f6e91 !important;
     color:white;
 
@@ -867,6 +882,7 @@ animation:*/
 	float: right;
 	color: black;
 }
+
 /*
 Copyright 2016 Google Inc. All Rights Reserved.
 Use of this source code is governed by an MIT-style license that can be foundin the LICENSE file at http://material.angularjs.org/HEAD/license.

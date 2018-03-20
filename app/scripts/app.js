@@ -152,15 +152,15 @@ var nmsReportsApp = angular
 
             .state('userManual.kilkari', {
                 url: '/kilkari',
-                templateUrl: 'views/kilkari.html'
+                templateUrl: 'views/userManual_kilkari.html'
             })
             .state('userManual.websiteInformation', {
                 url: '/WebsiteInformation',
-                templateUrl: 'views/websiteInformation.html'
+                templateUrl: 'views/userManual_websiteInformation.html'
             })
             .state('userManual.mobileAcademy', {
                 url: '/mobileAcademy',
-                templateUrl: 'views/mobileAcademy.html'
+                templateUrl: 'views/userManual_mobileAcademy.html'
             })
             .state('userManual.userManual_Management', {
                 url: '/userManual_Management',
