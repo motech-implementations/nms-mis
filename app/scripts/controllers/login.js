@@ -98,7 +98,7 @@
                          formElement.attr("action", $scope.loginUrl);
                          formElement.attr("method", "post");
                          formElement[0].submit();
-
+    
                       }
                       else{
                         if(UserFormFactory.isInternetExplorer()){

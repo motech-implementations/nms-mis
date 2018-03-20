@@ -10,11 +10,15 @@ import com.beehyv.nmsreporting.enums.ReportType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.io.File;
 import java.util.Calendar;
 import java.util.HashMap;
+
+import static com.beehyv.nmsreporting.utils.Global.retrieveUiAddress;
 
 /**
  * Created by beehyv on 16/5/17.
@@ -56,8 +60,8 @@ public class EmailController {
     }
 
 
-    @RequestMapping(value = "/sendEmail", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public @ResponseBody String send(@ModelAttribute EmailTest mailInfo){
+    @RequestMapping(value = "/sendFeedback", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public ModelAndView send(Model model, @ModelAttribute EmailTest mailInfo){
         EmailTest newMail = new EmailTest();
         newMail.setFrom("nsp-reports@beehyv.com");
         newMail.setTo(mailInfo.getTo());
@@ -66,7 +70,9 @@ public class EmailController {
         c.set(Calendar.DATE, 1);
         newMail.setSubject(mailInfo.getSubject());
         newMail.setBody(mailInfo.getBody());
-        return emailService.sendMailTest(newMail);
+//        return emailService.sendMailTest(newMail);
+        emailService.sendMailTest(newMail);
+        return new ModelAndView("redirect:"+ retrieveUiAddress() +"feedbackForm");
     }
 
     /*@RequestMapping(value = "/test", method =RequestMethod.GET )

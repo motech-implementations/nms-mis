@@ -10,7 +10,7 @@
 //				}
 //			})
 
-            $scope.feedbackUrl = backend_root + 'nms/mail/sendEmail';
+            $scope.feedbackUrl = backend_root + 'nms/mail/sendFeedback';
 
 			var url = $location.absUrl();
 			var error = url.split('?')[1]
@@ -76,6 +76,7 @@
                          }
 
                      })
+
 
 		    }
 
