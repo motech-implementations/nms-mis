@@ -1,124 +1,124 @@
-<div ng-controller="UserTableController" class='userTable'>
+<div data-ng-controller="UserTableController" class='userTable'>
 	<div class="block header">
 		<div class='block inputs row'>
 			<h1 class='col-sm-6'>User Management</h1>
-			<input type="text" class="form-control input input-sm" ng-model="filterText" name="tableSearch" placeholder="Search">
-			<input type="button" class="btn btn-sm btn-primary" name="bulkUpload" ui-sref="userManagement.bulkUpload" value="Upload Bulk User">
-			<input type="button" class="btn btn-sm btn-primary" name="newUser" ng-click="createUser()" value="Create new User">
+			<input type="text" class="form-control input input-sm" data-ng-model="filterText" name="tableSearch" placeholder="Search">
+			<input type="button" class="btn btn-sm btn-primary" name="bulkUpload" data-ui-sref="userManagement.bulkUpload" value="Upload Bulk User">
+			<input type="button" class="btn btn-sm btn-primary" name="newUser" data-ng-click="createUser()" value="Create new User">
 		</div>
 	</div>
 
 	<div>
-		<button class="btn btn-sm btn-primary resetButton" ng-click="resetFilters()">Reset Filters</button>
+		<button class="btn btn-sm btn-primary resetButton" data-ng-click="resetFilters()">Reset Filters</button>
 		<table class="table table-bordered">
 			<tr>
-				<th class="sortable-columns" ng-click="sort_by('id')"><a>Id</a></th>
-				<th class="sortable-columns" ng-click="sort_by('name')"><a>Name</a></th>
-				<th class="sortable-columns" ng-click="sort_by('username')"><a>Username</a></th>
-				<th class="sortable-columns" ng-click="sort_by('phoneNumber')"><a>Phone no.</a></th>
-				<th class="sortable-columns" ng-click="sort_by('email')"><a>Email id</a></th>
+				<th class="sortable-columns" data-ng-click="sort_by('id')"><a>Id</a></th>
+				<th class="sortable-columns" data-ng-click="sort_by('name')"><a>Name</a></th>
+				<th class="sortable-columns" data-ng-click="sort_by('username')"><a>Username</a></th>
+				<th class="sortable-columns" data-ng-click="sort_by('phoneNumber')"><a>Phone no.</a></th>
+				<th class="sortable-columns" data-ng-click="sort_by('email')"><a>Email id</a></th>
 				<th class="th-dropdown">
-					<span uib-dropdown>
-						<div uib-dropdown-toggle id="accessTypeDropdown">
+					<div data-uib-dropdown>
+						<div data-uib-dropdown-toggle id="accessTypeDropdown">
 							<a href>
 								Access Type
 								<span class="caret"></span>
 							</a>
-							<a href ng-if="exists(accType)">
+							<a href data-ng-if="exists(accType)">
 								({{crop(accType)}})
 							</a>
 						</div>
-						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="accessTypeDropdown">
-							<li><a ng-click="setUniqueAccessTypes('')">ALL</a></li>
-							<li ng-repeat="aType in uniqueAT = (getUniqueAccessTypes())">
-								<a ng-click="setUniqueAccessTypes(aType)" >{{aType}}</a>
+						<ul class="dropdown-menu" data-uib-dropdown-menu aria-labelledby="accessTypeDropdown">
+							<li><a data-ng-click="setUniqueAccessTypes('')">ALL</a></li>
+							<li data-ng-repeat="aType in uniqueAT = (getUniqueAccessTypes())">
+								<a data-ng-click="setUniqueAccessTypes(aType)" >{{aType}}</a>
 							</li>
 						</ul>
-					</span>
+					</div>
 				</th>
 				<th class="th-dropdown">
-					<span uib-dropdown>
-						<div uib-dropdown-toggle id="accessLevelDropdown">
+					<div data-uib-dropdown>
+						<div data-uib-dropdown-toggle id="accessLevelDropdown">
 							<a href>
 								Access Level
 								<span class="caret"></span>
 							</a>
-							<a href ng-if="exists(accLevel)">
+							<a href data-ng-if="exists(accLevel)">
 								({{crop(accLevel)}})
 							</a>
 						</div>
-						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="accessLevelDropdown">
+						<ul class="dropdown-menu" data-uib-dropdown-menu aria-labelledby="accessLevelDropdown">
 							<li>
-								<a ng-click="setUniqueAccessLevels('')">ALL</a>
+								<a data-ng-click="setUniqueAccessLevels('')">ALL</a>
 							</li>
-							<li ng-repeat="aLevel in uniqueAL = (getUniqueAccessLevels())">
-								<a ng-click="setUniqueAccessLevels(aLevel)" >{{aLevel}}</a>
+							<li data-ng-repeat="aLevel in uniqueAL = (getUniqueAccessLevels())">
+								<a data-ng-click="setUniqueAccessLevels(aLevel)" >{{aLevel}}</a>
 							</li>
 						</ul>
-					</span>
+					</div>
 				</th>
 				<th class="th-dropdown">
-					<span uib-dropdown>
-						<div uib-dropdown-toggle id="stateDropdown">
+					<div data-uib-dropdown>
+						<div data-uib-dropdown-toggle id="stateDropdown">
 							<a href>
 								State
 								<span class="caret"></span>
 							</a>
-							<a href ng-if="exists(stateName)">
+							<a href data-ng-if="exists(stateName)">
 								({{crop(stateName)}})
 							</a>
 						</div>
-						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="stateDropdown">
+						<ul class="dropdown-menu" data-uib-dropdown-menu aria-labelledby="stateDropdown">
 							<li>
-								<a ng-click="setUniqueStates('')">ALL</a>
+								<a data-ng-click="setUniqueStates('')">ALL</a>
 							</li>
-							<li ng-repeat="sName in sNames = (getUniqueStates()) | orderBy">
-								<a ng-click="setUniqueStates(sName)" >{{sName}}</a>
+							<li data-ng-repeat="sName in sNames = (getUniqueStates()) | orderBy">
+								<a data-ng-click="setUniqueStates(sName)" >{{sName}}</a>
 							</li>
 						</ul>
-					</span>
+					</div>
 				</th>
 				<th class="th-dropdown">
-					<span uib-dropdown>
-						<div uib-dropdown-toggle id="districtDropdown">
+					<div data-uib-dropdown>
+						<div data-uib-dropdown-toggle id="districtDropdown">
 							<a href>
 								District
 								<span class="caret"></span>
 							</a>
-							<a href ng-if="exists(districtName)">({{crop(districtName)}})
+							<a href data-ng-if="exists(districtName)">({{crop(districtName)}})
 							</a>
 						</div>
-						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="districtDropdown">
+						<ul class="dropdown-menu" data-uib-dropdown-menu aria-labelledby="districtDropdown">
 							<li>
-								<a ng-click="setUniqueDistricts('')">ALL</a>
+								<a data-ng-click="setUniqueDistricts('')">ALL</a>
 							</li>
-							<li ng-repeat="dName in dNames = (getUniqueDistricts()) | orderBy">
-								<a ng-click="setUniqueDistricts(dName)" >{{dName}}</a>
+							<li data-ng-repeat="dName in dNames = (getUniqueDistricts()) | orderBy">
+								<a data-ng-click="setUniqueDistricts(dName)" >{{dName}}</a>
 							</li>
 						</ul>
-					</span>
+					</div>
 				</th>
 				<th class="th-dropdown">
-					<span uib-dropdown>
-						<div uib-dropdown-toggle id="blockDropdown">
+					<div data-uib-dropdown>
+						<div data-uib-dropdown-toggle id="blockDropdown">
 							<a href>Block
 								<span class="caret"></span>
 							</a>
-							<a href ng-if="exists(blockName)">
+							<a href data-ng-if="exists(blockName)">
 								({{crop(blockName)}})
 							</a>
 						</div>
-						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="blockDropdown">
-							<li><a ng-click="setUniqueBlocks('')">ALL</a></li>
-							<li ng-repeat="bName in bNames = (getUniqueBlocks()) | orderBy">
-								<a ng-click="setUniqueBlocks(bName)" >{{bName}}</a>
+						<ul class="dropdown-menu" data-uib-dropdown-menu aria-labelledby="blockDropdown">
+							<li><a data-ng-click="setUniqueBlocks('')">ALL</a></li>
+							<li data-ng-repeat="bName in bNames = (getUniqueBlocks()) | orderBy">
+								<a data-ng-click="setUniqueBlocks(bName)" >{{bName}}</a>
 							</li>
 						</ul>
-					</span>
+					</div>
 				</th>
 				<th><a>Edit</a></th>
 			</tr>
-			<tr ng-repeat="item in filterData = (getAllUsers() | filter : search ) | orderBy : sorter : reverse  | limitTo : numPerPage : numPerPage * (currentPageNo - 1)">
+			<tr data-ng-repeat="item in filterData = (getAllUsers() | filter : search ) | orderBy : sorter : reverse  | limitTo : numPerPage : numPerPage * (currentPageNo - 1)">
 				<td>{{item.id - 1}}</td>
 				<td>{{item.name}}</td>
 				<td>{{item.username}}</td>
@@ -129,11 +129,11 @@
 				<td>{{item.state}}</td>
 				<td>{{item.district}}</td>
 				<td>{{item.block}}</td>
-				<td><span ng-if="item.createdBy"><a class="pointer" ng-click="editUser(item.id)">Edit</a></span></td>
+				<td><span data-ng-if="item.createdBy"><a class="pointer" data-ng-click="editUser(item.id)">Edit</a></span></td>
 			</tr>
 		</table>
 
-		<div ng-if="waiting" class="loading">
+		<div data-ng-if="waiting" class="loading">
 			<img src="images/pageloader.gif" alt="loading...">
 		</div>
 

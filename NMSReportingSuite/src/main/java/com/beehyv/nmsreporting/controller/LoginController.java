@@ -83,6 +83,7 @@ public class LoginController extends HttpServlet{
                 loginTrackerService.saveLoginDetails(loginTracker);
             }
             ensureUserIsLoggedOut();
+
             return "redirect:"+ retrieveUiAddress() +"login?error";
         } else {
             LoginTracker loginTracker=new LoginTracker();
@@ -97,7 +98,11 @@ public class LoginController extends HttpServlet{
                 return "redirect:"+ retrieveUiAddress() +"changePassword";
             }
             userService.setLoggedIn();
-            return "redirect:"+ retrieveUiAddress() +"reports";
+            if(loginUser.getFromUrl().equals(null)||loginUser.getFromUrl().equals("") ){
+                return "redirect:"+ retrieveUiAddress() +"reports";
+            }
+            return "redirect:"+ loginUser.getFromUrl();
+
         }
     }
 
