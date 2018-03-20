@@ -102,15 +102,16 @@
 				</ul>
 				<ul class="nav-menu" data-ng-hide='$state.current.name=="login" || $state.current.name=="forgotPassword" || currentUser.default  || currentUser.default == null '>
 					<li>
-						<a href={{logoutUrl}}>Logout</a>
+						<a data-ng-href={{logoutUrl}}>Logout</a>
 					</li>
                     <li data-ng-class="{active: activeTab('changePassword')}">
 						<a data-ng-hide='(!(($state.current.name)===("reports"))&&!(($state.current.name)===("profile"))&&!
                 (($state.current.name)===("forgotPassword"))&&!(($state.current.name)===("changePassword"))&&!
                 (($state.current.name)===("userManagement.bulkUpload"))&&!(($state.current.name)===("userManagement"))&&!
                 (($state.current.name)===("userManagement.createUser"))&&!(($state.current.name)===("userManagement.userTable"))&&!
-                (($state.current.name)===("userManagement.editUser")))' data-ng-click="goToChangePassword()" >Change Password</a>
+                (($state.current.name)===("userManagement.editUser")))' data-ng-click="goToChangePassword()" class="pointer">Change Password</a>
                         <a data-ng-hide='!(!(($state.current.name)===("reports"))&&!(($state.current.name)===("profile"))&&!
+
                 (($state.current.name)===("forgotPassword"))&&!(($state.current.name)===("changePassword"))&&!
                 (($state.current.name)===("userManagement.bulkUpload"))&&!(($state.current.name)===("userManagement"))&&!
                 (($state.current.name)===("userManagement.createUser"))&&!(($state.current.name)===("userManagement.userTable"))&&!
@@ -121,8 +122,9 @@
                 (($state.current.name)===("forgotPassword"))&&!(($state.current.name)===("changePassword"))&&!
                 (($state.current.name)===("userManagement.bulkUpload"))&&!(($state.current.name)===("userManagement"))&&!
                 (($state.current.name)===("userManagement.createUser"))&&!(($state.current.name)===("userManagement.userTable"))&&!
-                (($state.current.name)===("userManagement.editUser")))' data-ng-click="goToProfile()">My Profile</a>
+                (($state.current.name)===("userManagement.editUser")))' data-ng-click="goToProfile()" class="pointer">My Profile</a>
 						<a data-ng-hide='!(!(($state.current.name)===("reports"))&&!(($state.current.name)===("profile"))&&!
+
                 (($state.current.name)===("forgotPassword"))&&!(($state.current.name)===("changePassword"))&&!
                 (($state.current.name)===("userManagement.bulkUpload"))&&!(($state.current.name)===("userManagement"))&&!
                 (($state.current.name)===("userManagement.createUser"))&&!(($state.current.name)===("userManagement.userTable"))&&!
@@ -145,8 +147,9 @@
                 (($state.current.name)===("forgotPassword"))&&!(($state.current.name)===("changePassword"))&&!
                 (($state.current.name)===("userManagement.bulkUpload"))&&!(($state.current.name)===("userManagement"))&&!
                 (($state.current.name)===("userManagement.createUser"))&&!(($state.current.name)===("userManagement.userTable"))&&!
-                (($state.current.name)===("userManagement.editUser")))' data-ng-click="goToReports()">Reports</a>
+                (($state.current.name)===("userManagement.editUser")))' data-ng-click="goToReports()" class="pointer">Reports</a>
 						<a data-ng-hide='!(!(($state.current.name)===("reports"))&&!(($state.current.name)===("profile"))&&!
+
                 (($state.current.name)===("forgotPassword"))&&!(($state.current.name)===("changePassword"))&&!
                 (($state.current.name)===("userManagement.bulkUpload"))&&!(($state.current.name)===("userManagement"))&&!
                 (($state.current.name)===("userManagement.createUser"))&&!(($state.current.name)===("userManagement.userTable"))&&!
