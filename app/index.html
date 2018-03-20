@@ -15,6 +15,7 @@
 	Maternity, Child health, IVR service, ASHA Foundation, ASHAs, weekly messages, ANC,PNC, MoHFW, Ministry of Health, Family Welfare, Family, Welfare, Bound Calls">
 
 	<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+	<script type="text/javascript" src="bower_components/angular-animate/angular-animate.js"></script>
 	<script type="text/javascript" src="bower_components/angular-ui-validate/dist/validate.min.js"></script>
 	<script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 	<script type="text/javascript" src="bower_components/angular-messages/angular-messages.min.js"></script>
@@ -27,8 +28,12 @@
 	<script type="text/javascript" src="bower_components/re-tree/re-tree.js"></script>
 	<script type="text/javascript" src="bower_components/ng-device-detector/ng-device-detector.js"></script>
 	<script type="text/javascript" src="bower_components/ngstorage/ngStorage.min.js"></script>
+<<<<<<< HEAD
 <!--	<script type="text/javascript" src="bower_components/pdfmake/build/pdfmake.js"></script>
 	<script type="text/javascript" src="bower_components/pdfmake/build/vfs_fonts.js"></script>-->
+=======
+
+>>>>>>> 4fbcd93b8fc9e7f03d62137f82229a24c8590a5d
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.9.12/xlsx.full.min.js"></script>
     <script src="https://fastcdn.org/FileSaver.js/1.1.20151003/FileSaver.min.js"></script>
 
@@ -51,9 +56,24 @@
 	<script type="text/javascript" src="scripts/controllers/login.js"></script>
 	<script type="text/javascript" src="scripts/controllers/forgotPassword.js"></script>
     <script type="text/javascript" src="scripts/controllers/changePassword.js"></script>
+<<<<<<< HEAD
 	<script type="text/javascript" src="scripts/controllers/feedbackForm.js"></script>
 	<script type="text/javascript" src="scripts/controllers/contactUs.js"></script>
 
+=======
+	<script type="text/javascript" src="scripts/controllers/userManual.js"></script>
+	<script type="text/javascript" src="scripts/controllers/userManual_kilkari.js"></script>
+	<script type="text/javascript" src="scripts/controllers/userManual_websiteInformation.js"></script>
+	<script type="text/javascript" src="scripts/controllers/userManual_mobileAcademy.js"></script>
+	<script type="text/javascript" src="scripts/controllers/userManual_Management.js"></script>
+	<script type="text/javascript" src="scripts/controllers/userManual_Profile.js"></script>
+	<script type="text/javascript" src="scripts/controllers/faq.js"></script>
+	<script type="text/javascript" src="scripts/controllers/faqKilkari.js"></script>
+	<script type="text/javascript" src="scripts/controllers/faqMobileAcademy.js"></script>
+	<script type="text/javascript" src="scripts/controllers/faqWebsiteInformation.js"></script>
+	<script type="text/javascript" src="scripts/controllers/faqProfile.js"></script>
+	<script type="text/javascript" src="scripts/controllers/faqUserManagement.js"></script>
+>>>>>>> 4fbcd93b8fc9e7f03d62137f82229a24c8590a5d
 	<!-- Factory -->
 	<!-- <script type="text/javascript" src="scripts/factories/navbar.js"></script> -->
 	<script type="text/javascript" src="scripts/factories/userTable.js"></script>
@@ -93,15 +113,16 @@
 				</ul>
 				<ul class="nav-menu" data-ng-hide='$state.current.name=="login" || $state.current.name=="forgotPassword" || currentUser.default  || currentUser.default == null '>
 					<li>
-						<a href={{logoutUrl}}>Logout</a>
+						<a data-ng-href={{logoutUrl}}>Logout</a>
 					</li>
                     <li data-ng-class="{active: activeTab('changePassword')}">
 						<a data-ng-hide='(!(($state.current.name)===("reports"))&&!(($state.current.name)===("profile"))&&!
                 (($state.current.name)===("forgotPassword"))&&!(($state.current.name)===("changePassword"))&&!
                 (($state.current.name)===("userManagement.bulkUpload"))&&!(($state.current.name)===("userManagement"))&&!
                 (($state.current.name)===("userManagement.createUser"))&&!(($state.current.name)===("userManagement.userTable"))&&!
-                (($state.current.name)===("userManagement.editUser")))' data-ng-click="goToChangePassword()" >Change Password</a>
+                (($state.current.name)===("userManagement.editUser")))' data-ng-click="goToChangePassword()" class="pointer">Change Password</a>
                         <a data-ng-hide='!(!(($state.current.name)===("reports"))&&!(($state.current.name)===("profile"))&&!
+
                 (($state.current.name)===("forgotPassword"))&&!(($state.current.name)===("changePassword"))&&!
                 (($state.current.name)===("userManagement.bulkUpload"))&&!(($state.current.name)===("userManagement"))&&!
                 (($state.current.name)===("userManagement.createUser"))&&!(($state.current.name)===("userManagement.userTable"))&&!
@@ -112,8 +133,9 @@
                 (($state.current.name)===("forgotPassword"))&&!(($state.current.name)===("changePassword"))&&!
                 (($state.current.name)===("userManagement.bulkUpload"))&&!(($state.current.name)===("userManagement"))&&!
                 (($state.current.name)===("userManagement.createUser"))&&!(($state.current.name)===("userManagement.userTable"))&&!
-                (($state.current.name)===("userManagement.editUser")))' data-ng-click="goToProfile()">My Profile</a>
+                (($state.current.name)===("userManagement.editUser")))' data-ng-click="goToProfile()" class="pointer">My Profile</a>
 						<a data-ng-hide='!(!(($state.current.name)===("reports"))&&!(($state.current.name)===("profile"))&&!
+
                 (($state.current.name)===("forgotPassword"))&&!(($state.current.name)===("changePassword"))&&!
                 (($state.current.name)===("userManagement.bulkUpload"))&&!(($state.current.name)===("userManagement"))&&!
                 (($state.current.name)===("userManagement.createUser"))&&!(($state.current.name)===("userManagement.userTable"))&&!
@@ -136,8 +158,9 @@
                 (($state.current.name)===("forgotPassword"))&&!(($state.current.name)===("changePassword"))&&!
                 (($state.current.name)===("userManagement.bulkUpload"))&&!(($state.current.name)===("userManagement"))&&!
                 (($state.current.name)===("userManagement.createUser"))&&!(($state.current.name)===("userManagement.userTable"))&&!
-                (($state.current.name)===("userManagement.editUser")))' data-ng-click="goToReports()">Reports</a>
+                (($state.current.name)===("userManagement.editUser")))' data-ng-click="goToReports()" class="pointer">Reports</a>
 						<a data-ng-hide='!(!(($state.current.name)===("reports"))&&!(($state.current.name)===("profile"))&&!
+
                 (($state.current.name)===("forgotPassword"))&&!(($state.current.name)===("changePassword"))&&!
                 (($state.current.name)===("userManagement.bulkUpload"))&&!(($state.current.name)===("userManagement"))&&!
                 (($state.current.name)===("userManagement.createUser"))&&!(($state.current.name)===("userManagement.userTable"))&&!

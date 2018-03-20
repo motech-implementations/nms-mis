@@ -9,7 +9,7 @@
  * Main module of the application.
  */
 var nmsReportsApp = angular
-	.module('nmsReports', ['ui.bootstrap', 'ui.validate', 'ngMessages', 'ui.router', 'ui.grid', 'ngMaterial', 'BotDetectCaptcha','ng.deviceDetector','ui.grid.exporter', 'ngStorage'])
+	.module('nmsReports', ['ui.bootstrap', 'ui.validate', 'ngMessages', 'ui.router', 'ui.grid', 'ngMaterial', 'BotDetectCaptcha','ng.deviceDetector','ui.grid.exporter', 'ngStorage','ngAnimate'])
 	.run( ['$rootScope', '$state', '$stateParams',
 		function ($rootScope, $state, $stateParams) {
 			$rootScope.$state = $state;
@@ -154,7 +154,59 @@ var nmsReportsApp = angular
             .state('changePassword', {
                 url: '/changePassword',
                 templateUrl: 'views/changePassword.html'
-            });
+            })
+            .state('userManual', {
+                url: '/userManual',
+                templateUrl: 'views/userManual.html'
+            })
+
+            .state('userManual.kilkari', {
+                url: '/kilkari',
+                templateUrl: 'views/userManual_kilkari.html'
+            })
+            .state('userManual.websiteInformation', {
+                url: '/WebsiteInformation',
+                templateUrl: 'views/userManual_websiteInformation.html'
+            })
+            .state('userManual.mobileAcademy', {
+                url: '/mobileAcademy',
+                templateUrl: 'views/userManual_mobileAcademy.html'
+            })
+            .state('userManual.userManual_Management', {
+                url: '/userManual_Management',
+                templateUrl: 'views/userManual_Management.html'
+            })
+            .state('userManual.userManual_Profile', {
+                url: '/userManual_Profile',
+                templateUrl: 'views/userManual_Profile.html'
+            })
+
+            .state('faq', {
+                url: '/faq',
+                templateUrl: 'views/faq.html'
+            })
+            .state('faq.faqKilkari', {
+                url: '/Kilkari',
+                templateUrl: 'views/faqKilkari.html'
+            })
+            .state('faq.faqMobileAcademy', {
+                url: '/MobileAcademy',
+                templateUrl: 'views/faqMobileAcademy.html'
+            })
+            .state('faq.faqWebsiteInformation', {
+                url: '/WebsiteInformation',
+                templateUrl: 'views/faqWebsiteInformation.html'
+            })
+
+            .state('faq.faqProfile', {
+                url: '/Profile',
+                templateUrl: 'views/faqProfile.html'
+            })
+             .state('faq.faqUserManagement', {
+                 url: '/UserManagement',
+                 templateUrl: 'views/faqUserManagement.html'
+             });
+
 		$urlRouterProvider
 			.otherwise('/login');
 

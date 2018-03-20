@@ -8,7 +8,7 @@ import java.util.Date;
  * Created by himanshu on 06/10/17.
  */
 @Entity
-@Table(name="kilkari_message_listenership")
+@Table(name="agg_kilkari_message_listenership")
 
 public class KilkariMessageListenership {
 

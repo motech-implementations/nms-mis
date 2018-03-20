@@ -148,26 +148,26 @@
 				}
 
 				if(!(($state.current.name)===("reports"))){
-                switch($state.current.name){
-                case "MA Cumulative Summary":
-                case "MA Subscriber":
-                case "MA Performance":
-                    var reportCategorytemp = $scope.getArrayElementByName($scope.reports,"Mobile Academy Reports");
-                    break;
-                case "Kilkari Cumulative Summary":
-                case "Kilkari Beneficiary Completion":
-                case "Kilkari Usage":
-                case "Kilkari Call":
-                case "Kilkari Message Matrix":
-                case "Kilkari Listening Matrix":
-                case "Kilkari Thematic Content":
-                case "Kilkari Repeat Listener":
-                case "Kilkari Subscriber":
-                case "Kilkari Message Listenership":
-                case "Kilkari Aggregate Beneficiary":
-                    var reportCategorytemp = $scope.getArrayElementByName($scope.reports,"Kilkari Reports");
-                    break;
-                                        }
+                    switch($state.current.name){
+                        case "MA Cumulative Summary":
+                        case "MA Subscriber":
+                        case "MA Performance":
+                        var reportCategorytemp = $scope.getArrayElementByName($scope.reports,"Mobile Academy Reports");
+                        break;
+                        case "Kilkari Cumulative Summary":
+                        case "Kilkari Beneficiary Completion":
+                        case "Kilkari Usage":
+                        case "Kilkari Call":
+                        case "Kilkari Message Matrix":
+                        case "Kilkari Listening Matrix":
+                        case "Kilkari Thematic Content":
+                        case "Kilkari Repeat Listener":
+                        case "Kilkari Subscriber":
+                        case "Kilkari Message Listenership":
+                        case "Kilkari Aggregate Beneficiary":
+                        var reportCategorytemp = $scope.getArrayElementByName($scope.reports,"Kilkari Reports");
+                        break;
+                    }
                     $scope.selectReportCategory (reportCategorytemp);
                 }
 			})
@@ -1347,30 +1347,21 @@
 
             $scope.exportCsv = function() {
 
-//              $scope.gridOptions.exporterCsvFilename = fileName;
-//              var grid = $scope.gridApi.grid;
-//              var rowTypes = uiGridExporterConstants.ALL;
-//              var colTypes = uiGridExporterConstants.ALL;
-//              uiGridExporterService.csvExport(grid, rowTypes, colTypes);
-
               exportUiGridService.exportToCsv1($scope.gridApi,$scope.gridApi1, 'visible', 'visible', excelHeaderName);
 
             };
+/*
+            $scope.mobAcad= function(){
+              mobileAcademyController.mobileAcademy($scope.gridApi,$scope.gridApi1, 'visible', 'visible', excelHeaderName);
+
+            };
+*/
 
             $scope.exportPdf = function() {
-              var grid = $scope.gridApi.grid;
-              var rowTypes = uiGridExporterConstants.ALL;
-              var colTypes = uiGridExporterConstants.ALL;
-              var exportColumnHeaders = uiGridExporterService.getColumnHeaders(this.grid, uiGridExporterConstants.ALL);
-                              var exportData = uiGridExporterService.getData(this.grid, uiGridExporterConstants.ALL, uiGridExporterConstants.ALL, true);
-                              var docDefinition = uiGridExporterService.prepareAsPdf(this.grid, exportColumnHeaders, exportData);
-
-                              if (uiGridExporterService.isIE() || navigator.appVersion.indexOf("Edge") !== -1) {
-                                uiGridExporterService.downloadPDF(this.grid.options.exporterPdfFilename, docDefinition);
-                              } else {
-                                pdfMake.createPdf(docDefinition).download();
-                              }
-              uiGridExporterService.pdfExport(grid, rowTypes, colTypes);
+            var fileName1 = $scope.gridApi.grid.options.exporterExcelFilename ? $scope.gridApi.grid.options.exporterExcelFilename : 'dokuman';
+                             fileName1 = fileName1.replace("*","");
+                             fileName1 += '.pdf';
+            exportUiGridService.exportToPdf1($scope.gridApi,$scope.gridApi1,excelHeaderName,$scope.reportCategory,$scope.matrixContent1,$scope.matrixContent2,uiGridExporterConstants,'visible', 'visible',fileName1);
             };
 
             var canceler = $q.defer();
@@ -1525,7 +1516,7 @@
                                                      { field: 'content_50_75', name: 'Total calls where 50% to 75% content listened to',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
                                                      { field: 'content_25_50', name: 'Total calls where 25% to 50% content listened to',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                      { field: 'content_1_25', name: 'Total calls where < 25%  content listened to',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'billableMinutes', name: 'Total Billable minutes',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, footerCellFilter: 'number:2', width:"*", enableHiding: false },
+                                                     { field: 'billableMinutes', name: 'Total Billable minutes',cellFilter: 'number: 2',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, footerCellFilter: 'number:2', width:"*", enableHiding: false },
                                                      { field: 'avgDuration', name: 'Average Duration of Calls',cellFilter: 'number: 2',footerCellTemplate: '<div class="ui-grid-cell-contents" >{{(grid.columns[3].getAggregationValue()==0)?0.00: grid.columns[8].getAggregationValue()/grid.columns[3].getAggregationValue() | number:2}}</div>', width:"*", enableHiding: false},
                                                      { field: 'callsToInbox', name: 'Total number of calls to inbox where content is played',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
             ]
@@ -1757,6 +1748,7 @@
                         })
                   }
             }
+
 
 		}])
 })()
