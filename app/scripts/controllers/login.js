@@ -3,13 +3,20 @@
 		.module('nmsReports')
 		.controller("LoginController", ['$rootScope','$scope', '$http', '$location','Captcha','UserFormFactory', function($rootScope, $scope, $http, $location, Captcha,UserFormFactory){
 
+
+            $scope.w = window.innerWidth;
+            $scope.h = window.innerHeight;
+
+           // $scope.uri = imageurl;
+            $scope.images = [0, 1, 2, 3, 4];
+
 			$scope.user = {};
 			$scope.user.rememberMe = false;
 
 			$scope.loginUrl = backend_root + 'nms/login';
 
 			var url = $location.absUrl();
-			var error = url.split('?')[1]
+			var error = url.split('?')[1];
             $scope.preUrl = "";
 			$scope.errorMessage = "";
 			if(error == null){
