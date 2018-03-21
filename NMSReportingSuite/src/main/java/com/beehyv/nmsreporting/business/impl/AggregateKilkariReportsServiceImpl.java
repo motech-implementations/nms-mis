@@ -257,15 +257,14 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         aCalendar.set(Calendar.SECOND, 0);
         aCalendar.set(Calendar.MINUTE, 0);
         aCalendar.set(Calendar.HOUR_OF_DAY, 0);
-
-
-        aCalendar.add(Calendar.DATE, -1);
         Date fromDate = aCalendar.getTime();
+
         aCalendar.setTime(reportRequest.getToDate());
         aCalendar.set(Calendar.MILLISECOND, 0);
         aCalendar.set(Calendar.SECOND, 0);
         aCalendar.set(Calendar.MINUTE, 0);
         aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        aCalendar.add(Calendar.DATE, 1);
         toDate = aCalendar.getTime();
 
         List<KilkariSubscriberDto> kilkariSubscriberDtoList = new ArrayList<>();
@@ -296,11 +295,11 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                         kilkariSubscriberDto.setLocationId(end.getLocationId());
                         kilkariSubscriberDto.setTotalSubscriptionsStart(start.getTotalSubscriptions());
                         kilkariSubscriberDto.setTotalSubscriptionsEnd(end.getTotalSubscriptions());
-                        kilkariSubscriberDto.setTotalRecordsRejected(end.getTotalBeneficiaryRecordsRejected()- start.getTotalBeneficiaryRecordsRejected());
+                        kilkariSubscriberDto.setTotalRecordsRejected(end.getTotalSubscriptionsRejected()- start.getTotalSubscriptionsRejected());
                         kilkariSubscriberDto.setTotalSubscriptionsCompleted(end.getTotalSubscriptionsCompleted()- start.getTotalSubscriptionsCompleted());
-                        kilkariSubscriberDto.setTotalBeneficiaryRecordsAccepted(end.getTotalSubscriptions()- start.getTotalSubscriptions() + kilkariSubscriberDto.getTotalSubscriptionsCompleted() + end.getRecordsDeactivated() - start.getRecordsDeactivated());
-                        kilkariSubscriberDto.setTotalBeneficiaryRecordsEligible(end.getRecordsRejectedButEligible()  - start.getRecordsRejectedButEligible() + kilkariSubscriberDto.getTotalBeneficiaryRecordsAccepted());
-                        kilkariSubscriberDto.setTotalBeneficiaryRecordsReceived(kilkariSubscriberDto.getTotalBeneficiaryRecordsEligible() + end.getTotalBeneficiaryRecordsRejected() - start.getTotalBeneficiaryRecordsRejected());
+                        kilkariSubscriberDto.setTotalBeneficiaryRecordsAccepted(end.getTotalSubscriptionsAccepted()-start.getTotalSubscriptionsAccepted());
+                        kilkariSubscriberDto.setTotalBeneficiaryRecordsEligible(end.getEligibleForSubscriptions()  - start.getEligibleForSubscriptions());
+                        kilkariSubscriberDto.setTotalBeneficiaryRecordsReceived(end.getTotalRecordsReceived_MCTS_RCH()-start.getTotalRecordsReceived_MCTS_RCH());
                         kilkariSubscriberDto.setLocationType(end.getLocationType());
                         String locationType = end.getLocationType();
                         if(locationType.equalsIgnoreCase("State")){
@@ -358,78 +357,87 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         } else if(locationType.equalsIgnoreCase("District")){
             List<District> districts = districtDao.getDistrictsOfState(locationId);
             KilkariSubscriber kilkariStateCounts = kilkariSubscriberReportDao.getKilkariSubscriberCounts(locationId,"State", date);
-            Integer totalSubscriptions = 0;
-            Integer totalBeneficiaryRecordsRejected = 0;
-            Integer recordsDeactivated = 0;
+            Integer totalRecordsReceived_MCTS_RCH = 0;
+            Integer eligibleForSubscriptions = 0;
             Integer totalSubscriptionsCompleted = 0;
-            Integer recordsRejectedButEligible = 0;
+            Integer totalSubscriptionsAccepted = 0;
+            Integer totalSubscriptionsRejected = 0;
+            Integer totalSubscriptions = 0;
             for(District district:districts){
                 KilkariSubscriber kilkariDistrictCount = kilkariSubscriberReportDao.getKilkariSubscriberCounts(district.getDistrictId(),locationType, date);
                 kilkariSubscribersCountList.add(kilkariDistrictCount);
                 totalSubscriptions += kilkariDistrictCount.getTotalSubscriptions();
-                totalBeneficiaryRecordsRejected += kilkariDistrictCount.getTotalBeneficiaryRecordsRejected();
-                recordsDeactivated += kilkariDistrictCount.getRecordsDeactivated();
+                totalRecordsReceived_MCTS_RCH += kilkariDistrictCount.getTotalRecordsReceived_MCTS_RCH();
+                eligibleForSubscriptions += kilkariDistrictCount.getEligibleForSubscriptions();
                 totalSubscriptionsCompleted += kilkariDistrictCount.getTotalSubscriptionsCompleted();
-                recordsRejectedButEligible += kilkariDistrictCount.getTotalBeneficiaryRecordsRejected();
+                totalSubscriptionsAccepted += kilkariDistrictCount.getTotalSubscriptionsAccepted();
+                totalSubscriptionsRejected += kilkariDistrictCount.getTotalSubscriptionsRejected();
             }
             KilkariSubscriber kilkariNoDistrictCount = new KilkariSubscriber();
             kilkariNoDistrictCount.setTotalSubscriptions(kilkariStateCounts.getTotalSubscriptions()- totalSubscriptions);
-            kilkariNoDistrictCount.setTotalBeneficiaryRecordsRejected(kilkariStateCounts.getTotalBeneficiaryRecordsRejected()- totalBeneficiaryRecordsRejected);
-            kilkariNoDistrictCount.setRecordsDeactivated(kilkariStateCounts.getRecordsDeactivated()- recordsDeactivated);
+            kilkariNoDistrictCount.setTotalRecordsReceived_MCTS_RCH(kilkariStateCounts.getTotalRecordsReceived_MCTS_RCH()- totalRecordsReceived_MCTS_RCH);
+            kilkariNoDistrictCount.setEligibleForSubscriptions(kilkariStateCounts.getEligibleForSubscriptions()- eligibleForSubscriptions);
             kilkariNoDistrictCount.setTotalSubscriptionsCompleted(kilkariStateCounts.getTotalSubscriptionsCompleted()- totalSubscriptionsCompleted);
-            kilkariNoDistrictCount.setRecordsRejectedButEligible(kilkariStateCounts.getRecordsRejectedButEligible()- recordsRejectedButEligible);
+            kilkariNoDistrictCount.setTotalSubscriptionsAccepted(kilkariStateCounts.getTotalSubscriptionsAccepted()- totalSubscriptionsAccepted);
+            kilkariNoDistrictCount.setTotalSubscriptionsRejected(kilkariStateCounts.getTotalSubscriptionsRejected()- totalSubscriptionsRejected);
             kilkariNoDistrictCount.setLocationType("DifferenceState");
             kilkariNoDistrictCount.setLocationId((long)-locationId);
             kilkariSubscribersCountList.add(kilkariNoDistrictCount);
         } else if(locationType.equalsIgnoreCase("Block")) {
             List<Block> blocks = blockDao.getBlocksOfDistrict(locationId);
             KilkariSubscriber kilkariDistrictCounts = kilkariSubscriberReportDao.getKilkariSubscriberCounts(locationId,"District", date);
-            Integer totalSubscriptions = 0;
-            Integer totalBeneficiaryRecordsRejected = 0;
-            Integer recordsRejectedDuplicateMobileNumbers = 0;
+            Integer totalRecordsReceived_MCTS_RCH = 0;
+            Integer eligibleForSubscriptions = 0;
             Integer totalSubscriptionsCompleted = 0;
-            Integer recordsRejectedButEligible = 0;
+            Integer totalSubscriptionsAccepted = 0;
+            Integer totalSubscriptionsRejected = 0;
+            Integer totalSubscriptions = 0;
             for (Block block : blocks) {
                 KilkariSubscriber kilkariBlockCount = kilkariSubscriberReportDao.getKilkariSubscriberCounts(block.getBlockId(),locationType, date);
                 kilkariSubscribersCountList.add(kilkariBlockCount);
                 totalSubscriptions += kilkariBlockCount.getTotalSubscriptions();
-                totalBeneficiaryRecordsRejected += kilkariBlockCount.getTotalBeneficiaryRecordsRejected();
-                recordsRejectedDuplicateMobileNumbers += kilkariBlockCount.getRecordsDeactivated();
+                totalRecordsReceived_MCTS_RCH += kilkariBlockCount.getTotalRecordsReceived_MCTS_RCH();
+                eligibleForSubscriptions += kilkariBlockCount.getEligibleForSubscriptions();
                 totalSubscriptionsCompleted += kilkariBlockCount.getTotalSubscriptionsCompleted();
-                recordsRejectedButEligible += kilkariBlockCount.getTotalBeneficiaryRecordsRejected();
+                totalSubscriptionsAccepted += kilkariBlockCount.getTotalSubscriptionsAccepted();
+                totalSubscriptionsRejected += kilkariBlockCount.getTotalSubscriptionsRejected();
             }
             KilkariSubscriber kilkariNoBlockCount = new KilkariSubscriber();
             kilkariNoBlockCount.setTotalSubscriptions(kilkariDistrictCounts.getTotalSubscriptions()- totalSubscriptions);
-            kilkariNoBlockCount.setTotalBeneficiaryRecordsRejected(kilkariDistrictCounts.getTotalBeneficiaryRecordsRejected()- totalBeneficiaryRecordsRejected);
-            kilkariNoBlockCount.setRecordsDeactivated(kilkariDistrictCounts.getRecordsDeactivated()- recordsRejectedDuplicateMobileNumbers);
+            kilkariNoBlockCount.setTotalRecordsReceived_MCTS_RCH(kilkariDistrictCounts.getTotalRecordsReceived_MCTS_RCH()- totalRecordsReceived_MCTS_RCH);
+            kilkariNoBlockCount.setEligibleForSubscriptions(kilkariDistrictCounts.getEligibleForSubscriptions()- eligibleForSubscriptions);
             kilkariNoBlockCount.setTotalSubscriptionsCompleted(kilkariDistrictCounts.getTotalSubscriptionsCompleted()- totalSubscriptionsCompleted);
-            kilkariNoBlockCount.setRecordsRejectedButEligible(kilkariDistrictCounts.getRecordsRejectedButEligible()- recordsRejectedButEligible);
+            kilkariNoBlockCount.setTotalSubscriptionsAccepted(kilkariDistrictCounts.getTotalSubscriptionsAccepted()- totalSubscriptionsAccepted);
+            kilkariNoBlockCount.setTotalSubscriptionsRejected(kilkariDistrictCounts.getTotalSubscriptionsRejected()- totalSubscriptionsRejected);
             kilkariNoBlockCount.setLocationType("DifferenceDistrict");
             kilkariNoBlockCount.setLocationId((long)-locationId);
             kilkariSubscribersCountList.add(kilkariNoBlockCount);
         } else {
             List<Subcenter> subcenters = subcenterDao.getSubcentersOfBlock(locationId);
             KilkariSubscriber blockCounts = kilkariSubscriberReportDao.getKilkariSubscriberCounts(locationId, "block", date);
-            Integer totalSubscriptions = 0;
-            Integer totalBeneficiaryRecordsRejected = 0;
-            Integer recordsRejectedDuplicateMobileNumbers = 0;
+            Integer totalRecordsReceived_MCTS_RCH = 0;
+            Integer eligibleForSubscriptions = 0;
             Integer totalSubscriptionsCompleted = 0;
-            Integer recordsRejectedButEligible = 0;
+            Integer totalSubscriptionsAccepted = 0;
+            Integer totalSubscriptionsRejected = 0;
+            Integer totalSubscriptions = 0;
             for(Subcenter Subcenter : subcenters){
                 KilkariSubscriber kilkariSubcenterCount = kilkariSubscriberReportDao.getKilkariSubscriberCounts(Subcenter.getSubcenterId(),locationType, date);
                 kilkariSubscribersCountList.add(kilkariSubcenterCount);
                 totalSubscriptions += kilkariSubcenterCount.getTotalSubscriptions();
-                totalBeneficiaryRecordsRejected += kilkariSubcenterCount.getTotalBeneficiaryRecordsRejected();
-                recordsRejectedDuplicateMobileNumbers += kilkariSubcenterCount.getRecordsDeactivated();
+                totalRecordsReceived_MCTS_RCH += kilkariSubcenterCount.getTotalRecordsReceived_MCTS_RCH();
+                eligibleForSubscriptions += kilkariSubcenterCount.getEligibleForSubscriptions();
                 totalSubscriptionsCompleted += kilkariSubcenterCount.getTotalSubscriptionsCompleted();
-                recordsRejectedButEligible += kilkariSubcenterCount.getTotalBeneficiaryRecordsRejected();
+                totalSubscriptionsAccepted += kilkariSubcenterCount.getTotalSubscriptionsAccepted();
+                totalSubscriptionsRejected += kilkariSubcenterCount.getTotalSubscriptionsRejected();
             }
             KilkariSubscriber kilkariNoSubcenterCount = new KilkariSubscriber();
             kilkariNoSubcenterCount.setTotalSubscriptions(blockCounts.getTotalSubscriptions()- totalSubscriptions);
-            kilkariNoSubcenterCount.setTotalBeneficiaryRecordsRejected(blockCounts.getTotalBeneficiaryRecordsRejected()- totalBeneficiaryRecordsRejected);
-            kilkariNoSubcenterCount.setRecordsDeactivated(blockCounts.getRecordsDeactivated()- recordsRejectedDuplicateMobileNumbers);
+            kilkariNoSubcenterCount.setTotalRecordsReceived_MCTS_RCH(blockCounts.getTotalRecordsReceived_MCTS_RCH()- totalRecordsReceived_MCTS_RCH);
+            kilkariNoSubcenterCount.setEligibleForSubscriptions(blockCounts.getEligibleForSubscriptions()- eligibleForSubscriptions);
             kilkariNoSubcenterCount.setTotalSubscriptionsCompleted(blockCounts.getTotalSubscriptionsCompleted()- totalSubscriptionsCompleted);
-            kilkariNoSubcenterCount.setRecordsRejectedButEligible(blockCounts.getRecordsRejectedButEligible()- recordsRejectedButEligible);
+            kilkariNoSubcenterCount.setTotalSubscriptionsAccepted(blockCounts.getTotalSubscriptionsAccepted()- totalSubscriptionsAccepted);
+            kilkariNoSubcenterCount.setTotalSubscriptionsRejected(blockCounts.getTotalSubscriptionsRejected()- totalSubscriptionsRejected);
             kilkariNoSubcenterCount.setLocationType("DifferenceBlock");
             kilkariNoSubcenterCount.setLocationId((long)-locationId);
             kilkariSubscribersCountList.add(kilkariNoSubcenterCount);
