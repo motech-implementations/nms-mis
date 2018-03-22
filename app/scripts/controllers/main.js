@@ -2,7 +2,7 @@
 	var nmsReportsApp = angular
 		.module('nmsReports')
 		.controller("MainController", ['$scope', '$state', '$http', '$localStorage', '$rootScope', 'UserFormFactory', function($scope, $state, $http, $localStorage, $rootScope, UserFormFactory) {
-			
+			$scope.isCollapsed = true;
 			$scope.breadCrumbDict = {
 				'userManagement.userTable': [
 					{
@@ -98,6 +98,27 @@
 					return "Please Wait...";
 				}
 			};
+			$scope.goToLogin = function () {
+                $state.go('login', {pageNum: 1});
+            }
+            $scope.goToAboutus = function () {
+                $state.go('login', {pageNum: 1});
+            }
+            $scope.goToKilkari = function () {
+                $state.go('login', {pageNum: 1});
+            }
+            $scope.goToUserManual = function () {
+                $state.go('userManual.websiteInformation', {pageNum: 1});
+            }
+            $scope.goToFaq = function () {
+                $state.go('faq.faqWebsiteInformation', {pageNum: 1});
+            }
+            $scope.goToContactUs = function () {
+                $state.go('contactUs', {pageNum: 1});
+            }
+            $scope.goToFeedback = function () {
+                $state.go('feedbackForm', {pageNum: 1});
+            }
 $scope.goToReports = function() {
 delete $localStorage.filter;
 if(!(($state.current.name)===("reports"))&&!(($state.current.name)===("profile"))&&!
@@ -161,6 +182,7 @@ if(!(($state.current.name)===("reports"))&&!(($state.current.name)===("profile")
 			});
 
 			$scope.logoutUrl = backend_root + "nms/logout";
+            $scope.date = new Date();
 
 			$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 			    if (toState.name === 'login') {
@@ -172,6 +194,8 @@ if(!(($state.current.name)===("reports"))&&!(($state.current.name)===("profile")
                 }
             });
 		}
-	])}
+	]);
+
+	 }
 
 )();

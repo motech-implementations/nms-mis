@@ -15,6 +15,7 @@
 	Maternity, Child health, IVR service, ASHA Foundation, ASHAs, weekly messages, ANC,PNC, MoHFW, Ministry of Health, Family Welfare, Family, Welfare, Bound Calls">
 
 	<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+	<script type="text/javascript" src="bower_components/angular-animate/angular-animate.js"></script>
 	<script type="text/javascript" src="bower_components/angular-ui-validate/dist/validate.min.js"></script>
 	<script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 	<script type="text/javascript" src="bower_components/angular-messages/angular-messages.min.js"></script>
@@ -25,11 +26,12 @@
 	<script type="text/javascript" src="bower_components/angular-material/angular-material.min.js"></script>
 	<script type="text/javascript" src="bower_components/angularjs-captcha/dist/angularjs-captcha.min.js"></script>
 	<script type="text/javascript" src="bower_components/re-tree/re-tree.js"></script>
+	<script type="text/javascript" src="bower_components/angular-ui-carousel/dist/ui-carousel.js"></script>
 	<script type="text/javascript" src="bower_components/ng-device-detector/ng-device-detector.js"></script>
 	<script type="text/javascript" src="bower_components/ngstorage/ngStorage.min.js"></script>
-	<script type="text/javascript" src="bower_components/pdfmake/build/pdfmake.js"></script>
-	<script type="text/javascript" src="bower_components/pdfmake/build/vfs_fonts.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.9.12/xlsx.full.min.js"></script>
+<script type="text/javascript" src="bower_components/angular-hitcounter/src/angular-hitcounter.js"></script>
+	<script type="text/javascript" src="bower_components/underscore/underscore.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.9.12/xlsx.full.min.js"></script>
     <script src="https://fastcdn.org/FileSaver.js/1.1.20151003/FileSaver.min.js"></script>
 
 
@@ -52,6 +54,22 @@
 	<script type="text/javascript" src="scripts/controllers/forgotPassword.js"></script>
     <script type="text/javascript" src="scripts/controllers/changePassword.js"></script>
 
+	<script type="text/javascript" src="scripts/controllers/feedbackForm.js"></script>
+	<script type="text/javascript" src="scripts/controllers/contactUs.js"></script>
+
+	<script type="text/javascript" src="scripts/controllers/userManual.js"></script>
+	<script type="text/javascript" src="scripts/controllers/userManual_kilkari.js"></script>
+	<script type="text/javascript" src="scripts/controllers/userManual_websiteInformation.js"></script>
+	<script type="text/javascript" src="scripts/controllers/userManual_mobileAcademy.js"></script>
+	<script type="text/javascript" src="scripts/controllers/userManual_Management.js"></script>
+	<script type="text/javascript" src="scripts/controllers/userManual_Profile.js"></script>
+	<script type="text/javascript" src="scripts/controllers/faq.js"></script>
+	<script type="text/javascript" src="scripts/controllers/faqKilkari.js"></script>
+	<script type="text/javascript" src="scripts/controllers/faqMobileAcademy.js"></script>
+	<script type="text/javascript" src="scripts/controllers/faqWebsiteInformation.js"></script>
+	<script type="text/javascript" src="scripts/controllers/faqProfile.js"></script>
+	<script type="text/javascript" src="scripts/controllers/faqUserManagement.js"></script>
+
 	<!-- Factory -->
 	<!-- <script type="text/javascript" src="scripts/factories/navbar.js"></script> -->
 	<script type="text/javascript" src="scripts/factories/userTable.js"></script>
@@ -67,6 +85,7 @@
 	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="styleSheet" href="bower_components/angular-ui-grid/ui-grid.min.css"/>
 	<link rel="styleSheet" href="bower_components/angular-material/angular-material.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
 	<link rel="stylesheet" href="styles/style.css">
 
@@ -78,85 +97,156 @@
 		<div class='nav-bar'>
 			<div class="nav-header">
 				<img alt="Mobile Academy & Kilkari Management & information System" src="images/logo.png">
-				<span data-ng-hide='$state.current.name=="login" || $state.current.name=="forgotPassword" ||  currentUser.default || currentUser.default == null '><b>Hello {{currentUser.fullName}}</b></span>
+				<img alt="National Health Mission" src="images/national_health_mission.png" style="float: right">
+				<img alt="Digital india | power to empower" src="images/digital_logo.png" style="float: right">
+
 			</div>
+			<div class="nav-bar-middle"></div>
 
 			<div class="nav">
-				<ul class="breadcrumb" data-ng-hide='$state.current.name=="login" || $state.current.name=="forgotPassword" || currentUser.default || currentUser.default == null'>
-					<li data-ng-repeat="item in getBreadCrumb($state.current.name)">
-						<a data-ng-if="item.name != 'User Management' && item.name != 'Edit User'" data-ui-sref='{{item.sref}}' data-ng-class="{'active': {{item.active}} }" >{{item.name}} </a>
-						<a class="pointer" data-ng-click="goToUserTable()" data-ng-if="item.name == 'User Management'" data-ng-class="{'active': {{item.active}} }" >{{item.name}} </a>
-                        <a class="pointer" data-ng-if="item.name == 'Edit User'" data-ng-class="{'active': {{item.active}} }" >{{item.name}} </a>
-					</li>
-				</ul>
-				<ul class="nav-menu" data-ng-hide='$state.current.name=="login" || $state.current.name=="forgotPassword" || currentUser.default  || currentUser.default == null '>
-					<li>
-						<a data-ng-href={{logoutUrl}}>Logout</a>
-					</li>
-                    <li data-ng-class="{active: activeTab('changePassword')}">
-						<a data-ng-hide='(!(($state.current.name)===("reports"))&&!(($state.current.name)===("profile"))&&!
-                (($state.current.name)===("forgotPassword"))&&!(($state.current.name)===("changePassword"))&&!
-                (($state.current.name)===("userManagement.bulkUpload"))&&!(($state.current.name)===("userManagement"))&&!
-                (($state.current.name)===("userManagement.createUser"))&&!(($state.current.name)===("userManagement.userTable"))&&!
-                (($state.current.name)===("userManagement.editUser")))' data-ng-click="goToChangePassword()" class="pointer">Change Password</a>
-                        <a data-ng-hide='!(!(($state.current.name)===("reports"))&&!(($state.current.name)===("profile"))&&!
 
-                (($state.current.name)===("forgotPassword"))&&!(($state.current.name)===("changePassword"))&&!
-                (($state.current.name)===("userManagement.bulkUpload"))&&!(($state.current.name)===("userManagement"))&&!
-                (($state.current.name)===("userManagement.createUser"))&&!(($state.current.name)===("userManagement.userTable"))&&!
-                (($state.current.name)===("userManagement.editUser")))' data-ng-click="goToChangePassword()" style="cursor:not-allowed">Change Password</a>
+				<ul class="nav-menu-left" >
+                    <li>
+                        <a  data-ng-click="goToAboutus()">About us</a>
                     </li>
-					<li data-ng-class="{active: activeTab('profile')}">
+                    <li>
+                        <a data-ng-click="goToKilkari()">Kilkari</a>
+                    </li>
+                    <li>
+                        <a data-ng-click="goToAboutus()">Mobile Academy</a>
+                    </li>
+                    <li>
+                        <a data-ng-click="goToUserManual()">User Manual</a>
+                    </li>
+                    <li>
+                        <a data-ng-click="goToFaq()">FAQ</a>
+                    </li>
+				</ul>
+
+				<ul class="profile-icon" data-ng-if='!($state.current.name=="login" || $state.current.name=="forgotPassword" || currentUser.default == null)' >
+					<li >
+					<span uib-dropdown >
+						<div id="profile-tab" uib-dropdown-toggle id="accessLevelDropdown">
+							<a class="profile-link" href>
+								{{currentUser.fullName}}<span style="margin-top: -40px;margin-left: -10px;" class="caret"></span>
+
+							</a>
+
+						</div>
+						<ul class="dropdown-menu profile-menu" uib-dropdown-menu aria-labelledby="accessLevelDropdown">
+							<li data-ng-class="{active: activeTab('profile')}">
 						<a data-ng-hide='(!(($state.current.name)===("reports"))&&!(($state.current.name)===("profile"))&&!
                 (($state.current.name)===("forgotPassword"))&&!(($state.current.name)===("changePassword"))&&!
                 (($state.current.name)===("userManagement.bulkUpload"))&&!(($state.current.name)===("userManagement"))&&!
                 (($state.current.name)===("userManagement.createUser"))&&!(($state.current.name)===("userManagement.userTable"))&&!
-                (($state.current.name)===("userManagement.editUser")))' data-ng-click="goToProfile()" class="pointer">My Profile</a>
+                (($state.current.name)===("userManagement.editUser")))' data-ng-click="goToProfile()">My Profile</a>
 						<a data-ng-hide='!(!(($state.current.name)===("reports"))&&!(($state.current.name)===("profile"))&&!
-
                 (($state.current.name)===("forgotPassword"))&&!(($state.current.name)===("changePassword"))&&!
                 (($state.current.name)===("userManagement.bulkUpload"))&&!(($state.current.name)===("userManagement"))&&!
                 (($state.current.name)===("userManagement.createUser"))&&!(($state.current.name)===("userManagement.userTable"))&&!
                 (($state.current.name)===("userManagement.editUser")))' data-ng-click="goToProfile()" style="cursor:not-allowed">My Profile</a>
 					</li>
+							<li data-ng-class="{active: activeTab('changePassword')}">
+						<a data-ng-hide='(!(($state.current.name)===("reports"))&&!(($state.current.name)===("profile"))&&!
+                (($state.current.name)===("forgotPassword"))&&!(($state.current.name)===("changePassword"))&&!
+                (($state.current.name)===("userManagement.bulkUpload"))&&!(($state.current.name)===("userManagement"))&&!
+                (($state.current.name)===("userManagement.createUser"))&&!(($state.current.name)===("userManagement.userTable"))&&!
+                (($state.current.name)===("userManagement.editUser")))'data-ng-click="goToChangePassword()" >Change Password</a>
+                        <a data-ng-hide='!(!(($state.current.name)===("reports"))&&!(($state.current.name)===("profile"))&&!
+                (($state.current.name)===("forgotPassword"))&&!(($state.current.name)===("changePassword"))&&!
+                (($state.current.name)===("userManagement.bulkUpload"))&&!(($state.current.name)===("userManagement"))&&!
+                (($state.current.name)===("userManagement.createUser"))&&!(($state.current.name)===("userManagement.userTable"))&&!
+                (($state.current.name)===("userManagement.editUser")))'data-ng-click="goToChangePassword()" style="cursor:not-allowed">Change Password</a>
+                    </li>
+							<li>
+						<a href={{logoutUrl}}>Logout</a>
+					</li>
+
+						</ul>
+					</span>
+					</li>
+				</ul>
+
+				<ul class="nav-menu right"  >
+					<li  style="margin-right:10px; " data-ng-class="{active: activeTab('login')}">
+						<a data-ng-if='($state.current.name=="login" || $state.current.name=="forgotPassword" || currentUser.default == null)' class="pointer"  data-ng-click="goToLogin()" >Login</a>
+						<!--<a data-ng-hide='!($state.current.name !="login")'class="pointer"  data-ng-click="goToLogin()" >Login</a>-->
+					</li>
+
+				</ul>
+				<ul class="nav-menu right ">
+					<li class="nav-menu-right">
+						<a data-ng-click="goToContactUs()">Contact us</a>
+					</li>
+					<li>
+						<a data-ng-click="goToFeedback()">Feedback</a>
+					</li>
+
+				</ul>
+
+				<ul class="nav-menu" data-ng-hide='$state.current.name=="login" || $state.current.name=="forgotPassword" || currentUser.default  || currentUser.default == null '>
+
 					<li data-ng-class="{active: activeTab('userManagement')}" data-ng-if="currentUser.roleId!= null && currentUser.roleName != 'USER'">
 						<a data-ng-hide='(!(($state.current.name)===("reports"))&&!(($state.current.name)===("profile"))&&!
                 (($state.current.name)===("forgotPassword"))&&!(($state.current.name)===("changePassword"))&&!
                 (($state.current.name)===("userManagement.bulkUpload"))&&!(($state.current.name)===("userManagement"))&&!
                 (($state.current.name)===("userManagement.createUser"))&&!(($state.current.name)===("userManagement.userTable"))&&!
-                (($state.current.name)===("userManagement.editUser")))' class="pointer"  data-ng-click="goToUserTable()" >User Management</a>
+                (($state.current.name)===("userManagement.editUser")))'class="pointer"  data-ng-click="goToUserTable()" >User Management</a>
 						<a data-ng-hide='!(!(($state.current.name)===("reports"))&&!(($state.current.name)===("profile"))&&!
                 (($state.current.name)===("forgotPassword"))&&!(($state.current.name)===("changePassword"))&&!
                 (($state.current.name)===("userManagement.bulkUpload"))&&!(($state.current.name)===("userManagement"))&&!
                 (($state.current.name)===("userManagement.createUser"))&&!(($state.current.name)===("userManagement.userTable"))&&!
-                (($state.current.name)===("userManagement.editUser")))' class="pointer" style="cursor:not-allowed" data-ng-click="goToUserTable()" >User Management</a>
+                (($state.current.name)===("userManagement.editUser")))'class="pointer" style="cursor:not-allowed" data-ng-click="goToUserTable()" >User Management</a>
 					</li>
 					<li data-ng-class="{active: activeTab('reports')}">
 						<a data-ng-hide='(!(($state.current.name)===("reports"))&&!(($state.current.name)===("profile"))&&!
                 (($state.current.name)===("forgotPassword"))&&!(($state.current.name)===("changePassword"))&&!
                 (($state.current.name)===("userManagement.bulkUpload"))&&!(($state.current.name)===("userManagement"))&&!
                 (($state.current.name)===("userManagement.createUser"))&&!(($state.current.name)===("userManagement.userTable"))&&!
-                (($state.current.name)===("userManagement.editUser")))' data-ng-click="goToReports()" class="pointer">Reports</a>
+                (($state.current.name)===("userManagement.editUser")))' data-ng-click="goToReports()">Reports</a>
 						<a data-ng-hide='!(!(($state.current.name)===("reports"))&&!(($state.current.name)===("profile"))&&!
-
                 (($state.current.name)===("forgotPassword"))&&!(($state.current.name)===("changePassword"))&&!
                 (($state.current.name)===("userManagement.bulkUpload"))&&!(($state.current.name)===("userManagement"))&&!
                 (($state.current.name)===("userManagement.createUser"))&&!(($state.current.name)===("userManagement.userTable"))&&!
                 (($state.current.name)===("userManagement.editUser")))' data-ng-click="goToReports()" style="cursor:not-allowed">Reports</a>
 					</li>
 				</ul>
+
+
+
+
+
 			</div>
 		</div>
 
-		<div data-ui-view class="content">
+
+
+
+		<div class = "login-page content" data-ui-view >
 		</div>
 
 		<div class='footer'>
-			<span>2017 all rights reserved - Mobile Academy & Kilkari Management and Information system</span>
+			<div class="col-lg-4">
+				<div><a>terms and conditions </a> <span> |</span> <a>privacy policy</a> <span> |</span> <a>copyright policy</a></div>
+				<div><a>hyperlinking policy </a> <span> |</span> <a>disclaimer</a> <span> |</span> <a>help</a></div>
+				<div><!--<span>2017 all rights reserved - Mobile Academy & Kilkari Management and Information system</span>-->
+					<span>Copyright &#169 2015 central information commision</span>
+				</div>
+			</div>
+			<div class="col-lg-5 footer-image">
+				<img alt="india-logo" src="images/india-logo.png">
+			</div>
+			<div class="col-lg-3 footer-right">
+				<div>last updated</div>
+				<div>Visitors: <hit-counter style="background-color: #a4574c;color: white"></hit-counter></div>
+				<div>Dt:  {{date | date:'medium'}}</div>
+			</div>
+
 		</div>
 	</div>
 
-	
-
 </body>
-</html> 
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js"></script>
+</html>

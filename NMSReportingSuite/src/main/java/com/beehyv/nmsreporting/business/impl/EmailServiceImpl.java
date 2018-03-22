@@ -3,6 +3,7 @@ package com.beehyv.nmsreporting.business.impl;
 import com.beehyv.nmsreporting.business.*;
 import com.beehyv.nmsreporting.dao.*;
 import com.beehyv.nmsreporting.entity.EmailInfo;
+import com.beehyv.nmsreporting.entity.EmailTest;
 import com.beehyv.nmsreporting.entity.ReportRequest;
 import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.ReportType;
@@ -101,6 +102,46 @@ public class EmailServiceImpl implements EmailService{
             return "failure";
         }
     }
+
+
+
+    @Override
+    public String sendMailTest(EmailTest mail) {
+        try {
+            final JavaMailSenderImpl ms = (JavaMailSenderImpl) mailSender;
+            Properties props = ms.getJavaMailProperties();
+            final String username = ms.getUsername();
+            final String password = ms.getPassword();
+            Session session = Session.getInstance(props,
+                    new javax.mail.Authenticator() {
+                        protected PasswordAuthentication getPasswordAuthentication() {
+                            return new PasswordAuthentication(username, password);
+                        }
+                    });
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(mail.getFrom()));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mail.getTo()));
+            message.setSubject(mail.getSubject(), "UTF-8");
+            message.setText(mail.getBody(),"UTF-8");
+            Transport.send(message);
+            return "success";
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            return "failure";
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
     private String sendMailWithStatistics(EmailInfo emailInfo) {
         try {

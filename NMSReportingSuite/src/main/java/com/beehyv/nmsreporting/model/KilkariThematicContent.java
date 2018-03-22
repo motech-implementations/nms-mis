@@ -9,7 +9,7 @@ import java.util.Date;
  */
 
 @Entity
-@Table(name="kilkari_thematic_content")
+@Table(name="agg_kilkari_thematic_content")
 public class KilkariThematicContent {
 
     @Id

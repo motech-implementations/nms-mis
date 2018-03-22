@@ -148,26 +148,26 @@
 				}
 
 				if(!(($state.current.name)===("reports"))){
-                switch($state.current.name){
-                case "MA Cumulative Summary":
-                case "MA Subscriber":
-                case "MA Performance":
-                    var reportCategorytemp = $scope.getArrayElementByName($scope.reports,"Mobile Academy Reports");
-                    break;
-                case "Kilkari Cumulative Summary":
-                case "Kilkari Beneficiary Completion":
-                case "Kilkari Usage":
-                case "Kilkari Call":
-                case "Kilkari Message Matrix":
-                case "Kilkari Listening Matrix":
-                case "Kilkari Thematic Content":
-                case "Kilkari Repeat Listener":
-                case "Kilkari Subscriber":
-                case "Kilkari Message Listenership":
-                case "Kilkari Aggregate Beneficiary":
-                    var reportCategorytemp = $scope.getArrayElementByName($scope.reports,"Kilkari Reports");
-                    break;
-                                        }
+                    switch($state.current.name){
+                        case "MA Cumulative Summary":
+                        case "MA Subscriber":
+                        case "MA Performance":
+                        var reportCategorytemp = $scope.getArrayElementByName($scope.reports,"Mobile Academy Reports");
+                        break;
+                        case "Kilkari Cumulative Summary":
+                        case "Kilkari Beneficiary Completion":
+                        case "Kilkari Usage":
+                        case "Kilkari Call":
+                        case "Kilkari Message Matrix":
+                        case "Kilkari Listening Matrix":
+                        case "Kilkari Thematic Content":
+                        case "Kilkari Repeat Listener":
+                        case "Kilkari Subscriber":
+                        case "Kilkari Message Listenership":
+                        case "Kilkari Aggregate Beneficiary":
+                        var reportCategorytemp = $scope.getArrayElementByName($scope.reports,"Kilkari Reports");
+                        break;
+                    }
                     $scope.selectReportCategory (reportCategorytemp);
                 }
 			})
@@ -1350,12 +1350,18 @@
               exportUiGridService.exportToCsv1($scope.gridApi,$scope.gridApi1, 'visible', 'visible', excelHeaderName);
 
             };
+/*
+            $scope.mobAcad= function(){
+              mobileAcademyController.mobileAcademy($scope.gridApi,$scope.gridApi1, 'visible', 'visible', excelHeaderName);
+
+            };
+*/
 
             $scope.exportPdf = function() {
             var fileName1 = $scope.gridApi.grid.options.exporterExcelFilename ? $scope.gridApi.grid.options.exporterExcelFilename : 'dokuman';
                              fileName1 = fileName1.replace("*","");
                              fileName1 += '.pdf';
-            exportUiGridService.exportToPdf1($scope.gridApi,$scope.gridApi1,excelHeaderName,$scope.reportCategory,$scope.matrixContent1,$scope.matrixContent2,uiGridExporterConstants,fileName1);
+            exportUiGridService.exportToPdf1($scope.gridApi,$scope.gridApi1,excelHeaderName,$scope.reportCategory,$scope.matrixContent1,$scope.matrixContent2,uiGridExporterConstants,'visible', 'visible',fileName1);
             };
 
             var canceler = $q.defer();
