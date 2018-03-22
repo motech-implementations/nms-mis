@@ -533,6 +533,37 @@ div.footer{
 	text-align: right;
 }
 
+div.infoPages1, div.infoPages2, div.infoPages3, div.infoPages4 {
+  padding-left : 3%;
+  padding-right : 3%;
+  text-align : justify;
+}
+div.infoPages1 table, div.infoPages2 table, div.infoPages3 table, div.infoPages4 table {
+  width : 100%;
+  text-align : center;
+  padding-left : 10px;
+}
+div.infoPages1 h2, div.infoPages2 h2, div.infoPages3 h2, div.infoPages4 h2 {
+  margin-top : 10px;
+  padding-left : 15px;
+}
+div.infoPages1 th:nth-child(2) {
+  width : 86%;
+}
+div.infoPages2 th:nth-child(2) {
+  width : 80%;
+}
+div.infoPages3 th:nth-child(2) {
+  width : 73%;
+}
+div.infoPages4 th:nth-child(2) {
+  width : 91%;
+}
+th hr.infoHR {
+  border-bottom : 1px solid #000000;
+  line-height : 3px;
+}
+
 .dropdown-menu{
    max-height: 300px; /*Provide height in pixels or in other units as per your layout*/
    overflow-y: auto; /*Provide an auto overflow to diaply scroll*/
