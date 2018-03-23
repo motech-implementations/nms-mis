@@ -75,6 +75,23 @@ public class EmailController {
         return new ModelAndView("redirect:"+ retrieveUiAddress() +"feedbackForm");
     }
 
+
+    @RequestMapping(value = "/sendEmailForContactUs", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public ModelAndView sendEmailForContactUs(Model model, @ModelAttribute EmailTest mailInfo){
+        EmailTest newMail = new EmailTest();
+        newMail.setFrom("nsp-reports@beehyv.com");
+        newMail.setTo(mailInfo.getTo());
+        Calendar c = Calendar.getInstance();   // this takes current date
+        c.add(Calendar.MONTH, -1);
+        c.set(Calendar.DATE, 1);
+//      newMail.setSubject(mailInfo.getSubject());
+        newMail.setSubject("Subject for Contact");
+        newMail.setBody(mailInfo.getBody());
+//        return emailService.sendMailTest(newMail);
+        emailService.sendMailTest(newMail);
+        return new ModelAndView("redirect:"+ retrieveUiAddress() +"contactUs");
+    }
+
     /*@RequestMapping(value = "/test", method =RequestMethod.GET )
     @ResponseBody
         public String dummyTest() {
