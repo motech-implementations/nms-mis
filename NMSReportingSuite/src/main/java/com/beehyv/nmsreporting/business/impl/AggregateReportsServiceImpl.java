@@ -13,9 +13,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellUtil;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -214,7 +212,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
 
         rowid = rowid+3;
         XSSFRow row=spreadsheet.createRow(rowid++);
-        CellStyle style = workbook.createCellStyle();//Create style
+        XSSFCellStyle style = workbook.createCellStyle();//Create style
         Font font = workbook.createFont();//Create font
         font.setBoldweight(Font.BOLDWEIGHT_BOLD);//Make font bold
         style.setFont(font);//set it to bold
@@ -232,10 +230,19 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         Cell cell2=row.createCell(1);
         Cell cell3=row.createCell(5);
         Cell cell4=row.createCell(6);
-        spreadsheet.addMergedRegion(new CellRangeAddress(4,5,0,0));
-        spreadsheet.addMergedRegion(new CellRangeAddress(4,5,1,4));
-        spreadsheet.addMergedRegion(new CellRangeAddress(4,5,5,5));
-        spreadsheet.addMergedRegion(new CellRangeAddress(4,5,6,8));
+
+        CellRangeAddress range1 = new CellRangeAddress(4,5,0,0);
+            cleanBeforeMergeOnValidCells(spreadsheet,range1,style );
+            spreadsheet.addMergedRegion(range1);
+        CellRangeAddress range2 = new CellRangeAddress(4,5,1,4);
+            cleanBeforeMergeOnValidCells(spreadsheet,range2,style );
+            spreadsheet.addMergedRegion(range2);
+        CellRangeAddress range3 = new CellRangeAddress(4,5,5,5);
+            cleanBeforeMergeOnValidCells(spreadsheet,range3,style );
+            spreadsheet.addMergedRegion(range3);
+        CellRangeAddress range4 = new CellRangeAddress(4,5,6,8);
+            cleanBeforeMergeOnValidCells(spreadsheet,range4,style );
+            spreadsheet.addMergedRegion(range4);
         XSSFRow row1=spreadsheet.createRow(++rowid);
         Cell cell5=row1.createCell(0);
         Cell cell6=row1.createCell(1);
@@ -268,10 +275,16 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         cell8.setCellStyle(style);
         cell9.setCellStyle(style);
         cell10.setCellStyle(style);
-        spreadsheet.addMergedRegion(new CellRangeAddress(6,6,0,0));
-        spreadsheet.addMergedRegion(new CellRangeAddress(6,6,1,2));
-        spreadsheet.addMergedRegion(new CellRangeAddress(6,6,4,5));
-        spreadsheet.addMergedRegion(new CellRangeAddress(6,6,7,8));
+
+        CellRangeAddress range5 = new CellRangeAddress(6,6,1,2);
+            cleanBeforeMergeOnValidCells(spreadsheet,range5,style );
+            spreadsheet.addMergedRegion(range5);
+        CellRangeAddress range6 = new CellRangeAddress(6,6,4,5);
+            cleanBeforeMergeOnValidCells(spreadsheet,range6,style );
+            spreadsheet.addMergedRegion(range6);
+        CellRangeAddress range7 = new CellRangeAddress(6,6,7,8);
+            cleanBeforeMergeOnValidCells(spreadsheet,range7,style );
+            spreadsheet.addMergedRegion(range7);
 
 
 
@@ -440,6 +453,28 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
             tabrow1++;
         }
         createHeadersForAggreagateExcels(workbook,gridData);
+    }
+
+    private void cleanBeforeMergeOnValidCells(XSSFSheet sheet,CellRangeAddress region, XSSFCellStyle cellStyle )
+    {
+        for(int rowNum =region.getFirstRow();rowNum<=region.getLastRow();rowNum++){
+            XSSFRow row= sheet.getRow(rowNum);
+            if(row==null){
+                row= sheet.createRow(rowNum);
+            }
+            for(int colNum=region.getFirstColumn();colNum<=region.getLastColumn();colNum++){
+                XSSFCell currentCell = row.getCell(colNum);
+                if(currentCell==null){
+                    currentCell = row.createCell(colNum);
+
+                }
+
+                currentCell.setCellStyle(cellStyle);
+
+            }
+        }
+
+
     }
 
 }
