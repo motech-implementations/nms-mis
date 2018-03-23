@@ -286,10 +286,11 @@ div.userTable table th.sortable-columns{
 	cursor: pointer;
 }
 div.userTable table th a{
+    padding-left: 8px;
 	color: #ffffff;
 }
 div.userTable table th.th-dropdown{
-	padding: 0px;
+	padding-left: 0px;
 }
 div.userTable table th.th-dropdown > span > div{
 	padding: 8px;
@@ -329,6 +330,11 @@ div.userTable .pagination *{
 div.userTable .dropdown-menu > li > a{
 	max-width: 160px;
 }
+
+div.userTable .dropdown-menu {
+	margin-top : 8px;
+}
+
 div.userTable .dropdown-menu.small > li > a{
 
 }

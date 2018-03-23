@@ -32,7 +32,7 @@ public class AggregateCumulativeBeneficiaryDaoImpl extends AbstractDao<Integer,A
         List<AggregateCumulativeBeneficiary> result = criteria.list();
         if(result.size() < 1){
             Long a = (long)0;
-            AggregateCumulativeBeneficiary aggregateCumulativeBeneficiary = new AggregateCumulativeBeneficiary(0,locationType,locationId,toDate,a,a,a,a,a,a,a,a,a,a);
+            AggregateCumulativeBeneficiary aggregateCumulativeBeneficiary = new AggregateCumulativeBeneficiary(0,locationType,locationId,toDate,a,a,a,a,a,a,a);
             return aggregateCumulativeBeneficiary;
         }
         AggregateCumulativeBeneficiary aggregateCumulativeBeneficiary = result.get(0);
@@ -43,9 +43,6 @@ public class AggregateCumulativeBeneficiaryDaoImpl extends AbstractDao<Integer,A
         aggregateCumulativeBeneficiary.setSelfDeactivated(aggregateCumulativeBeneficiary.getSelfDeactivated() == null ? 0 : aggregateCumulativeBeneficiary.getSelfDeactivated());
         aggregateCumulativeBeneficiary.setNotAnswering(aggregateCumulativeBeneficiary.getNotAnswering() == null ? 0 : aggregateCumulativeBeneficiary.getNotAnswering());
         aggregateCumulativeBeneficiary.setSystemDeactivation(aggregateCumulativeBeneficiary.getSystemDeactivation() == null ? 0 : aggregateCumulativeBeneficiary.getSystemDeactivation());
-        aggregateCumulativeBeneficiary.setTotalBeneficiariesCalled(aggregateCumulativeBeneficiary.getTotalBeneficiariesCalled() == null ? 0 : aggregateCumulativeBeneficiary.getTotalBeneficiariesCalled());
-        aggregateCumulativeBeneficiary.setAnsweredAtleastOnce(aggregateCumulativeBeneficiary.getAnsweredAtleastOnce() == null ? 0 : aggregateCumulativeBeneficiary.getAnsweredAtleastOnce());
-        aggregateCumulativeBeneficiary.setCalledKilkariInbox(aggregateCumulativeBeneficiary.getCalledKilkariInbox() == null ? 0 : aggregateCumulativeBeneficiary.getCalledKilkariInbox());
         return aggregateCumulativeBeneficiary;
     }
 
