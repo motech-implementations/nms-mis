@@ -18,6 +18,27 @@
                 default :$scope.active1 = 'wi';break;
             }
 
+
+            (function () {
+                if(localStorage.getItem('role') !== undefined) {
+                    $scope.selectRole = localStorage.getItem('role');
+                } else {
+                    $scope.selectRole ='Anonymous';
+                }
+            }
+            )();
+            (function () {
+                    if($scope.selectRole !== 'Admin' && $state.current.name ==="userManual.userManual_Management") {
+                        $state.go('userManual.websiteInformation');
+                    }
+                }
+            )();
+            $scope.roles = [
+                {role : "Anonymous"},
+                {role : "User"},
+                {role : "Admin"}
+            ];
+
            /* $scope.flagx=true;
             $scope.flag1 = false;
             $scope.fuct = function () {
@@ -36,11 +57,25 @@
                     $state.go('userManual.mobileAcademy')
                 }
                 else if(val== 'um'){
-                    $state.go('userManual.userManual_Management')
+/*                    if($scope.selectRole ==='Admin'){
+                        $state.go('userManual.userManual_Management')
+                    }else{*/
+                        $state.go('userManual.userManual_Management');
+                   /* }*/
+
                 }
                 else if(val== 'pr'){
                     $state.go('userManual.userManual_Profile')
                 }
+            };
+
+            $scope.fnk = function () {
+                localStorage.setItem('role', $scope.selectRole);
+                if($scope.selectRole !== 'Admin' && $state.current.name ==="userManual.userManual_Management") {
+                    $scope.active1 = 'wi';
+                    $state.go('userManual.websiteInformation');
+                }
+
             }
 		}])
 })();
