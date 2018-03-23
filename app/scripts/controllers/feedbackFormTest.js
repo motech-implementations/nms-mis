@@ -20,12 +20,11 @@
 
             $scope.feedback = function(e){
 
+                 var formElement = angular.element(e.target);
+                 formElement.attr("action", $scope.feedbackUrl);
+                 formElement.attr("method", "post");
+                 formElement[0].submit();
 
-
-                     var formElement = angular.element(e.target);
-                     formElement.attr("action", $scope.feedbackUrl);
-                     formElement.attr("method", "post");
-                     formElement[0].submit();
-
-		}}])
+		    }
+		}])
 })();
