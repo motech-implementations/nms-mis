@@ -5,14 +5,20 @@ import com.beehyv.nmsreporting.business.LocationService;
 import com.beehyv.nmsreporting.business.ReportService;
 import com.beehyv.nmsreporting.business.UserService;
 import com.beehyv.nmsreporting.entity.EmailInfo;
+import com.beehyv.nmsreporting.entity.EmailTest;
 import com.beehyv.nmsreporting.enums.ReportType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.io.File;
 import java.util.Calendar;
 import java.util.HashMap;
+
+import static com.beehyv.nmsreporting.utils.Global.retrieveUiAddress;
 
 /**
  * Created by beehyv on 16/5/17.
@@ -53,6 +59,21 @@ public class EmailController {
         return emailService.sendMail(newMail);
     }
 
+
+    @RequestMapping(value = "/sendFeedback", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public ModelAndView send(Model model, @ModelAttribute EmailTest mailInfo){
+        EmailTest newMail = new EmailTest();
+        newMail.setFrom("nsp-reports@beehyv.com");
+        newMail.setTo(mailInfo.getTo());
+        Calendar c = Calendar.getInstance();   // this takes current date
+        c.add(Calendar.MONTH, -1);
+        c.set(Calendar.DATE, 1);
+        newMail.setSubject(mailInfo.getSubject());
+        newMail.setBody(mailInfo.getBody());
+//        return emailService.sendMailTest(newMail);
+        emailService.sendMailTest(newMail);
+        return new ModelAndView("redirect:"+ retrieveUiAddress() +"feedbackForm");
+    }
 
     /*@RequestMapping(value = "/test", method =RequestMethod.GET )
     @ResponseBody

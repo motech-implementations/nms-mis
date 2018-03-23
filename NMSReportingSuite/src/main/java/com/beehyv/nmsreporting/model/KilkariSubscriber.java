@@ -8,7 +8,7 @@ import java.util.Date;
  * Created by himanshu on 06/10/17.
  */
 @Entity
-@Table(name="kilkari_subscriber_counts")
+@Table(name="agg_kilkari_subscriber")
 
 public class KilkariSubscriber {
 
@@ -30,28 +30,32 @@ public class KilkariSubscriber {
     @Column(name="total_subscriptions", columnDefinition = "INT(11)")
     private Integer totalSubscriptions;
 
-    @Column(name="total_beneficiary_records_rejected", columnDefinition = "INT(11)")
-    private Integer totalBeneficiaryRecordsRejected;
+    @Column(name="total_records_received_MCTS_RCH", columnDefinition = "INT(11)")
+    private Integer totalRecordsReceived_MCTS_RCH;
 
-    @Column(name="records_deactivated", columnDefinition = "INT(11)")
-    private Integer recordsDeactivated;
+    @Column(name="eligible_for_subscriptions", columnDefinition = "INT(11)")
+    private Integer eligibleForSubscriptions;
 
-    @Column(name="records_rejected_but_eligible", columnDefinition = "INT(11)")
-    private Integer recordsRejectedButEligible;
+    @Column(name="total_subscriptions_rejected", columnDefinition = "INT(11)")
+    private Integer totalSubscriptionsRejected;
+
+    @Column(name="total_subscriptions_accepted", columnDefinition = "INT(11)")
+    private Integer totalSubscriptionsAccepted;
 
     @Column(name="total_subscriptions_completed", columnDefinition = "INT(11)")
     private Integer totalSubscriptionsCompleted;
 
 
-    public KilkariSubscriber(Integer id, String locationType, Long locationId, Date date, Integer totalSubscriptions, Integer totalBeneficiaryRecordsRejected, Integer recordsDeactivated, Integer recordsRejectedButEligible, Integer totalSubscriptionsCompleted){
+    public KilkariSubscriber(Integer id, String locationType, Long locationId, Date date, Integer totalSubscriptions, Integer totalRecordsReceived_MCTS_RCH, Integer eligibleForSubscriptions, Integer totalSubscriptionsRejected, Integer totalSubscriptionsAccepted, Integer totalSubscriptionsCompleted) {
         this.id = id;
         this.locationType = locationType;
         this.locationId = locationId;
         this.date = date;
         this.totalSubscriptions = totalSubscriptions;
-        this.totalBeneficiaryRecordsRejected = totalBeneficiaryRecordsRejected;
-        this.recordsDeactivated = recordsDeactivated;
-        this.recordsRejectedButEligible = recordsRejectedButEligible;
+        this.totalRecordsReceived_MCTS_RCH = totalRecordsReceived_MCTS_RCH;
+        this.eligibleForSubscriptions = eligibleForSubscriptions;
+        this.totalSubscriptionsRejected = totalSubscriptionsRejected;
+        this.totalSubscriptionsAccepted = totalSubscriptionsAccepted;
         this.totalSubscriptionsCompleted = totalSubscriptionsCompleted;
     }
 
@@ -99,28 +103,36 @@ public class KilkariSubscriber {
         this.totalSubscriptions = totalSubscriptions;
     }
 
-    public Integer getTotalBeneficiaryRecordsRejected() {
-        return totalBeneficiaryRecordsRejected;
+    public Integer getTotalRecordsReceived_MCTS_RCH() {
+        return totalRecordsReceived_MCTS_RCH;
     }
 
-    public void setTotalBeneficiaryRecordsRejected(Integer totalBeneficiaryRecordsRejected) {
-        this.totalBeneficiaryRecordsRejected = totalBeneficiaryRecordsRejected;
+    public void setTotalRecordsReceived_MCTS_RCH(Integer totalRecordsReceived_MCTS_RCH) {
+        this.totalRecordsReceived_MCTS_RCH = totalRecordsReceived_MCTS_RCH;
     }
 
-    public Integer getRecordsDeactivated() {
-        return recordsDeactivated;
+    public Integer getEligibleForSubscriptions() {
+        return eligibleForSubscriptions;
     }
 
-    public void setRecordsDeactivated(Integer recordsDeactivated) {
-        this.recordsDeactivated = recordsDeactivated;
+    public void setEligibleForSubscriptions(Integer eligibleForSubscriptions) {
+        this.eligibleForSubscriptions = eligibleForSubscriptions;
     }
 
-    public Integer getRecordsRejectedButEligible() {
-        return recordsRejectedButEligible;
+    public Integer getTotalSubscriptionsRejected() {
+        return totalSubscriptionsRejected;
     }
 
-    public void setRecordsRejectedButEligible(Integer recordsRejectedButEligible) {
-        this.recordsRejectedButEligible = recordsRejectedButEligible;
+    public void setTotalSubscriptionsRejected(Integer totalSubscriptionsRejected) {
+        this.totalSubscriptionsRejected = totalSubscriptionsRejected;
+    }
+
+    public Integer getTotalSubscriptionsAccepted() {
+        return totalSubscriptionsAccepted;
+    }
+
+    public void setTotalSubscriptionsAccepted(Integer totalSubscriptionsAccepted) {
+        this.totalSubscriptionsAccepted = totalSubscriptionsAccepted;
     }
 
     public Integer getTotalSubscriptionsCompleted() {
