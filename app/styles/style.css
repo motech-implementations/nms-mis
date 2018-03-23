@@ -37,9 +37,11 @@ body .nav-bar .nav-header{
 
 }
 body .nav-bar .nav-header{
-	padding: 15px;
-	background-image: url("../images/header.png");
+	padding: 10px;
+	background: linear-gradient(#29abe2, #FFFFFF);
 	background-size: 100%;
+	height: 100px;
+	vertical-align: center;
 }
 body .nav-bar .nav-header span{
 	color: #ffffff;
@@ -50,8 +52,8 @@ body .nav-bar .nav-header span{
 /*navbar*/
 
 div.nav-bar .nav{
-	background-color: #1cb1d2;
-	height: 41px;
+	background-color: #980026;
+	height: 28px;
 }
 
 div.nav-bar ul.breadcrumb {
@@ -63,7 +65,7 @@ div.nav-bar ul.breadcrumb {
 	background-color: inherit;
 	color: #ffffff;
 }
-div.nav-bar ul.breadcrumb > li + li:before{
+/*div.nav-bar ul.breadcrumb > li + li:before{
 	content: ">" !important;
 	color: #000000;
 }
@@ -72,7 +74,7 @@ div.nav .aggregate-bread-crumb > li + li:before{
     content: ">" !important;
     color: #23527c;
 
-}
+}*/
 
 div.nav-bar .breadcrumb li a{
 	text-decoration: none;
@@ -116,34 +118,72 @@ div.nav .aggregate-bread-crumb li a.active{
    cursor:pointer ;
 }
 
+ul.nav-menu.right{
+	float: right;
+	margin-right: 100px;
+}
+
 div.nav-bar ul.nav-menu {
 	display: inline-block;
 	list-style-type: none;
 	margin: 0px;
 	padding: 0px;
 	overflow: hidden;
-	background-color: #1cb1d2;
-	float: right;
+	background-color: #980026;
+	height: 28px;
 }
 div.nav-bar .nav-menu li {
 	float:right;
-	color: #000000;
+	color: white;
 }
 div.nav-bar .nav-menu li.active{
-	background-color: #2164b2;
+	background-color: black;
 	color: #ffffff;
 }
 
 div.nav-bar .nav-menu li a {
 	display: block;
-	color: #000000;
+	color: white;
 	text-align: center;
-	padding: 12px 16px;
+	padding: 5px 16px;
 	text-decoration: none;
 	font-size: 12px;
 }
 div.nav-bar .nav-menu li.active a{
 	color: #ffffff;
+}
+
+div.nav-bar ul.nav-menu-left {
+    display: inline-block;
+    list-style-type: none;
+    margin: 0px;
+	padding-left: 0px;
+    padding-bottom: 5px;
+    overflow: hidden;
+    background-color: #980026;
+    float: left;
+	vertical-align: center;
+}
+div.nav-bar .nav-menu-left li {
+    float:left;
+    color: white;
+	height: 20px;
+}
+div.nav-bar .nav-menu-left li.active{
+    background-color: black;
+    color: #ffffff;
+}
+
+div.nav-bar .nav-menu-left li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 5px 16px;
+    text-decoration: none;
+    font-size: 12px;
+}
+div.nav-bar .nav-menu-left li.active a{
+    color: #ffffff;
 }
 
 div ul.sundays-list{
@@ -155,7 +195,7 @@ div ul.sundays-list{
     min-width: 60px;
     left: 278px;
     list-style-type: none;
-    border: 1px solid #bfcbcf;
+    border: 1px solid #f2f2f2;
     background-color: #ffffff;
     border-radius:4px;
     padding:0px 0;
@@ -185,7 +225,7 @@ div ul.sundays-list li.sunday-list-items:hover{
 }
 
 div ul li.sunday-list-items{
-    height:35px;
+    height:28px;
     text-align:center;
     border-bottom:1px solid grey;
     color: black;
@@ -481,10 +521,47 @@ div.bulkUpload table td:nth-child(1) {
 
 div.footer{
 	background-color: #b3b3b3;
-	text-align: center;
+	text-align: left;
 	font-size: 13px;
 	color: #4d4d4d;
 	padding: 5px;
+}
+.footer-image{
+	text-align: center;
+}
+.footer-right{
+	text-align: right;
+}
+
+div.infoPages1, div.infoPages2, div.infoPages3, div.infoPages4 {
+  padding-left : 3%;
+  padding-right : 3%;
+  text-align : justify;
+}
+div.infoPages1 table, div.infoPages2 table, div.infoPages3 table, div.infoPages4 table {
+  width : 100%;
+  text-align : center;
+  padding-left : 10px;
+}
+div.infoPages1 h2, div.infoPages2 h2, div.infoPages3 h2, div.infoPages4 h2 {
+  margin-top : 10px;
+  padding-left : 15px;
+}
+div.infoPages1 th:nth-child(2) {
+  width : 86%;
+}
+div.infoPages2 th:nth-child(2) {
+  width : 80%;
+}
+div.infoPages3 th:nth-child(2) {
+  width : 73%;
+}
+div.infoPages4 th:nth-child(2) {
+  width : 91%;
+}
+th hr.infoHR {
+  border-bottom : 1px solid #000000;
+  line-height : 3px;
 }
 
 .dropdown-menu{
@@ -527,6 +604,7 @@ body > .main > .footer {
 	position:absolute;
 	bottom:0;
 	width:100%;
+	padding-bottom: 1px;
 }
 body *{
 	/*border: 1px solid black;*/
@@ -619,7 +697,7 @@ color: white !important;
 
 .dialogdemoBasicUsage .footer, .dialogdemoBasicUsage .footer > code {
   font-size: 0.8em;
-  margin-top: 50px; }
+  /*margin-top: 50px;*/ }
 
 .dialogdemoBasicUsage button {
   width: 200px; }
@@ -657,13 +735,24 @@ md-dialog{
 }
 
 .captcha{
-    margin-left : -15px;
+    padding-left: 15px;
 }
 
 .login-submit{
     padding-top : 15px;
 }
 
+.login-button{
+	margin-left: 30%;
+	margin-top: 5%;
+	width: 60%;
+	height: 10%;
+	background-color: #2b669a;
+}
+.forgotPassword{
+	margin-bottom: 5%;
+	text-align: center;
+}
 .ui-grid-cell-contents span.ui-grid-invisible{
     display : none;
 }
@@ -760,11 +849,13 @@ a.adisabled:active { text-decoration: none; }
 	-webkit-box-shadow:0px 0px 0px;
 }
 
-/*test*/
+/*
+!*test*!
 .container {
     background-color:#dddddd;
     padding:0 0 0 0;
 }
+*/
 
 .expandcollapse-item {
   overflow: hidden;
@@ -899,3 +990,111 @@ Use of this source code is governed by an MIT-style license that can be foundin 
 #AncientMosaic_CaptchaImageDiv a{
     visibility:hidden !important;
 }
+
+.login-tb{
+	height:35px;
+	background-color: #0071bc;
+	width: 100%;
+	padding-top: 5px;
+	font-size: 20px;
+	color: #FFFFFF;
+}
+
+.login-form{
+	background-color: #e7e7e7;
+	margin-left: 15px;
+}
+.login-inputs{
+	width: 60%;
+	float: right;
+	margin-right: 10%;
+	height: 8%;
+}
+.login-texts{
+	padding-left: 15px;
+	vertical-align: middle;
+    margin-left: 15px;
+}
+.carousel .carousel-inner{
+    height: 325px;
+	margin-top: 5px;
+	margin-left: 1%;
+	width: 98%;
+}
+.carousel-control{
+	height: 40px;
+	width: 40px;
+	margin-top: 150px;
+}
+.icons{
+	width: 20px;
+	margin-bottom: 0px;
+	margin-right: 10px;
+}
+
+.profile-icon{
+	position: relative;
+	left: -100px;
+	padding-right: 0px;
+	margin-right: 0px;
+	color: white;
+	padding-top: 5px;
+	float: right;
+	width: 20px;
+	list-style-type: none;
+	z-index: 1;
+}
+.profile-link{
+	color: white;
+	padding-top: 5px;
+	padding-bottom: 0px;
+	font-size: 12px;
+
+}
+.profile-link:hover{
+	text-decoration: none;
+	color: white;
+}
+
+.profile-link:visited{
+    text-decoration: none;
+    color: white;
+}
+
+.nav-menu-right{
+	margin-right: 50px;
+}
+.profile-menu{
+	position: absolute;
+	left: -80px;
+	top: -10px;
+	margin-right: 0px;
+}
+.content{
+	height: 50%;
+	margin-bottom: 40px;
+}
+.ui-content{
+	height: 50%;
+}
+/*.ui-content{
+	position: relative;
+	top: 55px;
+	left: 5px;
+	height: 500px;
+	display: block;
+
+	!*z-index: -5;*!
+}*/
+.nav-bar-middle{
+	height: 7px;
+	background-color: #29abe2;
+}
+.rtext{
+	padding-left: 3%;
+	width: 95%;
+}
+/*
+Copyright 2016 Google Inc. All Rights Reserved.
+Use of this source code is governed by an MIT-style license that can be foundin the LICENSE file at http://material.angularjs.org/HEAD/license.
+*/

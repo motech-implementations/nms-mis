@@ -1,32 +1,32 @@
-<div class="container-fluid" ng-controller="mobileAcademyController" style="padding-left: 30px">
-    <div ui-view></div>
-    <div ng-hide="flag">
+<div class="container-fluid" data-ng-controller="mobileAcademyController" style="padding-left: 30px">
+    <div data-ui-view></div>
+    <div data-ng-hide="flag">
         <h2 style="font-size: 24px;color: #333333">Mobile Academy Reports</h2>
         <div style="color: #0071bc; font-size: 16px">
-            <p><div ng-click="func('ccc')"><u>Cumulative Course Completion</u></div></p>
-            <p><div ng-click="func('cwau')"><u>Circle wise Anonymous Users</u></div></p>
-            <p><div ng-click="func('ciu')"><u>Cumulative Inactive Users</u></div></p>
-            <p><div ng-click="func('arr')"><u>Asha Rejected Records</u></div></p>
+            <p><div data-ng-click="func('ccc')"><u>Cumulative Course Completion</u></div></p>
+            <p><div data-ng-click="func('cwau')"><u>Circle wise Anonymous Users</u></div></p>
+            <p><div data-ng-click="func('ciu')"><u>Cumulative Inactive Users</u></div></p>
+            <p><div data-ng-click="func('arr')"><u>Asha Rejected Records</u></div></p>
         </div>
     </div>
 
-    <div ng-hide="!flag" style="padding: 20px 0px 0 5px">
-        <div><img src="./images/back1.png" ng-click="flag=!flag" style="float: left; margin: 15px 10px 0px -12px">
+    <div data-ng-hide="!flag" style="padding: 20px 0px 0 5px">
+        <div><img src="./images/back1.png" data-ng-click="flag=!flag" style="float: left; margin: 15px 10px 0px -12px">
             <div style="display: inline-block"><b>Mobile Academy Reports</b><br>
-                <div ng-hide="param!=='ccc'" style="display: inline-block" >
+                <div data-ng-hide="param!=='ccc'" style="display: inline-block" >
                     <p style="font-size: 30px"><b>Cumulative Course Completion</b></p><br>
                     <img src="./images/Screenshot1.png" style="max-width: 900px">
                 </div>
 
-                <div ng-hide="param!=='cwau'" style="display: inline-block">
+                <div data-ng-hide="param!=='cwau'" style="display: inline-block">
                     <p style="font-size: 30px"><b>Circle wise Anonymous Users</b></p><br>
                     <img src="./images/Screenshot2.png" style="max-width: 960px">
                 </div>
-                <div ng-hide="param!=='ciu'">
+                <div data-ng-hide="param!=='ciu'">
                     <p style="font-size: 30px"><b>Cumulative Inactive Users</b></p><br>
                     <img src="./images/Screenshot3.png" style="max-width: 960px">
                 </div>
-                <div ng-hide="param!=='arr'">
+                <div data-ng-hide="param!=='arr'">
                     <p style="font-size: 30px"><b>Asha Rejected Records</b></p><br>
                     <img src="./images/Screenshot4.png" style="max-width: 960px">
                 </div>

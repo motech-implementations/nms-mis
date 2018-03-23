@@ -27,15 +27,16 @@ public class KilkariSubscriberReportDaoImpl extends AbstractDao<Integer,KilkariS
         List<KilkariSubscriber> result = criteria.list();
 
         if(result.isEmpty()){
-            KilkariSubscriber kilkariSubscriber = new KilkariSubscriber(0,locationType,locationId.longValue(),toDate,0,0,0,0,0);
+            KilkariSubscriber kilkariSubscriber = new KilkariSubscriber(0,locationType,locationId.longValue(),toDate,0,0,0,0,0,0);
             return kilkariSubscriber;
         }
 
         KilkariSubscriber kilkariSubscriber = result.get(0);
-        kilkariSubscriber.setTotalBeneficiaryRecordsRejected(kilkariSubscriber.getTotalBeneficiaryRecordsRejected() == null ? 0 : kilkariSubscriber.getTotalBeneficiaryRecordsRejected());
-        kilkariSubscriber.setRecordsRejectedButEligible(kilkariSubscriber.getRecordsRejectedButEligible() == null ? 0 : kilkariSubscriber.getRecordsRejectedButEligible());
+        kilkariSubscriber.setTotalRecordsReceived_MCTS_RCH(kilkariSubscriber.getTotalRecordsReceived_MCTS_RCH() == null ? 0 : kilkariSubscriber.getTotalRecordsReceived_MCTS_RCH());
+        kilkariSubscriber.setEligibleForSubscriptions(kilkariSubscriber.getEligibleForSubscriptions() == null ? 0 : kilkariSubscriber.getEligibleForSubscriptions());
         kilkariSubscriber.setTotalSubscriptionsCompleted(kilkariSubscriber.getTotalSubscriptionsCompleted() == null ? 0 : kilkariSubscriber.getTotalSubscriptionsCompleted());
-        kilkariSubscriber.setRecordsDeactivated(kilkariSubscriber.getRecordsDeactivated() == null ? 0 : kilkariSubscriber.getRecordsDeactivated());
+        kilkariSubscriber.setTotalSubscriptionsAccepted(kilkariSubscriber.getTotalSubscriptionsAccepted() == null ? 0 : kilkariSubscriber.getTotalSubscriptionsAccepted());
+        kilkariSubscriber.setTotalSubscriptionsRejected(kilkariSubscriber.getTotalSubscriptionsRejected() == null ? 0 : kilkariSubscriber.getTotalSubscriptionsRejected());
         kilkariSubscriber.setTotalSubscriptions(kilkariSubscriber.getTotalSubscriptions() == null ? 0 : kilkariSubscriber.getTotalSubscriptions());
         return kilkariSubscriber;
     }
