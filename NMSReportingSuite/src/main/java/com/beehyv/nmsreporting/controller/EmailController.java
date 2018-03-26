@@ -72,7 +72,7 @@ public class EmailController {
         newMail.setBody(mailInfo.getBody());
 //        return emailService.sendMailTest(newMail);
         emailService.sendMailTest(newMail);
-        return new ModelAndView("redirect:"+ retrieveUiAddress() +"feedbackForm");
+        return new ModelAndView("redirect:"+ retrieveUiAddress() +"feedbackResponse");
     }
 
 
