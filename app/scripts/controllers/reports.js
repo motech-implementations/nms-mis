@@ -1336,6 +1336,12 @@
             };
 
             $window.addEventListener('click', function() {
+                return	UserFormFactory.isLoggedIn()
+                   .then(function(result){
+                    if(!result.data){
+                        $state.go('login', {});
+                        alert("Session Timed out...Please Login Again")
+                   }})
               if($scope.sundaysTable)
                 $scope.sundaysTable = false;
             });
