@@ -1,14 +1,8 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("faqMobileAcademyController", ['$scope', '$state', 'UserFormFactory', function($scope, $state, UserFormFactory){
+		.controller("faqMobileAcademyController", ['$scope', function($scope){
 
-/*			UserFormFactory.isLoggedIn()
-			.then(function(result){
-				if(!result.data){
-					$state.go('login', {});
-				}
-			})*/
 			$scope.active = true;
             $scope.active1 = true;
             $scope.active2 = true;
