@@ -1,53 +1,14 @@
 <div class="container-fluid" data-ng-controller="userManual_ProfileController" style="padding-left: 30px">
     <div data-ui-view></div>
     <h2>Profile</h2>
-    <div class="form-group col-xs-4">
-        <label> Reports Category</label><br>
-        <div class="btn-group" uib-dropdown dropdown-append-to-body>
-            <button id="btn-append-to-body-3" type="button" class="btn btn-sm btn-default" uib-dropdown-toggle data-ng-disabled="disableReportCategory()" data-ng-class="{loading: reportsLoading}">
-                {{reportCategory}}
-                <span data-ng-if="reportCategory == null">Select</span>
-                <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu report-dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
-                <li role="menuitem" data-ng-repeat="item in reports">
-                    <a class="report_category" data-ng-click='selectReportCategory(item)'>
-                        <span>{{item.name}}</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="form-group col-xs-4">
-        <label> Reports</label><br>
-        <div class="btn-group" uib-dropdown dropdown-append-to-body>
-            <button id="btn-append-to-body-1" type="button" class="btn btn-sm btn-default" data-ng-disabled='disableReport()' uib-dropdown-toggle>
-                <span>{{report.name}}</span>
-                <span data-ng-if="report.name == null">Select</span>
-                <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
-                <li role="menuitem" data-ng-repeat="item in reportNames">
-                    <a data-ng-if="item.showItem" class="select_report" data-ng-click='selectReport(item)'>
-                        <img class='block' src="{{item.icon}}">
-                        <span>{{item.name}}</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="btn-group" uib-dropdown dropdown-append-to-body>
-        <button id="btn-append-to-body-3" type="button" class="btn btn-sm btn-default" uib-dropdown-toggle data-ng-disabled="disableReportCategory()" data-ng-class="{loading: reportsLoading}">
-            {{reportCategory}}
-            <span data-ng-if="reportCategory == null">Select</span>
-            <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu report-dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
-            <li role="menuitem" data-ng-repeat="item in reports">
-                <a class="report_category" data-ng-click='selectReportCategory(item)'>
-                    <span>{{item.name}}</span>
-                </a>
-            </li>
-        </ul>
+    <div>
+        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/app/">https://rchivrreports.in/app/</a>.</p>
+        <p>2) To login User must enter a valid User Name and Password combination</p>
+        <p>3) Then click on ‘Login’ button to log in to the MIS interface</p>
+        <img src="./images/userManualLogin.jpg" style="width: 900px"><br><br><br>
+        <p>4) Click on the ‘Logout’ button on the top-right as shown in above screen to logout of the application.</p>
+        <img src="./images/userManualLogout.png" style="width: 900px"><br><br><br>
+        <p>5) Click on ‘My Profile’ located beside the logout option. Mention your old Password and new password twice and then press change password button</p>
+        <img src="./images/userManualProfile.jpg" style="width: 900px"><br><br>
     </div>
 </div>
