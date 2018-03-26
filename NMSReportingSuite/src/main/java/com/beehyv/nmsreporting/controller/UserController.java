@@ -11,6 +11,8 @@ import com.beehyv.nmsreporting.enums.AccessType;
 import com.beehyv.nmsreporting.enums.ModificationType;
 import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.*;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.ParseException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -838,6 +840,31 @@ public class UserController {
             }
             fl.close();
             out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "success";
+    }
+
+    @RequestMapping(value = "/downloadAgg", method = RequestMethod.POST,produces = "application/vnd.ms-excel")
+    @ResponseBody
+    public String downloadAggregates(@RequestBody AggregateExcelDto data, HttpServletResponse response) throws ParseException, java.text.ParseException {
+        response.setContentType("APPLICATION/OCTECT-STREAM");
+
+        try {
+            ServletOutputStream out = response.getOutputStream();
+
+            String filename = "sample.xlsx";
+            response.setHeader("Content-Disposition", "attachment;filename=\"" + filename + "\"");
+
+            XSSFWorkbook workbook = new XSSFWorkbook();
+            XSSFSheet spreadsheet = workbook.createSheet(
+                "Sheet 1");
+            aggregateReportsService.createSpecificAggreagateExcel(workbook,data);
+
+
+            workbook.write(response.getOutputStream());
+            //workbook.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

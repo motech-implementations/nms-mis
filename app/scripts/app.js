@@ -50,7 +50,7 @@ var nmsReportsApp = angular
 			})
 
             .state('logout', {
-                url: '/login',
+                url: '/logout',
                 templateUrl: 'views/login.html'
             })
 
@@ -149,6 +149,43 @@ var nmsReportsApp = angular
             .state('contactUs', {
                  url: '/contactUs',
                  templateUrl: 'views/contactUs.html'
+            })
+
+            .state('AboutUs', {
+            	url: '/aboutUs',
+                templateUrl: 'views/aboutUs.html'
+            })
+            .state('AboutKilkari', {
+                url: '/kilkari',
+                templateUrl: 'views/aboutKilkari.html'
+            })
+            .state('AboutMA', {
+                url: '/aboutMA',
+                templateUrl: 'views/aboutMA.html'
+            })
+            .state('PrivacyPolicy', {
+                url: '/privacyPolicy',
+                templateUrl: 'views/privacyPolicy.html'
+            })
+            .state('CopyrightPolicy', {
+                url: '/copyrightPolicy',
+                templateUrl: 'views/copyrightPolicy.html'
+            })
+            .state('TandC', {
+                url: '/termsAndConditions',
+                templateUrl: 'views/tAndC.html'
+            })
+            .state('HLPolicy', {
+                url: '/hyperLinkingPolicy',
+                templateUrl: 'views/hyperLinkingPolicy.html'
+            })
+            .state('Disclaimer', {
+                url: '/disclaimer',
+                templateUrl: 'views/disclaimer.html'
+            })
+            .state('Help', {
+                url: '/help',
+                templateUrl: 'views/helpPage.html'
             })
 
             .state('changePassword', {
