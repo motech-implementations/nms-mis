@@ -2,32 +2,59 @@
 	var nmsReportsApp = angular
 		.module('nmsReports')
 		.controller("FeedbackFormController", ['$scope', '$state', 'UserFormFactory','$http', '$location','Captcha',function($scope, $state, UserFormFactory,$http,$location,Captcha){
-//
-//			UserFormFactory.isAdminLoggedIn()
-//			.then(function(result){
-//				if(!result.data){
-//					$state.go('login', {});
-//				}
-//			})
 
             $scope.feedbackUrl = backend_root + 'nms/mail/sendFeedback';
 
-			var url = $location.absUrl();
-			var error = url.split('?')[1]
-            $scope.preUrl = "";
-			$scope.errorMessage = "";
-			if(error == null){
-				$scope.errorMessage = "";
-			}
-			else{
-				$scope.errorMessage = "Invalid data";
-			}
 			$scope.feedback = {};
-
-
+			$scope.email = {};
 
             $scope.feedback = function(e){
-                if($scope.feedback.captchaCode == null || $scope.feedback.captchaCode == ""){
+
+                if(!$scope.email.name){
+                    if(UserFormFactory.isInternetExplorer()){
+                        alert("Please enter the name")
+                        return;
+                    }
+                    else{
+                        UserFormFactory.showAlert("Please enter the name")
+                        return;
+                    }
+                }
+
+                if(!$scope.email.subject){
+                    if(UserFormFactory.isInternetExplorer()){
+                        alert("Please enter the Subject")
+                        return;
+                    }
+                    else{
+                        UserFormFactory.showAlert("Please enter the Subject")
+                        return;
+                    }
+                }
+
+                if(!$scope.email.to){
+                    if(UserFormFactory.isInternetExplorer()){
+                        alert("Please enter the email")
+                        return;
+                    }
+                    else{
+                        UserFormFactory.showAlert("Please enter the email")
+                        return;
+                    }
+                }
+
+                if(!$scope.email.body){
+                    if(UserFormFactory.isInternetExplorer()){
+                        alert("Please enter the Feedback")
+                        return;
+                    }
+                    else{
+                        UserFormFactory.showAlert("Please enter the Feedback")
+                        return;
+                    }
+                }
+
+                if(!$scope.feedback.captchaCode){
                     if(UserFormFactory.isInternetExplorer()){
                         alert("Please enter the captchaCode")
                         return;
