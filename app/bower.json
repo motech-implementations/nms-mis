@@ -19,6 +19,7 @@
     "ng-device-detector": "^4.0.3",
     "ngstorage": "^0.3.11",
     "angular-ui-carousel": "^0.1.10",
-    "angular-hitcounter": "^1.0.1"
+    "angular-hitcounter": "^1.0.1",
+    "pdfmake": "^0.1.36"
   }
 }
