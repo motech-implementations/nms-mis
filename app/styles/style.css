@@ -1147,3 +1147,26 @@ Use of this source code is governed by an MIT-style license that can be foundin 
 Copyright 2016 Google Inc. All Rights Reserved.
 Use of this source code is governed by an MIT-style license that can be foundin the LICENSE file at http://material.angularjs.org/HEAD/license.
 */
+
+/*-------------Feedback Start----------------*/
+
+.margin-top-40 {
+    margin-top: 40px;
+}
+
+.feedbackResponse-Box{
+    border: 1px solid green;
+    border-radius: 2%;
+    box-shadow: 3px 3px green;
+    padding: 0 15px 5px 15px;
+    margin: 15px 0 15px 0px;
+}
+
+.feedbackResponse-Link{
+    color: blue;
+    padding: 0 0 5px 0px;
+}
+
+
+
+/*-------------Feedback End----------------*/
