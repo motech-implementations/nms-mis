@@ -575,11 +575,11 @@ th hr.infoHR {
 	background-color: #2164b2;
 }
 
-.btn-info, 
+/*.btn-info,
 .btn-success,
 .btn-danger{
 	display: none;
-}
+}*/
 
 div.loading{
 	text-align: center;
