@@ -127,8 +127,8 @@
 				<li data-ng-class="{active: activeTab('userManual')}">
 					<a  data-ng-click="goToUserManual()" data-ng-if='(userManualBool==true)' class="pointer">User Manual</a>
 				</li>
-				<li>
-					<a data-ng-class="{active: activeTab('faq')}" data-ng-click="goToFaq()" class="pointer">FAQ</a>
+				<li data-ng-class="{active: activeTab('faq')}">
+					<a  data-ng-click="goToFaq()" class="pointer">FAQ</a>
 				</li>
 			</ul>
 
@@ -172,11 +172,11 @@
         <div ng-if="(show==true)"    >
             <ul class="profile-dropdown">
                 <li data-ng-class="{active: activeTab('profile')}" >
-                    <a class="dropdown-buttons" data-ng-hide='disableCursor()' class="pointer" data-ng-click="goToProfile()">My Profile</a>
+                    <a class="dropdown-buttons pointer" data-ng-hide='disableCursor()' data-ng-click="goToProfile()">My Profile</a>
                     <a class="dropdown-buttons" data-ng-hide='!disableCursor()' data-ng-click="goToProfile()" style="cursor:not-allowed">My Profile</a>
                 </li>
                 <li data-ng-class="{active: activeTab('changePassword')}" >
-                    <a class="dropdown-buttons" data-ng-hide='disableCursor()' class="pointer" data-ng-click="goToChangePassword()" >Change Password</a>
+                    <a class="dropdown-buttons pointer" data-ng-hide='disableCursor()' data-ng-click="goToChangePassword()" >Change Password</a>
                     <a class="dropdown-buttons" data-ng-hide='!disableCursor()' data-ng-click="goToChangePassword()" style="cursor:not-allowed">Change Password</a>
                 </li>
                 <li >

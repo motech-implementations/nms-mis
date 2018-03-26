@@ -1394,6 +1394,10 @@
                                            var temp = ft.getAggregationValue();
                                            v = Number(temp.toFixed(2));
                                        }
+                                       else if(ft.displayName == "Total Billable Minutes Played" && excelHeaderName.reportName == "Kilkari Cumulative Summary"){
+                                           var temp = ft.getAggregationValue();
+                                           v = Number(temp.toFixed(2));
+                                       }
                                        else if(ft.displayName == "Number Of Minutes Consumed" && excelHeaderName.reportName == "Kilkari Thematic Content"){
                                            var temp = ft.getAggregationValue();
                                            v = Number(temp.toFixed(2));
@@ -1439,7 +1443,7 @@
                               var temp1 = exportData1[i][j].value;
                                     if((excelHeaderName.reportName == "Kilkari Call" && (j == "7"||j == "8") )||
                                         (excelHeaderName.reportName == "MA Cumulative Summary" && (j == "6"||j == "7"||j == "8"))||
-                                        (excelHeaderName.reportName == "Kilkari Cumulative Summary" && (j == "4") )||
+                                        (excelHeaderName.reportName == "Kilkari Cumulative Summary" && (j == "4"||j=="3") )||
                                         (excelHeaderName.reportName == "Kilkari Thematic Content" && (j == "4") )||
                                         (excelHeaderName.reportName == "Kilkari Beneficiary Completion" && (j == "2") )){
                                          temp1 = (temp1.toFixed(2));
@@ -1578,7 +1582,7 @@
                                                              },
                                                              { field: 'uniqueBeneficiaries', name: 'Total unique beneficiaries',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                              { field: 'successfulCalls', name: 'Total successful calls',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                             { field: 'billableMinutes', name: 'Total billable minutes played',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
+                                                             { field: 'billableMinutes', name: 'Total billable minutes played', footerCellFilter: 'number:2',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
                                                              { field: 'averageDuration',cellFilter: 'number: 2', name: 'Average duration of call', footerCellTemplate: '<div class="ui-grid-cell-contents" >{{grid.columns[4].getAggregationValue()/grid.columns[3].getAggregationValue() | number:2}}</div>',   width:"*", enableHiding: false},
 
             ]

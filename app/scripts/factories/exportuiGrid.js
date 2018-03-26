@@ -63,7 +63,7 @@
                                         var temp = data[i][index].value;
                                         if((excelHeaderName.reportName == "Kilkari Call" && (index == "7"||index == "8") )||
                                            (excelHeaderName.reportName == "MA Cumulative Summary" && (index == "6"||index == "7"||index == "8"))||
-                                           (excelHeaderName.reportName == "Kilkari Cumulative Summary" && (index == "4") )||
+                                           (excelHeaderName.reportName == "Kilkari Cumulative Summary" && (index == "4" || index == "3") )||
                                            (excelHeaderName.reportName == "Kilkari Thematic Content" && (index == "4") )||
                                            (excelHeaderName.reportName == "Kilkari Beneficiary Completion" && (index == "2") )){
                                             temp = (temp.toFixed(2));
@@ -103,6 +103,10 @@
                                        v = (temp.toFixed(2));
                                    }
                                    else if(ft.displayName == "Number Of Minutes Consumed" && excelHeaderName.reportName == "Kilkari Thematic Content"){
+                                       var temp = ft.getAggregationValue();
+                                       v = (temp.toFixed(2));
+                                   }
+                                   else if(ft.displayName == "Total Billable Minutes Played" && excelHeaderName.reportName == "Kilkari Cumulative Summary"){
                                        var temp = ft.getAggregationValue();
                                        v = (temp.toFixed(2));
                                    }

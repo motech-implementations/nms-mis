@@ -11,7 +11,7 @@ public class AggregateCumulativeKilkariDto{
     private Long locationId;
     private Long uniqueBeneficiaries;
     private Long successfulCalls;
-    private Long billableMinutes;
+    private Double billableMinutes;
     private Float averageDuration;
     private boolean link = false;
 
@@ -63,11 +63,11 @@ public class AggregateCumulativeKilkariDto{
         this.successfulCalls = successfulCalls;
     }
 
-    public Long getBillableMinutes() {
+    public Double getBillableMinutes() {
         return billableMinutes;
     }
 
-    public void setBillableMinutes(Long billableMinutes) {
+    public void setBillableMinutes(Double billableMinutes) {
         this.billableMinutes = billableMinutes;
     }
 
