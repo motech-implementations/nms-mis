@@ -1,16 +1,8 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("faqController", ['$scope', '$state', 'UserFormFactory', function($scope, $state, UserFormFactory){
+		.controller("faqController", ['$scope', '$state', function($scope, $state){
             $scope.isCollapsed = true;
-
-/*			UserFormFactory.isLoggedIn()
-			.then(function(result){
-				if(!result.data){
-					$state.go('login', {});
-				}
-			})*/
-
 
             switch($state.current.name){
                 case "faq.faqKilkari":$scope.active1 = 'kr';break;

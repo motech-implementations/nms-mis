@@ -782,13 +782,18 @@ a.adisabled:hover { text-decoration: none; }
 a.adisabled:focus { text-decoration: none; }
 a.adisabled:active { text-decoration: none; }
 
-.block12{
+/*<--------------------User Manual and FAQ Start ----------------------------->*/
+
+.usermanual-padding0{
+	padding: 0px;
+}
+.userManual-block{
 	background-color: #0071bc;
-	height: 120px;
+	height: 112px;
 	padding: 13px 0px 0px 8px;
     margin: 0 0 55px 0;
 }
-.block12 p{
+.userManual-block p{
 	padding: 4px 32px 4px 32px;
 	color:white;
 	font-family: 'Roboto', sans-serif;
@@ -802,6 +807,12 @@ a.adisabled:active { text-decoration: none; }
     background-color: #f2f2f2;
 
 }
+.userManualSelectpicker{
+	color:black;
+	width: 175px;
+	padding: 7px;
+	margin: 0px 0px 0px 4px;
+}
 
 .user-manual{
     text-align : left !important;
@@ -810,13 +821,35 @@ a.adisabled:active { text-decoration: none; }
 	font-size: 15px;
 }
 
-.user-manual-right{
-	font-size: 16px;
-	color: #0071bc;
+.sideNavbar{
+	background-color:#1f6e91 !important;
+	color:white;
+
 }
+
+.plusSign{
+	float: right;
+	color: black;
+}
+
+.userManual-right{
+	 background-color: #f2f2f2;
+	 margin: 0px 50px 0px -12px;
+ }
+
 .user-manual-header{
 	font-size: 24px;
 	color: #333333;
+}
+
+.user-manual-right-text{
+	font-size: 16px;
+	color: #0071bc;
+}
+
+.faqMargin{
+	margin: 0px 50px 0px -12px;
+
 }
 .blockFAQ{
     background-color: #f2f2f2 !important;
@@ -824,6 +857,11 @@ a.adisabled:active { text-decoration: none; }
     padding: 0 0 0 0;
     margin: 0 0 0 0;
 }
+
+.faq-right{
+	background-color: #f2f2f2;
+}
+
 .panel-heading .accordion-toggle:after {
     /* symbol for "opening" panels */
     font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
@@ -933,10 +971,6 @@ animation:*/
 
 .slideDown.ng-hide-remove,
 .slideDown.ng-hide-add {
-  /* remember, the .hg-hide class is added to element
-  when the active class is added causing it to appear
-  as hidden. Therefore set the styling to display=block
-  so that the hide animation is visible */
   display:block!important;
 }
 
@@ -964,20 +998,8 @@ animation:*/
   animation-timing-function: ease-out;
   -webkit-animation-timing-function: ease-out;
 }
-.sideNavbar{
-    background-color:#1f6e91 !important;
-    color:white;
 
-}
-/*a:active{
-    background-color: #1f6e91;
-    color:white
-}*/
-.plusSign{
-	float: right;
-	color: black;
-}
-
+/*<--------------------User Manual and FAQ End ----------------------------->*/
 /*
 Copyright 2016 Google Inc. All Rights Reserved.
 Use of this source code is governed by an MIT-style license that can be foundin the LICENSE file at http://material.angularjs.org/HEAD/license.
