@@ -48,7 +48,10 @@ public class KilkariCalls {
     @Column(name="calls_to_inbox", columnDefinition = "BIGINT(20)")
     private Long callsToInbox;
 
-    public KilkariCalls(Integer id, String locationType, Long locationId, Date date, Long content_75_100, Long content_50_75, Long content_25_50, Long content_1_25, Long callsAttempted, Long successfulCalls, Double billableMinutes, Long callsToInbox) {
+    @Column(name="total_beneficiaries", columnDefinition = "BIGINT(20)")
+    private Long uniqueBeneficiaries;
+
+    public KilkariCalls(Integer id, String locationType, Long locationId, Date date, Long content_75_100, Long content_50_75, Long content_25_50, Long content_1_25, Long callsAttempted, Long successfulCalls, Double billableMinutes, Long callsToInbox, Long uniqueBeneficiaries) {
         this.id = id;
         this.locationType = locationType;
         this.locationId = locationId;
@@ -61,6 +64,7 @@ public class KilkariCalls {
         this.successfulCalls = successfulCalls;
         this.billableMinutes = billableMinutes;
         this.callsToInbox = callsToInbox;
+        this.uniqueBeneficiaries = uniqueBeneficiaries;
     }
 
     public KilkariCalls(){
@@ -161,5 +165,13 @@ public class KilkariCalls {
 
     public void setCallsToInbox(Long callsToInbox) {
         this.callsToInbox = callsToInbox;
+    }
+
+    public Long getUniqueBeneficiaries() {
+        return uniqueBeneficiaries;
+    }
+
+    public void setUniqueBeneficiaries(Long uniqueBeneficiaries) {
+        this.uniqueBeneficiaries = uniqueBeneficiaries;
     }
 }

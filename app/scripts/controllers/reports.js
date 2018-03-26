@@ -33,6 +33,7 @@
 			})
 
 			var reportRequest = {};
+			var ExcelData = {};
             $scope.sundays = [];
  			$scope.reports = [];
 			$scope.states = [];
@@ -1341,7 +1342,155 @@
 
             $scope.exportToExcel = function(){
 
-                   exportUiGridService.exportToExcel('sheet 1', $scope.gridApi,$scope.gridApi1, 'visible', 'visible', excelHeaderName);
+                columns = $scope.gridApi.grid.options.showHeader ? uiGridExporterService.getColumnHeaders($scope.gridApi.grid, 'visible') : [];
+
+                var headers=[]
+                columns.forEach(function (c) {
+                                        headers.push( c.displayName || c.value || columns[i].name);
+                                    }, this);
+                ExcelData.columnHeaders = headers;
+
+                var exportData = uiGridExporterService.getData($scope.gridApi.grid, "visible", "visible");
+                var data = [];
+
+                for (i = 0; i < exportData.length; i++) {
+                       var temprow=[];
+                       for (j = 0; j < exportData[i].length; j++) {
+                              var temp = exportData[i][j].value;
+                                    if((excelHeaderName.reportName == "Kilkari Call" && (j == "7"||j == "8") )||
+                                        (excelHeaderName.reportName == "MA Cumulative Summary" && (j == "6"||j == "7"||j == "8"))||
+                                        (excelHeaderName.reportName == "Kilkari Cumulative Summary" && (j == "4") )||
+                                        (excelHeaderName.reportName == "Kilkari Thematic Content" && (j == "4") )||
+                                        (excelHeaderName.reportName == "Kilkari Beneficiary Completion" && (j == "2") )){
+                                         temp = (temp.toFixed(2));
+                                    }
+                           temprow.push(temp);
+                       }
+                       data.push(temprow);
+                    }
+            ExcelData.reportData = data;
+
+            var footerData = [];
+                        var v;
+                                if(excelHeaderName.reportName != "Kilkari Message Matrix" && excelHeaderName.reportName != "Kilkari Listening Matrix" && excelHeaderName.reportName != "Kilkari Repeat Listener"){
+                                    $scope.gridApi.grid.columns.forEach(function (ft) {
+
+                                       if(ft.displayName == "State" || ft.displayName == "District" || ft.displayName == "Block" || ft.displayName == "Subcenter" || ft.displayName == "Message Number (Week)" )
+                                           v = "Total";
+
+                                       else if(ft.displayName == "Average Duration Of Call" && excelHeaderName.reportName == "Kilkari Cumulative Summary"){
+                                           var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[4].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue());
+                                           v = (temp.toFixed(2));
+                                       }
+                                       else if(ft.displayName == "Average Number of Weeks in Service" && excelHeaderName.reportName == "Kilkari Beneficiary Completion"){
+                                           var temp = $scope.gridApi.grid.columns.length==0?0.00: ($scope.gridApi.grid.columns[3].getAggregationValue()/$scope.gridApi.grid.columns.length);
+                                           v = (temp.toFixed(2));
+                                       }
+                                       else if(ft.displayName == "Average Duration Of Calls" && excelHeaderName.reportName == "Kilkari Call"){
+                                           var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[8].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue());
+                                           v = (temp.toFixed(2));
+                                       }
+                                       else if(ft.displayName == "Total Billable Minutes" && excelHeaderName.reportName == "Kilkari Call"){
+                                           var temp = ft.getAggregationValue();
+                                           v = Number(temp.toFixed(2));
+                                       }
+                                       else if(ft.displayName == "Total Billable Minutes Played" && excelHeaderName.reportName == "Kilkari Cumulative Summary"){
+                                           var temp = ft.getAggregationValue();
+                                           v = Number(temp.toFixed(2));
+                                       }
+                                       else if(ft.displayName == "Number Of Minutes Consumed" && excelHeaderName.reportName == "Kilkari Thematic Content"){
+                                           var temp = ft.getAggregationValue();
+                                           v = Number(temp.toFixed(2));
+                                       }
+                                       else if(ft.displayName == "% Not Started Course" && excelHeaderName.reportName == "MA Cumulative Summary"){
+                                          var temp = $scope.gridApi.grid.columns[2].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[4].getAggregationValue()/$scope.gridApi.grid.columns[2].getAggregationValue())*100;
+                                          v = (temp.toFixed(2));
+                                       }
+                                       else if(ft.displayName == "% Successfully Completed" && excelHeaderName.reportName == "MA Cumulative Summary"){
+                                          var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00:($scope.gridApi.grid.columns[5].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue())*100;
+                                          v = (temp.toFixed(2));
+                                       }
+                                       else if(ft.displayName == "% Failed the course" && excelHeaderName.reportName == "MA Cumulative Summary"){
+                                          var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00:($scope.gridApi.grid.columns[6].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue())*100;
+                                          v = (temp.toFixed(2));
+                                       }
+                                       else{
+                                           v = ft.getAggregationValue();
+                                       }
+
+                                       if(ft.displayName != "S No."){
+                                            footerData.push(v);
+                                       }
+
+                                   }, this);
+
+                                }
+                if(excelHeaderName.reportName == "Kilkari Message Matrix" ||  excelHeaderName.reportName == "Kilkari Repeat Listener"){
+                columns1 = $scope.gridApi1.grid.options.showHeader ? uiGridExporterService.getColumnHeaders($scope.gridApi1.grid, 'visible') : [];
+
+                var headers1=[]
+                columns1.forEach(function (c) {
+                                        headers1.push( c.displayName || c.value || columns1[i].name);
+                                    }, this);
+                ExcelData.columnHeaders1 = headers1;
+
+                var exportData1 = uiGridExporterService.getData($scope.gridApi1.grid, "visible", "visible");
+                var data1 = [];
+
+                for (i = 0; i < exportData1.length; i++) {
+                       var temprow1=[];
+                       for (j = 0; j < exportData1[i].length; j++) {
+                              var temp1 = exportData1[i][j].value;
+                                    if((excelHeaderName.reportName == "Kilkari Call" && (j == "7"||j == "8") )||
+                                        (excelHeaderName.reportName == "MA Cumulative Summary" && (j == "6"||j == "7"||j == "8"))||
+                                        (excelHeaderName.reportName == "Kilkari Cumulative Summary" && (j == "4"||j=="3") )||
+                                        (excelHeaderName.reportName == "Kilkari Thematic Content" && (j == "4") )||
+                                        (excelHeaderName.reportName == "Kilkari Beneficiary Completion" && (j == "2") )){
+                                         temp1 = (temp1.toFixed(2));
+                                    }
+                           temprow1.push(temp1);
+                       }
+                       data1.push(temprow1);
+                    }
+            ExcelData.reportData1 = data1;}else{
+            ExcelData.columnHeaders1 = [];
+            ExcelData.reportData1 = [];
+            }
+
+                  ExcelData.colunmFooters = footerData;
+                  ExcelData.stateName = excelHeaderName.stateName;
+                  ExcelData.districtName = excelHeaderName.districtName;
+                  ExcelData.blockName = excelHeaderName.blockName;
+                  ExcelData.reportName = excelHeaderName.reportName;
+                  ExcelData.timePeriod = excelHeaderName.timePeriod;
+
+                $http({
+                                    method  : 'POST',
+                                    url     : backend_root + 'nms/user/downloadAgg',
+                                    data    : ExcelData, //forms user object
+                                    responseType: 'arraybuffer',
+                                    headers : {'Content-Type': 'application/json '}
+                                }).then(function(response){
+                                console.log(response);
+
+                                     var fileName = $scope.gridApi.grid.options.exporterExcelFilename ? $scope.gridApi.grid.options.exporterExcelFilename : 'dokuman';
+                                                         fileName = fileName.replace("*","");
+                                                         fileName += '.xlsx';
+
+                                         saveAs(new Blob([response.data], {
+                                                                 type: 'application/octet-stream'
+                                                             }), fileName);
+
+                                         if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                                             window.navigator.msSaveOrOpenBlob(blob, fileName);
+                                         } else {
+                                             var objectUrl = URL.createObjectURL(blob);
+                                             window.open(objectUrl);
+                                         }
+                                     }
+                                );
+
+                  // exportUiGridService.exportToExcel('sheet 1', $scope.gridApi,$scope.gridApi1, 'visible', 'visible', excelHeaderName);
 
             }
 
@@ -1350,12 +1499,6 @@
               exportUiGridService.exportToCsv1($scope.gridApi,$scope.gridApi1, 'visible', 'visible', excelHeaderName);
 
             };
-/*
-            $scope.mobAcad= function(){
-              mobileAcademyController.mobileAcademy($scope.gridApi,$scope.gridApi1, 'visible', 'visible', excelHeaderName);
-
-            };
-*/
 
             $scope.exportPdf = function() {
             var fileName1 = $scope.gridApi.grid.options.exporterExcelFilename ? $scope.gridApi.grid.options.exporterExcelFilename : 'dokuman';
@@ -1439,7 +1582,7 @@
                                                              },
                                                              { field: 'uniqueBeneficiaries', name: 'Total unique beneficiaries',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                              { field: 'successfulCalls', name: 'Total successful calls',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                             { field: 'billableMinutes', name: 'Total billable minutes played',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
+                                                             { field: 'billableMinutes', name: 'Total billable minutes played', footerCellFilter: 'number:2',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
                                                              { field: 'averageDuration',cellFilter: 'number: 2', name: 'Average duration of call', footerCellTemplate: '<div class="ui-grid-cell-contents" >{{grid.columns[4].getAggregationValue()/grid.columns[3].getAggregationValue() | number:2}}</div>',   width:"*", enableHiding: false},
 
             ]

@@ -4,6 +4,7 @@ import com.beehyv.nmsreporting.dao.AggCumulativeBeneficiaryComplDao;
 import com.beehyv.nmsreporting.entity.*;
 import com.beehyv.nmsreporting.model.AggregateCumulativeMA;
 import com.beehyv.nmsreporting.model.User;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.util.Date;
 import java.util.List;
@@ -14,5 +15,7 @@ import java.util.List;
 public interface AggregateReportsService {
 
     List<AggregateCumulativeMA> getCumulativeSummaryMAReport(Integer locationId, String locationType, Date toDate);
+
+     void createSpecificAggreagateExcel(XSSFWorkbook workbook, AggregateExcelDto gridData);
 
 }

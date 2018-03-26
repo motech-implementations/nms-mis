@@ -120,7 +120,6 @@ div.nav .aggregate-bread-crumb li a.active{
 
 ul.nav-menu.right{
 	float: right;
-	margin-right: 100px;
 }
 
 div.nav-bar ul.nav-menu {
@@ -158,7 +157,6 @@ div.nav-bar ul.nav-menu-left {
     list-style-type: none;
     margin: 0px;
 	padding-left: 0px;
-    padding-bottom: 5px;
     overflow: hidden;
     background-color: #980026;
     float: left;
@@ -167,7 +165,7 @@ div.nav-bar ul.nav-menu-left {
 div.nav-bar .nav-menu-left li {
     float:left;
     color: white;
-	height: 20px;
+	height: 28px;
 }
 div.nav-bar .nav-menu-left li.active{
     background-color: black;
@@ -1093,6 +1091,31 @@ Use of this source code is governed by an MIT-style license that can be foundin 
 .rtext{
 	padding-left: 3%;
 	width: 95%;
+}
+
+.profile-dropdown{
+    background-color: #980026;
+    list-style-type: none;
+    float: right;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    padding:10px;
+    margin-right: 5px;
+    z-index: 1;
+}
+.dropdown-buttons{
+
+    color: #FFFFFF;
+}
+.dropdown-buttons:hover{
+    text-decoration: none;
+    color: black;
+}
+
+.cursor-dis{
+ cursor:not-allowed;
+ outline: none;
 }
 /*
 Copyright 2016 Google Inc. All Rights Reserved.

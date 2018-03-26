@@ -50,7 +50,7 @@ var nmsReportsApp = angular
 			})
 
             .state('logout', {
-                url: '/login',
+                url: '/logout',
                 templateUrl: 'views/login.html'
             })
 
