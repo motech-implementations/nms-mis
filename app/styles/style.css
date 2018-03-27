@@ -851,6 +851,15 @@ a.adisabled:active { text-decoration: none; }
 	color: #0071bc;
 }
 
+.user-manual-back{
+	float: left;
+	margin: 15px 8px 0px -12px;
+}
+
+.user-manual-reports{
+	padding: 20px 0px 0 5px;
+}
+
 .faqMargin{
 	margin: 0px 50px 0px -12px;
 
@@ -1056,44 +1065,10 @@ Use of this source code is governed by an MIT-style license that can be foundin 
 	margin-right: 10px;
 }
 
-.profile-icon{
-	position: relative;
-	left: -100px;
-	padding-right: 0px;
-	margin-right: 0px;
-	color: white;
-	padding-top: 5px;
-	float: right;
-	width: 20px;
-	list-style-type: none;
-	z-index: 1;
-}
-.profile-link{
-	color: white;
-	padding-top: 5px;
-	padding-bottom: 0px;
-	font-size: 12px;
-
-}
-.profile-link:hover{
-	text-decoration: none;
-	color: white;
-}
-
-.profile-link:visited{
-    text-decoration: none;
-    color: white;
-}
-
 .nav-menu-right{
 	margin-right: 50px;
 }
-.profile-menu{
-	position: absolute;
-	left: -80px;
-	top: -10px;
-	margin-right: 0px;
-}
+
 .content{
 	height: 50%;
 	margin-bottom: 40px;
@@ -1142,6 +1117,20 @@ Use of this source code is governed by an MIT-style license that can be foundin 
 .cursor-dis{
  cursor:not-allowed;
  outline: none;
+}
+.transparent-text{
+	position: absolute;
+	top: 35px;
+	opacity: 0.7;
+	z-index: 1;
+	background-color: black;
+	height: 30px;
+	color: #FFFFFF;
+	font-size: 15px;
+	padding-top: 5px;
+}
+.recaptcha{
+	margin: 5px;
 }
 /*
 Copyright 2016 Google Inc. All Rights Reserved.

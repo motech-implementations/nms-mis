@@ -1,7 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("LoginController", ['$rootScope','$scope', '$http', '$location','Captcha','UserFormFactory', function($rootScope, $scope, $http, $location, Captcha,UserFormFactory){
+		.controller("LoginController", ['$rootScope','$scope', '$http', '$location','Captcha','UserFormFactory','vcRecaptchaService', function($rootScope, $scope, $http, $location, Captcha,UserFormFactory){
 
 
             $scope.w = window.innerWidth;
@@ -11,6 +11,7 @@
             $scope.images = [0, 1, 2, 3, 4];
 
 			$scope.user = {};
+			$scope.captchaResponse = '';
 			$scope.user.rememberMe = false;
 
 			$scope.loginUrl = backend_root + 'nms/login';
@@ -69,6 +70,27 @@
                         return;
                     }
                 }
+
+                if($scope.captchaResponse ==''){
+                    if(UserFormFactory.isInternetExplorer()){
+                        alert("Check captcha")
+                        return;
+                    }
+                    else{
+                        UserFormFactory.showAlert("Check captcha")
+                        return;
+                    }
+
+                }
+                else{
+                    var formElement = angular.element(e.target);
+                    formElement.attr("action", $scope.loginUrl);
+                    formElement.attr("method", "post");
+                    formElement[0].submit();
+
+                }
+
+                /*
                 if($scope.user.captchaCode == null || $scope.user.captchaCode == ""){
                     if(UserFormFactory.isInternetExplorer()){
                         alert("Please enter the captchaCode")
@@ -82,8 +104,7 @@
 
                 var captcha = new Captcha();
 
-                // captcha id for validating captcha at server-side
-                var captchaId = captcha.captchaId;
+               // }
 
                 // captcha code input value for validating captcha at server-side
                 var captchaCode = angular.uppercase($scope.user.captchaCode);
@@ -105,7 +126,7 @@
                          formElement.attr("action", $scope.loginUrl);
                          formElement.attr("method", "post");
                          formElement[0].submit();
-    
+
                       }
                       else{
                         if(UserFormFactory.isInternetExplorer()){
@@ -118,7 +139,7 @@
                         }
 
                       }
-                })
+                })*/
 
             }
 

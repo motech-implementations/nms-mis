@@ -1,5 +1,4 @@
 <div class="container-fluid" data-ng-controller="mobileAcademyController" style="padding-left: 30px">
-    <div data-ui-view></div>
     <div data-ng-hide="flag">
         <h2 class="user-manual-header">Mobile Academy Reports</h2>
         <div style="color: #0071bc; font-size: 16px">
@@ -10,69 +9,81 @@
         </div>
     </div>
 
-    <div data-ng-hide="!flag" style="padding: 20px 0px 0 5px">
-        <div><img src="./images/back1.png" data-ng-click="flag=!flag" style="float: left; margin: 15px 10px 0px -12px">
+    <div data-ng-hide="!flag" class="user-manual-reports">
+        <div><img src="./images/back1.png" data-ng-click="flag=!flag" class="user-manual-back">
             <div style="display: inline-block"><b>Mobile Academy Reports</b><br>
                 <div data-ng-hide="param!=='ccc'" style="display: inline-block" >
                     <p style="font-size: 30px"><b>Cumulative Course Completion</b></p><br>
-                    <p>1) Under "Reports Category" select "Mobile Academy Reports", then</p><br>
-                    <img src="./images/reportCategory.png" style="max-width: 900px"><br><br><br>
-                    <p>2) Under "Reports" select "Cumulative Course Completion"</p><br>
-                    <img src="./images/reportsMobile.jpg" style="max-width: 900px"><br><br><br>
-                    <p>3) Then select the Month </p><br>
-                    <img src="./images/reportsMonth.jpg" style="max-width: 900px"><br><br><br>
-                    <p>4) Then select respective State, District and Block</p>
-                    <img src="./images/reportState.png" style="max-width: 900px"><br><br><br>
-                    <p>5) To view the result, press the "Select" button, or to reset it, press "Reset" button</p><br>
-                    <img src="./images/reportsDownload.png" style="max-width: 900px"><br>
-                    <p>6) Click on the download link to download the report. All the reports will be downloaded as Excel files.</p>
-                    <p>7) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
+                    <p>This report is generated from the launch of service in the state till the end of selected month </p>
+                    <p>Steps to download the reports</p>
+                    <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/app/">https://rchivrreports.in/app/</a>.</p>
+                    <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p><br>
+                    <img src="./images/reportCategory.png" alt="user Manual Mobile Academy Reports" style="max-width: 828px"><br><br><br>
+                    <p>3) Under "Reports" select "Cumulative Course Completion"</p><br>
+                    <img src="./images/reportsMobile.jpg" alt="user manual Cumulative Course Completion" style="max-width: 828px"><br><br><br>
+                    <p>4) Then select the Month </p><br>
+                    <img src="./images/reportsMonth.jpg" alt="user manual Reports Month" style="max-width: 828px"><br><br><br>
+                    <p>5) Then select respective State, District and Block</p>
+                    <img src="./images/reportState.png" style="max-width: 828px"><br><br><br>
+                    <p>6) To view the result, press the "Select" button, or to reset it, press "Reset" button</p><br>
+                    <img src="./images/reportsDownload.png" style="max-width: 828px"><br>
+                    <p>7) Click on the download link to download the report. All the reports will be downloaded as Excel files.</p>
+                    <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                 </div>
 
                 <div data-ng-hide="param!=='cwau'" style="display: inline-block">
                     <p style="font-size: 30px"><b>Circle wise Anonymous Users</b></p><br>
-                    <p>1) Under "Reports Category" select "Mobile Academy Reports", then</p><br>
-                    <img src="./images/reportCategory.png" style="max-width: 900px"><br><br><br>
-                    <p>2) Under "Reports" select "Circle wise Anonymous Users"</p><br>
-                    <img src="./images/reportsMobile.jpg" style="max-width: 900px"><br><br><br>
-                    <p>3) Then select the Month </p><br>
-                    <img src="./images/reportsMonth.jpg" style="max-width: 900px"><br><br><br>
-                    <p>4) Then select respective Circle</p>
-                    <img src="./images/reportState.png" style="max-width: 900px"><br><br><br>
-                    <p>5) To view the result, press the "Select" button, or to reset it, press "Reset" button</p><br>
-                    <img src="./images/reportsDownload.png" style="max-width: 900px"><br>
-                    <p>6) Click on the download link to download the report. All the reports will be downloaded as Excel files.</p>
-                    <p>7) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
+                    <p>This is a monthly report which lists out all the Mobile numbers that called from a specific circle in the selected month.</p>
+                    <p>Steps to download the reports</p>
+                    <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/app/">https://rchivrreports.in/app/</a>.</p>
+                    <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p><br>
+                    <img src="./images/reportCategory.png" style="max-width: 828px"><br><br><br>
+                    <p>3) Under "Reports" select "Circle wise Anonymous Users"</p><br>
+                    <img src="./images/reportsMobile.jpg" style="max-width: 828px"><br><br><br>
+                    <p>4) Then select the Month </p><br>
+                    <img src="./images/reportsMonth.jpg" style="max-width: 828px"><br><br><br>
+                    <p>5) Then select respective Circle</p>
+                    <img src="./images/reportState.png" style="max-width: 828px"><br><br><br>
+                    <p>6) To view the result, press the "Select" button, or to reset it, press "Reset" button</p><br>
+                    <img src="./images/reportsDownload.png" style="max-width: 828px"><br>
+                    <p>7) Click on the download link to download the report. All the reports will be downloaded as Excel files.</p>
+                    <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                 </div>
                 <div data-ng-hide="param!=='ciu'">
                     <p style="font-size: 30px"><b>Cumulative Inactive Users</b></p><br>
-                    <p>1) Under "Reports Category" select "Mobile Academy Reports", then</p><br>
-                    <img src="./images/reportCategory.png" style="max-width: 900px"><br><br><br>
-                    <p>2) Under "Reports" select "Cumulative Inactive Users"</p><br>
-                    <img src="./images/reportsMobile.jpg" style="max-width: 900px"><br><br><br>
-                    <p>3) Then select the Month </p><br>
-                    <img src="./images/reportsMonth.jpg" style="max-width: 900px"><br><br><br>
-                    <p>4) Then select respective State, District and Block</p>
-                    <img src="./images/reportState.png" style="max-width: 900px"><br><br><br>
-                    <p>5) To view the result, press the "Select" button, or to reset it, press "Reset" button</p><br>
-                    <img src="./images/reportsDownload.png" style="max-width: 900px"><br>
-                    <p>6) Click on the download link to download the report. All the reports will be downloaded as Excel files.</p>
-                    <p>7) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
+                    <p>This report lists out all the Ashas who have not started the course even once until the end of selected month from their date of registration</p>
+                    <p>Steps to download the reports</p>
+                    <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/app/">https://rchivrreports.in/app/</a>.</p>
+                    <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p><br>
+                    <img src="./images/reportCategory.png" style="max-width: 828px"><br><br><br>
+                    <p>3) Under "Reports" select "Cumulative Inactive Users"</p><br>
+                    <img src="./images/reportsMobile.jpg" style="max-width: 828px"><br><br><br>
+                    <p>4) Then select the Month </p><br>
+                    <img src="./images/reportsMonth.jpg" style="max-width: 828px"><br><br><br>
+                    <p>5) Then select respective State, District and Block</p>
+                    <img src="./images/reportState.png" style="max-width: 828px"><br><br><br>
+                    <p>6) To view the result, press the "Select" button, or to reset it, press "Reset" button</p><br>
+                    <img src="./images/reportsDownload.png" style="max-width: 828px"><br>
+                    <p>7) Click on the download link to download the report. All the reports will be downloaded as Excel files.</p>
+                    <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                 </div>
                 <div data-ng-hide="param!=='arr'">
                     <p style="font-size: 30px"><b>Asha Rejected Records</b></p><br>
-                    <p>1) Under "Reports Category" select "Mobile Academy Reports", then</p><br>
-                    <img src="./images/reportCategory.png" style="max-width: 900px"><br><br><br>
-                    <p>2) Under "Reports" select "Asha Rejected Records"</p><br>
-                    <img src="./images/reportsMobile.jpg" style="max-width: 900px"><br><br><br>
-                    <p>3) Then select the Week </p><br>
-                    <img src="./images/reportsMonth.jpg" style="max-width: 900px"><br><br><br>
-                    <p>4) Then select respective State, District and Block</p>
-                    <img src="./images/reportState.png" style="max-width: 900px"><br><br><br>
-                    <p>5) To view the result, press the "Select" button, or to reset it, press "Reset" button</p><br>
-                    <img src="./images/reportsDownload.png" style="max-width: 900px"><br>
-                    <p>6) Click on the download link to download the report. All the reports will be downloaded as Excel files.</p>
-                    <p>7) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
+                    <p>This report lists out all the Ashas who have been rejected by MOTECH due to any validation in data during registration</p>
+                    <p>Steps to download the reports</p>
+                    <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/app/">https://rchivrreports.in/app/</a>.</p>
+                    <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p><br>
+                    <img src="./images/reportCategory.png" style="max-width: 828px"><br><br><br>
+                    <p>3) Under "Reports" select "Asha Rejected Records"</p><br>
+                    <img src="./images/reportsMobile.jpg" style="max-width: 828px"><br><br><br>
+                    <p>4) Then select the Week </p><br>
+                    <img src="./images/reportsMonth.jpg" style="max-width: 828px"><br><br><br>
+                    <p>5) Then select respective State, District and Block</p>
+                    <img src="./images/reportState.png" style="max-width: 828px"><br><br><br>
+                    <p>6) To view the result, press the "Select" button, or to reset it, press "Reset" button</p><br>
+                    <img src="./images/reportsDownload.png" style="max-width: 828px"><br>
+                    <p>7) Click on the download link to download the report. All the reports will be downloaded as Excel files.</p>
+                    <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                 </div>
 
             </div>

@@ -1,15 +1,14 @@
 <div class="container-fluid" data-ng-controller="kilkariController" style="padding-left: 30px">
-    <div data-ui-view></div>
 
     <div data-ng-hide="flag">
         <h2 class="user-manual-header">Kilkari Reports</h2>
         <div class="user-manual-right-text">
             <!--<p><div data-ng-click="func('abr')"><u>Aggrgate Beneficiary Report</u></div></p>-->
-            <p><div data-ng-click="func('bl')"><u>Beneficiary listen to 25%</u></div></p>
-            <p><div data-ng-click="func('bwd')"><u>beneficiaries who deactivated themselves</u></div></p>
+            <p><div data-ng-click="func('bl')"><u>Listen to <25% this month</u></div></p>
+            <p><div data-ng-click="func('bwd')"><u>Self Deactivation</u></div></p>
             <!--<p><div data-ng-click="func('blr')"><u>Beneficiary listenership report</u></div></p>
             <p><div data-ng-click="func('kcsr')"><u>Kilkari Cumulative Summary report</u></div></p>-->
-            <p><div data-ng-click="func('dfna')"><u>Deactivation for not answering</u></div></p>
+            <p><div data-ng-click="func('dfna')"><u>Deactivated for not answering</u></div></p>
             <p><div data-ng-click="func('dfll')"><u>Deactivated for Low Listenership</u></div></p>
     <!--        <p><div data-ng-click="func('mtr')"><u>Monthly Thematic Report</u></div></p>
             <p><div data-ng-click="func('rlr')"><u>Repeat Listenership report</u></div></p>
@@ -26,9 +25,9 @@
         </div>
     </div>
 
-    <div data-ng-hide="!flag" style="padding: 20px 0px 0 5px">
-        <div><img src="./images/back1.png" data-ng-click="flag=!flag" style="float: left; margin: 15px 10px 0px -12px">
-            <div style="display: inline-block"><b>Kilkari Report</b><br>
+    <div data-ng-hide="!flag" class="user-manual-reports">
+        <div><img src="./images/back1.png" data-ng-click="flag=!flag" class="user-manual-back">
+            <div style="display: inline-block"><span><b>Kilkari Report</b><br>
                 <!--<div data-ng-hide="param!=='abr'" style="display: inline-block" >
                     <p style="font-size: 30px"><b>Aggregate Beneficiary Report</b></p><br>
                     <p>1) Under "Reports Category" select "Kilkari Reports", then</p>
@@ -38,35 +37,41 @@
                 </div>-->
 
                 <div data-ng-hide="param!=='bl'" style="display: inline-block">
-                    <p style="font-size: 30px"><b>Beneficiary listen to 25%</b></p><br>
-                    <p>1) Under "Reports Category" select "Kilkari Reports", then</p><br>
-                    <img src="./images/reportCategory.png" style="max-width: 900px"><br><br><br>
-                    <p>2) Under "Reports" select "Listen to <25% this month"</p><br>
-                    <img src="./images/reportsKilkari.jpg" style="max-width: 900px"><br><br><br>
-                    <p>3) Then select the Month </p><br>
-                    <img src="./images/reportsMonth.jpg" style="max-width: 900px"><br><br><br>
-                    <p>4) Then select respective State, District and Block</p>
-                    <img src="./images/reportState.png" style="max-width: 900px"><br><br><br>
-                    <p>5) To view the result, press the "Select" button, or to reset it, press "Reset" button</p><br>
-                    <img src="./images/reportsDownload.png" style="max-width: 900px"><br>
-                    <p>6) Click on the download link to download the report. All the reports will be downloaded as Excel files.</p>
-                    <p>7) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
+                    <p style="font-size: 30px"><b>Listen to <25% this month</b></p><br>
+                    <p>This report lists out all the beneficiaries who have listened to < 25% content on average, in the calls answered, during the selected month.</p>
+                    <p>Steps to download the reports</p>
+                    <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/app/">https://rchivrreports.in/app/</a>.</p>
+                    <p>2) Select "Kilkari Reports" under "Reports Category"</p><br>
+                    <img src="./images/reportCategory.png" style="max-width: 828px;"><br><br><br>
+                    <p>3) Then select "Listen to <25% this month" under "Reports" </p><br>
+                    <img src="./images/reportsKilkari.jpg" style="max-width: 828px;"><br><br><br>
+                    <p>4) Then select the Month </p><br>
+                    <img src="./images/reportsMonth.jpg" style="max-width: 828px;"><br><br><br>
+                    <p>5) Then select respective State, District and Block</p>
+                    <img src="./images/reportState.png" style="max-width: 828px;;"><br><br><br>
+                    <p>6) To view the result, press the "Select" button, or to reset it, press "Reset" button</p><br>
+                    <img src="./images/reportsDownload.png" style="max-width: 828px;"><br>
+                    <p>7) Click on the download link to download the report. All the reports will be downloaded as Excel files.</p>
+                    <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
 
                 </div>
                 <div data-ng-hide="param!=='bwd'">
-                    <p style="font-size: 30px"><b>beneficiaries who deactivated themselves</b></p><br>
-                    <p>1) Under "Reports Category" select "Kilkari Reports", then</p>
-                    <img src="./images/reportCategory.png" style="max-width: 900px"><br><br><br>
-                    <p>2) Under "Reports" select "Self Deactivation"</p><br>
-                    <img src="./images/reportsKilkari.jpg" style="max-width: 900px"><br><br><br>
-                    <p>3) Then select the Month </p><br>
-                    <img src="./images/reportsMonth.jpg" style="max-width: 900px"><br><br><br>
-                    <p>4) Then select respective State, District and Block</p>
-                    <img src="./images/reportState.png" style="max-width: 900px"><br><br><br>
-                    <p>5) To view the result, press the "Select" button, or to reset it, press "Reset" button</p><br>
-                    <img src="./images/reportsDownload.png" style="max-width: 900px"><br>
-                    <p>6) Click on the download link to download the report. All the reports will be downloaded as Excel files.</p>
-                    <p>7) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
+                    <p style="font-size: 30px"><b>Self Deactivation</b></p><br>
+                    <p>This report lists out all the beneficiaries who have deactivated by themselves in the selected month.</p>
+                    <p>Steps to download the reports</p>
+                    <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/app/">https://rchivrreports.in/app/</a>.</p>
+                    <p>2) Select "Kilkari Reports" under "Reports Category"</p>
+                    <img src="./images/reportCategory.png" style="max-width: 828px"><br><br><br>
+                    <p>3) Then select "Self Deactivation" under "Reports" </p><br>
+                    <img src="./images/reportsKilkari.jpg" style="max-width: 828px"><br><br><br>
+                    <p>4) Then select the Month </p><br>
+                    <img src="./images/reportsMonth.jpg" style="max-width: 828px"><br><br><br>
+                    <p>5) Then select respective State, District and Block</p>
+                    <img src="./images/reportState.png" style="max-width: 828px"><br><br><br>
+                    <p>6) To view the result, press the "Select" button, or to reset it, press "Reset" button</p><br>
+                    <img src="./images/reportsDownload.png" style="max-width: 828px"><br>
+                    <p>7) Click on the download link to download the report. All the reports will be downloaded as Excel files.</p>
+                    <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                 </div>
                 <!--<div data-ng-hide="param!=='blr'">
                     <p style="font-size: 30px"><b>Beneficiary listenership report</b></p><br><br>
@@ -81,36 +86,40 @@
                     <img src="./images/Screenshot5.png" style="max-width: 960px">
                 </div>-->
                 <div data-ng-hide="param!=='dfna'">
-                    <p style="font-size: 30px"><b>Deactivation for not answering</b></p>
+                    <p style="font-size: 30px"><b>Deactivated for not answering</b></p>
                     <p>This report lists out all the Kilkari beneficiaries who were deactivated in the selected month, for not answering a call for 6 weeks continuously.</p>
                     <p>Steps to download the reports</p>
-                    <p>1)  select "Kilkari Reports" under "Reports Category" </p>
-                    <img src="./images/reportCategory.png" style="max-width: 900px"><br><br><br>
-                    <p>2) Then select "Deactivated for not answering" under "Reports" </p><br>
-                    <img src="./images/reportsKilkari.jpg" style="max-width: 900px"><br><br><br>
-                    <p>3) Then select the Month of which the reports are needed</p><br>
-                    <img src="./images/reportsMonth.jpg" style="max-width: 900px"><br><br><br>
-                    <p>4) Then select respective State, District and Block</p>
-                    <img src="./images/reportState.png" style="max-width: 900px"><br><br><br>
-                    <p>5) To download the result, press the "Select" button</p><br>
-                    <img src="./images/reportsDownload.png" style="max-width: 900px"><br>
-                    <p>6) Click on the download link to download the report. All the reports will be downloaded as Excel files.</p>
-                    <p>7) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
+                    <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/app/">https://rchivrreports.in/app/</a>.</p>
+                    <p>2) select "Kilkari Reports" under "Reports Category" </p>
+                    <img src="./images/reportCategory.png" style="max-width: 828px"><br><br><br>
+                    <p>3) Then select "Deactivated for not answering" under "Reports" </p><br>
+                    <img src="./images/reportsKilkari.jpg" style="max-width: 828px"><br><br><br>
+                    <p>4) Then select the Month of which the reports are needed</p><br>
+                    <img src="./images/reportsMonth.jpg" style="max-width: 828px"><br><br><br>
+                    <p>5) Then select respective State, District and Block</p>
+                    <img src="./images/reportState.png" style="max-width: 828px"><br><br><br>
+                    <p>6) To download the result, press the "Select" button</p><br>
+                    <img src="./images/reportsDownload.png" style="max-width: 828px"><br>
+                    <p>7) Click on the download link to download the report. All the reports will be downloaded as Excel files.</p>
+                    <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                 </div>
                 <div data-ng-hide="param!=='dfll'">
-                    <p style="font-size: 30px"><b>Deactivation for Low Listenership</b></p>
-                    <p>1) Select "Kilkari Reports" under "Reports Category"</p>
-                    <img src="./images/reportCategory.png" style="max-width: 900px"><br><br><br>
-                    <p>2) Then  select "Deactivated for Low Listenership" under "Reports"</p><br>
-                    <img src="./images/reportsKilkari.jpg" style="max-width: 900px"><br><br><br>
-                    <p>3) Then select the Month </p><br>
-                    <img src="./images/reportsMonth.jpg" style="max-width: 900px"><br><br><br>
-                    <p>4) Then select respective State, District and Block</p>
-                    <img src="./images/reportState.png" style="max-width: 900px"><br><br><br>
-                    <p>5) To download the result, press the "Select" button</p><br>
-                    <img src="./images/reportsDownload.png" style="max-width: 900px"><br>
-                    <p>6) Click on the download link to download the report. All the reports will be downloaded as Excel files.</p>
-                    <p>7) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
+                    <p style="font-size: 30px"><b>Deactivated for Low Listenership</b></p>
+                    <p>This report lists out all the beneficiaries who have been deactivated due to low listenership (Not answered a single call for last six weeks)</p>
+                    <p>Steps to download the reports</p>
+                    <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/app/">https://rchivrreports.in/app/</a>.</p>
+                    <p>2) Select "Kilkari Reports" under "Reports Category"</p>
+                    <img src="./images/reportCategory.png" style="max-width: 828px"><br><br><br>
+                    <p>3) Then  select "Deactivated for Low Listenership" under "Reports"</p><br>
+                    <img src="./images/reportsKilkari.jpg" style="max-width: 828px"><br><br><br>
+                    <p>4) Then select the Month </p><br>
+                    <img src="./images/reportsMonth.jpg" style="max-width: 828px"><br><br><br>
+                    <p>5) Then select respective State, District and Block</p>
+                    <img src="./images/reportState.png" style="max-width: 828px"><br><br><br>
+                    <p>6) To download the result, press the "Select" button</p><br>
+                    <img src="./images/reportsDownload.png" style="max-width: 828px"><br>
+                    <p>7) Click on the download link to download the report. All the reports will be downloaded as Excel files.</p>
+                    <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                 </div>
                 <!--<div data-ng-hide="param!=='mtr'">
                     <h1>Monthly Thematic Report</h1>
@@ -132,33 +141,39 @@
                 </div>-->
                 <div data-ng-hide="param!=='mrr'">
                     <p style="font-size: 30px"><b>Mother Rejected Records</b></p>
-                    <p>1) Under "Reports Category" select "Kilkari Reports", then</p>
-                    <img src="./images/reportCategory.png" style="max-width: 900px"><br><br><br>
-                    <p>2) Under "Reports" select "Mother Rejected Records"</p><br>
-                    <img src="./images/reportsKilkari.jpg" style="max-width: 900px"><br><br><br>
-                    <p>3) Then select the Month </p><br>
-                    <img src="./images/reportsMonth.jpg" style="max-width: 900px"><br><br><br>
-                    <p>4) Then select respective State, District and Block</p>
-                    <img src="./images/reportState.png" style="max-width: 900px"><br><br><br>
-                    <p>5) To view the result, press the "Select" button, or to reset it, press "Reset" button</p><br>
-                    <img src="./images/reportsDownload.png" style="max-width: 900px"><br>
-                    <p>6) Click on the download link to download the report. All the reports will be downloaded as Excel files.</p>
-                    <p>7) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
+                    <p>This report lists out all the Mother beneficiaries who have been rejected by MOTECH due to any validation in data during registration.</p>
+                    <p>Steps to download the reports</p>
+                    <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/app/">https://rchivrreports.in/app/</a>.</p>
+                    <p>2) Select "Kilkari Reports" under "Reports Category"</p>
+                    <img src="./images/reportCategory.png" style="max-width: 828px"><br><br><br>
+                    <p>3) Then select "Mother Rejected Records" under "Reports" </p><br>
+                    <img src="./images/reportsKilkari.jpg" style="max-width: 828px"><br><br><br>
+                    <p>4) Then select the Month </p><br>
+                    <img src="./images/reportsMonth.jpg" style="max-width: 828px"><br><br><br>
+                    <p>5) Then select respective State, District and Block</p>
+                    <img src="./images/reportState.png" style="max-width: 828px"><br><br><br>
+                    <p>6) To view the result, press the "Select" button, or to reset it, press "Reset" button</p><br>
+                    <img src="./images/reportsDownload.png" style="max-width: 828px"><br>
+                    <p>7) Click on the download link to download the report. All the reports will be downloaded as Excel files.</p>
+                    <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                 </div>
                 <div  data-ng-hide="param!=='crr'" >
                     <p style="font-size: 30px"><b>Child Rejected Records</b></p>
-                    <p>1) Under "Reports Category" select "Kilkari Reports", then</p>
-                    <img src="./images/reportCategory.png" style="max-width: 900px"><br><br><br>
-                    <p>2) Under "Reports" select "Child Rejected Records"</p><br>
-                    <img src="./images/reportsKilkari.jpg" style="max-width: 900px"><br><br><br>
-                    <p>3) Then select the Month </p><br>
-                    <img src="./images/reportsMonth.jpg" style="max-width: 900px"><br><br><br>
-                    <p>4) Then select respective State, District and Block</p>
-                    <img src="./images/reportState.png" style="max-width: 900px"><br><br><br>
-                    <p>5) To view the result, press the "Select" button, or to reset it, press "Reset" button</p><br>
-                    <img src="./images/reportsDownload.png" style="max-width: 900px"><br>
-                    <p>6) Click on the download link to download the report. All the reports will be downloaded as Excel files.</p>
-                    <p>7) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
+                    <p>This report lists out all the Child beneficiaries who have been rejected by MOTECH due to any validation in data during registration.</p>
+                    <p>Steps to download the reports</p>
+                    <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/app/">https://rchivrreports.in/app/</a>.</p>
+                    <p>2) Select "Kilkari Reports" under "Reports Category"</p>
+                    <img src="./images/reportCategory.png" style="max-width: 828px"><br><br><br>
+                    <p>3) Then select "Child Rejected Records" under "Reports" </p><br>
+                    <img src="./images/reportsKilkari.jpg" style="max-width: 828px"><br><br><br>
+                    <p>4) Then select the Month </p><br>
+                    <img src="./images/reportsMonth.jpg" style="max-width: 828px"><br><br><br>
+                    <p>5) Then select respective State, District and Block</p>
+                    <img src="./images/reportState.png" style="max-width: 828px"><br><br><br>
+                    <p>6) To view the result, press the "Select" button, or to reset it, press "Reset" button</p><br>
+                    <img src="./images/reportsDownload.png" style="max-width: 828px"><br>
+                    <p>7) Click on the download link to download the report. All the reports will be downloaded as Excel files.</p>
+                    <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                 </div>
                 <!--<div data-ng-hide="param!=='ku'">
                     <h1>Kilkari Usage</h1>
@@ -172,7 +187,7 @@
                 <div data-ng-hide="param!=='krl'">
                     <h1>Kilkari Repeat Listener</h1>
                 </div>-->
-            </div>
+            </span></div>
         </div>
 
     </div>

@@ -159,7 +159,7 @@
             }
 
             $scope.hovered = function () {
-                $scope.show = true;
+                $scope.show = !$scope.show;
             }
             $scope.removed = function () {
                 $scope.show = false;
