@@ -531,17 +531,19 @@ div.footer{
 	text-align: right;
 }
 
-div.infoPages1, div.infoPages2, div.infoPages3, div.infoPages4 {
+/*<--------------------Static Pages Start ----------------------------->*/
+
+div.infoPages1, div.infoPages2, div.infoPages3, div.infoPages4, div.infoPages5, div.infoPages6, div.infoPages7, div.infoPages8 {
   padding-left : 3%;
   padding-right : 3%;
   text-align : justify;
 }
-div.infoPages1 table, div.infoPages2 table, div.infoPages3 table, div.infoPages4 table {
+div.infoPages1 table, div.infoPages2 table, div.infoPages3 table, div.infoPages4 table, div.infoPages5 table, div.infoPages6 table, div.infoPages7 table, div.infoPages8 table {
   width : 100%;
   text-align : center;
   padding-left : 10px;
 }
-div.infoPages1 h2, div.infoPages2 h2, div.infoPages3 h2, div.infoPages4 h2 {
+div.infoPages1 h2, div.infoPages2 h2, div.infoPages3 h2, div.infoPages4 h2, div.infoPages5 h2, div.infoPages6 h2, div.infoPages7 h2, div.infoPages8 h2 {
   margin-top : 10px;
   padding-left : 15px;
 }
@@ -552,17 +554,43 @@ div.infoPages2 th:nth-child(2) {
   width : 80%;
 }
 div.infoPages3 th:nth-child(2) {
-  width : 73%;
+  width : 74%;
 }
 div.infoPages4 th:nth-child(2) {
   width : 91%;
 }
-th hr.infoHR {
+div.infoPages5 th:nth-child(2) {
+  width : 88%;
+}
+div.infoPages6 th:nth-child(2) {
+  width : 93%;
+}
+div.infoPages7 th:nth-child(2) {
+  width : 76%;
+}
+div.infoPages8 th:nth-child(2) {
+  width : 83%;
+}
+hr.infoHR {
   border-bottom : 1px solid #000000;
   line-height : 3px;
 }
+.aboutImg1 {
+  float : left;
+  width : 300px;
+  margin-right : 25px;
+}
+.aboutImg2 {
+  float : right;
+  width : 300px;
+  margin-left : 25px;
+}
+/*<--------------------Static Pages End ----------------------------->*/
 
 div.uMManagement {
+  padding-left: 30px;
+}
+div.uMWebInfo {
   padding-left: 30px;
 }
 
@@ -805,7 +833,7 @@ a.adisabled:active { text-decoration: none; }
 }
 
 .user-manual div {
-    margin:  0px 4px 13px 36px;
+    margin:  0px 20px 13px 20px;
     padding: 11px 8px 11px 20px;
     font-size : 15px;
     background-color: #f2f2f2;
@@ -863,7 +891,22 @@ a.adisabled:active { text-decoration: none; }
 .faqMargin{
 	margin: 0px 50px 0px -12px;
 
+.faqTitle th:nth-child(2){
+    width : 92%;
 }
+div.faqTitle > div > h4 {
+    padding-left : 35px;
+}
+.faqTitle table {
+  width : 100%;
+  text-align : center;
+  padding-left : 10px;
+}
+.faqTitle h2 {
+  margin-top : 10px;
+  padding-left : 20px;
+}
+
 .blockFAQ{
     background-color: #f2f2f2 !important;
     font-size: 15px;
