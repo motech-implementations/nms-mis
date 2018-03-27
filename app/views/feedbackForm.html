@@ -1,7 +1,7 @@
 <div class="container-fluid feedback-form" data-ng-controller="FeedbackFormController">
     <div data-ui-view></div>
 
-    <div class="row margin-top-40">
+    <div class="row margin-top-40 margin-bottom-40">
         <div class="col-md-4"></div>
         <div class="col-md-4" style="background-color : #f2f2f2">
             <div class="row" style="background-color: #0071bc;height: 30px;color: white;padding-top: 5px;">
@@ -17,7 +17,7 @@
 
                     <div class="form-group row" style="padding-top :15px">
                         <div class=" col-md-1"></div>
-                        <div class=" col-md-3" style="text-align: center;">
+                        <div class=" col-md-3" style="text-align: left;">
                         <label for="name">Name<span style="color : red">*</span></label>
                         </div>
                         <div class=" col-md-8">
@@ -26,7 +26,7 @@
                     </div>
                     <div class="form-group row">
                         <div class=" col-md-1"></div>
-                        <div class=" col-md-3" style="    text-align: center;">
+                        <div class=" col-md-3" style="    text-align:  left;">
                         <label for="subject">Subject<span style="color : red">*</span></label>
                         </div>
                         <div class=" col-md-8">
@@ -35,7 +35,7 @@
                     </div>
                     <div class="form-group row">
                         <div class=" col-md-1"></div>
-                        <div class=" col-md-3" style="    text-align: center;">
+                        <div class=" col-md-3" style="    text-align:  left;">
                         <label for="email">Email<span style="color : red">*</span></label>
                         </div>
                         <div class=" col-md-8">
@@ -44,7 +44,7 @@
                     </div>
                     <div class="form-group row">
                         <div class=" col-md-1"></div>
-                        <div class=" col-md-3" style="    text-align: center;">
+                        <div class=" col-md-3" style="    text-align:  left;">
                         <label>Feedback<span style="color : red">*</span></label>
                         </div>
                         <div class=" col-md-8">
@@ -53,20 +53,22 @@
                     </div>
                     <input type="hidden" name="from" data-ng-model="email.from" value="nsp-reports@beehyv.com">
 
-                    <div class="captcha captcha1" style="text-align: center; padding: 0 0 0 85px;">
-                        <div >
-                        <botdetect-captcha styleName="AncientMosaic"></botdetect-captcha>
-                        </div>
-                        <div id="tapa" style="background-color: #ffffff; height: 10px;width: 250px;position: relative;top: -10px;"></div>
+                    <!--<div class="captcha captcha1" style="text-align: center; padding: 0 0 0 85px;">-->
+                        <!--<div >-->
+                        <!--<botdetect-captcha styleName="AncientMosaic"></botdetect-captcha>-->
+                        <!--</div>-->
+                        <!--<div id="tapa" style="background-color: #ffffff; height: 10px;width: 250px;position: relative;top: -10px;"></div>-->
 
 
-                        <p style="color: #337ab7; padding: 0 15px 0 0;">Please enter the captcha code</p>
+                        <!--<p style="color: #337ab7; padding: 0 15px 0 0;">Please enter the captcha code</p>-->
 
-                        <input type="text" id="captchaCode"  class ="captchaCode" name="captchaCode" data-ng-model="feedback.captchaCode" style="margin: 0 15px 0 0px;" correct-captcha>
+                        <!--<input type="text" id="captchaCode"  class ="captchaCode" name="captchaCode" data-ng-model="feedback.captchaCode" style="margin: 0 15px 0 0px;" correct-captcha>-->
 
-                    </div>
+                    <!--</div>-->
 
-                    <div class="form-group" style="text-align: center; padding: 15px 0px 0px 68px;">
+
+                    <div vc-recaptcha key="'6LfKH08UAAAAAKmEugRBtMKYaagj-CiluRt9h1tK'"data-ng-model="captchaResponse" class="recaptcha" style="padding: 0 0 0 30px;"></div>
+                    <div class="form-group" style="text-align: center; padding: 15px 0px 0px 0px;">
 
                         <button type="submit" class="btn btn-sm btn-primary">Submit</button>
 
