@@ -847,6 +847,15 @@ a.adisabled:active { text-decoration: none; }
 	color: #0071bc;
 }
 
+.user-manual-back{
+	float: left;
+	margin: 15px 10px 0px -12px;
+}
+
+.user-manual-reports{
+	padding: 20px 0px 0 5px;
+}
+
 .faqMargin{
 	margin: 0px 50px 0px -12px;
 
