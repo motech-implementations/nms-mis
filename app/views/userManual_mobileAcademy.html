@@ -23,8 +23,27 @@
                     <img src="./images/reportsMobile.jpg" alt="user manual Cumulative Course Completion" style="max-width: 828px"><br><br><br>
                     <p>4) Then select the Month </p><br>
                     <img src="./images/reportsMonth.jpg" alt="user manual Reports Month" style="max-width: 828px"><br><br><br>
-                    <p>5) Then select respective State, District and Block</p>
-                    <img src="./images/reportState.png" style="max-width: 828px"><br><br><br>
+
+                    <div data-ng-hide="selectRole != 1 && selectRole !=5">
+                        <p>5) Then select respective State, District and Block</p>
+                        <img src="./images/reportState.png" style="max-width: 828px"><br><br><br>
+                    </div>
+
+                    <div data-ng-hide="selectRole != 4">
+                        <p>5) Since this is for block user, location details from  “Selected Block” are already selected.</p>
+                        <img src="./images/usermanual-blocklevel1.jpg" style="max-width: 828px"><br><br><br>
+                    </div>
+
+                    <div data-ng-hide="selectRole != 3 && selectRole != 7">
+                        <p>5) Since this is for District user/admin, Select any/all block from “Selected Block”, under specified "District Block" and "State Block".</p>
+                        <img src="./images/usermanual-blocklevel1.jpg" style="max-width: 828px"><br><br><br>
+                    </div>
+
+                    <div data-ng-hide="selectRole != 2 && selectRole != 6">
+                        <p>5) Since this is for State user. Select any/all block from “Selected Block”, under any district from “District Block” with specified "State Block".</p>
+                        <img src="./images/usermanual-blocklevel1.jpg" style="max-width: 828px"><br><br><br>
+                    </div>
+
                     <p>6) To view the result, press the "Select" button, or to reset it, press "Reset" button</p><br>
                     <img src="./images/reportsDownload.png" style="max-width: 828px"><br>
                     <p>7) Click on the download link to download the report. All the reports will be downloaded as Excel files.</p>
@@ -42,13 +61,31 @@
                     <img src="./images/reportsMobile.jpg" style="max-width: 828px"><br><br><br>
                     <p>4) Then select the Month </p><br>
                     <img src="./images/reportsMonth.jpg" style="max-width: 828px"><br><br><br>
-                    <p>5) Then select respective Circle</p>
-                    <img src="./images/reportState.png" style="max-width: 828px"><br><br><br>
+                    <div data-ng-hide="selectRole != 1 && selectRole !=5">
+                        <p>5) Then select respective Circle from "Selected Circle"</p>
+                        <img src="./images/reportState.png" style="max-width: 828px"><br><br><br>
+                    </div>
+
+                    <div data-ng-hide="selectRole != 4">
+                        <p>5) Since this is for block user, location details from  “Selected Circle” is already selected.</p>
+                        <img src="./images/usermanual-blockcircle.jpg" style="max-width: 828px"><br><br><br>
+                    </div>
+
+                    <div data-ng-hide="selectRole != 3 && selectRole != 7">
+                        <p>5) Since this is for District user/admin, location details from “Selected Circle” is already selected.</p>
+                        <img src="./images/usermanual-blockcircle.jpg" style="max-width: 828px"><br><br><br>
+                    </div>
+
+                    <div data-ng-hide="selectRole != 2 && selectRole != 6">
+                        <p>5) Since this is for State user/admin. location details from “Selected Circle” is already selected.</p>
+                        <img src="./images/usermanual-blockcircle.jpg" style="max-width: 828px"><br><br><br>
+                    </div>
                     <p>6) To view the result, press the "Select" button, or to reset it, press "Reset" button</p><br>
                     <img src="./images/reportsDownload.png" style="max-width: 828px"><br>
                     <p>7) Click on the download link to download the report. All the reports will be downloaded as Excel files.</p>
                     <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                 </div>
+
                 <div data-ng-hide="param!=='ciu'">
                     <p style="font-size: 30px"><b>Cumulative Inactive Users</b></p><br>
                     <p>This report lists out all the Ashas who have not started the course even once until the end of selected month from their date of registration</p>
@@ -60,13 +97,31 @@
                     <img src="./images/reportsMobile.jpg" style="max-width: 828px"><br><br><br>
                     <p>4) Then select the Month </p><br>
                     <img src="./images/reportsMonth.jpg" style="max-width: 828px"><br><br><br>
-                    <p>5) Then select respective State, District and Block</p>
-                    <img src="./images/reportState.png" style="max-width: 828px"><br><br><br>
+                    <div data-ng-hide="selectRole != 1 && selectRole !=5">
+                        <p>5) Then select respective State, District and Block</p>
+                        <img src="./images/reportState.png" style="max-width: 828px"><br><br><br>
+                    </div>
+
+                    <div data-ng-hide="selectRole != 4">
+                        <p>5) Since this is for block user, location details from  “Selected Block” are already selected.</p>
+                        <img src="./images/usermanual-blocklevel1.jpg" style="max-width: 828px"><br><br><br>
+                    </div>
+
+                    <div data-ng-hide="selectRole != 3 && selectRole != 7">
+                        <p>5) Since this is for District user/admin, Select any/all block from “Selected Block”, under specified "District Block" and "State Block".</p>
+                        <img src="./images/usermanual-blocklevel1.jpg" style="max-width: 828px"><br><br><br>
+                    </div>
+
+                    <div data-ng-hide="selectRole != 2 && selectRole != 6">
+                        <p>5) Since this is for State user. Select any/all block from “Selected Block”, under any district from “District Block” with specified "State Block".</p>
+                        <img src="./images/usermanual-blocklevel1.jpg" style="max-width: 828px"><br><br><br>
+                    </div>
                     <p>6) To view the result, press the "Select" button, or to reset it, press "Reset" button</p><br>
                     <img src="./images/reportsDownload.png" style="max-width: 828px"><br>
                     <p>7) Click on the download link to download the report. All the reports will be downloaded as Excel files.</p>
                     <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                 </div>
+
                 <div data-ng-hide="param!=='arr'">
                     <p style="font-size: 30px"><b>Asha Rejected Records</b></p><br>
                     <p>This report lists out all the Ashas who have been rejected by MOTECH due to any validation in data during registration</p>
@@ -78,23 +133,32 @@
                     <img src="./images/reportsMobile.jpg" style="max-width: 828px"><br><br><br>
                     <p>4) Then select the Week </p><br>
                     <img src="./images/reportsMonth.jpg" style="max-width: 828px"><br><br><br>
-                    <p>5) Then select respective State, District and Block</p>
-                    <img src="./images/reportState.png" style="max-width: 828px"><br><br><br>
+                    <div data-ng-hide="selectRole != 1 && selectRole !=5">
+                        <p>5) Then select respective State, District and Block</p>
+                        <img src="./images/reportState.png" style="max-width: 828px"><br><br><br>
+                    </div>
+
+                    <div data-ng-hide="selectRole != 4">
+                        <p>5) Since this is for block user, location details from  “Selected Block” are already selected.</p>
+                        <img src="./images/usermanual-blocklevel.png" style="max-width: 828px"><br><br><br>
+                    </div>
+
+                    <div data-ng-hide="selectRole != 3 && selectRole != 7">
+                        <p>5) Since this is for District user/admin, Select any/all block from “Selected Block”, under specified "District Block" and "State Block".</p>
+                        <img src="./images/reportState.png" style="max-width: 828px"><br><br><br>
+                    </div>
+
+                    <div data-ng-hide="selectRole != 2 && selectRole != 6">
+                        <p>5) Since this is for State user. Select any/all block from “Selected Block”, under any district from “District Block” with specified "State Block".</p>
+                        <img src="./images/usermanual-blocklevel1.jpg" style="max-width: 828px"><br><br><br>
+                    </div>
                     <p>6) To view the result, press the "Select" button, or to reset it, press "Reset" button</p><br>
                     <img src="./images/reportsDownload.png" style="max-width: 828px"><br>
                     <p>7) Click on the download link to download the report. All the reports will be downloaded as Excel files.</p>
                     <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                 </div>
-
             </div>
         </div>
-
     </div>
-
-
-
-
-
-
 </div>
 
