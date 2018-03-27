@@ -17,11 +17,11 @@
             }
 
             $scope.func_UM = function(){
-                $state.go('userManual')
+                $state.go('userManual.websiteInformation')
             }
 
             $scope.func_FAQ = function(){
-                $state.go('faq')
+                $state.go('faq.faqWebsiteInformation')
             }
 
             $scope.func_Feedback = function(){

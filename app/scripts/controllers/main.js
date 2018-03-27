@@ -157,6 +157,9 @@
             $scope.goToHelp = function () {
                 $state.go('Help', {pageNum: 1});
             }
+            $scope.goToSitemap = function () {
+                $state.go('sitemap', {pageNum: 1});
+            }
 
             $scope.hovered = function () {
                 $scope.show = !$scope.show;
