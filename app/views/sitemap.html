@@ -2,32 +2,33 @@
     <div data-ui-view></div>
     <div class="container">
     <div class="row">
-        <div class="col-md-3"></div>
-        <div class="col-md-6">
+        <div class="col-md-1"></div>
+        <div class="col-md-8">
+            <h1>SiteMap</h1>
             <div>
-                <h2 class="sitemap-title">Primary Links</h2>
+                <div class="sitemap-title">Primary Links</div>
                 <div class="sitemap-content">
                     <ul>
-                        <li>About us</li>
-                        <li>About Kilkari</li>
-                        <li>About Mobile Academy </li>
-                        <li>User Manual</li>
-                        <li>FAQ</li>
-                        <li>Feedback</li>
-                        <li>Contact us</li>
+                        <li><span data-ng-click="func_aboutus()">About us</span></li>
+                        <li><span data-ng-click="func_aboutKilkari()">About Kilkari</span></li>
+                        <li><span data-ng-click="func_aboutMA()">About Mobile Academy</span></li>
+                        <li><span data-ng-click="func_UM()">User Manual</span></li>
+                        <li><span data-ng-click="func_FAQ()">FAQ</span></li>
+                        <li><span data-ng-click="func_Feedback()">Feedback Form</span></li>
+                        <li><span data-ng-click="func_Contactus()">Contact us</span></li>
                     </ul>
                 </div>
             </div>
             <div>
-                <h2 class="sitemap-title">Footer</h2>
+                <div class="sitemap-title">Footer</div>
                 <div class="sitemap-content">
                     <ul>
-                        <li>Terms & Conditions</li>
-                        <li>Privacy Policy</li>
-                        <li>Copyright Policy</li>
-                        <li>Hyper Linking Policy</li>
-                        <li>Desclaimer</li>
-                        <li>Help</li>
+                        <li><span data-ng-click="func_tnc()">Terms & Conditions</span></li>
+                        <li><span data-ng-click="func_pp()">Privacy Policy</span></li>
+                        <li><span data-ng-click="func_cp()">Copyright Policy</span></li>
+                        <li><span data-ng-click="func_HLP()">Hyper Linking Policy</span></li>
+                        <li><span data-ng-click="func_desclaimer()">Desclaimer</span></li>
+                        <li><span data-ng-click="func_help()">Help</span></li>
                     </ul>
                 </div>
             </div>
