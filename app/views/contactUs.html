@@ -51,7 +51,6 @@
                 <form name="ContactUsForm" class="form-horizontal"  data-ng-submit="contactUs($event)">
 
                     <div class="form-group row" style="padding-top :25px; padding-bottom: 10px;">
-                        <!--<div class=" col-md-1"></div>-->
                         <div class=" col-md-4" style="text-align: right;">
                             <label for="name">Name<span style="color : red">*</span></label>
                         </div>
@@ -60,7 +59,6 @@
                         </div>
                     </div>
                     <div class="form-group row" style="padding-bottom: 10px;">
-                        <!--<div class=" col-md-1"></div>-->
                         <div class=" col-md-4" style="text-align: right;">
                             <label for="phoneNo">Phone No.<span style="color : red">*</span></label>
                         </div>
@@ -69,7 +67,6 @@
                         </div>
                     </div>
                     <div class="form-group row" style="padding-bottom: 10px;">
-                        <!--<div class=" col-md-1"></div>-->
                         <div class=" col-md-4" style="text-align: right;">
                             <label for="email">Email<span style="color : red">*</span></label>
                         </div>
@@ -78,20 +75,18 @@
                         </div>
                     </div>
                     <div class="form-group row" style="padding-bottom: 0px;">
-                        <!--<div class=" col-md-1"></div>-->
                         <div class=" col-md-4" style="text-align: right;">
                             <label>Message<span style="color : red">*</span></label>
                         </div>
                         <div class=" col-md-8">
                             <textarea name="body" ng-model="email.body" style="    height: 95px;"></textarea>
-                            <!--<input id="feedback" type="textarea" name="feedback" ng-model="feedback" required>-->
                         </div>
                     </div>
 
                     <input type="hidden" name="from" ng-model="email.from" value="nsp-reports@beehyv.com">
                     <input type="hidden" name="subject" ng-model="email.subject" value="Subject For Contact">
 
-                    <div style="text-align: center;    padding-top: 5px;    padding-bottom: 20px; padding: 0 0 0 83px">
+                    <div style="text-align: center;    padding-top: 5px;    padding-bottom: 20px; padding: 0 0 0 83px; margin: 0 0 15px 0px;">
                         <input type="submit" style="background:#0071bc; color:white;border: none;padding: 4px 10px 4px 10px;">
                     </div>
                 </form>
