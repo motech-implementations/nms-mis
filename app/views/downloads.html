@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<div data-ng-app="nmsReports" class=""  data-ng-controller="DownloadsController">
 
-</body>
-</html>
+    <div>Downloads Page</div>
+    <ul>
+        <li ng-repeat=" downloaditem in downloadList">
+           {{downloaditem.id}} : {{downloaditem.name}}
+        </li>
+
+    </ul>
+
+</div>

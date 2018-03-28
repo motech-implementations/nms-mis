@@ -654,8 +654,9 @@ body *{
 }
 
 .grid {
-  width: 95.5%;
-  margin : auto;
+    width: 95.5%;
+    margin : auto;
+	margin-bottom: 40px;
 }
 
 .reportheader{
@@ -1140,7 +1141,7 @@ Use of this source code is governed by an MIT-style license that can be foundin 
 
 .content{
 	height: 50%;
-	margin-bottom: 40px;
+	margin-bottom: 60px;
 }
 .ui-content{
 	height: 50%;
