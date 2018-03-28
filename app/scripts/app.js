@@ -252,7 +252,11 @@ var nmsReportsApp = angular
              .state('faq.faqUserManagement', {
                  url: '/UserManagement',
                  templateUrl: 'views/faqUserManagement.html'
-             });
+             })
+            .state('Downloads', {
+                url: '/Downloads',
+                templateUrl: 'views/downloads.html'
+            });
 
 		$urlRouterProvider
 			.otherwise('/login');

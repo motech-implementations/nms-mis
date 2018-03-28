@@ -10,7 +10,7 @@ h1{
 }
 
 body div.main{
-    min-width: 1300px;
+    min-width: 1200px;
     overflow-x: auto;
 }
 
@@ -795,6 +795,19 @@ md-dialog{
 	margin-bottom: 5%;
 	text-align: center;
 }
+.forgotPasswordLink{
+	color: #c1272d;
+}
+.forgotPasswordLink:hover{
+	color: #c1272d;
+}
+.downloadsLink{
+	color: #FFFFFF;
+}
+.downloadsLink:hover{
+	color: #FFFFFF;
+	text-decoration: none;
+}
 .ui-grid-cell-contents span.ui-grid-invisible{
     display : none;
 }
@@ -1226,4 +1239,7 @@ Use of this source code is governed by an MIT-style license that can be foundin 
 /*-------------Feedback End----------------*/
 .image-content{
 	background-color: #f2f2f2;
+}
+.visitors{
+	height: 15px;
 }

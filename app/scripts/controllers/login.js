@@ -1,7 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("LoginController", ['$rootScope','$scope', '$http', '$location','Captcha','UserFormFactory','vcRecaptchaService', function($rootScope, $scope, $http, $location, Captcha,UserFormFactory){
+		.controller("LoginController", ['$rootScope','$scope','$state', '$http', '$location','Captcha','UserFormFactory','vcRecaptchaService', function($rootScope, $scope,$state, $http, $location, Captcha,UserFormFactory){
 
 
             $scope.w = window.innerWidth;
@@ -47,7 +47,9 @@
             $rootScope.$on('$locationChangeStart', function (event, current, previous) {
                    $scope.preUrl  = previous;
             });
-
+            $scope.goToDownloads = function () {
+                $state.go('Downloads', {pageNum: 1});
+            }
 			$scope.login = function(e){
 			    if($scope.user.username == null || $scope.user.username == ""){
 			        if(UserFormFactory.isInternetExplorer()){
