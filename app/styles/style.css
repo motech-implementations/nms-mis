@@ -23,8 +23,10 @@ body .login .login-header img{
 body .login .login-body{
 	height: 285px;
 }
-body .login .login-body .error{
-	color: #a94442;
+.error{
+	color: #980026;
+	text-align: center;
+	margin: 5px;
 }
 body .login .login-body .checkbox{
 	padding: 0px 0px 20px;
@@ -656,7 +658,7 @@ body *{
 .grid {
     width: 95.5%;
     margin : auto;
-	margin-bottom: 40px;
+
 }
 
 .reportheader{
