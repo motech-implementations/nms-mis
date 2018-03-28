@@ -1015,7 +1015,6 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 SubcenterCounts.setAnsweredCall(SubcenterCount2.getAnsweredAtleastOneCall());
                 KilkariUsageDto.add(SubcenterCounts);
 
-                KilkariUsageDto.add(SubcenterCounts);
                 beneficiariesCalled+=SubcenterCounts.getBeneficiariesCalled();
                 calls_75_100+=SubcenterCounts.getCalls_75_100();
                 calls_50_75+=SubcenterCounts.getCalls_50_75();
