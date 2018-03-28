@@ -1336,19 +1336,20 @@
             };
 
             $window.addEventListener('click', function() {
-                if((($state.current.name)===("reports"))||(($state.current.name)===("MA Cumulative Summary"))||(($state.current.name)===("MA Subscriber"))||
-                               (($state.current.name)===("MA Performance"))||(($state.current.name)===("Kilkari Cumulative Summary"))||
-                               (($state.current.name)===("Kilkari Beneficiary Completion"))||(($state.current.name)===("Kilkari Usage"))||
-                               (($state.current.name)===("Kilkari Call"))||(($state.current.name)===("Kilkari Message Matrix"))||
-                               (($state.current.name)===("Kilkari Listening Matrix"))||(($state.current.name)===("Kilkari Thematic Content"))||
-                               (($state.current.name)===("Kilkari Repeat Listener"))||(($state.current.name)===("Kilkari Subscriber"))||
-                               (($state.current.name)===("Kilkari Message Listenership"))||(($state.current.name)===("Kilkari Aggregate Beneficiary"))){
+
                 return	UserFormFactory.isLoggedIn()
                    .then(function(result){
                     if(!result.data){
-                        $state.go('login', {});
-                        alert("Session Timed out...Please Login Again")
-                   }})}
+                    if((($state.current.name)===("reports"))||(($state.current.name)===("MA Cumulative Summary"))||(($state.current.name)===("MA Subscriber"))||
+                                                   (($state.current.name)===("MA Performance"))||(($state.current.name)===("Kilkari Cumulative Summary"))||
+                                                   (($state.current.name)===("Kilkari Beneficiary Completion"))||(($state.current.name)===("Kilkari Usage"))||
+                                                   (($state.current.name)===("Kilkari Call"))||(($state.current.name)===("Kilkari Message Matrix"))||
+                                                   (($state.current.name)===("Kilkari Listening Matrix"))||(($state.current.name)===("Kilkari Thematic Content"))||
+                                                   (($state.current.name)===("Kilkari Repeat Listener"))||(($state.current.name)===("Kilkari Subscriber"))||
+                                                   (($state.current.name)===("Kilkari Message Listenership"))||(($state.current.name)===("Kilkari Aggregate Beneficiary"))||!(($state.current.name)===("login"))){
+                        UserFormFactory.showAlert("Session Timed out...Please Login Again")
+                        $state.go('login', {});}
+                   }})
               if($scope.sundaysTable)
                 $scope.sundaysTable = false;
             });
@@ -1372,7 +1373,7 @@
                               var temp = exportData[i][j].value;
                                     if((excelHeaderName.reportName == "Kilkari Call" && (j == "7"||j == "8") )||
                                         (excelHeaderName.reportName == "MA Cumulative Summary" && (j == "6"||j == "7"||j == "8"))||
-                                        (excelHeaderName.reportName == "Kilkari Cumulative Summary" && (j == "4") )||
+                                        (excelHeaderName.reportName == "Kilkari Cumulative Summary" && (j == "4"||j == "3") )||
                                         (excelHeaderName.reportName == "Kilkari Thematic Content" && (j == "4") )||
                                         (excelHeaderName.reportName == "Kilkari Beneficiary Completion" && (j == "2") )){
                                          temp = (temp.toFixed(2));
@@ -1405,15 +1406,15 @@
                                        }
                                        else if(ft.displayName == "Total Billable Minutes" && excelHeaderName.reportName == "Kilkari Call"){
                                            var temp = ft.getAggregationValue();
-                                           v = Number(temp.toFixed(2));
+                                           v = (temp.toFixed(2));
                                        }
                                        else if(ft.displayName == "Total Billable Minutes Played" && excelHeaderName.reportName == "Kilkari Cumulative Summary"){
                                            var temp = ft.getAggregationValue();
-                                           v = Number(temp.toFixed(2));
+                                           v = (temp.toFixed(2));
                                        }
                                        else if(ft.displayName == "Number Of Minutes Consumed" && excelHeaderName.reportName == "Kilkari Thematic Content"){
                                            var temp = ft.getAggregationValue();
-                                           v = Number(temp.toFixed(2));
+                                           v = (temp.toFixed(2));
                                        }
                                        else if(ft.displayName == "% Not Started Course" && excelHeaderName.reportName == "MA Cumulative Summary"){
                                           var temp = $scope.gridApi.grid.columns[2].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[4].getAggregationValue()/$scope.gridApi.grid.columns[2].getAggregationValue())*100;
@@ -1595,7 +1596,7 @@
                                                              },
                                                              { field: 'uniqueBeneficiaries', name: 'Total unique beneficiaries',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                              { field: 'successfulCalls', name: 'Total successful calls',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                             { field: 'billableMinutes', name: 'Total billable minutes played', footerCellFilter: 'number:2',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
+                                                             { field: 'billableMinutes',cellFilter: 'number: 2', name: 'Total billable minutes played', footerCellFilter: 'number:2',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
                                                              { field: 'averageDuration',cellFilter: 'number: 2', name: 'Average duration of call', footerCellTemplate: '<div class="ui-grid-cell-contents" >{{grid.columns[4].getAggregationValue()/grid.columns[3].getAggregationValue() | number:2}}</div>',   width:"*", enableHiding: false},
 
             ]

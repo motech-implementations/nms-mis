@@ -96,6 +96,12 @@
 			};
 
             $scope.child = {};
+            $scope.checkLogin = function(){
+                return (($state.current.name=="login" || $state.current.name=="forgotPassword" || !$scope.currentUser));
+            };
+            $scope.checkProfile = function(){
+                return (($state.current.name=="profile" || $state.current.name=="changePassword" ));
+            };
 
 			$scope.getBreadCrumb = function(state){
 				return $scope.breadCrumbDict[state];
@@ -111,15 +117,19 @@
 			};
 
 			$scope.goToLogin = function () {
+                $scope.currentUser = UserFormFactory.getCurrentUser();
                 $state.go('login', {pageNum: 1});
             }
             $scope.goToAboutus = function () {
+                $scope.currentUser = UserFormFactory.getCurrentUser();
                 $state.go('AboutUs', {pageNum: 1});
             }
             $scope.goToKilkari = function () {
+                $scope.currentUser = UserFormFactory.getCurrentUser();
                 $state.go('AboutKilkari', {pageNum: 1});
             }
             $scope.goToMobileA = function () {
+                $scope.currentUser = UserFormFactory.getCurrentUser();
                 $state.go('AboutMA', {pageNum: 1});
             }
             $scope.goToUserManual = function () {
@@ -134,9 +144,11 @@
                 $state.go('faq.faqWebsiteInformation', {pageNum: 1});
             }
             $scope.goToContactUs = function () {
+                $scope.currentUser = UserFormFactory.getCurrentUser();
                 $state.go('contactUs', {pageNum: 1});
             }
             $scope.goToFeedback = function () {
+                $scope.currentUser = UserFormFactory.getCurrentUser();
                 $state.go('feedbackForm', {pageNum: 1});
             }
             $scope.goToPrivacyPolicy = function () {
@@ -231,6 +243,9 @@
 			$scope.activeTab = function(tabName){
 				return ($state.current.name.indexOf(tabName) > -1);
 			};
+            $scope.reportsActive = function(){
+                return (($state.current.name.indexOf('reports') > -1)||($scope.disableCursor()));
+            };
 
 			$scope.disableCursor = function(){
 
