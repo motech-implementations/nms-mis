@@ -829,8 +829,7 @@ md-dialog{
 }
 
 .remove-link{
-pointer-events :none;
-cursor: none;
+cursor: default;
 }
 
 a.adisabled {
