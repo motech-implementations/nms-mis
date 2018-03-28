@@ -36,7 +36,7 @@
                 {"id": 4, "role" : "Block User"},
                 {"id": 5, "role" : "National Admin"},
                 {"id": 6, "role" : "State Admin"},
-                {"id": 7, "role" : "Block Admin"}
+                {"id": 7, "role" : "District Admin"}
 
                 /*{"id": 0, "role" : "Anonymous"},
                 {"id": 1, "role" : "User"},
