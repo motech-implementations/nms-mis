@@ -23,8 +23,10 @@ body .login .login-header img{
 body .login .login-body{
 	height: 285px;
 }
-body .login .login-body .error{
-	color: #a94442;
+.error{
+	color: #980026;
+	text-align: center;
+	margin: 5px;
 }
 body .login .login-body .checkbox{
 	padding: 0px 0px 20px;
@@ -654,8 +656,9 @@ body *{
 }
 
 .grid {
-  width: 95.5%;
-  margin : auto;
+    width: 95.5%;
+    margin : auto;
+
 }
 
 .reportheader{
@@ -826,8 +829,7 @@ md-dialog{
 }
 
 .remove-link{
-pointer-events :none;
-cursor: none;
+cursor: default;
 }
 
 a.adisabled {
@@ -1140,7 +1142,7 @@ Use of this source code is governed by an MIT-style license that can be foundin 
 
 .content{
 	height: 50%;
-	margin-bottom: 40px;
+	margin-bottom: 60px;
 }
 .ui-content{
 	height: 50%;

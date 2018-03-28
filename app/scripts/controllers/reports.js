@@ -1347,7 +1347,15 @@
                                                    (($state.current.name)===("Kilkari Listening Matrix"))||(($state.current.name)===("Kilkari Thematic Content"))||
                                                    (($state.current.name)===("Kilkari Repeat Listener"))||(($state.current.name)===("Kilkari Subscriber"))||
                                                    (($state.current.name)===("Kilkari Message Listenership"))||(($state.current.name)===("Kilkari Aggregate Beneficiary"))||!(($state.current.name)===("login"))){
-                        UserFormFactory.showAlert("Session Timed out...Please Login Again")
+
+                        if(UserFormFactory.isInternetExplorer()){
+                              alert("Session Timed out...Please Login Again")
+                              return;
+                         }
+                        else{
+                              UserFormFactory.showAlert("Session Timed out...Please Login Again")
+                              return;
+                        }
                         $state.go('login', {});}
                    }})
               if($scope.sundaysTable)
