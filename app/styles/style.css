@@ -1221,6 +1221,10 @@ Use of this source code is governed by an MIT-style license that can be foundin 
     padding-top :15px
 }
 
+.FF-txtbox{
+    height: 70px;
+    width : 191px;
+}
 
 
 /*-------------Feedback End----------------*/
