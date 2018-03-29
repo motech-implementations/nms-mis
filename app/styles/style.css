@@ -916,13 +916,8 @@ a.adisabled:active { text-decoration: none; }
 	padding: 20px 0px 0 5px;
 }
 
-.umManagePic{
-    width : 600px;
-    height : 300px;
-}
-.umWebInfoPic{
-    width : 600px;
-    height : 300px;
+.userManualPic{
+    max-width : 832px;
 }
 
 .faqMargin {
