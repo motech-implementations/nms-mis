@@ -307,7 +307,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                         kilkariSubscriberDto.setTotalRecordsRejected(end.getTotalSubscriptionsRejected()- start.getTotalSubscriptionsRejected());
                         kilkariSubscriberDto.setTotalSubscriptionsCompleted(end.getTotalSubscriptionsCompleted()- start.getTotalSubscriptionsCompleted());
                         kilkariSubscriberDto.setTotalBeneficiaryRecordsAccepted(end.getTotalSubscriptionsAccepted()-start.getTotalSubscriptionsAccepted());
-                        kilkariSubscriberDto.setTotalBeneficiaryRecordsEligible(end.getEligibleForSubscriptions()  - start.getEligibleForSubscriptions());
+                        kilkariSubscriberDto.setTotalBeneficiaryRecordsEligible(end.getEligibleForSubscriptions()+end.getTotalSubscriptionsAccepted()  - start.getEligibleForSubscriptions()- start.getTotalSubscriptionsAccepted());
                         kilkariSubscriberDto.setTotalBeneficiaryRecordsReceived(end.getTotalRecordsReceived_MCTS_RCH()-start.getTotalRecordsReceived_MCTS_RCH());
                         kilkariSubscriberDto.setLocationType(end.getLocationType());
                         String locationType = end.getLocationType();

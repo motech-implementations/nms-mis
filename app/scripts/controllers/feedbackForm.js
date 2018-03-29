@@ -8,7 +8,14 @@
 			$scope.feedback = {};
 			$scope.email = {};
 
+            var emailField = $scope.email.to
+            function validateEmail(emailField){
+                    var reg = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                        return reg.test(emailField);
+            }
+
             $scope.feedback = function(e){
+
 
                 if(!$scope.email.name){
                     if(UserFormFactory.isInternetExplorer()){
@@ -43,6 +50,17 @@
                     }
                 }
 
+                if(!validateEmail($scope.email.to)){
+                    if(UserFormFactory.isInternetExplorer()){
+                        alert("Please enter valid email")
+                        return;
+                    }
+                    else{
+                        UserFormFactory.showAlert("Please enter valid email")
+                        return;
+                    }
+                }
+
                 if(!$scope.email.body){
                     if(UserFormFactory.isInternetExplorer()){
                         alert("Please enter the Feedback")
@@ -53,6 +71,7 @@
                         return;
                     }
                 }
+
 
                 if($scope.captchaResponse ==''){
                     if(UserFormFactory.isInternetExplorer()){
@@ -65,6 +84,7 @@
                     }
 
                 }
+
                 else{
                     var formElement = angular.element(e.target);
                     formElement.attr("action", $scope.feedbackUrl);
@@ -72,59 +92,6 @@
                     formElement[0].submit();
 
                 }
-
-
-//                if(!$scope.feedback.captchaCode){
-//                    if(UserFormFactory.isInternetExplorer()){
-//                        alert("Please enter the captchaCode")
-//                        return;
-//                    }
-//                    else{
-//                        UserFormFactory.showAlert("Please enter the captchaCode")
-//                        return;
-//                    }
-//                }
-
-//                var captcha = new Captcha();
-//
-//                // captcha id for validating captcha at server-side
-//                var captchaId = captcha.captchaId;
-//
-//                // captcha code input value for validating captcha at server-side
-//                var captchaCode = angular.uppercase($scope.feedback.captchaCode);
-//
-//                var postData = {
-//                  captchaId: captchaId,
-//                  captchaCode: captchaCode
-//                };
-//
-//                $http({
-//                        method  : 'POST',
-//                        url     : backend_root + 'nms/captcha',
-//                        data    : postData, //forms user object
-//                        headers : {'Content-Type': 'application/json'}
-//                    }).then(function(response){
-//                         if(response.data.success){
-//                             var formElement = angular.element(e.target);
-//                             formElement.attr("action", $scope.feedbackUrl);
-//                             formElement.attr("method", "post");
-//                             formElement[0].submit();
-//                         }
-//                         else{
-//                             if(UserFormFactory.isInternetExplorer()){
-//                                 alert("Incorrect Captcha")
-//                                 return;
-//                             }
-//                             else{
-//                                 UserFormFactory.showAlert("Incorrect Captcha")
-//                                 return;
-//                             }
-//
-//                         }
-//
-//                     })
-
-
 		    }
 
 		}])
