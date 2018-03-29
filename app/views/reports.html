@@ -94,7 +94,7 @@
 					<div class="form-group col-xs-6" data-ng-if = "isAggregateReport()" >
 						<!-- <div> -->
 						<label for="email"> District</label><br>
-						<div class="btn-group" data-ng-class="{loading: districtsLoading, autoSelected, disabled: disableDistrict()&&!(districtsLoading, autoSelected)}" data-uib-dropdown dropdown-append-to-body>
+						<div class="btn-group" data-ng-class="{loading: districtsLoading, autoSelected, disabled: disableDistrict()&&!(districtsLoading || autoSelected)}" data-uib-dropdown dropdown-append-to-body>
 							<button id="btn-append-to-body-7" type="button" class="btn btn-sm btn-default" data-ng-disabled="disableDistrict()" data-uib-dropdown-toggle >
 								<span class="block">
 									<span>{{cropAggregate(district.districtName)}}</span>
@@ -111,7 +111,7 @@
 					<div class="form-group col-xs-4" data-ng-if = "!isAggregateReport()">
 					<!-- <div> -->
 						<label for="email"> District</label><br>
-						<div class="btn-group" data-ng-class="{loading: districtsLoading, autoSelected, disabled: disableDistrict()&&!(districtsLoading, autoSelected)}" data-uib-dropdown dropdown-append-to-body>
+						<div class="btn-group" data-ng-class="{loading: districtsLoading, autoSelected, disabled: disableDistrict()&&!(districtsLoading || autoSelected)}" data-uib-dropdown dropdown-append-to-body>
 							<button id="btn-append-to-body-7" type="button" class="btn btn-sm btn-default" data-ng-disabled="disableDistrict()" data-uib-dropdown-toggle >
 								<span class="block">
 									<span>{{crop(district.districtName)}}</span>
