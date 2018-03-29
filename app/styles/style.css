@@ -1337,7 +1337,8 @@ Use of this source code is governed by an MIT-style license that can be foundin 
 }
 
 .cf-txtAlign{
-    text-align: right;
+    text-align: left;
+    padding: 0 0 0 40px;
 }
 
 .cf-submit{
