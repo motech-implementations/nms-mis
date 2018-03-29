@@ -66,6 +66,7 @@
 	<script type="text/javascript" src="scripts/controllers/helpPage.js"></script>
 
 	<script type="text/javascript" src="scripts/controllers/feedbackForm.js"></script>
+	<script type="text/javascript" src="scripts/controllers/feedbackResponse.js"></script>
 	<script type="text/javascript" src="scripts/controllers/contactUs.js"></script>
 
 	<script type="text/javascript" src="scripts/controllers/userManual.js"></script>
@@ -80,7 +81,8 @@
 	<script type="text/javascript" src="scripts/controllers/faqWebsiteInformation.js"></script>
 	<script type="text/javascript" src="scripts/controllers/faqProfile.js"></script>
 	<script type="text/javascript" src="scripts/controllers/faqUserManagement.js"></script>
-
+	<script type="text/javascript" src="scripts/controllers/sitemap.js"></script>
+	<script type="text/javascript" src="scripts/controllers/downloads.js"></script>
 	<!-- Factory -->
 	<!-- <script type="text/javascript" src="scripts/factories/navbar.js"></script> -->
 	<script type="text/javascript" src="scripts/factories/userTable.js"></script>
@@ -91,6 +93,8 @@
 	<!-- Directives -->
 	<script type="text/javascript" src="scripts/directives/pagination.js"></script>
 
+
+	<script type="text/javascript" src="bower_components/angular-recaptcha/release/angular-recaptcha.js"></script>
 
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
@@ -107,9 +111,9 @@
 <div class="main" >
     <div class='nav-bar'>
         <div class="nav-header">
-            <img alt="Mobile Academy & Kilkari Management & information System" src="images/logo.png">
-            <img alt="National Health Mission" src="images/national_health_mission.png" style="float: right">
-            <img alt="Digital india | power to empower" src="images/digital_logo.png" style="float: right">
+            <img alt="Mobile Academy & Kilkari Management & information System" class="makmis-image" src="images/logo.png">
+            <img alt="National Health Mission" class="nhm-image" src="images/national_health_mission.png" >
+            <img alt="Digital india | power to empower" class="di-image" src="images/digital_logo.png" >
 
         </div>
         <div class="nav-bar-middle"></div>
@@ -118,37 +122,44 @@
 
 			<ul class="nav-menu-left" >
 				<li data-ng-class="{active: activeTab('AboutUs')}">
-					<a  data-ng-click="goToAboutus()" class="pointer">About us</a>
+					<a  data-ng-hide='disableCursor()' data-ng-click="goToAboutus()" class="pointer">About us</a>
+					<a  data-ng-hide='!disableCursor()'  style="cursor: not-allowed">About us</a>
 				</li>
 				<li data-ng-class="{active: activeTab('AboutKilkari')}">
-					<a data-ng-click="goToKilkari()" class="pointer">Kilkari</a>
+					<a data-ng-hide='disableCursor()'data-ng-click="goToKilkari()" class="pointer">Kilkari</a>
+					<a data-ng-hide='!disableCursor()' style="cursor: not-allowed">Kilkari</a>
 				</li>
 				<li  data-ng-class="{active: activeTab('AboutMA')}">
-					<a data-ng-click="goToMobileA()" class="pointer">Mobile Academy</a>
+					<a data-ng-hide='disableCursor()' data-ng-click="goToMobileA()" class="pointer">Mobile Academy</a>
+					<a data-ng-hide='!disableCursor()'  style="cursor: not-allowed">Mobile Academy</a>
 				</li>
 				<li data-ng-class="{active: activeTab('userManual')}">
-					<a  data-ng-click="goToUserManual()" data-ng-if='(userManualBool==true)' class="pointer">User Manual</a>
+					<a  data-ng-hide='disableCursor()' data-ng-click="goToUserManual()"  class="pointer">User Manual</a>
+					<a  data-ng-hide='!disableCursor()'  style="cursor: not-allowed">User Manual</a>
 				</li>
 				<li data-ng-class="{active: activeTab('faq')}">
-					<a  data-ng-click="goToFaq()" class="pointer">FAQ</a>
+					<a  data-ng-hide='disableCursor()' data-ng-click="goToFaq()" class="pointer">FAQ</a>
+					<a  data-ng-hide='!disableCursor()'  style="cursor: not-allowed">FAQ</a>
 				</li>
 			</ul>
 
 			<ul class="nav-menu right ">
-				<li  data-ng-if='(($state.current.name=="login" || $state.current.name=="forgotPassword" || currentUser.default == null))' data-ng-class="{active: activeTab('login')}">
+				<li  data-ng-if='checkLogin()' data-ng-class="{active: activeTab('login')}">
 					<a data-ng-if='(loginBool==true)' class="pointer"  data-ng-click="goToLogin()" >Login</a>
 					<a data-ng-if='!(loginBool==true)'style="cursor: not-allowed" data-ng-click="goToLogin()" >Login</a>
 				</li>
-				<li data-ng-if='!(($state.current.name=="login" || $state.current.name=="forgotPassword" || currentUser.default == null))' >
+				<li data-ng-if='!checkLogin()' data-ng-class="{active: checkProfile()}" >
 					<a  ng-click="hovered()" class="pointer" href>
 						{{currentUser.fullName}}<span  class="caret"></span>
 					</a>
 				</li>
 				<li data-ng-class="{active: activeTab('contactUs')}">
-					<a data-ng-click="goToContactUs()" class="pointer">Contact us</a>
+					<a data-ng-hide='disableCursor()' data-ng-click="goToContactUs()" class="pointer">Contact us</a>
+					<a data-ng-hide='!disableCursor()' style="cursor: not-allowed">Contact us</a>
 				</li>
 				<li data-ng-class="{active: activeTab('feedbackForm')}">
-					<a data-ng-click="goToFeedback()" class="pointer">Feedback</a>
+					<a data-ng-hide='disableCursor()' data-ng-click="goToFeedback()" class="pointer">Feedback</a>
+					<a data-ng-hide='!disableCursor()'  style="cursor: not-allowed">Feedback</a>
 				</li>
 
 			</ul>
@@ -159,7 +170,7 @@
                     <a data-ng-hide='disableCursor()' class="pointer"  data-ng-click="goToUserTable()" >User Management</a>
                     <a data-ng-hide='!disableCursor()' style="cursor:not-allowed" data-ng-click="goToUserTable()" >User Management</a>
                 </li>
-                <li data-ng-class="{active: activeTab('reports')}">
+                <li data-ng-class="{active: reportsActive()}">
                     <a data-ng-hide='disableCursor()' data-ng-click="goToReports()" class="pointer">Reports</a>
                     <a data-ng-hide='!disableCursor()' data-ng-click="goToReports()" style="cursor:not-allowed">Reports</a>
                 </li>
@@ -191,27 +202,46 @@
 
 
 
-    <div class = "login-page content" ng-click="removed()" data-ui-view >
+    <div class = "login-page content"  data-ui-view >
     </div>
 
 	<div class='footer'>
-		<div class="col-lg-4">
-			<div><a data-ng-click="goToTandC()" class="pointer">terms and conditions </a> <span> |</span>
-				<a data-ng-click="goToPrivacyPolicy()" class="pointer">privacy policy</a> <span> |</span>
-				<a data-ng-click="goToCopyrightPolicy()" class="pointer">copyright policy</a></div>
-			<div><a data-ng-click="goToHLPolicy()" class="pointer">hyperlinking policy </a> <span> |</span>
-				<a data-ng-click="goToDisclaimer()" class="pointer">disclaimer</a> <span> |</span>
-				<a data-ng-click="goToHelp()" class="pointer">help</a></div>
+		<div class="col-md-4 col-sm-4 col-xs-4">
+			<div>
+				<a data-ng-hide='disableCursor()' data-ui-sref="TandC" class="pointer">terms and conditions </a>
+				<a data-ng-hide='!disableCursor()'  style="cursor: not-allowed">terms and conditions </a>
+				<span> |</span>
+				<a data-ng-hide='disableCursor()' data-ui-sref="PrivacyPolicy" class="pointer">privacy policy</a>
+				<a data-ng-hide='!disableCursor()'  style="cursor: not-allowed">privacy policy</a>
+				<span> |</span>
+				<a data-ng-hide='disableCursor()' data-ui-sref="CopyrightPolicy" class="pointer">copyright policy</a>
+				<a data-ng-hide='!disableCursor()'  style="cursor: not-allowed">copyright policy</a>
+			</div>
+			<div>
+				<a data-ng-hide='disableCursor()' data-ui-sref="HLPolicy" class="pointer">hyperlinking policy </a>
+				<a data-ng-hide='!disableCursor()'  style="cursor: not-allowed">hyperlinking policy </a>
+				<span> |</span>
+				<a data-ng-hide='disableCursor()' data-ui-sref="Disclaimer" class="pointer">disclaimer</a>
+				<a data-ng-hide='!disableCursor()'  style="cursor: not-allowed">disclaimer</a>
+				<span> |</span>
+				<a data-ng-hide='disableCursor()' data-ui-sref="Help" class="pointer">help</a>
+				<a data-ng-hide='!disableCursor()' style="cursor: not-allowed">help</a>
+				<span> |</span>
+				<a data-ng-hide="disableCursor()" data-ng-click="goToSitemap()" class="pointer">Sitemap</a>
+				<a data-ng-hide="!disableCursor()" style="cursor: not-allowed">sitemap</a>
+
+			</div>
 			<div><!--<span>2017 all rights reserved - Mobile Academy & Kilkari Management and Information system</span>-->
 				<span>Copyright &#169 2015 central information commision</span>
 			</div>
 		</div>
-		<div class="col-lg-5 footer-image">
+		<div class="col-md-5 col-sm-5 col-xs-5 footer-image">
 			<img alt="india-logo" src="images/india-logo.png">
 		</div>
-		<div class="col-lg-3 footer-right">
+		<div class="col-md-3 col-sm-3 col-xs-3 footer-right">
 			<div>last updated</div>
-			<div>Visitors: <hit-counter style="background-color: #a4574c;color: white"></hit-counter></div>
+			<div>Visitors: <!--<hit-counter style="background-color: #a4574c;color: white"></hit-counter></div>-->
+				<img src='https://www.counter12.com/img-y1ZZZZDZD6BZy4C0-3.gif' class="visitors" alt='web counter free'><script type='text/javascript' src='https://www.counter12.com/ad.js?id=y1ZZZZDZD6BZy4C0'></script></div>
 			<div>Dt:  {{date | date:'medium'}}</div>
 		</div>
 

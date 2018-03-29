@@ -9,7 +9,7 @@
  * Main module of the application.
  */
 var nmsReportsApp = angular
-	.module('nmsReports', ['ui.bootstrap', 'ui.validate', 'ngMessages', 'ui.router', 'ui.grid', 'ngMaterial', 'BotDetectCaptcha','ng.deviceDetector','ui.grid.exporter', 'ngStorage','ngAnimate','hitcounter'])
+	.module('nmsReports', ['ui.bootstrap', 'ui.validate', 'ngMessages', 'ui.router', 'ui.grid', 'ngMaterial', 'BotDetectCaptcha','ng.deviceDetector','ui.grid.exporter', 'ngStorage','ngAnimate','hitcounter','vcRecaptcha'])
 	.run( ['$rootScope', '$state', '$stateParams',
 		function ($rootScope, $state, $stateParams) {
 			$rootScope.$state = $state;
@@ -146,9 +146,19 @@ var nmsReportsApp = angular
             	templateUrl: 'views/feedbackForm.html'
             })
 
+            .state('feedbackResponse',{
+                url: '/feedbackResponse',
+                templateUrl: 'views/feedbackResponse.html'
+            })
+
             .state('contactUs', {
                  url: '/contactUs',
                  templateUrl: 'views/contactUs.html'
+            })
+
+            .state('sitemap', {
+                 url: '/sitemap',
+                 templateUrl: 'views/sitemap.html'
             })
 
             .state('AboutUs', {
@@ -242,7 +252,11 @@ var nmsReportsApp = angular
              .state('faq.faqUserManagement', {
                  url: '/UserManagement',
                  templateUrl: 'views/faqUserManagement.html'
-             });
+             })
+            .state('Downloads', {
+                url: '/Downloads',
+                templateUrl: 'views/downloads.html'
+            });
 
 		$urlRouterProvider
 			.otherwise('/login');

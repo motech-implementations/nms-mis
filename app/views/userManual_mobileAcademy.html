@@ -1,7 +1,6 @@
 <div class="container-fluid" data-ng-controller="mobileAcademyController" style="padding-left: 30px">
-    <div data-ui-view></div>
     <div data-ng-hide="flag">
-        <h2 style="font-size: 24px;color: #333333">Mobile Academy Reports</h2>
+        <h2 class="user-manual-header">Mobile Academy Reports</h2>
         <div style="color: #0071bc; font-size: 16px">
             <p><div data-ng-click="func('ccc')"><u>Cumulative Course Completion</u></div></p>
             <p><div data-ng-click="func('cwau')"><u>Circle wise Anonymous Users</u></div></p>
@@ -10,36 +9,175 @@
         </div>
     </div>
 
-    <div data-ng-hide="!flag" style="padding: 20px 0px 0 5px">
-        <div><img src="./images/back1.png" data-ng-click="flag=!flag" style="float: left; margin: 15px 10px 0px -12px">
+    <div data-ng-hide="!flag" class="user-manual-reports">
+        <div><img src="./images/back1.png" data-ng-click="flag=!flag" class="user-manual-back">
             <div style="display: inline-block"><b>Mobile Academy Reports</b><br>
                 <div data-ng-hide="param!=='ccc'" style="display: inline-block" >
                     <p style="font-size: 30px"><b>Cumulative Course Completion</b></p><br>
-                    <img src="./images/Screenshot1.png" style="max-width: 900px">
+                    <p>This report is generated from the launch of service in the state till the end of selected month </p>
+                    <p>Steps to download the reports</p>
+                    <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/app/">https://rchivrreports.in/app/</a>.</p>
+                    <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p><br>
+                    <img src="./images/reportsCategory.png" alt="user Manual Mobile Academy Reports" style="max-width: 828px"><br><br><br>
+                    <p>3) Under "Reports" select "Cumulative Course Completion"</p><br>
+                    <img src="./images/r_stateAdmin_ma.png" alt="user manual Cumulative Course Completion" style="max-width: 828px"><br><br><br>
+                    <p>4) Then select the Month </p><br>
+                    <img src="./images/reportsMonth.png" alt="user manual Reports Month" style="max-width: 828px"><br><br><br>
+
+                    <div data-ng-hide="selectRole != 1 && selectRole !=5"><!--National User-->
+                        <p>5) Then select respective State, District and Block</p>
+                        <img src="./images/reportState1.png" style="max-width: 828px"><br><br><br>
+                        <img src="./images/reportdistrict.png" style="max-width: 828px"><br><br><br>
+                        <img src="./images/reportblock.png" style="max-width: 828px"><br><br><br>
+
+                    </div>
+
+                    <div data-ng-hide="selectRole != 4">
+                        <p>5) Since this is for block user, location details from  “Selected Block” are already selected.</p>
+                        <img src="./images/usermanual-blocklevel1.jpg" style="max-width: 828px"><br><br><br>
+                    </div>
+
+                    <div data-ng-hide="selectRole != 3 && selectRole != 7">
+                        <p>5) Since this is for District user/admin, Select any/all block from “Selected Block”, under specified "District Block" and "State Block".</p>
+                        <img src="./images/reportDistrictBlock.png" style="max-width: 828px"><br><br><br>
+                    </div>
+
+                    <div data-ng-hide="selectRole != 2 && selectRole != 6">
+                        <p>5) For State users, select any/all block from “Selected Block”, under any district from “District Block” with specified "State Block".</p>
+                        <img src="./images/reportStateDistrict.png" style="max-width: 828px"><br><br><br>
+                        <img src="./images/reportStateblock.png" style="max-width: 828px"><br><br><br>
+                    </div>
+
+                    <p>6) To view the result, press the "Select" button, or to reset it, press "Reset" button</p><br>
+                    <img src="./images/submit.png" style="max-width: 828px"><br>
+                    <p>7) Click on the download link to download the report. All the reports will be downloaded as Excel files.</p>
+                    <img src="./images/ma-download1.png" style="max-width: 828px"><br>
+                    <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
+                    <img src="./images/reset.png" style="max-width: 828px"><br>
                 </div>
 
                 <div data-ng-hide="param!=='cwau'" style="display: inline-block">
                     <p style="font-size: 30px"><b>Circle wise Anonymous Users</b></p><br>
-                    <img src="./images/Screenshot2.png" style="max-width: 960px">
+                    <p>This is a monthly report which lists out all the Mobile numbers that called from a specific circle in the selected month.</p>
+                    <p>Steps to download the reports</p>
+                    <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/app/">https://rchivrreports.in/app/</a>.</p>
+                    <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p><br>
+                    <img src="./images/reportsCategory.png" style="max-width: 828px"><br><br><br>
+                    <p>3) Under "Reports" select "Circle wise Anonymous Users"</p><br>
+                    <img src="./images/r_stateAdmin_ma.png" style="max-width: 828px"><br><br><br>
+                    <p>4) Then select the Month </p><br>
+                    <img src="./images/macwau_month.png" style="max-width: 828px"><br><br><br>
+                    <div data-ng-hide="selectRole != 1 && selectRole !=5">
+                        <p>5) Then select respective Circle from "Selected Circle"</p>
+                        <img src="./images/macwau_circle.png" style="max-width: 828px"><br><br><br>
+
+                    </div>
+
+                    <div data-ng-hide="selectRole != 4">
+                        <p>5) Since this is for block user, location details from  “Selected Circle” is already selected.</p>
+                        <img src="./images/circle_strict.png" style="max-width: 828px"><br><br><br>
+                    </div>
+
+                    <div data-ng-hide="selectRole != 3 && selectRole != 7">
+                        <p>5) Since this is for District user/admin, location details from “Selected Circle” is already selected.</p>
+                        <img src="./images/circle_strict.png" style="max-width: 828px"><br><br><br>
+                    </div>
+
+                    <div data-ng-hide="selectRole != 2 && selectRole != 6">
+                        <p>5) For State users/admin. location details from “Selected Circle” are selected from that state.</p>
+                        <img src="./images/Circle_StateAdmin_Ma.png" style="max-width: 828px"><br><br><br>
+                    </div>
+                    <p>6) To view the result, press the "Select" button, or to reset it, press "Reset" button</p><br>
+                    <img src="./images/circle_submit.png" style="max-width: 828px"><br>
+                    <p>7) Click on the download link to download the report. All the reports will be downloaded as Excel files.</p>
+                    <img src="./images/circle_download.png" style="max-width: 828px"><br>
+                    <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
+                    <img src="./images/circle_reset.png" style="max-width: 828px"><br>
                 </div>
+
                 <div data-ng-hide="param!=='ciu'">
                     <p style="font-size: 30px"><b>Cumulative Inactive Users</b></p><br>
-                    <img src="./images/Screenshot3.png" style="max-width: 960px">
+                    <p>The report lists out the Ashas who have not started the course even once until the end of selected month from their date of registration</p>
+                    <p>Steps to download the reports</p>
+                    <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/app/">https://rchivrreports.in/app/</a>.</p>
+                    <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p><br>
+                    <img src="./images/reportsCategory.png" style="max-width: 828px"><br><br><br>
+                    <p>3) Under "Reports" select "Cumulative Inactive Users"</p><br>
+                    <img src="./images/r_stateAdmin_ma.png" style="max-width: 828px"><br><br><br>
+                    <p>4) Then select the Month </p><br>
+                    <img src="./images/reportsMonth.png" style="max-width: 828px"><br><br><br>
+                    <div data-ng-hide="selectRole != 1 && selectRole !=5">
+                        <p>5) Then select respective State, District and Block</p>
+                        <img src="./images/reportState.png" style="max-width: 828px"><br><br><br>
+                        <img src="./images/reportdistrict.png" style="max-width: 828px"><br><br><br>
+                        <img src="./images/reportblock.png" style="max-width: 828px"><br><br><br>
+                    </div>
+
+                    <div data-ng-hide="selectRole != 4">
+                        <p>5) Since this is for block user, location details from  “Selected Block” are already selected.</p>
+                        <img src="./images/usermanual-blocklevel1.jpg" style="max-width: 828px"><br><br><br>
+                    </div>
+
+                    <div data-ng-hide="selectRole != 3 && selectRole != 7">
+                        <p>5) Since this is for District user/admin, Select any/all block from “Selected Block”, under specified "District Block" and "State Block".</p>
+                        <img src="./images/reportDistrictBlock.jpg" style="max-width: 828px"><br><br><br>
+                    </div>
+
+                    <div data-ng-hide="selectRole != 2 && selectRole != 6">
+                        <p>5) For State users, select any/all block from “Selected Block”, under any district from “District Block” with specified "State Block".</p>
+                        <img src="./images/reportStateDistrict.png" style="max-width: 828px"><br><br><br>
+                        <img src="./images/reportStateblock.png" style="max-width: 828px"><br><br><br>
+                    </div>
+                    <p>6) To view the result, press the "Select" button, or to reset it, press "Reset" button</p><br>
+                    <img src="./images/submit.png" style="max-width: 828px"><br>
+                    <p>7) Click on the download link to download the report. All the reports will be downloaded as Excel files.</p>
+                    <img src="./images/ma-download3.png" style="max-width: 828px"><br>
+                    <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
+                    <img src="./images/reset.png" style="max-width: 828px"><br>
                 </div>
+
                 <div data-ng-hide="param!=='arr'">
                     <p style="font-size: 30px"><b>Asha Rejected Records</b></p><br>
-                    <img src="./images/Screenshot4.png" style="max-width: 960px">
-                </div>
+                    <p>This report lists out all the Ashas who have been rejected by MOTECH due to any validation in data during registration</p>
+                    <p>Steps to download the reports</p>
+                    <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/app/">https://rchivrreports.in/app/</a>.</p>
+                    <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p><br>
+                    <img src="./images/reportsCategory.png" style="max-width: 828px"><br><br><br>
+                    <p>3) Under "Reports" select "Asha Rejected Records"</p><br>
+                    <img src="./images/r_stateAdmin_ma.png" style="max-width: 828px"><br><br><br>
+                    <p>4) Then select the Week </p><br>
+                    <img src="./images/reportsMonth.png" style="max-width: 828px"><br><br><br>
+                    <div data-ng-hide="selectRole != 1 && selectRole !=5">
+                        <p>5) Then select respective State, District and Block</p>
+                        <img src="./images/reportState.png" style="max-width: 828px"><br><br><br>
+                        <img src="./images/reportdistrict.png" style="max-width: 828px"><br><br><br>
+                        <img src="./images/reportblock.png" style="max-width: 828px"><br><br><br>
+                    </div>
 
+                    <div data-ng-hide="selectRole != 4">
+                        <p>5) Since this is for block user, location details from  “Selected Block” are already selected.</p>
+                        <img src="./images/usermanual-blocklevel.png" style="max-width: 828px"><br><br><br>
+                    </div>
+
+                    <div data-ng-hide="selectRole != 3 && selectRole != 7">
+                        <p>5) Since this is for District user/admin, Select any/all block from “Selected Block”, under specified "District Block" and "State Block".</p>
+                        <img src="./images/reportDistrictBlock.png" style="max-width: 828px"><br><br><br>
+                    </div>
+
+                    <div data-ng-hide="selectRole != 2 && selectRole != 6">
+                        <p>5) For State users, select any/all block from “Selected Block”, under any district from “District Block” with specified "State Block".</p>
+                        <img src="./images/reportStateDistrict.png" style="max-width: 828px"><br><br><br>
+                        <img src="./images/reportStateblock.png" style="max-width: 828px"><br><br><br>
+                    </div>
+                    <p>6) To view the result, press the "Select" button, or to reset it, press "Reset" button</p><br>
+                    <img src="./images/submit.png" style="max-width: 828px"><br>
+                    <p>7) Click on the download link to download the report. All the reports will be downloaded as Excel files.</p>
+                    <img src="./images/ma-download4.png" style="max-width: 828px"><br>
+                    <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
+                    <img src="./images/reset.png" style="max-width: 828px"><br>
+                </div>
             </div>
         </div>
-
     </div>
-
-
-
-
-
-
 </div>
 

@@ -39,7 +39,10 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
     private RoleDao roleDao;
 
     @Autowired
-    private SubcenterDao subcenterDao;
+    private HealthFacilityDao healthFacilitydao;
+
+    @Autowired
+    private HealthSubFacilityDao healthSubFacilityDao;
 
     @Autowired
     private AggregateCumulativekilkariDao aggregateCumulativekilkariDao;
@@ -119,7 +122,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         } else if(reportRequest.getBlockId() == 0){
             cumulativeSummaryReport.addAll(this.getCumulativeSummaryKilkariReport(reportRequest.getDistrictId(),"Block",toDate));
         } else {
-            cumulativeSummaryReport.addAll(this.getCumulativeSummaryKilkariReport(reportRequest.getBlockId(),"Subcenter",toDate));
+            cumulativeSummaryReport.addAll(this.getCumulativeSummaryKilkariReport(reportRequest.getBlockId(),"Subcentre",toDate));
         }
 
 
@@ -142,8 +145,9 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             if(locationType.equalsIgnoreCase("Block")){
                 summaryDto1.setLocationName(blockDao.findByblockId(a.getLocationId().intValue()).getBlockName());
             }
-            if(locationType.equalsIgnoreCase("Subcenter")){
-                summaryDto1.setLocationName(subcenterDao.findBySubcenterId(a.getLocationId().intValue()).getSubcenterName());
+            if(locationType.equalsIgnoreCase("Subcentre")){
+                summaryDto1.setLocationName(healthSubFacilityDao.findByHealthSubFacilityId(a.getLocationId().intValue()).getHealthSubFacilityName());
+                summaryDto1.setLink(true);
             }
             if (locationType.equalsIgnoreCase("DifferenceState")) {
                 summaryDto1.setLocationName("No District");
@@ -154,10 +158,10 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 summaryDto1.setLink(true);
             }
             if (locationType.equalsIgnoreCase("DifferenceBlock")) {
-                summaryDto1.setLocationName("No Subcenter");
+                summaryDto1.setLocationName("No Subcentre");
                 summaryDto1.setLink(true);
             }
-            if(a.getId() != 0 && !locationType.equalsIgnoreCase("DifferenceState")){
+            if((summaryDto1.getAverageDuration()+Math.round(summaryDto1.getBillableMinutes()*100)+summaryDto1.getSuccessfulCalls()+summaryDto1.getUniqueBeneficiaries())!=0 && !locationType.equalsIgnoreCase("DifferenceState")){
                 summaryDto.add(summaryDto1);
             }
         }
@@ -216,13 +220,18 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             noBlockCount.setLocationId((long)-1);
             CumulativeSummary.add(noBlockCount);
         } else {
-            List<Subcenter> subcenters = subcenterDao.getSubcentersOfBlock(locationId);
+            List<HealthFacility> healthFacilities = healthFacilitydao.findByHealthBlockId(locationId);
+            List<HealthSubFacility> subcenters = new ArrayList<>();
+            for(HealthFacility hf :healthFacilities){
+                subcenters.addAll(healthSubFacilityDao.findByHealthFacilityId(hf.getHealthFacilityId()));
+            }
+
             KilkariCalls blockCounts = kilkariCallReportDao.getKilkariCallreport(locationId,"block",toDate);
             Long uniqueBeneficiaries = (long)0;
             Long successfulCalls = (long)0;
             Double billableMinutes = 0.00;
-            for(Subcenter s: subcenters){
-                KilkariCalls SubcenterCount = kilkariCallReportDao.getKilkariCallreport(s.getSubcenterId(),locationType,toDate);
+            for(HealthSubFacility s: subcenters){
+                KilkariCalls SubcenterCount = kilkariCallReportDao.getKilkariCallreport(s.getHealthSubFacilityId(),locationType,toDate);
                 CumulativeSummary.add(SubcenterCount);
                 uniqueBeneficiaries+=SubcenterCount.getUniqueBeneficiaries();
                 successfulCalls+=SubcenterCount.getSuccessfulCalls();
@@ -281,8 +290,8 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             kilkariSubscriberReportStart.addAll(getKilkariSubscriberCount(reportRequest.getDistrictId(),"Block",fromDate));
             kilkariSubscriberReportEnd.addAll(getKilkariSubscriberCount(reportRequest.getDistrictId(),"Block",toDate));
         } else {
-            kilkariSubscriberReportStart.addAll(getKilkariSubscriberCount(reportRequest.getBlockId(),"Subcenter",fromDate));
-            kilkariSubscriberReportEnd.addAll(getKilkariSubscriberCount(reportRequest.getBlockId(),"Subcenter",toDate));
+            kilkariSubscriberReportStart.addAll(getKilkariSubscriberCount(reportRequest.getBlockId(),"Subcentre",fromDate));
+            kilkariSubscriberReportEnd.addAll(getKilkariSubscriberCount(reportRequest.getBlockId(),"Subcentre",toDate));
         }
 
         if(!(kilkariSubscriberReportEnd.isEmpty()) && !(kilkariSubscriberReportStart.isEmpty())){
@@ -298,7 +307,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                         kilkariSubscriberDto.setTotalRecordsRejected(end.getTotalSubscriptionsRejected()- start.getTotalSubscriptionsRejected());
                         kilkariSubscriberDto.setTotalSubscriptionsCompleted(end.getTotalSubscriptionsCompleted()- start.getTotalSubscriptionsCompleted());
                         kilkariSubscriberDto.setTotalBeneficiaryRecordsAccepted(end.getTotalSubscriptionsAccepted()-start.getTotalSubscriptionsAccepted());
-                        kilkariSubscriberDto.setTotalBeneficiaryRecordsEligible(end.getEligibleForSubscriptions()  - start.getEligibleForSubscriptions());
+                        kilkariSubscriberDto.setTotalBeneficiaryRecordsEligible(end.getEligibleForSubscriptions()+end.getTotalSubscriptionsAccepted()  - start.getEligibleForSubscriptions()- start.getTotalSubscriptionsAccepted());
                         kilkariSubscriberDto.setTotalBeneficiaryRecordsReceived(end.getTotalRecordsReceived_MCTS_RCH()-start.getTotalRecordsReceived_MCTS_RCH());
                         kilkariSubscriberDto.setLocationType(end.getLocationType());
                         String locationType = end.getLocationType();
@@ -311,8 +320,9 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                         if(locationType.equalsIgnoreCase("Block")){
                             kilkariSubscriberDto.setLocationName(blockDao.findByblockId(end.getLocationId().intValue()).getBlockName());
                         }
-                        if(locationType.equalsIgnoreCase("Subcenter")){
-                            kilkariSubscriberDto.setLocationName(subcenterDao.findBySubcenterId(end.getLocationId().intValue()).getSubcenterName());
+                        if(locationType.equalsIgnoreCase("Subcentre")){
+                            kilkariSubscriberDto.setLocationName(healthSubFacilityDao.findByHealthSubFacilityId(end.getLocationId().intValue()).getHealthSubFacilityName());
+                            kilkariSubscriberDto.setLink(true);
                         }
                         if (locationType.equalsIgnoreCase("DifferenceState")) {
                             kilkariSubscriberDto.setLocationName("No District Count");
@@ -326,7 +336,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
 
                         }
                         if (locationType.equalsIgnoreCase("DifferenceBlock")) {
-                            kilkariSubscriberDto.setLocationName("No Subcenter Count");
+                            kilkariSubscriberDto.setLocationName("No Subcentre Count");
                             kilkariSubscriberDto.setLink(true);
                             kilkariSubscriberDto.setLocationId((long)-1);
 
@@ -413,7 +423,11 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             kilkariNoBlockCount.setLocationId((long)-locationId);
             kilkariSubscribersCountList.add(kilkariNoBlockCount);
         } else {
-            List<Subcenter> subcenters = subcenterDao.getSubcentersOfBlock(locationId);
+            List<HealthFacility> healthFacilities = healthFacilitydao.findByHealthBlockId(locationId);
+            List<HealthSubFacility> subcenters = new ArrayList<>();
+            for(HealthFacility hf :healthFacilities){
+                subcenters.addAll(healthSubFacilityDao.findByHealthFacilityId(hf.getHealthFacilityId()));
+            }
             KilkariSubscriber blockCounts = kilkariSubscriberReportDao.getKilkariSubscriberCounts(locationId, "block", date);
             Integer totalRecordsReceived_MCTS_RCH = 0;
             Integer eligibleForSubscriptions = 0;
@@ -421,8 +435,8 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             Integer totalSubscriptionsAccepted = 0;
             Integer totalSubscriptionsRejected = 0;
             Integer totalSubscriptions = 0;
-            for(Subcenter Subcenter : subcenters){
-                KilkariSubscriber kilkariSubcenterCount = kilkariSubscriberReportDao.getKilkariSubscriberCounts(Subcenter.getSubcenterId(),locationType, date);
+            for(HealthSubFacility Subcenter : subcenters){
+                KilkariSubscriber kilkariSubcenterCount = kilkariSubscriberReportDao.getKilkariSubscriberCounts(Subcenter.getHealthSubFacilityId(),locationType, date);
                 kilkariSubscribersCountList.add(kilkariSubcenterCount);
                 totalSubscriptions += kilkariSubcenterCount.getTotalSubscriptions();
                 totalRecordsReceived_MCTS_RCH += kilkariSubcenterCount.getTotalRecordsReceived_MCTS_RCH();
@@ -482,7 +496,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         } else if (reportRequest.getBlockId() == 0) {
             aggregateCumulativeBeneficiaryList.addAll(this.getCumulativeBeneficiary(reportRequest.getDistrictId(), "Block", fromDate));
         } else {
-            aggregateCumulativeBeneficiaryList.addAll(this.getCumulativeBeneficiary(reportRequest.getBlockId(), "Subcenter", fromDate));
+            aggregateCumulativeBeneficiaryList.addAll(this.getCumulativeBeneficiary(reportRequest.getBlockId(), "Subcentre", fromDate));
         }
 
 
@@ -512,8 +526,9 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 if (locationType.equalsIgnoreCase("Block")) {
                     summaryDto1.setLocationName(blockDao.findByblockId(a.getLocationId().intValue()).getBlockName());
                 }
-                if (locationType.equalsIgnoreCase("Subcenter")) {
-                    summaryDto1.setLocationName(subcenterDao.findBySubcenterId(a.getLocationId().intValue()).getSubcenterName());
+                if (locationType.equalsIgnoreCase("Subcentre")) {
+                    summaryDto1.setLocationName(healthSubFacilityDao.findByHealthSubFacilityId(a.getLocationId().intValue()).getHealthSubFacilityName());
+                    summaryDto1.setLink(true);
                 }
                 if (locationType.equalsIgnoreCase("DifferenceState")) {
                     summaryDto1.setLocationName("No District");
@@ -524,7 +539,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     summaryDto1.setLink(true);
                 }
                 if (locationType.equalsIgnoreCase("DifferenceBlock")) {
-                    summaryDto1.setLocationName("No Subcenter");
+                    summaryDto1.setLocationName("No Subcentre");
                     summaryDto1.setLink(true);
                 }
                 if (a.getId() != 0 && !locationType.equalsIgnoreCase("DifferenceState")) {
@@ -689,7 +704,11 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             noBlockCount.setLocationId((long)-1);
             CumulativeBeneficiary.add(noBlockCount);
         } else {
-            List<Subcenter> subcenters = subcenterDao.getSubcentersOfBlock(locationId);
+            List<HealthFacility> healthFacilities = healthFacilitydao.findByHealthBlockId(locationId);
+            List<HealthSubFacility> subcenters = new ArrayList<>();
+            for(HealthFacility hf :healthFacilities){
+                subcenters.addAll(healthSubFacilityDao.findByHealthFacilityId(hf.getHealthFacilityId()));
+            }
             AggregateCumulativeBeneficiary blockCounts1 = aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary((long)locationId,"block",toDate);
             KilkariUsage blockCounts2=(kilkariUsageDao.getUsage(locationId,"block",toDate));
             KilkariMessageListenership blockCounts3 = kilkariMessageListenershipReportDao.getListenerData(locationId,"block",toDate);
@@ -704,10 +723,10 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             Long childCompletion = (long)0;
             Long calledInbox = (long)0;
             Long joinedSubscription = (long)0;
-            for(Subcenter s: subcenters){
-                AggregateCumulativeBeneficiary subcenterCount1 = aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary((long)s.getSubcenterId(),locationType,toDate);
-                KilkariUsage subcenterCount2=(kilkariUsageDao.getUsage(s.getSubcenterId(),locationType,toDate));
-                KilkariMessageListenership subcenterCount3 = kilkariMessageListenershipReportDao.getListenerData(s.getSubcenterId(),locationType,toDate);
+            for(HealthSubFacility s: subcenters){
+                AggregateCumulativeBeneficiary subcenterCount1 = aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary((long)s.getHealthSubFacilityId(),locationType,toDate);
+                KilkariUsage subcenterCount2=(kilkariUsageDao.getUsage(s.getHealthSubFacilityId(),locationType,toDate));
+                KilkariMessageListenership subcenterCount3 = kilkariMessageListenershipReportDao.getListenerData(s.getHealthSubFacilityId(),locationType,toDate);
                 KilkariAggregateBeneficiariesDto subCenterCount = new KilkariAggregateBeneficiariesDto();
                 subCenterCount.setJoinedSubscription(subcenterCount1.getJoinedSubscription());
                 subCenterCount.setChildCompletion(subcenterCount1.getChildCompletion());
@@ -720,7 +739,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 subCenterCount.setBeneficiariesCalled(subcenterCount3.getTotalBeneficiariesCalled());
                 subCenterCount.setAnsweredAtleastOneCall(subcenterCount3.getAnsweredAtleastOneCall());
                 subCenterCount.setLocationType(locationType);
-                subCenterCount.setLocationId((long)s.getSubcenterId());
+                subCenterCount.setLocationId((long)s.getHealthSubFacilityId());
                 subCenterCount.setId((int)(subCenterCount.getSystemDeactivation()+subCenterCount.getNotAnswering()+subCenterCount.getLowListenership()+subCenterCount.getChildCompletion()+subCenterCount.getCalledInbox()+subCenterCount.getJoinedSubscription()+subCenterCount.getMotherCompletion()+subCenterCount.getSelfDeactivated()));
                 CumulativeBeneficiary.add(subCenterCount);
 
@@ -792,7 +811,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             kilkariUsageList.addAll(this.getKilkariUsage(reportRequest.getDistrictId(),"Block",fromDate));
         }
         else {
-            kilkariUsageList.addAll(this.getKilkariUsage(reportRequest.getBlockId(),"Subcenter",fromDate));
+            kilkariUsageList.addAll(this.getKilkariUsage(reportRequest.getBlockId(),"Subcentre",fromDate));
         }
 
         if(!(kilkariUsageList.isEmpty())){
@@ -818,8 +837,9 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 if(locationType.equalsIgnoreCase("Block")){
                     summaryDto1.setLocationName(blockDao.findByblockId(a.getLocationId().intValue()).getBlockName());
                 }
-                if(locationType.equalsIgnoreCase("Subcenter")){
-                    summaryDto1.setLocationName(subcenterDao.findBySubcenterId(a.getLocationId().intValue()).getSubcenterName());
+                if(locationType.equalsIgnoreCase("Subcentre")){
+                    summaryDto1.setLocationName(healthSubFacilityDao.findByHealthSubFacilityId(a.getLocationId().intValue()).getHealthSubFacilityName());
+                    summaryDto1.setLink(true);
                 }
                 if (locationType.equalsIgnoreCase("DifferenceState")) {
                     summaryDto1.setLocationName("No District");
@@ -830,7 +850,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     summaryDto1.setLink(true);
                 }
                 if (locationType.equalsIgnoreCase("DifferenceBlock")) {
-                    summaryDto1.setLocationName("No Subcenter");
+                    summaryDto1.setLocationName("No Subcentre");
                     summaryDto1.setLink(true);
                 }
 
@@ -964,7 +984,11 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             noBlockCount.setLocationId((long)(-1));
             KilkariUsageDto.add(noBlockCount);
         } else {
-            List<Subcenter> subcenters = subcenterDao.getSubcentersOfBlock(locationId);
+            List<HealthFacility> healthFacilities = healthFacilitydao.findByHealthBlockId(locationId);
+            List<HealthSubFacility> subcenters = new ArrayList<>();
+            for(HealthFacility hf :healthFacilities){
+                subcenters.addAll(healthSubFacilityDao.findByHealthFacilityId(hf.getHealthFacilityId()));
+            }
             KilkariUsage blockCount1 = kilkariUsageDao.getUsage(locationId,"block",toDate);
             KilkariMessageListenership blockCount2 = kilkariMessageListenershipReportDao.getListenerData(locationId,"block",toDate);
 
@@ -976,9 +1000,9 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             Long calledInbox = (long)0;
             Long atLeastOneCall = (long)0;
 
-            for(Subcenter s: subcenters){
-                KilkariUsage SubcenterCount1 = kilkariUsageDao.getUsage(s.getSubcenterId(),locationType,toDate);
-                KilkariMessageListenership SubcenterCount2 = kilkariMessageListenershipReportDao.getListenerData(s.getSubcenterId(),locationType,toDate);
+            for(HealthSubFacility s: subcenters){
+                KilkariUsage SubcenterCount1 = kilkariUsageDao.getUsage(s.getHealthSubFacilityId(),locationType,toDate);
+                KilkariMessageListenership SubcenterCount2 = kilkariMessageListenershipReportDao.getListenerData(s.getHealthSubFacilityId(),locationType,toDate);
                 UsageDto SubcenterCounts = new UsageDto();
                 SubcenterCounts.setLocationId(SubcenterCount1.getLocationId());
                 SubcenterCounts.setLocationType(SubcenterCount1.getLocationType());
@@ -991,7 +1015,6 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 SubcenterCounts.setAnsweredCall(SubcenterCount2.getAnsweredAtleastOneCall());
                 KilkariUsageDto.add(SubcenterCounts);
 
-                KilkariUsageDto.add(SubcenterCounts);
                 beneficiariesCalled+=SubcenterCounts.getBeneficiariesCalled();
                 calls_75_100+=SubcenterCounts.getCalls_75_100();
                 calls_50_75+=SubcenterCounts.getCalls_50_75();
@@ -1054,7 +1077,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         } else if(reportRequest.getBlockId() == 0){
             kilkariMessageListenershipList.addAll(getKilkariMessageListenershipData(reportRequest.getDistrictId(),"Block",fromDate));
         } else {
-            kilkariMessageListenershipList.addAll(getKilkariMessageListenershipData(reportRequest.getBlockId(),"Subcenter",fromDate));
+            kilkariMessageListenershipList.addAll(getKilkariMessageListenershipData(reportRequest.getBlockId(),"Subcentre",fromDate));
         }
 
         if(!(kilkariMessageListenershipList.isEmpty())){
@@ -1079,8 +1102,9 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 if(locationType.equalsIgnoreCase("Block")){
                     kilkariMessageListenershipReportDto.setLocationName(blockDao.findByblockId(a.getLocationId().intValue()).getBlockName());
                 }
-                if(locationType.equalsIgnoreCase("Subcenter")){
-                    kilkariMessageListenershipReportDto.setLocationName(subcenterDao.findBySubcenterId(a.getLocationId().intValue()).getSubcenterName());
+                if(locationType.equalsIgnoreCase("Subcentre")){
+                    kilkariMessageListenershipReportDto.setLocationName(healthSubFacilityDao.findByHealthSubFacilityId(a.getLocationId().intValue()).getHealthSubFacilityName());
+                    kilkariMessageListenershipReportDto.setLink(true);
                 }
                 if (locationType.equalsIgnoreCase("DifferenceState")) {
                     kilkariMessageListenershipReportDto.setLocationName("No District");
@@ -1091,7 +1115,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     kilkariMessageListenershipReportDto.setLink(true);
                 }
                 if (locationType.equalsIgnoreCase("DifferenceBlock")) {
-                    kilkariMessageListenershipReportDto.setLocationName("No Subcenter");
+                    kilkariMessageListenershipReportDto.setLocationName("No Subcentre");
                     kilkariMessageListenershipReportDto.setLink(true);
                 }
                 if(a.getId()!=0 && !locationType.equalsIgnoreCase("DifferenceState")){
@@ -1182,7 +1206,11 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             kilkariMessageListenershipList.add(noBlockCount);
         }
         else {
-            List<Subcenter> subcenters = subcenterDao.getSubcentersOfBlock(locationId);
+            List<HealthFacility> healthFacilities = healthFacilitydao.findByHealthBlockId(locationId);
+            List<HealthSubFacility> subcenters = new ArrayList<>();
+            for(HealthFacility hf :healthFacilities){
+                subcenters.addAll(healthSubFacilityDao.findByHealthFacilityId(hf.getHealthFacilityId()));
+            }
             KilkariMessageListenership blockCounts = kilkariMessageListenershipReportDao.getListenerData(locationId,"block",date);
             Long answeredAtleastOneCall = (long)0;
             Long answeredMoreThan75Per = (long)0;
@@ -1192,8 +1220,8 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             Long answeredNoCalls = (long)0;
             Long totalBeneficiariesCalled = (long)0;
 
-            for(Subcenter s: subcenters){
-                KilkariMessageListenership subcenterCount = kilkariMessageListenershipReportDao.getListenerData(s.getSubcenterId(),locationType,date);
+            for(HealthSubFacility s: subcenters){
+                KilkariMessageListenership subcenterCount = kilkariMessageListenershipReportDao.getListenerData(s.getHealthSubFacilityId(),locationType,date);
                 kilkariMessageListenershipList.add(subcenterCount);
                 answeredAtleastOneCall += subcenterCount.getAnsweredAtleastOneCall();
                 answeredMoreThan75Per += subcenterCount.getAnsweredMoreThan75Per();
@@ -1262,8 +1290,8 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             aggBeneficiaryCompletionStart.addAll(this.getCumulativeBeneficiaryCompletionData(reportRequest.getDistrictId(), "Block", fromDate));
             aggBeneficiaryCompletionEnd.addAll(this.getCumulativeBeneficiaryCompletionData(reportRequest.getDistrictId(), "Block", toDate));
         } else {
-            aggBeneficiaryCompletionStart.addAll(this.getCumulativeBeneficiaryCompletionData(reportRequest.getBlockId(), "Subcenter", fromDate));
-            aggBeneficiaryCompletionEnd.addAll(this.getCumulativeBeneficiaryCompletionData(reportRequest.getBlockId(), "Subcenter", toDate));
+            aggBeneficiaryCompletionStart.addAll(this.getCumulativeBeneficiaryCompletionData(reportRequest.getBlockId(), "Subcentre", fromDate));
+            aggBeneficiaryCompletionEnd.addAll(this.getCumulativeBeneficiaryCompletionData(reportRequest.getBlockId(), "Subcentre", toDate));
         }
 
         if (!(aggBeneficiaryCompletionEnd.isEmpty()) && !(aggBeneficiaryCompletionStart.isEmpty())) {
@@ -1291,8 +1319,9 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                         if (locationType.equalsIgnoreCase("Block")) {
                             aggCumulativeBeneficiaryComplDto.setLocationName(blockDao.findByblockId(end.getLocationId().intValue()).getBlockName());
                         }
-                        if (locationType.equalsIgnoreCase("Subcenter")) {
-                            aggCumulativeBeneficiaryComplDto.setLocationName(subcenterDao.findBySubcenterId(end.getLocationId().intValue()).getSubcenterName());
+                        if (locationType.equalsIgnoreCase("Subcentre")) {
+                            aggCumulativeBeneficiaryComplDto.setLocationName(healthSubFacilityDao.findByHealthSubFacilityId(end.getLocationId().intValue()).getHealthSubFacilityName());
+                            aggCumulativeBeneficiaryComplDto.setLink(true);
                         }
                         if (locationType.equalsIgnoreCase("DifferenceState")) {
                             aggCumulativeBeneficiaryComplDto.setLocationName("No District Count");
@@ -1306,7 +1335,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
 
                         }
                         if (locationType.equalsIgnoreCase("DifferenceBlock")) {
-                            aggCumulativeBeneficiaryComplDto.setLocationName("No Subcenter Count");
+                            aggCumulativeBeneficiaryComplDto.setLocationName("No Subcentre Count");
                             aggCumulativeBeneficiaryComplDto.setLink(true);
                             aggCumulativeBeneficiaryComplDto.setLocationId((long) -1);
 
@@ -1393,7 +1422,11 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             noBlockCount.setLocationId((long)(-1));
             CumulativeCompletion.add(noBlockCount);
         } else {
-            List<Subcenter> subcenters = subcenterDao.getSubcentersOfBlock(locationId);
+            List<HealthFacility> healthFacilities = healthFacilitydao.findByHealthBlockId(locationId);
+            List<HealthSubFacility> subcenters = new ArrayList<>();
+            for(HealthFacility hf :healthFacilities){
+                subcenters.addAll(healthSubFacilityDao.findByHealthFacilityId(hf.getHealthFacilityId()));
+            }
             AggregateCumulativeBeneficiaryCompletion blockCounts = aggCumulativeBeneficiaryComplDao.getBeneficiaryCompletion(locationId,"block",toDate);
             Long completedBeneficiaries = (long)0;
             Long calls_75_100 = (long)0;
@@ -1401,8 +1434,8 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             Long calls_25_50 = (long)0;
             Long calls_1_25 = (long)0;
             Integer totalAge = 0;
-            for(Subcenter s: subcenters){
-                AggregateCumulativeBeneficiaryCompletion SubcenterCount = aggCumulativeBeneficiaryComplDao.getBeneficiaryCompletion(s.getSubcenterId(),locationType,toDate);
+            for(HealthSubFacility s: subcenters){
+                AggregateCumulativeBeneficiaryCompletion SubcenterCount = aggCumulativeBeneficiaryComplDao.getBeneficiaryCompletion(s.getHealthSubFacilityId(),locationType,toDate);
                 CumulativeCompletion.add(SubcenterCount);
                 completedBeneficiaries+=SubcenterCount.getCompletedBeneficiaries();
                 calls_75_100 += SubcenterCount.getCalls_75_100();
@@ -1598,7 +1631,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             kilkariThematicContentReportDto.setCallsAnswered(kilkariThematicContentData.getCallsAnswered());
             kilkariThematicContentReportDto.setUniqueBeneficiariesCalled(kilkariThematicContentData.getUniqueBeneficiariesCalled());
             kilkariThematicContentReportDto.setMessageWeekNumber("w"+i);
-            if(kilkariThematicContentReportDto.getCallsAnswered()+kilkariThematicContentReportDto.getMinutesConsumed().floatValue()+kilkariThematicContentReportDto.getUniqueBeneficiariesCalled() > 0){
+            if(kilkariThematicContentReportDto.getCallsAnswered()+Math.round(kilkariThematicContentReportDto.getMinutesConsumed().floatValue()*100)+kilkariThematicContentReportDto.getUniqueBeneficiariesCalled() > 0){
                 kilkariThematicContentReportDtoList.add(kilkariThematicContentReportDto);
             }
         }
@@ -1970,8 +2003,8 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             kilkariCallStart.addAll(this.getKilkariCallReport(reportRequest.getDistrictId(), "Block", fromDate));
             kilkariCallEnd.addAll(this.getKilkariCallReport(reportRequest.getDistrictId(), "Block", toDate));
         } else {
-            kilkariCallStart.addAll(this.getKilkariCallReport(reportRequest.getBlockId(), "Subcenter", fromDate));
-            kilkariCallEnd.addAll(this.getKilkariCallReport(reportRequest.getBlockId(), "Subcenter", toDate));
+            kilkariCallStart.addAll(this.getKilkariCallReport(reportRequest.getBlockId(), "Subcentre", fromDate));
+            kilkariCallEnd.addAll(this.getKilkariCallReport(reportRequest.getBlockId(), "Subcentre", toDate));
         }
 
         if (!(kilkariCallEnd.isEmpty()) && !(kilkariCallStart.isEmpty())) {
@@ -2002,8 +2035,9 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                         if (locationType.equalsIgnoreCase("Block")) {
                             kilkariCallReportDto.setLocationName(blockDao.findByblockId(end.getLocationId().intValue()).getBlockName());
                         }
-                        if (locationType.equalsIgnoreCase("Subcenter")) {
-                            kilkariCallReportDto.setLocationName(subcenterDao.findBySubcenterId(end.getLocationId().intValue()).getSubcenterName());
+                        if (locationType.equalsIgnoreCase("Subcentre")) {
+                            kilkariCallReportDto.setLocationName(healthSubFacilityDao.findByHealthSubFacilityId(end.getLocationId().intValue()).getHealthSubFacilityName());
+                            kilkariCallReportDto.setLink(true);
                         }
                         if (locationType.equalsIgnoreCase("DifferenceState")) {
                             kilkariCallReportDto.setLocationName("No District Count");
@@ -2017,13 +2051,13 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
 
                         }
                         if (locationType.equalsIgnoreCase("DifferenceBlock")) {
-                            kilkariCallReportDto.setLocationName("No Subcenter Count");
+                            kilkariCallReportDto.setLocationName("No Subcentre Count");
                             kilkariCallReportDto.setLink(true);
                             kilkariCallReportDto.setLocationId((long) -1);
 
                         }
 
-                        if ((kilkariCallReportDto.getSuccessfulCalls() + kilkariCallReportDto.getBillableMinutes() + kilkariCallReportDto.getCallsAttempted()
+                        if ((kilkariCallReportDto.getSuccessfulCalls() + Math.round(kilkariCallReportDto.getBillableMinutes()*100) + kilkariCallReportDto.getCallsAttempted()
                                 + kilkariCallReportDto.getCallsToInbox() + kilkariCallReportDto.getContent_1_25()
                                 + kilkariCallReportDto.getContent_25_50() + kilkariCallReportDto.getContent_50_75()
                                 + kilkariCallReportDto.getContent_75_100()) != 0 && !locationType.equalsIgnoreCase("DifferenceState")) {
@@ -2119,7 +2153,11 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             noBlockCount.setLocationId((long)(-1));
             kilkariCall.add(noBlockCount);
         } else {
-            List<Subcenter> subcenters = subcenterDao.getSubcentersOfBlock(locationId);
+            List<HealthFacility> healthFacilities = healthFacilitydao.findByHealthBlockId(locationId);
+            List<HealthSubFacility> subcenters = new ArrayList<>();
+            for(HealthFacility hf :healthFacilities){
+                subcenters.addAll(healthSubFacilityDao.findByHealthFacilityId(hf.getHealthFacilityId()));
+            }
             KilkariCalls blockCounts = kilkariCallReportDao.getKilkariCallreport(locationId,"block",toDate);
             Long callsAttempted = (long)0;
             Long successfulCalls = (long)0;
@@ -2129,8 +2167,8 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             Long content_50_75 = (long)0;
             Long content_25_50 = (long)0;
             Long content_1_25 = (long)0;
-            for(Subcenter s: subcenters){
-                KilkariCalls SubcenterCount = kilkariCallReportDao.getKilkariCallreport(s.getSubcenterId(),locationType,toDate);
+            for(HealthSubFacility s: subcenters){
+                KilkariCalls SubcenterCount = kilkariCallReportDao.getKilkariCallreport(s.getHealthSubFacilityId(),locationType,toDate);
                 kilkariCall.add(SubcenterCount);
                 callsAttempted+=SubcenterCount.getCallsAttempted();
                 successfulCalls+=SubcenterCount.getSuccessfulCalls();

@@ -10,7 +10,7 @@ h1{
 }
 
 body div.main{
-    min-width: 1300px;
+    min-width: 1200px;
     overflow-x: auto;
 }
 
@@ -23,8 +23,10 @@ body .login .login-header img{
 body .login .login-body{
 	height: 285px;
 }
-body .login .login-body .error{
-	color: #a94442;
+.error{
+	color: #980026;
+	text-align: center;
+	margin: 5px;
 }
 body .login .login-body .checkbox{
 	padding: 0px 0px 20px;
@@ -40,8 +42,20 @@ body .nav-bar .nav-header{
 	padding: 10px;
 	background: linear-gradient(#29abe2, #FFFFFF);
 	background-size: 100%;
-	height: 100px;
+	height: 90px;
 	vertical-align: center;
+}
+.makmis-image{
+	height: 70px;
+	padding-left:10px;
+}
+.nhm-image{
+	float: right;
+	height: 70px;
+}
+.di-image{
+	float: right;
+	height: 70px;
 }
 body .nav-bar .nav-header span{
 	color: #ffffff;
@@ -65,7 +79,7 @@ div.nav-bar ul.breadcrumb {
 	background-color: inherit;
 	color: #ffffff;
 }
-/*div.nav-bar ul.breadcrumb > li + li:before{
+div.nav-bar ul.breadcrumb > li + li:before{
 	content: ">" !important;
 	color: #000000;
 }
@@ -74,7 +88,7 @@ div.nav .aggregate-bread-crumb > li + li:before{
     content: ">" !important;
     color: #23527c;
 
-}*/
+}
 
 div.nav-bar .breadcrumb li a{
 	text-decoration: none;
@@ -411,6 +425,15 @@ div.reports-header .right button.loading,
 div.reports-header .left button.loading{	
 	cursor: wait;
 }
+
+div.reports-header .loading{
+	cursor: wait;
+}
+
+div.reports-header .disabled{
+	cursor: not-allowed;
+}
+
 div.reports-header .right button span.caret,
 div.reports-header .left button span.caret{
 	float: right;
@@ -531,17 +554,19 @@ div.footer{
 	text-align: right;
 }
 
-div.infoPages1, div.infoPages2, div.infoPages3, div.infoPages4 {
+/*<--------------------Static Pages Start ----------------------------->*/
+
+div.infoPages1, div.infoPages2, div.infoPages3, div.infoPages4, div.infoPages5, div.infoPages6, div.infoPages7, div.infoPages8 {
   padding-left : 3%;
   padding-right : 3%;
   text-align : justify;
 }
-div.infoPages1 table, div.infoPages2 table, div.infoPages3 table, div.infoPages4 table {
+div.infoPages1 table, div.infoPages2 table, div.infoPages3 table, div.infoPages4 table, div.infoPages5 table, div.infoPages6 table, div.infoPages7 table, div.infoPages8 table {
   width : 100%;
   text-align : center;
   padding-left : 10px;
 }
-div.infoPages1 h2, div.infoPages2 h2, div.infoPages3 h2, div.infoPages4 h2 {
+div.infoPages1 h2, div.infoPages2 h2, div.infoPages3 h2, div.infoPages4 h2, div.infoPages5 h2, div.infoPages6 h2, div.infoPages7 h2, div.infoPages8 h2 {
   margin-top : 10px;
   padding-left : 15px;
 }
@@ -552,14 +577,44 @@ div.infoPages2 th:nth-child(2) {
   width : 80%;
 }
 div.infoPages3 th:nth-child(2) {
-  width : 73%;
+  width : 74%;
 }
 div.infoPages4 th:nth-child(2) {
   width : 91%;
 }
-th hr.infoHR {
+div.infoPages5 th:nth-child(2) {
+  width : 88%;
+}
+div.infoPages6 th:nth-child(2) {
+  width : 93%;
+}
+div.infoPages7 th:nth-child(2) {
+  width : 76%;
+}
+div.infoPages8 th:nth-child(2) {
+  width : 83%;
+}
+hr.infoHR {
   border-bottom : 1px solid #000000;
   line-height : 3px;
+}
+.aboutImg1 {
+  float : left;
+  width : 300px;
+  margin-right : 25px;
+}
+.aboutImg2 {
+  float : right;
+  width : 300px;
+  margin-left : 25px;
+}
+/*<--------------------Static Pages End ----------------------------->*/
+
+div.uMManagement {
+  padding-left: 30px;
+}
+div.uMWebInfo {
+  padding-left: 30px;
 }
 
 .dropdown-menu{
@@ -573,11 +628,11 @@ th hr.infoHR {
 	background-color: #2164b2;
 }
 
-.btn-info, 
+/*.btn-info,
 .btn-success,
 .btn-danger{
 	display: none;
-}
+}*/
 
 div.loading{
 	text-align: center;
@@ -598,11 +653,11 @@ body > .main > .nav-bar {
 body > .main > .content {
 	padding-bottom: 40px;
 }
-body > .main > .footer {
-	position:absolute;
-	bottom:0;
-	width:100%;
-	padding-bottom: 1px;
+.footer{
+	margin-top: 10px;
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
 }
 body *{
 	/*border: 1px solid black;*/
@@ -610,8 +665,9 @@ body *{
 }
 
 .grid {
-  width: 95.5%;
-  margin : auto;
+    width: 95.5%;
+    margin : auto;
+
 }
 
 .reportheader{
@@ -751,6 +807,19 @@ md-dialog{
 	margin-bottom: 5%;
 	text-align: center;
 }
+.forgotPasswordLink{
+	color: #c1272d;
+}
+.forgotPasswordLink:hover{
+	color: #c1272d;
+}
+.downloadsLink{
+	color: #FFFFFF;
+}
+.downloadsLink:hover{
+	color: #FFFFFF;
+	text-decoration: none;
+}
 .ui-grid-cell-contents span.ui-grid-invisible{
     display : none;
 }
@@ -769,8 +838,7 @@ md-dialog{
 }
 
 .remove-link{
-pointer-events :none;
-cursor: none;
+cursor: default;
 }
 
 a.adisabled {
@@ -782,13 +850,18 @@ a.adisabled:hover { text-decoration: none; }
 a.adisabled:focus { text-decoration: none; }
 a.adisabled:active { text-decoration: none; }
 
-.block12{
+/*<--------------------User Manual and FAQ Start ----------------------------->*/
+
+.usermanual-padding0{
+	padding: 0px;
+}
+.userManual-block{
 	background-color: #0071bc;
-	height: 120px;
+	height: 112px;
 	padding: 13px 0px 0px 8px;
     margin: 0 0 55px 0;
 }
-.block12 p{
+.userManual-block p{
 	padding: 4px 32px 4px 32px;
 	color:white;
 	font-family: 'Roboto', sans-serif;
@@ -796,11 +869,18 @@ a.adisabled:active { text-decoration: none; }
 }
 
 .user-manual div {
-    margin:  0px 4px 13px 36px;
+    margin:  0px 20px 13px 20px;
     padding: 11px 8px 11px 20px;
     font-size : 15px;
     background-color: #f2f2f2;
 
+}
+.userManualSelectpicker{
+	color:black;
+	width: 175px;
+	padding: 7px;
+	margin: 0px 0px 0px 4px;
+	white-space: nowrap;
 }
 
 .user-manual{
@@ -810,20 +890,76 @@ a.adisabled:active { text-decoration: none; }
 	font-size: 15px;
 }
 
-.user-manual-right{
-	font-size: 16px;
-	color: #0071bc;
+.sideNavbar{
+	background-color:#1f6e91 !important;
+	color:white;
+
 }
+
+.plusSign{
+	float: right;
+	color: black;
+}
+
+.userManual-right{
+	 background-color: #f2f2f2;
+	 margin: 0px 50px 0px -12px;
+ }
+
 .user-manual-header{
 	font-size: 24px;
 	color: #333333;
 }
+
+.user-manual-right-text{
+	font-size: 16px;
+	color: #0071bc;
+}
+
+.user-manual-back{
+	float: left;
+	margin: 15px 8px 0px -12px;
+}
+
+.user-manual-reports{
+	padding: 20px 0px 0 5px;
+}
+
+.userManualPic{
+    max-width : 832px;
+}
+
+.faqMargin {
+	margin: 0px 50px 0px -12px;
+}
+
+.faqTitle th:nth-child(2){
+    width : 92%;
+}
+div.faqTitle > div > h4 {
+    padding-left : 35px;
+}
+.faqTitle table {
+  width : 100%;
+  text-align : center;
+  padding-left : 10px;
+}
+.faqTitle h2 {
+  margin-top : 10px;
+  padding-left : 20px;
+}
+
 .blockFAQ{
     background-color: #f2f2f2 !important;
     font-size: 15px;
     padding: 0 0 0 0;
     margin: 0 0 0 0;
 }
+
+.faq-right{
+	background-color: #f2f2f2;
+}
+
 .panel-heading .accordion-toggle:after {
     /* symbol for "opening" panels */
     font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
@@ -933,10 +1069,6 @@ animation:*/
 
 .slideDown.ng-hide-remove,
 .slideDown.ng-hide-add {
-  /* remember, the .hg-hide class is added to element
-  when the active class is added causing it to appear
-  as hidden. Therefore set the styling to display=block
-  so that the hide animation is visible */
   display:block!important;
 }
 
@@ -964,20 +1096,8 @@ animation:*/
   animation-timing-function: ease-out;
   -webkit-animation-timing-function: ease-out;
 }
-.sideNavbar{
-    background-color:#1f6e91 !important;
-    color:white;
 
-}
-/*a:active{
-    background-color: #1f6e91;
-    color:white
-}*/
-.plusSign{
-	float: right;
-	color: black;
-}
-
+/*<--------------------User Manual and FAQ End ----------------------------->*/
 /*
 Copyright 2016 Google Inc. All Rights Reserved.
 Use of this source code is governed by an MIT-style license that can be foundin the LICENSE file at http://material.angularjs.org/HEAD/license.
@@ -1026,51 +1146,17 @@ Use of this source code is governed by an MIT-style license that can be foundin 
 }
 .icons{
 	width: 20px;
-	margin-bottom: 0px;
+	margin-bottom: 5px;
 	margin-right: 10px;
-}
-
-.profile-icon{
-	position: relative;
-	left: -100px;
-	padding-right: 0px;
-	margin-right: 0px;
-	color: white;
-	padding-top: 5px;
-	float: right;
-	width: 20px;
-	list-style-type: none;
-	z-index: 1;
-}
-.profile-link{
-	color: white;
-	padding-top: 5px;
-	padding-bottom: 0px;
-	font-size: 12px;
-
-}
-.profile-link:hover{
-	text-decoration: none;
-	color: white;
-}
-
-.profile-link:visited{
-    text-decoration: none;
-    color: white;
 }
 
 .nav-menu-right{
 	margin-right: 50px;
 }
-.profile-menu{
-	position: absolute;
-	left: -80px;
-	top: -10px;
-	margin-right: 0px;
-}
+
 .content{
 	height: 50%;
-	margin-bottom: 40px;
+	margin-bottom: 60px;
 }
 .ui-content{
 	height: 50%;
@@ -1117,7 +1203,186 @@ Use of this source code is governed by an MIT-style license that can be foundin 
  cursor:not-allowed;
  outline: none;
 }
+.transparent-text{
+	position: absolute;
+	top: 35px;
+	opacity: 0.7;
+	z-index: 1;
+	background-color: black;
+	height: 30px;
+	color: #FFFFFF;
+	font-size: 15px;
+	padding-top: 5px;
+	width: 100%;
+}
+.recaptcha{
+	margin: 5px;
+}
 /*
 Copyright 2016 Google Inc. All Rights Reserved.
 Use of this source code is governed by an MIT-style license that can be foundin the LICENSE file at http://material.angularjs.org/HEAD/license.
 */
+
+/*-------------Feedback Start----------------*/
+.margin-top-40 {
+    margin-top: 40px;
+}
+
+.margin-bottom-40{
+    margin-bottom : 40px;
+}
+
+.ff-icon{
+    background-color: #0071bc;
+    height: 30px;
+    color: white;
+    padding-top: 5px;
+}
+
+.ff-background{
+    background-color : #f2f2f2;
+ }
+
+ .ff-padding-top{
+    padding-top :15px;
+ }
+
+.ff-input-textalign{
+    text-align: left;
+}
+
+.ff-inputBox-width{
+    width: 191px;
+}
+
+.ff-captcha{
+    padding: 0 0 0 30px;
+}
+
+.ff-submit{
+    text-align: center;
+    padding: 15px 0px 0px 0px;
+}
+
+.feedbackResponse-Box{
+    border: 1px solid green;
+    border-radius: 2%;
+    box-shadow: 3px 3px green;
+    padding: 0 15px 5px 15px;
+    margin: 15px 0 15px 0px;
+}
+
+.feedbackResponse-Link{
+    color: blue;
+    padding: 0 0 5px 0px;
+}
+
+.feedbackForm-inputs{
+    padding-top :15px
+}
+
+.FF-txtbox{
+    height: 80px;
+    width : 191px;
+    resize: none;
+}
+/*-------------Feedback End----------------*/
+/*-------------ContactUs Start----------------*/
+.contactPageHeading{
+    width: 100%;
+}
+
+.contactPageHeading th:nth-child(2){
+    width: 86%;
+}
+
+.contactPageHeading h2{
+    margin-top: 10px;
+}
+
+.contactUs-background{
+    background-color:white;
+}
+
+.contactUs-paddingLeft{
+    padding: 0 15px 0 0px;
+}
+
+.contactUs-locationColumn{
+    margin-top: 50px;
+    padding: 0 40px 0px 40px;
+}
+
+.contactUs-locationColumn-icon{
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.contactUs-phoneColumn{
+     margin-top: 50px;
+     padding: 0 45px 0 45px;
+}
+
+.contactUs-phoneColumn-icon{
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.contactUs-mailColumn{
+    margin-top: 50px;
+    padding: 0 50px 0 50px;
+}
+
+.contactUs-mailColumn-icon{
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.cf-icon{
+    background-color: #0071bc;
+    height: 30px;
+    color: white;
+    padding-top: 5px;
+}
+
+.cf-top-padding{
+    padding-top :25px;
+    padding-bottom: 10px;
+}
+
+.cf-txtAlign{
+    text-align: left;
+    padding: 0 0 0 40px;
+}
+
+.cf-submit{
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 20px;
+    padding: 0 0 0 83px;
+    margin: 0 0 15px 0px;
+}
+
+.cf-submit-input{
+    background:#0071bc;
+    color:white;border: none;
+    padding: 4px 10px 4px 10px;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+/*-------------ContactUs End----------------*/
+
+
+
+.image-content{
+	background-color: #f2f2f2;
+}
+.visitors{
+	height: 15px;
+}

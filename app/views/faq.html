@@ -1,8 +1,15 @@
-<div class="container-fluid" data-ng-controller="faqController" style="margin: 0px 50px 0px -12px;">
+<div class="container-fluid faqTitle" data-ng-controller="faqController">
+    <br>
+    <div class="col-md-12">
+        <table>
+            <th><h2>FAQ's</h2></th>
+            <th><hr class="infoHR"/></th>
+        </table>
+    </div>
+    <div><h4>Frequently Asked Questions</h4></div>
+    <br/><br/>
 
-    <div><h1>FAQ</h1></div>
-
-    <div class="col-md-3 user-manual">
+    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3 user-manual">
 
         <div data-ng-click="active1='wi'; func('wi')" data-ng-class="{'sideNavbar': active1 =='wi'}">Website Information
             <span class="glyphicon glyphicon-plus plusSign"></span>
@@ -21,7 +28,7 @@
         </div>
     </div>
 
-    <div class="col-md-9" style="background-color: #f2f2f2;">
+    <div class="col-md-9 col-sm-9 col-lg-9 col-xs-9 faq-right">
         <div data-ng-app="myApp">
 
             <div data-ui-view></div>
