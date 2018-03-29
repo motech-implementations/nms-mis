@@ -1336,18 +1336,19 @@
             };
 
             $window.addEventListener('click', function() {
+                if((($state.current.name)===("reports"))||(($state.current.name)===("MA Cumulative Summary"))||(($state.current.name)===("MA Subscriber"))||
+                (($state.current.name)===("MA Performance"))||(($state.current.name)===("Kilkari Cumulative Summary"))||
+                (($state.current.name)===("Kilkari Beneficiary Completion"))||(($state.current.name)===("Kilkari Usage"))||
+                (($state.current.name)===("Kilkari Call"))||(($state.current.name)===("Kilkari Message Matrix"))||
+                (($state.current.name)===("Kilkari Listening Matrix"))||(($state.current.name)===("Kilkari Thematic Content"))||
+                (($state.current.name)===("Kilkari Repeat Listener"))||(($state.current.name)===("Kilkari Subscriber"))||
+                (($state.current.name)===("Kilkari Message Listenership"))||(($state.current.name)===("Kilkari Aggregate Beneficiary"))){
 
                 return	UserFormFactory.isLoggedIn()
                    .then(function(result){
                     if(!result.data){
-                    if((($state.current.name)===("reports"))||(($state.current.name)===("MA Cumulative Summary"))||(($state.current.name)===("MA Subscriber"))||
-                                                   (($state.current.name)===("MA Performance"))||(($state.current.name)===("Kilkari Cumulative Summary"))||
-                                                   (($state.current.name)===("Kilkari Beneficiary Completion"))||(($state.current.name)===("Kilkari Usage"))||
-                                                   (($state.current.name)===("Kilkari Call"))||(($state.current.name)===("Kilkari Message Matrix"))||
-                                                   (($state.current.name)===("Kilkari Listening Matrix"))||(($state.current.name)===("Kilkari Thematic Content"))||
-                                                   (($state.current.name)===("Kilkari Repeat Listener"))||(($state.current.name)===("Kilkari Subscriber"))||
-                                                   (($state.current.name)===("Kilkari Message Listenership"))||(($state.current.name)===("Kilkari Aggregate Beneficiary"))||!(($state.current.name)===("login"))){
 
+                        $window.location.href= backend_root+"nms/logout";
                         if(UserFormFactory.isInternetExplorer()){
                               alert("Session Timed out...Please Login Again")
                               return;
@@ -1356,8 +1357,9 @@
                               UserFormFactory.showAlert("Session Timed out...Please Login Again")
                               return;
                         }
-                        $state.go('login', {});}
-                   }})
+
+
+                   }})}
               if($scope.sundaysTable)
                 $scope.sundaysTable = false;
             });
