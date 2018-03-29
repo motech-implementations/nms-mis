@@ -788,7 +788,7 @@ md-dialog{
 }
 
 .login-button{
-	margin-left: 30%;
+	margin-left: 23%;
 	margin-top: 5%;
 	width: 60%;
 	height: 10%;
@@ -1110,7 +1110,7 @@ Use of this source code is governed by an MIT-style license that can be foundin 
 	margin-left: 15px;
 }
 .login-inputs{
-	width: 60%;
+	width: 55%;
 	float: right;
 	margin-right: 10%;
 	height: 8%;
@@ -1245,4 +1245,39 @@ Use of this source code is governed by an MIT-style license that can be foundin 
 }
 .visitors{
 	height: 15px;
+}
+
+.carousel-image{
+	width: 100%;
+}
+@media screen and (min-width: 600px) {
+	.recaptcha {
+		transform:scale(0.77);
+		transform-origin:0 0;
+		padding-left: 9%;
+	}
+}
+@media screen and (min-width: 900px) {
+	.recaptcha {
+		transform:scale(0.77);
+		transform-origin:0 0;
+		padding-left: 9%;
+	}
+}
+@media screen and (min-width: 1200px) {
+	.recaptcha {
+		transform:scale(0.77);
+		transform-origin:0 0;
+		padding-left: 9%;
+	}
+}
+@media screen and (min-width: 1500px) {
+	.recaptcha {
+		transform:scale(0.9,1);
+		padding-left: 13%;
+		transform-origin:0 0;
+	}
+}
+.footer-logo{
+	width: 25%;
 }
