@@ -16,8 +16,8 @@
 
             var phoneNoField = $scope.email.phoneNo
             function validatePhoneNo(phoneNoField){
-                var reg =/^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
-
+//                var reg =/^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
+                  var reg = /^(?:\+\d+[- ])?\d{10}$/;
                 return reg.test(phoneNoField);
             }
 
