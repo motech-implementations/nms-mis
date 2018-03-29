@@ -3,77 +3,52 @@
 
     <div class="row margin-top-40 margin-bottom-40">
         <div class="col-md-4"></div>
-        <div class="col-md-4" style="background-color : #f2f2f2">
-            <div class="row" style="background-color: #0071bc;height: 30px;color: white;padding-top: 5px;">
-                <div class=" col-md-1">
-                <span><img src="images/feedback.png"></span>
-                </div>
-                <div class=" col-md-11">
-                <span>Feedback Form</span>
-                </div>
+        <div class=" ff-background col-md-4">
+            <div class="row ff-icon">
+                <div class=" col-md-1"><span><img src="images/feedback.png"></span></div>
+                <div class=" col-md-11"><span>Feedback Form</span></div>
             </div>
             <div>
-                <form name="FeedbackForm" class="form-horizontal" data-ng-submit="feedback($event)">
-
-                    <div class="form-group row" style="padding-top :15px">
+                <form name="FeedbackForm" class="form-horizontal" data-ng-submit="feedback($event)" novalidate>
+                    <div class="form-group row ff-padding-top">
                         <div class=" col-md-1"></div>
-                        <div class=" col-md-3" style="text-align: left;">
+                        <div class=" col-md-3 ff-input-textalign">
                         <label for="name">Name<span style="color : red">*</span></label>
                         </div>
                         <div class=" col-md-8">
-                        <input id="name" type="text" name="name" data-ng-model="email.name">
+                        <input class="ff-inputBox-width" id="name" type="text" name="name" data-ng-model="email.name">
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class=" col-md-1"></div>
-                        <div class=" col-md-3" style="    text-align:  left;">
+                        <div class=" col-md-3 ff-input-textalign">
                         <label for="subject">Subject<span style="color : red">*</span></label>
                         </div>
                         <div class=" col-md-8">
-                        <input id="subject" type="text" name="subject" data-ng-model="email.subject">
+                        <input class="ff-inputBox-width" id="subject" type="text" name="subject" data-ng-model="email.subject">
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class=" col-md-1"></div>
-                        <div class=" col-md-3" style="    text-align:  left;">
+                        <div class=" col-md-3 ff-input-textalign">
                         <label for="email">Email<span style="color : red">*</span></label>
                         </div>
                         <div class=" col-md-8">
-                        <input id="email" type="email" name="to"data-ng-model="email.to" >
+                        <input class="ff-inputBox-width" id="email" type="text" name="to"data-ng-model="email.to">
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class=" col-md-1"></div>
-                        <div class=" col-md-3" style="    text-align:  left;">
+                        <div class=" col-md-3 ff-input-textalign">
                         <label>Feedback<span style="color : red">*</span></label>
                         </div>
                         <div class=" col-md-8">
-                            <textarea name="body" data-ng-model="email.body"></textarea>
+                            <textarea name="body"  class="FF-txtbox" data-ng-model="email.body"></textarea>
                         </div>
                     </div>
                     <input type="hidden" name="from" data-ng-model="email.from" value="nsp-reports@beehyv.com">
-
-                    <!--<div class="captcha captcha1" style="text-align: center; padding: 0 0 0 85px;">-->
-                        <!--<div >-->
-                        <!--<botdetect-captcha styleName="AncientMosaic"></botdetect-captcha>-->
-                        <!--</div>-->
-                        <!--<div id="tapa" style="background-color: #ffffff; height: 10px;width: 250px;position: relative;top: -10px;"></div>-->
-
-
-                        <!--<p style="color: #337ab7; padding: 0 15px 0 0;">Please enter the captcha code</p>-->
-
-                        <!--<input type="text" id="captchaCode"  class ="captchaCode" name="captchaCode" data-ng-model="feedback.captchaCode" style="margin: 0 15px 0 0px;" correct-captcha>-->
-
-                    <!--</div>-->
-
-
-                    <div vc-recaptcha key="'6LfKH08UAAAAAKmEugRBtMKYaagj-CiluRt9h1tK'"data-ng-model="captchaResponse" class="recaptcha" style="padding: 0 0 0 30px;"></div>
-                    <div class="form-group" style="text-align: center; padding: 15px 0px 0px 0px;">
-
-                        <button type="submit" class="btn btn-sm btn-primary">Submit</button>
-
-                    </div>
-
+                    <div vc-recaptcha key="'6LfKH08UAAAAAKmEugRBtMKYaagj-CiluRt9h1tK'"data-ng-model="captchaResponse" class="recaptcha ff-captcha"></div>
+                    <div class="form-group ff-submit"><button type="submit" class="btn btn-sm btn-primary">Submit</button></div>
                 </form>
             </div>
         </div>

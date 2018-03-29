@@ -1,7 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("SitemapController", ['$scope', '$state', 'UserFormFactory', function($scope, $state, UserFormFactory){
+		.controller("SitemapController", ['$scope', '$state', function($scope, $state){
 
 
             $scope.func_aboutus = function(){
@@ -30,6 +30,10 @@
 
             $scope.func_Contactus = function(){
                 $state.go('contactUs')
+            }
+
+            $scope.func_downloads = function(){
+                $state.go('Downloads')
             }
 
             $scope.func_tnc = function(){
