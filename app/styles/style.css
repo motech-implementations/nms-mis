@@ -425,6 +425,15 @@ div.reports-header .right button.loading,
 div.reports-header .left button.loading{	
 	cursor: wait;
 }
+
+div.reports-header .loading{
+	cursor: wait;
+}
+
+div.reports-header .disabled{
+	cursor: not-allowed;
+}
+
 div.reports-header .right button span.caret,
 div.reports-header .left button span.caret{
 	float: right;

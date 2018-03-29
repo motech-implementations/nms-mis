@@ -6,8 +6,8 @@
 				<div class="col-xs-7 left">
 					<div class="form-group col-xs-4">
 						<label> Reports Category</label><br>
-						<div class="btn-group" data-uib-dropdown dropdown-append-to-body>
-							<button id="btn-append-to-body-3" type="button" class="btn btn-sm btn-default" data-uib-dropdown-toggle data-ng-disabled="disableReportCategory()" data-ng-class="{loading: reportsLoading}">
+						<div class="btn-group" data-ng-class="{loading: reportsLoading, disabled:disableReportCategory()&&!reportsLoading }" data-uib-dropdown dropdown-append-to-body>
+							<button id="btn-append-to-body-3" type="button" class="btn btn-sm btn-default" data-uib-dropdown-toggle data-ng-disabled="disableReportCategory()" >
 								{{reportCategory}}
 								<span data-ng-if="reportCategory == null">Select</span>
 								<span class="caret"></span>
@@ -23,7 +23,7 @@
 					</div>
 					<div class="form-group col-xs-4">
 						<label> Reports</label><br>
-						<div class="btn-group" data-uib-dropdown dropdown-append-to-body>
+						<div class="btn-group" data-uib-dropdown data-ng-class="{ disabled: disableReport()}" dropdown-append-to-body>
 							<button id="btn-append-to-body-4" type="button" class="btn btn-sm btn-default" data-ng-disabled='disableReport()' data-uib-dropdown-toggle>
 								<span>{{report.name}}</span>
 								<span data-ng-if="report.name == null">Select</span>
@@ -42,7 +42,7 @@
 
 					<div class="form-group col-xs-4" data-ng-hide = "isAggregateReport()">
 						<label>{{datePickerContent}}</label><br>
-						<p class="input-group" data-ng-disabled="disableDate()">
+						<p class="input-group" data-ng-class="{disabled :disableDate() }" data-ng-disabled="disableDate()">
 							<input type="text" class="form-control input input-sm" data-uib-datepicker-popup="{{format}}" data-ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" datepicker-mode="'month'" data-ng-required = "true" close-text="Close" alt-input-formats="altInputFormats" data-ng-disabled='disableDate()' readonly />
 							<span class="input-group-btn">
 							<button type="button" class="btn btn-sm btn-default" data-ng-click="open1()"  data-ng-disabled='disableDate()' ><i class="glyphicon glyphicon-calendar" data-ng-disabled="disableDate()" ></i></button>
@@ -59,8 +59,8 @@
 
 					<div class="form-group col-xs-4" data-ng-if = "isAggregateReport()">
 						<label for="name"> State</label><br>
-						<div class="btn-group" data-uib-dropdown dropdown-append-to-body>
-							<button id="btn-append-to-body-5" type="button" class="btn btn-sm btn-default" data-ng-disabled="disableState()" data-uib-dropdown-toggle data-ng-class="{loading: statesLoading}">
+						<div class="btn-group" data-ng-class="{loading: statesLoading, disabled: disableState()&&!statesLoading}" data-uib-dropdown dropdown-append-to-body>
+							<button id="btn-append-to-body-5" type="button" class="btn btn-sm btn-default" data-ng-disabled="disableState()" data-uib-dropdown-toggle >
 								<span class="block">
 									<span>{{state.stateName}}</span>
 									<span data-ng-if="state == null">ALL</span>
@@ -79,8 +79,8 @@
 				<div class="col-xs-5 right" data-ng-if="!isCircleReport()">
 					<div class="form-group col-xs-4" data-ng-if = "!isAggregateReport()">
 						<label for="name"> State</label><br>
-						<div class="btn-group" data-uib-dropdown dropdown-append-to-body>
-							<button id="btn-append-to-body-6" type="button" class="btn btn-sm btn-default" data-ng-disabled="disableState()" data-uib-dropdown-toggle data-ng-class="{loading: statesLoading}">
+						<div class="btn-group" data-ng-class="{loading: statesLoading, disabled: disableState()&&!statesLoading }" data-uib-dropdown dropdown-append-to-body>
+							<button id="btn-append-to-body-6" type="button" class="btn btn-sm btn-default" data-ng-disabled="disableState()" data-uib-dropdown-toggle >
 								<span class="block">
 									<span>{{cropState(state.stateName)}}</span>
 									<span class="caret"></span>
@@ -94,8 +94,8 @@
 					<div class="form-group col-xs-6" data-ng-if = "isAggregateReport()" >
 						<!-- <div> -->
 						<label for="email"> District</label><br>
-						<div class="btn-group" data-uib-dropdown dropdown-append-to-body>
-							<button id="btn-append-to-body-7" type="button" class="btn btn-sm btn-default" data-ng-disabled="disableDistrict()" data-uib-dropdown-toggle data-ng-class="{loading: districtsLoading, autoSelected}">
+						<div class="btn-group" data-ng-class="{loading: districtsLoading, autoSelected, disabled: disableDistrict()&&!(districtsLoading, autoSelected)}" data-uib-dropdown dropdown-append-to-body>
+							<button id="btn-append-to-body-7" type="button" class="btn btn-sm btn-default" data-ng-disabled="disableDistrict()" data-uib-dropdown-toggle >
 								<span class="block">
 									<span>{{cropAggregate(district.districtName)}}</span>
 									<span data-ng-if="district == null">ALL</span>
@@ -111,8 +111,8 @@
 					<div class="form-group col-xs-4" data-ng-if = "!isAggregateReport()">
 					<!-- <div> -->
 						<label for="email"> District</label><br>
-						<div class="btn-group" data-uib-dropdown dropdown-append-to-body>
-							<button id="btn-append-to-body-7" type="button" class="btn btn-sm btn-default" data-ng-disabled="disableDistrict()" data-uib-dropdown-toggle data-ng-class="{loading: districtsLoading, autoSelected}">
+						<div class="btn-group" data-ng-class="{loading: districtsLoading, autoSelected, disabled: disableDistrict()&&!(districtsLoading, autoSelected)}" data-uib-dropdown dropdown-append-to-body>
+							<button id="btn-append-to-body-7" type="button" class="btn btn-sm btn-default" data-ng-disabled="disableDistrict()" data-uib-dropdown-toggle >
 								<span class="block">
 									<span>{{crop(district.districtName)}}</span>
 									<span data-ng-if="district == null">ALL</span>
@@ -127,8 +127,8 @@
 					</div>
 					<div class="form-group col-xs-6" data-ng-if = "isAggregateReport()">
 						<label for="pwd"> Block</label><br>
-						<div class="btn-group" data-uib-dropdown dropdown-append-to-body>
-							<button id="btn-append-to-body-8" type="button" class="btn btn-sm btn-default" data-ng-disabled="disableBlock()" data-uib-dropdown-toggle data-ng-class="{loading: blocksLoading}">
+						<div class="btn-group" data-ng-class="{loading: blocksLoading, disabled: disableBlock()&&!blocksLoading}" data-uib-dropdown dropdown-append-to-body>
+							<button id="btn-append-to-body-8" type="button" class="btn btn-sm btn-default" data-ng-disabled="disableBlock()" data-uib-dropdown-toggle>
 								<span class="block">
 									<span>{{cropAggregate(block.blockName)}}</span>
 									<span data-ng-if="block == null">ALL</span>
@@ -143,8 +143,8 @@
 					</div>
 					<div class="form-group col-xs-4" data-ng-if = "!isAggregateReport()">
 						<label for="pwd"> Block</label><br>
-						<div class="btn-group" data-uib-dropdown dropdown-append-to-body>
-							<button id="btn-append-to-body-8" type="button" class="btn btn-sm btn-default" data-ng-disabled="disableBlock()" data-uib-dropdown-toggle data-ng-class="{loading: blocksLoading}">
+						<div class="btn-group" data-ng-class="{loading: blocksLoading, disabled: disableBlock()&&!blocksLoading}" data-uib-dropdown dropdown-append-to-body>
+							<button id="btn-append-to-body-8" type="button" class="btn btn-sm btn-default" data-ng-disabled="disableBlock()" data-uib-dropdown-toggle >
 								<span class="block">
 									<span>{{crop(block.blockName)}}</span>
 									<span data-ng-if="block == null">ALL</span>
@@ -162,8 +162,8 @@
 				<div class="col-xs-5 right" data-ng-if="isCircleReport()">
 					<div class="form-group col-xs-4">
 						<label for="name"> Circle</label><br>
-						<div class="btn-group" data-uib-dropdown dropdown-append-to-body>
-							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" data-ng-disabled="disableCircle()" data-uib-dropdown-toggle data-ng-class="{loading: circlesLoading}">
+						<div class="btn-group" data-ng-class="{loading: circlesLoading, disabled : disableCircle()&&!circlesLoading}" data-uib-dropdown dropdown-append-to-body>
+							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" data-ng-disabled="disableCircle()" data-uib-dropdown-toggle >
 								<span class="block">
 									<span>{{circle.circleName}}</span>
 									<!--<span data-ng-if="circle == null">ALL</span>-->
@@ -207,7 +207,7 @@
 
                     <div class="form-group col-xs-2" data-ng-hide = " periodDisplayType == '' || (report.name == 'MA Cumulative Summary' ||  report.reportEnum == 'Kilkari_Cumulative_Summary' ) ">
                         <label>{{periodTypeContent}}</label><br>
-                        <p class="input-group" data-ng-disabled="disableDate()">
+                        <p class="input-group" data-ng-class="{disabled :disableDate() }" data-ng-disabled="disableDate()">
                             <input type="text" class="form-control input input-sm" data-uib-datepicker-popup="{{dateFormat}}" data-ng-model="dt1" is-open="popup2.opened" datepicker-options="datePickerOptions"  data-ng-required = "true" close-text="Close" alt-input-formats="altInputFormats" data-ng-disabled='disableDate()' readonly />
                             <span class="input-group-btn">
 							<button type="button" class="btn btn-sm btn-default" data-ng-click="open2()"  data-ng-disabled='disableDate()' ><i class="glyphicon glyphicon-calendar" data-ng-disabled="disableDate()" ></i></button>
@@ -217,7 +217,7 @@
 
                     <div class="form-group col-xs-2" data-ng-hide = " (report.name != 'MA Cumulative Summary' &&  report.reportEnum != 'Kilkari_Cumulative_Summary' && periodDisplayType != 'Custom Range')">
                         <label>End Date</label><br>
-                        <p class="input-group" data-ng-disabled="disableDate()">
+                        <p class="input-group" data-ng-class="{disabled :disableDate() }" data-ng-disabled="disableDate()">
                             <input type="text" class="form-control input input-sm" data-uib-datepicker-popup="{{dateFormat}}" data-ng-model="dt2" is-open="popup3.opened" datepicker-options="endDatePickerOptions"  data-ng-required= "true" close-text="Close" alt-input-formats="altInputFormats" data-ng-disabled='disableDate()' readonly />
                             <span class="input-group-btn">
                             <button type="button" class="btn btn-sm btn-default" data-ng-click="open3()" data-ng-disabled='disableDate()'><i class="glyphicon glyphicon-calendar" data-ng-disabled='disableDate()'></i></button>
@@ -247,7 +247,7 @@
 
 					<div class="form-group col-xs-2">
 						<label for="name"> Report Type</label><br>
-						<div class="btn-group" data-uib-dropdown dropdown-append-to-body>
+						<div class="btn-group disabled" data-uib-dropdown dropdown-append-to-body>
 							<button data-ng-disabled = "true"  id="btn-append-to-body1" type="button" class="btn btn-sm btn-default"  data-uib-dropdown-toggle >
 								<span class="block">
 									<span>{{reportDisplayType}}</span>
