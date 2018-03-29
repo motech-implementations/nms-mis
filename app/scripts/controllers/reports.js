@@ -1339,7 +1339,7 @@
 
                 return	UserFormFactory.isLoggedIn()
                    .then(function(result){
-                    if(result.data){
+                    if(!result.data){
                               alert("Session Timed out...Please Login Again")
                                 $window.location.href= backend_root+"nms/logout";
                    }})
