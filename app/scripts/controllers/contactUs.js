@@ -81,11 +81,11 @@
 
                 if(!$scope.email.body){
                     if(UserFormFactory.isInternetExplorer()){
-                        alert("Please enter the Feedback")
+                        alert("Please enter the Message")
                         return;
                     }
                     else{
-                        UserFormFactory.showAlert("Please enter the Feedback")
+                        UserFormFactory.showAlert("Please enter the Message")
                         return;
                     }
                 }
