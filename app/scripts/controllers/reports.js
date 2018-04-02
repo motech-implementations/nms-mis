@@ -28,6 +28,9 @@
                         if((($state.current.name)===("reports"))){
                             $scope.getStatesByService(null);
                         }
+                        else{
+                            $scope.selectPeriodType("Month");
+                        }
 					})
 				}
 			})
