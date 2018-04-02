@@ -562,28 +562,28 @@ div.infoPages1 h2, div.infoPages2 h2, div.infoPages3 h2, div.infoPages4 h2, div.
   padding-left : 15px;
 }
 div.infoPages1 th:nth-child(2) {
-  width : 86%;
+  width : 83%;
 }
 div.infoPages2 th:nth-child(2) {
-  width : 80%;
+  width : 75%;
 }
 div.infoPages3 th:nth-child(2) {
-  width : 74%;
+  width : 71%;
 }
 div.infoPages4 th:nth-child(2) {
-  width : 91%;
-}
-div.infoPages5 th:nth-child(2) {
   width : 88%;
 }
+div.infoPages5 th:nth-child(2) {
+  width : 85%;
+}
 div.infoPages6 th:nth-child(2) {
-  width : 93%;
+  width : 90%;
 }
 div.infoPages7 th:nth-child(2) {
-  width : 76%;
+  width : 73%;
 }
 div.infoPages8 th:nth-child(2) {
-  width : 83%;
+  width : 80%;
 }
 hr.infoHR {
   border-bottom : 1px solid #000000;
@@ -923,7 +923,7 @@ a.adisabled:active { text-decoration: none; }
 }
 
 .faqTitle th:nth-child(2){
-    width : 92%;
+    width : 90%;
 }
 div.faqTitle > div > h4 {
     padding-left : 35px;
