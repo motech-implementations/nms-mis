@@ -18,6 +18,7 @@
             function validatePhoneNo(phoneNoField){
 //                var reg =/^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
                   var reg = /^(?:\+\d+[- ])?\d{10}$/;
+//                     var reg =  /^[0-9]{10}$/
                 return reg.test(phoneNoField);
             }
 
@@ -91,16 +92,6 @@
                 }
 
                 var formElement = angular.element(e.target);
-                if(!$scope.email.body){
-                    if(UserFormFactory.isInternetExplorer()){
-                        alert("Please enter the Message")
-                        return;
-                    }
-                    else{
-                        UserFormFactory.showAlert("Please enter the Message")
-                        return;
-                    }
-                }
                 formElement.attr("action", $scope.contactUsUrl);
                 formElement.attr("method", "post");
                 formElement[0].submit();
