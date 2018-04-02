@@ -7,7 +7,7 @@ import java.util.Date;
  * Created by beehyv on 6/10/17.
  */
 @Entity
-@Table(name="aggregate_cumulative_beneficiary_completion_counts")
+@Table(name="agg_kilkari_beneficiary_completion")
 public class AggregateCumulativeBeneficiaryCompletion {
 
     @Id
