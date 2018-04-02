@@ -91,6 +91,16 @@
                 }
 
                 var formElement = angular.element(e.target);
+                if(!$scope.email.body){
+                    if(UserFormFactory.isInternetExplorer()){
+                        alert("Please enter the Message")
+                        return;
+                    }
+                    else{
+                        UserFormFactory.showAlert("Please enter the Message")
+                        return;
+                    }
+                }
                 formElement.attr("action", $scope.contactUsUrl);
                 formElement.attr("method", "post");
                 formElement[0].submit();
