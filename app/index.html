@@ -186,12 +186,12 @@
         <div ng-if="(show==true)"    >
             <ul class="profile-dropdown">
                 <li data-ng-class="{active: activeTab('profile')}" >
-                    <a class="dropdown-buttons pointer" data-ng-hide='disableCursor()' data-ng-click="goToProfile()">My Profile</a>
-                    <a class="dropdown-buttons" data-ng-hide='!disableCursor()' data-ng-click="goToProfile()" style="cursor:not-allowed">My Profile</a>
+                    <a class="dropdown-buttons pointer" class="pointer" data-ng-class="{dis1: disableCursor()}" data-ng-click="goToProfile()">My Profile</a>
+
                 </li>
                 <li data-ng-class="{active: activeTab('changePassword')}" >
-                    <a class="dropdown-buttons pointer" data-ng-hide='disableCursor()' data-ng-click="goToChangePassword()" >Change Password</a>
-                    <a class="dropdown-buttons" data-ng-hide='!disableCursor()' data-ng-click="goToChangePassword()" style="cursor:not-allowed">Change Password</a>
+                    <a class="dropdown-buttons pointer"  data-ng-click="goToChangePassword()" data-ng-class="{dis1: disableCursor()}" >Change Password</a>
+
                 </li>
                 <li >
                     <a class="dropdown-buttons" href={{logoutUrl}}>Logout</a>
@@ -209,27 +209,27 @@
 	<div class='footer'>
 		<div class="col-md-4 col-sm-4 col-xs-4">
 			<div>
-				<a data-ng-hide='disableCursor()' data-ui-sref="TandC" class="pointer">terms and conditions </a>
-				<a data-ng-hide='!disableCursor()'  style="cursor: not-allowed">terms and conditions </a>
+				<a  data-ng-click="goToTandC()" class="pointer" data-ng-class="{dis: disableCursor()}">terms and conditions </a>
+
 				<span> |</span>
-				<a data-ng-hide='disableCursor()' data-ui-sref="PrivacyPolicy" class="pointer">privacy policy</a>
-				<a data-ng-hide='!disableCursor()'  style="cursor: not-allowed">privacy policy</a>
+				<a data-ng-click="goToPrivacyPolicy()" class="pointer" data-ng-class="{dis: disableCursor()}">privacy policy</a>
+
 				<span> |</span>
-				<a data-ng-hide='disableCursor()' data-ui-sref="CopyrightPolicy" class="pointer">copyright policy</a>
-				<a data-ng-hide='!disableCursor()'  style="cursor: not-allowed">copyright policy</a>
+				<a data-ng-click="goToCopyrightPolicy()" class="pointer" data-ng-class="{dis: disableCursor()}">copyright policy</a>
+
 			</div>
 			<div>
-				<a data-ng-hide='disableCursor()' data-ui-sref="HLPolicy" class="pointer">hyperlinking policy </a>
-				<a data-ng-hide='!disableCursor()'  style="cursor: not-allowed">hyperlinking policy </a>
+				<a data-ng-click="goToHLPolicy()" class="pointer" data-ng-class="{dis: disableCursor()}">hyperlinking policy </a>
+
 				<span> |</span>
-				<a data-ng-hide='disableCursor()' data-ui-sref="Disclaimer" class="pointer">disclaimer</a>
-				<a data-ng-hide='!disableCursor()'  style="cursor: not-allowed">disclaimer</a>
+				<a data-ng-click="goToDisclaimer()" class="pointer" data-ng-class="{dis: disableCursor()}">disclaimer</a>
+
 				<span> |</span>
-				<a data-ng-hide='disableCursor()' data-ui-sref="Help" class="pointer">help</a>
-				<a data-ng-hide='!disableCursor()' style="cursor: not-allowed">help</a>
+				<a data-ng-click="goToHelp()" class="pointer" data-ng-class="{dis: disableCursor()}">help</a>
+
 				<span> |</span>
-				<a data-ng-hide="disableCursor()" data-ng-click="goToSitemap()" class="pointer">Sitemap</a>
-				<a data-ng-hide="!disableCursor()" style="cursor: not-allowed">sitemap</a>
+				<a data-ng-click="goToSitemap()" class="pointer" data-ng-class="{dis: disableCursor()}">Sitemap</a>
+
 
 			</div>
 			<div><!--<span>2017 all rights reserved - Mobile Academy & Kilkari Management and Information system</span>-->
@@ -242,7 +242,7 @@
 		<div class="col-md-3 col-sm-3 col-xs-3 footer-right">
 			<div>last updated</div>
 			<div>Visitors: <!--<hit-counter style="background-color: #a4574c;color: white"></hit-counter></div>-->
-				<img src='https://www.counter12.com/img-y1ZZZZDZD6BZy4C0-3.gif' class="visitors" alt='web counter free'><script type='text/javascript' src='https://www.counter12.com/ad.js?id=y1ZZZZDZD6BZy4C0'></script></div>
+				<img src='https://www.counter12.com/img-y1ZZZZDZD6BZy4C0-3.gif' class="visitors" alt='count'><script type='text/javascript' src='https://www.counter12.com/ad.js?id=y1ZZZZDZD6BZy4C0'></script></div>
 			<div>Dt:  {{date | date:'medium'}}</div>
 		</div>
 

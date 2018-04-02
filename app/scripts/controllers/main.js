@@ -152,25 +152,40 @@
                 $state.go('feedbackForm', {pageNum: 1});
             }
             $scope.goToPrivacyPolicy = function () {
-                $state.go('PrivacyPolicy', {pageNum: 1});
+                if (!($scope.disableCursor())) {
+                    $state.go('PrivacyPolicy', {pageNum: 1});
+                }
             }
             $scope.goToCopyrightPolicy = function () {
-                $state.go('CopyrightPolicy', {pageNum: 1});
+                if (!($scope.disableCursor())) {
+                    $state.go('CopyrightPolicy', {pageNum: 1});
+                }
             }
             $scope.goToTandC = function () {
-                $state.go('TandC', {pageNum: 1});
+			    if (!($scope.disableCursor())){
+                    $state.go('TandC', {pageNum: 1});
+                }
+
             }
             $scope.goToHLPolicy = function () {
-                $state.go('HLPolicy', {pageNum: 1});
+                if (!($scope.disableCursor())) {
+                    $state.go('HLPolicy', {pageNum: 1});
+                }
             }
             $scope.goToDisclaimer = function () {
-                $state.go('Disclaimer', {pageNum: 1});
+                if (!($scope.disableCursor())) {
+                    $state.go('Disclaimer', {pageNum: 1});
+                }
             }
             $scope.goToHelp = function () {
-                $state.go('Help', {pageNum: 1});
+                if (!($scope.disableCursor())) {
+                    $state.go('Help', {pageNum: 1});
+                }
             }
             $scope.goToSitemap = function () {
-                $state.go('sitemap', {pageNum: 1});
+                if (!($scope.disableCursor())) {
+                    $state.go('sitemap', {pageNum: 1});
+                }
             }
 
             $scope.hovered = function () {
