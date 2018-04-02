@@ -861,9 +861,13 @@ a.adisabled:active { text-decoration: none; }
 .usermanual-padding0{
 	padding: 0px;
 }
-.userManualPic{
-    max-width : 820px;
+.userManualPic img{
+	max-width : 828px;
 }
+/*.userManualPic p{
+	max-width : 828px;
+}*/
+
 .userManual-block{
 	background-color: #0071bc;
 	height: 112px;
