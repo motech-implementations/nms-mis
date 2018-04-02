@@ -90,7 +90,6 @@
                     }
                 }
 
-
                 var formElement = angular.element(e.target);
                 formElement.attr("action", $scope.contactUsUrl);
                 formElement.attr("method", "post");
