@@ -1247,11 +1247,11 @@ Use of this source code is governed by an MIT-style license that can be foundin 
 
 .ff-captcha{
     padding: 0 0 0 30px;
+    margin: 0 0 0 74px;
 }
 
 .ff-submit{
     text-align: center;
-    padding: 15px 0px 0px 0px;
 }
 
 .feedbackResponse-Box{

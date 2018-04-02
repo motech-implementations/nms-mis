@@ -156,6 +156,11 @@ var nmsReportsApp = angular
                  templateUrl: 'views/contactUs.html'
             })
 
+            .state('contactUsResponse',{
+                url: '/contactUsResponse',
+                templateUrl: 'views/contactUsResponse.html'
+            })
+
             .state('sitemap', {
                  url: '/sitemap',
                  templateUrl: 'views/sitemap.html'
