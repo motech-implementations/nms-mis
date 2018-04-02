@@ -29,7 +29,8 @@
                             $scope.getStatesByService(null);
                         }
                         else{
-                            $scope.selectPeriodType("Month");
+                            if(!(($state.current.name)===("Kilkari Cumulative Summary"))&&!(($state.current.name)===("MA Cumulative Summary"))){
+                            $scope.selectPeriodType("Month");}
                         }
 					})
 				}
@@ -527,7 +528,14 @@
 					$scope.state = state;
 					excelHeaderName.stateName = state.stateName;
 				}
-				$scope.periodDisplayType = '';
+                        if((($state.current.name)===("reports"))){
+                            $scope.periodDisplayType = '';
+                        }
+                        else{
+                            if(!(($state.current.name)===("Kilkari Cumulative Summary"))&&!(($state.current.name)===("MA Cumulative Summary"))){
+                            $scope.selectPeriodType("Month");}
+                        }
+
                 $scope.dt1 = null;
                 $scope.dt2 = null;
                 $scope.hideGrid = true;
@@ -535,13 +543,21 @@
                 $scope.showEmptyData = false;
 				$scope.setDateOptions();
 				$scope.clearFile();
+
 			}
 			$scope.clearState = function(){
 				$scope.state = null;
 				excelHeaderName.stateName = "ALL";
 				$scope.clearDistrict();
 				$scope.districts = [];
-				$scope.periodDisplayType = '';
+                        if((($state.current.name)===("reports"))){
+                            $scope.periodDisplayType = '';
+                        }
+                        else{
+                            if(!(($state.current.name)===("Kilkari Cumulative Summary"))&&!(($state.current.name)===("MA Cumulative Summary"))){
+                            $scope.selectPeriodType("Month");}
+                        }
+
                 $scope.dt1 = null;
                 $scope.dt2 = null;
                 $scope.hideGrid = true;
@@ -557,7 +573,14 @@
 					$scope.district = district;
 					excelHeaderName.districtName = district.districtName;
 				}
-                $scope.periodDisplayType = '';
+                        if((($state.current.name)===("reports"))){
+                            $scope.periodDisplayType = '';
+                        }
+                        else{
+                            if(!(($state.current.name)===("Kilkari Cumulative Summary"))&&!(($state.current.name)===("MA Cumulative Summary"))){
+                            $scope.selectPeriodType("Month");}
+                        }
+
 				$scope.dt1 = null;
 				$scope.dt2 = null;
 				$scope.hideGrid = true;
@@ -570,7 +593,14 @@
 				excelHeaderName.districtName = "ALL";
 				$scope.clearBlock();
 				$scope.blocks = [];
-				$scope.periodDisplayType = '';
+                        if((($state.current.name)===("reports"))){
+                            $scope.periodDisplayType = '';
+                        }
+                        else{
+                            if(!(($state.current.name)===("Kilkari Cumulative Summary"))&&!(($state.current.name)===("MA Cumulative Summary"))){
+                            $scope.selectPeriodType("Month");}
+                        }
+
                 $scope.dt1 = null;
                 $scope.dt2 = null;
                 $scope.hideGrid = true;
@@ -585,7 +615,14 @@
 					$scope.block = block;
 					excelHeaderName.blockName = block.blockName;
 				}
-				$scope.periodDisplayType = '';
+                        if((($state.current.name)===("reports"))){
+                            $scope.periodDisplayType = '';
+                        }
+                        else{
+                            if(!(($state.current.name)===("Kilkari Cumulative Summary"))&&!(($state.current.name)===("MA Cumulative Summary"))){
+                            $scope.selectPeriodType("Month");}
+                        }
+
                 $scope.dt1 = null;
                 $scope.dt2 = null;
                 $scope.hideGrid = true;
@@ -596,7 +633,14 @@
 			$scope.clearBlock = function(){
 				$scope.block = null;
 				excelHeaderName.blockName = "ALL";
-				$scope.periodDisplayType = '';
+                        if((($state.current.name)===("reports"))){
+                            $scope.periodDisplayType = '';
+                        }
+                        else{
+                            if(!(($state.current.name)===("Kilkari Cumulative Summary"))&&!(($state.current.name)===("MA Cumulative Summary"))){
+                            $scope.selectPeriodType("Month");}
+                        }
+
                 $scope.dt1 = null;
                 $scope.dt2 = null;
                 $scope.hideGrid = true;
@@ -1161,7 +1205,14 @@
 				$scope.dt2 = null;
 				$scope.hideGrid = true;
 				$scope.hideMessageMatrix = true;
-				$scope.periodDisplayType = '';
+                        if((($state.current.name)===("reports"))){
+                            $scope.periodDisplayType = '';
+                        }
+                        else{
+                            if(!(($state.current.name)===("Kilkari Cumulative Summary"))&&!(($state.current.name)===("MA Cumulative Summary"))){
+                            $scope.selectPeriodType("Month");}
+                        }
+
 				$scope.showEmptyData = false;
 				}
 			})
