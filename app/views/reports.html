@@ -186,8 +186,8 @@
 
 					<div class="form-group col-xs-2" data-ng-hide = "report.name == 'MA Cumulative Summary' || report.reportEnum == 'Kilkari_Cumulative_Summary' ">
 						<label for="name"> Period Type</label><br>
-						<div class="btn-group" data-uib-dropdown dropdown-append-to-body>
-							<button id="btn-append-to-body9" type="button" class="btn btn-sm btn-default"  data-uib-dropdown-toggle >
+						<div class="btn-group disabled" data-uib-dropdown dropdown-append-to-body>
+							<button data-ng-disabled="true" id="btn-append-to-body9" type="button" class="btn btn-sm btn-default"  data-uib-dropdown-toggle >
 								<span class="block">
 									<span>{{periodDisplayType}}</span>
 									<span data-ng-if="reportDisplayType == null">ALL</span>
