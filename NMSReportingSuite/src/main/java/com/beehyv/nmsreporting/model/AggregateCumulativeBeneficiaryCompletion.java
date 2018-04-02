@@ -24,19 +24,19 @@ public class AggregateCumulativeBeneficiaryCompletion {
     @Column(name="date", columnDefinition = "DATE")
     private Date date;
 
-    @Column(name="course_completed_beneficiaries", columnDefinition = "BIGINT(20)")
+    @Column(name="total_beneficiaries_completed", columnDefinition = "BIGINT(20)")
     private Long completedBeneficiaries;
 
-    @Column(name="calls_75_100", columnDefinition = "BIGINT(20)")
+    @Column(name="content_listened_more_than_75_per", columnDefinition = "BIGINT(20)")
     private Long calls_75_100;
 
-    @Column(name="calls_50_75", columnDefinition = "BIGINT(20)")
+    @Column(name="content_listened_50_to_75_per", columnDefinition = "BIGINT(20)")
     private Long calls_50_75;
 
-    @Column(name="calls_25_50", columnDefinition = "BIGINT(20)")
+    @Column(name="content_listened_25_to_50_per", columnDefinition = "BIGINT(20)")
     private Long calls_25_50;
 
-    @Column(name="calls_1_25", columnDefinition = "BIGINT(20)")
+    @Column(name="content_listened_1_to_25_per", columnDefinition = "BIGINT(20)")
     private Long calls_1_25;
 
     @Column(name="total_age", columnDefinition = "INT(11)")
