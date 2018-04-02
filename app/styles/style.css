@@ -647,6 +647,7 @@ body {
 	margin:0;
 	padding:0;
 	height:100%;
+	background-color: #ffffff;
 }
 body > .main {
 	min-height:100%;
@@ -933,7 +934,9 @@ a.adisabled:active { text-decoration: none; }
 .user-manual-reports{
 	padding: 20px 0px 0 5px;
 }
-
+.imageModify img{
+	max-width: 828px;
+}
 .faqMargin {
 	margin: 0px 50px 0px -12px;
 }
