@@ -898,7 +898,7 @@ a.adisabled:active { text-decoration: none; }
 .userManual-right{
 	 background-color: #f2f2f2;
 	 margin: 0px 50px 0px -12px;
-	width: 110%;
+	width: 100%;
 	/*position: relative;*/
  }
 
