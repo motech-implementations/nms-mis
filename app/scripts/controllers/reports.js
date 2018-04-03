@@ -30,6 +30,7 @@
                         }
                         else{
                             if(!(($state.current.name)===("Kilkari Cumulative Summary"))&&!(($state.current.name)===("MA Cumulative Summary"))){
+                            $scope.setDateOptions();
                             $scope.selectPeriodType("Month");}
                         }
 					})
@@ -539,10 +540,10 @@
                         }
                         else{
                             if(!(($state.current.name)===("Kilkari Cumulative Summary"))&&!(($state.current.name)===("MA Cumulative Summary"))){
-                            $scope.selectPeriodType("Month");}
+                            $scope.setDateOptions();
+                            $scope.selectPeriodType("Month");
+                            }
                         }
-
-
 
 				$scope.clearFile();
 
@@ -563,6 +564,7 @@
                         }
                         else{
                             if(!(($state.current.name)===("Kilkari Cumulative Summary"))&&!(($state.current.name)===("MA Cumulative Summary"))){
+                            $scope.setDateOptions();
                             $scope.selectPeriodType("Month");}
                         }
 
@@ -586,6 +588,7 @@
                         }
                         else{
                             if(!(($state.current.name)===("Kilkari Cumulative Summary"))&&!(($state.current.name)===("MA Cumulative Summary"))){
+                            $scope.setDateOptions();
                             $scope.selectPeriodType("Month");}
                         }
 
@@ -608,6 +611,7 @@
                         }
                         else{
                             if(!(($state.current.name)===("Kilkari Cumulative Summary"))&&!(($state.current.name)===("MA Cumulative Summary"))){
+                            $scope.setDateOptions();
                             $scope.selectPeriodType("Month");}
                         }
 
@@ -630,6 +634,7 @@
                         }
                         else{
                             if(!(($state.current.name)===("Kilkari Cumulative Summary"))&&!(($state.current.name)===("MA Cumulative Summary"))){
+                            $scope.setDateOptions();
                             $scope.selectPeriodType("Month");}
                         }
 
@@ -650,6 +655,7 @@
                         }
                         else{
                             if(!(($state.current.name)===("Kilkari Cumulative Summary"))&&!(($state.current.name)===("MA Cumulative Summary"))){
+                            $scope.setDateOptions();
                             $scope.selectPeriodType("Month");}
                         }
 
@@ -1217,6 +1223,7 @@
                         }
                         else{
                             if(!(($state.current.name)===("Kilkari Cumulative Summary"))&&!(($state.current.name)===("MA Cumulative Summary"))){
+                            $scope.setDateOptions();
                             $scope.selectPeriodType("Month");}
                         }
 
