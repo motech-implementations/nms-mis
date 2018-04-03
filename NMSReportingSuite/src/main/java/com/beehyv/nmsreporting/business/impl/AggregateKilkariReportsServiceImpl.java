@@ -359,8 +359,8 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         return aggregateKilkariReportsDto;
     }
 
-    private List<KilkariSubscriber> getKilkariSubscriberCount(Integer locationId, String locationType, Date dateReq){
-        Date date = dateReq;
+    private List<KilkariSubscriber> getKilkariSubscriberCount(Integer locationId, String locationType, Date toDate){
+        Date date = toDate;
         List<KilkariSubscriber> kilkariSubscribersCountList = new ArrayList<>();
 
         if(locationType.equalsIgnoreCase("State")) {
@@ -370,7 +370,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     date = stateServiceDao.getServiceStartDateForState(state.getStateId(),"K");
                 }
                 kilkariSubscribersCountList.add(kilkariSubscriberReportDao.getKilkariSubscriberCounts(state.getStateId(),locationType, date));
-                date = dateReq;
+                date = toDate;
             }
         } else if(locationType.equalsIgnoreCase("District")){
             if(date.before(stateServiceDao.getServiceStartDateForState(locationId,"K"))){
@@ -1147,23 +1147,16 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
     }
 
 
-    private List<KilkariMessageListenership> getKilkariMessageListenershipData(Integer locationId, String locationType, Date dateReq){
-        Date date = dateReq;
+    private List<KilkariMessageListenership> getKilkariMessageListenershipData(Integer locationId, String locationType, Date date){
         List<KilkariMessageListenership> kilkariMessageListenershipList = new ArrayList<>();
         if(locationType.equalsIgnoreCase("State")){
             List<State> states=stateDao.getStatesByServiceType("K");
             for(State s:states){
-                if(date.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"K"))){
-                    date = stateServiceDao.getServiceStartDateForState(s.getStateId(),"K");
-                }
+                if(!date.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"K"))){
                 kilkariMessageListenershipList.add(kilkariMessageListenershipReportDao.getListenerData(s.getStateId(),locationType,date));
-                date = dateReq;
-            }
+            }}
         }
         else if(locationType.equalsIgnoreCase("District")){
-            if(date.before(stateServiceDao.getServiceStartDateForState(locationId,"K"))){
-                date = stateServiceDao.getServiceStartDateForState(locationId,"K");
-            }
             List<District> districts = districtDao.getDistrictsOfState(locationId);
             KilkariMessageListenership stateCounts = kilkariMessageListenershipReportDao.getListenerData(locationId,"State",date);
             Long answeredAtleastOneCall = (long)0;
@@ -1198,9 +1191,6 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             kilkariMessageListenershipList.add(noDistrictCount);
         }
         else if(locationType.equalsIgnoreCase("Block")) {
-            if(date.before(stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(),"K"))){
-                date = stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(),"K");
-            }
             List<Block> blocks = blockDao.getBlocksOfDistrict(locationId);
             KilkariMessageListenership districtCounts = kilkariMessageListenershipReportDao.getListenerData(locationId,"district",date);
             Long answeredAtleastOneCall = (long)0;
@@ -1236,9 +1226,6 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             kilkariMessageListenershipList.add(noBlockCount);
         }
         else {
-            if(date.before(stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(),"K"))){
-                date = stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(),"K");
-            }
             List<HealthFacility> healthFacilities = healthFacilitydao.findByHealthBlockId(locationId);
             List<HealthSubFacility> subcenters = new ArrayList<>();
             for(HealthFacility hf :healthFacilities){
@@ -1387,17 +1374,24 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
     }
 
     private List<AggregateCumulativeBeneficiaryCompletion> getCumulativeBeneficiaryCompletionData(Integer locationId,String locationType,Date toDate){
+        Date date = toDate;
         List<AggregateCumulativeBeneficiaryCompletion> CumulativeCompletion = new ArrayList<>();
         if(locationType.equalsIgnoreCase("State")){
             List<State> states=stateDao.getStatesByServiceType("K");
             for(State s:states){
-                if(!toDate.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"K"))){
-                CumulativeCompletion.add(aggCumulativeBeneficiaryComplDao.getBeneficiaryCompletion(s.getStateId(),locationType,toDate));
-            }}
+                if(date.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"K"))){
+                    date = stateServiceDao.getServiceStartDateForState(s.getStateId(),"K");
+                }
+                CumulativeCompletion.add(aggCumulativeBeneficiaryComplDao.getBeneficiaryCompletion(s.getStateId(),locationType,date));
+                date = toDate;
+            }
         }
         else if(locationType.equalsIgnoreCase("District")){
+            if(date.before(stateServiceDao.getServiceStartDateForState(locationId,"K"))){
+                date = stateServiceDao.getServiceStartDateForState(locationId,"K");
+            }
             List<District> districts = districtDao.getDistrictsOfState(locationId);
-            AggregateCumulativeBeneficiaryCompletion stateCounts = aggCumulativeBeneficiaryComplDao.getBeneficiaryCompletion(locationId,"State",toDate);
+            AggregateCumulativeBeneficiaryCompletion stateCounts = aggCumulativeBeneficiaryComplDao.getBeneficiaryCompletion(locationId,"State",date);
             Long completedBeneficiaries = (long)0;
             Long calls_75_100 = (long)0;
             Long calls_50_75 = (long)0;
@@ -1405,7 +1399,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             Long calls_1_25 = (long)0;
             Integer totalAge = 0;
             for(District d:districts){
-                AggregateCumulativeBeneficiaryCompletion districtCount = aggCumulativeBeneficiaryComplDao.getBeneficiaryCompletion(d.getDistrictId(),locationType,toDate);
+                AggregateCumulativeBeneficiaryCompletion districtCount = aggCumulativeBeneficiaryComplDao.getBeneficiaryCompletion(d.getDistrictId(),locationType,date);
                 CumulativeCompletion.add(districtCount);
                 completedBeneficiaries+=districtCount.getCompletedBeneficiaries();
                 calls_75_100 += districtCount.getCalls_75_100();
@@ -1426,8 +1420,11 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             noDistrictCount.setLocationId((long)(-1));
             CumulativeCompletion.add(noDistrictCount);
         } else if(locationType.equalsIgnoreCase("Block")) {
+            if(date.before(stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(),"K"))){
+                date = stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(),"K");
+            }
             List<Block> blocks = blockDao.getBlocksOfDistrict(locationId);
-            AggregateCumulativeBeneficiaryCompletion districtCounts = aggCumulativeBeneficiaryComplDao.getBeneficiaryCompletion(locationId,"District",toDate);
+            AggregateCumulativeBeneficiaryCompletion districtCounts = aggCumulativeBeneficiaryComplDao.getBeneficiaryCompletion(locationId,"District",date);
             Long completedBeneficiaries = (long)0;
             Long calls_75_100 = (long)0;
             Long calls_50_75 = (long)0;
@@ -1435,7 +1432,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             Long calls_1_25 = (long)0;
             Integer totalAge =  0;
             for (Block d : blocks) {
-                AggregateCumulativeBeneficiaryCompletion blockCount = aggCumulativeBeneficiaryComplDao.getBeneficiaryCompletion(d.getBlockId(),locationType,toDate);
+                AggregateCumulativeBeneficiaryCompletion blockCount = aggCumulativeBeneficiaryComplDao.getBeneficiaryCompletion(d.getBlockId(),locationType,date);
                 CumulativeCompletion.add(blockCount);
                 completedBeneficiaries += blockCount.getCompletedBeneficiaries();
                 calls_75_100 += blockCount.getCalls_75_100();
@@ -1456,12 +1453,15 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             noBlockCount.setLocationId((long)(-1));
             CumulativeCompletion.add(noBlockCount);
         } else {
+            if(date.before(stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(),"K"))){
+                date = stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(),"K");
+            }
             List<HealthFacility> healthFacilities = healthFacilitydao.findByHealthBlockId(locationId);
             List<HealthSubFacility> subcenters = new ArrayList<>();
             for(HealthFacility hf :healthFacilities){
                 subcenters.addAll(healthSubFacilityDao.findByHealthFacilityId(hf.getHealthFacilityId()));
             }
-            AggregateCumulativeBeneficiaryCompletion blockCounts = aggCumulativeBeneficiaryComplDao.getBeneficiaryCompletion(locationId,"block",toDate);
+            AggregateCumulativeBeneficiaryCompletion blockCounts = aggCumulativeBeneficiaryComplDao.getBeneficiaryCompletion(locationId,"block",date);
             Long completedBeneficiaries = (long)0;
             Long calls_75_100 = (long)0;
             Long calls_50_75 = (long)0;
@@ -1469,7 +1469,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             Long calls_1_25 = (long)0;
             Integer totalAge = 0;
             for(HealthSubFacility s: subcenters){
-                AggregateCumulativeBeneficiaryCompletion SubcenterCount = aggCumulativeBeneficiaryComplDao.getBeneficiaryCompletion(s.getHealthSubFacilityId(),locationType,toDate);
+                AggregateCumulativeBeneficiaryCompletion SubcenterCount = aggCumulativeBeneficiaryComplDao.getBeneficiaryCompletion(s.getHealthSubFacilityId(),locationType,date);
                 CumulativeCompletion.add(SubcenterCount);
                 completedBeneficiaries+=SubcenterCount.getCompletedBeneficiaries();
                 calls_75_100 += SubcenterCount.getCalls_75_100();
@@ -2107,17 +2107,24 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
 
 
     private List<KilkariCalls> getKilkariCallReport(Integer locationId,String locationType, Date toDate){
+        Date date = toDate;
         List<KilkariCalls> kilkariCall = new ArrayList<>();
         if(locationType.equalsIgnoreCase("State")){
             List<State> states=stateDao.getStatesByServiceType("K");
             for(State s:states){
-                if(!toDate.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"K"))){
-                kilkariCall.add(kilkariCallReportDao.getKilkariCallreport(s.getStateId(),locationType,toDate));
-            }}
+                if(date.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"K"))){
+                    date = stateServiceDao.getServiceStartDateForState(s.getStateId(),"K");
+                }
+                kilkariCall.add(kilkariCallReportDao.getKilkariCallreport(s.getStateId(),locationType,date));
+                date = toDate;
+            }
 
         }  else if(locationType.equalsIgnoreCase("District")){
+            if(date.before(stateServiceDao.getServiceStartDateForState(locationId,"K"))){
+                date = stateServiceDao.getServiceStartDateForState(locationId,"K");
+            }
             List<District> districts = districtDao.getDistrictsOfState(locationId);
-            KilkariCalls stateCounts = kilkariCallReportDao.getKilkariCallreport(locationId,"State",toDate);
+            KilkariCalls stateCounts = kilkariCallReportDao.getKilkariCallreport(locationId,"State",date);
             Long callsAttempted = (long)0;
             Long successfulCalls = (long)0;
             Double billableMinutes = 0.00;
@@ -2127,7 +2134,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             Long content_25_50 = (long)0;
             Long content_1_25 = (long)0;
             for(District d:districts){
-                KilkariCalls districtCount = kilkariCallReportDao.getKilkariCallreport(d.getDistrictId(),locationType,toDate);
+                KilkariCalls districtCount = kilkariCallReportDao.getKilkariCallreport(d.getDistrictId(),locationType,date);
                 kilkariCall.add(districtCount);
                 callsAttempted+=districtCount.getCallsAttempted();
                 successfulCalls+=districtCount.getSuccessfulCalls();
@@ -2152,8 +2159,11 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             noDistrictCount.setLocationId((long)(-1));
             kilkariCall.add(noDistrictCount);
         } else if(locationType.equalsIgnoreCase("Block")) {
+            if(date.before(stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(),"K"))){
+                date = stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(),"K");
+            }
             List<Block> blocks = blockDao.getBlocksOfDistrict(locationId);
-            KilkariCalls districtCounts = kilkariCallReportDao.getKilkariCallreport(locationId,"District",toDate);
+            KilkariCalls districtCounts = kilkariCallReportDao.getKilkariCallreport(locationId,"District",date);
             Long callsAttempted = (long)0;
             Long successfulCalls = (long)0;
             Double billableMinutes = 0.00;
@@ -2163,7 +2173,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             Long content_25_50 = (long)0;
             Long content_1_25 = (long)0;
             for (Block d : blocks) {
-                KilkariCalls blockCount = kilkariCallReportDao.getKilkariCallreport(d.getBlockId(),locationType,toDate);
+                KilkariCalls blockCount = kilkariCallReportDao.getKilkariCallreport(d.getBlockId(),locationType,date);
                 kilkariCall.add(blockCount);
                 callsAttempted+=blockCount.getCallsAttempted();
                 successfulCalls+=blockCount.getSuccessfulCalls();
@@ -2188,12 +2198,15 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             noBlockCount.setLocationId((long)(-1));
             kilkariCall.add(noBlockCount);
         } else {
+            if(date.before(stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(),"K"))){
+                date = stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(),"K");
+            }
             List<HealthFacility> healthFacilities = healthFacilitydao.findByHealthBlockId(locationId);
             List<HealthSubFacility> subcenters = new ArrayList<>();
             for(HealthFacility hf :healthFacilities){
                 subcenters.addAll(healthSubFacilityDao.findByHealthFacilityId(hf.getHealthFacilityId()));
             }
-            KilkariCalls blockCounts = kilkariCallReportDao.getKilkariCallreport(locationId,"block",toDate);
+            KilkariCalls blockCounts = kilkariCallReportDao.getKilkariCallreport(locationId,"block",date);
             Long callsAttempted = (long)0;
             Long successfulCalls = (long)0;
             Double billableMinutes = 0.00;
@@ -2203,7 +2216,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             Long content_25_50 = (long)0;
             Long content_1_25 = (long)0;
             for(HealthSubFacility s: subcenters){
-                KilkariCalls SubcenterCount = kilkariCallReportDao.getKilkariCallreport(s.getHealthSubFacilityId(),locationType,toDate);
+                KilkariCalls SubcenterCount = kilkariCallReportDao.getKilkariCallreport(s.getHealthSubFacilityId(),locationType,date);
                 kilkariCall.add(SubcenterCount);
                 callsAttempted+=SubcenterCount.getCallsAttempted();
                 successfulCalls+=SubcenterCount.getSuccessfulCalls();
