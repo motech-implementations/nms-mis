@@ -237,6 +237,7 @@
             			    return false;}
                             if ($state.current.name !== 'profile') {
                                 $state.go('profile', {pageNum: 1});
+                                $scope.show = false;
                             }
             			};
 
@@ -252,12 +253,17 @@
                     return false;}
                     if ($state.current.name !== 'changePassword') {
                         $state.go('changePassword', {pageNum: 1});
+                        $scope.show = false;
                     }
                        };
 
 			$scope.activeTab = function(tabName){
 				return ($state.current.name.indexOf(tabName) > -1);
 			};
+			$scope.activeTabProfile = function (tabName) {
+			    console.log(tabName);
+                return (($state.current.name) === (tabName));
+            }
             $scope.reportsActive = function(){
                 return (($state.current.name.indexOf('reports') > -1)||($scope.disableCursor()));
             };

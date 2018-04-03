@@ -559,7 +559,10 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     summaryDto1.setLocationName("No Subcentre");
                     summaryDto1.setLink(true);
                 }
-                if (a.getId() != 0 && !locationType.equalsIgnoreCase("DifferenceState")) {
+                if ((a.getBeneficiariesCalled()+a.getAnsweredAtleastOneCall()+a.getSelfDeactivated()+
+                        a.getNotAnswering()+a.getLowListenership()+a.getSystemDeactivation()+a.getMotherCompletion()+
+                        a.getChildCompletion()+a.getCalledInbox()+a.getJoinedSubscription() != 0)
+                        && !locationType.equalsIgnoreCase("DifferenceState")) {
                     summaryDto.add(summaryDto1);
                 }
             }
