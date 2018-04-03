@@ -73,7 +73,7 @@
                 }
 
 
-                if($scope.captchaResponse ==''){
+                if(!$scope.captchaResponse){
                     if(UserFormFactory.isInternetExplorer()){
                         alert("Check captcha")
                         return;
