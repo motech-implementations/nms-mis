@@ -55,10 +55,12 @@
 					}).then(function(result){
                         if(UserFormFactory.isInternetExplorer()){
                             alert(result.data['0'])
+                            $state.go($state.current, {}, {reload: true});
                              return;
                         }
                         else{
                             UserFormFactory.showAlert(result.data['0'])
+                            $state.go($state.current, {}, {reload: true});
                             return;
                         }
 
