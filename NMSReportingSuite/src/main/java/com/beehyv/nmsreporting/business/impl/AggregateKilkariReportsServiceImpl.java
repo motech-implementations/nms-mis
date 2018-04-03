@@ -1729,8 +1729,8 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             return  messageMatrixResponseDto;
         }
 
-        while(motherMatrixDto.size() < 5) motherMatrixDto.add(new MessageMatrixDto());
-        while(childMatrixDto.size() < 9) childMatrixDto.add(new MessageMatrixDto());
+        while(motherMatrixDto.size() < 4) motherMatrixDto.add(new MessageMatrixDto());
+        while(childMatrixDto.size() < 8) childMatrixDto.add(new MessageMatrixDto());
         for(int count =0; count< messagelist.size();count++) {
             MessageMatrixDto matrixDto1 = new MessageMatrixDto();
 
@@ -1876,24 +1876,24 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
 
         }
 
-        MessageMatrixDto matrixDto5 = new MessageMatrixDto();
-        matrixDto5.setMessageWeek("Total");
-        matrixDto5.setContent_1_25(Mother_1_25);
-        matrixDto5.setContent_25_50(Mother_25_50);
-        matrixDto5.setContent_50_75(Mother_50_75);
-        matrixDto5.setContent_75_100(Mother_75_100);
-        matrixDto5.setTotal(Mother_1_25 + Mother_25_50 + Mother_50_75 + Mother_75_100);
-        motherMatrixDto.set(4,matrixDto5);
-
-        MessageMatrixDto matrixDto14 = new MessageMatrixDto();
-        matrixDto14.setMessageWeek("Total");
-        matrixDto14.setContent_1_25(Child_1_25);
-        matrixDto14.setContent_25_50(Child_25_50);
-        matrixDto14.setContent_50_75(Child_50_75);
-        matrixDto14.setContent_75_100(Child_75_100);
-        matrixDto14.setTotal(Child_1_25 + Child_25_50 +Child_50_75 + Child_75_100);
-
-        childMatrixDto.set(8,matrixDto14);
+//        MessageMatrixDto matrixDto5 = new MessageMatrixDto();
+//        matrixDto5.setMessageWeek("Total");
+//        matrixDto5.setContent_1_25(Mother_1_25);
+//        matrixDto5.setContent_25_50(Mother_25_50);
+//        matrixDto5.setContent_50_75(Mother_50_75);
+//        matrixDto5.setContent_75_100(Mother_75_100);
+//        matrixDto5.setTotal(Mother_1_25 + Mother_25_50 + Mother_50_75 + Mother_75_100);
+//        motherMatrixDto.set(4,matrixDto5);
+//
+//        MessageMatrixDto matrixDto14 = new MessageMatrixDto();
+//        matrixDto14.setMessageWeek("Total");
+//        matrixDto14.setContent_1_25(Child_1_25);
+//        matrixDto14.setContent_25_50(Child_25_50);
+//        matrixDto14.setContent_50_75(Child_50_75);
+//        matrixDto14.setContent_75_100(Child_75_100);
+//        matrixDto14.setTotal(Child_1_25 + Child_25_50 +Child_50_75 + Child_75_100);
+//
+//        childMatrixDto.set(8,matrixDto14);
 
 
 
