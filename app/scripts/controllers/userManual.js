@@ -23,8 +23,8 @@
             }
             )();
             /*$scope.selectRole = localStorage.getItem('role');*/
-            console.log( localStorage.getItem('role'));
-            console.log($scope.selectRole);
+            /*console.log( localStorage.getItem('role'));
+            console.log($scope.selectRole);*/
 
             (function () {
                     if(($scope.selectRole < 5 && $state.current.name ==="userManual.userManual_Management") || ($scope.selectRole < 1 && $state.current.name ==="userManual.kilkari") || ($scope.selectRole < 1 && $state.current.name ==="userManual.mobileAcademy")) {
