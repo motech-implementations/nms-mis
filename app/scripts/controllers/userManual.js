@@ -12,14 +12,19 @@
             }
             // localStorage.getItem('role') = 'Anonymous';
             (function () {
-                if(localStorage.getItem('role') === undefined) {
-                    $scope.selectRole = 0;
+
+                if(localStorage.getItem('role') !== undefined) {
+                    $scope.selectRole = localStorage.getItem('role');
+
                 } else {
 
-                    $scope.selectRole = localStorage.getItem('role');
+                     $scope.selectRole = 0;
                 }
             }
             )();
+            /*$scope.selectRole = localStorage.getItem('role');*/
+            console.log( localStorage.getItem('role'));
+            console.log($scope.selectRole);
 
             (function () {
                     if(($scope.selectRole < 5 && $state.current.name ==="userManual.userManual_Management") || ($scope.selectRole < 1 && $state.current.name ==="userManual.kilkari") || ($scope.selectRole < 1 && $state.current.name ==="userManual.mobileAcademy")) {
@@ -38,9 +43,6 @@
                 {"id": 6, "role" : "State Admin"},
                 {"id": 7, "role" : "District Admin"}
 
-                /*{"id": 0, "role" : "Anonymous"},
-                {"id": 1, "role" : "User"},
-                {"id": 2, "role" : "Admin"}*/
             ];
 
             $scope.func = function (val) {
