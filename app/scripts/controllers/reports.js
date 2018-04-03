@@ -29,10 +29,10 @@
                             $scope.getStatesByService(null);
                         }
                         else{
-                            if(!(($state.current.name)===("Kilkari Cumulative Summary"))&&!(($state.current.name)===("MA Cumulative Summary"))){
+                        if(!(($state.current.name)===("Kilkari Cumulative Summary"))&&!(($state.current.name)===("MA Cumulative Summary"))){
                             $scope.setDateOptions();
-                            $scope.selectPeriodType("Month");}
-                        }
+                            $scope.selectPeriodType("Month");
+                        }}
 					})
 				}
 			})
@@ -529,7 +529,8 @@
 					$scope.state = state;
 					excelHeaderName.stateName = state.stateName;
 				}
-                        if((($state.current.name)===("reports"))){
+                        if((($state.current.name)===("reports"))||(($state.current.name)===("Kilkari Cumulative Summary"))||(($state.current.name)===("MA Cumulative Summary"))){
+                            console.log($scope.endDatePickerOptions);
                             $scope.periodDisplayType = '';
                             $scope.dt1 = null;
                             $scope.dt2 = null;
@@ -537,12 +538,14 @@
                             $scope.hideMessageMatrix = true;
                             $scope.showEmptyData = false;
                             $scope.setDateOptions();
+//                            console.log($scope.endDatePickerOptions);
+//                            console.log($scope.state);
                         }
                         else{
-                            if(!(($state.current.name)===("Kilkari Cumulative Summary"))&&!(($state.current.name)===("MA Cumulative Summary"))){
                             $scope.setDateOptions();
                             $scope.selectPeriodType("Month");
-                            }
+//                            console.log($scope.state);
+
                         }
 
 				$scope.clearFile();
@@ -553,7 +556,7 @@
 				excelHeaderName.stateName = "ALL";
 				$scope.clearDistrict();
 				$scope.districts = [];
-                        if((($state.current.name)===("reports"))){
+                        if((($state.current.name)===("reports"))||(($state.current.name)===("Kilkari Cumulative Summary"))||(($state.current.name)===("MA Cumulative Summary"))){
                             $scope.periodDisplayType = '';
                             $scope.dt1 = null;
                             $scope.dt2 = null;
@@ -563,9 +566,9 @@
                             $scope.setDateOptions();
                         }
                         else{
-                            if(!(($state.current.name)===("Kilkari Cumulative Summary"))&&!(($state.current.name)===("MA Cumulative Summary"))){
+
                             $scope.setDateOptions();
-                            $scope.selectPeriodType("Month");}
+                            $scope.selectPeriodType("Month");
                         }
 
 
@@ -578,7 +581,7 @@
 					$scope.district = district;
 					excelHeaderName.districtName = district.districtName;
 				}
-                        if((($state.current.name)===("reports"))){
+                        if((($state.current.name)===("reports"))||(($state.current.name)===("Kilkari Cumulative Summary"))||(($state.current.name)===("MA Cumulative Summary"))){
                             $scope.periodDisplayType = '';
                             $scope.dt1 = null;
                             $scope.dt2 = null;
@@ -587,9 +590,9 @@
                             $scope.showEmptyData = false;
                         }
                         else{
-                            if(!(($state.current.name)===("Kilkari Cumulative Summary"))&&!(($state.current.name)===("MA Cumulative Summary"))){
+
                             $scope.setDateOptions();
-                            $scope.selectPeriodType("Month");}
+                            $scope.selectPeriodType("Month");
                         }
 
 
@@ -600,7 +603,7 @@
 				excelHeaderName.districtName = "ALL";
 				$scope.clearBlock();
 				$scope.blocks = [];
-                        if((($state.current.name)===("reports"))){
+                        if((($state.current.name)===("reports"))||(($state.current.name)===("Kilkari Cumulative Summary"))||(($state.current.name)===("MA Cumulative Summary"))){
                             $scope.periodDisplayType = '';
                             $scope.dt1 = null;
                             $scope.dt2 = null;
@@ -610,9 +613,9 @@
                             $scope.setDateOptions();
                         }
                         else{
-                            if(!(($state.current.name)===("Kilkari Cumulative Summary"))&&!(($state.current.name)===("MA Cumulative Summary"))){
+
                             $scope.setDateOptions();
-                            $scope.selectPeriodType("Month");}
+                            $scope.selectPeriodType("Month");
                         }
 
 
@@ -624,7 +627,7 @@
 					$scope.block = block;
 					excelHeaderName.blockName = block.blockName;
 				}
-                        if((($state.current.name)===("reports"))){
+                        if((($state.current.name)===("reports"))||(($state.current.name)===("Kilkari Cumulative Summary"))||(($state.current.name)===("MA Cumulative Summary"))){
                             $scope.periodDisplayType = '';
                             $scope.dt1 = null;
                             $scope.dt2 = null;
@@ -633,9 +636,9 @@
                             $scope.showEmptyData = false;
                         }
                         else{
-                            if(!(($state.current.name)===("Kilkari Cumulative Summary"))&&!(($state.current.name)===("MA Cumulative Summary"))){
+
                             $scope.setDateOptions();
-                            $scope.selectPeriodType("Month");}
+                            $scope.selectPeriodType("Month");
                         }
 
 
@@ -644,7 +647,7 @@
 			$scope.clearBlock = function(){
 				$scope.block = null;
 				excelHeaderName.blockName = "ALL";
-                        if((($state.current.name)===("reports"))){
+                        if((($state.current.name)===("reports"))||(($state.current.name)===("Kilkari Cumulative Summary"))||(($state.current.name)===("MA Cumulative Summary"))){
                             $scope.periodDisplayType = '';
                             $scope.dt1 = null;
                             $scope.dt2 = null;
@@ -654,9 +657,9 @@
                             $scope.setDateOptions();
                         }
                         else{
-                            if(!(($state.current.name)===("Kilkari Cumulative Summary"))&&!(($state.current.name)===("MA Cumulative Summary"))){
+
                             $scope.setDateOptions();
-                            $scope.selectPeriodType("Month");}
+                            $scope.selectPeriodType("Month");
                         }
 
 
@@ -933,6 +936,7 @@
                             reportRequest.toDate = new Date($scope.dt1.getFullYear(),$scope.dt1.getMonth() + 1,0);
                             dateString = (reportRequest.fromDate.getMonth()+ 1 ) + "_" + reportRequest.fromDate.getFullYear();
                             excelHeaderName.timePeriod = (reportRequest.fromDate.getMonth()+ 1 ) + "-" + reportRequest.fromDate.getFullYear();
+                            toDates = reportRequest.toDate;
                          }
                     }
                     else if($scope.periodDisplayType == 'Quarter' ){
@@ -1017,8 +1021,9 @@
 					    else if($scope.report.reportEnum == 'MA_Performance'){
 					        $scope.gridOptions1.columnDefs = $scope.MA_Performance_Column_Definitions;
 					    }
-					    else if($scope.report.reportEnum == 'MA_Subscriber')
+					    else if($scope.report.reportEnum == 'MA_Subscriber'){
 					        $scope.gridOptions1.columnDefs = $scope.MA_Subscriber_Column_Definitions;
+					        console.log($scope.gridOptions1.columnDefs);}
 					    else if($scope.report.reportEnum == 'Kilkari_Cumulative_Summary'){
 					        $scope.gridOptions1.columnDefs = $scope.Kilkari_Cumulative_Summary_Definitions;
 					    }
@@ -1056,6 +1061,7 @@
                         if($scope.report.reportEnum != 'Kilkari_Message_Matrix' && $scope.report.reportEnum != 'Kilkari_Listening_Matrix' && $scope.report.reportEnum != 'Kilkari_Repeat_Listener_Month_Wise' && $scope.report.reportEnum != 'Kilkari_Thematic_Content' ){
                             if(result.data.tableData.length >0){
                              $scope.gridOptions1.data = result.data.tableData;
+
                              $scope.gridOptions1.showColumnFooter = true;
                              $scope.reportBreadCrumbData = result.data.breadCrumbData;
                              $scope.hideGrid = false;
@@ -1116,7 +1122,7 @@
                                 $scope.gridOptions1.data = result.data.motherData;
                                 $scope.gridOptions1.showColumnFooter = false;
                                 $scope.hideGrid = false;
-                                $scope.matrixContent1 ='Kilkari MotherPack Data';
+                                $scope.matrixContent1 ='Kilkari Maternal Health Content Data';
 
                             }
                              else{
@@ -1127,7 +1133,7 @@
                                 $scope.gridOptions2.data = result.data.childData;
                                 $scope.gridOptions1.showColumnFooter = false;
                                 $scope.hideMessageMatrix = false;
-                                $scope.matrixContent2 ='Kilkari ChildPack Data';
+                                $scope.matrixContent2 ='Kilkari Child Health Content Data';
                             }
                             else{
                                 $scope.hideMessageMatrix = true;
@@ -1218,13 +1224,13 @@
 				$scope.dt2 = null;
 				$scope.hideGrid = true;
 				$scope.hideMessageMatrix = true;
-                        if((($state.current.name)===("reports"))){
+                        if((($state.current.name)===("reports"))||(($state.current.name)===("Kilkari Cumulative Summary"))||(($state.current.name)===("MA Cumulative Summary"))){
                             $scope.periodDisplayType = '';
                         }
                         else{
-                            if(!(($state.current.name)===("Kilkari Cumulative Summary"))&&!(($state.current.name)===("MA Cumulative Summary"))){
+
                             $scope.setDateOptions();
-                            $scope.selectPeriodType("Month");}
+                            $scope.selectPeriodType("Month");
                         }
 
 				$scope.showEmptyData = false;
@@ -1405,12 +1411,12 @@
 
             $window.addEventListener('click', function() {
 
-                return	UserFormFactory.isLoggedIn()
-                   .then(function(result){
-                    if(!result.data){
-                              alert("Session Timed out...Please Login Again")
-                                $window.location.href= backend_root+"nms/logout";
-                   }})
+//                return	UserFormFactory.isLoggedIn()
+//                   .then(function(result){
+//                    if(!result.data){
+//                              alert("Session Timed out...Please Login Again")
+//                                $window.location.href= backend_root+"nms/logout";
+//                   }})
               if($scope.sundaysTable)
                 $scope.sundaysTable = false;
             });
@@ -1741,21 +1747,21 @@
 
             $scope.Kilkari_Message_Matrix_Motherpack_Definitions =[
                                                      { field: 'messageWeek', name: 'Message Week',enableSorting: false,width:"*", enableHiding: false },
-                                                     { field: 'content_75_100', name: 'Listening > 75% content', enableSorting: false,width:"*", enableHiding: false},
-                                                     { field: 'content_50_75', name: 'Listening 50 to 75% content', enableSorting: false,width:"*", enableHiding: false},
-                                                     { field: 'content_25_50', name: 'Listening 25 to 50% content',enableSorting: false,width:"*", enableHiding: false },
-                                                     { field: 'content_1_25', name: 'Listening < 25 % content',enableSorting: false,width:"*", enableHiding: false },
-                                                     { field: 'total', name: 'Total', enableSorting: false,width:"*", enableHiding: false },
+                                                     { field: 'content_75_100', name: 'Benefeciaries listened > 75% content', enableSorting: false,width:"*", enableHiding: false},
+                                                     { field: 'content_50_75', name: 'Benefeciaries listened 50 to 75% content', enableSorting: false,width:"*", enableHiding: false},
+                                                     { field: 'content_25_50', name: 'Benefeciaries listened 25 to 50% content',enableSorting: false,width:"*", enableHiding: false },
+                                                     { field: 'content_1_25', name: 'Benefeciaries listened < 25 % content',enableSorting: false,width:"*", enableHiding: false },
+                                                     //{ field: 'total', name: 'Total', enableSorting: false,width:"*", enableHiding: false },
 
             ]
 
             $scope.Kilkari_Message_Matrix_Childpack_Definitions =[
                                                      { field: 'messageWeek', name: 'Message Week',enableSorting: false,width:"*", enableHiding: false },
-                                                     { field: 'content_75_100', name: 'Listening > 75% content', enableSorting: false,width:"*", enableHiding: false},
-                                                     { field: 'content_50_75', name: 'Listening 50 to 75% content',enableSorting: false, width:"*", enableHiding: false},
-                                                     { field: 'content_25_50', name: 'Listening 25 to 50% content',enableSorting: false,width:"*", enableHiding: false },
-                                                     { field: 'content_1_25', name: 'Listening < 25 % content',enableSorting: false,width:"*", enableHiding: false },
-                                                     { field: 'total', name: 'Total', enableSorting: false,width:"*", enableHiding: false },
+                                                     { field: 'content_75_100', name: 'Benefeciaries listened > 75% content', enableSorting: false,width:"*", enableHiding: false},
+                                                     { field: 'content_50_75', name: 'Benefeciaries listened 50 to 75% content',enableSorting: false, width:"*", enableHiding: false},
+                                                     { field: 'content_25_50', name: 'Benefeciaries listened 25 to 50% content',enableSorting: false,width:"*", enableHiding: false },
+                                                     { field: 'content_1_25', name: 'Benefeciaries listened < 25 % content',enableSorting: false,width:"*", enableHiding: false },
+                                                     //{ field: 'total', name: 'Total', enableSorting: false,width:"*", enableHiding: false },
 
             ]
 

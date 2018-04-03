@@ -34,7 +34,7 @@
             var CSV = '';
             //Set Report title in first row or line
             if (excelHeaderName.reportName == "Kilkari Message Matrix") {
-                CSV += 'Kilkari Mother Pack Data\r\n\n';
+                CSV += 'Kilkari Maternal Health Content Data\r\n\n';
             }
             if (excelHeaderName.reportName == "Kilkari Repeat Listener") {
                 CSV += 'Beneficiary Count\r\n\n';
@@ -131,7 +131,7 @@
                 CSV += row;
             }
             if (excelHeaderName.reportName == "Kilkari Message Matrix") {
-                CSV += '\n\nKilkari Child Pack Data\r\n\n';
+                CSV += '\n\nKilkari Child Health Content Data\r\n\n';
             }
             if (excelHeaderName.reportName == "Kilkari Repeat Listener") {
                 CSV += '\n\nBeneficiary Percentage\r\n\n';
@@ -1201,7 +1201,7 @@
                 var ws = {
                     B1: {
                         t: 's',
-                        v: excelHeaderName.reportName + " (Kilkari MotherPack Data)"
+                        v: excelHeaderName.reportName + " (Kilkari Maternal Health Content Data)"
                     },
                     B3: {
                         t: 's',
@@ -1233,7 +1233,7 @@
                     },
                     B15: {
                         t: 's',
-                        v: excelHeaderName.reportName + " (Kilkari ChildPack Data)"
+                        v: excelHeaderName.reportName + " (Kilkari Child Health Content Data)"
                     },
                     B17: {
                         t: 's',
