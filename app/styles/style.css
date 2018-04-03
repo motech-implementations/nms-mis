@@ -1448,3 +1448,15 @@ input[type=number]::-webkit-outer-spin-button {
 	text-decoration: none;
 	color: #428bca;
 }
+.activeP a{
+	color: #bfbfbf;
+}
+.activeP a:hover{
+	color: #bfbfbf;
+}
+.pd{
+	display: none;
+}
+.pd1{
+	display: block;
+}
