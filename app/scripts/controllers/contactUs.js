@@ -1,7 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
-		.module('nmsReports')
-		.controller("ContactUsController", ['$scope', '$state', 'UserFormFactory','$http', '$location', function($scope,$state,UserFormFactory, $http, $location ){
+		.module('nmsReports');
+		nmsReportsApp.controller("ContactUsController", ['$scope', '$state', 'UserFormFactory','$http', '$location', function($scope,$state,UserFormFactory, $http, $location ){
 
             $scope.contactUsUrl = backend_root + 'nms/mail/sendEmailForContactUs';
 

@@ -1,7 +1,8 @@
 (function(){
 	var nmsReportsApp = angular
-		.module('nmsReports')
-		.controller("FeedbackFormController", ['$scope', '$state', 'UserFormFactory','$http', '$location','Captcha',function($scope, $state, UserFormFactory,$http,$location,Captcha){
+		.module('nmsReports');
+
+	nmsReportsApp.controller("FeedbackFormController", ['$scope', '$state', 'UserFormFactory','$http', '$location','Captcha',function($scope, $state, UserFormFactory,$http,$location,Captcha){
 
             $scope.feedbackUrl = backend_root + 'nms/mail/sendFeedback';
 
@@ -94,5 +95,12 @@
                 }
 		    }
 
-		}])
+		}]);
+	nmsReportsApp.controller("FeedbackResponseController", ['$scope', '$state', 'UserFormFactory', function($scope, $state, UserFormFactory){
+
+        $scope.goBackToFeedbackForm = function(){
+            $state.go('feedbackForm')
+        }
+
+    }]);
 })();
