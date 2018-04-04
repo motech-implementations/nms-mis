@@ -25,6 +25,7 @@ import java.io.*;
 import java.util.*;
 import java.util.List;
 
+import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
 
 
@@ -375,7 +376,9 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
             colid =0;
             for (String cellData : rowData) {
                 Cell cell1 = row.createCell(colid++);
-                cell1.setCellValue(cellData);
+                if(colid==1||cellData.equalsIgnoreCase("NA")){
+                cell1.setCellValue(cellData);}
+                else{cell1.setCellValue(parseDouble(cellData));}
 
                 if(tabrow %2 ==0){
                     backgroundStyle1.setFillForegroundColor(IndexedColors.WHITE.getIndex());
@@ -397,7 +400,11 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         for (String footer : gridData.getColunmFooters()) {
             backgroundStyle1.setFont(font2);
             Cell cell1 = row.createCell(colid++);
-            cell1.setCellValue(footer);
+            if(colid==1||footer.equalsIgnoreCase("NA")){
+            cell1.setCellValue(footer);}
+            else{
+                cell1.setCellValue(parseDouble(footer));
+            }
             if(tabrow %2 ==0){
                 backgroundStyle1.setFillForegroundColor(IndexedColors.WHITE.getIndex());
                 backgroundStyle1.setFillPattern(CellStyle.SOLID_FOREGROUND);}
@@ -439,7 +446,11 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
             colid =0;
             for (String cellData : rowData) {
                 Cell cell1 = row.createCell(colid++);
-                cell1.setCellValue(cellData);
+                if(colid==1){
+                cell1.setCellValue(cellData);}
+                else{
+                    cell1.setCellValue(parseDouble(cellData));
+                }
                 if(tabrow1 %2 ==0){
                     backgroundStyle1.setFillForegroundColor(IndexedColors.WHITE.getIndex());
                     backgroundStyle1.setFillPattern(CellStyle.SOLID_FOREGROUND);}
