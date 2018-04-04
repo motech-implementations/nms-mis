@@ -11,12 +11,26 @@
                 default :$scope.active1 = 'wi';break;
             }
             // localStorage.getItem('role') = 'Anonymous';
+
             (function () {
-                if(localStorage.getItem('role') === undefined) {
-                    $scope.selectRole = 0;
+                    $scope.roles = [
+                        {"id": 0, "role" : "Anonymous"},
+                        {"id": 1, "role" : "National User"},
+                        {"id": 2, "role" : "State User"},
+                        {"id": 3, "role" : "District User"},
+                        {"id": 4, "role" : "Block User"},
+                        {"id": 5, "role" : "National Admin"},
+                        {"id": 6, "role" : "State Admin"},
+                        {"id": 7, "role" : "District Admin"}
+
+                    ];
+
+                if(localStorage.getItem('role') !== undefined) {
+                    $scope.selectRole = localStorage.getItem('role');
+
                 } else {
 
-                    $scope.selectRole = localStorage.getItem('role');
+                     $scope.selectRole = 0;
                 }
             }
             )();
@@ -28,17 +42,7 @@
                     }
                 }
             )();
-            $scope.roles = [
-                {"id": 0, "role" : "Anonymous"},
-                {"id": 1, "role" : "National User"},
-                {"id": 2, "role" : "State User"},
-                {"id": 3, "role" : "District User"},
-                {"id": 4, "role" : "Block User"},
-                {"id": 5, "role" : "National Admin"},
-                {"id": 6, "role" : "State Admin"},
-                {"id": 7, "role" : "District Admin"}
 
-            ];
 
             $scope.func = function (val) {
                 if(val === 'wi'){

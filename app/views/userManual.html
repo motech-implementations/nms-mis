@@ -5,7 +5,7 @@
     <p>I am a:
         <select data-ng-model="selectRole" data-ng-change="fnk();" class="userManualSelectpicker">
             <option value="" disabled hidden>Select the Role</option>
-            <option data-ng-repeat="x in roles" [(data-ng-model)]="{{x.id}}">{{x.role}}</option>
+            <option data-ng-repeat="x in roles" value="{{x.id}}">{{x.role}}</option>
         </select></p>
 
     </div>
