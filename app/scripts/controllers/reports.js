@@ -928,7 +928,7 @@
 
                     else if($scope.periodDisplayType == 'Month' ){
                          if($scope.report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise'){
-                            reportRequest.fromDate = new Date($scope.dt1.getFullYear(),$scope.dt1.getMonth() - 6,1);
+                            reportRequest.fromDate = new Date($scope.dt1.getFullYear(),$scope.dt1.getMonth() - 5,1);
                             reportRequest.toDate = new Date($scope.dt1.getFullYear(),$scope.dt1.getMonth() + 1,0);
                             dateString = reportRequest.fromDate.getDate() + "_" +(reportRequest.fromDate.getMonth() + 1 ) + "_" + reportRequest.fromDate.getFullYear() + "to" + reportRequest.toDate.getDate() + "-" +(reportRequest.toDate.getMonth() + 1) +
                                          "_" + reportRequest.toDate.getFullYear();
@@ -1079,7 +1079,6 @@
                                     for(i=0; i<$scope.gridOptions1.data.length ;i++){
                                      $scope.gridOptions1.data[i].totalRecordsRejected = "NA";
                                     }
-                                    //$scope.gridApi.grid.columns[5].aggregationValue="NA";
                                  }
                              }
                              $scope.gridOptions1.showColumnFooter = true;
@@ -1142,7 +1141,7 @@
                                 $scope.gridOptions1.data = result.data.motherData;
                                 $scope.gridOptions1.showColumnFooter = false;
                                 $scope.hideGrid = false;
-                                $scope.matrixContent1 ='Kilkari Maternal Health Content Data';
+                                $scope.matrixContent1 ='Kilkari Pregnancy Content Data';
 
                             }
                              else{
@@ -1153,7 +1152,7 @@
                                 $scope.gridOptions2.data = result.data.childData;
                                 $scope.gridOptions1.showColumnFooter = false;
                                 $scope.hideMessageMatrix = false;
-                                $scope.matrixContent2 ='Kilkari Child Health Content Data';
+                                $scope.matrixContent2 ='Kilkari Child Content Data';
                             }
                             else{
                                 $scope.hideMessageMatrix = true;
@@ -1503,6 +1502,9 @@
                                            var temp = ft.getAggregationValue();
                                            v = (temp.toFixed(2));
                                        }
+                                       else if(ft.displayName == "Total Beneficiary Records Rejected" && excelHeaderName.reportName == "Kilkari Subscriber"&&!rejectionStart){
+                                           v = "NA";
+                                       }
                                        else if(ft.displayName == "% Not Started Course" && excelHeaderName.reportName == "MA Cumulative Summary"){
                                           var temp = $scope.gridApi.grid.columns[2].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[4].getAggregationValue()/$scope.gridApi.grid.columns[2].getAggregationValue())*100;
                                           v = (temp.toFixed(2));
@@ -1597,7 +1599,7 @@
 
             $scope.exportCsv = function() {
 
-              exportUiGridService.exportToCsv1($scope.gridApi,$scope.gridApi1, 'visible', 'visible', excelHeaderName);
+              exportUiGridService.exportToCsv1($scope.gridApi,$scope.gridApi1, 'visible', 'visible', excelHeaderName,rejectionStart);
 
             };
 
@@ -1605,7 +1607,7 @@
             var fileName1 = $scope.gridApi.grid.options.exporterExcelFilename ? $scope.gridApi.grid.options.exporterExcelFilename : 'dokuman';
                              fileName1 = fileName1.replace("*","");
                              fileName1 += '.pdf';
-            exportUiGridService.exportToPdf1($scope.gridApi,$scope.gridApi1,excelHeaderName,$scope.reportCategory,$scope.matrixContent1,$scope.matrixContent2,uiGridExporterConstants,'visible', 'visible',fileName1);
+            exportUiGridService.exportToPdf1($scope.gridApi,$scope.gridApi1,excelHeaderName,$scope.reportCategory,$scope.matrixContent1,$scope.matrixContent2,uiGridExporterConstants,'visible', 'visible',fileName1,rejectionStart);
             };
 
             var canceler = $q.defer();
@@ -1800,6 +1802,20 @@
                                                      { field: 'beneficiariesAnsweredNoCalls', name: 'Beneficiaries who have not answered any calls', cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
             ]
 
+            if(!rejectionStart){$scope.Kilkari_Subscriber_Definitions = [
+                                                     {name: 'S No.', displayName: 'S No.',width:"4%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
+                                                     { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents">Total</div>',defaultSort: { direction: uiGridConstants.ASC },
+                                                        cellTemplate:'<a   ng-if= !row.entity.link class="btn aggregate-location" title="{{COL_FIELD}}"  ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a><p ng-if= row.entity.link class="btn aggregate-location remove-link" title="{{COL_FIELD}}" >{{ COL_FIELD }}</p>',
+                                                        enableHiding: false,width:"10%"
+                                                     },
+                                                     { field: 'totalSubscriptionsStart', name: 'Total Subscription at the start of the period', cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"12%", enableHiding: false },
+                                                     { field: 'totalBeneficiaryRecordsReceived', displayName: 'Total beneficiary Records Received from RCH/MCTS', cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'totalBeneficiaryRecordsEligible', name: 'Total beneficiary Records Found Eligible for Subscriptions', cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'totalRecordsRejected', name: 'Total beneficiary records rejected',cellTemplate:'<p class="ui-grid-cell-contents">NA</p>',footerCellTemplate:'<p class="ui-grid-cell-contents">NA</p>', aggregationHideLabel: true, width:"12%", enableHiding: false},
+                                                     { field: 'totalBeneficiaryRecordsAccepted', name: 'Total beneficiary Records accepted As Subscriptions', cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'totalSubscriptionsCompleted', name: 'Total number of subscriptions who have completed their packs', cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'totalSubscriptionsEnd', name: 'Total Subscription at the end of the period', width:"10%", cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, enableHiding: false },
+            ]}else{
             $scope.Kilkari_Subscriber_Definitions = [
                                                      {name: 'S No.', displayName: 'S No.',width:"4%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
                                                      { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents">Total</div>',defaultSort: { direction: uiGridConstants.ASC },
@@ -1809,11 +1825,12 @@
                                                      { field: 'totalSubscriptionsStart', name: 'Total Subscription at the start of the period', cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"12%", enableHiding: false },
                                                      { field: 'totalBeneficiaryRecordsReceived', displayName: 'Total beneficiary Records Received from RCH/MCTS', cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                      { field: 'totalBeneficiaryRecordsEligible', name: 'Total beneficiary Records Found Eligible for Subscriptions', cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'totalRecordsRejected', name: 'Total beneficiary records rejected', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"12%", enableHiding: false},
+                                                     { field: 'totalRecordsRejected', name: 'Total beneficiary records rejected',cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"12%", enableHiding: false},
                                                      { field: 'totalBeneficiaryRecordsAccepted', name: 'Total beneficiary Records accepted As Subscriptions', cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                      { field: 'totalSubscriptionsCompleted', name: 'Total number of subscriptions who have completed their packs', cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                      { field: 'totalSubscriptionsEnd', name: 'Total Subscription at the end of the period', width:"10%", cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, enableHiding: false },
             ]
+            }
 
             $scope.Kilkari_Thematic_Content_Definitions = [
                                                      {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
@@ -1826,6 +1843,7 @@
 
             $scope.Kilkari_RepeatListener_Numberdata_Definitions =[
                                                      { field: 'month', enableSorting: false,name: 'Month',width:"*", enableHiding: false },
+                                                     { field: 'moreThanFiveCallsAnswered',enableSorting: false, name: 'more than 5 calls answered',cellFilter: 'number', width:"*", enableHiding: false},
                                                      { field: 'fiveCallsAnswered',enableSorting: false, name: '5 calls answered',cellFilter: 'number', width:"*", enableHiding: false},
                                                      { field: 'fourCallsAnswered',enableSorting: false, name: '4 calls answered',cellFilter: 'number', width:"*", enableHiding: false},
                                                      { field: 'threeCallsAnswered', enableSorting: false,name: '3 calls answered',cellFilter: 'number',width:"*", enableHiding: false },
@@ -1838,6 +1856,7 @@
 
             $scope.Kilkari_RepeatListener_Percentdata_Definitions =[
                                                      { field: 'month', enableSorting: false,name: 'Month',width:"*", enableHiding: false },
+                                                     { field: 'moreThanFiveCallsAnsweredPercent', cellFilter: 'number: 2', enableSorting: false,name: 'more than 5 calls answered', width:"*", enableHiding: false},
                                                      { field: 'fiveCallsAnsweredPercent', cellFilter: 'number: 2', enableSorting: false,name: '5 calls answered', width:"*", enableHiding: false},
                                                      { field: 'fourCallsAnsweredPercent',cellFilter: 'number: 2', enableSorting: false,name: '4 calls answered', width:"*", enableHiding: false},
                                                      { field: 'threeCallsAnsweredPercent', cellFilter: 'number: 2', enableSorting: false,name: '3 calls answered',width:"*", enableHiding: false },
@@ -1873,7 +1892,14 @@
                                     $scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.COLUMN );
                                     fileName = $scope.report.reportEnum + "_" + $scope.reportBreadCrumbData[$scope.reportBreadCrumbData.length -1].locationName ;
                                     $scope.gridOptions1.exporterExcelFilename = fileName + "_" + dateString;
-
+                                         if($scope.report.reportEnum == 'Kilkari_Subscriber'){
+                                             if(!rejectionStart){
+                                             var i;
+                                                for(i=0; i<$scope.gridOptions1.data.length ;i++){
+                                                 $scope.gridOptions1.data[i].totalRecordsRejected = "NA";
+                                                }
+                                             }
+                                         }
                                 }
                                 else{
                                     $scope.showEmptyData = true;
@@ -1910,7 +1936,14 @@
                                        $scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.COLUMN );
                                        fileName = $scope.report.reportEnum + "_" + $scope.reportBreadCrumbData[$scope.reportBreadCrumbData.length -1].locationName ;
                                        $scope.gridOptions1.exporterExcelFilename = fileName + "_" + dateString;
-
+                                             if($scope.report.reportEnum == 'Kilkari_Subscriber'){
+                                                 if(!rejectionStart){
+                                                 var i;
+                                                    for(i=0; i<$scope.gridOptions1.data.length ;i++){
+                                                     $scope.gridOptions1.data[i].totalRecordsRejected = "NA";
+                                                    }
+                                                 }
+                                             }
                                    }
                                    else{
                                        $scope.showEmptyData = true;
@@ -1946,7 +1979,14 @@
                                      $scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.COLUMN );
                                      fileName = $scope.report.reportEnum + "_" + $scope.reportBreadCrumbData[$scope.reportBreadCrumbData.length -1].locationName ;
                                      $scope.gridOptions1.exporterExcelFilename = fileName + "_" + dateString;
-
+                                         if($scope.report.reportEnum == 'Kilkari_Subscriber'){
+                                             if(!rejectionStart){
+                                             var i;
+                                                for(i=0; i<$scope.gridOptions1.data.length ;i++){
+                                                 $scope.gridOptions1.data[i].totalRecordsRejected = "NA";
+                                                }
+                                             }
+                                         }
                                  }
                                  else{
                                      $scope.showEmptyData = true;
@@ -1980,6 +2020,14 @@
                                      $scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.COLUMN );
                                      fileName = $scope.report.reportEnum + "_" + $scope.reportBreadCrumbData[$scope.reportBreadCrumbData.length -1].locationName ;
                                      $scope.gridOptions1.exporterExcelFilename = fileName + "_" + dateString;
+                                        if($scope.report.reportEnum == 'Kilkari_Subscriber'){
+                                            if(!rejectionStart){
+                                            var i;
+                                               for(i=0; i<$scope.gridOptions1.data.length ;i++){
+                                                $scope.gridOptions1.data[i].totalRecordsRejected = "NA";
+                                               }
+                                            }
+                                        }
                                 }
                                 else{
                                      $scope.showEmptyData = true;

@@ -350,7 +350,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         if(gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix"))
         {row = spreadsheet.createRow(rowid++);
             Cell cell = row.createCell(0);
-            cell.setCellValue( "Kilkari Maternal Health Content Data");
+            cell.setCellValue( "Kilkari Pregnancy Content Data");
             CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
             spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:F9"));}
 
@@ -418,7 +418,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         if(gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix"))
         {row = spreadsheet.createRow(rowid++);
         Cell cell = row.createCell(0);
-        cell.setCellValue( "Kilkari Child Health Content Data");
+        cell.setCellValue( "Kilkari Child Content Data");
         CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
            spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A16:F16"));}
 

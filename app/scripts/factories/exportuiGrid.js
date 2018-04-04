@@ -21,7 +21,7 @@
             this.Sheets = {};
         }
 
-        function exportToCsv1(gridApi, gridApi1, rowTypes, colTypes, excelHeaderName) {
+        function exportToCsv1(gridApi, gridApi1, rowTypes, colTypes, excelHeaderName, rejectionStart) {
 
             var columns = gridApi.grid.options.showHeader ? uiGridExporterService.getColumnHeaders(gridApi.grid, colTypes) : [];
             var data = uiGridExporterService.getData(gridApi.grid, rowTypes, colTypes);
@@ -34,7 +34,7 @@
             var CSV = '';
             //Set Report title in first row or line
             if (excelHeaderName.reportName == "Kilkari Message Matrix") {
-                CSV += 'Kilkari Maternal Health Content Data\r\n\n';
+                CSV += 'Kilkari Pregnancy Content Data\r\n\n';
             }
             if (excelHeaderName.reportName == "Kilkari Repeat Listener") {
                 CSV += 'Beneficiary Count\r\n\n';
@@ -112,7 +112,9 @@
                     } else if (ft.displayName == "% Successfully Completed" && excelHeaderName.reportName == "MA Cumulative Summary") {
                         var temp = gridApi.grid.columns[3].getAggregationValue() == 0 ? 0.00 : (gridApi.grid.columns[5].getAggregationValue() / gridApi.grid.columns[3].getAggregationValue()) * 100;
                         v = (temp.toFixed(2));
-                    } else if (ft.displayName == "% Failed the course" && excelHeaderName.reportName == "MA Cumulative Summary") {
+                    }else if(ft.displayName == "Total Beneficiary Records Rejected" && excelHeaderName.reportName == "Kilkari Subscriber"&&!rejectionStart){
+                        v = "NA";
+                    }else if (ft.displayName == "% Failed the course" && excelHeaderName.reportName == "MA Cumulative Summary") {
                         var temp = gridApi.grid.columns[3].getAggregationValue() == 0 ? 0.00 : (gridApi.grid.columns[6].getAggregationValue() / gridApi.grid.columns[3].getAggregationValue()) * 100;
                         v = (temp.toFixed(2));
                     } else {
@@ -131,7 +133,7 @@
                 CSV += row;
             }
             if (excelHeaderName.reportName == "Kilkari Message Matrix") {
-                CSV += '\n\nKilkari Child Health Content Data\r\n\n';
+                CSV += '\n\nKilkari Child Content Data\r\n\n';
             }
             if (excelHeaderName.reportName == "Kilkari Repeat Listener") {
                 CSV += '\n\nBeneficiary Percentage\r\n\n';
@@ -194,7 +196,7 @@
         }
 
 
-        function exportToPdf1(gridApi, gridApi1, excelHeaderName, reportCategory, matrixContent1, matrixContent2, uiGridExporterConstants, rowTypes, colTypes, fileName1) {
+        function exportToPdf1(gridApi, gridApi1, excelHeaderName, reportCategory, matrixContent1, matrixContent2, uiGridExporterConstants, rowTypes, colTypes, fileName1,rejectionStart) {
             var pageHeading;
             switch(excelHeaderName.reportName){
             case 'MA Cumulative Summary': pageHeading='Mobile Academy Cumulative Summary Report'; break;
@@ -260,12 +262,12 @@
                 //Dynamically getting the number of columns for each kind of table
                 var colWidth = [];
                 for (i = 0; i < exportColumnHeaders.length; i++) {
-                    colWidth[i] = 80;
+                    colWidth[i] = 70;
                 }
                 //For 2nd Table
                 var colWidth1 = [];
                 for (i = 0; i < exportColumnHeaders1.length; i++) {
-                    colWidth1[i] = 100;
+                    colWidth1[i] = 80;
                 }
 
                 //Contains data on the pdf as well as the styling
@@ -815,7 +817,9 @@
                     } else if (ft.displayName == "Number Of Minutes Consumed" && excelHeaderName.reportName == "Kilkari Thematic Content") {
                         var temp = ft.getAggregationValue();
                         v = (temp.toFixed(2));
-                    } else if (ft.displayName == "% Not Started Course" && excelHeaderName.reportName == "MA Cumulative Summary") {
+                    }else if(ft.displayName == "Total Beneficiary Records Rejected" && excelHeaderName.reportName == "Kilkari Subscriber"&&!rejectionStart){
+                        v = "NA";
+                    }else if (ft.displayName == "% Not Started Course" && excelHeaderName.reportName == "MA Cumulative Summary") {
                         var temp = gridApi.grid.columns[2].getAggregationValue() == 0.00 ? 0.00 : (gridApi.grid.columns[4].getAggregationValue() / gridApi.grid.columns[2].getAggregationValue()) * 100;
                         v = (temp.toFixed(2));
                     } else if (ft.displayName == "% Successfully Completed" && excelHeaderName.reportName == "MA Cumulative Summary") {
@@ -1201,7 +1205,7 @@
                 var ws = {
                     B1: {
                         t: 's',
-                        v: excelHeaderName.reportName + " (Kilkari Maternal Health Content Data)"
+                        v: excelHeaderName.reportName + " (Kilkari Pregnancy Content Data)"
                     },
                     B3: {
                         t: 's',
@@ -1233,7 +1237,7 @@
                     },
                     B15: {
                         t: 's',
-                        v: excelHeaderName.reportName + " (Kilkari Child Health Content Data)"
+                        v: excelHeaderName.reportName + " (Kilkari Child Content Data)"
                     },
                     B17: {
                         t: 's',
