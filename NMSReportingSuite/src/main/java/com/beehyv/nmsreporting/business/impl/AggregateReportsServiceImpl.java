@@ -376,7 +376,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
             colid =0;
             for (String cellData : rowData) {
                 Cell cell1 = row.createCell(colid++);
-                if(colid==1||cellData.equalsIgnoreCase("NA")){
+                if(colid==1||cellData.equalsIgnoreCase("NA")||(gridData.getReportName().equalsIgnoreCase("Kilkari Thematic Content")&&colid==2)){
                 cell1.setCellValue(cellData);}
                 else{cell1.setCellValue(parseDouble(cellData));}
 
@@ -400,7 +400,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         for (String footer : gridData.getColunmFooters()) {
             backgroundStyle1.setFont(font2);
             Cell cell1 = row.createCell(colid++);
-            if(colid==1||footer.equalsIgnoreCase("NA")){
+            if(colid==1||footer.equalsIgnoreCase("NA")||(gridData.getReportName().equalsIgnoreCase("Kilkari Thematic Content")&&colid==2)){
             cell1.setCellValue(footer);}
             else{
                 cell1.setCellValue(parseDouble(footer));
@@ -420,7 +420,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         Cell cell = row.createCell(0);
         cell.setCellValue( "Kilkari Child Health Content Data");
         CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
-           spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A17:F17"));}
+           spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A16:F16"));}
 
         if(gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener"))
         {row = spreadsheet.createRow(rowid++);
