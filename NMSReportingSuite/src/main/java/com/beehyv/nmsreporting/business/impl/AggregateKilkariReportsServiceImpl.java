@@ -1967,6 +1967,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 kilkariRepeatListenerMonthWiseDto.setId(kilkariRepeatListenerMonthWise1.getId());
                 kilkariRepeatListenerMonthWiseDto.setMonth(new DateFormatSymbols().getMonths()[(fromDate.getMonth() + i)%12]);
                 kilkariRepeatListenerMonthWiseDto.setDate(kilkariRepeatListenerMonthWise1.getDate());
+                kilkariRepeatListenerMonthWiseDto.setMoreThanFiveCallsAnswered(kilkariRepeatListenerMonthWise1.getMoreThanFiveCallsAnswered());
                 kilkariRepeatListenerMonthWiseDto.setFiveCallsAnswered(kilkariRepeatListenerMonthWise1.getFiveCallsAnswered());
                 kilkariRepeatListenerMonthWiseDto.setFourCallsAnswered(kilkariRepeatListenerMonthWise1.getFourCallsAnswered());
                 kilkariRepeatListenerMonthWiseDto.setThreeCallsAnswered(kilkariRepeatListenerMonthWise1.getThreeCallsAnswered());
@@ -1978,7 +1979,10 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                         +kilkariRepeatListenerMonthWise1.getThreeCallsAnswered()
                         +kilkariRepeatListenerMonthWise1.getTwoCallsAnswered()
                         +kilkariRepeatListenerMonthWise1.getOneCallAnswered()
-                        +kilkariRepeatListenerMonthWise1.getNoCallsAnswered());
+                        +kilkariRepeatListenerMonthWise1.getNoCallsAnswered()
+                        +kilkariRepeatListenerMonthWise1.getMoreThanFiveCallsAnswered()
+                );
+                kilkariRepeatListenerMonthWisePercentDto.setMoreThanFiveCallsAnsweredPercent((double) (kilkariRepeatListenerMonthWiseDto.getMoreThanFiveCallsAnswered() == 0 ? 0.00 : (Math.round((kilkariRepeatListenerMonthWiseDto.getMoreThanFiveCallsAnswered() * 10000.0d) / kilkariRepeatListenerMonthWiseDto.getTotal()))) / 100d);
                 kilkariRepeatListenerMonthWisePercentDto.setFiveCallsAnsweredPercent((double) (kilkariRepeatListenerMonthWiseDto.getFiveCallsAnswered() == 0 ? 0.00 : (Math.round((kilkariRepeatListenerMonthWiseDto.getFiveCallsAnswered() * 10000.0d) / kilkariRepeatListenerMonthWiseDto.getTotal()))) / 100d);
                 kilkariRepeatListenerMonthWisePercentDto.setFourCallsAnsweredPercent((double) (kilkariRepeatListenerMonthWiseDto.getFourCallsAnswered() == 0 ? 0.00 :  (Math.round((kilkariRepeatListenerMonthWiseDto.getFourCallsAnswered() * 10000.0d) / kilkariRepeatListenerMonthWiseDto.getTotal()))) / 100d);
                 kilkariRepeatListenerMonthWisePercentDto.setThreeCallsAnsweredPercent((double) (kilkariRepeatListenerMonthWiseDto.getThreeCallsAnswered() == 0 ? 0.00 :  (Math.round((kilkariRepeatListenerMonthWiseDto.getThreeCallsAnswered() * 10000.0d) / kilkariRepeatListenerMonthWiseDto.getTotal()))) / 100d);

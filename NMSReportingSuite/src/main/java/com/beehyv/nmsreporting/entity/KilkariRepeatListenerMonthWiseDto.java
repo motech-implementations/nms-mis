@@ -11,6 +11,7 @@ public class KilkariRepeatListenerMonthWiseDto {
 
     private Integer id;
     private String month;
+    private Integer moreThanFiveCallsAnswered;
     private Integer fiveCallsAnswered;
     private Integer fourCallsAnswered;
     private Integer threeCallsAnswered;
@@ -34,6 +35,14 @@ public class KilkariRepeatListenerMonthWiseDto {
 
     public void setMonth(String month) {
         this.month = month;
+    }
+
+    public Integer getMoreThanFiveCallsAnswered() {
+        return moreThanFiveCallsAnswered;
+    }
+
+    public void setMoreThanFiveCallsAnswered(Integer moreThanFiveCallsAnswered) {
+        this.moreThanFiveCallsAnswered = moreThanFiveCallsAnswered;
     }
 
     public Integer getFiveCallsAnswered() {

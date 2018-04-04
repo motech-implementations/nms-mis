@@ -27,6 +27,9 @@ public class KilkariRepeatListenerMonthWise {
     @Column(name="date", columnDefinition = "DATE")
     private Date date;
 
+    @Column(name="greater_than_5", columnDefinition = "INT(11)")
+    private Integer moreThanFiveCallsAnswered;
+
     @Column(name="5_calls_answered", columnDefinition = "INT(11)")
     private Integer fiveCallsAnswered;
 
@@ -49,7 +52,7 @@ public class KilkariRepeatListenerMonthWise {
 
     }
 
-    public KilkariRepeatListenerMonthWise(Integer id, Date date, Integer fiveCallsAnswered, Integer fourCallsAnswered, Integer threeCallsAnswered, Integer twoCallsAnswered, Integer oneCallAnswered, Integer noCallsAnswered){
+    public KilkariRepeatListenerMonthWise(Integer id, Date date, Integer fiveCallsAnswered, Integer fourCallsAnswered, Integer threeCallsAnswered, Integer twoCallsAnswered, Integer oneCallAnswered, Integer noCallsAnswered, Integer moreThanFiveCallsAnswered){
         this.id = id;
         this.date = date;
         this.fiveCallsAnswered = fiveCallsAnswered;
@@ -58,6 +61,7 @@ public class KilkariRepeatListenerMonthWise {
         this.twoCallsAnswered = twoCallsAnswered;
         this.oneCallAnswered = oneCallAnswered;
         this.noCallsAnswered = noCallsAnswered;
+        this.moreThanFiveCallsAnswered = moreThanFiveCallsAnswered;
     }
 
     public Integer getId() {
@@ -140,5 +144,13 @@ public class KilkariRepeatListenerMonthWise {
 
     public void setNoCallsAnswered(Integer noCallsAnswered) {
         this.noCallsAnswered = noCallsAnswered;
+    }
+
+    public Integer getMoreThanFiveCallsAnswered() {
+        return moreThanFiveCallsAnswered;
+    }
+
+    public void setMoreThanFiveCallsAnswered(Integer moreThanFiveCallsAnswered) {
+        this.moreThanFiveCallsAnswered = moreThanFiveCallsAnswered;
     }
 }

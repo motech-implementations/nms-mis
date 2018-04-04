@@ -5,6 +5,7 @@ import java.util.Date;
 public class KilkariRepeatListenerMonthWisePercentDto {
     private Integer id;
     private String month;
+    private Double moreThanFiveCallsAnsweredPercent;
     private Double fiveCallsAnsweredPercent;
     private Double fourCallsAnsweredPercent;
     private Double threeCallsAnsweredPercent;
@@ -35,6 +36,14 @@ public class KilkariRepeatListenerMonthWisePercentDto {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Double getMoreThanFiveCallsAnsweredPercent() {
+        return moreThanFiveCallsAnsweredPercent;
+    }
+
+    public void setMoreThanFiveCallsAnsweredPercent(Double moreThanFiveCallsAnsweredPercent) {
+        this.moreThanFiveCallsAnsweredPercent = moreThanFiveCallsAnsweredPercent;
     }
 
     public Double getFiveCallsAnsweredPercent() {

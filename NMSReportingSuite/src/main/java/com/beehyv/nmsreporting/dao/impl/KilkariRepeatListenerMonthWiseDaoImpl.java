@@ -29,7 +29,7 @@ public class KilkariRepeatListenerMonthWiseDaoImpl extends AbstractDao<Integer,K
         ));
         List<KilkariRepeatListenerMonthWise> kilkariRepeatListenerMonthWiseList = criteria.list();
         if(kilkariRepeatListenerMonthWiseList.isEmpty()){
-            KilkariRepeatListenerMonthWise kilkariRepeatListenerMonthWise = new KilkariRepeatListenerMonthWise(0,date,0,0,0,0,0,0);
+            KilkariRepeatListenerMonthWise kilkariRepeatListenerMonthWise = new KilkariRepeatListenerMonthWise(0,date,0,0,0,0,0,0,0);
             return kilkariRepeatListenerMonthWise;
         }
         KilkariRepeatListenerMonthWise kilkariRepeatListenerMonthWise = kilkariRepeatListenerMonthWiseList.get(0);
@@ -39,6 +39,7 @@ public class KilkariRepeatListenerMonthWiseDaoImpl extends AbstractDao<Integer,K
         kilkariRepeatListenerMonthWise.setTwoCallsAnswered(kilkariRepeatListenerMonthWise.getTwoCallsAnswered() == null ? 0 : kilkariRepeatListenerMonthWise.getTwoCallsAnswered());
         kilkariRepeatListenerMonthWise.setOneCallAnswered(kilkariRepeatListenerMonthWise.getOneCallAnswered() == null ? 0 : kilkariRepeatListenerMonthWise.getOneCallAnswered());
         kilkariRepeatListenerMonthWise.setNoCallsAnswered(kilkariRepeatListenerMonthWise.getNoCallsAnswered() == null ? 0 : kilkariRepeatListenerMonthWise.getNoCallsAnswered());
+        kilkariRepeatListenerMonthWise.setMoreThanFiveCallsAnswered(kilkariRepeatListenerMonthWise.getMoreThanFiveCallsAnswered() == null ? 0 : kilkariRepeatListenerMonthWise.getMoreThanFiveCallsAnswered());
         return kilkariRepeatListenerMonthWise;
     }
 
