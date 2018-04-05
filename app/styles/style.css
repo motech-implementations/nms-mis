@@ -798,12 +798,13 @@ md-dialog{
 }
 
 .login-submit{
-    padding-top : 15px;
+    margin-bottom: 20px;
 }
 
+.lb{
+	width: 26%;
+}
 .login-button{
-	margin-left: 23%;
-	margin-top: 5%;
 	width: 60%;
 	height: 10%;
 	background-color: #2b669a;
