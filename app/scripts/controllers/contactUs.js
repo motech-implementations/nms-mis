@@ -90,11 +90,31 @@
                         return;
                     }
                 }
+                //
+                // var formElement = angular.element(e.target);
+                // formElement.attr("action", $scope.contactUsUrl);
+                // formElement.attr("method", "post");
+                // formElement[0].submit();
 
-                var formElement = angular.element(e.target);
-                formElement.attr("action", $scope.contactUsUrl);
-                formElement.attr("method", "post");
-                formElement[0].submit();
+                else {
+                    $http({
+                        method  : 'POST',
+                        url     : backend_root + 'nms/mail/sendEmailForContactUs',
+                        data    : $scope.email, //forms user object
+                        headers : {'Content-Type': 'application/json'}
+                    }).then(function(){
+                        if(UserFormFactory.isInternetExplorer()){
+                            alert('Contact-us form submitted successfully')
+                            $state.go($state.current, {}, {reload: true});
+                            return;
+                        }
+                        else{
+                            UserFormFactory.showAlert('Contact-us form submitted successfully')
+                            $state.go($state.current, {}, {reload: true});
+                            return;
+                        }
+                    })
+                }
 		    }
 		}])
 })();
