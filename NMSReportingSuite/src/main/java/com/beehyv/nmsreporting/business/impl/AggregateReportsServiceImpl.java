@@ -339,6 +339,9 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         font2.setFontName(HSSFFont.FONT_ARIAL);
         font2.setBoldweight(Font.BOLDWEIGHT_BOLD);
 
+        XSSFCellStyle style = workbook.createCellStyle();//Create style
+        style.setFont(font2);//set it to bold
+
 
         for(int i =0;i<15;i++){
         spreadsheet.setColumnWidth(i, 4000);}
@@ -351,15 +354,17 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         {row = spreadsheet.createRow(rowid++);
             Cell cell = row.createCell(0);
             cell.setCellValue( "Kilkari Pregnancy Content Data");
+            cell.setCellStyle(style);
             CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
-            spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:F9"));}
+            spreadsheet.addMergedRegion(new CellRangeAddress(rowid-1,rowid-1,0,gridData.getColumnHeaders().size()-1));}
 
         if(gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener"))
         {row = spreadsheet.createRow(rowid++);
             Cell cell = row.createCell(0);
-            cell.setCellValue( "Beneficiary Count ");
+            cell.setCellValue( "Beneficiary Count");
+            cell.setCellStyle(style);
             CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
-            spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:H9"));}
+            spreadsheet.addMergedRegion(new CellRangeAddress(rowid-1,rowid-1,0,gridData.getColumnHeaders1().size()-1));}
 
         row = spreadsheet.createRow(rowid++);
         row.setHeight((short)1100);
@@ -418,16 +423,18 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         if(gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix"))
         {row = spreadsheet.createRow(rowid++);
         Cell cell = row.createCell(0);
+        cell.setCellStyle(style);
         cell.setCellValue( "Kilkari Child Content Data");
         CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
-           spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A16:F16"));}
+           spreadsheet.addMergedRegion(new CellRangeAddress(rowid-1,rowid-1,0,gridData.getColumnHeaders1().size()-1));}
 
         if(gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener"))
         {row = spreadsheet.createRow(rowid++);
             Cell cell = row.createCell(0);
+            cell.setCellStyle(style);
             cell.setCellValue( "Beneficiary Percentage");
             CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
-            spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A19:H19"));}
+            spreadsheet.addMergedRegion(new CellRangeAddress(rowid-1,rowid-1,0,gridData.getColumnHeaders1().size()-1));}
 
         row = spreadsheet.createRow(rowid++);
         if(gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix")||gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener")){

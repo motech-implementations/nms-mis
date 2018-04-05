@@ -17,8 +17,9 @@
             var phoneNoField = $scope.email.phoneNo
             function validatePhoneNo(phoneNoField){
 //                var reg =/^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
-                  var reg = /^(?:\+\d+[- ])?\d{10}$/;
-//                     var reg =  /^[0-9]{10}$/
+//                var reg = /^(?:\+\d+[- ])?\d{10}$/;
+//                var reg =  /^[0-9]{10}$/
+                var reg = /^[6-9]\d{9}$/;
                 return reg.test(phoneNoField);
             }
 
@@ -38,11 +39,11 @@
 
                 if(!$scope.email.phoneNo){
                     if(UserFormFactory.isInternetExplorer()){
-                        alert("Please enter the PhoneNo")
+                        alert("Please enter a valid Phone Number")
                         return;
                     }
                     else{
-                        UserFormFactory.showAlert("Please enter the PhoneNo")
+                        UserFormFactory.showAlert("Please enter a valid Phone Number")
                         return;
                     }
                 }
@@ -90,11 +91,6 @@
                         return;
                     }
                 }
-                //
-                // var formElement = angular.element(e.target);
-                // formElement.attr("action", $scope.contactUsUrl);
-                // formElement.attr("method", "post");
-                // formElement[0].submit();
 
                 else {
                     $http({
