@@ -1929,6 +1929,16 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         aCalendar.set(Calendar.HOUR_OF_DAY, 0);
         toDate = aCalendar.getTime();
 
+        Calendar aCalendar1 = new GregorianCalendar(2016, 11, 01);
+        aCalendar1.set(Calendar.MILLISECOND, 0);
+        aCalendar1.set(Calendar.SECOND, 0);
+        aCalendar1.set(Calendar.MINUTE, 0);
+        aCalendar1.set(Calendar.HOUR_OF_DAY, 0);
+        Date refDate = aCalendar1.getTime();
+
+        if(fromDate.compareTo(refDate) < 0){
+            fromDate = refDate;
+        }
         Date date = fromDate;
 
         List<KilkariRepeatListenerMonthWiseDto> kilkariRepeatListenerMonthWiseDtoList = new ArrayList<>();
