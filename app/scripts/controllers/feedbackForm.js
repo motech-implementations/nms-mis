@@ -16,8 +16,6 @@
             }
 
             $scope.feedback = function(e){
-
-
                 if(!$scope.email.name){
                     if(UserFormFactory.isInternetExplorer()){
                         alert("Please enter the name")
@@ -85,7 +83,6 @@
                     }
 
                 }
-
                 else{
                     var formElement = angular.element(e.target);
                     formElement.attr("action", $scope.feedbackUrl);
