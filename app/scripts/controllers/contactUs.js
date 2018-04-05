@@ -38,11 +38,11 @@
 
                 if(!$scope.email.phoneNo){
                     if(UserFormFactory.isInternetExplorer()){
-                        alert("Please enter the PhoneNo")
+                        alert("Please enter valid PhoneNo")
                         return;
                     }
                     else{
-                        UserFormFactory.showAlert("Please enter the PhoneNo")
+                        UserFormFactory.showAlert("Please enter valid PhoneNo")
                         return;
                     }
                 }

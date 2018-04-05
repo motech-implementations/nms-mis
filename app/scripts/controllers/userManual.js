@@ -58,7 +58,6 @@
                 }
                 else if(val=== 'um'){
                         $state.go('userManual.userManual_Management');
-
                 }
                 else if(val=== 'pr'){
                     $state.go('userManual.userManual_Profile')
