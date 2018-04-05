@@ -4,7 +4,7 @@
 
 	nmsReportsApp.controller("FeedbackFormController", ['$scope', '$state', 'UserFormFactory','$http', '$location','Captcha',function($scope, $state, UserFormFactory,$http,$location,Captcha){
 
-            $scope.feedbackUrl = backend_root + 'nms/mail/sendFeedback';
+            $scope.feedbackUrl = backend_root + 'nms/mail/sendFeedback1';
 
 			$scope.feedback = {};
 			$scope.email = {};
@@ -71,7 +71,6 @@
                     }
                 }
 
-
                 if(!$scope.captchaResponse){
                     if(UserFormFactory.isInternetExplorer()){
                         alert("Check captcha")
@@ -81,14 +80,26 @@
                         UserFormFactory.showAlert("Check captcha")
                         return;
                     }
-
                 }
-                else{
-                    var formElement = angular.element(e.target);
-                    formElement.attr("action", $scope.feedbackUrl);
-                    formElement.attr("method", "post");
-                    formElement[0].submit();
 
+                else {
+                    $http({
+                        method  : 'POST',
+                        url     : backend_root + 'nms/mail/sendFeedback',
+                        data    : $scope.email, //forms user object
+                        headers : {'Content-Type': 'application/json'}
+                    }).then(function(){
+                        if(UserFormFactory.isInternetExplorer()){
+                            alert('feedback form submitted successfully')
+                            $state.go($state.current, {}, {reload: true});
+                            return;
+                        }
+                        else{
+                            UserFormFactory.showAlert('feedback form submitted successfully')
+                            $state.go($state.current, {}, {reload: true});
+                            return;
+                        }
+                    })
                 }
 		    }
 

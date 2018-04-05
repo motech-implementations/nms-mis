@@ -146,11 +146,6 @@ var nmsReportsApp = angular
             	templateUrl: 'views/feedbackForm.html'
             })
 
-            .state('feedbackForm1', {
-                url: '/feedbackForm1',
-                templateUrl: 'views/feedbackForm1.html'
-            })
-
             .state('feedbackResponse',{
                 url: '/feedbackResponse',
                 templateUrl: 'views/feedbackResponse.html'
