@@ -2,53 +2,172 @@
     <div data-ui-view></div>
     <h2>User Management</h2>
     <br/>
-    <div class="userManualPic">
-        <p>The User Management tab allows Admin users to view, create new lower/equal access-level users, lower access-level admins and to edit/delete users created by them.</p>
-        <p>1)To access the User Management page, login with your admin credentials.</p>
-        <p>User Management tab is visible to admin users only after logging in to the application</p>
-        <p>Click on the <b>'User Management'</b> tab:</p>
-        <img src="images/UMclick.png" alt="User Management"/>
-        <br/><br/><br/>
-        <p>2)Click on 'User Management' tab to display user-list according to your access level:</p>
-        <img src="images/UMdisplay.png" alt="User Management"/>
-        <br/><br/><br/>
-        <p><b>Functionalities in User Management page:</b></p>
-        <p>3)A search field is provided to search for entered keywords from all fields of all the records:</p>
-        <img src="images/UMtextbox.png" alt="User Management"/>
-        <br/><br/><br/>
-        <p>4)Filters 'Access-type', 'Access-level', 'State', 'District' and 'Block' are provided with certain values,which can be used to filter the respective columns.</p>
-        <p>5)The first five columns can be sorted by clicking on the headings/names of these columns.</p>
-        <img src="images/UMfilters.png" alt="User Management"/>
-        <br/><br/><br/>
-        <p>6)Each page shows a maximum of 10 users. Use the numbers and arrows on the bottom-right to navigate to other pages:</p>
-        <img src="images/UMpages.png" alt="User Management"/>
-        <br/><br/><br/>
-        <p>7)Admins can only edit users they created, by clicking on the 'Edit' button. Every user on the list maynot have this button:</p>
-        <img src="images/UMedit.png" alt="User Management"/>
-        <br/><br/><br/>
-        <p>8)Admins can create other admins of lower access-level or equal/lower access-level users by clicking on the 'Create new User' button.</p>
-        <p>This button will show the following screen with empty fields which are required to be filled.</p>
-        <img src="images/UMuserCreate.png" alt="User Management"/><br/><br/><br/>
-        <p>9)'Edit' button will show the following screen on click.</p>
-        <p>'Edit' user form will fill fields with previous information on the user.</p>
-        <img src="images/UMuserEdit.png" alt="User Management"/>
-        <br/><br/><br/>
-        <p>10) All fields in the above form are compulsory. Default password for creating a user is the user's contact number.</p>
-        <p>Create user form has two action buttons: 'Create user' and 'Cancel'.</p>
-        <p>Edit form has four submit options:</p>
-        <ul>
-            <li>Update user: This option will validate all the values entered and update the same.</li>
-            <li>Reset password: Will reset the password of the user to their contact number and update the contact number as well.</li>
-            <li>Delete user: Will delete the user. Only those users who have never logged into the application can be deleted.</li>
-            <li>Cancel: Cancels edit action.</li>
-        </ul>
-        <br/><br/>
-        <p>11)<b>'Upload Bulk Users'</b> button at the top-right of the User Management page leads to the bulk upload page.</p>
-        <p>In this page, the admin can download sample template.</p>
-        <p>The admin can then fill details in a CSV form according to given headers in the template and upload it back to the same page:</p>
-        <img src="images/UMtemplateDL.png" alt="User Management"/><br/><br/>
-        <p>After uploading the file, the admin must click the 'Upload Bulk Users' button. The file is then validated.</p>
-        <img src="images/UMbulkUpload.png" alt="User Management"/><br/><br/>
-        <p>The validation errors will then be displayed after processing the file.</p>
+
+    <div data-ng-hide="selectRole != 5">
+        <div class="userManualPic">
+            <p>The User Management tab allows Admin users to view, create new lower/equal access-level users and lower access-level admins, and to edit/delete users created by them.</p>
+            <p>1) To access the User Management page, login with Admin credentials.</p>
+            <p>User Management tab is visible to admin users only after logging in to the application</p>
+            <p>Click on the <b>'User Management'</b> tab in the navigation bar:</p>
+            <img src="images/UMclick_NA.png" alt="User Management"/>
+            <br/><br/><br/>
+            <p>2) National Admin users will be shown user-lists containing all users and admins of the country:</p>
+            <img src="images/UMdisplay_NA.png" alt="User Management"/>
+            <br/><br/><br/>
+            <p><b>Functionalities in User Management page:</b></p>
+            <p>3) A search field is provided to search for entered keywords from all fields of all the records:</p>
+            <img src="images/UMtextbox_NA.png" alt="User Management"/>
+            <br/><br/><br/>
+            <p>4) Filters 'Access-type', 'Access-level', 'State', 'District' and 'Block' are provided with certain values, which can be used to filter the respective columns.</p>
+            <p>5) The first five columns can be sorted by clicking on the headings/names of these columns.</p>
+            <img src="images/UMfilters_NA.png" alt="User Management"/>
+            <br/><br/><br/>
+            <p>6) Each page shows a maximum of 10 users. Use the numbers and arrows on the bottom-right to navigate to other pages:</p>
+            <img src="images/UMpages_NA.png" alt="User Management"/>
+            <br/><br/><br/>
+            <p>7) Admins can only edit users they created, by clicking on the 'Edit' button. Every user on the list maynot have this button:</p>
+            <img src="images/UMedit_NA.png" alt="User Management"/>
+            <br/><br/><br/>
+            <p>8) National Admins can <b>create non-National Admins and any Users</b> by clicking on the 'Create new User' button.</p>
+            <p>This button will show the following screen with empty fields which are required to be filled.</p>
+            <p>Create user form has two action buttons: 'Create user' and 'Cancel'.</p>
+            <ul>
+                <li>Create new User: creates a new user with details as filled in the form.</li>
+                <li>Cancel: aborts the action of creating user and navigates back to User Management.</li>
+            </ul>
+            <img src="images/UMuserCreate.png" alt="User Management"/><br/><br/><br/>
+            <p>9) 'Edit' button will show the following screen on click.</p>
+            <p>'Edit' user form will fill fields with previous information on the user.</p>
+            <img src="images/UMuserEdit.png" alt="User Management"/>
+            <br/><br/><br/>
+            <p>10) All fields in the above form are compulsory. Default password for creating a user is the user's contact number.</p>
+            <p>Edit form has four submit options:</p>
+            <ul>
+                <li>Update user: This option will validate all the values entered and update the same.</li>
+                <li>Reset password: Will reset the password of the user to their contact number and update the contact number as well.</li>
+                <li>Delete user: Will delete the user. Only those users who have never logged into the application can be deleted.</li>
+                <li>Cancel: Cancels edit action.</li>
+            </ul>
+            <br/><br/>
+            <p>11) <b>'Upload Bulk Users'</b> button at the top-right of the User Management page leads to the bulk upload page.</p>
+            <p>In this page, the admin can download sample template.</p>
+            <p>The admin can then fill details in a CSV form according to given headers in the template and upload it back to the same page:</p>
+            <img src="images/UMtemplateDL_NA.png" alt="User Management"/><br/><br/>
+            <p>After uploading the file, the admin must click the 'Upload Bulk Users' button. The file is then validated.</p>
+            <img src="images/UMbulkUpload_NA.png" alt="User Management"/><br/><br/>
+            <p>The validation errors will then be displayed after processing the file.</p>
+        </div>
+    </div>
+
+    <div data-ng-hide="selectRole != 6">
+        <div class="userManualPic">
+            <p>The User Management tab allows Admin users to view, create new lower/equal access-level users and lower access-level admins, and to edit/delete users created by them.</p>
+            <p>1) To access the User Management page, login with Admin credentials.</p>
+            <p>User Management tab is visible to admin users only after logging in to the application</p>
+            <p>Click on the <b>'User Management'</b> tab in the navigation bar:</p>
+            <img src="images/UMclick_SA.png" alt="User Management"/>
+            <br/><br/><br/>
+            <p>2) State Admin users will be shown user-lists from their state, all the districts and blocks in their state:</p>
+            <img src="images/UMdisplay_SA.png" alt="User Management"/>
+            <br/><br/><br/>
+            <p><b>Functionalities in User Management page:</b></p>
+            <p>3) A search field is provided to search for entered keywords from all fields of all the records:</p>
+            <img src="images/UMtextbox_SA.png" alt="User Management"/>
+            <br/><br/><br/>
+            <p>4) Filters 'Access-type', 'Access-level', 'State', 'District' and 'Block' are provided with certain values, which can be used to filter the respective columns.</p>
+            <p>5) The first five columns can be sorted by clicking on the headings/names of these columns.</p>
+            <img src="images/UMfilters_SA.png" alt="User Management"/>
+            <br/><br/><br/>
+            <p>6) Each page shows a maximum of 10 users. Use the numbers and arrows on the bottom-right to navigate to other pages:</p>
+            <img src="images/UMpages_SA.png" alt="User Management"/>
+            <br/><br/><br/>
+            <p>7) Admins can only edit users they created, by clicking on the 'Edit' button. Every user on the list maynot have this button:</p>
+            <img src="images/UMedit_SA.png" alt="User Management"/>
+            <br/><br/><br/>
+            <p>8) State Admins can <b>create District Admins and non-National Users</b> by clicking on the 'Create new User' button.</p>
+            <p>This button will show the following screen with empty fields which are required to be filled.</p>
+            <p>Create user form has two action buttons: 'Create user' and 'Cancel'.</p>
+            <ul>
+                <li>Create new User: creates a new user with details as filled in the form.</li>
+                <li>Cancel: aborts the action of creating user and navigates back to User Management.</li>
+            </ul>
+            <img src="images/UMuserCreate.png" alt="User Management"/><br/><br/><br/>
+            <p>9) 'Edit' button will show the following screen on click.</p>
+            <p>'Edit' user form will fill fields with previous information on the user.</p>
+            <img src="images/UMuserEdit.png" alt="User Management"/>
+            <br/><br/><br/>
+            <p>10) All fields in the above form are compulsory. Default password for creating a user is the user's contact number.</p>
+            <p>Edit form has four submit options:</p>
+            <ul>
+                <li>Update user: This option will validate all the values entered and update the same.</li>
+                <li>Reset password: Will reset the password of the user to their contact number and update the contact number as well.</li>
+                <li>Delete user: Will delete the user. Only those users who have never logged into the application can be deleted.</li>
+                <li>Cancel: Cancels edit action.</li>
+            </ul>
+            <br/><br/>
+            <p>11) <b>'Upload Bulk Users'</b> button at the top-right of the User Management page leads to the bulk upload page.</p>
+            <p>In this page, the admin can download sample template.</p>
+            <p>The admin can then fill details in a CSV form according to given headers in the template and upload it back to the same page:</p>
+            <img src="images/UMtemplateDL_SA.png" alt="User Management"/><br/><br/>
+            <p>After uploading the file, the admin must click the 'Upload Bulk Users' button. The file is then validated.</p>
+            <img src="images/UMbulkUpload_SA.png" alt="User Management"/><br/><br/>
+            <p>The validation errors will then be displayed after processing the file.</p>
+        </div>
+    </div>
+
+    <div data-ng-hide="selectRole != 7">
+        <div class="userManualPic">
+            <p>The User Management tab allows Admin users to view, create new lower/equal access-level users and lower access-level admins, and to edit/delete users created by them.</p>
+            <p>1) To access the User Management page, login with Admin credentials.</p>
+            <p>User Management tab is visible to admin users only after logging in to the application</p>
+            <p>Click on the <b>'User Management'</b> tab in the navigation bar:</p>
+            <img src="images/UMclick_DA.png" alt="User Management"/>
+            <br/><br/><br/>
+            <p>2) District Admin users will be shown user-lists of their district and user-lists of all blocks in their district:</p>
+            <img src="images/UMdisplay_DA.png" alt="User Management"/>
+            <br/><br/><br/>
+            <p><b>Functionalities in User Management page:</b></p>
+            <p>3) A search field is provided to search for entered keywords from all fields of all the records:</p>
+            <img src="images/UMtextbox_DA.png" alt="User Management"/>
+            <br/><br/><br/>
+            <p>4) Filters 'Access-type', 'Access-level', 'State', 'District' and 'Block' are provided with certain values, which can be used to filter the respective columns.</p>
+            <p>5) The first five columns can be sorted by clicking on the headings/names of these columns.</p>
+            <img src="images/UMfilters_DA.png" alt="User Management"/>
+            <br/><br/><br/>
+            <p>6) Each page shows a maximum of 10 users. Use the numbers and arrows on the bottom-right to navigate to other pages:</p>
+            <img src="images/UMpages_DA.png" alt="User Management"/>
+            <br/><br/><br/>
+            <p>7) Admins can only edit users they created, by clicking on the 'Edit' button. Every user on the list maynot have this button:</p>
+            <img src="images/UMedit_DA.png" alt="User Management"/>
+            <br/><br/><br/>
+            <p>8) District Admins <b>cannot create Admin-users, but can create District/Block Users</b> by clicking on the 'Create new User' button.</p>
+            <p>This button will show the following screen with empty fields which are required to be filled.</p>
+            <p>Create user form has two action buttons: 'Create user' and 'Cancel'.</p>
+            <ul>
+                <li>Create new User: creates a new user with details as filled in the form.</li>
+                <li>Cancel: aborts the action of creating user and navigates back to User Management.</li>
+            </ul>
+            <img src="images/UMuserCreate.png" alt="User Management"/><br/><br/><br/>
+            <p>9) 'Edit' button will show the following screen on click.</p>
+            <p>'Edit' user form will fill fields with previous information on the user.</p>
+            <img src="images/UMuserEdit.png" alt="User Management"/>
+            <br/><br/><br/>
+            <p>10) All fields in the above form are compulsory. Default password for creating a user is the user's contact number.</p>
+            <p>Edit form has four submit options:</p>
+            <ul>
+                <li>Update user: This option will validate all the values entered and update the same.</li>
+                <li>Reset password: Will reset the password of the user to their contact number and update the contact number as well.</li>
+                <li>Delete user: Will delete the user. Only those users who have never logged into the application can be deleted.</li>
+                <li>Cancel: Cancels edit action.</li>
+            </ul>
+            <br/><br/>
+            <p>11) <b>'Upload Bulk Users'</b> button at the top-right of the User Management page leads to the bulk upload page.</p>
+            <p>In this page, the admin can download sample template.</p>
+            <p>The admin can then fill details in a CSV form according to given headers in the template and upload it back to the same page:</p>
+            <img src="images/UMtemplateDL_DA.png" alt="User Management"/><br/><br/>
+            <p>After uploading the file, the admin must click the 'Upload Bulk Users' button. The file is then validated.</p>
+            <img src="images/UMbulkUpload_DA.png" alt="User Management"/><br/><br/>
+            <p>The validation errors will then be displayed after processing the file.</p>
+        </div>
     </div>
 </div>
