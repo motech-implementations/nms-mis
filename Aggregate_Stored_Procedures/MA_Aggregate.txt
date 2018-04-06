@@ -1,0 +1,141 @@
+CREATE DEFINER=`etluser`@`%` PROCEDURE `MA_Aggregate`()
+BEGIN
+DECLARE dt DATETIME;
+SET dt = (select cast(last_etl_time as datetime) from ETL_info_table where table_id = 45);
+
+WHILE DATE(dt) <= DATE_ADD(UTC_TIMESTAMP(),INTERVAL -1 DAY) DO
+insert into aggregate_cumulative_MA_counts(location_type, location_id, date, ashas_registered, ashas_started_course, ashas_not_started_course, ashas_completed_successfully, ashas_failed_course, ashas_rejected)
+select a.location_type,a.location_id,a.date, a.ashas_registered, a.ashas_started_course, a.ashas_not_started_course, b.successes, b.failures, c.rejected from
+(select 
+'STATE' as location_type,
+f.state_id as location_id,
+dt as date,
+sum(case when f.job_status = 'ACTIVE' and f.flw_designation = 'ASHA' then 1 else 0 end) as ashas_registered,
+sum(case when f.job_status = 'ACTIVE' and f.flw_status = 'ACTIVE' and f.flw_designation = 'ASHA' and (f.flw_id in (SELECT distinct flw_id FROM ma_call_detail_measure where modificationDate < dt)) then 1 else 0 end) as ashas_started_course,
+sum(case when f.job_status = 'ACTIVE' and f.flw_status = 'INACTIVE' and f.flw_designation = 'ASHA' then 1 else 0 end) as ashas_not_started_course
+from front_line_worker f 
+where f.creation_date < dt 
+group by f.state_id) as a
+left join
+(select 
+'STATE' as location_type,
+f.state_id as location_id,
+dt as date,
+count(distinct(case when (m.has_passed = 1 and f.job_status = 'ACTIVE' and f.flw_designation = 'ASHA') then m.flw_id end)) as successes,
+count(distinct(case when (m.has_passed = 0 and m.flw_id not in (select distinct m1.flw_id from ma_course_completion m1 where m1.has_passed = 1 and m1.creationDate < dt) and f.job_status = 'ACTIVE' and f.flw_designation = 'ASHA') then m.flw_id end)) as failures
+from front_line_worker f
+join ma_course_completion m on m.flw_id = f.flw_id 
+where m.creationDate < dt
+group by f.state_id) as b on b.location_id = a.location_id
+left join
+(select 
+'STATE' as location_type,
+r.state_id as location_id,
+dt as date,
+count(*) as rejected
+from flw_import_rejection r 
+where r.creation_date < dt and r.rejection_reason not in ('UPDATED_RECORD_ALREADY_EXISTS','FLW_TYPE_NOT_ASHA','FLW_IMPORT_ERROR','GF_STATUS_INACTIVE')
+group by r.state_id) as c on c.location_id = a.location_id
+UNION ALL
+select a.location_type,a.location_id,a.date, a.ashas_registered, a.ashas_started_course, a.ashas_not_started_course, b.successes, b.failures, c.rejected from
+(select 
+'DISTRICT' as location_type,
+f.district_id as location_id,
+dt as date,
+sum(case when f.job_status = 'ACTIVE' and f.flw_designation = 'ASHA' then 1 else 0 end) as ashas_registered,
+sum(case when f.job_status = 'ACTIVE' and f.flw_status = 'ACTIVE' and f.flw_designation = 'ASHA' and (f.flw_id in (SELECT distinct flw_id FROM ma_call_detail_measure where modificationDate < dt)) then 1 else 0 end) as ashas_started_course,
+sum(case when f.job_status = 'ACTIVE' and f.flw_status = 'INACTIVE' and f.flw_designation = 'ASHA' then 1 else 0 end) as ashas_not_started_course
+from front_line_worker f 
+where f.creation_date < dt
+group by f.district_id) as a
+left join
+(select 
+'DISTRICT' as location_type,
+f.district_id as location_id,
+dt as date,
+count(distinct(case when (m.has_passed = 1 and f.job_status = 'ACTIVE' and f.flw_designation = 'ASHA') then m.flw_id end)) as successes,
+count(distinct(case when (m.has_passed = 0 and m.flw_id not in (select distinct m1.flw_id from ma_course_completion m1 where m1.has_passed = 1 and m1.creationDate < dt) and f.job_status = 'ACTIVE' and f.flw_designation = 'ASHA') then m.flw_id end)) as failures
+from front_line_worker f
+join ma_course_completion m on m.flw_id = f.flw_id 
+where m.creationDate < dt
+group by f.district_id) as b on b.location_id = a.location_id
+left join
+(select 
+'DISTRICT' as location_type,
+r.district_id as location_id,
+dt as date,
+count(*) as rejected
+from flw_import_rejection r 
+where r.creation_date < dt and r.rejection_reason not in ('UPDATED_RECORD_ALREADY_EXISTS','FLW_TYPE_NOT_ASHA','FLW_IMPORT_ERROR','GF_STATUS_INACTIVE')
+group by r.district_id) as c on c.location_id = a.location_id
+UNION ALL
+select a.location_type,a.location_id,a.date, a.ashas_registered, a.ashas_started_course, a.ashas_not_started_course, b.successes, b.failures, c.rejected from
+(select 
+'BLOCK' as location_type,
+f.block_id as location_id,
+dt as date,
+sum(case when f.job_status = 'ACTIVE' and f.flw_designation = 'ASHA' then 1 else 0 end) as ashas_registered,
+sum(case when f.job_status = 'ACTIVE' and f.flw_status = 'ACTIVE' and f.flw_designation = 'ASHA' and (f.flw_id in (SELECT distinct flw_id FROM ma_call_detail_measure where modificationDate < dt)) then 1 else 0 end) as ashas_started_course,
+sum(case when f.job_status = 'ACTIVE' and f.flw_status = 'INACTIVE' and f.flw_designation = 'ASHA' then 1 else 0 end) as ashas_not_started_course
+from front_line_worker f 
+where f.creation_date < dt
+group by f.block_id) as a
+left join
+(select 
+'BLOCK' as location_type,
+f.block_id as location_id,
+dt as date,
+count(distinct(case when (m.has_passed = 1 and f.job_status = 'ACTIVE' and f.flw_designation = 'ASHA') then m.flw_id end)) as successes,
+count(distinct(case when (m.has_passed = 0 and m.flw_id not in (select distinct m1.flw_id from ma_course_completion m1 where m1.has_passed = 1 and m1.creationDate < dt) and f.job_status = 'ACTIVE' and f.flw_designation = 'ASHA') then m.flw_id end)) as failures
+from front_line_worker f
+join ma_course_completion m on m.flw_id = f.flw_id 
+where m.creationDate < dt
+group by f.block_id) as b on b.location_id = a.location_id
+left join
+(select 
+'BLOCK' as location_type,
+r.health_block_id as location_id,
+dt as date,
+count(*) as rejected
+from flw_import_rejection r 
+where r.creation_date < dt and r.rejection_reason not in ('UPDATED_RECORD_ALREADY_EXISTS','FLW_TYPE_NOT_ASHA','FLW_IMPORT_ERROR','GF_STATUS_INACTIVE')
+group by r.health_block_id) as c on c.location_id = a.location_id
+UNION ALL
+select a.location_type,a.location_id,a.date, a.ashas_registered, a.ashas_started_course, a.ashas_not_started_course, b.successes, b.failures, c.rejected from
+(select 
+'SUBCENTRE' as location_type,
+f.healthsubfacility_id as location_id,
+dt as date,
+sum(case when f.job_status = 'ACTIVE' and f.flw_designation = 'ASHA' then 1 else 0 end) as ashas_registered,
+sum(case when f.job_status = 'ACTIVE' and f.flw_status = 'ACTIVE' and f.flw_designation = 'ASHA' and (f.flw_id in (SELECT distinct flw_id FROM ma_call_detail_measure where modificationDate < dt)) then 1 else 0 end) as ashas_started_course,
+sum(case when f.job_status = 'ACTIVE' and f.flw_status = 'INACTIVE' and f.flw_designation = 'ASHA' then 1 else 0 end) as ashas_not_started_course
+from front_line_worker f 
+where f.creation_date < dt
+group by f.healthsubfacility_id) as a
+left join
+(select 
+'SUBCENTRE' as location_type,
+f.healthsubfacility_id as location_id,
+dt as date,
+count(distinct(case when (m.has_passed = 1 and f.job_status = 'ACTIVE' and f.flw_designation = 'ASHA') then m.flw_id end)) as successes,
+count(distinct(case when (m.has_passed = 0 and m.flw_id not in (select distinct m1.flw_id from ma_course_completion m1 where m1.has_passed = 1 and m1.creationDate < dt) and f.job_status = 'ACTIVE' and f.flw_designation = 'ASHA') then m.flw_id end)) as failures
+from front_line_worker f
+join ma_course_completion m on m.flw_id = f.flw_id 
+where m.creationDate < dt
+group by f.healthsubfacility_id) as b on b.location_id = a.location_id
+left join
+(select 
+'SUBCENTRE' as location_type,
+r.subcentre_id as location_id,
+dt as date,
+count(*) as rejected
+from flw_import_rejection r 
+where r.creation_date < dt and r.rejection_reason not in ('UPDATED_RECORD_ALREADY_EXISTS','FLW_TYPE_NOT_ASHA','FLW_IMPORT_ERROR','GF_STATUS_INACTIVE')
+group by r.subcentre_id) as c on c.location_id = a.location_id;
+
+SET dt = DATE_ADD(dt, INTERVAL 1 DAY);
+
+update ETL_info_table set last_etl_time = DATE_ADD(dt, INTERVAL -1 DAY) where table_id = 45;
+END WHILE;
+
+END
