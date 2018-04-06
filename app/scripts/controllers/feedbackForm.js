@@ -1,15 +1,21 @@
 (function(){
 	var nmsReportsApp = angular
-		.module('nmsReports')
-		.controller("FeedbackFormController", ['$scope', '$state', 'UserFormFactory','$http', '$location','Captcha',function($scope, $state, UserFormFactory,$http,$location,Captcha){
+		.module('nmsReports');
 
-            $scope.feedbackUrl = backend_root + 'nms/mail/sendFeedback';
+	nmsReportsApp.controller("FeedbackFormController", ['$scope', '$state', 'UserFormFactory','$http', '$location','Captcha',function($scope, $state, UserFormFactory,$http,$location,Captcha){
+
+            $scope.feedbackUrl = backend_root + 'nms/mail/sendFeedback1';
 
 			$scope.feedback = {};
 			$scope.email = {};
 
-            $scope.feedback = function(e){
+            var emailField = $scope.email.to
+            function validateEmail(emailField){
+                    var reg = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                        return reg.test(emailField);
+            }
 
+            $scope.feedback = function(e){
                 if(!$scope.email.name){
                     if(UserFormFactory.isInternetExplorer()){
                         alert("Please enter the name")
@@ -43,6 +49,17 @@
                     }
                 }
 
+                if(!validateEmail($scope.email.to)){
+                    if(UserFormFactory.isInternetExplorer()){
+                        alert("Please enter valid email")
+                        return;
+                    }
+                    else{
+                        UserFormFactory.showAlert("Please enter valid email")
+                        return;
+                    }
+                }
+
                 if(!$scope.email.body){
                     if(UserFormFactory.isInternetExplorer()){
                         alert("Please enter the Feedback")
@@ -54,7 +71,7 @@
                     }
                 }
 
-                if($scope.captchaResponse ==''){
+                if(!$scope.captchaResponse){
                     if(UserFormFactory.isInternetExplorer()){
                         alert("Check captcha")
                         return;
@@ -63,69 +80,35 @@
                         UserFormFactory.showAlert("Check captcha")
                         return;
                     }
-
-                }
-                else{
-                    var formElement = angular.element(e.target);
-                    formElement.attr("action", $scope.feedbackUrl);
-                    formElement.attr("method", "post");
-                    formElement[0].submit();
-
                 }
 
-
-//                if(!$scope.feedback.captchaCode){
-//                    if(UserFormFactory.isInternetExplorer()){
-//                        alert("Please enter the captchaCode")
-//                        return;
-//                    }
-//                    else{
-//                        UserFormFactory.showAlert("Please enter the captchaCode")
-//                        return;
-//                    }
-//                }
-
-//                var captcha = new Captcha();
-//
-//                // captcha id for validating captcha at server-side
-//                var captchaId = captcha.captchaId;
-//
-//                // captcha code input value for validating captcha at server-side
-//                var captchaCode = angular.uppercase($scope.feedback.captchaCode);
-//
-//                var postData = {
-//                  captchaId: captchaId,
-//                  captchaCode: captchaCode
-//                };
-//
-//                $http({
-//                        method  : 'POST',
-//                        url     : backend_root + 'nms/captcha',
-//                        data    : postData, //forms user object
-//                        headers : {'Content-Type': 'application/json'}
-//                    }).then(function(response){
-//                         if(response.data.success){
-//                             var formElement = angular.element(e.target);
-//                             formElement.attr("action", $scope.feedbackUrl);
-//                             formElement.attr("method", "post");
-//                             formElement[0].submit();
-//                         }
-//                         else{
-//                             if(UserFormFactory.isInternetExplorer()){
-//                                 alert("Incorrect Captcha")
-//                                 return;
-//                             }
-//                             else{
-//                                 UserFormFactory.showAlert("Incorrect Captcha")
-//                                 return;
-//                             }
-//
-//                         }
-//
-//                     })
-
-
+                else {
+                    $http({
+                        method  : 'POST',
+                        url     : backend_root + 'nms/mail/sendFeedback',
+                        data    : $scope.email, //forms user object
+                        headers : {'Content-Type': 'application/json'}
+                    }).then(function(){
+                        if(UserFormFactory.isInternetExplorer()){
+                            alert('feedback form submitted successfully')
+                            $state.go($state.current, {}, {reload: true});
+                            return;
+                        }
+                        else{
+                            UserFormFactory.showAlert('feedback form submitted successfully')
+                            $state.go($state.current, {}, {reload: true});
+                            return;
+                        }
+                    })
+                }
 		    }
 
-		}])
+		}]);
+	nmsReportsApp.controller("FeedbackResponseController", ['$scope', '$state', 'UserFormFactory', function($scope, $state, UserFormFactory){
+
+        $scope.goBackToFeedbackForm = function(){
+            $state.go('feedbackForm')
+        }
+
+    }]);
 })();

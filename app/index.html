@@ -35,6 +35,7 @@
 	<script type="text/javascript" src="bower_components/underscore/underscore.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.9.12/xlsx.full.min.js"></script>
     <script src="https://fastcdn.org/FileSaver.js/1.1.20151003/FileSaver.min.js"></script>
+    <script src="bower_components/angular-idle-service/dist/angular-idle-service.js"></script>
 
 
 	<script type="text/javascript" src="scripts/global/urls.js"></script>
@@ -55,34 +56,16 @@
 	<script type="text/javascript" src="scripts/controllers/login.js"></script>
 	<script type="text/javascript" src="scripts/controllers/forgotPassword.js"></script>
     <script type="text/javascript" src="scripts/controllers/changePassword.js"></script>
-	<script type="text/javascript" src="scripts/controllers/aboutUs.js"></script>
-	<script type="text/javascript" src="scripts/controllers/aboutKilkari.js"></script>
-	<script type="text/javascript" src="scripts/controllers/aboutMA.js"></script>
-	<script type="text/javascript" src="scripts/controllers/privacyPolicy.js"></script>
-	<script type="text/javascript" src="scripts/controllers/copyrightPolicy.js"></script>
-	<script type="text/javascript" src="scripts/controllers/tAndC.js"></script>
-	<script type="text/javascript" src="scripts/controllers/hLPolicy.js"></script>
-	<script type="text/javascript" src="scripts/controllers/disclaimer.js"></script>
-	<script type="text/javascript" src="scripts/controllers/helpPage.js"></script>
+
 
 	<script type="text/javascript" src="scripts/controllers/feedbackForm.js"></script>
-	<script type="text/javascript" src="scripts/controllers/feedbackResponse.js"></script>
 	<script type="text/javascript" src="scripts/controllers/contactUs.js"></script>
+	<script type="text/javascript" src="scripts/controllers/contactUsResponse.js"></script>
 
 	<script type="text/javascript" src="scripts/controllers/userManual.js"></script>
-	<script type="text/javascript" src="scripts/controllers/userManual_kilkari.js"></script>
-	<script type="text/javascript" src="scripts/controllers/userManual_websiteInformation.js"></script>
-	<script type="text/javascript" src="scripts/controllers/userManual_mobileAcademy.js"></script>
-	<script type="text/javascript" src="scripts/controllers/userManual_Management.js"></script>
-	<script type="text/javascript" src="scripts/controllers/userManual_Profile.js"></script>
 	<script type="text/javascript" src="scripts/controllers/faq.js"></script>
-	<script type="text/javascript" src="scripts/controllers/faqKilkari.js"></script>
-	<script type="text/javascript" src="scripts/controllers/faqMobileAcademy.js"></script>
-	<script type="text/javascript" src="scripts/controllers/faqWebsiteInformation.js"></script>
-	<script type="text/javascript" src="scripts/controllers/faqProfile.js"></script>
-	<script type="text/javascript" src="scripts/controllers/faqUserManagement.js"></script>
-	<script type="text/javascript" src="scripts/controllers/sitemap.js"></script>
 	<script type="text/javascript" src="scripts/controllers/downloads.js"></script>
+	<script type="text/javascript" src="scripts/controllers/staticPages.js"></script>
 	<!-- Factory -->
 	<!-- <script type="text/javascript" src="scripts/factories/navbar.js"></script> -->
 	<script type="text/javascript" src="scripts/factories/userTable.js"></script>
@@ -122,24 +105,19 @@
 
 			<ul class="nav-menu-left" >
 				<li data-ng-class="{active: activeTab('AboutUs')}">
-					<a  data-ng-hide='disableCursor()' data-ng-click="goToAboutus()" class="pointer">About us</a>
-					<a  data-ng-hide='!disableCursor()'  style="cursor: not-allowed">About us</a>
+					<a  data-ng-class="{dis1: disableCursor()}" data-ng-click="goToAboutus()" class="pointer">About us</a>
 				</li>
 				<li data-ng-class="{active: activeTab('AboutKilkari')}">
-					<a data-ng-hide='disableCursor()'data-ng-click="goToKilkari()" class="pointer">Kilkari</a>
-					<a data-ng-hide='!disableCursor()' style="cursor: not-allowed">Kilkari</a>
+					<a data-ng-class="{dis1: disableCursor()}" data-ng-click="goToKilkari()" class="pointer">Kilkari</a>
 				</li>
 				<li  data-ng-class="{active: activeTab('AboutMA')}">
-					<a data-ng-hide='disableCursor()' data-ng-click="goToMobileA()" class="pointer">Mobile Academy</a>
-					<a data-ng-hide='!disableCursor()'  style="cursor: not-allowed">Mobile Academy</a>
+					<a data-ng-class="{dis1: disableCursor()}" data-ng-click="goToMobileA()" class="pointer">Mobile Academy</a>
 				</li>
 				<li data-ng-class="{active: activeTab('userManual')}">
-					<a  data-ng-hide='disableCursor()' data-ng-click="goToUserManual()"  class="pointer">User Manual</a>
-					<a  data-ng-hide='!disableCursor()'  style="cursor: not-allowed">User Manual</a>
+					<a  data-ng-class="{dis1: disableCursor()}" data-ng-click="goToUserManual()"  class="pointer">User Manual</a>
 				</li>
 				<li data-ng-class="{active: activeTab('faq')}">
-					<a  data-ng-hide='disableCursor()' data-ng-click="goToFaq()" class="pointer">FAQ</a>
-					<a  data-ng-hide='!disableCursor()'  style="cursor: not-allowed">FAQ</a>
+					<a  data-ng-class="{dis1: disableCursor()}" data-ng-click="goToFaq()" class="pointer">FAQ</a>
 				</li>
 			</ul>
 
@@ -148,32 +126,28 @@
 					<a data-ng-if='(loginBool==true)' class="pointer"  data-ng-click="goToLogin()" >Login</a>
 					<a data-ng-if='!(loginBool==true)'style="cursor: not-allowed" data-ng-click="goToLogin()" >Login</a>
 				</li>
-				<li data-ng-if='!checkLogin()' data-ng-class="{active: checkProfile()}" >
+				<li data-ng-if='!checkLogin()' class="pd" data-ng-class="{active: checkProfile(),pd1:!checkLogin()}" >
 					<a  ng-click="hovered()" class="pointer" href>
 						{{currentUser.fullName}}<span  class="caret"></span>
 					</a>
 				</li>
 				<li data-ng-class="{active: activeTab('contactUs')}">
-					<a data-ng-hide='disableCursor()' data-ng-click="goToContactUs()" class="pointer">Contact us</a>
-					<a data-ng-hide='!disableCursor()' style="cursor: not-allowed">Contact us</a>
+					<a data-ng-class="{dis1: disableCursor()}" data-ng-click="goToContactUs()" class="pointer">Contact us</a>
 				</li>
-				<li data-ng-class="{active: activeTab('feedbackForm')}">
-					<a data-ng-hide='disableCursor()' data-ng-click="goToFeedback()" class="pointer">Feedback</a>
-					<a data-ng-hide='!disableCursor()'  style="cursor: not-allowed">Feedback</a>
+				<li data-ng-class="{active: activeTab('feedbackForm')}" >
+					<a data-ng-class="{dis1: disableCursor()}" data-ng-click="goToFeedback()" class="pointer">Feedback</a>
 				</li>
 
 			</ul>
 
             <ul class="nav-menu" data-ng-hide='$state.current.name=="login" || $state.current.name=="forgotPassword" || currentUser.default  || currentUser.default == null '>
 
-                <li data-ng-class="{active: activeTab('userManagement')}" data-ng-if="currentUser.roleId!= null && currentUser.roleName != 'USER'">
-                    <a data-ng-hide='disableCursor()' class="pointer"  data-ng-click="goToUserTable()" >User Management</a>
-                    <a data-ng-hide='!disableCursor()' style="cursor:not-allowed" data-ng-click="goToUserTable()" >User Management</a>
+                <li class="pd" data-ng-class="{active: activeTab('userManagement'),pd1:!checkLogin()}" data-ng-if="currentUser.roleId!= null && currentUser.roleName != 'USER'">
+                    <a  class="pointer" data-ng-class="{dis1: disableCursor()}" data-ng-click="goToUserTable()"  >User Management</a>
                 </li>
-                <li data-ng-class="{active: reportsActive()}">
-                    <a data-ng-hide='disableCursor()' data-ng-click="goToReports()" class="pointer">Reports</a>
-                    <a data-ng-hide='!disableCursor()' data-ng-click="goToReports()" style="cursor:not-allowed">Reports</a>
-                </li>
+                <li class="pd" data-ng-class="{active: reportsActive(),pd1:!checkLogin()}">
+                    <a data-ng-class="{dis1: disableCursor()}" data-ng-click="goToReports()" class="pointer">Reports</a>
+                 </li>
             </ul>
 
         </div>
@@ -182,23 +156,22 @@
 
 
     <div ng-mouseleave="removed()" >
-        <div ng-if="(show==true)"    >
+        <div ng-if="(show==true)" class="pd" data-ng-class="{pd1:show}"   >
             <ul class="profile-dropdown">
-                <li data-ng-class="{active: activeTab('profile')}" >
-                    <a class="dropdown-buttons pointer" data-ng-hide='disableCursor()' data-ng-click="goToProfile()">My Profile</a>
-                    <a class="dropdown-buttons" data-ng-hide='!disableCursor()' data-ng-click="goToProfile()" style="cursor:not-allowed">My Profile</a>
+                <li data-ng-class="{activeP: activeTabProfile('profile')}" >
+                    <a class="dropdown-buttons pointer" class="pointer" data-ng-class="{dis1: disableCursor()}" data-ng-click="goToProfile()">My Profile</a>
+
                 </li>
-                <li data-ng-class="{active: activeTab('changePassword')}" >
-                    <a class="dropdown-buttons pointer" data-ng-hide='disableCursor()' data-ng-click="goToChangePassword()" >Change Password</a>
-                    <a class="dropdown-buttons" data-ng-hide='!disableCursor()' data-ng-click="goToChangePassword()" style="cursor:not-allowed">Change Password</a>
+                <li data-ng-class="{activeP: activeTabProfile('changePassword')}" >
+                    <a class="dropdown-buttons pointer"  data-ng-click="goToChangePassword()" data-ng-class="{dis1: disableCursor()}" >Change Password</a>
+
                 </li>
                 <li >
-                    <a class="dropdown-buttons" href={{logoutUrl}}>Logout</a>
+                    <a class="dropdown-buttons pointer" data-ng-click="goToLogout()">Logout</a>
                 </li>
             </ul>
         </div>
     </div>
-
 
 
 
@@ -208,27 +181,27 @@
 	<div class='footer'>
 		<div class="col-md-4 col-sm-4 col-xs-4">
 			<div>
-				<a data-ng-hide='disableCursor()' data-ui-sref="TandC" class="pointer">terms and conditions </a>
-				<a data-ng-hide='!disableCursor()'  style="cursor: not-allowed">terms and conditions </a>
+				<a  data-ng-click="goToTandC()" class="pointer" data-ng-class="{dis: disableCursor()}">terms and conditions </a>
+
 				<span> |</span>
-				<a data-ng-hide='disableCursor()' data-ui-sref="PrivacyPolicy" class="pointer">privacy policy</a>
-				<a data-ng-hide='!disableCursor()'  style="cursor: not-allowed">privacy policy</a>
+				<a data-ng-click="goToPrivacyPolicy()" class="pointer" data-ng-class="{dis: disableCursor()}">privacy policy</a>
+
 				<span> |</span>
-				<a data-ng-hide='disableCursor()' data-ui-sref="CopyrightPolicy" class="pointer">copyright policy</a>
-				<a data-ng-hide='!disableCursor()'  style="cursor: not-allowed">copyright policy</a>
+				<a data-ng-click="goToCopyrightPolicy()" class="pointer" data-ng-class="{dis: disableCursor()}">copyright policy</a>
+
 			</div>
 			<div>
-				<a data-ng-hide='disableCursor()' data-ui-sref="HLPolicy" class="pointer">hyperlinking policy </a>
-				<a data-ng-hide='!disableCursor()'  style="cursor: not-allowed">hyperlinking policy </a>
+				<a data-ng-click="goToHLPolicy()" class="pointer" data-ng-class="{dis: disableCursor()}">hyperlinking policy </a>
+
 				<span> |</span>
-				<a data-ng-hide='disableCursor()' data-ui-sref="Disclaimer" class="pointer">disclaimer</a>
-				<a data-ng-hide='!disableCursor()'  style="cursor: not-allowed">disclaimer</a>
+				<a data-ng-click="goToDisclaimer()" class="pointer" data-ng-class="{dis: disableCursor()}">disclaimer</a>
+
 				<span> |</span>
-				<a data-ng-hide='disableCursor()' data-ui-sref="Help" class="pointer">help</a>
-				<a data-ng-hide='!disableCursor()' style="cursor: not-allowed">help</a>
+				<a data-ng-click="goToHelp()" class="pointer" data-ng-class="{dis: disableCursor()}">help</a>
+
 				<span> |</span>
-				<a data-ng-hide="disableCursor()" data-ng-click="goToSitemap()" class="pointer">Sitemap</a>
-				<a data-ng-hide="!disableCursor()" style="cursor: not-allowed">Sitemap</a>
+				<a data-ng-click="goToSitemap()" class="pointer" data-ng-class="{dis: disableCursor()}">Sitemap</a>
+
 
 			</div>
 			<div><!--<span>2017 all rights reserved - Mobile Academy & Kilkari Management and Information system</span>-->
@@ -236,12 +209,12 @@
 			</div>
 		</div>
 		<div class="col-md-5 col-sm-5 col-xs-5 footer-image">
-			<img alt="india-logo" src="images/india-logo.png">
+			<img class="footer-logo" alt="india-logo" src="images/india-logo.png">
 		</div>
 		<div class="col-md-3 col-sm-3 col-xs-3 footer-right">
 			<div>last updated</div>
 			<div>Visitors: <!--<hit-counter style="background-color: #a4574c;color: white"></hit-counter></div>-->
-				<img src='https://www.counter12.com/img-y1ZZZZDZD6BZy4C0-3.gif' class="visitors" alt='web counter free'><script type='text/javascript' src='https://www.counter12.com/ad.js?id=y1ZZZZDZD6BZy4C0'></script></div>
+				<img src='https://www.counter12.com/img-y1ZZZZDZD6BZy4C0-3.gif' class="visitors" alt='count'><script type='text/javascript' src='https://www.counter12.com/ad.js?id=y1ZZZZDZD6BZy4C0'></script></div>
 			<div>Dt:  {{date | date:'medium'}}</div>
 		</div>
 

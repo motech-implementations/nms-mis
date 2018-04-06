@@ -1,9 +1,10 @@
 <div class="container-fluid" data-ng-controller="mobileAcademyController" style="padding-left: 30px">
+
     <div data-ng-hide="flag">
         <h2 class="user-manual-header">Mobile Academy Reports</h2>
         <div style="color: #0071bc; font-size: 16px">
             <p><div data-ng-click="func('ccc')"><u>Cumulative Course Completion</u></div></p>
-            <p><div data-ng-click="func('cwau')"><u>Circle wise Anonymous Users</u></div></p>
+            <p><div data-ng-click="func('cwau')" ><u>Circle wise Anonymous Users</u></div></p>
             <p><div data-ng-click="func('ciu')"><u>Cumulative Inactive Users</u></div></p>
             <p><div data-ng-click="func('arr')"><u>Asha Rejected Records</u></div></p>
         </div>
@@ -11,151 +12,372 @@
 
     <div data-ng-hide="!flag" class="user-manual-reports">
         <div><img src="./images/back1.png" data-ng-click="flag=!flag" class="user-manual-back">
-            <div style="display: inline-block"><b>Mobile Academy Reports</b><br>
-                <div data-ng-hide="param!=='ccc'" style="display: inline-block" >
-                    <p style="font-size: 30px"><b>Cumulative Course Completion</b></p><br>
-                    <p>This report is generated from the launch of service in the state till the end of selected month </p>
-                    <p>Steps to download the reports</p>
-                    <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/app/">https://rchivrreports.in/app/</a>.</p>
-                    <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p><br>
-                    <img src="./images/reportCategory.png" alt="user Manual Mobile Academy Reports" style="max-width: 828px"><br><br><br>
-                    <p>3) Under "Reports" select "Cumulative Course Completion"</p><br>
-                    <img src="./images/reportsMobile.jpg" alt="user manual Cumulative Course Completion" style="max-width: 828px"><br><br><br>
-                    <p>4) Then select the Month </p><br>
-                    <img src="./images/reportsMonth.jpg" alt="user manual Reports Month" style="max-width: 828px"><br><br><br>
-
-                    <div data-ng-hide="selectRole != 1 && selectRole !=5">
-                        <p>5) Then select respective State, District and Block</p>
-                        <img src="./images/reportState.png" style="max-width: 828px"><br><br><br>
+            <div style="display: inline-block"  class="imageModify"><b>Mobile Academy Reports</b><br>
+                <div data-ng-hide="selectRole != 1 && selectRole !=5"><!--National User-->
+                    <div data-ng-hide="param!=='ccc'" style="display: inline-block">
+                        <p style="font-size: 30px"><b>Cumulative Course Completion</b></p><br>
+                        <p>This report is generated from the launch of service in the state till the end of selected month </p>
+                        <p>Steps to download the reports</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/app/">https://rchivrreports.in/app/</a>.</p>
+                        <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p>
+                        <img src="./images/National/MA/NA_MA_RC.png" alt="user Manual Mobile Academy Reports" ><br><br><br>
+                        <p>3) Under "Reports" select "Cumulative Course Completion"</p>
+                        <img src="./images/State/KA1/SA_KA_Rep.png" alt="user manual Cumulative Course Completion" ><br><br><br>
+                        <p>4) Then select the Month of which the reports are needed </p>
+                        <img src="./images/National/MA/NA_MA_CCC_Cal.png" alt="user manual Reports Month"><br><br><br>
+                        <p>5) Then select an option in the 'State' dropdown for a specific state or to get all states data, select 'All':</p>
+                        <img src="./images/National/MA/NA_MA_CCC_State.png"><br><br><br>
+                        <p>6) Next, select an option from the 'District' dropdown in the same manner: (does not work if State is set to all)</p>
+                        <img src="./images/National/MA/NA_MA_CCC_Dist.png"><br><br><br>
+                        <p>7) Next, select an option from the 'Block' dropdown in the same manner: (does not work if District is set to all)</p>
+                        <img src="./images/National/MA/NA_MA_CCC_Block.png"><br><br><br>
+                        <p>8) To view the result, click the "Submit" button.</p>
+                        <img src="./images/National/MA/NA_MA_CCC_Submit - Copy.png"><br><br><br>
+                        <p>9) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <img src="./images/National/MA/NA_MA_CCC_Download.png"><br><br><br>
+                        <p>10) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
+                        <img src="./images/National/MA/NA_MA_CCC_Submit.png"><br>
                     </div>
 
-                    <div data-ng-hide="selectRole != 4">
-                        <p>5) Since this is for block user, location details from  “Selected Block” are already selected.</p>
-                        <img src="./images/usermanual-blocklevel1.jpg" style="max-width: 828px"><br><br><br>
+                    <div data-ng-hide="param!=='cwau'" style="display: inline-block">
+                        <p style="font-size: 30px"><b>Circle wise Anonymous Users</b></p><br>
+                        <p>This is a monthly report which lists out all the Mobile numbers that called from a specific circle in the selected month.</p>
+                        <p>Steps to download the reports</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/app/">https://rchivrreports.in/app/</a>.</p>
+                        <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p>
+                        <img src="./images/National/MA/NA_MA_RC.png"><br><br><br>
+                        <p>3) Under "Reports" select "Circle wise Anonymous Users"</p>
+                        <img src="./images/State/KA1/SA_KA_Rep.png"><br><br><br>
+                        <p>4) Then select the Month of which the reports are needed </p>
+                        <img src="./images/National/MA/NA_MA_CWAU_Cal.png"><br><br><br>
+                        <p>5) Then select respective Circle from "Circle" dropdown:</p>
+                        <img src="./images/National/MA/NA_MA_CWAU_CIRCLE.png"><br><br><br>
+                        <p>6) To view the result, click the "Submit" button.</p>
+                        <img src="./images/National/MA/NA_MA_CWAU_SUBMIT - Copy.png"><br><br><br>
+                        <p>7) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <img src="./images/National/MA/NA_MA_CWA_DOWNLOAD.png"><br><br><br>
+                        <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
+                        <img src="./images/National/MA/NA_MA_CWAU_SUBMIT.png"><br>
                     </div>
 
-                    <div data-ng-hide="selectRole != 3 && selectRole != 7">
-                        <p>5) Since this is for District user/admin, Select any/all block from “Selected Block”, under specified "District Block" and "State Block".</p>
-                        <img src="./images/usermanual-blocklevel1.jpg" style="max-width: 828px"><br><br><br>
+                    <div data-ng-hide="param!=='ciu'">
+                        <p style="font-size: 30px"><b>Cumulative Inactive Users</b></p><br>
+                        <p>The report lists out the Ashas who have not started the course even once until the end of selected month from their date of registration</p>
+                        <p>Steps to download the reports</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/app/">https://rchivrreports.in/app/</a>.</p>
+                        <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p>
+                        <img src="./images/National/MA/NA_MA_RC.png"><br><br><br>
+                        <p>3) Under "Reports" select "Cumulative Inactive Users"</p>
+                        <img src="./images/State/KA1/SA_KA_Rep.png"><br><br><br>
+                        <p>4) Then select the Month of which the reports are needed </p>
+                        <img src="./images/National/MA/NA_MA_CIU_CAL.png"><br><br><br>
+                        <p>5) Then select an option in the 'State' dropdown for a specific state or to get all states data, select 'All':</p>
+                        <img src="./images/National/MA/NA_MA_CIA_STATE.png"><br><br><br>
+                        <p>6) Next, select an option from the 'District' dropdown in the same manner: (does not work if State is set to all)</p>
+                        <img src="./images/National/MA/NA_MA_CIU_DISTRICT.png"><br><br><br>
+                        <p>7) Next, select an option from the 'Block' dropdown in the same manner: (does not work if District is set to all)</p>
+                        <img src="./images/National/MA/NA_MA_CIU_BLOCK.png"><br><br><br>
+                        <p>8) To view the result, click the "Submit" button.</p>
+                        <img src="./images/National/MA/NA_MA_CIU_SUBMIT - Copy.png"><br><br><br>
+                        <p>9) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <img src="./images/National/MA/NA_MA_CIU_DOWNLOADS.png"><br><br><br>
+                        <p>10) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
+                        <img src="./images/National/MA/NA_MA_CIU_SUBMIT.png"><br>
                     </div>
 
-                    <div data-ng-hide="selectRole != 2 && selectRole != 6">
-                        <p>5) Since this is for State user. Select any/all block from “Selected Block”, under any district from “District Block” with specified "State Block".</p>
-                        <img src="./images/usermanual-blocklevel1.jpg" style="max-width: 828px"><br><br><br>
+                    <div data-ng-hide="param!=='arr'">
+                        <p style="font-size: 30px"><b>Asha Rejected Records</b></p><br>
+                        <p>This report lists out all the Ashas who have been rejected by MOTECH due to any validation in data during registration</p>
+                        <p>Steps to download the reports</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/app/">https://rchivrreports.in/app/</a>.</p>
+                        <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p>
+                        <img src="./images/National/MA/NA_MA_RC.png"><br><br><br>
+                        <p>3) Under "Reports" select "Asha Rejected Records"</p>
+                        <img src="./images/State/KA1/SA_KA_Rep.png"><br><br><br>
+                        <p>4) Then select the Week </p>
+                        <img src="./images/National/MA/NA_MA_ARR_CAL.png"><br><br>
+                        <img src="./images/National/MA/NA_MA_ARR_CalDate.png"><br><br><br>
+                        <p>5) Then select an option in the 'State' dropdown for a specific state or to get all states data, select 'All':</p>
+                        <img src="./images/National/MA/NA_MA_ARR_STATE.png"><br><br><br>
+                        <p>6) Next, select an option from the 'District' dropdown in the same manner: (does not work if State is set to all)</p>
+                        <img src="./images/National/MA/NA_MA_ARR_DISTRICT.png"><br><br><br>
+                        <p>7) Next, select an option from the 'Block' dropdown in the same manner: (does not work if District is set to all)</p>
+                        <img src="./images/National/MA/NA_MA_ARR_BLOCK.png"><br><br><br>
+                        <p>8) To view the result, click the "Submit" button.</p>
+                        <img src="./images/National/MA/NA_MA_ARR_SUBMIT - Copy.png"><br><br><br>
+                        <p>9) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <img src="./images/National/MA/NA_MA_ARR_Download.png"><br><br><br>
+                        <p>10) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
+                        <img src="./images/National/MA/NA_MA_ARR_SUBMIT.png"><br>
+                    </div>
+                </div>
+                <div data-ng-hide="selectRole != 2 && selectRole !=6">
+                    <div data-ng-hide="param!=='ccc'" style="display: inline-block" >
+                        <p style="font-size: 30px"><b>Cumulative Course Completion</b></p><br>
+                        <p>This report is generated from the launch of service in the state till the end of selected month </p>
+                        <p>Steps to download the reports</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/app/">https://rchivrreports.in/app/</a>.</p>
+                        <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p>
+                        <img src="./images/State/MA1/SA_MA_RC.png" alt="user Manual Mobile Academy Reports"><br><br><br>
+                        <p>3) Under "Reports" select "Cumulative Course Completion"</p>
+                        <img src="./images/State/MA1/SA_MA_Rep.png" alt="user manual Cumulative Course Completion"><br><br><br>
+                        <p>4) Then select the Month of which the reports are needed </p>
+                        <img src="./images/State/MA1/SA_MA_CCC_Cal.png" alt="user manual Reports Month"><br><br><br>
+                        <p>5) For State users, their 'State' option is already selected.</p>
+                        <p>6) Select an option in the 'District' dropdown for a specific state or to get all districts data, select 'All':</p>
+                        <img src="./images/State/MA1/SA_MA_CCC_Dist.png"><br><br><br>
+                        <p>7) Next, select an option from the 'Block' dropdown in the same manner: (does not work if District is set to all)</p>
+                        <img src="./images/State/MA1/SA_MA_CCC_Block.png"><br><br><br>
+                        <p>8) To view the result, click the "Submit" button.</p>
+                        <img src="./images/State/MA1/SA_MA_CCC_Submit.png"><br><br><br>
+                        <p>9) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <img src="./images/State/MA1/SA_MA_CCC_Download.png"><br><br><br>
+                        <p>10) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
+                        <img src="./images/State/MA1/SA_MA_CCC_Reset.jpg"><br>
                     </div>
 
-                    <p>6) To view the result, press the "Select" button, or to reset it, press "Reset" button</p><br>
-                    <img src="./images/reportsDownload.png" style="max-width: 828px"><br>
-                    <p>7) Click on the download link to download the report. All the reports will be downloaded as Excel files.</p>
-                    <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
+                    <div data-ng-hide="param!=='cwau'" style="display: inline-block">
+                        <p style="font-size: 30px"><b>Circle wise Anonymous Users</b></p><br>
+                        <p>This is a monthly report which lists out all the Mobile numbers that called from a specific circle in the selected month.</p>
+                        <p>Steps to download the reports</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/app/">https://rchivrreports.in/app/</a>.</p>
+                        <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p>
+                        <img src="./images/State/MA1/SA_MA_RC.png"><br><br><br>
+                        <p>3) Under "Reports" select "Circle wise Anonymous Users"</p><br>
+                        <img src="./images/State/MA1/SA_MA_Rep.png"><br><br><br>
+                        <p>4) Then select the Month of which the reports are needed </p>
+                        <img src="./images/State/MA2/SA_MA_CWAU_Cal.png"><br><br><br>
+                        <p>5) For State users, their 'Circle' option is already selected.</p>
+                        <img src="./images/State/MA2/SA_MA_CWAU_Circle.png"><br><br><br>
+                        <p>6) To view the result, click the "Submit" button.</p>
+                        <img src="./images/State/MA2/SA_MA_CWAU_Submit.png"><br><br><br>
+                        <p>7) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <img src="./images/State/MA2/SA_MA_CWAU_Download.png"><br><br><br>
+                        <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
+                        <img src="./images/State/MA2/SA_MA_CWAU_Reset.png"><br>
+                    </div>
+
+                    <div data-ng-hide="param!=='ciu'">
+                        <p style="font-size: 30px"><b>Cumulative Inactive Users</b></p><br>
+                        <p>The report lists out the Ashas who have not started the course even once until the end of selected month from their date of registration</p>
+                        <p>Steps to download the reports</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/app/">https://rchivrreports.in/app/</a>.</p>
+                        <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p>
+                        <img src="./images/State/MA1/SA_MA_RC.png"><br><br><br>
+                        <p>3) Under "Reports" select "Cumulative Inactive Users"</p>
+                        <img src="./images/State/MA1/SA_MA_Rep.png"><br><br><br>
+                        <p>4) Then select the Month of which the reports are needed </p>
+                        <img src="./images/State/MA3/SA_MA_CIU_Month.png"><br><br><br>
+                        <p>5) For State users, their 'State' option is already selected.</p>
+                        <p>6) Select an option in the 'District' dropdown for a specific state or to get all districts data, select 'All':</p>
+                        <img src="./images/State/MA3/SA_MA_CIU_District.png"><br><br>
+                        <p>7) Next, select an option from the 'Block' dropdown in the same manner: (does not work if District is set to all)</p>
+                        <img src="./images/State/MA3/SA_MA_CIU_Blocks.png"><br><br><br>
+                        <p>8) To view the result, click the "Submit" button.</p>
+                        <img src="./images/State/MA3/SA_MA_CIU_Submit.png"><br><br><br>
+                        <p>9) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <img src="./images/State/MA3/SA_MA_CIU_Download.png"><br><br><br>
+                        <p>10) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
+                        <img src="./images/State/MA3/SA_MA_CIU_Reset.png"><br>
+                    </div>
+
+                    <div data-ng-hide="param!=='arr'">
+                        <p style="font-size: 30px"><b>Asha Rejected Records</b></p><br>
+                        <p>This report lists out all the Ashas who have been rejected by MOTECH due to any validation in data during registration</p>
+                        <p>Steps to download the reports</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/app/">https://rchivrreports.in/app/</a>.</p>
+                        <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p>
+                        <img src="./images/State/MA1/SA_MA_RC.png"><br><br><br>
+                        <p>3) Under "Reports" select "Asha Rejected Records"</p>
+                        <img src="./images/State/MA1/SA_MA_Rep.png"><br><br><br>
+                        <p>4) Then select the Week </p>
+                        <img src="./images/State/MA4/SA_MA_ARR_Cal.png"><br><br>
+                        <img src="./images/State/MA4/SA_MA_ARR_Caldate.png"><br><br><br>
+                        <p>5) For State users, their 'State' option is already selected.</p>
+                        <p>6) Select an option in the 'District' dropdown for a specific state or to get all districts data, select 'All':</p>
+                        <img src="./images/State/MA4/SA_MA_ARR_Dist.png"><br><br>
+                        <p>7) Next, select an option from the 'Block' dropdown in the same manner: (does not work if District is set to all)</p>
+                        <img src="./images/State/MA4/SA_MA_ARR_Block.png"><br><br><br>
+                        <p>8) To view the result, click the "Submit" button.</p>
+                        <img src="./images/State/MA4/SA_MA_ARR_Submit.png"><br><br><br>
+                        <p>9) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <img src="./images/State/MA4/SA_MA_ARR_Download.png"><br><br><br>
+                        <p>10) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
+                        <img src="./images/State/MA4/SA_MA_ARR_Reset.png"><br>
+                    </div>
                 </div>
 
-                <div data-ng-hide="param!=='cwau'" style="display: inline-block">
-                    <p style="font-size: 30px"><b>Circle wise Anonymous Users</b></p><br>
-                    <p>This is a monthly report which lists out all the Mobile numbers that called from a specific circle in the selected month.</p>
-                    <p>Steps to download the reports</p>
-                    <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/app/">https://rchivrreports.in/app/</a>.</p>
-                    <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p><br>
-                    <img src="./images/reportCategory.png" style="max-width: 828px"><br><br><br>
-                    <p>3) Under "Reports" select "Circle wise Anonymous Users"</p><br>
-                    <img src="./images/reportsMobile.jpg" style="max-width: 828px"><br><br><br>
-                    <p>4) Then select the Month </p><br>
-                    <img src="./images/reportsMonth.jpg" style="max-width: 828px"><br><br><br>
-                    <div data-ng-hide="selectRole != 1 && selectRole !=5">
-                        <p>5) Then select respective Circle from "Selected Circle"</p>
-                        <img src="./images/reportState.png" style="max-width: 828px"><br><br><br>
+
+                <div data-ng-hide="selectRole != 3 && selectRole !=7"><!--District User-->
+                    <div data-ng-hide="param!=='ccc'" style="display: inline-block" >
+                        <p style="font-size: 30px"><b>Cumulative Course Completion</b></p><br>
+                        <p>This report is generated from the launch of service in the state till the end of selected month </p>
+                        <p>Steps to download the reports</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/app/">https://rchivrreports.in/app/</a>.</p>
+                        <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p>
+                        <img src="./images/District/MA/DA_RC.png" alt="user Manual Mobile Academy Reports"><br><br><br>
+                        <p>3) Under "Reports" select "Cumulative Course Completion"</p>
+                        <img src="./images/District/MA/DA_MA_All.png" alt="user manual Cumulative Course Completion"><br><br><br>
+                        <p>4) Then select the Month of which the reports are needed </p>
+                        <img src="./images/District/MA/DA_MA_CCC_Cal.png" alt="user manual Reports Month"><br><br><br>
+                        <p>5) Since this is for District user/admin, Select any/all block from 'Block', under specified "District" and "State".</p>
+                        <img src="./images/District/MA/DA_MA_CCC_Block.png"><br><br><br>
+                        <p>6) To view the result, click the "Submit" button.</p>
+                        <img src="./images/District/MA/DA_MA_CCC_Sub - Copy.png"><br><br><br>
+                        <p>7) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <img src="./images/District/MA/DA_MA_CCC_DownLoad.png"><br><br><br>
+                        <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
+                        <img src="./images/District/MA/DA_MA_CCC_Sub.png"><br>
                     </div>
 
-                    <div data-ng-hide="selectRole != 4">
-                        <p>5) Since this is for block user, location details from  “Selected Circle” is already selected.</p>
-                        <img src="./images/usermanual-blockcircle.jpg" style="max-width: 828px"><br><br><br>
+                    <div data-ng-hide="param!=='cwau'" style="display: inline-block">
+                        <p style="font-size: 30px"><b>Circle wise Anonymous Users</b></p><br>
+                        <p>This is a monthly report which lists out all the Mobile numbers that called from a specific circle in the selected month.</p>
+                        <p>Steps to download the reports</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/app/">https://rchivrreports.in/app/</a>.</p>
+                        <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p>
+                        <img src="./images/District/MA/DA_RC.png"><br><br><br>
+                        <p>3) Under "Reports" select "Circle wise Anonymous Users"</p>
+                        <img src="./images/District/MA/DA_MA_All.png"><br><br><br>
+                        <p>4) Then select the Month of which the reports are needed </p>
+                        <img src="./images/District/MA/DA_MA_CWAU_Cal.png"><br><br><br>
+                        <p>5) For District users, their 'Circle' option is already selected.</p>
+                        <img src="./images/State/MA2/SA_MA_CWAU_Circle.png"><br><br><br>
+                        <p>6) To view the result, click the "Submit" button.</p>
+                        <img src="./images/District/MA/DA_MA_CWAU_sub - Copy.png"><br><br><br>
+                        <p>7) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <img src="./images/District/MA/DA_MA_CWAU_dowload.png"><br><br><br>
+                        <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
+                        <img src="./images/District/MA/DA_MA_CWAU_sub.png"><br>
                     </div>
 
-                    <div data-ng-hide="selectRole != 3 && selectRole != 7">
-                        <p>5) Since this is for District user/admin, location details from “Selected Circle” is already selected.</p>
-                        <img src="./images/usermanual-blockcircle.jpg" style="max-width: 828px"><br><br><br>
+                    <div data-ng-hide="param!=='ciu'">
+                        <p style="font-size: 30px"><b>Cumulative Inactive Users</b></p><br>
+                        <p>The report lists out the Ashas who have not started the course even once until the end of selected month from their date of registration</p>
+                        <p>Steps to download the reports</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/app/">https://rchivrreports.in/app/</a>.</p>
+                        <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p>
+                        <img src="./images/District/MA/DA_RC.png"><br><br><br>
+                        <p>3) Under "Reports" select "Cumulative Inactive Users"</p>
+                        <img src="./images/District/MA/DA_MA_All.png"><br><br><br>
+                        <p>4) Then select the Month of which the reports are needed </p>
+                        <img src="./images/District/MA/DA_MA_CIU_Cal.png"><br><br><br>
+                        <p>5) Since this is for District user/admin, Select any/all block from 'Block', under specified "District" and "State".</p>
+                        <img src="./images/District/MA/DA_MA_CIU_Block.png"><br><br><br>
+                        <p>6) To view the result, click the "Submit" button.</p>
+                        <img src="./images/District/MA/DA_MA_CIU_sub - Copy.png"><br><br><br>
+                        <p>7) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <img src="./images/District/MA/DA_MA_CIU_DownLoad.png"><br><br><br>
+                        <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
+                        <img src="./images/District/MA/DA_MA_CIU_sub.png"><br>
                     </div>
 
-                    <div data-ng-hide="selectRole != 2 && selectRole != 6">
-                        <p>5) Since this is for State user/admin. location details from “Selected Circle” is already selected.</p>
-                        <img src="./images/usermanual-blockcircle.jpg" style="max-width: 828px"><br><br><br>
+                    <div data-ng-hide="param!=='arr'">
+                        <p style="font-size: 30px"><b>Asha Rejected Records</b></p><br>
+                        <p>This report lists out all the Ashas who have been rejected by MOTECH due to any validation in data during registration</p>
+                        <p>Steps to download the reports</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/app/">https://rchivrreports.in/app/</a>.</p>
+                        <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p>
+                        <img src="./images/District/MA/DA_RC.png"><br><br><br>
+                        <p>3) Under "Reports" select "Asha Rejected Records"</p>
+                        <img src="./images/District/MA/DA_MA_All.png"><br><br><br>
+                        <p>4) Then select the Week </p>
+                        <img src="./images/District/MA/DA_MA_ARR_Cal.png"><br><br>
+                        <img src="./images/District/MA/DA_MA_ARR_CalDate.png"><br><br><br>
+                        <p>5) Since this is for District user/admin, Select any/all block from “Block”, under specified "District" and "State".</p>
+                        <img src="./images/District/MA/DA_MA_ARR_Block.png"><br><br><br>
+                        <p>6) To view the result, click the "Submit" button.</p>
+                        <img src="./images/District/MA/DA_MA_ARR_sub - Copy.png"><br><br><br>
+                        <p>7) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <img src="./images/District/MA/DA_MA_ARR_download.png"><br><br><br>
+                        <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
+                        <img src="./images/District/MA/DA_MA_ARR_sub.png"><br>
                     </div>
-                    <p>6) To view the result, press the "Select" button, or to reset it, press "Reset" button</p><br>
-                    <img src="./images/reportsDownload.png" style="max-width: 828px"><br>
-                    <p>7) Click on the download link to download the report. All the reports will be downloaded as Excel files.</p>
-                    <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                 </div>
-
-                <div data-ng-hide="param!=='ciu'">
-                    <p style="font-size: 30px"><b>Cumulative Inactive Users</b></p><br>
-                    <p>This report lists out all the Ashas who have not started the course even once until the end of selected month from their date of registration</p>
-                    <p>Steps to download the reports</p>
-                    <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/app/">https://rchivrreports.in/app/</a>.</p>
-                    <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p><br>
-                    <img src="./images/reportCategory.png" style="max-width: 828px"><br><br><br>
-                    <p>3) Under "Reports" select "Cumulative Inactive Users"</p><br>
-                    <img src="./images/reportsMobile.jpg" style="max-width: 828px"><br><br><br>
-                    <p>4) Then select the Month </p><br>
-                    <img src="./images/reportsMonth.jpg" style="max-width: 828px"><br><br><br>
-                    <div data-ng-hide="selectRole != 1 && selectRole !=5">
-                        <p>5) Then select respective State, District and Block</p>
-                        <img src="./images/reportState.png" style="max-width: 828px"><br><br><br>
+                <div data-ng-hide="selectRole != 4">
+                    <div data-ng-hide="param!=='ccc'" style="display: inline-block" >
+                        <p style="font-size: 30px"><b>Cumulative Course Completion</b></p><br>
+                        <p>This report is generated from the launch of service in the state till the end of selected month </p>
+                        <p>Steps to download the reports</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/app/">https://rchivrreports.in/app/</a>.</p>
+                        <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p>
+                        <img src="./images/Block/MA0/BU_MA_RC.png" alt="user Manual Mobile Academy Reports"><br><br><br>
+                        <p>3) Under "Reports" select "Cumulative Course Completion"</p>
+                        <img src="./images/Block/MA0/BU_MA_Report.png" alt="user manual Cumulative Course Completion"><br><br><br>
+                        <p>4) Then select the Month of which the reports are needed </p>
+                        <img src="./images/Block/MA0/BU_MA_CCC_Cal.png" alt="user manual Reports Month"><br><br><br>
+                        <p>5) Since this is for block user, location details upto “Block” are already selected.</p>
+                        <img src="./images/usermanual-blocklevel1.jpg"><br><br><br>
+                        <p>6) To view the result, click the "Submit" button.</p>
+                        <img src="./images/Block/MA0/BU_MA_CCC_Submit.png"><br><br><br>
+                        <p>7) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <img src="./images/Block/MA0/BU_MA_CCC_Download.png"><br><br><br>
+                        <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
+                        <img src="./images/Block/MA0/BU_MA_CCC_Reset.png"><br>
                     </div>
 
-                    <div data-ng-hide="selectRole != 4">
-                        <p>5) Since this is for block user, location details from  “Selected Block” are already selected.</p>
-                        <img src="./images/usermanual-blocklevel1.jpg" style="max-width: 828px"><br><br><br>
+                    <div data-ng-hide="param!=='cwau'" style="display: inline-block">
+                        <p style="font-size: 30px"><b>Circle wise Anonymous Users</b></p><br>
+                        <p>This is a monthly report which lists out all the Mobile numbers that called from a specific circle in the selected month.</p>
+                        <p>Steps to download the reports</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/app/">https://rchivrreports.in/app/</a>.</p>
+                        <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p>
+                        <img src="./images/Block/MA0/BU_MA_RC.png"><br><br><br>
+                        <p>3) Under "Reports" select "Circle wise Anonymous Users"</p>
+                        <img src="./images/Block/MA0/BU_MA_Report.png"><br><br><br>
+                        <p>4) Then select the Month of which the reports are needed </p>
+                        <img src="./images/Block/MA1/BU_MA_CWAU_Cal.png"><br><br><br>
+                        <p>5) For Block level users, the circle is selected by default and cannot be changed.</p>
+                        <p>6) To view the result, click the "Submit" button.</p>
+                        <img src="./images/Block/MA1/BU_MA_CWAU_Submit.png"><br><br><br>
+                        <p>7) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <img src="./images/Block/MA1/BU_MA_CWAU_Download.png"><br><br><br>
+                        <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
+                        <img src="./images/Block/MA1/BU_MA_CWAU_Reset.png"><br>
                     </div>
 
-                    <div data-ng-hide="selectRole != 3 && selectRole != 7">
-                        <p>5) Since this is for District user/admin, Select any/all block from “Selected Block”, under specified "District Block" and "State Block".</p>
-                        <img src="./images/usermanual-blocklevel1.jpg" style="max-width: 828px"><br><br><br>
+                    <div data-ng-hide="param!=='ciu'">
+                        <p style="font-size: 30px"><b>Cumulative Inactive Users</b></p><br>
+                        <p>The report lists out the Ashas who have not started the course even once until the end of selected month from their date of registration</p>
+                        <p>Steps to download the reports</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/app/">https://rchivrreports.in/app/</a>.</p>
+                        <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p>
+                        <img src="./images/Block/MA0/BU_MA_RC.png"><br><br><br>
+                        <p>3) Under "Reports" select "Cumulative Inactive Users"</p>
+                        <img src="./images/Block/MA0/BU_MA_Report.png"><br><br><br>
+                        <p>4) Then select the Month of which the reports are needed </p>
+                        <img src="./images/Block/MA2/BU_MA_CIU_Month.png"><br><br><br>
+                        <p>5) Since this is for block user, location details upto “Block” are already selected.</p>
+                        <img src="./images/usermanual-blocklevel1.jpg"><br><br><br>
+                        <p>6) To view the result, click the "Submit" button.</p>
+                        <img src="./images/Block/MA2/BU_MA_CIU_Submit.png"><br><br><br>
+                        <p>7) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <img src="./images/Block/MA2/BU_MA_CIU_Download.png"><br><br><br>
+                        <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
+                        <img src="./images/Block/MA2/BU_MA_CIU_Reset.png"><br>
                     </div>
 
-                    <div data-ng-hide="selectRole != 2 && selectRole != 6">
-                        <p>5) Since this is for State user. Select any/all block from “Selected Block”, under any district from “District Block” with specified "State Block".</p>
-                        <img src="./images/usermanual-blocklevel1.jpg" style="max-width: 828px"><br><br><br>
+                    <div data-ng-hide="param!=='arr'">
+                        <p style="font-size: 30px"><b>Asha Rejected Records</b></p><br>
+                        <p>This report lists out all the Ashas who have been rejected by MOTECH due to any validation in data during registration</p>
+                        <p>Steps to download the reports</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/app/">https://rchivrreports.in/app/</a>.</p>
+                        <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p>
+                        <img src="./images/Block/MA0/BU_MA_RC.png"><br><br><br>
+                        <p>3) Under "Reports" select "Asha Rejected Records"</p>
+                        <img src="./images/Block/MA0/BU_MA_Report.png"><br><br><br>
+                        <p>4) Then select the Week </p>
+                        <img src="./images/Block/MA3/BU_MA_ARR_Cal.png"><br><br>
+                        <img src="./images/Block/MA3/BU_MA_ARR_CalDate.png"><br><br><br>
+                        <p>5) Since this is for block user, location details upto “Block” are already selected.</p>
+                        <img src="./images/usermanual-blocklevel1.jpg"><br><br><br>
+                        <p>6) To view the result, click the "Submit" button.</p>
+                        <img src="./images/Block/MA3/BU_MA_ARR_Submit.png"><br><br><br>
+                        <p>7) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <img src="./images/Block/MA3/BU_MA_ARR_Download.png"><br><br><br>
+                        <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
+                        <img src="./images/Block/MA3/BU_MA_ARR_Reset.png"><br>
                     </div>
-                    <p>6) To view the result, press the "Select" button, or to reset it, press "Reset" button</p><br>
-                    <img src="./images/reportsDownload.png" style="max-width: 828px"><br>
-                    <p>7) Click on the download link to download the report. All the reports will be downloaded as Excel files.</p>
-                    <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
-                </div>
-
-                <div data-ng-hide="param!=='arr'">
-                    <p style="font-size: 30px"><b>Asha Rejected Records</b></p><br>
-                    <p>This report lists out all the Ashas who have been rejected by MOTECH due to any validation in data during registration</p>
-                    <p>Steps to download the reports</p>
-                    <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/app/">https://rchivrreports.in/app/</a>.</p>
-                    <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p><br>
-                    <img src="./images/reportCategory.png" style="max-width: 828px"><br><br><br>
-                    <p>3) Under "Reports" select "Asha Rejected Records"</p><br>
-                    <img src="./images/reportsMobile.jpg" style="max-width: 828px"><br><br><br>
-                    <p>4) Then select the Week </p><br>
-                    <img src="./images/reportsMonth.jpg" style="max-width: 828px"><br><br><br>
-                    <div data-ng-hide="selectRole != 1 && selectRole !=5">
-                        <p>5) Then select respective State, District and Block</p>
-                        <img src="./images/reportState.png" style="max-width: 828px"><br><br><br>
-                    </div>
-
-                    <div data-ng-hide="selectRole != 4">
-                        <p>5) Since this is for block user, location details from  “Selected Block” are already selected.</p>
-                        <img src="./images/usermanual-blocklevel.png" style="max-width: 828px"><br><br><br>
-                    </div>
-
-                    <div data-ng-hide="selectRole != 3 && selectRole != 7">
-                        <p>5) Since this is for District user/admin, Select any/all block from “Selected Block”, under specified "District Block" and "State Block".</p>
-                        <img src="./images/reportState.png" style="max-width: 828px"><br><br><br>
-                    </div>
-
-                    <div data-ng-hide="selectRole != 2 && selectRole != 6">
-                        <p>5) Since this is for State user. Select any/all block from “Selected Block”, under any district from “District Block” with specified "State Block".</p>
-                        <img src="./images/usermanual-blocklevel1.jpg" style="max-width: 828px"><br><br><br>
-                    </div>
-                    <p>6) To view the result, press the "Select" button, or to reset it, press "Reset" button</p><br>
-                    <img src="./images/reportsDownload.png" style="max-width: 828px"><br>
-                    <p>7) Click on the download link to download the report. All the reports will be downloaded as Excel files.</p>
-                    <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                 </div>
             </div>
         </div>

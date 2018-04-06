@@ -25,6 +25,7 @@ import java.io.*;
 import java.util.*;
 import java.util.List;
 
+import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
 
 
@@ -338,6 +339,9 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         font2.setFontName(HSSFFont.FONT_ARIAL);
         font2.setBoldweight(Font.BOLDWEIGHT_BOLD);
 
+        XSSFCellStyle style = workbook.createCellStyle();//Create style
+        style.setFont(font2);//set it to bold
+
 
         for(int i =0;i<15;i++){
         spreadsheet.setColumnWidth(i, 4000);}
@@ -349,16 +353,18 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         if(gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix"))
         {row = spreadsheet.createRow(rowid++);
             Cell cell = row.createCell(0);
-            cell.setCellValue( "Kilkari MotherPack Data ");
+            cell.setCellValue( "Kilkari Pregnancy Content Data");
+            cell.setCellStyle(style);
             CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
-            spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:F9"));}
+            spreadsheet.addMergedRegion(new CellRangeAddress(rowid-1,rowid-1,0,gridData.getColumnHeaders().size()-1));}
 
         if(gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener"))
         {row = spreadsheet.createRow(rowid++);
             Cell cell = row.createCell(0);
-            cell.setCellValue( "Beneficiary Count ");
+            cell.setCellValue( "Beneficiary Count");
+            cell.setCellStyle(style);
             CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
-            spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:H9"));}
+            spreadsheet.addMergedRegion(new CellRangeAddress(rowid-1,rowid-1,0,gridData.getColumnHeaders1().size()-1));}
 
         row = spreadsheet.createRow(rowid++);
         row.setHeight((short)1100);
@@ -375,7 +381,9 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
             colid =0;
             for (String cellData : rowData) {
                 Cell cell1 = row.createCell(colid++);
-                cell1.setCellValue(cellData);
+                if(colid==1||cellData.equalsIgnoreCase("NA")||(gridData.getReportName().equalsIgnoreCase("Kilkari Thematic Content")&&colid==2)){
+                cell1.setCellValue(cellData);}
+                else{cell1.setCellValue(parseDouble(cellData));}
 
                 if(tabrow %2 ==0){
                     backgroundStyle1.setFillForegroundColor(IndexedColors.WHITE.getIndex());
@@ -397,7 +405,11 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         for (String footer : gridData.getColunmFooters()) {
             backgroundStyle1.setFont(font2);
             Cell cell1 = row.createCell(colid++);
-            cell1.setCellValue(footer);
+            if(colid==1||footer.equalsIgnoreCase("NA")||(gridData.getReportName().equalsIgnoreCase("Kilkari Thematic Content")&&colid==2)){
+            cell1.setCellValue(footer);}
+            else{
+                cell1.setCellValue(parseDouble(footer));
+            }
             if(tabrow %2 ==0){
                 backgroundStyle1.setFillForegroundColor(IndexedColors.WHITE.getIndex());
                 backgroundStyle1.setFillPattern(CellStyle.SOLID_FOREGROUND);}
@@ -411,16 +423,18 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         if(gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix"))
         {row = spreadsheet.createRow(rowid++);
         Cell cell = row.createCell(0);
-        cell.setCellValue( "Kilkari ChildPack Data ");
+        cell.setCellStyle(style);
+        cell.setCellValue( "Kilkari Child Content Data");
         CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
-           spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A17:F17"));}
+           spreadsheet.addMergedRegion(new CellRangeAddress(rowid-1,rowid-1,0,gridData.getColumnHeaders1().size()-1));}
 
         if(gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener"))
         {row = spreadsheet.createRow(rowid++);
             Cell cell = row.createCell(0);
+            cell.setCellStyle(style);
             cell.setCellValue( "Beneficiary Percentage");
             CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
-            spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A19:H19"));}
+            spreadsheet.addMergedRegion(new CellRangeAddress(rowid-1,rowid-1,0,gridData.getColumnHeaders1().size()-1));}
 
         row = spreadsheet.createRow(rowid++);
         if(gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix")||gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener")){
@@ -439,7 +453,11 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
             colid =0;
             for (String cellData : rowData) {
                 Cell cell1 = row.createCell(colid++);
-                cell1.setCellValue(cellData);
+                if(colid==1){
+                cell1.setCellValue(cellData);}
+                else{
+                    cell1.setCellValue(parseDouble(cellData));
+                }
                 if(tabrow1 %2 ==0){
                     backgroundStyle1.setFillForegroundColor(IndexedColors.WHITE.getIndex());
                     backgroundStyle1.setFillPattern(CellStyle.SOLID_FOREGROUND);}

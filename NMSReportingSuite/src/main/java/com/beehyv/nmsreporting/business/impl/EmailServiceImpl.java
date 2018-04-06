@@ -291,13 +291,16 @@ public class EmailServiceImpl implements EmailService{
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.DAY_OF_MONTH,1);
 
-        Date toDate = calendar.getTime();
+        Date toDate;
         if(reportType.equals(ReportType.flwRejected.getReportType()) || reportType.equals(ReportType.motherRejected.getReportType())
                 || reportType.equals(ReportType.childRejected.getReportType())){
+            calendar.add(Calendar.DAY_OF_WEEK, -(calendar.get(Calendar.DAY_OF_WEEK) - 2));
+            toDate = calendar.getTime();
             calendar.add(Calendar.DAY_OF_MONTH, -7);
         } else {
+            calendar.set(Calendar.DAY_OF_MONTH,1);
+            toDate = calendar.getTime();
             calendar.add(Calendar.MONTH, -1);
         }
         Date fromDate=calendar.getTime();

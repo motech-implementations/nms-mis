@@ -31,7 +31,7 @@
                                 alert(result.data['0']);
                                 UserFormFactory.logoutUser().then(function(result){
                                     if(result.data){
-                                        $state.go('logout', {});
+                                        $scope.goToLogout();
                                     }
                                 })
                                 return;
@@ -50,7 +50,7 @@
                                 UserFormFactory.showAlert(result.data['0'])
                                 UserFormFactory.logoutUser().then(function(result){
                                     if(result.data){
-                                        $state.go('logout', {});
+                                        $scope.goToLogout();
                                     }
                                 })
                                 return;

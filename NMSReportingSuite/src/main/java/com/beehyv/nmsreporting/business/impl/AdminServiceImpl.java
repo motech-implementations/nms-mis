@@ -6,6 +6,8 @@ import com.beehyv.nmsreporting.entity.ReportRequest;
 import com.beehyv.nmsreporting.enums.*;
 import com.beehyv.nmsreporting.model.*;
 import com.opencsv.CSVReader;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellUtil;
@@ -1051,9 +1053,35 @@ public class AdminServiceImpl implements AdminService {
         XSSFRow row;
         //This data needs to be written (Object[])
         CellStyle style = workbook.createCellStyle();//Create style
-        Font font = workbook.createFont();//Create font
+        style.setAlignment(CellStyle.ALIGN_CENTER);
+        style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+        style.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
+        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        style.setBorderBottom(CellStyle.BORDER_THIN);
+        style.setBottomBorderColor(IndexedColors.WHITE.getIndex());
+        style.setBorderLeft(CellStyle.BORDER_THIN);
+        style.setLeftBorderColor(IndexedColors.WHITE.getIndex());
+        style.setBorderRight(CellStyle.BORDER_THIN);
+        style.setRightBorderColor(IndexedColors.WHITE.getIndex());
+        style.setBorderTop(CellStyle.BORDER_THIN);
+        style.setTopBorderColor(IndexedColors.WHITE.getIndex());
+        style.setWrapText(true);
+
+        Font font = workbook.createFont();
+        font.setColor(HSSFColor.WHITE.index);
+        font.setFontName(HSSFFont.FONT_ARIAL);
         font.setBoldweight(Font.BOLDWEIGHT_BOLD);
         style.setFont(font);
+
+        CellStyle borderStyle = workbook.createCellStyle();
+        borderStyle.setBorderBottom(CellStyle.BORDER_THIN);
+        borderStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setBorderLeft(CellStyle.BORDER_THIN);
+        borderStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setBorderRight(CellStyle.BORDER_THIN);
+        borderStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setBorderTop(CellStyle.BORDER_THIN);
+        borderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
 
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
@@ -1098,6 +1126,8 @@ public class AdminServiceImpl implements AdminService {
         int rowid=7;
         for (String key : keyid) {
             row = spreadsheet.createRow(rowid++);
+            if(rowid==8){
+                row.setHeight((short)1100);}
             Object[] objectArr = empinfo.get(key);
             int cellid = 0;
 
@@ -1106,9 +1136,12 @@ public class AdminServiceImpl implements AdminService {
                 cell.setCellValue(obj.toString());
                 if(rowid==8){
                 cell.setCellStyle(style);}
-                if(rowid == 9 && rejectedChildImports.isEmpty()){
+                else if(rowid == 9 && rejectedChildImports.isEmpty()){
                     CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
                     spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:L9"));
+                }
+                else{
+                    cell.setCellStyle(borderStyle);
                 }
             }
         }
@@ -1143,9 +1176,35 @@ public class AdminServiceImpl implements AdminService {
         //This data needs to be written (Object[])
 
         CellStyle style = workbook.createCellStyle();//Create style
-        Font font = workbook.createFont();//Create font
+        style.setAlignment(CellStyle.ALIGN_CENTER);
+        style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+        style.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
+        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        style.setBorderBottom(CellStyle.BORDER_THIN);
+        style.setBottomBorderColor(IndexedColors.WHITE.getIndex());
+        style.setBorderLeft(CellStyle.BORDER_THIN);
+        style.setLeftBorderColor(IndexedColors.WHITE.getIndex());
+        style.setBorderRight(CellStyle.BORDER_THIN);
+        style.setRightBorderColor(IndexedColors.WHITE.getIndex());
+        style.setBorderTop(CellStyle.BORDER_THIN);
+        style.setTopBorderColor(IndexedColors.WHITE.getIndex());
+        style.setWrapText(true);
+
+        Font font = workbook.createFont();
+        font.setColor(HSSFColor.WHITE.index);
+        font.setFontName(HSSFFont.FONT_ARIAL);
         font.setBoldweight(Font.BOLDWEIGHT_BOLD);
         style.setFont(font);
+
+        CellStyle borderStyle = workbook.createCellStyle();
+        borderStyle.setBorderBottom(CellStyle.BORDER_THIN);
+        borderStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setBorderLeft(CellStyle.BORDER_THIN);
+        borderStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setBorderRight(CellStyle.BORDER_THIN);
+        borderStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setBorderTop(CellStyle.BORDER_THIN);
+        borderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
 
         Map<String, Object[]> empinfo = new TreeMap<String, Object[]>();
         empinfo.put("1", new Object[]{
@@ -1189,6 +1248,8 @@ public class AdminServiceImpl implements AdminService {
         int rowid=7;
         for (String key : keyid) {
             row = spreadsheet.createRow(rowid++);
+            if(rowid==8){
+                row.setHeight((short)1100);}
             Object[] objectArr = empinfo.get(key);
             int cellid = 0;
             for (Object obj : objectArr) {
@@ -1196,9 +1257,12 @@ public class AdminServiceImpl implements AdminService {
                 cell.setCellValue(obj.toString());
                 if(rowid==8){
                     cell.setCellStyle(style);}
-                if(rowid == 9 && rejectedMotherImports.isEmpty()){
+                else if(rowid == 9 && rejectedMotherImports.isEmpty()){
                     CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
                     spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:L9"));
+                }
+                else{
+                    cell.setCellStyle(borderStyle);
                 }
             }
         }
@@ -1233,9 +1297,35 @@ public class AdminServiceImpl implements AdminService {
         //This data needs to be written (Object[])
 
         CellStyle style = workbook.createCellStyle();//Create style
-        Font font = workbook.createFont();//Create font
+        style.setAlignment(CellStyle.ALIGN_CENTER);
+        style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+        style.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
+        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        style.setBorderBottom(CellStyle.BORDER_THIN);
+        style.setBottomBorderColor(IndexedColors.WHITE.getIndex());
+        style.setBorderLeft(CellStyle.BORDER_THIN);
+        style.setLeftBorderColor(IndexedColors.WHITE.getIndex());
+        style.setBorderRight(CellStyle.BORDER_THIN);
+        style.setRightBorderColor(IndexedColors.WHITE.getIndex());
+        style.setBorderTop(CellStyle.BORDER_THIN);
+        style.setTopBorderColor(IndexedColors.WHITE.getIndex());
+        style.setWrapText(true);
+
+        Font font = workbook.createFont();
+        font.setColor(HSSFColor.WHITE.index);
+        font.setFontName(HSSFFont.FONT_ARIAL);
         font.setBoldweight(Font.BOLDWEIGHT_BOLD);
         style.setFont(font);
+
+        CellStyle borderStyle = workbook.createCellStyle();
+        borderStyle.setBorderBottom(CellStyle.BORDER_THIN);
+        borderStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setBorderLeft(CellStyle.BORDER_THIN);
+        borderStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setBorderRight(CellStyle.BORDER_THIN);
+        borderStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setBorderTop(CellStyle.BORDER_THIN);
+        borderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
 
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
@@ -1280,6 +1370,8 @@ public class AdminServiceImpl implements AdminService {
         int rowid=7;
         for (String key : keyid) {
             row = spreadsheet.createRow(rowid++);
+            if(rowid==8){
+                row.setHeight((short)1100);}
             Object[] objectArr = empinfo.get(key);
             int cellid = 0;
             for (Object obj : objectArr) {
@@ -1287,9 +1379,12 @@ public class AdminServiceImpl implements AdminService {
                 cell.setCellValue(obj.toString());
                 if(rowid==8){
                     cell.setCellStyle(style);}
-                if(rowid == 9 && rejectedChildImports.isEmpty()){
+                else if(rowid == 9 && rejectedChildImports.isEmpty()){
                     CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
                     spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:L9"));
+                }
+                else{
+                    cell.setCellStyle(borderStyle);
                 }
             }
         }
@@ -1325,9 +1420,35 @@ public class AdminServiceImpl implements AdminService {
         //This data needs to be written (Object[])
 
         CellStyle style = workbook.createCellStyle();//Create style
-        Font font = workbook.createFont();//Create font
+        style.setAlignment(CellStyle.ALIGN_CENTER);
+        style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+        style.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
+        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        style.setBorderBottom(CellStyle.BORDER_THIN);
+        style.setBottomBorderColor(IndexedColors.WHITE.getIndex());
+        style.setBorderLeft(CellStyle.BORDER_THIN);
+        style.setLeftBorderColor(IndexedColors.WHITE.getIndex());
+        style.setBorderRight(CellStyle.BORDER_THIN);
+        style.setRightBorderColor(IndexedColors.WHITE.getIndex());
+        style.setBorderTop(CellStyle.BORDER_THIN);
+        style.setTopBorderColor(IndexedColors.WHITE.getIndex());
+        style.setWrapText(true);
+
+        Font font = workbook.createFont();
+        font.setColor(HSSFColor.WHITE.index);
+        font.setFontName(HSSFFont.FONT_ARIAL);
         font.setBoldweight(Font.BOLDWEIGHT_BOLD);
         style.setFont(font);
+
+        CellStyle borderStyle = workbook.createCellStyle();
+        borderStyle.setBorderBottom(CellStyle.BORDER_THIN);
+        borderStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setBorderLeft(CellStyle.BORDER_THIN);
+        borderStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setBorderRight(CellStyle.BORDER_THIN);
+        borderStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setBorderTop(CellStyle.BORDER_THIN);
+        borderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
 
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
@@ -1376,6 +1497,8 @@ public class AdminServiceImpl implements AdminService {
         int rowid=7;
         for (String key : keyid) {
             row = spreadsheet.createRow(rowid++);
+            if(rowid==8){
+                row.setHeight((short)1100);}
             Object[] objectArr = empinfo.get(key);
             int cellid = 0;
             for (Object obj : objectArr) {
@@ -1383,9 +1506,12 @@ public class AdminServiceImpl implements AdminService {
                 cell.setCellValue(obj.toString());
                 if(rowid==8){
                     cell.setCellStyle(style);}
-                if(rowid == 9 && successfulCandidates.isEmpty()){
+                else if(rowid == 9 && successfulCandidates.isEmpty()){
                     CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
                     spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:N9"));
+                }
+                else{
+                    cell.setCellStyle(borderStyle);
                 }
             }
         }
@@ -1492,9 +1618,35 @@ public class AdminServiceImpl implements AdminService {
         //This data needs to be written (Object[])
 
         CellStyle style = workbook.createCellStyle();//Create style
-        Font font = workbook.createFont();//Create font
+        style.setAlignment(CellStyle.ALIGN_CENTER);
+        style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+        style.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
+        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        style.setBorderBottom(CellStyle.BORDER_THIN);
+        style.setBottomBorderColor(IndexedColors.WHITE.getIndex());
+        style.setBorderLeft(CellStyle.BORDER_THIN);
+        style.setLeftBorderColor(IndexedColors.WHITE.getIndex());
+        style.setBorderRight(CellStyle.BORDER_THIN);
+        style.setRightBorderColor(IndexedColors.WHITE.getIndex());
+        style.setBorderTop(CellStyle.BORDER_THIN);
+        style.setTopBorderColor(IndexedColors.WHITE.getIndex());
+        style.setWrapText(true);
+
+        Font font = workbook.createFont();
+        font.setColor(HSSFColor.WHITE.index);
+        font.setFontName(HSSFFont.FONT_ARIAL);
         font.setBoldweight(Font.BOLDWEIGHT_BOLD);
         style.setFont(font);
+
+        CellStyle borderStyle = workbook.createCellStyle();
+        borderStyle.setBorderBottom(CellStyle.BORDER_THIN);
+        borderStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setBorderLeft(CellStyle.BORDER_THIN);
+        borderStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setBorderRight(CellStyle.BORDER_THIN);
+        borderStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setBorderTop(CellStyle.BORDER_THIN);
+        borderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
 
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
@@ -1520,6 +1672,8 @@ public class AdminServiceImpl implements AdminService {
         int rowid=7;
         for (String key : keyid) {
             row = spreadsheet.createRow(rowid++);
+            if(rowid==8){
+                row.setHeight((short)1100);}
             Object[] objectArr = empinfo.get(key);
             int cellid = 0;
             for (Object obj : objectArr) {
@@ -1527,9 +1681,12 @@ public class AdminServiceImpl implements AdminService {
                 cell.setCellValue(obj.toString());
                 if(rowid==8){
                     cell.setCellStyle(style);}
-                if(rowid==9 && anonymousUsersList.isEmpty()) {
+                else if(rowid==9 && anonymousUsersList.isEmpty()) {
                     CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
                     spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:C9"));
+                }
+                else{
+                    cell.setCellStyle(borderStyle);
                 }
             }
         }
@@ -1563,9 +1720,35 @@ public class AdminServiceImpl implements AdminService {
         //This data needs to be written (Object[])
 
         CellStyle style = workbook.createCellStyle();//Create style
-        Font font = workbook.createFont();//Create font
+        style.setAlignment(CellStyle.ALIGN_CENTER);
+        style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+        style.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
+        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        style.setBorderBottom(CellStyle.BORDER_THIN);
+        style.setBottomBorderColor(IndexedColors.WHITE.getIndex());
+        style.setBorderLeft(CellStyle.BORDER_THIN);
+        style.setLeftBorderColor(IndexedColors.WHITE.getIndex());
+        style.setBorderRight(CellStyle.BORDER_THIN);
+        style.setRightBorderColor(IndexedColors.WHITE.getIndex());
+        style.setBorderTop(CellStyle.BORDER_THIN);
+        style.setTopBorderColor(IndexedColors.WHITE.getIndex());
+        style.setWrapText(true);
+
+        Font font = workbook.createFont();
+        font.setColor(HSSFColor.WHITE.index);
+        font.setFontName(HSSFFont.FONT_ARIAL);
         font.setBoldweight(Font.BOLDWEIGHT_BOLD);
         style.setFont(font);
+
+        CellStyle borderStyle = workbook.createCellStyle();
+        borderStyle.setBorderBottom(CellStyle.BORDER_THIN);
+        borderStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setBorderLeft(CellStyle.BORDER_THIN);
+        borderStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setBorderRight(CellStyle.BORDER_THIN);
+        borderStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setBorderTop(CellStyle.BORDER_THIN);
+        borderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
 
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
@@ -1609,16 +1792,22 @@ public class AdminServiceImpl implements AdminService {
         int rowid=7;
         for (String key : keyid) {
             row = spreadsheet.createRow(rowid++);
+            if(rowid==8){
+                row.setHeight((short)1100);}
             Object[] objectArr = empinfo.get(key);
             int cellid = 0;
             for (Object obj : objectArr) {
+
                 Cell cell = row.createCell(cellid++);
                 cell.setCellValue(obj.toString());
                 if(rowid==8){
                     cell.setCellStyle(style);}
-                if(rowid==9 && inactiveCandidates.isEmpty()) {
+                else if(rowid==9 && inactiveCandidates.isEmpty()) {
                     CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
                     spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:L9"));
+                }
+                else{
+                    cell.setCellStyle(borderStyle);
                 }
             }
         }
@@ -1801,9 +1990,35 @@ public class AdminServiceImpl implements AdminService {
         //This data needs to be written (Object[])
 
         CellStyle style = workbook.createCellStyle();//Create style
-        Font font = workbook.createFont();//Create font
+        style.setAlignment(CellStyle.ALIGN_CENTER);
+        style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+        style.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
+        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        style.setBorderBottom(CellStyle.BORDER_THIN);
+        style.setBottomBorderColor(IndexedColors.WHITE.getIndex());
+        style.setBorderLeft(CellStyle.BORDER_THIN);
+        style.setLeftBorderColor(IndexedColors.WHITE.getIndex());
+        style.setBorderRight(CellStyle.BORDER_THIN);
+        style.setRightBorderColor(IndexedColors.WHITE.getIndex());
+        style.setBorderTop(CellStyle.BORDER_THIN);
+        style.setTopBorderColor(IndexedColors.WHITE.getIndex());
+        style.setWrapText(true);
+
+        Font font = workbook.createFont();
+        font.setColor(HSSFColor.WHITE.index);
+        font.setFontName(HSSFFont.FONT_ARIAL);
         font.setBoldweight(Font.BOLDWEIGHT_BOLD);
         style.setFont(font);
+
+        CellStyle borderStyle = workbook.createCellStyle();
+        borderStyle.setBorderBottom(CellStyle.BORDER_THIN);
+        borderStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setBorderLeft(CellStyle.BORDER_THIN);
+        borderStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setBorderRight(CellStyle.BORDER_THIN);
+        borderStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setBorderTop(CellStyle.BORDER_THIN);
+        borderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
 
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
@@ -1847,6 +2062,8 @@ public class AdminServiceImpl implements AdminService {
         int rowid=7;
         for (String key : keyid) {
             row = spreadsheet.createRow(rowid++);
+            if(rowid==8){
+                row.setHeight((short)1100);}
             Object[] objectArr = empinfo.get(key);
             int cellid = 0;
             for (Object obj : objectArr) {
@@ -1854,9 +2071,12 @@ public class AdminServiceImpl implements AdminService {
                 cell.setCellValue(obj.toString());
                 if(rowid==8){
                     cell.setCellStyle(style);}
-                if(rowid==9 && kilkariSixWeeksNoAnswersList.isEmpty()) {
+                else if(rowid==9 && kilkariSixWeeksNoAnswersList.isEmpty()) {
                     CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
                     spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:L9"));
+                }
+                else{
+                    cell.setCellStyle(borderStyle);
                 }
             }
         }
@@ -1889,9 +2109,35 @@ public class AdminServiceImpl implements AdminService {
         //This data needs to be written (Object[])
 
         CellStyle style = workbook.createCellStyle();//Create style
-        Font font = workbook.createFont();//Create font
+        style.setAlignment(CellStyle.ALIGN_CENTER);
+        style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+        style.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
+        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        style.setBorderBottom(CellStyle.BORDER_THIN);
+        style.setBottomBorderColor(IndexedColors.WHITE.getIndex());
+        style.setBorderLeft(CellStyle.BORDER_THIN);
+        style.setLeftBorderColor(IndexedColors.WHITE.getIndex());
+        style.setBorderRight(CellStyle.BORDER_THIN);
+        style.setRightBorderColor(IndexedColors.WHITE.getIndex());
+        style.setBorderTop(CellStyle.BORDER_THIN);
+        style.setTopBorderColor(IndexedColors.WHITE.getIndex());
+        style.setWrapText(true);
+
+        Font font = workbook.createFont();
+        font.setColor(HSSFColor.WHITE.index);
+        font.setFontName(HSSFFont.FONT_ARIAL);
         font.setBoldweight(Font.BOLDWEIGHT_BOLD);
         style.setFont(font);
+
+        CellStyle borderStyle = workbook.createCellStyle();
+        borderStyle.setBorderBottom(CellStyle.BORDER_THIN);
+        borderStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setBorderLeft(CellStyle.BORDER_THIN);
+        borderStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setBorderRight(CellStyle.BORDER_THIN);
+        borderStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setBorderTop(CellStyle.BORDER_THIN);
+        borderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
 
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
@@ -1935,6 +2181,8 @@ public class AdminServiceImpl implements AdminService {
         int rowid=7;
         for (String key : keyid) {
             row = spreadsheet.createRow(rowid++);
+            if(rowid==8){
+                row.setHeight((short)1100);}
             Object[] objectArr = empinfo.get(key);
             int cellid = 0;
             for (Object obj : objectArr) {
@@ -1942,9 +2190,12 @@ public class AdminServiceImpl implements AdminService {
                 cell.setCellValue(obj.toString());
                 if(rowid==8){
                     cell.setCellStyle(style);}
-                if(rowid==6 && lowListenershipList.isEmpty()) {
+                else if(rowid==6 && lowListenershipList.isEmpty()) {
                     CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
                     spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:L9"));
+                }
+                else{
+                    cell.setCellStyle(borderStyle);
                 }
             }
         }
@@ -1978,9 +2229,35 @@ public class AdminServiceImpl implements AdminService {
         //This data needs to be written (Object[])
 
         CellStyle style = workbook.createCellStyle();//Create style
-        Font font = workbook.createFont();//Create font
+        style.setAlignment(CellStyle.ALIGN_CENTER);
+        style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+        style.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
+        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        style.setBorderBottom(CellStyle.BORDER_THIN);
+        style.setBottomBorderColor(IndexedColors.WHITE.getIndex());
+        style.setBorderLeft(CellStyle.BORDER_THIN);
+        style.setLeftBorderColor(IndexedColors.WHITE.getIndex());
+        style.setBorderRight(CellStyle.BORDER_THIN);
+        style.setRightBorderColor(IndexedColors.WHITE.getIndex());
+        style.setBorderTop(CellStyle.BORDER_THIN);
+        style.setTopBorderColor(IndexedColors.WHITE.getIndex());
+        style.setWrapText(true);
+
+        Font font = workbook.createFont();
+        font.setColor(HSSFColor.WHITE.index);
+        font.setFontName(HSSFFont.FONT_ARIAL);
         font.setBoldweight(Font.BOLDWEIGHT_BOLD);
         style.setFont(font);
+
+        CellStyle borderStyle = workbook.createCellStyle();
+        borderStyle.setBorderBottom(CellStyle.BORDER_THIN);
+        borderStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setBorderLeft(CellStyle.BORDER_THIN);
+        borderStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setBorderRight(CellStyle.BORDER_THIN);
+        borderStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setBorderTop(CellStyle.BORDER_THIN);
+        borderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
 
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
@@ -2031,16 +2308,22 @@ public class AdminServiceImpl implements AdminService {
         int rowid=7;
         for (String key : keyid) {
             row = spreadsheet.createRow(rowid++);
+            if(rowid==8){
+                row.setHeight((short)1100);}
             Object[] objectArr = empinfo.get(key);
             int cellid = 0;
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
                 cell.setCellValue(obj.toString());
                 if(rowid==8){
+                    row.setHeight((short)1100);
                     cell.setCellStyle(style);}
-                if(rowid==9 && kilkariSelfDeactivatedList.isEmpty()) {
+                else if(rowid==9 && kilkariSelfDeactivatedList.isEmpty()) {
                     CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
                     spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:O9"));
+                }
+                else{
+                    cell.setCellStyle(borderStyle);
                 }
             }
         }
@@ -2073,9 +2356,35 @@ public class AdminServiceImpl implements AdminService {
         //This data needs to be written (Object[])
 
         CellStyle style = workbook.createCellStyle();//Create style
-        Font font = workbook.createFont();//Create font
+        style.setAlignment(CellStyle.ALIGN_CENTER);
+        style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+        style.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
+        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        style.setBorderBottom(CellStyle.BORDER_THIN);
+        style.setBottomBorderColor(IndexedColors.WHITE.getIndex());
+        style.setBorderLeft(CellStyle.BORDER_THIN);
+        style.setLeftBorderColor(IndexedColors.WHITE.getIndex());
+        style.setBorderRight(CellStyle.BORDER_THIN);
+        style.setRightBorderColor(IndexedColors.WHITE.getIndex());
+        style.setBorderTop(CellStyle.BORDER_THIN);
+        style.setTopBorderColor(IndexedColors.WHITE.getIndex());
+        style.setWrapText(true);
+
+        Font font = workbook.createFont();
+        font.setColor(HSSFColor.WHITE.index);
+        font.setFontName(HSSFFont.FONT_ARIAL);
         font.setBoldweight(Font.BOLDWEIGHT_BOLD);
         style.setFont(font);
+
+        CellStyle borderStyle = workbook.createCellStyle();
+        borderStyle.setBorderBottom(CellStyle.BORDER_THIN);
+        borderStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setBorderLeft(CellStyle.BORDER_THIN);
+        borderStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setBorderRight(CellStyle.BORDER_THIN);
+        borderStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setBorderTop(CellStyle.BORDER_THIN);
+        borderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
 
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
@@ -2119,6 +2428,8 @@ public class AdminServiceImpl implements AdminService {
         int rowid=7;
         for (String key : keyid) {
             row = spreadsheet.createRow(rowid++);
+            if(rowid==8){
+                row.setHeight((short)1100);}
             Object[] objectArr = empinfo.get(key);
             int cellid = 0;
             for (Object obj : objectArr) {
@@ -2126,9 +2437,12 @@ public class AdminServiceImpl implements AdminService {
                 cell.setCellValue(obj.toString());
                 if(rowid==8){
                     cell.setCellStyle(style);}
-                if(rowid==9 && kilkariLowUsageList.isEmpty()) {
+                else if(rowid==9 && kilkariLowUsageList.isEmpty()) {
                     CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
                     spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:L9"));
+                }
+                else{
+                    cell.setCellStyle(borderStyle);
                 }
             }
         }

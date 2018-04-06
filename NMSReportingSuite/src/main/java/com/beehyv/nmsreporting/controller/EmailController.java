@@ -59,9 +59,8 @@ public class EmailController {
         return emailService.sendMail(newMail);
     }
 
-
-    @RequestMapping(value = "/sendFeedback", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public ModelAndView send(Model model, @ModelAttribute EmailTest mailInfo){
+    @RequestMapping(value = "/sendFeedback", method = RequestMethod.POST)
+        public @ResponseBody String sendFeedback(@RequestBody EmailInfo mailInfo){
         EmailTest newMail = new EmailTest();
         newMail.setFrom("nsp-reports@beehyv.com");
         newMail.setTo(mailInfo.getTo());
@@ -70,27 +69,50 @@ public class EmailController {
         c.set(Calendar.DATE, 1);
         newMail.setSubject(mailInfo.getSubject());
         newMail.setBody(mailInfo.getBody());
-//        return emailService.sendMailTest(newMail);
-        emailService.sendMailTest(newMail);
-        return new ModelAndView("redirect:"+ retrieveUiAddress() +"feedbackResponse");
-    }
+        return emailService.sendMailTest(newMail);
+   }
 
-
-    @RequestMapping(value = "/sendEmailForContactUs", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public ModelAndView sendEmailForContactUs(Model model, @ModelAttribute EmailTest mailInfo){
+    @RequestMapping(value = "/sendEmailForContactUs", method = RequestMethod.POST)
+    public @ResponseBody String sendEmailForContactUs(@RequestBody EmailInfo mailInfo){
         EmailTest newMail = new EmailTest();
         newMail.setFrom("nsp-reports@beehyv.com");
         newMail.setTo(mailInfo.getTo());
         Calendar c = Calendar.getInstance();   // this takes current date
         c.add(Calendar.MONTH, -1);
         c.set(Calendar.DATE, 1);
-//      newMail.setSubject(mailInfo.getSubject());
         newMail.setSubject("Subject for Contact");
         newMail.setBody(mailInfo.getBody());
-//        return emailService.sendMailTest(newMail);
-        emailService.sendMailTest(newMail);
-        return new ModelAndView("redirect:"+ retrieveUiAddress() +"contactUs");
+        return emailService.sendMailTest(newMail);
     }
+
+//    @RequestMapping(value = "/sendFeedback1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+//    public ModelAndView send(Model model, @ModelAttribute EmailTest mailInfo){
+//        EmailTest newMail = new EmailTest();
+//        newMail.setFrom("nsp-reports@beehyv.com");
+//        newMail.setTo(mailInfo.getTo());
+//        Calendar c = Calendar.getInstance();   // this takes current date
+//        c.add(Calendar.MONTH, -1);
+//        c.set(Calendar.DATE, 1);
+//        newMail.setSubject(mailInfo.getSubject());
+//        newMail.setBody(mailInfo.getBody());
+//        emailService.sendMailTest(newMail);
+//        return new ModelAndView("redirect:"+ retrieveUiAddress() +"feedbackResponse");
+//    }
+//
+//
+//    @RequestMapping(value = "/sendEmailForContactUs1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+//    public ModelAndView sendEmailForContactUs(Model model, @ModelAttribute EmailTest mailInfo){
+//        EmailTest newMail = new EmailTest();
+//        newMail.setFrom("nsp-reports@beehyv.com");
+//        newMail.setTo(mailInfo.getTo());
+//        Calendar c = Calendar.getInstance();   // this takes current date
+//        c.add(Calendar.MONTH, -1);
+//        c.set(Calendar.DATE, 1);
+//        newMail.setSubject("Subject for Contact");
+//        newMail.setBody(mailInfo.getBody());
+//        emailService.sendMailTest(newMail);
+//        return new ModelAndView("redirect:"+ retrieveUiAddress() +"contactUsResponse");
+//    }
 
     /*@RequestMapping(value = "/test", method =RequestMethod.GET )
     @ResponseBody

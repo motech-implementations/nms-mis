@@ -1,7 +1,8 @@
 (function(){
 	var nmsReportsApp = angular
-		.module('nmsReports')
-		.controller("UserManualController", ['$scope', '$state', function($scope, $state){
+		.module('nmsReports');
+
+    nmsReportsApp.controller("UserManualController", ['$scope', '$state', function($scope, $state){
 
             switch($state.current.name){
                 case "userManual.kilkari":$scope.active1 = 'kr';break;
@@ -12,6 +13,17 @@
             }
             // localStorage.getItem('role') = 'Anonymous';
             (function () {
+            $scope.roles = [
+                            {"id": 0, "role" : "Anonymous"},
+                            {"id": 1, "role" : "National User"},
+                            {"id": 2, "role" : "State User"},
+                            {"id": 3, "role" : "District User"},
+                            {"id": 4, "role" : "Block User"},
+                            {"id": 5, "role" : "National Admin"},
+                            {"id": 6, "role" : "State Admin"},
+                            {"id": 7, "role" : "District Admin"}
+
+                        ];
                 if(localStorage.getItem('role') === undefined) {
                     $scope.selectRole = 0;
                 } else {
@@ -28,20 +40,7 @@
                     }
                 }
             )();
-            $scope.roles = [
-                {"id": 0, "role" : "Anonymous"},
-                {"id": 1, "role" : "National User"},
-                {"id": 2, "role" : "State User"},
-                {"id": 3, "role" : "District User"},
-                {"id": 4, "role" : "Block User"},
-                {"id": 5, "role" : "National Admin"},
-                {"id": 6, "role" : "State Admin"},
-                {"id": 7, "role" : "District Admin"}
 
-                /*{"id": 0, "role" : "Anonymous"},
-                {"id": 1, "role" : "User"},
-                {"id": 2, "role" : "Admin"}*/
-            ];
 
             $scope.func = function (val) {
                 if(val === 'wi'){
@@ -55,7 +54,6 @@
                 }
                 else if(val=== 'um'){
                         $state.go('userManual.userManual_Management');
-
                 }
                 else if(val=== 'pr'){
                     $state.go('userManual.userManual_Profile')
@@ -70,5 +68,74 @@
                 }
 
             }
-		}])
+		}]);
+    nmsReportsApp.controller("kilkariController", ['$scope', '$state', 'UserFormFactory', function($scope, $state, UserFormFactory){
+
+            /*			UserFormFactory.isLoggedIn()
+                        .then(function(result){
+                            if(!result.data){
+                                $state.go('login', {});
+                            }
+                        });*/
+
+            $scope.param = '';
+            $scope.flag = false;
+            $scope.func = function (val) {
+                $scope.flag = true;
+                $scope.param = val;
+            }
+        }]);
+    nmsReportsApp.controller("userManual_ManagementController", ['$scope', '$state', 'UserFormFactory', function($scope, $state, UserFormFactory){
+    }]);
+    nmsReportsApp.controller("mobileAcademyController", ['$scope', '$state', 'UserFormFactory', function($scope, $state, UserFormFactory){
+
+        /*
+                    UserFormFactory.isLoggedIn()
+                    .then(function(result){
+                        if(!result.data){
+                            $state.go('login', {});
+                        }
+                    })
+        */
+
+        /*
+                    $scope.mobileAcademyReports = [];
+
+                    UserFormFactory.getReportsMenu()
+                    .then(function(result){
+                        if(result.data[0].service == "M"){
+
+                                $scope.serviceReport = result.data[0].name;
+                                console.log($scope.serviceReport);
+                                $scope.mobileAcademyReports = result.data[0].options;
+
+                            }
+                        else {
+                            $scope.mobileAcademyReports = result.data[1].options;
+                        }
+                    })
+
+        */
+
+        $scope.param = '';
+        $scope.flag = false;
+        $scope.func = function (val) {
+            $scope.flag = true;
+            $scope.param = val;
+        }
+
+    }]);
+    nmsReportsApp.controller("userManual_ProfileController", ['$scope', '$state', 'UserFormFactory', function($scope, $state, UserFormFactory){
+
+    }]);
+    nmsReportsApp.controller("websiteInformationController", ['$scope', '$state', 'UserFormFactory', function($scope, $state, UserFormFactory){
+
+        /*			UserFormFactory.isLoggedIn()
+                    .then(function(result){
+                        if(!result.data){
+                            $state.go('login', {});
+                        }
+                    })*/
+
+    }]);
 })();

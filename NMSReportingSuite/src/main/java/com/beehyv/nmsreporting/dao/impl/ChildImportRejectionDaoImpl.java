@@ -20,8 +20,12 @@ public class ChildImportRejectionDaoImpl extends AbstractDao<Long, ChildImportRe
         criteria.add(Restrictions.lt("modificationDate",toDate))
                 .add(Restrictions.ge("modificationDate",fromDate))
                 .add(Restrictions.eq("accepted",false))
-                .add(Restrictions.ne("rejectionReason","INVALID_DOB"))
-                .add(Restrictions.ne("rejectionReason","UPDATED_RECORD_ALREADY_EXISTS"));
+                .add(Restrictions.disjunction()
+                .add(Restrictions.eq("rejectionReason","DUPLICATE_MOBILE_NUMBER_IN_DATASET"))
+                .add(Restrictions.eq("rejectionReason","MOBILE_NUMBER_ALREADY_SUBSCRIBED"))
+                .add(Restrictions.eq("rejectionReason","MOBILE_NUMBER_EMPTY_OR_WRONG_FORMAT"))
+                .add(Restrictions.eq("rejectionReason","ALREADY_LINKED_WITH_A_DIFFERENT_MOTHER_ID"))
+                );
 
         return criteria.list();
     }
@@ -34,8 +38,12 @@ public class ChildImportRejectionDaoImpl extends AbstractDao<Long, ChildImportRe
                 .add(Restrictions.ge("modificationDate",fromDate))
                 .add(Restrictions.eq("accepted",false))
                 .add(Restrictions.eq("stateId",stateId))
-                .add(Restrictions.ne("rejectionReason","INVALID_DOB"))
-                .add(Restrictions.ne("rejectionReason","UPDATED_RECORD_ALREADY_EXISTS"));
+                .add(Restrictions.disjunction()
+                .add(Restrictions.eq("rejectionReason","DUPLICATE_MOBILE_NUMBER_IN_DATASET"))
+                .add(Restrictions.eq("rejectionReason","MOBILE_NUMBER_ALREADY_SUBSCRIBED"))
+                .add(Restrictions.eq("rejectionReason","MOBILE_NUMBER_EMPTY_OR_WRONG_FORMAT"))
+                .add(Restrictions.eq("rejectionReason","ALREADY_LINKED_WITH_A_DIFFERENT_MOTHER_ID"))
+                );
         return criteria.list();
     }
 
@@ -47,8 +55,12 @@ public class ChildImportRejectionDaoImpl extends AbstractDao<Long, ChildImportRe
                 .add(Restrictions.ge("modificationDate",fromDate))
                 .add(Restrictions.eq("accepted",false))
                 .add(Restrictions.eq("districtId",districtId))
-                .add(Restrictions.ne("rejectionReason","INVALID_DOB"))
-                .add(Restrictions.ne("rejectionReason","UPDATED_RECORD_ALREADY_EXISTS"));
+                .add(Restrictions.disjunction()
+                .add(Restrictions.eq("rejectionReason","DUPLICATE_MOBILE_NUMBER_IN_DATASET"))
+                .add(Restrictions.eq("rejectionReason","MOBILE_NUMBER_ALREADY_SUBSCRIBED"))
+                .add(Restrictions.eq("rejectionReason","MOBILE_NUMBER_EMPTY_OR_WRONG_FORMAT"))
+                .add(Restrictions.eq("rejectionReason","ALREADY_LINKED_WITH_A_DIFFERENT_MOTHER_ID"))
+                );
         return criteria.list();
     }
 
@@ -60,8 +72,12 @@ public class ChildImportRejectionDaoImpl extends AbstractDao<Long, ChildImportRe
                 .add(Restrictions.ge("modificationDate",fromDate))
                 .add(Restrictions.eq("accepted",false))
                 .add(Restrictions.eq("healthBlockId",blockId))
-                .add(Restrictions.ne("rejectionReason","INVALID_DOB"))
-                .add(Restrictions.ne("rejectionReason","UPDATED_RECORD_ALREADY_EXISTS"));
+                .add(Restrictions.disjunction()
+                .add(Restrictions.eq("rejectionReason","DUPLICATE_MOBILE_NUMBER_IN_DATASET"))
+                .add(Restrictions.eq("rejectionReason","MOBILE_NUMBER_ALREADY_SUBSCRIBED"))
+                .add(Restrictions.eq("rejectionReason","MOBILE_NUMBER_EMPTY_OR_WRONG_FORMAT"))
+                .add(Restrictions.eq("rejectionReason","ALREADY_LINKED_WITH_A_DIFFERENT_MOTHER_ID"))
+                );
         return criteria.list();
     }
 
@@ -72,8 +88,11 @@ public class ChildImportRejectionDaoImpl extends AbstractDao<Long, ChildImportRe
                 .add(Restrictions.ge("modificationDate",fromDate))
                 .add(Restrictions.eq("accepted",false))
                 .add(Restrictions.eq("districtId",districtId))
-                .add(Restrictions.ne("rejectionReason","INVALID_DOB"))
-                .add(Restrictions.ne("rejectionReason","UPDATED_RECORD_ALREADY_EXISTS"))
+                .add(Restrictions.disjunction()
+                .add(Restrictions.eq("rejectionReason","DUPLICATE_MOBILE_NUMBER_IN_DATASET"))
+                .add(Restrictions.eq("rejectionReason","MOBILE_NUMBER_ALREADY_SUBSCRIBED"))
+                .add(Restrictions.eq("rejectionReason","MOBILE_NUMBER_EMPTY_OR_WRONG_FORMAT"))
+                .add(Restrictions.eq("rejectionReason","ALREADY_LINKED_WITH_A_DIFFERENT_MOTHER_ID")))
                 .setProjection(Projections.rowCount());
 
         return (Long) criteria.uniqueResult();
