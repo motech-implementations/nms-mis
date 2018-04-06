@@ -97,7 +97,7 @@
 					var confirmAlert = $mdDialog.show(
                         $mdDialog.alert()
                             .parent(angular.element(document.querySelector('#popupContainer')))
-                            .clickOutsideToClose(true)
+                            //.clickOutsideToClose(true)
                             .title('MIS Alert!!')
                             .textContent(message)
                             .ariaLabel('Alert Dialog Demo')

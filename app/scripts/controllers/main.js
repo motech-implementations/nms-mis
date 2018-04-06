@@ -376,12 +376,12 @@
                 if (!($scope.checkLogin())){
 
                     if(UserFormFactory.isInternetExplorer()){
-                        alert("session timed out login again");
+                        alert("Session timed out! Please login again");
                         $scope.goToLogout();
                         return;
                     }
                     else{
-                      var a= UserFormFactory.showAlert2("session timed out login again");
+                      var a= UserFormFactory.showAlert2("Session timed out! Please login again");
                       a.then(function () {
                           $scope.goToLogout();
                           return;

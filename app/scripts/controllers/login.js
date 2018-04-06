@@ -75,11 +75,11 @@
 
                 if($scope.captchaResponse ==''){
                     if(UserFormFactory.isInternetExplorer()){
-                        alert("Check captcha")
+                        alert("Please check the captcha")
                         return;
                     }
                     else{
-                        UserFormFactory.showAlert("Check captcha")
+                        UserFormFactory.showAlert("Please check the captcha")
                         return;
                     }
 
