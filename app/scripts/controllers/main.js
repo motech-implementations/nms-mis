@@ -1,7 +1,7 @@
  (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("MainController", ['$scope', '$state', '$http', '$localStorage', '$rootScope', 'UserFormFactory', function($scope, $state, $http, $localStorage, $rootScope, UserFormFactory) {
+		.controller("MainController", ['$scope', '$state', '$http', '$localStorage', '$rootScope', 'UserFormFactory','$idle', function($scope, $state, $http, $localStorage, $rootScope, UserFormFactory,$idle) {
 
 		    var logoutUrl = backend_root + "nms/logout";
 		    $scope.isCollapsed = true;
@@ -370,6 +370,27 @@
                             $state.go('reports');
                         }
                     });
+                }
+            });
+            $scope.$on('$userIdle', function () {
+                if (!($scope.checkLogin())){
+
+                    if(UserFormFactory.isInternetExplorer()){
+                        alert("session timed out login again");
+                        $scope.goToLogout();
+                        return;
+                    }
+                    else{
+                      var a= UserFormFactory.showAlert2("session timed out login again");
+                      a.then(function () {
+                          $scope.goToLogout();
+                          return;
+                      });
+
+                    }
+                }
+                else {
+
                 }
 
             });

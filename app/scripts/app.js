@@ -9,13 +9,14 @@
  * Main module of the application.
  */
 var nmsReportsApp = angular
-	.module('nmsReports', ['ui.bootstrap', 'ui.validate', 'ngMessages', 'ui.router', 'ui.grid', 'ngMaterial', 'BotDetectCaptcha','ng.deviceDetector','ui.grid.exporter', 'ngStorage','ngAnimate','hitcounter','vcRecaptcha'])
-	.run( ['$rootScope', '$state', '$stateParams',
-		function ($rootScope, $state, $stateParams) {
+	.module('nmsReports', ['ui.bootstrap', 'ui.validate', 'ngMessages', 'ui.router', 'ui.grid', 'ngMaterial', 'BotDetectCaptcha','ng.deviceDetector','ui.grid.exporter', 'ngStorage','ngAnimate','vcRecaptcha','$idle'])
+	.run( ['$rootScope', '$state', '$stateParams','$idle',
+		function ($rootScope, $state, $stateParams,$idle) {
 			$rootScope.$state = $state;
 			$rootScope.$stateParams = $stateParams;
+            $idle.watch();
 		}
-	]).config(function ($stateProvider, $urlRouterProvider, $httpProvider, captchaSettingsProvider) {
+	]).config(function ($stateProvider, $urlRouterProvider, $httpProvider, captchaSettingsProvider,$idleProvider) {
 		$stateProvider
 		
 			.state('userManagement', {
@@ -275,4 +276,5 @@ var nmsReportsApp = angular
 		$httpProvider.defaults.headers.post = {};
 		$httpProvider.defaults.headers.put = {};
 		$httpProvider.defaults.headers.patch = {};
+		$idleProvider.setIdleTime(50000);
 	});
