@@ -82,7 +82,7 @@
 
             var v;
             var row = "";
-            if (excelHeaderName.reportName != "Kilkari Message Matrix" && excelHeaderName.reportName != "Kilkari Listening Matrix" && excelHeaderName.reportName != "Kilkari Repeat Listener") {
+            if (excelHeaderName.reportName != "Kilkari Message Matrix" && excelHeaderName.reportName != "Kilkari Listening Matrix" && excelHeaderName.reportName != "Kilkari Repeat Listener"&& excelHeaderName.reportName != "Kilkari Thematic Content") {
                 gridApi.grid.columns.forEach(function(ft) {
 
                     if (ft.displayName == "State" || ft.displayName == "District" || ft.displayName == "Block" || ft.displayName == "Subcenter" || ft.displayName == "Message Number (Week)")
@@ -98,9 +98,6 @@
                         var temp = gridApi.grid.columns[3].getAggregationValue() == 0 ? 0.00 : (gridApi.grid.columns[8].getAggregationValue() / gridApi.grid.columns[3].getAggregationValue());
                         v = (temp.toFixed(2));
                     } else if (ft.displayName == "Total Billable Minutes" && excelHeaderName.reportName == "Kilkari Call") {
-                        var temp = ft.getAggregationValue();
-                        v = (temp.toFixed(2));
-                    } else if (ft.displayName == "Number Of Minutes Consumed" && excelHeaderName.reportName == "Kilkari Thematic Content") {
                         var temp = ft.getAggregationValue();
                         v = (temp.toFixed(2));
                     } else if (ft.displayName == "Total Billable Minutes Played" && excelHeaderName.reportName == "Kilkari Cumulative Summary") {
@@ -520,7 +517,7 @@
             }
             //Listening Matrix unlike other single table reports has it's total calculation coming from back-end
             //Hence it needs own Pdf formatting
-            else if (excelHeaderName.reportName === 'Kilkari Listening Matrix') {
+            else if (excelHeaderName.reportName === 'Kilkari Listening Matrix'|| excelHeaderName.reportName === "Kilkari Thematic Content") {
                 var grid = gridApi.grid;
                 var exportColumnHeaders = uiGridExporterService.getColumnHeaders(grid, uiGridExporterConstants.ALL);
                 var exportData = uiGridExporterService.getData(grid, rowTypes, colTypes);
@@ -538,10 +535,21 @@
                 for (i = 0; i < exportData.length; i++) {
                     var tempcol = [];
                     for (j = 0; j < exportData[i].length; j++) {
-                        tempcol.push(exportData[i][j].value);
+                        var temp = (exportData[i][j].value);
+
+                        //Pushes data in a 2x2 matrix
+                        //Some cases like % columns
+                        //Value after decimal till 2 digits
+                        if (
+                            (excelHeaderName.reportName == "Kilkari Thematic Content" && (j == "4")) ) {
+                            temp = Number(temp);
+                            temp = (temp.toFixed(2));
+                        }
+                        tempcol.push(temp);
                     }
                     datapdf.push(tempcol);
                 }
+
                 var docDefinition = {
                     pageOrientation: 'landscape',
                     content: [
@@ -814,10 +822,7 @@
                     } else if (ft.displayName == "Total Billable Minutes Played" && excelHeaderName.reportName == "Kilkari Cumulative Summary") {
                         var temp = ft.getAggregationValue();
                         v = (temp.toFixed(2));
-                    } else if (ft.displayName == "Number Of Minutes Consumed" && excelHeaderName.reportName == "Kilkari Thematic Content") {
-                        var temp = ft.getAggregationValue();
-                        v = (temp.toFixed(2));
-                    }else if(ft.displayName == "Total Beneficiary Records Rejected" && excelHeaderName.reportName == "Kilkari Subscriber"&&!rejectionStart){
+                    } else if(ft.displayName == "Total Beneficiary Records Rejected" && excelHeaderName.reportName == "Kilkari Subscriber"&&!rejectionStart){
                         v = "NA";
                     }else if (ft.displayName == "% Not Started Course" && excelHeaderName.reportName == "MA Cumulative Summary") {
                         var temp = gridApi.grid.columns[2].getAggregationValue() == 0.00 ? 0.00 : (gridApi.grid.columns[4].getAggregationValue() / gridApi.grid.columns[2].getAggregationValue()) * 100;
@@ -1660,7 +1665,7 @@
             }, this);
             C = 0;
             var v;
-            if (excelHeaderName.reportName != "Kilkari Message Matrix" && excelHeaderName.reportName != "Kilkari Listening Matrix" && excelHeaderName.reportName != "Kilkari Repeat Listener") {
+            if (excelHeaderName.reportName != "Kilkari Message Matrix" && excelHeaderName.reportName != "Kilkari Listening Matrix" && excelHeaderName.reportName != "Kilkari Repeat Listener"&& excelHeaderName.reportName != "Kilkari Thematic Content") {
                 gridApi.grid.columns.forEach(function(ft) {
 
                     if (ft.displayName == "State" || ft.displayName == "District" || ft.displayName == "Block" || ft.displayName == "Subcenter" || ft.displayName == "Message Number (Week)")
