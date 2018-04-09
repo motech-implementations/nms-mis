@@ -16,9 +16,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by himanshu on 06/10/17.
@@ -28,29 +26,36 @@ import java.util.List;
 public class KilkariThematicContentReportDaoImpl extends AbstractDao<Integer,KilkariThematicContent> implements KilkariThematicContentReportDao{
 
     @Override
-    public KilkariThematicContent getKilkariThematicContentReportData(Integer locationId, String locationType,Date date, String week_id){
+    public Map<String,KilkariThematicContent> getKilkariThematicContentReportData(Integer locationId, String locationType, Date date){
 
         KilkariThematicContent kilkariThematicContent;
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.and(
                 Restrictions.eq("locationId",locationId.longValue()),
                 Restrictions.eq("locationType",locationType),
-                Restrictions.eq("date", date),
-                Restrictions.eq("messageWeekNumber", week_id)
+                Restrictions.eq("date", date)
+              //  Restrictions.eq("messageWeekNumber", week_id)
         ));
 
         List<KilkariThematicContent> result = (List<KilkariThematicContent>)criteria.list();
-        BigDecimal d = new BigDecimal(0.00);
+        Double d = new Double(0.00);
+        Map<String,KilkariThematicContent> resultMap =  new HashMap<>();
         if(result.isEmpty()){
-            kilkariThematicContent = new KilkariThematicContent(0,date,"",week_id,(long)0,(long)0,d);
-            return kilkariThematicContent;
+            kilkariThematicContent = new KilkariThematicContent(0,date,"","",(long)0,(long)0,d);
+            resultMap.put("",kilkariThematicContent);
+            return resultMap;
         }
-        kilkariThematicContent = result.get(0);
-        kilkariThematicContent.setCallsAnswered(kilkariThematicContent.getCallsAnswered() == null ? 0 : kilkariThematicContent.getCallsAnswered());
-        kilkariThematicContent.setMinutesConsumed(kilkariThematicContent.getMinutesConsumed() == null ? d : kilkariThematicContent.getMinutesConsumed());
-        kilkariThematicContent.setUniqueBeneficiariesCalled(kilkariThematicContent.getUniqueBeneficiariesCalled() == null ? 0 : kilkariThematicContent.getUniqueBeneficiariesCalled());
-        kilkariThematicContent.setTheme(kilkariThematicContent.getTheme() == null ? "" : kilkariThematicContent.getTheme());
-        return kilkariThematicContent;
+        for(int i=0;i<72;i++){
+            KilkariThematicContent kilkariThematicContent1;
+            kilkariThematicContent1 = result.get(i);
+            kilkariThematicContent1.setCallsAnswered(kilkariThematicContent1.getCallsAnswered() == null ? 0 : kilkariThematicContent1.getCallsAnswered());
+            kilkariThematicContent1.setMinutesConsumed(kilkariThematicContent1.getMinutesConsumed() == null ? d : kilkariThematicContent1.getMinutesConsumed());
+            kilkariThematicContent1.setUniqueBeneficiariesCalled(kilkariThematicContent1.getUniqueBeneficiariesCalled() == null ? 0 : kilkariThematicContent1.getUniqueBeneficiariesCalled());
+            kilkariThematicContent1.setTheme(kilkariThematicContent1.getTheme() == null ? "" : kilkariThematicContent1.getTheme());
+
+            resultMap.put(kilkariThematicContent1.getMessageWeekNumber(),kilkariThematicContent1);
+        }
+        return resultMap;
     }
 
     @Override

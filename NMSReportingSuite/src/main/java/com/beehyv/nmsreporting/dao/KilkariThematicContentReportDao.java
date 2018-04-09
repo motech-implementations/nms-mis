@@ -6,6 +6,7 @@ import com.beehyv.nmsreporting.model.KilkariThematicContent;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by himanshu on 06/10/17.
@@ -13,7 +14,7 @@ import java.util.List;
 
 public interface KilkariThematicContentReportDao {
 
-    KilkariThematicContent getKilkariThematicContentReportData(Integer locationId,String locationType,Date date, String week_id);
+    Map<String,KilkariThematicContent> getKilkariThematicContentReportData(Integer locationId, String locationType, Date date );
 
     String getMessageWeekNumber(Integer messageWeekNumber);
 

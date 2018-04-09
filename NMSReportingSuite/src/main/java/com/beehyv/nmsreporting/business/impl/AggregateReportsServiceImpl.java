@@ -4,8 +4,6 @@ import com.beehyv.nmsreporting.business.AggregateReportsService;
 
 import com.beehyv.nmsreporting.dao.*;
 import com.beehyv.nmsreporting.entity.AggregateExcelDto;
-import com.beehyv.nmsreporting.entity.ReportRequest;
-import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.*;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.util.HSSFColor;
@@ -18,14 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.ServletOutputStream;
 import javax.transaction.Transactional;
-import java.awt.*;
-import java.io.*;
 import java.util.*;
 import java.util.List;
 
-import static com.beehyv.nmsreporting.utils.constants.image_base64;
+import static com.beehyv.nmsreporting.utils.Constants.image_base64;
 import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
 
@@ -382,7 +377,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
             colid =0;
             for (String cellData : rowData) {
                 Cell cell1 = row.createCell(colid++);
-                if(colid==1||cellData.equalsIgnoreCase("NA")||(gridData.getReportName().equalsIgnoreCase("Kilkari Thematic Content")&&colid==2)){
+                if(colid==1||cellData.equalsIgnoreCase("N/A")||(gridData.getReportName().equalsIgnoreCase("Kilkari Thematic Content")&&colid==2)){
                 cell1.setCellValue(cellData);}
                 else{cell1.setCellValue(parseDouble(cellData));}
 
@@ -406,7 +401,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         for (String footer : gridData.getColunmFooters()) {
             backgroundStyle1.setFont(font2);
             Cell cell1 = row.createCell(colid++);
-            if(colid==1||footer.equalsIgnoreCase("NA")||(gridData.getReportName().equalsIgnoreCase("Kilkari Thematic Content")&&colid==2)){
+            if(colid==1||footer.equalsIgnoreCase("N/A")){
             cell1.setCellValue(footer);}
             else{
                 cell1.setCellValue(parseDouble(footer));

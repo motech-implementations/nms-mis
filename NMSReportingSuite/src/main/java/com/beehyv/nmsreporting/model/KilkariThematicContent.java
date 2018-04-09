@@ -1,7 +1,6 @@
 package com.beehyv.nmsreporting.model;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -41,13 +40,13 @@ public class KilkariThematicContent {
     private Long callsAnswered;
 
     @Column(name="minutes_consumed", columnDefinition = "BIGINT(20)")
-    private BigDecimal minutesConsumed;
+    private Double minutesConsumed;
 
     public KilkariThematicContent(){
 
     }
 
-    public KilkariThematicContent(Integer id, Date date, String theme, String messageWeekNumber, Long uniqueBeneficiariesCalled, Long callsAnswered, BigDecimal minutesConsumed){
+    public KilkariThematicContent(Integer id, Date date, String theme, String messageWeekNumber, Long uniqueBeneficiariesCalled, Long callsAnswered, Double minutesConsumed){
         this.id = id;
         this.date = date;
         this.theme = theme;
@@ -121,11 +120,11 @@ public class KilkariThematicContent {
         this.callsAnswered = callsAnswered;
     }
 
-    public BigDecimal getMinutesConsumed() {
+    public Double getMinutesConsumed() {
         return minutesConsumed;
     }
 
-    public void setMinutesConsumed(BigDecimal minutesConsumed) {
+    public void setMinutesConsumed(Double minutesConsumed) {
         this.minutesConsumed = minutesConsumed;
     }
 }

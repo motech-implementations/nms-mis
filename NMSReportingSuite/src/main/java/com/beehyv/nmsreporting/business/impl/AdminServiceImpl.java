@@ -11,14 +11,11 @@ import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellUtil;
-import org.apache.poi.util.IOUtils;
 import org.apache.poi.xssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import sun.rmi.runtime.Log;
 
-import javax.annotation.Resource;
 import javax.transaction.Transactional;
 import java.io.*;
 import java.util.*;
@@ -27,7 +24,7 @@ import java.util.regex.Pattern;
 
 import static com.beehyv.nmsreporting.utils.Global.retrieveDocuments;
 import static com.beehyv.nmsreporting.utils.ServiceFunctions.StReplace;
-import static com.beehyv.nmsreporting.utils.constants.image_base64;
+import static com.beehyv.nmsreporting.utils.Constants.image_base64;
 import static java.lang.Integer.parseInt;
 
 /**

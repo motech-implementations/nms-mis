@@ -1077,7 +1077,7 @@
                                  if(!rejectionStart){
                                  var i;
                                     for(i=0; i<$scope.gridOptions1.data.length ;i++){
-                                     $scope.gridOptions1.data[i].totalRecordsRejected = "NA";
+                                     $scope.gridOptions1.data[i].totalRecordsRejected = "N/A";
                                     }
                                  }
                              }
@@ -1499,7 +1499,7 @@
                                            v = (temp.toFixed(2));
                                        }
                                        else if(ft.displayName == "Total Beneficiary Records Rejected" && excelHeaderName.reportName == "Kilkari Subscriber"&&!rejectionStart){
-                                           v = "NA";
+                                           v = "N/A";
                                        }
                                        else if(ft.displayName == "% Not Started Course" && excelHeaderName.reportName == "MA Cumulative Summary"){
                                           var temp = $scope.gridApi.grid.columns[2].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[4].getAggregationValue()/$scope.gridApi.grid.columns[2].getAggregationValue())*100;
@@ -1892,7 +1892,7 @@
                                              if(!rejectionStart){
                                              var i;
                                                 for(i=0; i<$scope.gridOptions1.data.length ;i++){
-                                                 $scope.gridOptions1.data[i].totalRecordsRejected = "NA";
+                                                 $scope.gridOptions1.data[i].totalRecordsRejected = "N/A";
                                                 }
                                              }
                                          }
@@ -1936,7 +1936,7 @@
                                                  if(!rejectionStart){
                                                  var i;
                                                     for(i=0; i<$scope.gridOptions1.data.length ;i++){
-                                                     $scope.gridOptions1.data[i].totalRecordsRejected = "NA";
+                                                     $scope.gridOptions1.data[i].totalRecordsRejected = "N/A";
                                                     }
                                                  }
                                              }
@@ -1979,7 +1979,7 @@
                                              if(!rejectionStart){
                                              var i;
                                                 for(i=0; i<$scope.gridOptions1.data.length ;i++){
-                                                 $scope.gridOptions1.data[i].totalRecordsRejected = "NA";
+                                                 $scope.gridOptions1.data[i].totalRecordsRejected = "N/A";
                                                 }
                                              }
                                          }
@@ -2020,7 +2020,7 @@
                                             if(!rejectionStart){
                                             var i;
                                                for(i=0; i<$scope.gridOptions1.data.length ;i++){
-                                                $scope.gridOptions1.data[i].totalRecordsRejected = "NA";
+                                                $scope.gridOptions1.data[i].totalRecordsRejected = "N/A";
                                                }
                                             }
                                         }

@@ -1,5 +1,4 @@
 package com.beehyv.nmsreporting.entity;
-import java.math.BigDecimal;
 
 
 /**
@@ -14,7 +13,7 @@ public class KilkariThematicContentReportDto {
     private String messageWeekNumber;
     private Long uniqueBeneficiariesCalled;
     private Long callsAnswered;
-    private BigDecimal minutesConsumed;
+    private Double minutesConsumed;
 
 
     public Integer getId() {
@@ -57,11 +56,11 @@ public class KilkariThematicContentReportDto {
         this.callsAnswered = callsAnswered;
     }
 
-    public BigDecimal getMinutesConsumed() {
+    public Double getMinutesConsumed() {
         return minutesConsumed;
     }
 
-    public void setMinutesConsumed(BigDecimal minutesConsumed) {
+    public void setMinutesConsumed(Double minutesConsumed) {
         this.minutesConsumed = minutesConsumed;
     }
 }
