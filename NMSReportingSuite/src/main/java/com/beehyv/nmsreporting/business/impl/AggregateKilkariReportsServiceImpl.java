@@ -42,6 +42,9 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
     private RoleDao roleDao;
 
     @Autowired
+    private ThemeDao themeDao;
+
+    @Autowired
     private HealthFacilityDao healthFacilitydao;
 
     @Autowired
@@ -1657,21 +1660,53 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             locationType = "Block";
         }
 
+        Double minutesConsumed = new Double(0.00);
+        Long callsAnswered = (long)0;
+        Long totalBenefeciariesCalled = (long)0;
 
-
+        Map<Integer,Theme> themes = themeDao.getAllThemes();
+        Map<String,KilkariThematicContent> kilkariThematicContentData1 = kilkariThematicContentReportDao.getKilkariThematicContentReportData(locationId,locationType,fromDate);
         for(int i = 1; i <= 72; i++){
-            kilkariThematicContentData = kilkariThematicContentReportDao.getKilkariThematicContentReportData(locationId,locationType,fromDate,"w"+i);
+            kilkariThematicContentData = kilkariThematicContentData1.get("w"+i);
+            Theme theme = themes.get(i);
             KilkariThematicContentReportDto kilkariThematicContentReportDto = new KilkariThematicContentReportDto();
             kilkariThematicContentReportDto.setId(kilkariThematicContentData.getId());
-            kilkariThematicContentReportDto.setTheme(kilkariThematicContentData.getTheme());
+            kilkariThematicContentReportDto.setTheme(theme.getTheme());
             kilkariThematicContentReportDto.setMinutesConsumed(kilkariThematicContentData.getMinutesConsumed());
+                minutesConsumed += kilkariThematicContentData.getMinutesConsumed();
             kilkariThematicContentReportDto.setCallsAnswered(kilkariThematicContentData.getCallsAnswered());
+                callsAnswered += kilkariThematicContentData.getCallsAnswered();
             kilkariThematicContentReportDto.setUniqueBeneficiariesCalled(kilkariThematicContentData.getUniqueBeneficiariesCalled());
-            kilkariThematicContentReportDto.setMessageWeekNumber("w"+i);
+            kilkariThematicContentReportDto.setMessageWeekNumber("Week "+i+" - "+theme.getTitle());
             if(kilkariThematicContentReportDto.getCallsAnswered()+Math.round(kilkariThematicContentReportDto.getMinutesConsumed().floatValue()*100)+kilkariThematicContentReportDto.getUniqueBeneficiariesCalled() > 0){
                 kilkariThematicContentReportDtoList.add(kilkariThematicContentReportDto);
             }
         }
+
+        if(locationType.equalsIgnoreCase("National")){
+            List<State> states=stateDao.getStatesByServiceType("K");
+            for(State s :states){
+                if(!toDate.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"K"))) {
+                    KilkariMessageListenership kilkariMessageListenership = kilkariMessageListenershipReportDao.getListenerData(s.getStateId(), "State", fromDate);
+                    totalBenefeciariesCalled += kilkariMessageListenership.getTotalBeneficiariesCalled();
+                }
+            }
+
+        }else{
+            KilkariMessageListenership kilkariMessageListenership = kilkariMessageListenershipReportDao.getListenerData(locationId,locationType,fromDate);
+            totalBenefeciariesCalled = kilkariMessageListenership.getTotalBeneficiariesCalled();
+        }
+
+        KilkariThematicContentReportDto kilkariThematicContentReportDto = new KilkariThematicContentReportDto();
+        kilkariThematicContentReportDto.setId(0);
+        kilkariThematicContentReportDto.setTheme("");
+        kilkariThematicContentReportDto.setMinutesConsumed(minutesConsumed);
+        kilkariThematicContentReportDto.setCallsAnswered(callsAnswered);
+        kilkariThematicContentReportDto.setUniqueBeneficiariesCalled(totalBenefeciariesCalled);
+        kilkariThematicContentReportDto.setMessageWeekNumber("Total");
+        kilkariThematicContentReportDtoList.add(kilkariThematicContentReportDto);
+
+
         aggregateKilkariReportsDto.setTableData(kilkariThematicContentReportDtoList);
         return aggregateKilkariReportsDto;
     }

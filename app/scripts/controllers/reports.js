@@ -1077,7 +1077,7 @@
                                  if(!rejectionStart){
                                  var i;
                                     for(i=0; i<$scope.gridOptions1.data.length ;i++){
-                                     $scope.gridOptions1.data[i].totalRecordsRejected = "NA";
+                                     $scope.gridOptions1.data[i].totalRecordsRejected = "N/A";
                                     }
                                  }
                              }
@@ -1125,7 +1125,7 @@
                         if($scope.report.reportEnum == 'Kilkari_Thematic_Content'){
                             if(result.data.tableData.length >0){
                                  $scope.gridOptions1.data = result.data.tableData;
-                                 $scope.gridOptions1.showColumnFooter = true;
+                                 $scope.gridOptions1.showColumnFooter = false;
                                  $scope.reportBreadCrumbData = result.data.breadCrumbData;
                                  $scope.hideGrid = false;
                                  fileName = $scope.report.reportEnum + "_" + $scope.reportBreadCrumbData[$scope.reportBreadCrumbData.length -1].locationName ;
@@ -1472,7 +1472,7 @@
 
             var footerData = [];
                         var v;
-                                if(excelHeaderName.reportName != "Kilkari Message Matrix" && excelHeaderName.reportName != "Kilkari Listening Matrix" && excelHeaderName.reportName != "Kilkari Repeat Listener"){
+                                if(excelHeaderName.reportName != "Kilkari Message Matrix" && excelHeaderName.reportName != "Kilkari Listening Matrix" && excelHeaderName.reportName != "Kilkari Repeat Listener"&& excelHeaderName.reportName != "Kilkari Thematic Content"){
                                     $scope.gridApi.grid.columns.forEach(function (ft) {
 
                                        if(ft.displayName == "State" || ft.displayName == "District" || ft.displayName == "Block" || ft.displayName == "Subcenter" || ft.displayName == "Message Number (Week)" )
@@ -1498,12 +1498,8 @@
                                            var temp = ft.getAggregationValue();
                                            v = (temp.toFixed(2));
                                        }
-                                       else if(ft.displayName == "Number Of Minutes Consumed" && excelHeaderName.reportName == "Kilkari Thematic Content"){
-                                           var temp = ft.getAggregationValue();
-                                           v = (temp.toFixed(2));
-                                       }
                                        else if(ft.displayName == "Total Beneficiary Records Rejected" && excelHeaderName.reportName == "Kilkari Subscriber"&&!rejectionStart){
-                                           v = "NA";
+                                           v = "N/A";
                                        }
                                        else if(ft.displayName == "% Not Started Course" && excelHeaderName.reportName == "MA Cumulative Summary"){
                                           var temp = $scope.gridApi.grid.columns[2].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[4].getAggregationValue()/$scope.gridApi.grid.columns[2].getAggregationValue())*100;
@@ -1835,10 +1831,10 @@
             $scope.Kilkari_Thematic_Content_Definitions = [
                                                      {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
                                                      { field: 'theme',  cellTooltip: true, name: 'Theme', width:"*", enableHiding: false },
-                                                     { field: 'messageWeekNumber', name: 'Message Number (Week)', footerCellTemplate: '<div class="ui-grid-cell-contents">Total</div>', width:"*", enableHiding: false },
-                                                     { field: 'uniqueBeneficiariesCalled', name: 'Number of unique beneficiaries called',cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
-                                                     { field: 'callsAnswered', name: 'Number of calls answered', cellFilter: 'number',footerCellFilter: 'number',aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
-                                                     { field: 'minutesConsumed', name: 'Number of minutes consumed', cellFilter: 'number: 2', footerCellFilter: 'number:2',aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false }
+                                                     { field: 'messageWeekNumber',cellTooltip: true, name: 'Message Number (Week)', width:"*", enableHiding: false },
+                                                     { field: 'uniqueBeneficiariesCalled', name: 'Number of unique beneficiaries called',cellFilter: 'number',  width:"*", enableHiding: false },
+                                                     { field: 'callsAnswered', name: 'Number of calls answered', cellFilter: 'number',  width:"*", enableHiding: false},
+                                                     { field: 'minutesConsumed', name: 'Number of minutes consumed', cellFilter: 'number: 2', width:"*", enableHiding: false }
              ]
 
             $scope.Kilkari_RepeatListener_Numberdata_Definitions =[
@@ -1896,7 +1892,7 @@
                                              if(!rejectionStart){
                                              var i;
                                                 for(i=0; i<$scope.gridOptions1.data.length ;i++){
-                                                 $scope.gridOptions1.data[i].totalRecordsRejected = "NA";
+                                                 $scope.gridOptions1.data[i].totalRecordsRejected = "N/A";
                                                 }
                                              }
                                          }
@@ -1940,7 +1936,7 @@
                                                  if(!rejectionStart){
                                                  var i;
                                                     for(i=0; i<$scope.gridOptions1.data.length ;i++){
-                                                     $scope.gridOptions1.data[i].totalRecordsRejected = "NA";
+                                                     $scope.gridOptions1.data[i].totalRecordsRejected = "N/A";
                                                     }
                                                  }
                                              }
@@ -1983,7 +1979,7 @@
                                              if(!rejectionStart){
                                              var i;
                                                 for(i=0; i<$scope.gridOptions1.data.length ;i++){
-                                                 $scope.gridOptions1.data[i].totalRecordsRejected = "NA";
+                                                 $scope.gridOptions1.data[i].totalRecordsRejected = "N/A";
                                                 }
                                              }
                                          }
@@ -2024,7 +2020,7 @@
                                             if(!rejectionStart){
                                             var i;
                                                for(i=0; i<$scope.gridOptions1.data.length ;i++){
-                                                $scope.gridOptions1.data[i].totalRecordsRejected = "NA";
+                                                $scope.gridOptions1.data[i].totalRecordsRejected = "N/A";
                                                }
                                             }
                                         }
