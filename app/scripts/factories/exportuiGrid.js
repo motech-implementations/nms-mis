@@ -529,8 +529,14 @@
                 datapdf.push(tempHeader);
 
                 var colWidth = [];
+                if(excelHeaderName.reportName === "Kilkari Thematic Content"){
                 for (i = 0; i < exportColumnHeaders.length; i++) {
-                    colWidth[i] = 100;
+                    colWidth[i] = 120;
+                }
+                }else{
+                for (i = 0; i < exportColumnHeaders.length; i++) {
+                    colWidth[i] = 110;
+                }
                 }
                 for (i = 0; i < exportData.length; i++) {
                     var tempcol = [];
