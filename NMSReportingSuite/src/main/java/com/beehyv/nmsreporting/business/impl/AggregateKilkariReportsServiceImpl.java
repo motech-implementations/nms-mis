@@ -1670,13 +1670,13 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             kilkariThematicContentData = kilkariThematicContentData1.get("w"+i);
             Theme theme = themes.get(i);
             KilkariThematicContentReportDto kilkariThematicContentReportDto = new KilkariThematicContentReportDto();
-            kilkariThematicContentReportDto.setId(kilkariThematicContentData.getId());
+            kilkariThematicContentReportDto.setId(kilkariThematicContentData==null?0:kilkariThematicContentData.getId());
             kilkariThematicContentReportDto.setTheme(theme.getTheme());
-            kilkariThematicContentReportDto.setMinutesConsumed(kilkariThematicContentData.getMinutesConsumed());
-                minutesConsumed += kilkariThematicContentData.getMinutesConsumed();
-            kilkariThematicContentReportDto.setCallsAnswered(kilkariThematicContentData.getCallsAnswered());
-                callsAnswered += kilkariThematicContentData.getCallsAnswered();
-            kilkariThematicContentReportDto.setUniqueBeneficiariesCalled(kilkariThematicContentData.getUniqueBeneficiariesCalled());
+            kilkariThematicContentReportDto.setMinutesConsumed(kilkariThematicContentData==null?0:kilkariThematicContentData.getMinutesConsumed());
+                minutesConsumed += kilkariThematicContentData==null?0:kilkariThematicContentData.getMinutesConsumed();
+            kilkariThematicContentReportDto.setCallsAnswered(kilkariThematicContentData==null?0:kilkariThematicContentData.getCallsAnswered());
+                callsAnswered += kilkariThematicContentData==null?0:kilkariThematicContentData.getCallsAnswered();
+            kilkariThematicContentReportDto.setUniqueBeneficiariesCalled(kilkariThematicContentData==null?0:kilkariThematicContentData.getUniqueBeneficiariesCalled());
             kilkariThematicContentReportDto.setMessageWeekNumber("Week "+i+" - "+theme.getTitle());
             if(kilkariThematicContentReportDto.getCallsAnswered()+Math.round(kilkariThematicContentReportDto.getMinutesConsumed().floatValue()*100)+kilkariThematicContentReportDto.getUniqueBeneficiariesCalled() > 0){
                 kilkariThematicContentReportDtoList.add(kilkariThematicContentReportDto);

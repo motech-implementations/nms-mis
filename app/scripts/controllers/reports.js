@@ -1692,7 +1692,7 @@
                                                     cellTemplate:'<a   ng-if= !row.entity.link class="btn aggregate-location" title="{{COL_FIELD}}"  ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a><p ng-if= row.entity.link class="ui-grid-cell-contents" title="{{COL_FIELD}}" >{{ COL_FIELD }}</p>',
                                                     enableHiding: false, width:"*",
                                                  },
-                                                 { field: 'beneficiariesCalled', name: 'Total beneficiaries Called', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                 { field: 'beneficiariesCalled', name: 'Total beneficiaries Called',cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                  { field: 'answeredCall', name: 'Beneficiaries who have answered at least one call',cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                  { field: 'calls_75_100', name: 'Beneficiaries who have listened more than 75% content (avg)',cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
                                                  { field: 'calls_50_75', name: 'Beneficiaries who have listened 50 to 75% content (avg)',cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
@@ -1765,20 +1765,20 @@
 
             $scope.Kilkari_Message_Matrix_Motherpack_Definitions =[
                                                      { field: 'messageWeek', name: 'Message Week',enableSorting: false,width:"*", enableHiding: false },
-                                                     { field: 'content_75_100', name: 'Benefeciaries listened > 75% content',cellFilter: 'number',footerCellFilter: 'number', enableSorting: false,width:"*", enableHiding: false},
-                                                     { field: 'content_50_75', name: 'Benefeciaries listened 50 to 75% content',cellFilter: 'number',footerCellFilter: 'number', enableSorting: false,width:"*", enableHiding: false},
-                                                     { field: 'content_25_50', name: 'Benefeciaries listened 25 to 50% content',cellFilter: 'number',footerCellFilter: 'number',enableSorting: false,width:"*", enableHiding: false },
-                                                     { field: 'content_1_25', name: 'Benefeciaries listened < 25 % content',cellFilter: 'number',footerCellFilter: 'number',enableSorting: false,width:"*", enableHiding: false },
+                                                     { field: 'content_75_100', name: 'Beneficiaries listened > 75% content',cellFilter: 'number',footerCellFilter: 'number', enableSorting: false,width:"*", enableHiding: false},
+                                                     { field: 'content_50_75', name: 'Beneficiaries listened 50 to 75% content',cellFilter: 'number',footerCellFilter: 'number', enableSorting: false,width:"*", enableHiding: false},
+                                                     { field: 'content_25_50', name: 'Beneficiaries listened 25 to 50% content',cellFilter: 'number',footerCellFilter: 'number',enableSorting: false,width:"*", enableHiding: false },
+                                                     { field: 'content_1_25', name: 'Beneficiaries listened < 25 % content',cellFilter: 'number',footerCellFilter: 'number',enableSorting: false,width:"*", enableHiding: false },
                                                      //{ field: 'total', name: 'Total', enableSorting: false,width:"*",cellFilter: 'number',footerCellFilter: 'number', enableHiding: false },
 
             ]
 
             $scope.Kilkari_Message_Matrix_Childpack_Definitions =[
                                                      { field: 'messageWeek', name: 'Message Week',enableSorting: false,width:"*", enableHiding: false },
-                                                     { field: 'content_75_100', name: 'Benefeciaries listened > 75% content',cellFilter: 'number',footerCellFilter: 'number', enableSorting: false,width:"*", enableHiding: false},
-                                                     { field: 'content_50_75', name: 'Benefeciaries listened 50 to 75% content',cellFilter: 'number',footerCellFilter: 'number',enableSorting: false, width:"*", enableHiding: false},
-                                                     { field: 'content_25_50', name: 'Benefeciaries listened 25 to 50% content',cellFilter: 'number',footerCellFilter: 'number',enableSorting: false,width:"*", enableHiding: false },
-                                                     { field: 'content_1_25', name: 'Benefeciaries listened < 25 % content',cellFilter: 'number',footerCellFilter: 'number',enableSorting: false,width:"*", enableHiding: false },
+                                                     { field: 'content_75_100', name: 'Beneficiaries listened > 75% content',cellFilter: 'number',footerCellFilter: 'number', enableSorting: false,width:"*", enableHiding: false},
+                                                     { field: 'content_50_75', name: 'Beneficiaries listened 50 to 75% content',cellFilter: 'number',footerCellFilter: 'number',enableSorting: false, width:"*", enableHiding: false},
+                                                     { field: 'content_25_50', name: 'Beneficiaries listened 25 to 50% content',cellFilter: 'number',footerCellFilter: 'number',enableSorting: false,width:"*", enableHiding: false },
+                                                     { field: 'content_1_25', name: 'Beneficiaries listened < 25 % content',cellFilter: 'number',footerCellFilter: 'number',enableSorting: false,width:"*", enableHiding: false },
                                                      //{ field: 'total', name: 'Total', enableSorting: false,width:"*",cellFilter: 'number',footerCellFilter: 'number', enableHiding: false },
 
             ]
@@ -1807,7 +1807,7 @@
                                                      { field: 'totalSubscriptionsStart', name: 'Total Subscription at the start of the period', cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"12%", enableHiding: false },
                                                      { field: 'totalBeneficiaryRecordsReceived', displayName: 'Total beneficiary Records Received from RCH/MCTS', cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                      { field: 'totalBeneficiaryRecordsEligible', name: 'Total beneficiary Records Found Eligible for Subscriptions', cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'totalRecordsRejected', name: 'Total beneficiary records rejected',cellTemplate:'<p class="ui-grid-cell-contents">NA</p>',footerCellTemplate:'<p class="ui-grid-cell-contents">NA</p>', aggregationHideLabel: true, width:"12%", enableHiding: false},
+                                                     { field: 'totalRecordsRejected', name: 'Total beneficiary records rejected',cellTemplate:'<p class="ui-grid-cell-contents">N/A</p>',footerCellTemplate:'<p class="ui-grid-cell-contents">N/A</p>', aggregationHideLabel: true, width:"12%", enableHiding: false},
                                                      { field: 'totalBeneficiaryRecordsAccepted', name: 'Total beneficiary Records accepted As Subscriptions', cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                      { field: 'totalSubscriptionsCompleted', name: 'Total number of subscriptions who have completed their packs', cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                      { field: 'totalSubscriptionsEnd', name: 'Total Subscription at the end of the period', width:"10%", cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, enableHiding: false },

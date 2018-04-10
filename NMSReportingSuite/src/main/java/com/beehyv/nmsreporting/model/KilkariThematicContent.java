@@ -27,9 +27,6 @@ public class KilkariThematicContent {
     @Column(name="date", columnDefinition = "DATE")
     private Date date;
 
-    @Column(name="theme", columnDefinition = "VARCHAR(90)")
-    private String theme;
-
     @Column(name="message_week_number", columnDefinition = "VARCHAR(45)")
     private String messageWeekNumber;
 
@@ -46,10 +43,9 @@ public class KilkariThematicContent {
 
     }
 
-    public KilkariThematicContent(Integer id, Date date, String theme, String messageWeekNumber, Long uniqueBeneficiariesCalled, Long callsAnswered, Double minutesConsumed){
+    public KilkariThematicContent(Integer id, Date date, String messageWeekNumber, Long uniqueBeneficiariesCalled, Long callsAnswered, Double minutesConsumed){
         this.id = id;
         this.date = date;
-        this.theme = theme;
         this.messageWeekNumber = messageWeekNumber;
         this.uniqueBeneficiariesCalled = uniqueBeneficiariesCalled;
         this.callsAnswered = callsAnswered;
@@ -86,14 +82,6 @@ public class KilkariThematicContent {
 
     public void setDate(Date date) {
         this.date = date;
-    }
-
-    public String getTheme() {
-        return theme;
-    }
-
-    public void setTheme(String theme) {
-        this.theme = theme;
     }
 
     public String getMessageWeekNumber() {

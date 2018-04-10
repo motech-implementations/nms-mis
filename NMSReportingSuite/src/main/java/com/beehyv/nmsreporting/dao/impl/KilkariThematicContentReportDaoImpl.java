@@ -41,18 +41,18 @@ public class KilkariThematicContentReportDaoImpl extends AbstractDao<Integer,Kil
         Double d = new Double(0.00);
         Map<String,KilkariThematicContent> resultMap =  new HashMap<>();
         if(result.isEmpty()){
-            kilkariThematicContent = new KilkariThematicContent(0,date,"","",(long)0,(long)0,d);
+            kilkariThematicContent = new KilkariThematicContent(0,date,"",(long)0,(long)0,d);
             resultMap.put("",kilkariThematicContent);
             return resultMap;
         }
         for(int i=0;i<72;i++){
-            KilkariThematicContent kilkariThematicContent1;
-            kilkariThematicContent1 = result.get(i);
-            kilkariThematicContent1.setCallsAnswered(kilkariThematicContent1.getCallsAnswered() == null ? 0 : kilkariThematicContent1.getCallsAnswered());
-            kilkariThematicContent1.setMinutesConsumed(kilkariThematicContent1.getMinutesConsumed() == null ? d : kilkariThematicContent1.getMinutesConsumed());
-            kilkariThematicContent1.setUniqueBeneficiariesCalled(kilkariThematicContent1.getUniqueBeneficiariesCalled() == null ? 0 : kilkariThematicContent1.getUniqueBeneficiariesCalled());
-            kilkariThematicContent1.setTheme(kilkariThematicContent1.getTheme() == null ? "" : kilkariThematicContent1.getTheme());
-
+            KilkariThematicContent kilkariThematicContent1= new KilkariThematicContent();
+            if(i<result.size()) {
+                kilkariThematicContent1 = result.get(i);
+                kilkariThematicContent1.setCallsAnswered(kilkariThematicContent1.getCallsAnswered() == null ? 0 : kilkariThematicContent1.getCallsAnswered());
+                kilkariThematicContent1.setMinutesConsumed(kilkariThematicContent1.getMinutesConsumed() == null ? d : kilkariThematicContent1.getMinutesConsumed());
+                kilkariThematicContent1.setUniqueBeneficiariesCalled(kilkariThematicContent1.getUniqueBeneficiariesCalled() == null ? 0 : kilkariThematicContent1.getUniqueBeneficiariesCalled());
+            }
             resultMap.put(kilkariThematicContent1.getMessageWeekNumber(),kilkariThematicContent1);
         }
         return resultMap;
