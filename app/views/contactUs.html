@@ -55,15 +55,16 @@
                             <label for="name">Name<span style="color : red">*</span></label>
                         </div>
                         <div class=" col-sm-8 col-xs-8 col-lg-8">
-                            <input id="name" type="text" name="name" data-ng-model="email.name">
+                            <input id="name" type="text" name="name" data-ng-model="email.name" style="width:220px">
                         </div>
                     </div>
                     <div class="form-group row" style="padding-bottom: 10px;">
                         <div class=" col-sm-4 col-xs-4 col-lg-4 cf-txtAlign">
                             <label for="phoneNo">Phone No.<span style="color : red">*</span></label>
                         </div>
-                        <div class=" col-sm-8 col-xs-8 col-lg-8">
-                            <input id="phoneNo" type="number" name="phoneNo"  data-ng-model="email.phoneNo">
+                        <div class=" col-sm-8 col-xs-8 col-lg-8 fake-input">
+                            <input id="phoneNo" type="number" name="phoneNo" class= "ng-pristine ng-valid-pattern ng-valid-minlength ng-valid-maxlength ng-not-empty ng-valid ng-valid-required " required="" data-ng-pattern="[1-9]{1}[0-9]{9}" data-ng-minlength="10" data-ng-maxlength="10" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10" data-ng-model="email.phoneNo">
+                            <p class="fake-input"><b>+91</b></p>
                         </div>
                     </div>
                     <div class="form-group row" style="padding-bottom: 10px;">
@@ -71,7 +72,7 @@
                             <label for="email">Email<span style="color : red">*</span></label>
                         </div>
                         <div class=" col-sm-8 col-xs-8 col-lg-8 ">
-                            <input id="email" type="text" name="to" data-ng-model="email.to" >
+                            <input id="email" type="text" name="to" data-ng-model="email.to"  style="width:220px">
                         </div>
                     </div>
                     <div class="form-group row" style="padding-bottom: 0px;">
@@ -79,7 +80,7 @@
                             <label>Message<span style="color : red">*</span></label>
                         </div>
                         <div class=" col-sm-8 col-xs-8 col-lg-8">
-                            <textarea name="body" data-ng-model="email.body" style="    height: 95px; resize: none;"></textarea>
+                            <textarea name="body" data-ng-model="email.body" style=" width:220px;   height: 95px; resize: none;"></textarea>
                         </div>
                     </div>
                     <input type="hidden" name="from" data-ng-model="email.from" value="nsp-reports@beehyv.com">
