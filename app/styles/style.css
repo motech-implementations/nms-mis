@@ -567,27 +567,28 @@ div.infoPages1, div.infoPages2, div.infoPages3, div.infoPages4, div.infoPages5, 
 }
 div.infoPages1 table, div.infoPages2 table, div.infoPages3 table, div.infoPages4 table, div.infoPages5 table, div.infoPages6 table, div.infoPages7 table, div.infoPages8 table {
   width : 100%;
-  text-align : center;
+  text-align : center!important;
   padding-left : 10px;
 }
 div.infoPages1 h2, div.infoPages2 h2, div.infoPages3 h2, div.infoPages4 h2, div.infoPages5 h2, div.infoPages6 h2, div.infoPages7 h2, div.infoPages8 h2 {
   margin-top : 10px;
   padding-left : 15px;
+  text-align : left;
 }
 div.infoPages1 th:nth-child(2) {
   width : 83%;
 }
 div.infoPages2 th:nth-child(2) {
-  width : 75%;
+  width : 80%;
 }
 div.infoPages3 th:nth-child(2) {
   width : 71%;
 }
 div.infoPages4 th:nth-child(2) {
-  width : 88%;
+  width : 91%;
 }
 div.infoPages5 th:nth-child(2) {
-  width : 85%;
+  width : 88%;
 }
 div.infoPages6 th:nth-child(2) {
   width : 90%;
@@ -601,6 +602,7 @@ div.infoPages8 th:nth-child(2) {
 hr.infoHR {
   border-bottom : 1px solid #000000;
   line-height : 3px;
+
 }
 .aboutImg1 {
   float : left;
@@ -799,6 +801,7 @@ md-dialog{
 
 .login-submit{
     margin-bottom: 20px;
+    text-align: center;
 }
 
 .lb{
@@ -947,8 +950,10 @@ a.adisabled:active { text-decoration: none; }
 }
 
 .faqTitle th:nth-child(2){
-    width : 90%;
+    width : 92%;
 }
+.unit { position: absolute; display: block; left: 5px; top: 10px; z-index: 9; }
+
 div.faqTitle > div > h4 {
     padding-left : 35px;
 }
@@ -958,7 +963,7 @@ div.faqTitle > div > h4 {
   padding-left : 10px;
 }
 .faqTitle h2 {
-  margin-top : 10px;
+  margin-top:10px;
   padding-left : 20px;
 }
 
@@ -1397,6 +1402,22 @@ input[type=number]::-webkit-outer-spin-button {
     appearance: none;
     margin: 0;
 }
+
+
+.fake-input p {
+    position: relative;
+    display: inline-block;
+    z-index: 3;
+    top: -25px;
+    left: 8px;
+    color: #000000;
+    font-size: 17px;
+    }
+.fake-input input {
+    padding-left:36px !important;
+    width: 220px;
+    }
+
 /*-------------ContactUs End----------------*/
 
 
