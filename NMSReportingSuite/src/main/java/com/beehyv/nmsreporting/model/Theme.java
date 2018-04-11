@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
-@Table(name="thematic_details")
+@Table(name="dim_theme")
 public class Theme {
 
     @Id

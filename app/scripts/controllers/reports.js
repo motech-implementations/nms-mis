@@ -1829,7 +1829,7 @@
             }
 
             $scope.Kilkari_Thematic_Content_Definitions = [
-                                                     {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
+                                                    // {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
                                                      { field: 'theme',  cellTooltip: true, name: 'Theme', width:"*", enableHiding: false },
                                                      { field: 'messageWeekNumber',cellTooltip: true, name: 'Message Number (Week)', width:"*", enableHiding: false },
                                                      { field: 'uniqueBeneficiariesCalled', name: 'Number of unique beneficiaries called',cellFilter: 'number',  width:"*", enableHiding: false },

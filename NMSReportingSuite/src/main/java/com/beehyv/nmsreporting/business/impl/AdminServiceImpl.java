@@ -1131,7 +1131,13 @@ public class AdminServiceImpl implements AdminService {
 
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
-                cell.setCellValue(obj.toString());
+                if(rowid!=8&&((cellid==8&&!obj.toString().equalsIgnoreCase("No MCTS ID"))
+                        ||(cellid==9&&!obj.toString().equalsIgnoreCase("No RCH ID"))
+                        ||(cellid==11&&!obj.toString().equalsIgnoreCase("No Mobile Number")))){
+                cell.setCellValue(Float.parseFloat(obj.toString()));}
+                else{
+                    cell.setCellValue(obj.toString());
+                }
                 if(rowid==8){
                 cell.setCellStyle(style);}
                 else if(rowid == 9 && rejectedChildImports.isEmpty()){
@@ -1252,7 +1258,13 @@ public class AdminServiceImpl implements AdminService {
             int cellid = 0;
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
-                cell.setCellValue(obj.toString());
+                if(rowid!=8&&((cellid==8&&!obj.toString().equalsIgnoreCase("No MCTS ID"))
+                        ||(cellid==9&&!obj.toString().equalsIgnoreCase("No RCH ID"))
+                        ||(cellid==11&&!obj.toString().equalsIgnoreCase("No Mobile Number")))){
+                    cell.setCellValue(Float.parseFloat(obj.toString()));}
+                else{
+                    cell.setCellValue(obj.toString());
+                }
                 if(rowid==8){
                     cell.setCellStyle(style);}
                 else if(rowid == 9 && rejectedMotherImports.isEmpty()){
@@ -1374,7 +1386,12 @@ public class AdminServiceImpl implements AdminService {
             int cellid = 0;
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
-                cell.setCellValue(obj.toString());
+                if(rowid!=8&&((cellid==11&&!obj.toString().equalsIgnoreCase("No ASHA Mobile Number"))
+                        ||(cellid==8&&!obj.toString().equalsIgnoreCase("No ASHA ID")))){
+                cell.setCellValue(Float.parseFloat(obj.toString()));}
+                else{
+                    cell.setCellValue(obj.toString());
+                }
                 if(rowid==8){
                     cell.setCellStyle(style);}
                 else if(rowid == 9 && rejectedChildImports.isEmpty()){
@@ -1501,7 +1518,12 @@ public class AdminServiceImpl implements AdminService {
             int cellid = 0;
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
-                cell.setCellValue(obj.toString());
+                if(rowid!=8&&((cellid==1&&!obj.toString().equalsIgnoreCase("No Phone"))
+                        ||(cellid==10&&!obj.toString().equalsIgnoreCase("No FLW_ID")))){
+                cell.setCellValue(Float.parseFloat(obj.toString()));}
+                else{
+                    cell.setCellValue(obj.toString());
+                }
                 if(rowid==8){
                     cell.setCellStyle(style);}
                 else if(rowid == 9 && successfulCandidates.isEmpty()){
@@ -1672,11 +1694,16 @@ public class AdminServiceImpl implements AdminService {
             row = spreadsheet.createRow(rowid++);
             if(rowid==8){
                 row.setHeight((short)1100);}
+
             Object[] objectArr = empinfo.get(key);
             int cellid = 0;
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
-                cell.setCellValue(obj.toString());
+                if(rowid!=8&&(cellid==2)){
+                cell.setCellValue(Float.parseFloat(obj.toString()));}
+                else{
+                    cell.setCellValue(obj.toString());
+                }
                 if(rowid==8){
                     cell.setCellStyle(style);}
                 else if(rowid==9 && anonymousUsersList.isEmpty()) {
@@ -1797,7 +1824,12 @@ public class AdminServiceImpl implements AdminService {
             for (Object obj : objectArr) {
 
                 Cell cell = row.createCell(cellid++);
-                cell.setCellValue(obj.toString());
+                if(rowid!=8&&((cellid==1&&!obj.toString().equalsIgnoreCase("No Phone"))
+                        ||(cellid==10&&!obj.toString().equalsIgnoreCase("No FLW_ID")))){
+                cell.setCellValue(Long.parseLong(obj.toString()));}
+                else{
+                    cell.setCellValue(obj.toString());
+                }
                 if(rowid==8){
                     cell.setCellStyle(style);}
                 else if(rowid==9 && inactiveCandidates.isEmpty()) {
@@ -2066,7 +2098,13 @@ public class AdminServiceImpl implements AdminService {
             int cellid = 0;
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
-                cell.setCellValue(obj.toString());
+                if(rowid!=8&&((cellid==8&&!obj.toString().equalsIgnoreCase("No MCTS Id"))
+                        ||(cellid==9&&!obj.toString().equalsIgnoreCase("No RCH Id"))
+                        ||(cellid==11&&!obj.toString().equalsIgnoreCase("No MSISDN")))){
+                cell.setCellValue(Float.parseFloat(obj.toString()));}
+                else{
+                    cell.setCellValue(obj.toString());
+                }
                 if(rowid==8){
                     cell.setCellStyle(style);}
                 else if(rowid==9 && kilkariSixWeeksNoAnswersList.isEmpty()) {
@@ -2185,7 +2223,13 @@ public class AdminServiceImpl implements AdminService {
             int cellid = 0;
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
-                cell.setCellValue(obj.toString());
+                if(rowid!=8&&((cellid==8&&!obj.toString().equalsIgnoreCase("No MCTS Id"))
+                        ||(cellid==9&&!obj.toString().equalsIgnoreCase("No RCH Id"))
+                        ||(cellid==11&&!obj.toString().equalsIgnoreCase("No MSISDN")))){
+                cell.setCellValue(Float.parseFloat(obj.toString()));}
+                else{
+                    cell.setCellValue(obj.toString());
+                }
                 if(rowid==8){
                     cell.setCellStyle(style);}
                 else if(rowid==6 && lowListenershipList.isEmpty()) {
@@ -2312,7 +2356,13 @@ public class AdminServiceImpl implements AdminService {
             int cellid = 0;
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
-                cell.setCellValue(obj.toString());
+                if(rowid!=8&&((cellid==8&&!obj.toString().equalsIgnoreCase("No MCTS Id"))
+                        ||(cellid==9&&!obj.toString().equalsIgnoreCase("No RCH Id"))
+                        ||(cellid==11&&!obj.toString().equalsIgnoreCase("No MSISDN")))){
+                cell.setCellValue(Float.parseFloat(obj.toString()));}
+                else{
+                    cell.setCellValue(obj.toString());
+                }
                 if(rowid==8){
                     row.setHeight((short)1100);
                     cell.setCellStyle(style);}
@@ -2432,7 +2482,13 @@ public class AdminServiceImpl implements AdminService {
             int cellid = 0;
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
-                cell.setCellValue(obj.toString());
+                if(rowid!=8&&((cellid==8&&!obj.toString().equalsIgnoreCase("No MCTS Id"))
+                        ||(cellid==9&&!obj.toString().equalsIgnoreCase("No RCH Id"))
+                        ||(cellid==11&&!obj.toString().equalsIgnoreCase("No MSISDN")))){
+                    cell.setCellValue(Float.parseFloat(obj.toString()));}
+                else{
+                    cell.setCellValue(obj.toString());
+                }
                 if(rowid==8){
                     cell.setCellStyle(style);}
                 else if(rowid==9 && kilkariLowUsageList.isEmpty()) {
