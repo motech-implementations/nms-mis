@@ -375,6 +375,10 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         for (ArrayList<String> rowData : gridData.getReportData()) {
             row = spreadsheet.createRow(rowid++);
             colid =0;
+
+            if((gridData.getReportName().equalsIgnoreCase("Kilkari Thematic Content")||gridData.getReportName().equalsIgnoreCase("Kilkari Listening Matrix"))&&tabrow+1==gridData.getReportData().size()){
+                backgroundStyle1.setFont(font2);
+            }
             for (String cellData : rowData) {
                 Cell cell1 = row.createCell(colid++);
                 if(colid==1||cellData.equalsIgnoreCase("N/A")||(gridData.getReportName().equalsIgnoreCase("Kilkari Thematic Content")&&colid==2)){
