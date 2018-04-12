@@ -146,6 +146,10 @@
 			$scope.userHasOneCircle = function(){
 				return $scope.circles.length == 1;
 			}
+
+			$scope.footerBold = function(){
+            	return $scope.report.reportEnum == 'Kilkari_Thematic_Content'|| $scope.report.reportEnum == 'Kilkari_Listening_Matrix';
+            }
 			
 			$scope.reportsLoading = true;
 			UserFormFactory.getReportsMenu()

@@ -1482,3 +1482,6 @@ input[type=number]::-webkit-outer-spin-button {
 .pd1{
 	display: block;
 }
+div.bold div.ui-grid-row:last-child{
+    font-weight: bold;
+}
