@@ -1,3 +1,5 @@
+DELIMITER $$
+
 CREATE DEFINER=`etluser`@`%` PROCEDURE `KilkariUsageReport`()
 BEGIN
 DECLARE dt DATETIME;
@@ -17,7 +19,11 @@ COUNT(case when a.contentPercentage >=50 and a.contentPercentage <75 THEN a.bene
 COUNT(case when a.contentPercentage >=25 and a.contentPercentage < 50 THEN a.beneficiaryTracking_id END) as '25and50', 
 COUNT(case when a.contentPercentage > 0 and a.contentPercentage < 25 THEN a.beneficiaryTracking_id END) as 'lessthan25',
 COUNT(DISTINCT case when a.calledInbox > 0 THEN a.beneficiaryTracking_id END) as 'calledInbox'
-from (select distinct beneficiaryTracking_id, SUM(case when call_source='INBOX' THEN 1 else 0 END) as 'calledInbox', case when (SUM(case when call_source='OBD' and call_status='SUCCESS' THEN percentage_listened END)/COUNT(case when call_source='OBD' and call_status='SUCCESS' THEN campaign_id END)) is not null THEN (SUM(case when call_source='OBD' and call_status='SUCCESS' THEN percentage_listened END)/COUNT(case when call_source='OBD' and call_status='SUCCESS' THEN campaign_id END)) ELSE '0' END  as 'contentPercentage' from KilkariAgg.beneficiary_call_measure where modificationdate between dt and DATE_ADD(dt, INTERVAL 1 MONTH) and beneficiaryTracking_id is not null group by beneficiaryTracking_id) as a LEFT JOIN KilkariAgg.beneficiary_tracker b on a.beneficiaryTracking_id=b.id group by b.state_id, b.district_id, b.healthBlock_id, b.healthSubFacility_id;
+from 
+(select distinct bm.beneficiaryTracking_id, 
+SUM(case when bm.call_source='INBOX' THEN 1 else 0 END) as 'calledInbox', 
+case when (SUM(case when bm.call_source='OBD' and bm.call_status='SUCCESS' THEN bm.msg_duration END)/SUM(case when bm.call_source='OBD' and bm.call_status='SUCCESS' THEN md.message_duration END)) is not null THEN (SUM(case when bm.call_source='OBD' and bm.call_status='SUCCESS' THEN bm.msg_duration END)/SUM(case when bm.call_source='OBD' and bm.call_status='SUCCESS' THEN md.message_duration END))*100 ELSE '0' END  as 'contentPercentage' 
+from KilkariAgg.beneficiary_call_measure as bm  LEFT JOIN KilkariAgg.message_durations md on bm.campaign_id = md.id  where bm.modificationdate between dt and DATE_ADD(dt, INTERVAL 1 MONTH) and bm.beneficiaryTracking_id is not null group by bm.beneficiaryTracking_id) as a LEFT JOIN KilkariAgg.beneficiary_tracker b on a.beneficiaryTracking_id=b.id group by b.state_id, b.district_id, b.healthBlock_id, b.healthSubFacility_id;
 
 insert into KilkariAgg.agg_kilkari_usage (location_type, location_id, date, content_listened_more_than_75_per, content_listened_50_to_75_per, content_listened_25_to_50_per, content_listened_1_to_25_per , called_inbox)
 
