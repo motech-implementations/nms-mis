@@ -70,6 +70,7 @@
             $scope.matrixContent2 = '';
             $scope.state = "";
             $scope.district = "";
+            $scope.reportHeaderName = "";
             var parentScope = $scope.$parent;
             parentScope.child = $scope;
             var fileName;
@@ -283,6 +284,7 @@
 
 			$scope.selectReport = function(item){
 				$scope.report = item;
+				$scope.setReportHeaderName($scope.report.name);
 				if(!$scope.userHasState()){
 					$scope.clearState();
 				}
@@ -323,9 +325,17 @@
                 }
 
                 $scope.gridOptions1.exporterExcelSheetName = $scope.report.name;
-                excelHeaderName.reportName = $scope.report.name;
+                excelHeaderName.reportName = $scope.reportHeaderName;
 
 
+			}
+
+			$scope.setReportHeaderName = function(name){
+			if(name == "Kilkari Repeat Listener"){
+			    $scope.reportHeaderName = "Kilkari Repeat Listener Month Wise";
+			}else{
+			    $scope.reportHeaderName = name;
+			    }
 			}
 
 			$scope.crop = function(name){
@@ -1476,7 +1486,7 @@
 
             var footerData = [];
                         var v;
-                                if(excelHeaderName.reportName != "Kilkari Message Matrix" && excelHeaderName.reportName != "Kilkari Listening Matrix" && excelHeaderName.reportName != "Kilkari Repeat Listener"&& excelHeaderName.reportName != "Kilkari Thematic Content"){
+                                if(excelHeaderName.reportName != "Kilkari Message Matrix" && excelHeaderName.reportName != "Kilkari Listening Matrix" && excelHeaderName.reportName != "Kilkari Repeat Listener Month Wise"&& excelHeaderName.reportName != "Kilkari Thematic Content"){
                                     $scope.gridApi.grid.columns.forEach(function (ft) {
 
                                        if(ft.displayName == "State" || ft.displayName == "District" || ft.displayName == "Block" || ft.displayName == "Subcenter" || ft.displayName == "Message Number (Week)" )
@@ -1528,7 +1538,7 @@
                                    }, this);
 
                                 }
-                if(excelHeaderName.reportName == "Kilkari Message Matrix" ||  excelHeaderName.reportName == "Kilkari Repeat Listener"){
+                if(excelHeaderName.reportName == "Kilkari Message Matrix" ||  excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise"){
                 columns1 = $scope.gridApi1.grid.options.showHeader ? uiGridExporterService.getColumnHeaders($scope.gridApi1.grid, 'visible') : [];
 
                 var headers1=[]
