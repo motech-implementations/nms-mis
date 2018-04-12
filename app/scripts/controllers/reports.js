@@ -1859,7 +1859,7 @@
                                                      { field: 'threeCallsAnswered', enableSorting: false,name: '3 calls answered',cellFilter: 'number',width:"*", enableHiding: false },
                                                      { field: 'twoCallsAnswered', enableSorting: false,name: '2 calls answered',cellFilter: 'number',width:"*", enableHiding: false },
                                                      { field: 'oneCallAnswered', enableSorting: false,name: '1 call answered',cellFilter: 'number',width:"*", enableHiding: false },
-                                                     { field: 'noCallsAnswered', enableSorting: false,name: '0 calls answered',cellFilter: 'number',width:"*", enableHiding: false },
+                                                     { field: 'noCallsAnswered', enableSorting: false,name: '0 call answered',cellFilter: 'number',width:"*", enableHiding: false },
                                                      { field: 'total', enableSorting: false,name: 'Total',cellFilter: 'number',width:"*", enableHiding: false },
 
             ]
