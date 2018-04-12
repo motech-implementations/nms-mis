@@ -1,3 +1,5 @@
+DELIMITER $$
+
 CREATE DEFINER=`etluser`@`%` PROCEDURE `KilkariThematicContent`()
 BEGIN
 DECLARE dt DATETIME;
@@ -10,31 +12,30 @@ TRUNCATE TABLE KilkariAgg.beneficiary_call_measure_temp;
 insert into KilkariAgg.beneficiary_call_measure_temp
 SELECT * FROM KilkariAgg.beneficiary_call_measure bm where bm.modificationDate between dt and DATE_ADD(dt, INTERVAL 1 MONTH);
 TRUNCATE TABLE KilkariAgg.agg_kilkari_thematic_content_temp;
-insert into KilkariAgg.agg_kilkari_thematic_content_temp(state_id, district_id, healthBlock_id, date, theme, message_week_number,unique_beneficiaries_called, calls_answered, minutes_consumed)
+insert into KilkariAgg.agg_kilkari_thematic_content_temp(state_id, district_id, healthBlock_id, date,message_week_number,unique_beneficiaries_called, calls_answered, minutes_consumed)
 
 select 
 bt.state_id, bt.district_id, bt.healthBlock_id,
 dt as date,
-th.theme as theme,
 substring_index(md.week_id,'_',1) as weekId,
 count(DISTINCT case when bm.call_source = 'OBD' then bm.beneficiaryTracking_id end) as unique_beneficiaries_called,
 count(case when bm.call_status = 'SUCCESS' and bm.call_source = 'OBD' then bm.id end) as calls_answered,
-ROUND(sum(case when bm.call_status = 'SUCCESS' and bm.call_source = 'OBD' then bm.msg_duration end)/60,2) as minutes_consumed FROM KilkariAgg.beneficiary_call_measure_temp bm left join KilkariAgg.beneficiary_tracker bt on bt.id = bm.beneficiaryTracking_id join KilkariAgg.message_durations md on bm.campaign_id = md.id join KilkariAgg.theme th on md.week_id = th.message_id
+ROUND(sum(case when bm.call_status = 'SUCCESS' and bm.call_source = 'OBD' then bm.msg_duration end)/60,2) as minutes_consumed FROM KilkariAgg.beneficiary_call_measure_temp bm left join KilkariAgg.beneficiary_tracker bt on bt.id = bm.beneficiaryTracking_id join KilkariAgg.message_durations md on bm.campaign_id = md.id join Reporting.theme th on md.week_id = th.message_id
 where bm.modificationDate between dt and DATE_ADD(dt, INTERVAL 1 MONTH)
 group by substring_index(md.week_id,'_',1), bt.state_id, bt.district_id, bt.healthBlock_id;
 
-insert into KilkariAgg.agg_kilkari_thematic_content(location_type, location_id, date, theme, message_week_number,unique_beneficiaries_called, calls_answered, minutes_consumed)
+insert into KilkariAgg.agg_kilkari_thematic_content(location_type, location_id, date, message_week_number,unique_beneficiaries_called, calls_answered, minutes_consumed)
 
-select 'NATIONAL' as location_type, 0, date, theme, message_week_number, sum(unique_beneficiaries_called), sum(calls_answered), sum(minutes_consumed) from KilkariAgg.agg_kilkari_thematic_content_temp group by message_week_number
-
-UNION ALL
-select 'STATE' as location_type, state_id, date, theme, message_week_number, sum(unique_beneficiaries_called), sum(calls_answered), sum(minutes_consumed) from KilkariAgg.agg_kilkari_thematic_content_temp group by state_id, message_week_number
+select 'NATIONAL' as location_type, 0, date,message_week_number, sum(unique_beneficiaries_called), sum(calls_answered), sum(minutes_consumed) from KilkariAgg.agg_kilkari_thematic_content_temp group by message_week_number
 
 UNION ALL
-select 'DISTRICT' as location_type, district_id, date, theme, message_week_number, sum(unique_beneficiaries_called), sum(calls_answered), sum(minutes_consumed) from KilkariAgg.agg_kilkari_thematic_content_temp group by district_id, message_week_number
+select 'STATE' as location_type, state_id, date,message_week_number, sum(unique_beneficiaries_called), sum(calls_answered), sum(minutes_consumed) from KilkariAgg.agg_kilkari_thematic_content_temp group by state_id, message_week_number
 
 UNION ALL
-select 'BLOCK' as location_type, healthBlock_id, date, theme, message_week_number, sum(unique_beneficiaries_called), sum(calls_answered), sum(minutes_consumed) from KilkariAgg.agg_kilkari_thematic_content_temp group by healthBlock_id, message_week_number;
+select 'DISTRICT' as location_type, district_id, date,message_week_number, sum(unique_beneficiaries_called), sum(calls_answered), sum(minutes_consumed) from KilkariAgg.agg_kilkari_thematic_content_temp group by district_id, message_week_number
+
+UNION ALL
+select 'BLOCK' as location_type, healthBlock_id, date,message_week_number, sum(unique_beneficiaries_called), sum(calls_answered), sum(minutes_consumed) from KilkariAgg.agg_kilkari_thematic_content_temp group by healthBlock_id, message_week_number;
 
 SET dt = DATE_ADD(dt, INTERVAL 1 MONTH);
 update ETL_info_table set last_etl_time = dt where table_id = 56;

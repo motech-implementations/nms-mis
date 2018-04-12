@@ -1,3 +1,5 @@
+DELIMITER $$
+
 CREATE DEFINER=`etluser`@`%` PROCEDURE `KilkariCallReport`()
 BEGIN
 DECLARE dt DATETIME;
@@ -17,7 +19,7 @@ sum(case when bm.percentage_listened >= 75 and bm.call_status = 'SUCCESS' and bm
 sum(case when bm.percentage_listened < 75 and bm.percentage_listened >= 50 and bm.call_status = 'SUCCESS' and bm.call_source = 'OBD' then 1 else 0 end) as between50to75,
 sum(case when bm.percentage_listened < 50 and bm.percentage_listened >= 25 and bm.call_status = 'SUCCESS' and bm.call_source = 'OBD' then 1 else 0 end) as between25to50,
 sum(case when bm.percentage_listened < 25 and bm.call_status = 'SUCCESS' and bm.call_source = 'OBD' then 1 else 0 end) as lessThan25,
-sum(case when bm.call_source = 'OBD' THEN 1 else 0 END) as 'calls',
+count(case when bm.call_source = 'OBD' THEN bm.id END) as 'calls',
 sum(case when bm.call_status = 'SUCCESS' and bm.call_source = 'OBD' THEN 1 else 0 END) as 'successful_calls',
 ROUND(SUM(case when bm.call_status = 'SUCCESS' and bm.call_source = 'OBD' THEN bm.call_duration END)/60,2) as 'billable_minutes',
 sum(case when bm.call_source = 'INBOX' THEN 1 else 0 END) as 'calls_to_inbox',
