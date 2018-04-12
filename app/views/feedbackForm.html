@@ -15,8 +15,12 @@
                         <div class=" col-xs-3 ff-input-textalign">
                         <label for="name">Name<span style="color : red">*</span></label>
                         </div>
-                        <div class=" col-xs-8">
-                        <input class="ff-inputBox-width" id="name" type="text" name="name" data-ng-model="email.name">
+                        <div class="col-xs-8">
+                            <input name="name" id="name" type="text" class="form-control input input-sm" data-ng-model="email.name" placeholder="Name" style="width: 220px;" required>
+
+                            <div class="errorMessage" data-ng-messages="FeedbackForm.name.$error" role="alert" data-ng-show="!FeedbackForm.name.$pristine">
+                                <div data-ng-message="required">This field cannot be empty</div>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -24,8 +28,12 @@
                         <div class=" col-xs-3 ff-input-textalign">
                         <label for="subject">Subject<span style="color : red">*</span></label>
                         </div>
-                        <div class=" col-xs-8">
-                        <input class="ff-inputBox-width" id="subject" type="text" name="subject" data-ng-model="email.subject">
+                        <div class="col-xs-8">
+                            <input name="subject" id="subject" type="text" class="form-control input input-sm" data-ng-model="email.subject" placeholder="Subject" style="width: 220px;" required>
+
+                            <div class="errorMessage" data-ng-messages="FeedbackForm.subject.$error" role="alert" data-ng-show="!FeedbackForm.subject.$pristine">
+                                <div data-ng-message="required">This field cannot be empty</div>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -33,8 +41,15 @@
                         <div class=" col-xs-3 ff-input-textalign">
                         <label for="email">Email<span style="color : red">*</span></label>
                         </div>
-                        <div class=" col-xs-8">
-                        <input class="ff-inputBox-width" id="email" type="text" name="to"data-ng-model="email.to">
+                        <div data-ng-class="{'has-error':FeedbackForm.email.$invalid &amp;&amp; !FeedbackForm.email.$pristine}" style="">
+                            <div class="col-xs-8 ">
+                                <input id="email" name="email" type="email" class="form-control input input-sm ng-touched ng-dirty ng-invalid ng-not-empty ng-invalid-email ng-valid-required ng-invalid-remove ng-valid-email-add ng-invalid-email-remove" data-ng-model="email.email" placeholder="Email" required="" aria-invalid="true" style="width:220px;" required>
+                                <div class="errorMessage ng-active" data-ng-messages="FeedbackForm.email.$error" role="alert" data-ng-show="!FeedbackForm.email.$pristine" aria-live="assertive" aria-hidden="false" style="">
+                                    <!-- ngMessage: required --><div data-ng-message="required">This field cannot be empty</div>
+                                    <!-- ngMessage: email --><div data-ng-message="email" class="ng-scope" style="">Enter a valid email</div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                     <div class="form-group row">
@@ -42,9 +57,19 @@
                         <div class=" col-xs-3 ff-input-textalign">
                         <label>Feedback<span style="color : red">*</span></label>
                         </div>
-                        <div class=" col-xs-8">
-                            <textarea name="body"  class="FF-txtbox" data-ng-model="email.body"></textarea>
+                        <div data-ng-class="{'has-error':FeedbackForm.body.$invalid && !FeedbackForm.body.$pristine}">
+
+                            <div class="col-xs-8">
+                                <textarea name="body" class="form-control input input-sm ng-pristine ng-valid ng-empty ng-touched" data-ng-model="email.body" style="width: 220px; height: 95px; resize: none;" aria-invalid="false">
+                                    Your Message Here
+                                </textarea>
+
+                                <div class="errorMessage" data-ng-messages="FeedbackForm.body.$error" role="alert" data-ng-show="!FeedbackForm.body.$pristine">
+                                    <div data-ng-message="required">This field cannot be empty</div>
+                                </div>
+                            </div>
                         </div>
+
                     </div>
                     <input type="hidden" name="from" data-ng-model="email.from" value="nsp-reports@beehyv.com">
                     <div vc-recaptcha key="'6LfKH08UAAAAAKmEugRBtMKYaagj-CiluRt9h1tK'"data-ng-model="captchaResponse" class="recaptcha ff-captcha"></div>
