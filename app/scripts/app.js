@@ -127,7 +127,7 @@ var nmsReportsApp = angular
             	templateUrl: 'views/reports.html'
             })
 
-			.state('Kilkari Aggregate Beneficiary', {
+			.state('Kilkari Aggregate Beneficiaries', {
             	url: '/reports/kilkari/aggregate-beneficiary-report',
             	templateUrl: 'views/reports.html'
             })

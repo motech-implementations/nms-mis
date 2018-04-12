@@ -209,7 +209,7 @@
             case 'Kilkari Repeat Listener': pageHeading='Kilkari Repeat Listener Report'; break;
             case 'Kilkari Subscriber': pageHeading='Kilkari Subscriber Report'; break;
             case 'Kilkari Message Listenership': pageHeading='Kilkari Message Listenership Report'; break;
-            case 'Kilkari Aggregate Beneficiary': pageHeading='Kilkari Aggregate Beneficiary Report'; break;
+            case 'Kilkari Aggregate Beneficiaries': pageHeading='Kilkari Aggregate Beneficiaries Report'; break;
             }
 
 
@@ -864,7 +864,7 @@
                     excelHeaderName.reportName === 'Kilkari Cumulative Summary' || excelHeaderName.reportName === 'Kilkari Usage' ||
                     excelHeaderName.reportName === 'Kilkari Beneficiary Completion' || excelHeaderName.reportName === 'Kilkari Message Listenership') {
                     fontHasSize = 10;
-                } else if (excelHeaderName.reportName === 'Kilkari Aggregate Beneficiary') {
+                } else if (excelHeaderName.reportName === 'Kilkari Aggregate Beneficiaries') {
                     fontHasSize = 8;
                     for (i = 0; i < exportColumnHeaders.length; i++) {
                                         colWidth[i] = 60;

@@ -173,7 +173,7 @@
                         case "Kilkari Repeat Listener":
                         case "Kilkari Subscriber":
                         case "Kilkari Message Listenership":
-                        case "Kilkari Aggregate Beneficiary":
+                        case "Kilkari Aggregate Beneficiaries":
                         var reportCategorytemp = $scope.getArrayElementByName($scope.reports,"Kilkari Reports");
                         break;
                     }
@@ -295,7 +295,7 @@
 				if($scope.userHasOneCircle()){
                 	$scope.selectCircle($scope.circles[0]);
                 }
-                if($scope.report.reportEnum == 'Kilkari_Message_Matrix' || $scope.report.reportEnum == 'Kilkari_Listening_Matrix' || $scope.report.reportEnum == 'Kilkari_Usage' || $scope.report.reportEnum == 'Kilkari_Message_Listenership' || $scope.report.reportEnum == 'Kilkari_Thematic_Content' || $scope.report.reportEnum == 'Kilkari_Aggregate_Beneficiary'){
+                if($scope.report.reportEnum == 'Kilkari_Message_Matrix' || $scope.report.reportEnum == 'Kilkari_Listening_Matrix' || $scope.report.reportEnum == 'Kilkari_Usage' || $scope.report.reportEnum == 'Kilkari_Message_Listenership' || $scope.report.reportEnum == 'Kilkari_Thematic_Content' || $scope.report.reportEnum == 'Kilkari_Aggregate_Beneficiaries'){
                     $scope.periodType = ['Year','Month','Quarter'];
                 }
                 else if($scope.report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise'){
@@ -1041,7 +1041,7 @@
 					    }
 					    else if($scope.report.reportEnum == 'Kilkari_Usage')
 					        $scope.gridOptions1.columnDefs = $scope.Kilkari_Usage_Definitions;
-					    else if($scope.report.reportEnum == 'Kilkari_Aggregate_Beneficiary'){
+					    else if($scope.report.reportEnum == 'Kilkari_Aggregate_Beneficiaries'){
 					        $scope.gridOptions1.columnDefs = $scope.Kilkari_Aggregate_Beneficiaries_Definitions;
 					    }
 					    else if($scope.report.reportEnum == 'Kilkari_Beneficiary_Completion'){
@@ -1830,11 +1830,11 @@
 
             $scope.Kilkari_Thematic_Content_Definitions = [
                                                     // {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
-                                                     { field: 'theme',  cellTooltip: true, name: 'Theme', width:"*", enableHiding: false },
-                                                     { field: 'messageWeekNumber',cellTooltip: true, name: 'Message Number (Week)', width:"*", enableHiding: false },
-                                                     { field: 'uniqueBeneficiariesCalled', name: 'Number of unique beneficiaries called',cellFilter: 'number',  width:"*", enableHiding: false },
-                                                     { field: 'callsAnswered', name: 'Number of calls answered', cellFilter: 'number',  width:"*", enableHiding: false},
-                                                     { field: 'minutesConsumed', name: 'Number of minutes consumed', cellFilter: 'number: 2', width:"*", enableHiding: false }
+                                                     { field: 'theme',  cellTooltip: true, name: 'Theme', width:"*", enableHiding: false,enableSorting: false },
+                                                     { field: 'messageWeekNumber',cellTooltip: true, name: 'Message Number (Week)', width:"*", enableHiding: false,enableSorting: false },
+                                                     { field: 'uniqueBeneficiariesCalled', name: 'Number of unique beneficiaries called',cellFilter: 'number',  width:"*", enableHiding: false,enableSorting: false },
+                                                     { field: 'callsAnswered', name: 'Number of calls answered', cellFilter: 'number',  width:"*", enableHiding: false,enableSorting: false},
+                                                     { field: 'minutesConsumed', name: 'Number of minutes consumed', cellFilter: 'number: 2', width:"*", enableHiding: false,enableSorting: false }
              ]
 
             $scope.Kilkari_RepeatListener_Numberdata_Definitions =[
