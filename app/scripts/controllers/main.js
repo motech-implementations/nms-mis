@@ -118,6 +118,14 @@
 				}
 			};
 
+//			$(window).focus(function() {
+//                //do something
+//                if (document.hasFocus()) {
+//                			location.reload();
+//                			}
+//
+//            });
+
 			$scope.goToLogin = function () {
                 UserFormFactory.downloadCurrentUser().then(function(result){
                     UserFormFactory.setCurrentUser(result.data);
@@ -133,6 +141,7 @@
                 if (!($scope.disableCursor())){
                     $state.go('AboutUs', {pageNum: 1});
                 }
+                $scope.removed();
 
             }
             $scope.goToKilkari = function () {
@@ -143,6 +152,7 @@
                 if (!($scope.disableCursor())){
                     $state.go('AboutKilkari', {pageNum: 1});
                 }
+                $scope.removed();
             }
             $scope.goToMobileA = function () {
                 UserFormFactory.downloadCurrentUser().then(function(result){
@@ -152,6 +162,7 @@
                 if (!($scope.disableCursor())){
                     $state.go('AboutMA', {pageNum: 1});
                 }
+                $scope.removed();
             }
             $scope.goToUserManual = function () {
                 UserFormFactory.downloadCurrentUser().then(function(result){
@@ -161,6 +172,7 @@
                if (!($scope.disableCursor())){
                    $state.go('userManual.websiteInformation', {pageNum: 1});
                }
+               $scope.removed();
 
             }
             $scope.goToFaq = function () {
@@ -171,6 +183,7 @@
                 if (!($scope.disableCursor())){
                     $state.go('faq.faqWebsiteInformation', {pageNum: 1});
                 }
+                $scope.removed();
             }
             $scope.goToContactUs = function () {
                 UserFormFactory.downloadCurrentUser().then(function(result){
@@ -180,6 +193,7 @@
                 if (!($scope.disableCursor())){
                     $state.go('contactUs', {pageNum: 1});
                 }
+                $scope.removed();
             }
             $scope.goToFeedback = function () {
                 UserFormFactory.downloadCurrentUser().then(function(result){
@@ -189,7 +203,7 @@
                    if (!($scope.disableCursor())){
                        $state.go('feedbackForm', {pageNum: 1});
                    }
-
+                $scope.removed();
 
             }
             $scope.goToPrivacyPolicy = function () {
@@ -200,6 +214,7 @@
                 if (!($scope.disableCursor())) {
                     $state.go('PrivacyPolicy', {pageNum: 1});
                 }
+                $scope.removed();
             }
             $scope.goToCopyrightPolicy = function () {
                 UserFormFactory.downloadCurrentUser().then(function(result){
@@ -209,6 +224,7 @@
                 if (!($scope.disableCursor())) {
                     $state.go('CopyrightPolicy', {pageNum: 1});
                 }
+                $scope.removed();
             }
             $scope.goToTandC = function () {
                 UserFormFactory.downloadCurrentUser().then(function(result){
@@ -218,7 +234,7 @@
 			    if (!($scope.disableCursor())){
                     $state.go('TandC', {pageNum: 1});
                 }
-
+            $scope.removed();
             }
             $scope.goToHLPolicy = function () {
                 UserFormFactory.downloadCurrentUser().then(function(result){
@@ -228,6 +244,7 @@
                 if (!($scope.disableCursor())) {
                     $state.go('HLPolicy', {pageNum: 1});
                 }
+                $scope.removed();
             }
             $scope.goToDisclaimer = function () {
                 UserFormFactory.downloadCurrentUser().then(function(result){
@@ -237,6 +254,7 @@
                 if (!($scope.disableCursor())) {
                     $state.go('Disclaimer', {pageNum: 1});
                 }
+                $scope.removed();
             }
             $scope.goToHelp = function () {
                 UserFormFactory.downloadCurrentUser().then(function(result){
@@ -246,6 +264,7 @@
                 if (!($scope.disableCursor())) {
                     $state.go('Help', {pageNum: 1});
                 }
+                $scope.removed();
             }
             $scope.goToSitemap = function () {
                 UserFormFactory.downloadCurrentUser().then(function(result){
@@ -255,6 +274,7 @@
                 if (!($scope.disableCursor())) {
                     $state.go('sitemap', {pageNum: 1});
                 }
+                $scope.removed();
             }
 
             $scope.hovered = function () {
@@ -275,6 +295,7 @@
                 if ($state.current.name !== 'reports') {
                     $state.go('reports', {pageNum: 1});
                 };
+                $scope.removed();
             };
 
 			$scope.goToUserTable = function() {
@@ -288,6 +309,7 @@
                 if ($state.current.name !== 'userManagement.userTable') {
                     $state.go('userManagement.userTable', {pageNum: 1});
                 }
+                $scope.removed();
 			};
 
 
@@ -303,12 +325,13 @@
                     $state.go('profile', {pageNum: 1});
                     $scope.show = false;
                  };
+                 $scope.removed();
             			};
             $scope.goToLogout = function () {
 
                 UserFormFactory.logoutUser().then(function(result){
                     if(result.data){
-
+                        window.localStorage.setItem('logged_in', false);
                         UserFormFactory.downloadCurrentUser().then(function(result){
                             UserFormFactory.setCurrentUser(result.data);
                             $scope.currentUser = UserFormFactory.getCurrentUser();
@@ -320,6 +343,17 @@
 
 
             };
+
+
+            function storageChange (event) {
+                if(event.key === 'logged_in') {
+                    //alert('Logged in: ' + event.newValue);
+                    $state.go('login');
+                }
+                window.localStorage.setItem('logged_in', true);
+            }
+            window.addEventListener('storage', storageChange, false)
+
             $scope.goToChangePassword = function() {
                     delete $localStorage.filter;
                 UserFormFactory.downloadCurrentUser().then(function(result){
@@ -332,6 +366,7 @@
                         $state.go('changePassword', {pageNum: 1});
                         $scope.show = false;
                     }
+                    $scope.removed();
             };
 
 			$scope.activeTab = function(tabName){

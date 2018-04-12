@@ -1318,7 +1318,7 @@ Use of this source code is governed by an MIT-style license that can be foundin 
 }
 
 .contactPageHeading th:nth-child(2){
-    width: 86%;
+    width: 87%;
 }
 
 .contactPageHeading h2{
@@ -1408,13 +1408,13 @@ input[type=number]::-webkit-outer-spin-button {
     position: relative;
     display: inline-block;
     z-index: 3;
-    top: -25px;
+    top: -26.5px;
     left: 8px;
     color: #000000;
-    font-size: 17px;
+    font-size: 12px;
     }
 .fake-input input {
-    padding-left:36px !important;
+    padding-left:30px !important;
     width: 220px;
     }
 
