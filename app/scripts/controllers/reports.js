@@ -1443,13 +1443,6 @@
             };
 
             $window.addEventListener('click', function() {
-
-//                return	UserFormFactory.isLoggedIn()
-//                   .then(function(result){
-//                    if(!result.data){
-//                              alert("Session Timed out...Please Login Again")
-//                                $window.location.href= backend_root+"nms/logout";
-//                   }})
               if($scope.sundaysTable)
                 $scope.sundaysTable = false;
             });
