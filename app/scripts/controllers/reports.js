@@ -1647,14 +1647,14 @@
                                                          cellTemplate:'<a   ng-if= !row.entity.link class="btn aggregate-location" title="{{COL_FIELD}}"  ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a><p ng-if= row.entity.link class="ui-grid-cell-contents" title="{{COL_FIELD}}" >{{ COL_FIELD }}</p>',
                                                          width: '12%', enableHiding: false,
                                                        },
-                                                       { field: 'ashasRegistered', displayName : 'No of Registered ASHA',cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
-                                                       { field: 'ashasStarted', displayName : ' No of ASHA Started Course',cellFilter: 'number',footerCellFilter: 'number',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
-                                                       { field: 'ashasNotStarted', displayName : ' No of ASHA Not Started Course',cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
-                                                       { field: 'ashasCompleted' , displayName : 'No of ASHA Successfully Completed the Course',cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"13%", enableHiding: false},
-                                                       { field: 'ashasFailed' , displayName : 'No of ASHA who failed the course',cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
-                                                       { field: 'notStartedpercentage' , displayName : '% Not Started Course',cellFilter: 'number: 2', footerCellTemplate: '<div class="ui-grid-cell-contents" >{{grid.columns[2].getAggregationValue()==0 ? 0.00:(grid.columns[4].getAggregationValue()/grid.columns[2].getAggregationValue()) *100 | number:2}}</div>', width:"*", enableHiding: false},
-                                                       { field: 'completedPercentage' , displayName : '% Successfully Completed',cellFilter: 'number: 2', footerCellTemplate: '<div class="ui-grid-cell-contents" >{{grid.columns[3].getAggregationValue()==0 ? 0.00:(grid.columns[5].getAggregationValue()/grid.columns[3].getAggregationValue())*100 | number:2}}</div>', width:"*", enableHiding: false},
-                                                       { field: 'failedpercentage' , displayName : '% Failed the course',cellFilter: 'number: 2', footerCellTemplate: '<div class="ui-grid-cell-contents" >{{grid.columns[3].getAggregationValue()==0 ? 0.00:(grid.columns[6].getAggregationValue()/grid.columns[3].getAggregationValue()) *100 | number:2}}</div>', width:"*", enableHiding: false},
+                                                       { field: 'ashasRegistered', displayName : 'No of Registered ASHA',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',culture:'en-IN', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                       { field: 'ashasStarted', displayName : ' No of ASHA Started Course',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                       { field: 'ashasNotStarted', displayName : ' No of ASHA Not Started Course',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                       { field: 'ashasCompleted' , displayName : 'No of ASHA Successfully Completed the Course',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"13%", enableHiding: false},
+                                                       { field: 'ashasFailed' , displayName : 'No of ASHA who failed the course',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                       { field: 'notStartedpercentage' , displayName : '% Not Started Course',cellFilter: 'indianDecimalFilter', culture:'en-IN',footerCellTemplate: '<div class="ui-grid-cell-contents" >{{grid.columns[2].getAggregationValue()==0 ? 0.00:(grid.columns[4].getAggregationValue()/grid.columns[2].getAggregationValue()) *100 | number:2}}</div>', width:"*", enableHiding: false},
+                                                       { field: 'completedPercentage' , displayName : '% Successfully Completed',cellFilter: 'indianDecimalFilter', footerCellTemplate: '<div class="ui-grid-cell-contents" >{{grid.columns[3].getAggregationValue()==0 ? 0.00:(grid.columns[5].getAggregationValue()/grid.columns[3].getAggregationValue())*100 | number:2}}</div>', width:"*", enableHiding: false},
+                                                       { field: 'failedpercentage' , displayName : '% Failed the course',cellFilter: 'indianDecimalFilter', footerCellTemplate: '<div class="ui-grid-cell-contents" >{{grid.columns[3].getAggregationValue()==0 ? 0.00:(grid.columns[6].getAggregationValue()/grid.columns[3].getAggregationValue()) *100 | number:2}}</div>', width:"*", enableHiding: false},
                                                      ],
 
 
@@ -1665,11 +1665,11 @@
                                                             enableHiding: false, width:"12%",
 
                                                          },
-                                                         { field: 'ashasStarted', displayName: 'Number of ASHA Started Course',cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*",enableHiding: false },
-                                                         { field: 'ashasAccessed', displayName: 'Number of ASHA Pursuing Course',cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                         { field: 'ashasNotAccessed', displayName: 'Number of ASHA not Pursuing Course',cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
-                                                         { field: 'ashasCompleted', displayName: 'Number of ASHA Successfully Completed Course',cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"18%",enableHiding: false},
-                                                         { field: 'ashasFailed',  displayName: 'Number of ASHA who Failed the Course',cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                         { field: 'ashasStarted', displayName: 'Number of ASHA Started Course',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*",enableHiding: false },
+                                                         { field: 'ashasAccessed', displayName: 'Number of ASHA Pursuing Course',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                         { field: 'ashasNotAccessed', displayName: 'Number of ASHA not Pursuing Course',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                         { field: 'ashasCompleted', displayName: 'Number of ASHA Successfully Completed Course',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"18%",enableHiding: false},
+                                                         { field: 'ashasFailed',  displayName: 'Number of ASHA who Failed the Course',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
                                                         ],
 
             $scope.MA_Subscriber_Column_Definitions =[
@@ -1679,12 +1679,12 @@
                                                             enableHiding: false,width:"14%",
 
                                                          },
-                                                         { field: 'registeredNotCompletedStart', displayName: 'Number of ASHA Registered But Not Completed the Course(Period Start)',cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"16%", enableHiding: false },
-                                                         { field: 'recordsReceived', displayName: 'Number of ASHA Records Received Through Web Service',cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                         { field: 'ashasRejected', displayName: 'Number of ASHA Records Rejected',cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
-                                                         { field: 'ashasRegistered', displayName: 'Number of ASHA Subscriptions Added',cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
-                                                         { field: 'ashasCompleted',  displayName: 'Number of ASHA Successfully Completed the Course',cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
-                                                         { field: 'registeredNotCompletedend',  displayName: 'Number of ASHA Registered But Not Completed the Course (Period End)',cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"16%", enableHiding: false},
+                                                         { field: 'registeredNotCompletedStart', displayName: 'Number of ASHA Registered But Not Completed the Course(Period Start)',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"16%", enableHiding: false },
+                                                         { field: 'recordsReceived', displayName: 'Number of ASHA Records Received Through Web Service',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                         { field: 'ashasRejected', displayName: 'Number of ASHA Records Rejected',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                         { field: 'ashasRegistered', displayName: 'Number of ASHA Subscriptions Added',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                         { field: 'ashasCompleted',  displayName: 'Number of ASHA Successfully Completed the Course',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                         { field: 'registeredNotCompletedend',  displayName: 'Number of ASHA Registered But Not Completed the Course (Period End)',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"16%", enableHiding: false},
                                                         ],
 
             $scope.Kilkari_Cumulative_Summary_Definitions =[
@@ -1693,10 +1693,10 @@
                                                                 cellTemplate:'<a   ng-if= !row.entity.link class="btn aggregate-location" title="{{COL_FIELD}}"  ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a><p ng-if= row.entity.link class="ui-grid-cell-contents" title="{{COL_FIELD}}" >{{ COL_FIELD }}</p>',
                                                                 enableHiding: false, width:"*",
                                                              },
-                                                             { field: 'uniqueBeneficiaries', name: 'Total unique beneficiaries',cellFilter: 'number',footerCellFilter: 'number',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                             { field: 'successfulCalls', name: 'Total successful calls',cellFilter: 'number',footerCellFilter: 'number',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                             { field: 'billableMinutes',cellFilter: 'number: 2', name: 'Total billable minutes played', footerCellFilter: 'number:2',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
-                                                             { field: 'averageDuration',cellFilter: 'number: 2', name: 'Average duration of call', footerCellTemplate: '<div class="ui-grid-cell-contents" >{{grid.columns[3].getAggregationValue()==0 ? 0.00 : grid.columns[4].getAggregationValue()/grid.columns[3].getAggregationValue() | number:2}}</div>',   width:"*", enableHiding: false},
+                                                             { field: 'uniqueBeneficiaries', name: 'Total unique beneficiaries',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                             { field: 'successfulCalls', name: 'Total successful calls',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                             { field: 'billableMinutes',cellFilter: 'indianDecimalFilter', name: 'Total billable minutes played', footerCellFilter: 'number:2',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
+                                                             { field: 'averageDuration',cellFilter: 'indianDecimalFilter', name: 'Average duration of call', footerCellTemplate: '<div class="ui-grid-cell-contents" >{{grid.columns[3].getAggregationValue()==0 ? 0.00 : grid.columns[4].getAggregationValue()/grid.columns[3].getAggregationValue() | number:2}}</div>',   width:"*", enableHiding: false},
 
             ]
 
@@ -1706,13 +1706,13 @@
                                                     cellTemplate:'<a   ng-if= !row.entity.link class="btn aggregate-location" title="{{COL_FIELD}}"  ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a><p ng-if= row.entity.link class="ui-grid-cell-contents" title="{{COL_FIELD}}" >{{ COL_FIELD }}</p>',
                                                     enableHiding: false, width:"*",
                                                  },
-                                                 { field: 'beneficiariesCalled', name: 'Total beneficiaries Called',cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                 { field: 'answeredCall', name: 'Beneficiaries who have answered at least one call',cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                 { field: 'calls_75_100', name: 'Beneficiaries who have listened more than 75% content (avg)',cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
-                                                 { field: 'calls_50_75', name: 'Beneficiaries who have listened 50 to 75% content (avg)',cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
-                                                 { field: 'calls_25_50', name: 'Beneficiaries who have listened 25 to 50% content (avg)',cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
-                                                 { field: 'calls_1_25', name: 'Beneficiaries who have listened less than 25% content (avg)',cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                 { field: 'calledInbox', name: 'Beneficiaries who have called the Kilkari Inbox', width:"*",cellFilter: 'number',footerCellFilter: 'number',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, enableHiding: false},
+                                                 { field: 'beneficiariesCalled', name: 'Total beneficiaries Called',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                 { field: 'answeredCall', name: 'Beneficiaries who have answered at least one call',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                 { field: 'calls_75_100', name: 'Beneficiaries who have listened more than 75% content (avg)',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
+                                                 { field: 'calls_50_75', name: 'Beneficiaries who have listened 50 to 75% content (avg)',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
+                                                 { field: 'calls_25_50', name: 'Beneficiaries who have listened 25 to 50% content (avg)',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
+                                                 { field: 'calls_1_25', name: 'Beneficiaries who have listened less than 25% content (avg)',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                 { field: 'calledInbox', name: 'Beneficiaries who have called the Kilkari Inbox', width:"*",cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, enableHiding: false},
 
             ]
 
@@ -1722,16 +1722,16 @@
                                                         cellTemplate:'<a   ng-if= !row.entity.link class="btn aggregate-location" title="{{COL_FIELD}}"  ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a><p ng-if= row.entity.link class="ui-grid-cell-contents" title="{{COL_FIELD}}" >{{ COL_FIELD }}</p>',
                                                         enableHiding: false, width:"10%"
                                                      },
-                                                     { field: 'beneficiariesCalled', name: 'Total beneficiaries Called',cellFilter: 'number',footerCellFilter: 'number',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'answeredAtleastOneCall', name: 'Beneficiaries who have answered at least one call',cellFilter: 'number',footerCellFilter: 'number',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'selfDeactivated', name: 'Beneficiaries who have self-deactivated',cellFilter: 'number',footerCellFilter: 'number',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
-                                                     { field: 'notAnswering', name: 'Beneficiaries deactivated for not answering',cellFilter: 'number',footerCellFilter: 'number',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                     { field: 'beneficiariesCalled', name: 'Total beneficiaries Called',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'answeredAtleastOneCall', name: 'Beneficiaries who have answered at least one call',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'selfDeactivated', name: 'Beneficiaries who have self-deactivated',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
+                                                     { field: 'notAnswering', name: 'Beneficiaries deactivated for not answering',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
                                                      { field: 'lowListenership', name: 'Beneficiaries deactivated for low listenership',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
-                                                     { field: 'systemDeactivation', displayName: 'Beneficiaries deactivated by system through MCTS/RCH updates', cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"11%", enableHiding: false },
-                                                     { field: 'motherCompletion', name: 'Beneficiaries completed Mother Pack',cellFilter: 'number',footerCellFilter: 'number',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
-                                                     { field: 'childCompletion', name: 'Beneficiaries completed Child Pack',cellFilter: 'number',footerCellFilter: 'number',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
-                                                     { field: 'calledInbox', name: 'Beneficiaries who have called the Kilkari Inbox',cellFilter: 'number',footerCellFilter: 'number',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'joinedSubscription', name: 'Beneficiaries who have joined the subscription',cellFilter: 'number',footerCellFilter: 'number',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                     { field: 'systemDeactivation', displayName: 'Beneficiaries deactivated by system through MCTS/RCH updates', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"11%", enableHiding: false },
+                                                     { field: 'motherCompletion', name: 'Beneficiaries completed Mother Pack',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
+                                                     { field: 'childCompletion', name: 'Beneficiaries completed Child Pack',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                     { field: 'calledInbox', name: 'Beneficiaries who have called the Kilkari Inbox',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'joinedSubscription', name: 'Beneficiaries who have joined the subscription',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
 
             ]
 
@@ -1741,22 +1741,22 @@
                                                         cellTemplate:'<a   ng-if= !row.entity.link class="btn aggregate-location" title="{{COL_FIELD}}"  ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a><p ng-if= row.entity.link class="ui-grid-cell-contents" title="{{COL_FIELD}}" >{{ COL_FIELD }}</p>',
                                                         enableHiding: false, width:"12%"
                                                      },
-                                                     { field: 'completedBeneficiaries', name: 'Total beneficiaries Completed Program',cellFilter: 'number',footerCellFilter: 'number',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'avgWeeks', name: 'Average Number of Weeks in Service',cellFilter: 'number: 2', footerCellFilter: 'number:2', aggregationType: uiGridConstants.aggregationTypes.avg, aggregationHideLabel: true,  aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'calls_75_100', name: 'Beneficiaries who have listened more than 75% content (consolidated)',cellFilter: 'number',footerCellFilter: 'number',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'calls_50_75', name: 'Beneficiaries who have listened 50 to 75% content (consolidated)',cellFilter: 'number',footerCellFilter: 'number',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
-                                                     { field: 'calls_25_50', name: 'Beneficiaries who have listened 25 to 50% content (consolidated)',cellFilter: 'number',footerCellFilter: 'number',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'calls_1_25', name: 'Beneficiaries who have listened less than 25% content (consolidated)',cellFilter: 'number',footerCellFilter: 'number',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
+                                                     { field: 'completedBeneficiaries', name: 'Total beneficiaries Completed Program',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'avgWeeks', name: 'Average Number of Weeks in Service',cellFilter: 'indianDecimalFilter', footerCellFilter: 'number:2', aggregationType: uiGridConstants.aggregationTypes.avg, aggregationHideLabel: true,  aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'calls_75_100', name: 'Beneficiaries who have listened more than 75% content (consolidated)',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'calls_50_75', name: 'Beneficiaries who have listened 50 to 75% content (consolidated)',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                     { field: 'calls_25_50', name: 'Beneficiaries who have listened 25 to 50% content (consolidated)',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'calls_1_25', name: 'Beneficiaries who have listened less than 25% content (consolidated)',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
 
             ]
 
             $scope.Kilkari_Listening_Matrix_Definitions =[
                                                      { field: 'percentageCalls', name: 'Listening Percentage', enableSorting: false,width:"30%", enableHiding: false },
-                                                     { field: 'content_75_100', name: 'Listening > 75 % content',cellFilter: 'number',footerCellFilter: 'number', enableSorting: false,width:"*", enableHiding: false},
-                                                     { field: 'content_50_75', name: 'Listening 50 to 75 % content',cellFilter: 'number',footerCellFilter: 'number',enableSorting: false,width:"*", enableHiding: false },
-                                                     { field: 'content_25_50', name: 'Listening 25 to 50 % content', cellFilter: 'number',footerCellFilter: 'number',enableSorting: false,width:"*", enableHiding: false },
-                                                     { field: 'content_1_25', name: 'Listening < 25 % content',cellFilter: 'number',footerCellFilter: 'number',enableSorting: false,width:"*", enableHiding: false },
-                                                     { field: 'total', name: 'Total',cellFilter: 'number',footerCellFilter: 'number', enableSorting: false,width:"10%", enableHiding: false },
+                                                     { field: 'content_75_100', name: 'Listening > 75 % content',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', enableSorting: false,width:"*", enableHiding: false},
+                                                     { field: 'content_50_75', name: 'Listening 50 to 75 % content',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',enableSorting: false,width:"*", enableHiding: false },
+                                                     { field: 'content_25_50', name: 'Listening 25 to 50 % content', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',enableSorting: false,width:"*", enableHiding: false },
+                                                     { field: 'content_1_25', name: 'Listening < 25 % content',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',enableSorting: false,width:"*", enableHiding: false },
+                                                     { field: 'total', name: 'Total',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', enableSorting: false,width:"10%", enableHiding: false },
 
             ]
 
@@ -1766,34 +1766,34 @@
                                                         cellTemplate:'<a   ng-if= !row.entity.link class="btn aggregate-location" title="{{COL_FIELD}}"  ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a><p ng-if= row.entity.link class="ui-grid-cell-contents" title="{{COL_FIELD}}" >{{ COL_FIELD }}</p>',
                                                         enableHiding: false, width:"12%"
                                                      },
-                                                     { field: 'callsAttempted', name: 'Total Calls Attempted',cellFilter: 'number',footerCellFilter: 'number',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'successfulCalls', name: 'Total Number of Successful Calls',cellFilter: 'number',footerCellFilter: 'number',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
-                                                     { field: 'content_75_100', name: 'Total calls where > 75% content listened to',cellFilter: 'number',footerCellFilter: 'number',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
-                                                     { field: 'content_50_75', name: 'Total calls where 50% to 75% content listened to',cellFilter: 'number',footerCellFilter: 'number',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
-                                                     { field: 'content_25_50', name: 'Total calls where 25% to 50% content listened to',cellFilter: 'number',footerCellFilter: 'number',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'content_1_25', name: 'Total calls where < 25%  content listened to',cellFilter: 'number',footerCellFilter: 'number',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'billableMinutes', name: 'Total Billable minutes',cellFilter: 'number: 2',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, footerCellFilter: 'number:2', width:"*", enableHiding: false },
-                                                     { field: 'avgDuration', name: 'Average Duration of Calls',cellFilter: 'number: 2',footerCellTemplate: '<div class="ui-grid-cell-contents" >{{(grid.columns[3].getAggregationValue()==0)?0.00: grid.columns[8].getAggregationValue()/grid.columns[3].getAggregationValue() | number:2}}</div>', width:"*", enableHiding: false},
-                                                     { field: 'callsToInbox', name: 'Total number of calls to inbox where content is played',cellFilter: 'number',footerCellFilter: 'number',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
+                                                     { field: 'callsAttempted', name: 'Total Calls Attempted',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'successfulCalls', name: 'Total Number of Successful Calls',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
+                                                     { field: 'content_75_100', name: 'Total calls where > 75% content listened to',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
+                                                     { field: 'content_50_75', name: 'Total calls where 50% to 75% content listened to',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
+                                                     { field: 'content_25_50', name: 'Total calls where 25% to 50% content listened to',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'content_1_25', name: 'Total calls where < 25%  content listened to',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'billableMinutes', name: 'Total Billable minutes',cellFilter: 'indianDecimalFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, footerCellFilter: 'indianDecimalFilter', width:"*", enableHiding: false },
+                                                     { field: 'avgDuration', name: 'Average Duration of Calls',cellFilter: 'indianDecimalFilter',footerCellTemplate: '<div class="ui-grid-cell-contents" >{{(grid.columns[3].getAggregationValue()==0)?0.00: grid.columns[8].getAggregationValue()/grid.columns[3].getAggregationValue() | number:2}}</div>', width:"*", enableHiding: false},
+                                                     { field: 'callsToInbox', name: 'Total number of calls to inbox where content is played',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
             ]
 
             $scope.Kilkari_Message_Matrix_Motherpack_Definitions =[
                                                      { field: 'messageWeek', name: 'Message Week',enableSorting: false,width:"*", enableHiding: false },
-                                                     { field: 'content_75_100', name: 'Beneficiaries listened > 75% content',cellFilter: 'number',footerCellFilter: 'number', enableSorting: false,width:"*", enableHiding: false},
-                                                     { field: 'content_50_75', name: 'Beneficiaries listened 50 to 75% content',cellFilter: 'number',footerCellFilter: 'number', enableSorting: false,width:"*", enableHiding: false},
-                                                     { field: 'content_25_50', name: 'Beneficiaries listened 25 to 50% content',cellFilter: 'number',footerCellFilter: 'number',enableSorting: false,width:"*", enableHiding: false },
-                                                     { field: 'content_1_25', name: 'Beneficiaries listened < 25 % content',cellFilter: 'number',footerCellFilter: 'number',enableSorting: false,width:"*", enableHiding: false },
-                                                     //{ field: 'total', name: 'Total', enableSorting: false,width:"*",cellFilter: 'number',footerCellFilter: 'number', enableHiding: false },
+                                                     { field: 'content_75_100', name: 'Beneficiaries listened > 75% content',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', enableSorting: false,width:"*", enableHiding: false},
+                                                     { field: 'content_50_75', name: 'Beneficiaries listened 50 to 75% content',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', enableSorting: false,width:"*", enableHiding: false},
+                                                     { field: 'content_25_50', name: 'Beneficiaries listened 25 to 50% content',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',enableSorting: false,width:"*", enableHiding: false },
+                                                     { field: 'content_1_25', name: 'Beneficiaries listened < 25 % content',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',enableSorting: false,width:"*", enableHiding: false },
+                                                     //{ field: 'total', name: 'Total', enableSorting: false,width:"*",cellFilter: 'indianFilter,footerCellFilter: 'indianFilter, enableHiding: false },
 
             ]
 
             $scope.Kilkari_Message_Matrix_Childpack_Definitions =[
                                                      { field: 'messageWeek', name: 'Message Week',enableSorting: false,width:"*", enableHiding: false },
-                                                     { field: 'content_75_100', name: 'Beneficiaries listened > 75% content',cellFilter: 'number',footerCellFilter: 'number', enableSorting: false,width:"*", enableHiding: false},
-                                                     { field: 'content_50_75', name: 'Beneficiaries listened 50 to 75% content',cellFilter: 'number',footerCellFilter: 'number',enableSorting: false, width:"*", enableHiding: false},
-                                                     { field: 'content_25_50', name: 'Beneficiaries listened 25 to 50% content',cellFilter: 'number',footerCellFilter: 'number',enableSorting: false,width:"*", enableHiding: false },
-                                                     { field: 'content_1_25', name: 'Beneficiaries listened < 25 % content',cellFilter: 'number',footerCellFilter: 'number',enableSorting: false,width:"*", enableHiding: false },
-                                                     //{ field: 'total', name: 'Total', enableSorting: false,width:"*",cellFilter: 'number',footerCellFilter: 'number', enableHiding: false },
+                                                     { field: 'content_75_100', name: 'Beneficiaries listened > 75% content',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', enableSorting: false,width:"*", enableHiding: false},
+                                                     { field: 'content_50_75', name: 'Beneficiaries listened 50 to 75% content',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',enableSorting: false, width:"*", enableHiding: false},
+                                                     { field: 'content_25_50', name: 'Beneficiaries listened 25 to 50% content',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',enableSorting: false,width:"*", enableHiding: false },
+                                                     { field: 'content_1_25', name: 'Beneficiaries listened < 25 % content',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',enableSorting: false,width:"*", enableHiding: false },
+                                                     //{ field: 'total', name: 'Total', enableSorting: false,width:"*",cellFilter: 'indianFilter,footerCellFilter: 'indianFilter, enableHiding: false },
 
             ]
 
@@ -1803,13 +1803,13 @@
                                                         cellTemplate:'<a   ng-if= !row.entity.link class="btn aggregate-location" title="{{COL_FIELD}}"  ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a><p ng-if= row.entity.link class="ui-grid-cell-contents" title="{{COL_FIELD}}" >{{ COL_FIELD }}</p>',
                                                         enableHiding: false, width:"12%"
                                                      },
-                                                     { field: 'totalBeneficiariesCalled', name: 'Total beneficiaries Called',cellFilter: 'number',footerCellFilter: 'number',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'beneficiariesAnsweredAtleastOnce', name: 'Beneficiaries who have answered at least one call',cellFilter: 'number',footerCellFilter: 'number',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'beneficiariesAnsweredMoreThan75', name: 'Beneficiaries who have answered more than 75% calls',cellFilter: 'number',footerCellFilter: 'number',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'beneficiariesAnswered50To75', name: 'Beneficiaries who have answered 50 to 75% calls', cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
-                                                     { field: 'beneficiariesAnswered25To50', name: 'Beneficiaries who have answered 25 to 50% calls', cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'beneficiariesAnswered1To25', name: 'Beneficiaries who have answered less than 25% calls', cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'beneficiariesAnsweredNoCalls', name: 'Beneficiaries who have not answered any calls', cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'totalBeneficiariesCalled', name: 'Total beneficiaries Called',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'beneficiariesAnsweredAtleastOnce', name: 'Beneficiaries who have answered at least one call',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'beneficiariesAnsweredMoreThan75', name: 'Beneficiaries who have answered more than 75% calls',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'beneficiariesAnswered50To75', name: 'Beneficiaries who have answered 50 to 75% calls', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                     { field: 'beneficiariesAnswered25To50', name: 'Beneficiaries who have answered 25 to 50% calls', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'beneficiariesAnswered1To25', name: 'Beneficiaries who have answered less than 25% calls', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'beneficiariesAnsweredNoCalls', name: 'Beneficiaries who have not answered any calls', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
             ]
 
             if(!rejectionStart){$scope.Kilkari_Subscriber_Definitions = [
@@ -1818,13 +1818,13 @@
                                                         cellTemplate:'<a   ng-if= !row.entity.link class="btn aggregate-location" title="{{COL_FIELD}}"  ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a><p ng-if= row.entity.link class="ui-grid-cell-contents" title="{{COL_FIELD}}" >{{ COL_FIELD }}</p>',
                                                         enableHiding: false,width:"10%"
                                                      },
-                                                     { field: 'totalSubscriptionsStart', name: 'Total Subscription at the start of the period', cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"12%", enableHiding: false },
-                                                     { field: 'totalBeneficiaryRecordsReceived', displayName: 'Total beneficiary Records Received from RCH/MCTS', cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'totalBeneficiaryRecordsEligible', name: 'Total beneficiary Records Found Eligible for Subscriptions', cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'totalSubscriptionsStart', name: 'Total Subscription at the start of the period', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"12%", enableHiding: false },
+                                                     { field: 'totalBeneficiaryRecordsReceived', displayName: 'Total beneficiary Records Received from RCH/MCTS', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'totalBeneficiaryRecordsEligible', name: 'Total beneficiary Records Found Eligible for Subscriptions', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                      { field: 'totalRecordsRejected', name: 'Total beneficiary records rejected',cellTemplate:'<p class="ui-grid-cell-contents">N/A</p>',footerCellTemplate:'<p class="ui-grid-cell-contents">N/A</p>', aggregationHideLabel: true, width:"12%", enableHiding: false},
-                                                     { field: 'totalBeneficiaryRecordsAccepted', name: 'Total beneficiary Records accepted As Subscriptions', cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'totalSubscriptionsCompleted', name: 'Total number of subscriptions who have completed their packs', cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'totalSubscriptionsEnd', name: 'Total Subscription at the end of the period', width:"10%", cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, enableHiding: false },
+                                                     { field: 'totalBeneficiaryRecordsAccepted', name: 'Total beneficiary Records accepted As Subscriptions', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'totalSubscriptionsCompleted', name: 'Total number of subscriptions who have completed their packs', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'totalSubscriptionsEnd', name: 'Total Subscription at the end of the period', width:"10%", cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, enableHiding: false },
             ]}else{
             $scope.Kilkari_Subscriber_Definitions = [
                                                      {name: 'S No.', displayName: 'S No.',width:"4%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
@@ -1832,13 +1832,13 @@
                                                         cellTemplate:'<a   ng-if= !row.entity.link class="btn aggregate-location" title="{{COL_FIELD}}"  ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a><p ng-if= row.entity.link class="ui-grid-cell-contents" title="{{COL_FIELD}}" >{{ COL_FIELD }}</p>',
                                                         enableHiding: false,width:"10%"
                                                      },
-                                                     { field: 'totalSubscriptionsStart', name: 'Total Subscription at the start of the period', cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"12%", enableHiding: false },
-                                                     { field: 'totalBeneficiaryRecordsReceived', displayName: 'Total beneficiary Records Received from RCH/MCTS', cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'totalBeneficiaryRecordsEligible', name: 'Total beneficiary Records Found Eligible for Subscriptions', cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'totalRecordsRejected', name: 'Total beneficiary records rejected',cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"12%", enableHiding: false},
-                                                     { field: 'totalBeneficiaryRecordsAccepted', name: 'Total beneficiary Records accepted As Subscriptions', cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'totalSubscriptionsCompleted', name: 'Total number of subscriptions who have completed their packs', cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'totalSubscriptionsEnd', name: 'Total Subscription at the end of the period', width:"10%", cellFilter: 'number',footerCellFilter: 'number', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, enableHiding: false },
+                                                     { field: 'totalSubscriptionsStart', name: 'Total Subscription at the start of the period', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"12%", enableHiding: false },
+                                                     { field: 'totalBeneficiaryRecordsReceived', displayName: 'Total beneficiary Records Received from RCH/MCTS', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'totalBeneficiaryRecordsEligible', name: 'Total beneficiary Records Found Eligible for Subscriptions', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'totalRecordsRejected', name: 'Total beneficiary records rejected',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"12%", enableHiding: false},
+                                                     { field: 'totalBeneficiaryRecordsAccepted', name: 'Total beneficiary Records accepted As Subscriptions', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'totalSubscriptionsCompleted', name: 'Total number of subscriptions who have completed their packs', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'totalSubscriptionsEnd', name: 'Total Subscription at the end of the period', width:"10%", cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, enableHiding: false },
             ]
             }
 
@@ -1846,33 +1846,33 @@
                                                     // {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
                                                      { field: 'theme',  cellTooltip: true, name: 'Theme', width:"*", enableHiding: false,enableSorting: false },
                                                      { field: 'messageWeekNumber',cellTooltip: true, name: 'Message Number (Week)', width:"*", enableHiding: false,enableSorting: false },
-                                                     { field: 'uniqueBeneficiariesCalled', name: 'Number of unique beneficiaries called',cellFilter: 'number',  width:"*", enableHiding: false,enableSorting: false },
-                                                     { field: 'callsAnswered', name: 'Number of calls answered', cellFilter: 'number',  width:"*", enableHiding: false,enableSorting: false},
-                                                     { field: 'minutesConsumed', name: 'Number of minutes consumed', cellFilter: 'number: 2', width:"*", enableHiding: false,enableSorting: false }
+                                                     { field: 'uniqueBeneficiariesCalled', name: 'Number of unique beneficiaries called',cellFilter: 'indianFilter',  width:"*", enableHiding: false,enableSorting: false },
+                                                     { field: 'callsAnswered', name: 'Number of calls answered', cellFilter: 'indianFilter',  width:"*", enableHiding: false,enableSorting: false},
+                                                     { field: 'minutesConsumed', name: 'Number of minutes consumed', cellFilter: 'indianDecimalFilter', width:"*", enableHiding: false,enableSorting: false }
              ]
 
             $scope.Kilkari_RepeatListener_Numberdata_Definitions =[
                                                      { field: 'month', enableSorting: false,name: 'Month',width:"*", enableHiding: false },
-                                                     { field: 'moreThanFiveCallsAnswered',enableSorting: false, name: 'more than 5 calls answered',cellFilter: 'number', width:"*", enableHiding: false},
-                                                     { field: 'fiveCallsAnswered',enableSorting: false, name: '5 calls answered',cellFilter: 'number', width:"*", enableHiding: false},
-                                                     { field: 'fourCallsAnswered',enableSorting: false, name: '4 calls answered',cellFilter: 'number', width:"*", enableHiding: false},
-                                                     { field: 'threeCallsAnswered', enableSorting: false,name: '3 calls answered',cellFilter: 'number',width:"*", enableHiding: false },
-                                                     { field: 'twoCallsAnswered', enableSorting: false,name: '2 calls answered',cellFilter: 'number',width:"*", enableHiding: false },
-                                                     { field: 'oneCallAnswered', enableSorting: false,name: '1 call answered',cellFilter: 'number',width:"*", enableHiding: false },
-                                                     { field: 'noCallsAnswered', enableSorting: false,name: '0 call answered',cellFilter: 'number',width:"*", enableHiding: false },
-                                                     { field: 'total', enableSorting: false,name: 'Total',cellFilter: 'number',width:"*", enableHiding: false },
+                                                     { field: 'moreThanFiveCallsAnswered',enableSorting: false, name: 'more than 5 calls answered',cellFilter: 'indianFilter', width:"*", enableHiding: false},
+                                                     { field: 'fiveCallsAnswered',enableSorting: false, name: '5 calls answered',cellFilter: 'indianFilter', width:"*", enableHiding: false},
+                                                     { field: 'fourCallsAnswered',enableSorting: false, name: '4 calls answered',cellFilter: 'indianFilter', width:"*", enableHiding: false},
+                                                     { field: 'threeCallsAnswered', enableSorting: false,name: '3 calls answered',cellFilter: 'indianFilter',width:"*", enableHiding: false },
+                                                     { field: 'twoCallsAnswered', enableSorting: false,name: '2 calls answered',cellFilter: 'indianFilter',width:"*", enableHiding: false },
+                                                     { field: 'oneCallAnswered', enableSorting: false,name: '1 call answered',cellFilter: 'indianFilter',width:"*", enableHiding: false },
+                                                     { field: 'noCallsAnswered', enableSorting: false,name: '0 call answered',cellFilter: 'indianFilter',width:"*", enableHiding: false },
+                                                     { field: 'total', enableSorting: false,name: 'Total',cellFilter: 'indianFilter',width:"*", enableHiding: false },
 
             ]
 
             $scope.Kilkari_RepeatListener_Percentdata_Definitions =[
                                                      { field: 'month', enableSorting: false,name: 'Month',width:"*", enableHiding: false },
-                                                     { field: 'moreThanFiveCallsAnsweredPercent', cellFilter: 'number: 2', enableSorting: false,name: 'more than 5 calls answered', width:"*", enableHiding: false},
-                                                     { field: 'fiveCallsAnsweredPercent', cellFilter: 'number: 2', enableSorting: false,name: '5 calls answered', width:"*", enableHiding: false},
-                                                     { field: 'fourCallsAnsweredPercent',cellFilter: 'number: 2', enableSorting: false,name: '4 calls answered', width:"*", enableHiding: false},
-                                                     { field: 'threeCallsAnsweredPercent', cellFilter: 'number: 2', enableSorting: false,name: '3 calls answered',width:"*", enableHiding: false },
-                                                     { field: 'twoCallsAnsweredPercent', cellFilter: 'number: 2', enableSorting: false,name: '2 calls answered',width:"*", enableHiding: false },
-                                                     { field: 'oneCallAnsweredPercent',cellFilter: 'number: 2', enableSorting: false,name: '1 call answered',width:"*", enableHiding: false },
-                                                     { field: 'noCallsAnsweredPercent', cellFilter: 'number: 2', enableSorting: false,name: '0 calls answered',width:"*", enableHiding: false }
+                                                     { field: 'moreThanFiveCallsAnsweredPercent', cellFilter: 'indianDecimalFilter', enableSorting: false,name: 'more than 5 calls answered', width:"*", enableHiding: false},
+                                                     { field: 'fiveCallsAnsweredPercent', cellFilter: 'indianDecimalFilter', enableSorting: false,name: '5 calls answered', width:"*", enableHiding: false},
+                                                     { field: 'fourCallsAnsweredPercent',cellFilter: 'indianDecimalFilter', enableSorting: false,name: '4 calls answered', width:"*", enableHiding: false},
+                                                     { field: 'threeCallsAnsweredPercent', cellFilter: 'indianDecimalFilter', enableSorting: false,name: '3 calls answered',width:"*", enableHiding: false },
+                                                     { field: 'twoCallsAnsweredPercent', cellFilter: 'indianDecimalFilter', enableSorting: false,name: '2 calls answered',width:"*", enableHiding: false },
+                                                     { field: 'oneCallAnsweredPercent',cellFilter: 'indianDecimalFilter', enableSorting: false,name: '1 call answered',width:"*", enableHiding: false },
+                                                     { field: 'noCallsAnsweredPercent', cellFilter: 'indianDecimalFilter', enableSorting: false,name: '0 calls answered',width:"*", enableHiding: false }
             ]
 
 
@@ -2053,4 +2053,36 @@
 
 
 		}])
+
+		.filter('indianDecimalFilter', function () {
+          return function (value) {
+            x=value.toString();
+        var afterPoint = '';
+        if(x.indexOf('.') > 0)
+           afterPoint = x.substring(x.indexOf('.'),x.length);
+           afterPoint = Number(afterPoint).toFixed(2);
+           afterPoint = afterPoint.substring(afterPoint.indexOf('.'),afterPoint.length);
+        x = Math.floor(x);
+        x=x.toString();
+        var lastThree = x.substring(x.length-3);
+        var otherNumbers = x.substring(0,x.length-3);
+        if(otherNumbers != '')
+            lastThree = ',' + lastThree;
+        var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree + afterPoint;
+        return res;
+
+          };
+        })
+        		.filter('indianFilter', function () {
+                  return function (value) {
+                    x=value.toString();
+                var lastThree = x.substring(x.length-3);
+                var otherNumbers = x.substring(0,x.length-3);
+                if(otherNumbers != '')
+                    lastThree = ',' + lastThree;
+                var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree ;
+                return res;
+
+                  };
+                })
 })()
