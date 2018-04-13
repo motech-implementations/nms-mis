@@ -192,6 +192,33 @@
             }
         }
 
+        function indianDecimal( value){
+                x=value.toString();
+                var afterPoint = '';
+                if(x.indexOf('.') > 0)
+                   afterPoint = x.substring(x.indexOf('.'),x.length);
+                   afterPoint = Number(afterPoint).toFixed(2);
+                   afterPoint = afterPoint.substring(afterPoint.indexOf('.'),afterPoint.length);
+                x = Math.floor(x);
+                x=x.toString();
+                var lastThree = x.substring(x.length-3);
+                var otherNumbers = x.substring(0,x.length-3);
+                if(otherNumbers != '')
+                    lastThree = ',' + lastThree;
+                var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree + afterPoint;
+                return res;
+        }
+
+        function indianInteger(value){
+                            x=value.toString();
+                        var lastThree = x.substring(x.length-3);
+                        var otherNumbers = x.substring(0,x.length-3);
+                        if(otherNumbers != '')
+                            lastThree = ',' + lastThree;
+                        var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree ;
+                        return res;
+
+        }
 
         function exportToPdf1(gridApi, gridApi1, excelHeaderName, reportCategory, matrixContent1, matrixContent2, uiGridExporterConstants, rowTypes, colTypes, fileName1,rejectionStart) {
             var pageHeading;
@@ -549,8 +576,12 @@
                         if (
                             (excelHeaderName.reportName == "Kilkari Thematic Content" && (j == "4")) ) {
                             temp = Number(temp);
-                            temp = (temp.toFixed(2));
+                            temp = indianDecimal(temp);
                         }
+                        else if((j!="0")&&!(excelHeaderName.reportName == "Kilkari Thematic Content"&&j=="1")){
+                        temp=indianInteger(temp);
+                        }
+
                         tempcol.push(temp);
                     }
                     datapdf.push(tempcol);
@@ -798,8 +829,9 @@
                             (excelHeaderName.reportName == "Kilkari Thematic Content" && (j == "4")) ||
                             (excelHeaderName.reportName == "Kilkari Beneficiary Completion" && (j == "2"))) {
                             temp = Number(temp);
-                            temp = (temp.toFixed(2));
+                            temp = indianDecimal(temp);
                         }
+                        else if(!j=="0") {temp = indianInteger(temp);}
                         tempcol.push(temp);
                     }
                     datapdf.push(tempcol);
@@ -815,32 +847,36 @@
 
                     else if (ft.displayName == "Average Duration Of Call" && excelHeaderName.reportName == "Kilkari Cumulative Summary") {
                         var temp = gridApi.grid.columns[3].getAggregationValue() == 0 ? 0.00 : (gridApi.grid.columns[4].getAggregationValue() / gridApi.grid.columns[3].getAggregationValue());
-                        v = (temp.toFixed(2));
+                        v = indianDecimal(temp);
                     } else if (ft.displayName == "Average Number of Weeks in Service" && excelHeaderName.reportName == "Kilkari Beneficiary Completion") {
                         var temp = gridApi.grid.columns.length == 0 ? 0.00 : (gridApi.grid.columns[3].getAggregationValue() / gridApi.grid.columns.length);
-                        v = (temp.toFixed(2));
+                        v = indianDecimal(temp);
                     } else if (ft.displayName == "Average Duration Of Calls" && excelHeaderName.reportName == "Kilkari Call") {
                         var temp = gridApi.grid.columns[3].getAggregationValue() == 0 ? 0.00 : (gridApi.grid.columns[8].getAggregationValue() / gridApi.grid.columns[3].getAggregationValue());
-                        v = (temp.toFixed(2));
+                        v = indianDecimal(temp);
                     } else if (ft.displayName == "Total Billable Minutes" && excelHeaderName.reportName == "Kilkari Call") {
                         var temp = ft.getAggregationValue();
-                        v = (temp.toFixed(2));
+                        v = indianDecimal(temp);
                     } else if (ft.displayName == "Total Billable Minutes Played" && excelHeaderName.reportName == "Kilkari Cumulative Summary") {
                         var temp = ft.getAggregationValue();
-                        v = (temp.toFixed(2));
+                        v = indianDecimal(temp);
                     } else if(ft.displayName == "Total Beneficiary Records Rejected" && excelHeaderName.reportName == "Kilkari Subscriber"&&!rejectionStart){
                         v = "N/A";
                     }else if (ft.displayName == "% Not Started Course" && excelHeaderName.reportName == "MA Cumulative Summary") {
                         var temp = gridApi.grid.columns[2].getAggregationValue() == 0.00 ? 0.00 : (gridApi.grid.columns[4].getAggregationValue() / gridApi.grid.columns[2].getAggregationValue()) * 100;
-                        v = (temp.toFixed(2));
+                        v = indianDecimal(temp);
                     } else if (ft.displayName == "% Successfully Completed" && excelHeaderName.reportName == "MA Cumulative Summary") {
                         var temp = gridApi.grid.columns[3].getAggregationValue() == 0.00 ? 0.00 : (gridApi.grid.columns[5].getAggregationValue() / gridApi.grid.columns[3].getAggregationValue()) * 100;
-                        v = (temp.toFixed(2));
+                        v = indianDecimal(temp);
                     } else if (ft.displayName == "% Failed the course" && excelHeaderName.reportName == "MA Cumulative Summary") {
                         var temp = gridApi.grid.columns[3].getAggregationValue() == 0.00 ? 0.00 : (gridApi.grid.columns[6].getAggregationValue() / gridApi.grid.columns[3].getAggregationValue()) * 100;
-                        v = (temp.toFixed(2));
+                        v = indianDecimal(temp);
                     } else {
+                             if (ft.displayName != "S No.") {
+                        v = indianInteger(ft.getAggregationValue());}
+                        else{
                         v = ft.getAggregationValue();
+                        }
                     }
 
                     if (ft.displayName != "S No.") {
