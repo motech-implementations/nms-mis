@@ -276,5 +276,5 @@ var nmsReportsApp = angular
 		$httpProvider.defaults.headers.post = {};
 		$httpProvider.defaults.headers.put = {};
 		$httpProvider.defaults.headers.patch = {};
-		$idleProvider.setIdleTime(1799);
+		$idleProvider.setIdleTime(1800);
 	});

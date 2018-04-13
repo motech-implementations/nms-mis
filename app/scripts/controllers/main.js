@@ -1,9 +1,11 @@
  (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("MainController", ['$scope', '$state', '$http', '$localStorage', '$rootScope', 'UserFormFactory','$idle', function($scope, $state, $http, $localStorage, $rootScope, UserFormFactory,$idle) {
+		.controller("MainController", ['$scope', '$state', '$http', '$localStorage', '$rootScope', 'UserFormFactory','$idle','$window','$interval', function($scope, $state, $http, $localStorage, $rootScope, UserFormFactory,$idle,$window,$interval) {
 
 		    var logoutUrl = backend_root + "nms/logout";
+		    var timestamp = localStorage.lastEventTime;
+		    $scope.ondropdown = false;
 		    $scope.isCollapsed = true;
             $scope.aboutUsBool = true;
             $scope.kilkariBool = true;
@@ -278,11 +280,24 @@
             }
 
             $scope.hovered = function () {
+                $scope.ondropdown = true;
                 $scope.show = !$scope.show;
+            }
+
+            $scope.ondropdownfn = function () {
+               $scope.ondropdown = false;
             }
             $scope.removed = function () {
                 $scope.show = false;
             }
+
+            $window.addEventListener('click', function() {
+                localStorage.setItem('lastEventTime', new Date().getTime());
+                if($scope.show&&!$scope.ondropdown){
+                     $scope.removed();
+                }
+            });
+
             $scope.goToReports = function() {
             delete $localStorage.filter;
                 UserFormFactory.downloadCurrentUser().then(function(result){
@@ -408,6 +423,7 @@
                 }
             });
             $scope.$on('$userIdle', function () {
+            if(new Date().getTime()-localStorage.lastEventTime>1800000){
                 if (!($scope.checkLogin())){
 
                     if(UserFormFactory.isInternetExplorer()){
@@ -423,12 +439,17 @@
                       });
 
                     }
-                }
-                else {
-
-                }
+                }}
 
             });
+
+            $interval(function() {
+                if (localStorage.lastEventTime > timestamp) {
+                     $idle.watch();
+                     timestamp = localStorage.lastEventTime;
+                }
+            }, 5000);
+
 		}
 	]);
 
