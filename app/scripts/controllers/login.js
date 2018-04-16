@@ -18,7 +18,8 @@
 
 			var url = $location.absUrl();
 			var error = url.split('?')[1];
-            $scope.preUrl = "";
+            $scope.preUrl = localStorage.preUrl;
+            console.log( $scope.preUrl);
 			$scope.errorMessage = "";
 			if(error == null){
 				$scope.errorMessage = "";
@@ -45,7 +46,11 @@
 //			}
 
             $rootScope.$on('$locationChangeStart', function (event, current, previous) {
-                   $scope.preUrl  = previous;
+            if(!current.includes("login?error")){
+            window.localStorage.setItem('preUrl', previous);
+            $scope.preUrl = localStorage.preUrl;
+            console.log("inside");}
+
             });
             $scope.goToDownloads = function () {
                 $state.go('Downloads', {pageNum: 1});
