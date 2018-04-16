@@ -29,10 +29,10 @@
                             $scope.getStatesByService(null);
                         }
                         else{
-                        if(!(($state.current.name)===("Kilkari Cumulative Summary"))&&!(($state.current.name)===("MA Cumulative Summary"))){
+                        if($scope.disablePeriodType()){
                             $scope.setDateOptions();
-                            $scope.selectPeriodType("Month");
-                        }}
+                            $scope.selectPeriodType("Month");}
+                            }
 					})
 				}
 			})
@@ -132,6 +132,11 @@
 			}
 			$scope.disableCircle = function(){
 				return $scope.circles[0]  == null || $scope.userHasOneCircle();
+			}
+
+			$scope.disablePeriodType = function(){
+				return ($state.current.name == 'Kilkari Message Matrix' || $state.current.name == 'Kilkari Listening Matrix' || $state.current.name == 'Kilkari Usage' || $state.current.name == 'Kilkari Message Listenership' || $state.current.name == 'Kilkari Thematic Content' || $state.current.name == 'Kilkari Aggregate Beneficiaries' || $state.current.name == 'Kilkari Repeat Listener');
+
 			}
 
 
@@ -302,13 +307,13 @@
                 	$scope.selectCircle($scope.circles[0]);
                 }
                 if($scope.report.reportEnum == 'Kilkari_Message_Matrix' || $scope.report.reportEnum == 'Kilkari_Listening_Matrix' || $scope.report.reportEnum == 'Kilkari_Usage' || $scope.report.reportEnum == 'Kilkari_Message_Listenership' || $scope.report.reportEnum == 'Kilkari_Thematic_Content' || $scope.report.reportEnum == 'Kilkari_Aggregate_Beneficiaries'){
-                    $scope.periodType = ['Year','Month','Quarter'];
+                    $scope.periodType = [/*'Year',*/'Month'/*,'Quarter'*/];
                 }
                 else if($scope.report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise'){
                     $scope.periodType = ['Month'];
                 }
                 else
-                    $scope.periodType = ['Year','Month','Quarter', 'Custom Range'];
+                    $scope.periodType = [/*'Year',*/'Month',/*'Quarter',*/ 'Custom Range'];
                 if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).indexOf(angular.lowercase("rejected")) > -1)  ){
                 	$scope.datePickerContent = "Select Week";
                 }
@@ -546,7 +551,14 @@
 					$scope.state = state;
 					excelHeaderName.stateName = state.stateName;
 				}
-                        if((($state.current.name)===("reports"))||(($state.current.name)===("Kilkari Cumulative Summary"))||(($state.current.name)===("MA Cumulative Summary"))){
+
+                        if($scope.disablePeriodType()){
+                            $scope.setDateOptions();
+                            $scope.selectPeriodType("Month");
+//                            console.log($scope.state);
+
+                        }
+                        else{
                             console.log($scope.endDatePickerOptions);
                             $scope.periodDisplayType = '';
                             $scope.dt1 = null;
@@ -558,12 +570,7 @@
 //                            console.log($scope.endDatePickerOptions);
 //                            console.log($scope.state);
                         }
-                        else{
-                            $scope.setDateOptions();
-                            $scope.selectPeriodType("Month");
-//                            console.log($scope.state);
 
-                        }
 
 				$scope.clearFile();
 
@@ -573,7 +580,12 @@
 				excelHeaderName.stateName = "ALL";
 				$scope.clearDistrict();
 				$scope.districts = [];
-                        if((($state.current.name)===("reports"))||(($state.current.name)===("Kilkari Cumulative Summary"))||(($state.current.name)===("MA Cumulative Summary"))){
+                        if($scope.disablePeriodType()){
+
+                            $scope.setDateOptions();
+                            $scope.selectPeriodType("Month");
+                        }
+                        else{
                             $scope.periodDisplayType = '';
                             $scope.dt1 = null;
                             $scope.dt2 = null;
@@ -582,13 +594,9 @@
                             $scope.showEmptyData = false;
                             $scope.setDateOptions();
                         }
-                        else{
-
-                            $scope.setDateOptions();
-                            $scope.selectPeriodType("Month");
-                        }
 
 
+                console.log($scope.reports);
                 $scope.clearFile();
 			}
 			$scope.selectDistrict = function(district){
@@ -598,7 +606,12 @@
 					$scope.district = district;
 					excelHeaderName.districtName = district.districtName;
 				}
-                        if((($state.current.name)===("reports"))||(($state.current.name)===("Kilkari Cumulative Summary"))||(($state.current.name)===("MA Cumulative Summary"))){
+                        if($state.disablePeriodType()){
+
+                            $scope.setDateOptions();
+                            $scope.selectPeriodType("Month");
+                        }
+                        else{
                             $scope.periodDisplayType = '';
                             $scope.dt1 = null;
                             $scope.dt2 = null;
@@ -606,11 +619,7 @@
                             $scope.hideMessageMatrix = true;
                             $scope.showEmptyData = false;
                         }
-                        else{
 
-                            $scope.setDateOptions();
-                            $scope.selectPeriodType("Month");
-                        }
 
 
 				$scope.clearFile();
@@ -620,7 +629,12 @@
 				excelHeaderName.districtName = "ALL";
 				$scope.clearBlock();
 				$scope.blocks = [];
-                        if((($state.current.name)===("reports"))||(($state.current.name)===("Kilkari Cumulative Summary"))||(($state.current.name)===("MA Cumulative Summary"))){
+                        if($scope.disablePeriodType()){
+
+                            $scope.setDateOptions();
+                            $scope.selectPeriodType("Month");
+                        }
+                        else{
                             $scope.periodDisplayType = '';
                             $scope.dt1 = null;
                             $scope.dt2 = null;
@@ -629,11 +643,7 @@
                             $scope.showEmptyData = false;
                             $scope.setDateOptions();
                         }
-                        else{
 
-                            $scope.setDateOptions();
-                            $scope.selectPeriodType("Month");
-                        }
 
 
                 $scope.clearFile();
@@ -644,7 +654,12 @@
 					$scope.block = block;
 					excelHeaderName.blockName = block.blockName;
 				}
-                        if((($state.current.name)===("reports"))||(($state.current.name)===("Kilkari Cumulative Summary"))||(($state.current.name)===("MA Cumulative Summary"))){
+                        if($state.disablePeriodType()){
+
+                            $scope.setDateOptions();
+                            $scope.selectPeriodType("Month");
+                        }
+                        else{
                             $scope.periodDisplayType = '';
                             $scope.dt1 = null;
                             $scope.dt2 = null;
@@ -652,11 +667,7 @@
                             $scope.hideMessageMatrix = true;
                             $scope.showEmptyData = false;
                         }
-                        else{
 
-                            $scope.setDateOptions();
-                            $scope.selectPeriodType("Month");
-                        }
 
 
                 $scope.clearFile();
@@ -664,7 +675,12 @@
 			$scope.clearBlock = function(){
 				$scope.block = null;
 				excelHeaderName.blockName = "ALL";
-                        if((($state.current.name)===("reports"))||(($state.current.name)===("Kilkari Cumulative Summary"))||(($state.current.name)===("MA Cumulative Summary"))){
+                        if($scope.disablePeriodType()){
+
+                            $scope.setDateOptions();
+                            $scope.selectPeriodType("Month");
+                        }
+                        else{
                             $scope.periodDisplayType = '';
                             $scope.dt1 = null;
                             $scope.dt2 = null;
@@ -673,12 +689,6 @@
                             $scope.showEmptyData = false;
                             $scope.setDateOptions();
                         }
-                        else{
-
-                            $scope.setDateOptions();
-                            $scope.selectPeriodType("Month");
-                        }
-
 
                 $scope.clearFile();
 			}
@@ -1257,14 +1267,15 @@
 				$scope.dt2 = null;
 				$scope.hideGrid = true;
 				$scope.hideMessageMatrix = true;
-                        if((($state.current.name)===("reports"))||(($state.current.name)===("Kilkari Cumulative Summary"))||(($state.current.name)===("MA Cumulative Summary"))){
-                            $scope.periodDisplayType = '';
-                        }
-                        else{
+                        if($scope.disablePeriodType()){
 
                             $scope.setDateOptions();
                             $scope.selectPeriodType("Month");
                         }
+                        else{
+                            $scope.periodDisplayType = '';
+                        }
+
 
 				$scope.showEmptyData = false;
 				}
