@@ -1,3 +1,9 @@
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: comments before and after the routine body will not be stored by the server
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
 CREATE DEFINER=`etluser`@`%` PROCEDURE `KilkariBeneficiaryCompletion`()
 BEGIN
 DECLARE dt DATETIME;
@@ -20,13 +26,14 @@ COUNT(case when a.content_listened < 25 THEN a.beneficiaryTracking_id END) as 'l
 SUM(a.ageOnService) as 'total_age'
 from (
 select s.beneficiaryTracking_id, 
-case when s.subscriptionPack_id = 1 then s.ageOnService 
-	 when s.subscriptionPack_id = 2 and s.mother_subscription_id is null then s.ageOnService
-	 else s.ageOnService + ( select ageOnService from subscriptions where subscription_id = s.mother_subscription_id) end as ageOnService,
-case when s.subscriptionPack_id = 1 then s.percentageContentListenedTo 
-	 when s.subscriptionPack_id = 2 and s.mother_subscription_id is null then s.percentageContentListenedTo
-	 else (s.percentageContentListenedTo * s.percentageCallsAnswered * s.ageOnService + ( select percentageContentListenedTo * percentageCallsAnswered * ageOnService from subscriptions where subscription_id = s.mother_subscription_id)) / 
-	 	(s.percentageCallsAnswered * s.ageOnService + ( select percentageCallsAnswered * ageOnService from subscriptions where subscription_id = s.mother_subscription_id))  end as content_listened
+case when s.subscriptionPack_id = 1 then if(s.ageOnService is null,0,s.ageOnService) 
+	 when s.subscriptionPack_id = 2 and s.mother_subscription_id is null then if(s.ageOnService is null,0,s.ageOnService)
+	 else if(s.ageOnService + ( select ageOnService from subscriptions where subscription_id = s.mother_subscription_id) is null,0,s.ageOnService + ( select ageOnService from subscriptions where subscription_id = s.mother_subscription_id)) end as ageOnService,
+case when s.subscriptionPack_id = 1 then if((s.listenedContentDuration/s.totalContentDuration) is null, 0,(s.listenedContentDuration/s.totalContentDuration)*100) 
+	 when s.subscriptionPack_id = 2 and s.mother_subscription_id is null then if((s.listenedContentDuration/s.totalContentDuration) is null, 0,(s.listenedContentDuration/s.totalContentDuration)*100)
+	 else if((s.listenedContentDuration + ( select listenedContentDuration from subscriptions where subscription_id = s.mother_subscription_id)) / 
+	 	(s.totalContentDuration + ( select totalContentDuration from subscriptions where subscription_id = s.mother_subscription_id)) is null,0,(s.listenedContentDuration + ( select listenedContentDuration from subscriptions where subscription_id = s.mother_subscription_id)) / 
+	 	(s.totalContentDuration + ( select totalContentDuration from subscriptions where subscription_id = s.mother_subscription_id))*100) end as content_listened
 from subscriptions s where s.endDate between DATE_ADD(dt, INTERVAL -1 DAY) and dt and s.subscription_status = 'COMPLETED' group by s.beneficiaryTracking_id
 ) as a LEFT JOIN KilkariAgg.beneficiary_tracker b on a.beneficiaryTracking_id=b.id group by b.state_id, b.district_id, b.healthBlock_id, b.healthSubFacility_id;
 
