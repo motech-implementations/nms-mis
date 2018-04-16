@@ -606,7 +606,7 @@
 					$scope.district = district;
 					excelHeaderName.districtName = district.districtName;
 				}
-                        if($state.disablePeriodType()){
+                        if($scope.disablePeriodType()){
 
                             $scope.setDateOptions();
                             $scope.selectPeriodType("Month");
@@ -654,7 +654,7 @@
 					$scope.block = block;
 					excelHeaderName.blockName = block.blockName;
 				}
-                        if($state.disablePeriodType()){
+                        if($scope.disablePeriodType()){
 
                             $scope.setDateOptions();
                             $scope.selectPeriodType("Month");

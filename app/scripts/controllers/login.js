@@ -82,7 +82,7 @@
                         return;
                     }
                     else{
-                        UserFormFactory.showAlert("Please check the captchaxxxxxxxxxx")
+                        UserFormFactory.showAlert("Please check the captcha")
                         return;
                     }
 
