@@ -82,8 +82,28 @@
                         return;
                     }
                     else{
-                        UserFormFactory.showAlert("Please check the captcha")
+                        UserFormFactory.showAlert("Please check the captchaxxxxxxxxxx")
                         return;
+                    }
+
+                }
+
+
+					UserFormFactory.downloadCurrentUser()
+					.then(function(result){
+                if(!(typeof(result.data) == "string")){
+                    if(UserFormFactory.isInternetExplorer()){
+                        alert("You are already logged in with "+result.data.fullName);
+                        location.reload();
+                        return;
+                    }
+                    else{
+                      var a= UserFormFactory.showAlert2("You are already logged in with "+result.data.fullName);
+                      a.then(function () {
+                          location.reload();
+                          return;
+                      });
+
                     }
 
                 }
@@ -93,7 +113,7 @@
                     formElement.attr("method", "post");
                     formElement[0].submit();
 
-                }
+                }});
 
                 /*
                 if($scope.user.captchaCode == null || $scope.user.captchaCode == ""){
