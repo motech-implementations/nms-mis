@@ -354,7 +354,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
             CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
             spreadsheet.addMergedRegion(new CellRangeAddress(rowid-1,rowid-1,0,gridData.getColumnHeaders().size()-1));}
 
-        if(gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener"))
+        if(gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener Month Wise"))
         {row = spreadsheet.createRow(rowid++);
             Cell cell = row.createCell(0);
             cell.setCellValue( "Beneficiary Count");
@@ -428,7 +428,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
            spreadsheet.addMergedRegion(new CellRangeAddress(rowid-1,rowid-1,0,gridData.getColumnHeaders1().size()-1));}
 
-        if(gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener"))
+        if(gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener Month Wise"))
         {row = spreadsheet.createRow(rowid++);
             Cell cell = row.createCell(0);
             cell.setCellStyle(style);
@@ -437,7 +437,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
             spreadsheet.addMergedRegion(new CellRangeAddress(rowid-1,rowid-1,0,gridData.getColumnHeaders1().size()-1));}
 
         row = spreadsheet.createRow(rowid++);
-        if(gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix")||gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener")){
+        if(gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix")||gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener Month Wise")){
         row.setHeight((short)1100);}
          colid =0;
         int tabrow1 =0;

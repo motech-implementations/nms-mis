@@ -1,7 +1,7 @@
 <div class="container-fluid contact-us" data-ng-controller="ContactUsController">
     <div data-ui-view></div>
 
-    <div class="contactUs-background">
+    <div class="contactUs-background" style="margin-top:0px;">
         <div class="row">
             <div class="col-sm-12 col-xs-12 col-lg-12">
                 <table class="contactPageHeading">
@@ -54,33 +54,67 @@
                         <div class=" col-sm-4 col-xs-4 col-lg-4 cf-txtAlign">
                             <label for="name">Name<span style="color : red">*</span></label>
                         </div>
-                        <div class=" col-sm-8 col-xs-8 col-lg-8">
-                            <input id="name" type="text" name="name" data-ng-model="email.name" style="width:220px">
+                        <div data-ng-class="{'has-error':ContactUsForm.name.$invalid && !ContactUsForm.name.$pristine}">
+
+                            <div class="col-sm-8 col-xs-8 col-lg-8">
+                                <input name="name" id="name" type="text" class="form-control input input-sm" data-ng-model="email.name" placeholder="Name" style="width: 220px;" required>
+
+                                <div class="errorMessage" data-ng-messages="ContactUsForm.name.$error" role="alert" data-ng-show="!ContactUsForm.name.$pristine">
+                                    <div data-ng-message="required">This field cannot be empty</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group row" style="padding-bottom: 10px;">
+                    <div class="form-group row" style="padding-bottom: 10px;height:30px;">
                         <div class=" col-sm-4 col-xs-4 col-lg-4 cf-txtAlign">
                             <label for="phoneNo">Phone No.<span style="color : red">*</span></label>
                         </div>
-                        <div class=" col-sm-8 col-xs-8 col-lg-8 fake-input">
-                            <input id="phoneNo" type="number" name="phoneNo" class= "ng-pristine ng-valid-pattern ng-valid-minlength ng-valid-maxlength ng-not-empty ng-valid ng-valid-required " required="" data-ng-pattern="[1-9]{1}[0-9]{9}" data-ng-minlength="10" data-ng-maxlength="10" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10" data-ng-model="email.phoneNo">
-                            <p class="fake-input"><b>+91</b></p>
+                        <div data-ng-class="{'has-error':ContactUsForm.phoneNo.$invalid && !ContactUsForm.phoneNo.$pristine}">
+
+                            <div class="col-sm-8 col-xs-8 col-lg-8 fake-input">
+                                <input name="phoneNo" id="phoneNo" type="text" class="form-control input input-sm" data-ng-model="email.phoneNo" placeholder="Contact no." required
+                                       style="width: 220px;" data-ng-pattern="/^[0-9]*$/" data-ng-minlength="10" data-ng-maxlength="10">
+                                <p class="fake-input"><b>+91</b></p>
+                                <div class="errorMessage" data-ng-messages="ContactUsForm.phoneNo.$error" role="alert" data-ng-show="!ContactUsForm.phoneNo.$pristine">
+                                    <div data-ng-message="required">This field cannot be empty</div>
+                                    <div data-ng-message="pattern">Input contains non-numeric characters</div>
+                                    <div data-ng-message="minlength">Number is too short</div>
+                                    <div data-ng-message="maxlength">Number is too long</div>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                     <div class="form-group row" style="padding-bottom: 10px;">
                         <div class=" col-sm-4 col-xs-4 col-lg-4 cf-txtAlign">
                             <label for="email">Email<span style="color : red">*</span></label>
                         </div>
-                        <div class=" col-sm-8 col-xs-8 col-lg-8 ">
-                            <input id="email" type="text" name="to" data-ng-model="email.to"  style="width:220px">
+                        <div data-ng-class="{'has-error':ContactUsForm.email.$invalid &amp;&amp; !ContactUsForm.email.$pristine}" style="">
+                            <div class="col-sm-8 col-xs-8 col-lg-8">
+                                <input id="email" name="email" type="email" class="form-control input input-sm ng-touched ng-dirty ng-invalid ng-not-empty ng-invalid-email ng-valid-required ng-invalid-remove ng-valid-email-add ng-invalid-email-remove" data-ng-model="email.email" placeholder="Email" required="" aria-invalid="true" style="width:220px;" required>
+                                <div class="errorMessage ng-active" data-ng-messages="ContactUsForm.email.$error" role="alert" data-ng-show="!ContactUsForm.email.$pristine" aria-live="assertive" aria-hidden="false" style="">
+                                    <!-- ngMessage: required --><div data-ng-message="required">This field cannot be empty</div>
+                                    <!-- ngMessage: email --><div data-ng-message="email" class="ng-scope" style="">Enter a valid email</div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                     <div class="form-group row" style="padding-bottom: 0px;">
                         <div class=" col-sm-4 col-xs-4 col-lg-4 cf-txtAlign">
                             <label>Message<span style="color : red">*</span></label>
                         </div>
-                        <div class=" col-sm-8 col-xs-8 col-lg-8">
-                            <textarea name="body" data-ng-model="email.body" style=" width:220px;   height: 95px; resize: none;"></textarea>
+                        <div data-ng-class="{'has-error':ContactUsForm.body.$invalid && !ContactUsForm.body.$pristine}">
+
+                            <div class="col-sm-8 col-xs-8 col-lg-8">
+                                <textarea name="body" class="form-control input input-sm ng-pristine ng-valid ng-empty ng-touched" data-ng-model="email.body" style="width: 220px; height: 95px; resize: none;" aria-invalid="false">
+                                    Your Message Here
+                                </textarea>
+
+                                <div class="errorMessage" data-ng-messages="ContactUsForm.body.$error" role="alert" data-ng-show="!ContactUsForm.body.$pristine">
+                                    <div data-ng-message="required">This field cannot be empty</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <input type="hidden" name="from" data-ng-model="email.from" value="nsp-reports@beehyv.com">

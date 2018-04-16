@@ -127,7 +127,7 @@
 					<a data-ng-if='!(loginBool==true)'style="cursor: not-allowed" data-ng-click="goToLogin()" >Login</a>
 				</li>
 				<li data-ng-if='!checkLogin()' class="pd" data-ng-class="{active: checkProfile(),pd1:!checkLogin()}" >
-					<a  ng-click="hovered()" class="pointer" href>
+					<a ng-mouseleave="ondropdownfn()" ng-click="hovered()" class="pointer" href>
 						{{currentUser.fullName}}<span  class="caret"></span>
 					</a>
 				</li>

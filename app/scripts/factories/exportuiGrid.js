@@ -25,7 +25,7 @@
 
             var columns = gridApi.grid.options.showHeader ? uiGridExporterService.getColumnHeaders(gridApi.grid, colTypes) : [];
             var data = uiGridExporterService.getData(gridApi.grid, rowTypes, colTypes);
-            if (excelHeaderName.reportName == "Kilkari Message Matrix" || excelHeaderName.reportName == "Kilkari Repeat Listener") {
+            if (excelHeaderName.reportName == "Kilkari Message Matrix" || excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise") {
                 var columns1 = gridApi1.grid.options.showHeader ? uiGridExporterService.getColumnHeaders(gridApi1.grid, colTypes) : [];
                 var data1 = uiGridExporterService.getData(gridApi1.grid, rowTypes, colTypes);
             }
@@ -36,7 +36,7 @@
             if (excelHeaderName.reportName == "Kilkari Message Matrix") {
                 CSV += 'Kilkari Pregnancy Content Data\r\n\n';
             }
-            if (excelHeaderName.reportName == "Kilkari Repeat Listener") {
+            if (excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise") {
                 CSV += 'Beneficiary Count\r\n\n';
             }
             //This condition will generate the Label/Header
@@ -82,7 +82,7 @@
 
             var v;
             var row = "";
-            if (excelHeaderName.reportName != "Kilkari Message Matrix" && excelHeaderName.reportName != "Kilkari Listening Matrix" && excelHeaderName.reportName != "Kilkari Repeat Listener"&& excelHeaderName.reportName != "Kilkari Thematic Content") {
+            if (excelHeaderName.reportName != "Kilkari Message Matrix" && excelHeaderName.reportName != "Kilkari Listening Matrix" && excelHeaderName.reportName != "Kilkari Repeat Listener Month Wise"&& excelHeaderName.reportName != "Kilkari Thematic Content") {
                 gridApi.grid.columns.forEach(function(ft) {
 
                     if (ft.displayName == "State" || ft.displayName == "District" || ft.displayName == "Block" || ft.displayName == "Subcenter" || ft.displayName == "Message Number (Week)")
@@ -132,10 +132,10 @@
             if (excelHeaderName.reportName == "Kilkari Message Matrix") {
                 CSV += '\n\nKilkari Child Content Data\r\n\n';
             }
-            if (excelHeaderName.reportName == "Kilkari Repeat Listener") {
+            if (excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise") {
                 CSV += '\n\nBeneficiary Percentage\r\n\n';
             }
-            if (excelHeaderName.reportName == "Kilkari Message Matrix" || excelHeaderName.reportName == "Kilkari Repeat Listener") {
+            if (excelHeaderName.reportName == "Kilkari Message Matrix" || excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise") {
                 var row = "";
                 columns1.forEach(function(c) {
                     var v = c.displayName || c.value || columns[i].name;
@@ -192,6 +192,33 @@
             }
         }
 
+        function indianDecimal( value){
+                x=value.toString();
+                var afterPoint = '';
+                if(x.indexOf('.') > 0)
+                   afterPoint = x.substring(x.indexOf('.'),x.length);
+                   afterPoint = Number(afterPoint).toFixed(2);
+                   afterPoint = afterPoint.substring(afterPoint.indexOf('.'),afterPoint.length);
+                x = Math.floor(x);
+                x=x.toString();
+                var lastThree = x.substring(x.length-3);
+                var otherNumbers = x.substring(0,x.length-3);
+                if(otherNumbers != '')
+                    lastThree = ',' + lastThree;
+                var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree + afterPoint;
+                return res;
+        }
+
+        function indianInteger(value){
+                            x=value.toString();
+                        var lastThree = x.substring(x.length-3);
+                        var otherNumbers = x.substring(0,x.length-3);
+                        if(otherNumbers != '')
+                            lastThree = ',' + lastThree;
+                        var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree ;
+                        return res;
+
+        }
 
         function exportToPdf1(gridApi, gridApi1, excelHeaderName, reportCategory, matrixContent1, matrixContent2, uiGridExporterConstants, rowTypes, colTypes, fileName1,rejectionStart) {
             var pageHeading;
@@ -206,7 +233,7 @@
             case 'Kilkari Message Matrix': pageHeading='Kilkari Message Matrix Report'; break;
             case 'Kilkari Listening Matrix': pageHeading='Kilkari Listenign Matrix Report'; break;
             case 'Kilkari Thematic Content': pageHeading='Kilkari Thematic Content Report'; break;
-            case 'Kilkari Repeat Listener': pageHeading='Kilkari Repeat Listener Report'; break;
+            case 'Kilkari Repeat Listener Month Wise': pageHeading='Kilkari Repeat Listener Month Wise Report'; break;
             case 'Kilkari Subscriber': pageHeading='Kilkari Subscriber Report'; break;
             case 'Kilkari Message Listenership': pageHeading='Kilkari Message Listenership Report'; break;
             case 'Kilkari Aggregate Beneficiaries': pageHeading='Kilkari Aggregate Beneficiaries Report'; break;
@@ -218,7 +245,7 @@
 
 
 
-            if (excelHeaderName.reportName == "Kilkari Message Matrix" || excelHeaderName.reportName == "Kilkari Repeat Listener") {
+            if (excelHeaderName.reportName == "Kilkari Message Matrix" || excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise") {
                 //First Table
                 var grid = gridApi.grid;
                 var exportColumnHeaders = uiGridExporterService.getColumnHeaders(grid, uiGridExporterConstants.ALL);
@@ -549,8 +576,12 @@
                         if (
                             (excelHeaderName.reportName == "Kilkari Thematic Content" && (j == "4")) ) {
                             temp = Number(temp);
-                            temp = (temp.toFixed(2));
+                            temp = indianDecimal(temp);
                         }
+                        else if((j!="0")&&!(excelHeaderName.reportName == "Kilkari Thematic Content"&&j=="1")){
+                        temp=indianInteger(temp);
+                        }
+
                         tempcol.push(temp);
                     }
                     datapdf.push(tempcol);
@@ -798,8 +829,9 @@
                             (excelHeaderName.reportName == "Kilkari Thematic Content" && (j == "4")) ||
                             (excelHeaderName.reportName == "Kilkari Beneficiary Completion" && (j == "2"))) {
                             temp = Number(temp);
-                            temp = (temp.toFixed(2));
+                            temp = indianDecimal(temp);
                         }
+                        else if(!j=="0") {temp = indianInteger(temp);}
                         tempcol.push(temp);
                     }
                     datapdf.push(tempcol);
@@ -815,32 +847,36 @@
 
                     else if (ft.displayName == "Average Duration Of Call" && excelHeaderName.reportName == "Kilkari Cumulative Summary") {
                         var temp = gridApi.grid.columns[3].getAggregationValue() == 0 ? 0.00 : (gridApi.grid.columns[4].getAggregationValue() / gridApi.grid.columns[3].getAggregationValue());
-                        v = (temp.toFixed(2));
+                        v = indianDecimal(temp);
                     } else if (ft.displayName == "Average Number of Weeks in Service" && excelHeaderName.reportName == "Kilkari Beneficiary Completion") {
                         var temp = gridApi.grid.columns.length == 0 ? 0.00 : (gridApi.grid.columns[3].getAggregationValue() / gridApi.grid.columns.length);
-                        v = (temp.toFixed(2));
+                        v = indianDecimal(temp);
                     } else if (ft.displayName == "Average Duration Of Calls" && excelHeaderName.reportName == "Kilkari Call") {
                         var temp = gridApi.grid.columns[3].getAggregationValue() == 0 ? 0.00 : (gridApi.grid.columns[8].getAggregationValue() / gridApi.grid.columns[3].getAggregationValue());
-                        v = (temp.toFixed(2));
+                        v = indianDecimal(temp);
                     } else if (ft.displayName == "Total Billable Minutes" && excelHeaderName.reportName == "Kilkari Call") {
                         var temp = ft.getAggregationValue();
-                        v = (temp.toFixed(2));
+                        v = indianDecimal(temp);
                     } else if (ft.displayName == "Total Billable Minutes Played" && excelHeaderName.reportName == "Kilkari Cumulative Summary") {
                         var temp = ft.getAggregationValue();
-                        v = (temp.toFixed(2));
+                        v = indianDecimal(temp);
                     } else if(ft.displayName == "Total Beneficiary Records Rejected" && excelHeaderName.reportName == "Kilkari Subscriber"&&!rejectionStart){
                         v = "N/A";
                     }else if (ft.displayName == "% Not Started Course" && excelHeaderName.reportName == "MA Cumulative Summary") {
                         var temp = gridApi.grid.columns[2].getAggregationValue() == 0.00 ? 0.00 : (gridApi.grid.columns[4].getAggregationValue() / gridApi.grid.columns[2].getAggregationValue()) * 100;
-                        v = (temp.toFixed(2));
+                        v = indianDecimal(temp);
                     } else if (ft.displayName == "% Successfully Completed" && excelHeaderName.reportName == "MA Cumulative Summary") {
                         var temp = gridApi.grid.columns[3].getAggregationValue() == 0.00 ? 0.00 : (gridApi.grid.columns[5].getAggregationValue() / gridApi.grid.columns[3].getAggregationValue()) * 100;
-                        v = (temp.toFixed(2));
+                        v = indianDecimal(temp);
                     } else if (ft.displayName == "% Failed the course" && excelHeaderName.reportName == "MA Cumulative Summary") {
                         var temp = gridApi.grid.columns[3].getAggregationValue() == 0.00 ? 0.00 : (gridApi.grid.columns[6].getAggregationValue() / gridApi.grid.columns[3].getAggregationValue()) * 100;
-                        v = (temp.toFixed(2));
+                        v = indianDecimal(temp);
                     } else {
+                             if (ft.displayName != "S No.") {
+                        v = indianInteger(ft.getAggregationValue());}
+                        else{
                         v = ft.getAggregationValue();
+                        }
                     }
 
                     if (ft.displayName != "S No.") {
@@ -1085,7 +1121,7 @@
         function exportToExcel(sheetName, gridApi, gridApi1, rowTypes, colTypes, excelHeaderName) {
             var columns = gridApi.grid.options.showHeader ? uiGridExporterService.getColumnHeaders(gridApi.grid, colTypes) : [];
             var data = uiGridExporterService.getData(gridApi.grid, rowTypes, colTypes);
-            if (excelHeaderName.reportName == "Kilkari Message Matrix" || excelHeaderName.reportName == "Kilkari Repeat Listener") {
+            if (excelHeaderName.reportName == "Kilkari Message Matrix" || excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise") {
                 var columns1 = gridApi1.grid.options.showHeader ? uiGridExporterService.getColumnHeaders(gridApi1.grid, colTypes) : [];
                 var data1 = uiGridExporterService.getData(gridApi1.grid, rowTypes, colTypes);
             }
@@ -1421,7 +1457,7 @@
 
             }
 
-            if (excelHeaderName.reportName == "Kilkari Repeat Listener") {
+            if (excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise") {
 
                 var ws = {
                     B1: {
@@ -1647,7 +1683,7 @@
             addCell(range, "Report :", 0, 0, ws);
             addCell(range, excelHeaderName.timePeriod, 0, 8, ws);
             addCell(range, excelHeaderName.blockName, 2, 9, ws);
-            if (excelHeaderName.reportName == "Kilkari Message Matrix" || excelHeaderName.reportName == "Kilkari Repeat Listener") {
+            if (excelHeaderName.reportName == "Kilkari Message Matrix" || excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise") {
                 addCell(range, excelHeaderName.timePeriod, 14, 8, ws);
                 addCell(range, excelHeaderName.blockName, 16, 9, ws);
             }
@@ -1671,7 +1707,7 @@
             }, this);
             C = 0;
             var v;
-            if (excelHeaderName.reportName != "Kilkari Message Matrix" && excelHeaderName.reportName != "Kilkari Listening Matrix" && excelHeaderName.reportName != "Kilkari Repeat Listener"&& excelHeaderName.reportName != "Kilkari Thematic Content") {
+            if (excelHeaderName.reportName != "Kilkari Message Matrix" && excelHeaderName.reportName != "Kilkari Listening Matrix" && excelHeaderName.reportName != "Kilkari Repeat Listener Month Wise"&& excelHeaderName.reportName != "Kilkari Thematic Content") {
                 gridApi.grid.columns.forEach(function(ft) {
 
                     if (ft.displayName == "State" || ft.displayName == "District" || ft.displayName == "Block" || ft.displayName == "Subcenter" || ft.displayName == "Message Number (Week)")
@@ -1708,7 +1744,7 @@
 
             }
             C = 0;
-            if (excelHeaderName.reportName == "Kilkari Message Matrix" || excelHeaderName.reportName == "Kilkari Repeat Listener") {
+            if (excelHeaderName.reportName == "Kilkari Message Matrix" || excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise") {
                 columns1.forEach(function(c) {
                     var v = c.displayName || c.value || columns[i].name;
                     addCell(range, v, 18, C, ws);
