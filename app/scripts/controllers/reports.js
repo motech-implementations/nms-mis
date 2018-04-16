@@ -1848,8 +1848,8 @@
 
             $scope.Kilkari_Thematic_Content_Definitions = [
                                                     // {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
-                                                     { field: 'theme',  cellTooltip: true, name: 'Theme', width:"*", enableHiding: false,enableSorting: false },
-                                                     { field: 'messageWeekNumber',cellTooltip: true, name: 'Message Number (Week)', width:"*", enableHiding: false,enableSorting: false },
+                                                     { field: 'theme',  cellTooltip: true, name: 'Theme', width:"15%", cellClass: 'text-left', enableHiding: false,enableSorting: false },
+                                                     { field: 'messageWeekNumber',cellTooltip: true, name: 'Message Number (Week)', width:"35%", cellClass: 'text-left', enableHiding: false,enableSorting: false },
                                                      { field: 'uniqueBeneficiariesCalled', name: 'Number of unique beneficiaries called',cellFilter: 'indianFilter',  width:"*", enableHiding: false,enableSorting: false },
                                                      { field: 'callsAnswered', name: 'Number of calls answered', cellFilter: 'indianFilter',  width:"*", enableHiding: false,enableSorting: false},
                                                      { field: 'minutesConsumed', name: 'Number of minutes consumed', cellFilter: 'indianDecimalFilter', width:"*", enableHiding: false,enableSorting: false }
