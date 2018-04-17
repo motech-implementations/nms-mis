@@ -186,8 +186,8 @@
 
 					<div class="form-group col-xs-2" data-ng-hide = "report.name == 'MA Cumulative Summary' || report.reportEnum == 'Kilkari_Cumulative_Summary' ">
 						<label for="name"> Period Type</label><br>
-						<div class="btn-group disabled" data-uib-dropdown dropdown-append-to-body>
-							<button data-ng-disabled="true" id="btn-append-to-body9" type="button" class="btn btn-sm btn-default"  data-uib-dropdown-toggle >
+						<div class="btn-group " data-ng-class="{disabled: disablePeriodType()}" data-uib-dropdown dropdown-append-to-body>
+							<button data-ng-disabled="disablePeriodType()" id="btn-append-to-body9" type="button" class="btn btn-sm btn-default"  data-uib-dropdown-toggle >
 								<span class="block">
 									<span>{{periodDisplayType}}</span>
 									<span data-ng-if="reportDisplayType == null">ALL</span>
@@ -318,6 +318,7 @@
 		</div>
 
     </div>
+
 
 	<div class="reportheader matrixHeader" data-ng-hide="hideGrid || (report.reportEnum != 'Kilkari_Message_Matrix' && report.reportEnum != 'Kilkari_Repeat_Listener_Month_Wise')|| waiting">
 		<p class="ng-binding" style="display: inline-block;">{{matrixContent1}}</p>
