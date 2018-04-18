@@ -351,8 +351,13 @@
 
 
 	<div style="margin-top : 15px;">
+		<p data-ng-if ="!hideGrid && !waiting && (report.reportEnum == 'Kilkari_Thematic_Content')" ><b>Note:</b>
+			The total number of unique beneficiaries called is the number of unique beneficiaries called in the entire month.
+			A beneficiary can listen to messages that fall under different weeks in a given month.Thus, The total should not be compared with the aggregate value of the column.
+		</p>
+
 		<p data-ng-if ="!hideGrid && !waiting && (report.reportEnum == 'Kilkari_Message_Matrix')" ><b>Note1:</b> A beneficiary can listen to messages that fall under different brackets, in a given month.
-			For example, they could have listened a messages 6, 7,8, 9 and listened to more than 75% conent for week 6 and 50-75% on Avg in weeks 7 - 9.
+			For example, they could have listened a messages 6, 7, 8, 9 and listened to more than 75% conent for week 6 and 50-75% on Avg in weeks 7 - 9.
 			So the beneficiary could be counted once under each bracket. Thus the count of beneficiaries in this report should not be totalled.</p>
 		<p data-ng-if ="!hideGrid && !waiting && (report.reportEnum == 'Kilkari_Message_Matrix')" ><b>Note2 :</b> This report takes only Success calls into consideration and does not report on users who have not answered even one call.</p>
 		<p data-ng-if ="!hideGrid && !waiting && (report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise')" ><b>Note:</b> Beneficiary could listen to more than 5 calls when, either their LMP/Child DOB gets updated or the call record is not updated due to System issues.</p>
