@@ -45,7 +45,7 @@
 //			}
 
             $rootScope.$on('$locationChangeStart', function (event, current, previous) {
-            if(!current.includes("login?error")){
+            if(!current.indexOf("login?error") > 0){
             window.localStorage.setItem('preUrl', previous);
             $scope.preUrl = localStorage.preUrl;
             }
