@@ -12,6 +12,7 @@
                 default :$scope.active1 = 'wi';break;
             }
             // localStorage.getItem('role') = 'Anonymous';
+            $scope.selectRole = 0;
             (function () {
             $scope.roles = [
                             {"id": 0, "role" : "Anonymous"},
