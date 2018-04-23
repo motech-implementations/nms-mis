@@ -45,10 +45,10 @@
 //			}
 
             $rootScope.$on('$locationChangeStart', function (event, current, previous) {
-            if(!current.indexOf("login?error") > 0){
-            window.localStorage.setItem('preUrl', previous);
-            $scope.preUrl = localStorage.preUrl;
-            }
+                if(!(current.indexOf("login?error") > 0)){
+                    window.localStorage.setItem('preUrl', previous);
+                    $scope.preUrl = localStorage.preUrl;
+                }
             });
             $scope.goToDownloads = function () {
                 $state.go('Downloads', {pageNum: 1});

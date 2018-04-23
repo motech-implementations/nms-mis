@@ -443,6 +443,20 @@
 
             });
 
+            $scope.$watch('online', function(newStatus) {
+            if($rootScope.online){
+            }
+            else{
+                    if (UserFormFactory.isInternetExplorer()) {
+                            alert("You are offline");
+                             return;
+                        } else {
+                            UserFormFactory.showAlert("You are offline");
+                            return;
+                        }
+            }
+            });
+
             $interval(function() {
                 if (localStorage.lastEventTime > timestamp) {
                      $idle.watch();

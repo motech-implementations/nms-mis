@@ -10,11 +10,25 @@
  */
 var nmsReportsApp = angular
 	.module('nmsReports', ['ui.bootstrap', 'ui.validate', 'ngMessages', 'ui.router', 'ui.grid', 'ngMaterial', 'BotDetectCaptcha','ng.deviceDetector','ui.grid.exporter', 'ngStorage','ngAnimate','vcRecaptcha','$idle'])
-	.run( ['$rootScope', '$state', '$stateParams','$idle',
-		function ($rootScope, $state, $stateParams,$idle) {
+	.run( ['$rootScope', '$state', '$stateParams','$idle','$http','$window',
+		function ($rootScope, $state, $stateParams,$idle,$http,$window) {
 			$rootScope.$state = $state;
 			$rootScope.$stateParams = $stateParams;
             $idle.watch();
+
+            $rootScope.online = navigator.onLine;
+                  $window.addEventListener("offline", function() {
+                    $rootScope.$apply(function() {
+                      $rootScope.online = false;
+                    });
+                  }, false);
+
+                  $window.addEventListener("online", function() {
+                    $rootScope.$apply(function() {
+                      $rootScope.online = true;
+                    });
+                  }, false);
+
 		}
 	]).config(function ($stateProvider, $urlRouterProvider, $httpProvider, captchaSettingsProvider,$idleProvider) {
 		$stateProvider
