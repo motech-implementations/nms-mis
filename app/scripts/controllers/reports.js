@@ -1573,13 +1573,23 @@
             ExcelData.columnHeaders1 = [];
             ExcelData.reportData1 = [];
             }
-                  excelHeaderName.timePeriod = $scope.headerFromDate.toString().split(' ').splice(1,3)+" to "+$scope.headerToDate.toString().split(' ').splice(1,3)
+
+                  var months    = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                  var toDateString = $scope.headerToDate.getDate()<10?"0"+$scope.headerToDate.getDate():$scope.headerToDate.getDate();
+                  var fromDateString = $scope.headerFromDate.getDate()<10?"0"+$scope.headerFromDate.getDate():$scope.headerFromDate.getDate();
+                  if($scope.report.reportEnum == 'Kilkari_Cumulative_Summary'||$scope.report.reportEnum == 'MA_Cumulative_Summary'){
+                   excelHeaderName.timePeriod = "till "+toDateString+" "+months[$scope.headerToDate.getMonth()]+" "+$scope.headerToDate.getFullYear();}
+                  else{
+                  excelHeaderName.timePeriod = fromDateString+" "+months[$scope.headerFromDate.getMonth()]+" "+$scope.headerFromDate.getFullYear()+
+                  " to "+toDateString+" "+months[$scope.headerToDate.getMonth()]+" "+$scope.headerToDate.getFullYear();
+                  }
+
                   ExcelData.colunmFooters = footerData;
                   ExcelData.stateName = excelHeaderName.stateName;
                   ExcelData.districtName = excelHeaderName.districtName;
                   ExcelData.blockName = excelHeaderName.blockName;
                   ExcelData.reportName = excelHeaderName.reportName;
-                  ExcelData.timePeriod = excelHeaderName.timePeriod.replace(/,/g, " ");;
+                  ExcelData.timePeriod = excelHeaderName.timePeriod;
 
                 $http({
                                     method  : 'POST',
