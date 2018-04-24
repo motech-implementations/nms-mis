@@ -124,7 +124,7 @@
 			<ul class="nav-menu right ">
 				<li  data-ng-if='checkLogin()' data-ng-class="{active: activeTab('login')}">
 					<a data-ng-if='(loginBool==true)' class="pointer"  data-ng-click="goToLogin()" >Login</a>
-					<a data-ng-if='!(loginBool==true)'style="cursor: not-allowed" data-ng-click="goToLogin()" >Login</a>
+					<a data-ng-if='!(loginBool==true)' style="cursor: not-allowed" data-ng-click="goToLogin()" >Login</a>
 				</li>
 				<li data-ng-if='!checkLogin()' class="pd" data-ng-class="{active: checkProfile(),pd1:!checkLogin()}" >
 					<a ng-mouseleave="ondropdownfn()" ng-click="hovered()" class="pointer" href>
@@ -206,7 +206,7 @@
 
 			</div>
 			<div><!--<span>2017 all rights reserved - Mobile Academy & Kilkari Management and Information system</span>-->
-				<span>Copyright &#169 2015 central information commision</span>
+				<span>Copyright &#169; 2015 central information commision</span>
 			</div>
 		</div>
 		<div class="col-md-5 col-sm-5 col-xs-5 footer-image">
@@ -221,9 +221,8 @@
 
     </div>
 </div>
-
-</body>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js"></script>
+</body>
+
 </html>

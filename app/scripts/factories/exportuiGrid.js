@@ -220,7 +220,7 @@
 
         }
 
-        function exportToPdf1(gridApi, gridApi1, excelHeaderName, reportCategory, matrixContent1, matrixContent2, uiGridExporterConstants, rowTypes, colTypes, fileName1,rejectionStart,fromDate,toDate) {
+        function exportToPdf1(gridApi, gridApi1, excelHeaderName, reportCategory, matrixContent1, matrixContent2, uiGridExporterConstants, rowTypes, colTypes, fileName1,rejectionStart) {
             var pageHeading;
             switch(excelHeaderName.reportName){
             case 'MA Cumulative Summary': pageHeading='Mobile Academy Cumulative Summary Report'; break;
@@ -239,7 +239,11 @@
             case 'Kilkari Aggregate Beneficiaries': pageHeading='Kilkari Aggregate Beneficiaries Report'; break;
             }
 
-            var d = (new Date()).toString().split(' ').splice(1,3).join(' ');
+            var newD = new Date();
+            var months    = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+            var toDateString = newD.getDate()<10?"0"+newD.getDate():newD.getDate();
+           var d = toDateString+" "+months[newD.getMonth()]+" "+newD.getFullYear();
+
 //            var period="";
 //            if(excelHeaderName.reportName=="MA Cumulative Summary"||excelHeaderName.reportName=="Kilkari Cumulative Summary"){
 //            period=excelHeaderName.timePeriod;
@@ -248,53 +252,71 @@
 //            fromDate= fromDate.toString().split(' ').splice(1,3).join(' ');
 //            period= fromDate + " - " + toDate;
 //            }
+
+
             if (excelHeaderName.reportName == "Kilkari Message Matrix" || excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise") {
                 //First Table
                 var grid = gridApi.grid;
                 var exportColumnHeaders = uiGridExporterService.getColumnHeaders(grid, uiGridExporterConstants.ALL);
                 var exportData = uiGridExporterService.getData(grid, uiGridExporterConstants.ALL, uiGridExporterConstants.ALL, true);
                 var datapdf = [];
-                var tempHeader = [];
+                var tempHeader = ["S No"];
                 //Pushing the Column Headers into the table
                 for (i = 0; i < exportColumnHeaders.length; i++) {
-                    tempHeader[i] = exportColumnHeaders[i].displayName;
+                    tempHeader[i+1] = exportColumnHeaders[i].displayName;
                 }
                 datapdf.push(tempHeader);
                 //Pushing the rest of the data
+                var index=1;
                 for (i = 0; i < exportData.length; i++) {
-                    var tempcol = [];
+                    var tempcol = [index];
                     for (j = 0; j < exportData[i].length; j++) {
                         tempcol.push(exportData[i][j].value);
                     }
                     datapdf.push(tempcol);
+                    index++;
                 }
                 //Second Table
                 var grid1 = gridApi1.grid;
                 var exportColumnHeaders1 = uiGridExporterService.getColumnHeaders(grid1, uiGridExporterConstants.ALL);
                 var exportData1 = uiGridExporterService.getData(grid1, uiGridExporterConstants.ALL, uiGridExporterConstants.ALL, true);
                 var datapdf1 = [];
-                var tempHeader1 = [];
+                var tempHeader1 = ["S No"];
                 for (i = 0; i < exportColumnHeaders1.length; i++) {
-                    tempHeader1[i] = exportColumnHeaders1[i].displayName;
+                    tempHeader1[i+1] = exportColumnHeaders1[i].displayName;
                 }
                 datapdf1.push(tempHeader1);
+                var index1=1;
                 for (i = 0; i < exportData1.length; i++) {
-                    var tempcol = [];
+                    var tempcol = [index1];
                     for (j = 0; j < exportData1[i].length; j++) {
                         tempcol.push(exportData1[i][j].value);
                     }
                     datapdf1.push(tempcol);
+                    index1++;
                 }
-
+                var colWidth = [25];
+                var colWidth1 = [25];
                 //Dynamically getting the number of columns for each kind of table
-                var colWidth = [];
+               if(excelHeaderName.reportName == "Kilkari Message Matrix"){
                 for (i = 0; i < exportColumnHeaders.length; i++) {
-                    colWidth[i] = 70;
+                    colWidth[i+1] = 130;
                 }
                 //For 2nd Table
-                var colWidth1 = [];
+
                 for (i = 0; i < exportColumnHeaders1.length; i++) {
-                    colWidth1[i] = 80;
+                    colWidth1[i+1] = 130;
+                }
+
+               }else{
+
+                for (i = 0; i < exportColumnHeaders.length; i++) {
+                    colWidth[i+1] = 70;
+                }
+                //For 2nd Table
+                for (i = 0; i < exportColumnHeaders1.length; i++) {
+                    colWidth1[i+1] = 80;
+                }
                 }
 
                 //Contains data on the pdf as well as the styling
@@ -558,24 +580,26 @@
                 var exportColumnHeaders = uiGridExporterService.getColumnHeaders(grid, uiGridExporterConstants.ALL);
                 var exportData = uiGridExporterService.getData(grid, rowTypes, colTypes);
                 var datapdf = [];
-                var tempHeader = [];
+                var tempHeader = ["S No"];
                 for (i = 0; i < exportColumnHeaders.length; i++) {
-                    tempHeader[i] = exportColumnHeaders[i].displayName;
+                    tempHeader[i+1] = exportColumnHeaders[i].displayName;
                 }
                 datapdf.push(tempHeader);
 
-                var colWidth = [];
+                var colWidth = [25];
                 if(excelHeaderName.reportName === "Kilkari Thematic Content"){
                 for (i = 0; i < exportColumnHeaders.length; i++) {
-                    colWidth[i] = 120;
+                    colWidth[i+1] = 120;
                 }
+
                 }else{
                 for (i = 0; i < exportColumnHeaders.length; i++) {
-                    colWidth[i] = 110;
+                    colWidth[i+1] = 110;
                 }
                 }
+                var index=1;
                 for (i = 0; i < exportData.length; i++) {
-                    var tempcol = [];
+                    var tempcol = [index];
                     for (j = 0; j < exportData[i].length; j++) {
                         var temp = (exportData[i][j].value);
 
@@ -594,7 +618,12 @@
                         tempcol.push(temp);
                     }
                     datapdf.push(tempcol);
+                    if(index==exportData.length-1){ index=" "}
+                    else{
+                    index++;}
+
                 }
+
 
                 var docDefinition = {
                     pageOrientation: 'landscape',
@@ -800,7 +829,7 @@
                 }
                 else if(excelHeaderName.reportName== "MA Cumulative Summary"){
                 for (i = 0; i < exportColumnHeaders.length; i++) {
-                    colWidth[i+1] = 75;
+                    colWidth[i+1] = 71;
                 }
                 }
                 else if(excelHeaderName.reportName== "Kilkari Usage"
