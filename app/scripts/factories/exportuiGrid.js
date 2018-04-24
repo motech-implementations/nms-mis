@@ -91,8 +91,8 @@
                     else if (ft.displayName == "Average Duration Of Call" && excelHeaderName.reportName == "Kilkari Cumulative Summary") {
                         var temp = gridApi.grid.columns[3].getAggregationValue() == 0 ? 0.00 : (gridApi.grid.columns[4].getAggregationValue() / gridApi.grid.columns[3].getAggregationValue());
                         v = (temp.toFixed(2));
-                    } else if (ft.displayName == "Average Number of Weeks in Service" && excelHeaderName.reportName == "Kilkari Beneficiary Completion") {
-                        var temp = gridApi.grid.columns.length == 0 ? 0.00 : (gridApi.grid.columns[3].getAggregationValue() / gridApi.grid.columns.length);
+                    } else if (ft.displayName == "Average Number Of Weeks In Service" && excelHeaderName.reportName == "Kilkari Beneficiary Completion") {
+                        var temp = gridApi.grid.columns.length == 0 ? 0.00 : (gridApi.grid.columns[3].getAggregationValue());
                         v = (temp.toFixed(2));
                     } else if (ft.displayName == "Average Duration Of Calls" && excelHeaderName.reportName == "Kilkari Call") {
                         var temp = gridApi.grid.columns[3].getAggregationValue() == 0 ? 0.00 : (gridApi.grid.columns[8].getAggregationValue() / gridApi.grid.columns[3].getAggregationValue());
@@ -240,8 +240,14 @@
             }
 
             var d = (new Date()).toString().split(' ').splice(1,3).join(' ');
-            toDate= toDate.toString().split(' ').splice(1,3).join(' ');
-            fromDate= fromDate.toString().split(' ').splice(1,3).join(' ');
+//            var period="";
+//            if(excelHeaderName.reportName=="MA Cumulative Summary"||excelHeaderName.reportName=="Kilkari Cumulative Summary"){
+//            period=excelHeaderName.timePeriod;
+//            } else{
+//            toDate= toDate.toString().split(' ').splice(1,3).join(' ');
+//            fromDate= fromDate.toString().split(' ').splice(1,3).join(' ');
+//            period= fromDate + " - " + toDate;
+//            }
             if (excelHeaderName.reportName == "Kilkari Message Matrix" || excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise") {
                 //First Table
                 var grid = gridApi.grid;
@@ -347,7 +353,7 @@
                             style: 'subsubheader'
                         },
                         {
-                            text: 'Period : ' + fromDate + ' - ' + toDate,
+                            text: 'Period : ' + excelHeaderName.timePeriod,
                             style: 'subsubheader'
                         },
                         {
@@ -644,7 +650,7 @@
                             style: 'subsubheader'
                         },
                         {
-                            text: 'Period : ' + fromDate + ' - ' + toDate,
+                            text: 'Period : ' + excelHeaderName.timePeriod,
                             style: 'subsubheader'
                         },
                       {
@@ -768,40 +774,40 @@
                 var exportData = uiGridExporterService.getData(grid, rowTypes, colTypes); //Ensures data is retrieved in ascending Order
                 var datapdf = [];
 
-                var tempHeader = [];
+                var tempHeader = ["S No"];
                 for (i = 0; i < exportColumnHeaders.length; i++) {
-                    tempHeader[i] = exportColumnHeaders[i].displayName;
+                    tempHeader[i+1] = exportColumnHeaders[i].displayName;
                 }
                 datapdf.push(tempHeader);
 
 
                 //Dynamically setting width of the column
-                var colWidth = [];
+                var colWidth = [25];
                 if(excelHeaderName.reportName == "MA Subscriber"||excelHeaderName.reportName == 'Kilkari Beneficiary Completion'){
                 for (i = 0; i < exportColumnHeaders.length; i++) {
-                    colWidth[i] = 90;
+                    colWidth[i+1] = 90;
                     }
                 }
                 else if(excelHeaderName.reportName == "MA Performance"){
                 for (i = 0; i < exportColumnHeaders.length; i++) {
-                    colWidth[i] = 100;
+                    colWidth[i+1] = 100;
                     }
                 }
                 else if(excelHeaderName.reportName== "Kilkari Cumulative Summary"){
                 for (i = 0; i < exportColumnHeaders.length; i++) {
-                    colWidth[i] = 120;
+                    colWidth[i+1] = 120;
                 }
                 }
                 else if(excelHeaderName.reportName== "MA Cumulative Summary"){
                 for (i = 0; i < exportColumnHeaders.length; i++) {
-                    colWidth[i] = 75;
+                    colWidth[i+1] = 75;
                 }
                 }
                 else if(excelHeaderName.reportName== "Kilkari Usage"
                 ||excelHeaderName.reportName=="Kilkari Message Listenership"
                 ||excelHeaderName.reportName=="Kilkari Subscriber"){
                 for (i = 0; i < exportColumnHeaders.length; i++) {
-                    colWidth[i] = 80;
+                    colWidth[i+1] = 80;
                 }
                 }
                 else if(excelHeaderName.reportName == "Kilkari Thematic Content"){
@@ -811,7 +817,7 @@
                 }
                 else if(excelHeaderName.reportName == "Kilkari Call"){
                 for (i = 0; i < exportColumnHeaders.length; i++) {
-                    colWidth[i] = 70;
+                    colWidth[i+1] = 65;
                 }
                 }
 
@@ -822,9 +828,9 @@
                 customMarginLeft=10
                 }
 
-
+                var index=1;
                 for (i = 0; i < exportData.length; i++) {
-                    var tempcol = [];
+                    var tempcol = [index];
                     for (j = 0; j < exportData[i].length; j++) {
                         var temp = (exportData[i][j].value);
 
@@ -843,8 +849,9 @@
                         tempcol.push(temp);
                     }
                     datapdf.push(tempcol);
+                    index++;
                 }
-                var tempfoot = [];
+                var tempfoot = [" "];
 
                 //Calculating the total for respective
                 //Columns
@@ -856,8 +863,8 @@
                     else if (ft.displayName == "Average Duration Of Call" && excelHeaderName.reportName == "Kilkari Cumulative Summary") {
                         var temp = gridApi.grid.columns[3].getAggregationValue() == 0 ? 0.00 : (gridApi.grid.columns[4].getAggregationValue() / gridApi.grid.columns[3].getAggregationValue());
                         v = indianDecimal(temp);
-                    } else if (ft.displayName == "Average Number of Weeks in Service" && excelHeaderName.reportName == "Kilkari Beneficiary Completion") {
-                        var temp = gridApi.grid.columns.length == 0 ? 0.00 : (gridApi.grid.columns[3].getAggregationValue() / gridApi.grid.columns.length);
+                    } else if (ft.displayName == "Average Number Of Weeks In Service" && excelHeaderName.reportName == "Kilkari Beneficiary Completion") {
+                        var temp = gridApi.grid.columns.length == 0 ? 0.00 : (gridApi.grid.columns[3].getAggregationValue());
                         v = indianDecimal(temp);
                     } else if (ft.displayName == "Average Duration Of Calls" && excelHeaderName.reportName == "Kilkari Call") {
                         var temp = gridApi.grid.columns[3].getAggregationValue() == 0 ? 0.00 : (gridApi.grid.columns[8].getAggregationValue() / gridApi.grid.columns[3].getAggregationValue());
@@ -892,9 +899,7 @@
                     }
 
                 }, this);
-                if (excelHeaderName.reportName == 'Kilkari Thematic Content') {
-                    tempfoot[0] = " ";
-                }
+
 
                 datapdf.push(tempfoot);
 
@@ -911,7 +916,7 @@
                 } else if (excelHeaderName.reportName === 'Kilkari Aggregate Beneficiaries') {
                     fontHasSize = 8;
                     for (i = 0; i < exportColumnHeaders.length; i++) {
-                                        colWidth[i] = 60;
+                                        colWidth[i+1] = 56;
                                         }
                 } else {
                     fontHasSize = 9;
@@ -971,7 +976,7 @@
                             style: 'subsubheader'
                         },
                         {
-                            text: 'Period : ' + fromDate + ' - ' + toDate,
+                            text: 'Period : ' + excelHeaderName.timePeriod,
                             style: 'subsubheader'
                         },
 
@@ -1729,8 +1734,8 @@
                     else if (ft.displayName == "Average Duration Of Call" && excelHeaderName.reportName == "Kilkari Cumulative Summary") {
                         var temp = gridApi.grid.columns[3].getAggregationValue() == 0 ? 0.00 : (gridApi.grid.columns[4].getAggregationValue() / gridApi.grid.columns[3].getAggregationValue());
                         v = Number(temp.toFixed(2));
-                    } else if (ft.displayName == "Average Number of Weeks in Service" && excelHeaderName.reportName == "Kilkari Beneficiary Completion") {
-                        var temp = gridApi.grid.columns.length == 0 ? 0.00 : (gridApi.grid.columns[3].getAggregationValue() / gridApi.grid.columns.length);
+                    } else if (ft.displayName == "Average Number Of Weeks In Service" && excelHeaderName.reportName == "Kilkari Beneficiary Completion") {
+                        var temp = gridApi.grid.columns.length == 0 ? 0.00 : (gridApi.grid.columns[3].getAggregationValue());
                         v = Number(temp.toFixed(2));
                     } else if (ft.displayName == "Average Duration Of Calls" && excelHeaderName.reportName == "Kilkari Call") {
                         var temp = gridApi.grid.columns[3].getAggregationValue() == 0 ? 0.00 : (gridApi.grid.columns[8].getAggregationValue() / gridApi.grid.columns[3].getAggregationValue());
