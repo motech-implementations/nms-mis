@@ -8,7 +8,7 @@
             $scope.contactUs = {};
             $scope.email = {};
 
-            var emailField = $scope.email.to
+            var emailField = $scope.email.email
             function validateEmail(emailField){
                 var reg = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                 return reg.test(emailField);
@@ -59,7 +59,7 @@
                     }
                 }
 
-                if(!$scope.email.to){
+                if(!$scope.email.email){
                     if(UserFormFactory.isInternetExplorer()){
                         alert("Please enter the email")
                         return;
@@ -70,7 +70,7 @@
                     }
                 }
 
-                if(!validateEmail($scope.email.to)){
+                if(!validateEmail($scope.email.email)){
                     if(UserFormFactory.isInternetExplorer()){
                         alert("Please enter valid email")
                         return;

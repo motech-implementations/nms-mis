@@ -559,7 +559,7 @@
 
                         }
                         else{
-                            console.log($scope.endDatePickerOptions);
+                            //console.log($scope.endDatePickerOptions);
                             $scope.periodDisplayType = '';
                             $scope.dt1 = null;
                             $scope.dt2 = null;
@@ -596,7 +596,7 @@
                         }
 
 
-                console.log($scope.reports);
+                //console.log($scope.reports);
                 $scope.clearFile();
 			}
 			$scope.selectDistrict = function(district){
@@ -1059,7 +1059,7 @@
 					    }
 					    else if($scope.report.reportEnum == 'MA_Subscriber'){
 					        $scope.gridOptions1.columnDefs = $scope.MA_Subscriber_Column_Definitions;
-					        console.log($scope.gridOptions1.columnDefs);}
+					    }
 					    else if($scope.report.reportEnum == 'Kilkari_Cumulative_Summary'){
 					        $scope.gridOptions1.columnDefs = $scope.Kilkari_Cumulative_Summary_Definitions;
 					    }
@@ -1108,7 +1108,7 @@
                              $scope.gridOptions1.showColumnFooter = true;
                              $scope.reportBreadCrumbData = result.data.breadCrumbData;
                              $scope.hideGrid = false;
-                             console.log(angular.lowercase(result.data.tableData[0].locationType));
+                            // console.log(angular.lowercase(result.data.tableData[0].locationType));
                              if(angular.lowercase(result.data.tableData[0].locationType) == 'state'){
                                      $scope.gridOptions1.columnDefs[1].displayName = 'State';
                                  }
@@ -1573,13 +1573,13 @@
             ExcelData.columnHeaders1 = [];
             ExcelData.reportData1 = [];
             }
-
+                  excelHeaderName.timePeriod = $scope.headerFromDate.toString().split(' ').splice(1,3)+" to "+$scope.headerToDate.toString().split(' ').splice(1,3)
                   ExcelData.colunmFooters = footerData;
                   ExcelData.stateName = excelHeaderName.stateName;
                   ExcelData.districtName = excelHeaderName.districtName;
                   ExcelData.blockName = excelHeaderName.blockName;
                   ExcelData.reportName = excelHeaderName.reportName;
-                  ExcelData.timePeriod = excelHeaderName.timePeriod;
+                  ExcelData.timePeriod = excelHeaderName.timePeriod.replace(/,/g, " ");;
 
                 $http({
                                     method  : 'POST',
@@ -1588,7 +1588,7 @@
                                     responseType: 'arraybuffer',
                                     headers : {'Content-Type': 'application/json '}
                                 }).then(function(response){
-                                console.log(response);
+                                //console.log(response);
 
                                      var fileName = $scope.gridApi.grid.options.exporterExcelFilename ? $scope.gridApi.grid.options.exporterExcelFilename : 'dokuman';
                                                          fileName = fileName.replace("*","");
@@ -1621,7 +1621,7 @@
             var fileName1 = $scope.gridApi.grid.options.exporterExcelFilename ? $scope.gridApi.grid.options.exporterExcelFilename : 'dokuman';
                              fileName1 = fileName1.replace("*","");
                              fileName1 += '.pdf';
-            exportUiGridService.exportToPdf1($scope.gridApi,$scope.gridApi1,excelHeaderName,$scope.reportCategory,$scope.matrixContent1,$scope.matrixContent2,uiGridExporterConstants,'visible', 'visible',fileName1,rejectionStart);
+            exportUiGridService.exportToPdf1($scope.gridApi,$scope.gridApi1,excelHeaderName,$scope.reportCategory,$scope.matrixContent1,$scope.matrixContent2,uiGridExporterConstants,'visible', 'visible',fileName1,rejectionStart,$scope.headerFromDate,$scope.headerToDate);
             };
 
             var canceler = $q.defer();

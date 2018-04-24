@@ -283,8 +283,30 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
             cleanBeforeMergeOnValidCells(spreadsheet,range7,style );
             spreadsheet.addMergedRegion(range7);
 
+        XSSFRow dateRow=spreadsheet.createRow(7);
+        Cell cellA = dateRow.createCell(0);
+        cellA.setCellValue("Date Filed");
+        cellA.setCellStyle(style);
+        Cell cellB = dateRow.createCell(1);
 
+            Calendar calendar=Calendar.getInstance();
+            calendar.setTime(new Date());
+            int DateValue =calendar.get(Calendar.DATE);
+            int DateYear =(calendar.get(Calendar.YEAR));
+            String DateString;
+            if(DateValue <10) {
+                DateString ="0"+String.valueOf(DateValue);
+            }
+            else {
+                DateString =String.valueOf(DateValue);
+            }
+            String MonthString = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH );
+            String YearString =String.valueOf(DateYear);
 
+        cellB.setCellValue(DateString+" "+MonthString+" "+YearString);
+        CellRangeAddress dateRange = new CellRangeAddress(7,7,1,3);
+        cleanBeforeMergeOnValidCells(spreadsheet,dateRange,style);
+        spreadsheet.addMergedRegion(dateRange);
 
     }
 
