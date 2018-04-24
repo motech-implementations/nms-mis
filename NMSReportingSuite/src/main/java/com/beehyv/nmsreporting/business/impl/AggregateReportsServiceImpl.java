@@ -298,6 +298,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         CellStyle backgroundStyle = workbook.createCellStyle();
         CellStyle backgroundStyle1 = workbook.createCellStyle();
 
+        backgroundStyle1.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
         backgroundStyle1.setBorderBottom(CellStyle.BORDER_THIN);
         backgroundStyle1.setBottomBorderColor(IndexedColors.GREY_40_PERCENT.getIndex());
         backgroundStyle1.setBorderLeft(CellStyle.BORDER_THIN);
@@ -306,6 +307,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         backgroundStyle1.setRightBorderColor(IndexedColors.GREY_40_PERCENT.getIndex());
         backgroundStyle1.setBorderTop(CellStyle.BORDER_THIN);
         backgroundStyle1.setTopBorderColor(IndexedColors.WHITE.getIndex());
+        backgroundStyle1.setWrapText(true);
 
         backgroundStyle.setAlignment(CellStyle.ALIGN_CENTER);
         backgroundStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
@@ -337,6 +339,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
 
         XSSFCellStyle style = workbook.createCellStyle();//Create style
         style.setFont(font2);//set it to bold
+        style.setWrapText(true);
 
 
         for(int i =0;i<15;i++){
@@ -352,7 +355,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
             cell.setCellValue( "Kilkari Pregnancy Content Data");
             cell.setCellStyle(style);
             CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
-            spreadsheet.addMergedRegion(new CellRangeAddress(rowid-1,rowid-1,0,gridData.getColumnHeaders().size()-1));}
+            spreadsheet.addMergedRegion(new CellRangeAddress(rowid-1,rowid-1,0,gridData.getColumnHeaders().size()));}
 
         if(gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener Month Wise"))
         {row = spreadsheet.createRow(rowid++);
@@ -360,12 +363,15 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
             cell.setCellValue( "Beneficiary Count");
             cell.setCellStyle(style);
             CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
-            spreadsheet.addMergedRegion(new CellRangeAddress(rowid-1,rowid-1,0,gridData.getColumnHeaders1().size()-1));}
+            spreadsheet.addMergedRegion(new CellRangeAddress(rowid-1,rowid-1,0,gridData.getColumnHeaders1().size()));}
 
         row = spreadsheet.createRow(rowid++);
         row.setHeight((short)1100);
         int colid =0;
         int tabrow =0;
+            Cell sno = row.createCell(colid++);
+            sno.setCellValue("S.No");
+            sno.setCellStyle(backgroundStyle);
         for (String header : gridData.getColumnHeaders()) {
             Cell cell1 = row.createCell(colid++);
             cell1.setCellValue(header);
@@ -375,13 +381,28 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         for (ArrayList<String> rowData : gridData.getReportData()) {
             row = spreadsheet.createRow(rowid++);
             colid =0;
+            Cell SNrow = row.createCell(colid++);
+            if((gridData.getReportName().equalsIgnoreCase("Kilkari Thematic Content")||gridData.getReportName().equalsIgnoreCase("Kilkari Listening Matrix"))&&tabrow+1==gridData.getReportData().size()){
+                SNrow.setCellValue("");
+            }else{
+            SNrow.setCellValue(tabrow+1);}
+            if(tabrow %2 ==0){
+                backgroundStyle1.setFillForegroundColor(IndexedColors.WHITE.getIndex());
+                backgroundStyle1.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            }
+            else {
+                backgroundStyle1.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+                backgroundStyle1.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            }
+            SNrow.setCellStyle(backgroundStyle1);
+            CellUtil.setAlignment(SNrow, workbook, CellStyle.ALIGN_CENTER);
 
             if((gridData.getReportName().equalsIgnoreCase("Kilkari Thematic Content")||gridData.getReportName().equalsIgnoreCase("Kilkari Listening Matrix"))&&tabrow+1==gridData.getReportData().size()){
                 backgroundStyle1.setFont(font2);
             }
             for (String cellData : rowData) {
                 Cell cell1 = row.createCell(colid++);
-                if(colid==1||cellData.equalsIgnoreCase("N/A")||(gridData.getReportName().equalsIgnoreCase("Kilkari Thematic Content")&&colid==2)){
+                if(colid==2||cellData.equalsIgnoreCase("N/A")||(gridData.getReportName().equalsIgnoreCase("Kilkari Thematic Content")&&colid==3)){
                 cell1.setCellValue(cellData);}
                 else{cell1.setCellValue(parseDouble(cellData));}
 
@@ -402,10 +423,22 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
 
         row = spreadsheet.createRow(rowid++);
         colid =0;
+        if(!(gridData.getReportName().equalsIgnoreCase("Kilkari Thematic Content")||gridData.getReportName().equalsIgnoreCase("Kilkari Listening Matrix")||gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix")||gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener Month Wise"))){
+            Cell SNofooot = row.createCell(colid++);
+            SNofooot.setCellValue("");
+        if(tabrow %2 ==0){
+            backgroundStyle1.setFillForegroundColor(IndexedColors.WHITE.getIndex());
+            backgroundStyle1.setFillPattern(CellStyle.SOLID_FOREGROUND);}
+        else {
+            backgroundStyle1.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+            backgroundStyle1.setFillPattern(CellStyle.SOLID_FOREGROUND);}
+        SNofooot.setCellStyle(backgroundStyle1);
+        CellUtil.setAlignment(SNofooot, workbook, CellStyle.ALIGN_CENTER);}
+
         for (String footer : gridData.getColunmFooters()) {
             backgroundStyle1.setFont(font2);
             Cell cell1 = row.createCell(colid++);
-            if(colid==1||footer.equalsIgnoreCase("N/A")){
+            if(colid==2||footer.equalsIgnoreCase("N/A")){
             cell1.setCellValue(footer);}
             else{
                 cell1.setCellValue(parseDouble(footer));
@@ -426,7 +459,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         cell.setCellStyle(style);
         cell.setCellValue( "Kilkari Child Content Data");
         CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
-           spreadsheet.addMergedRegion(new CellRangeAddress(rowid-1,rowid-1,0,gridData.getColumnHeaders1().size()-1));}
+           spreadsheet.addMergedRegion(new CellRangeAddress(rowid-1,rowid-1,0,gridData.getColumnHeaders1().size()));}
 
         if(gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener Month Wise"))
         {row = spreadsheet.createRow(rowid++);
@@ -434,13 +467,16 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
             cell.setCellStyle(style);
             cell.setCellValue( "Beneficiary Percentage");
             CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
-            spreadsheet.addMergedRegion(new CellRangeAddress(rowid-1,rowid-1,0,gridData.getColumnHeaders1().size()-1));}
+            spreadsheet.addMergedRegion(new CellRangeAddress(rowid-1,rowid-1,0,gridData.getColumnHeaders1().size()));}
 
         row = spreadsheet.createRow(rowid++);
         if(gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix")||gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener Month Wise")){
-        row.setHeight((short)1100);}
+        row.setHeight((short)1100);
          colid =0;
         int tabrow1 =0;
+        Cell sno1 = row.createCell(colid++);
+        sno1.setCellValue("S.No");
+        sno1.setCellStyle(backgroundStyle);
         for (String header : gridData.getColumnHeaders1()) {
             Cell cell1 = row.createCell(colid++);
             cell1.setCellValue(header);
@@ -451,9 +487,21 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         for (ArrayList<String> rowData : gridData.getReportData1()) {
             row = spreadsheet.createRow(rowid++);
             colid =0;
+
+            Cell SNrow1 = row.createCell(colid++);
+            SNrow1.setCellValue(tabrow1+1);
+            if(tabrow1 %2 ==0){
+                backgroundStyle1.setFillForegroundColor(IndexedColors.WHITE.getIndex());
+                backgroundStyle1.setFillPattern(CellStyle.SOLID_FOREGROUND);}
+            else {
+                backgroundStyle1.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+                backgroundStyle1.setFillPattern(CellStyle.SOLID_FOREGROUND);}
+            SNrow1.setCellStyle(backgroundStyle1);
+            CellUtil.setAlignment(SNrow1, workbook, CellStyle.ALIGN_CENTER);
+
             for (String cellData : rowData) {
                 Cell cell1 = row.createCell(colid++);
-                if(colid==1){
+                if(colid==2){
                 cell1.setCellValue(cellData);}
                 else{
                     cell1.setCellValue(parseDouble(cellData));
@@ -469,7 +517,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                 CellUtil.setAlignment(cell1, workbook, CellStyle.ALIGN_CENTER);
             }
             tabrow1++;
-        }
+        }}
         createHeadersForAggreagateExcels(workbook,gridData);
     }
 

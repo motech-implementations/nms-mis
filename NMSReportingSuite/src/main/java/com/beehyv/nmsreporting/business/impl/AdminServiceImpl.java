@@ -1080,6 +1080,7 @@ public class AdminServiceImpl implements AdminService {
         borderStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
         borderStyle.setBorderTop(CellStyle.BORDER_THIN);
         borderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setWrapText(true);
 
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
@@ -1209,6 +1210,7 @@ public class AdminServiceImpl implements AdminService {
         borderStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
         borderStyle.setBorderTop(CellStyle.BORDER_THIN);
         borderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setWrapText(true);
 
         Map<String, Object[]> empinfo = new TreeMap<String, Object[]>();
         empinfo.put("1", new Object[]{
@@ -1336,6 +1338,7 @@ public class AdminServiceImpl implements AdminService {
         borderStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
         borderStyle.setBorderTop(CellStyle.BORDER_THIN);
         borderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setWrapText(true);
 
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
@@ -1464,6 +1467,7 @@ public class AdminServiceImpl implements AdminService {
         borderStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
         borderStyle.setBorderTop(CellStyle.BORDER_THIN);
         borderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setWrapText(true);
 
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
@@ -1667,6 +1671,7 @@ public class AdminServiceImpl implements AdminService {
         borderStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
         borderStyle.setBorderTop(CellStyle.BORDER_THIN);
         borderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setWrapText(true);
 
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
@@ -1774,6 +1779,7 @@ public class AdminServiceImpl implements AdminService {
         borderStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
         borderStyle.setBorderTop(CellStyle.BORDER_THIN);
         borderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setWrapText(true);
 
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
@@ -2049,6 +2055,7 @@ public class AdminServiceImpl implements AdminService {
         borderStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
         borderStyle.setBorderTop(CellStyle.BORDER_THIN);
         borderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setWrapText(true);
 
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
@@ -2174,6 +2181,7 @@ public class AdminServiceImpl implements AdminService {
         borderStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
         borderStyle.setBorderTop(CellStyle.BORDER_THIN);
         borderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setWrapText(true);
 
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
@@ -2300,6 +2308,7 @@ public class AdminServiceImpl implements AdminService {
         borderStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
         borderStyle.setBorderTop(CellStyle.BORDER_THIN);
         borderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setWrapText(true);
 
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
@@ -2433,6 +2442,7 @@ public class AdminServiceImpl implements AdminService {
         borderStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
         borderStyle.setBorderTop(CellStyle.BORDER_THIN);
         borderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setWrapText(true);
 
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
