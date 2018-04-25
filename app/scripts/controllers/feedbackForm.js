@@ -9,75 +9,94 @@
 			$scope.feedback = {};
 			$scope.email = {};
 
-            var emailField = $scope.email.email
-            function validateEmail(emailField){
-                    var reg = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                        return reg.test(emailField);
-            }
+            var emailField = $scope.email.email;
+
+                        function validateEmail(emailField){
+                                var reg = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                                    return reg.test(emailField);
+                        }
+
 
             $scope.feedback = function(e){
+              $(':input[type="submit"]').text('Submitting..');
+              $(':input[type="submit"]').prop('disabled', true);
+              $(':input[type="submit"]').css('background-color', 'red');
+
                 if(!$scope.email.name){
                     if(UserFormFactory.isInternetExplorer()){
-                        alert("Please enter the name")
+                        alert("Please enter the name");
+                        $scope.reverse();
+
                         return;
                     }
                     else{
-                        UserFormFactory.showAlert("Please enter the name")
+                        UserFormFactory.showAlert("Please enter the name");
+                     $scope.reverse();
                         return;
                     }
                 }
 
                 if(!$scope.email.subject){
                     if(UserFormFactory.isInternetExplorer()){
-                        alert("Please enter the Subject")
+                        alert("Please enter the Subject");
+                         $scope.reverse();
                         return;
                     }
                     else{
-                        UserFormFactory.showAlert("Please enter the Subject")
+                        UserFormFactory.showAlert("Please enter the Subject");
+                         $scope.reverse();
                         return;
                     }
                 }
 
                 if(!$scope.email.email){
                     if(UserFormFactory.isInternetExplorer()){
-                        alert("Please enter the email")
+                        alert("Please enter the email");
+                         $scope.reverse();
                         return;
                     }
                     else{
-                        UserFormFactory.showAlert("Please enter the email")
+                        UserFormFactory.showAlert("Please enter the email");
+                         $scope.reverse();
                         return;
                     }
                 }
 
                 if(!validateEmail($scope.email.email)){
                     if(UserFormFactory.isInternetExplorer()){
-                        alert("Please enter valid email")
+                        alert("Please enter valid email");
+                         $scope.reverse();
                         return;
                     }
                     else{
-                        UserFormFactory.showAlert("Please enter valid email")
+                        UserFormFactory.showAlert("Please enter valid email");
+                         $scope.reverse();
                         return;
                     }
                 }
 
                 if(!$scope.email.body){
                     if(UserFormFactory.isInternetExplorer()){
-                        alert("Please enter the Feedback")
+                        alert("Please enter the Feedback");
+                         $scope.reverse();
                         return;
                     }
                     else{
-                        UserFormFactory.showAlert("Please enter the Feedback")
+                        UserFormFactory.showAlert("Please enter the Feedback");
+                         $scope.reverse();
                         return;
                     }
                 }
 
                 if(!$scope.captchaResponse){
                     if(UserFormFactory.isInternetExplorer()){
-                        alert("Check captcha")
+                        alert("Check captcha");
+                         $scope.reverse();
                         return;
                     }
                     else{
-                        UserFormFactory.showAlert("Check captcha")
+                        UserFormFactory.showAlert("Check captcha");
+                         $scope.reverse();
                         return;
                     }
                 }
@@ -103,7 +122,16 @@
                 }
 		    }
 
+                    $scope.reverse = function(){
+                          $(':input[type="submit"]').text('Submit');
+                          $(':input[type="submit"]').prop('disabled', false);
+                          $(':input[type="submit"]').css('background-color', '#2164b2');
+                    }
+
+
+
 		}]);
+
 	nmsReportsApp.controller("FeedbackResponseController", ['$scope', '$state', 'UserFormFactory', function($scope, $state, UserFormFactory){
 
         $scope.goBackToFeedbackForm = function(){
