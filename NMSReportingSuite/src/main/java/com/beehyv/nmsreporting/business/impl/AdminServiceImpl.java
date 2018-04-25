@@ -1085,17 +1085,18 @@ public class AdminServiceImpl implements AdminService {
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
         empinfo.put("1", new Object[]{
+                "S.No",
+                "Name",
+                "Child MCTS ID",
+                "Child RCH ID",
+                "Mobile Number",
                 "State Name",
                 "District Name",
+                "Taluka Name",
                 "Health Block",
                 "Health Facility",
                 "Health Sub-Facility",
-                "Taluka Name",
                 "Village Name",
-                "Child MCTS ID",
-                "Child RCH ID",
-                "Name",
-                "Mobile Number",
                 "Rejection Reason"
         });
         Integer counter = 2;
@@ -1104,17 +1105,18 @@ public class AdminServiceImpl implements AdminService {
         }
         for (ChildImportRejection childRejection : rejectedChildImports) {
             empinfo.put((counter.toString()), new Object[]{
+                    counter-1,
+                    (childRejection.getName() == null) ? "No Name": childRejection.getName(),
+                    (childRejection.getIdNo() == null) ? "No MCTS ID": childRejection.getIdNo(),
+                    (childRejection.getRegistrationNo() == null) ? "No RCH ID": childRejection.getRegistrationNo(),
+                    (childRejection.getMobileNo() == null) ? "No Mobile Number": childRejection.getMobileNo(),
                     (childRejection.getStateId() == null) ? "No State Name": stateDao.findByStateId(childRejection.getStateId()).getStateName(),
                     (childRejection.getDistrictName() == null) ? "No District Name": childRejection.getDistrictName(),
+                    (childRejection.getTalukaName() == null) ? "No Taluka Name" : childRejection.getTalukaName(),
                     (childRejection.getHealthBlockName() == null) ? "No Health Block Name": childRejection.getHealthBlockName(),
                     (childRejection.getPhcName() == null) ? "No Health Facility" : childRejection.getPhcName(),
                     (childRejection.getSubcentreName() == null) ? "No Health Sub-Facility": childRejection.getSubcentreName(),
-                    (childRejection.getTalukaName() == null) ? "No Taluka Name" : childRejection.getTalukaName(),
                     (childRejection.getVillageName() == null) ? "No Village Name": childRejection.getVillageName(),
-                    (childRejection.getIdNo() == null) ? "No MCTS ID": childRejection.getIdNo(),
-                    (childRejection.getRegistrationNo() == null) ? "No RCH ID": childRejection.getRegistrationNo(),
-                    (childRejection.getName() == null) ? "No Name": childRejection.getName(),
-                    (childRejection.getMobileNo() == null) ? "No Mobile Number": childRejection.getMobileNo(),
                     (childRejection.getRejectionReason() == null) ? "No Rejection Reason": childRejection.getRejectionReason(),
             });
             counter++;
@@ -1132,18 +1134,21 @@ public class AdminServiceImpl implements AdminService {
 
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
-                if(rowid!=8&&((cellid==8&&!obj.toString().equalsIgnoreCase("No MCTS ID"))
-                        ||(cellid==9&&!obj.toString().equalsIgnoreCase("No RCH ID"))
-                        ||(cellid==11&&!obj.toString().equalsIgnoreCase("No Mobile Number")))){
+                if(rowid!=8&&((cellid==3&&!obj.toString().equalsIgnoreCase("No MCTS ID"))
+                        ||(cellid==4&&!obj.toString().equalsIgnoreCase("No RCH ID"))
+                        ||(cellid==5&&!obj.toString().equalsIgnoreCase("No Mobile Number")))){
                 cell.setCellValue(Float.parseFloat(obj.toString()));}
                 else{
                     cell.setCellValue(obj.toString());
+                }
+                if(rowid!=8&&cellid==1&&!rejectedChildImports.isEmpty()){
+                    cell.setCellValue(rowid-8);
                 }
                 if(rowid==8){
                 cell.setCellStyle(style);}
                 else if(rowid == 9 && rejectedChildImports.isEmpty()){
                     CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
-                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:L9"));
+                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:M9"));
                 }
                 else{
                     cell.setCellStyle(borderStyle);
@@ -1214,17 +1219,18 @@ public class AdminServiceImpl implements AdminService {
 
         Map<String, Object[]> empinfo = new TreeMap<String, Object[]>();
         empinfo.put("1", new Object[]{
+                "S.No",
+                "Name",
+                "Mother MCTS ID",
+                "Mother RCH ID",
+                "Mobile Number",
                 "State Name",
                 "District Name",
+                "Taluka Name",
                 "Health Block",
                 "Health Facility",
                 "Health Sub-Facility",
-                "Taluka Name",
                 "Village Name",
-                "Mother MCTS ID",
-                "Mother RCH ID",
-                "Name",
-                "Mobile Number",
                 "Rejection Reason"
         });
         Integer counter = 2;
@@ -1233,17 +1239,18 @@ public class AdminServiceImpl implements AdminService {
         }
         for (MotherImportRejection motherRejection : rejectedMotherImports) {
             empinfo.put((counter.toString()), new Object[]{
+                    counter-1,
+                    (motherRejection.getName() == null) ? "No Name": motherRejection.getName(),
+                    (motherRejection.getIdNo() == null) ? "No MCTS ID": motherRejection.getIdNo(),
+                    (motherRejection.getRegistrationNo() == null) ? "No RCH ID": motherRejection.getRegistrationNo(),
+                    (motherRejection.getMobileNo() == null) ? "No Mobile Number": motherRejection.getMobileNo(),
                     (motherRejection.getStateId() == null) ? "No State Name": stateDao.findByStateId(motherRejection.getStateId()).getStateName(),
                     (motherRejection.getDistrictName() == null) ? "No District Name": motherRejection.getDistrictName(),
+                    (motherRejection.getTalukaName() == null) ? "No Taluka Name" : motherRejection.getTalukaName(),
                     (motherRejection.getHealthBlockName() == null) ? "No Health Block": motherRejection.getHealthBlockName(),
                     (motherRejection.getPhcName() == null) ? "No Health Facility" : motherRejection.getPhcName(),
                     (motherRejection.getSubcentreName() == null) ? "No Health Sub-Facility": motherRejection.getSubcentreName(),
-                    (motherRejection.getTalukaName() == null) ? "No Taluka Name" : motherRejection.getTalukaName(),
                     (motherRejection.getVillageName() == null) ? "No Village Name": motherRejection.getVillageName(),
-                    (motherRejection.getIdNo() == null) ? "No MCTS ID": motherRejection.getIdNo(),
-                    (motherRejection.getRegistrationNo() == null) ? "No RCH ID": motherRejection.getRegistrationNo(),
-                    (motherRejection.getName() == null) ? "No Name": motherRejection.getName(),
-                    (motherRejection.getMobileNo() == null) ? "No Mobile Number": motherRejection.getMobileNo(),
                     (motherRejection.getRejectionReason() == null) ? "No Rejection Reason": motherRejection.getRejectionReason(),
             });
             counter++;
@@ -1260,18 +1267,21 @@ public class AdminServiceImpl implements AdminService {
             int cellid = 0;
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
-                if(rowid!=8&&((cellid==8&&!obj.toString().equalsIgnoreCase("No MCTS ID"))
-                        ||(cellid==9&&!obj.toString().equalsIgnoreCase("No RCH ID"))
-                        ||(cellid==11&&!obj.toString().equalsIgnoreCase("No Mobile Number")))){
+                if(rowid!=8&&((cellid==3&&!obj.toString().equalsIgnoreCase("No MCTS ID"))
+                        ||(cellid==4&&!obj.toString().equalsIgnoreCase("No RCH ID"))
+                        ||(cellid==5&&!obj.toString().equalsIgnoreCase("No Mobile Number")))){
                     cell.setCellValue(Float.parseFloat(obj.toString()));}
                 else{
                     cell.setCellValue(obj.toString());
+                }
+                if(rowid!=8&&cellid==1 && !rejectedMotherImports.isEmpty()){
+                    cell.setCellValue(rowid-8);
                 }
                 if(rowid==8){
                     cell.setCellStyle(style);}
                 else if(rowid == 9 && rejectedMotherImports.isEmpty()){
                     CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
-                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:L9"));
+                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:M9"));
                 }
                 else{
                     cell.setCellStyle(borderStyle);
@@ -1343,17 +1353,18 @@ public class AdminServiceImpl implements AdminService {
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
         empinfo.put("1", new Object[]{
+                "S.No",
+                "ASHA Name",
+                "ASHA Id",
+                "ASHA Mobile Number",
                 "State Name",
                 "District Name",
+                "Taluka Name",
                 "Health Block",
                 "Health Facility",
                 "Health Sub-Facility",
-                "Taluka Name",
                 "Village Name",
-                "ASHA Id",
-                "ASHA Name",
                 "ASHA Job Status",
-                "ASHA Mobile Number",
                 "Reason For Rejection"
         });
         Integer counter = 2;
@@ -1362,17 +1373,18 @@ public class AdminServiceImpl implements AdminService {
         }
         for (FlwImportRejection flwRejection : rejectedChildImports) {
             empinfo.put((counter.toString()), new Object[]{
+                    counter-1,
+                    (flwRejection.getGfName() == null) ? "No ASHA Name": flwRejection.getGfName(),
+                    (flwRejection.getFlwId() == null) ? "No ASHA ID": flwRejection.getFlwId(),
+                    (flwRejection.getMsisdn() == null) ? "No ASHA Mobile Number": flwRejection.getMsisdn(),
                     (flwRejection.getStateId() == null) ? "No State Name": stateDao.findByStateId(flwRejection.getStateId()).getStateName(),
                     (flwRejection.getDistrictName() == null) ? "No District Name": flwRejection.getDistrictName(),
+                    (flwRejection.getTalukaName() == null) ? "No Taluka Name" : flwRejection.getTalukaName(),
                     (flwRejection.getHealthBlockName() == null) ? "No Health Block": flwRejection.getHealthBlockName(),
                     (flwRejection.getPhcName() == null) ? "No Health Facility" : flwRejection.getPhcName(),
                     (flwRejection.getSubcentreName() == null) ? "No Health Sub-Facility" : flwRejection.getSubcentreName(),
-                    (flwRejection.getTalukaName() == null) ? "No Taluka Name" : flwRejection.getTalukaName(),
                     (flwRejection.getVillageName() == null) ? "No Village Name": flwRejection.getVillageName(),
-                    (flwRejection.getFlwId() == null) ? "No ASHA ID": flwRejection.getFlwId(),
-                    (flwRejection.getGfName() == null) ? "No ASHA Name": flwRejection.getGfName(),
                     (flwRejection.getGfStatus() == null) ? "No ASHA Job Status": flwRejection.getGfStatus(),
-                    (flwRejection.getMsisdn() == null) ? "No ASHA Mobile Number": flwRejection.getMsisdn(),
                     (flwRejection.getRejectionReason() == null) ? "No Rejection Reason": flwRejection.getRejectionReason(),
             });
             counter++;
@@ -1389,17 +1401,20 @@ public class AdminServiceImpl implements AdminService {
             int cellid = 0;
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
-                if(rowid!=8&&((cellid==11&&!obj.toString().equalsIgnoreCase("No ASHA Mobile Number"))
-                        ||(cellid==8&&!obj.toString().equalsIgnoreCase("No ASHA ID")))){
+                if(rowid!=8&&((cellid==4&&!obj.toString().equalsIgnoreCase("No ASHA Mobile Number"))
+                        ||(cellid==3&&!obj.toString().equalsIgnoreCase("No ASHA ID")))){
                 cell.setCellValue(Float.parseFloat(obj.toString()));}
                 else{
                     cell.setCellValue(obj.toString());
+                }
+                if(rowid!=8&&cellid==1&& !rejectedChildImports.isEmpty()){
+                    cell.setCellValue(rowid-8);
                 }
                 if(rowid==8){
                     cell.setCellStyle(style);}
                 else if(rowid == 9 && rejectedChildImports.isEmpty()){
                     CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
-                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:L9"));
+                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:M9"));
                 }
                 else{
                     cell.setCellStyle(borderStyle);
@@ -1472,16 +1487,17 @@ public class AdminServiceImpl implements AdminService {
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
         empinfo.put("1", new Object[]{
+                "S.No",
+                "ASHA Name",
+                "ASHA MCTS/RCH ID",
                 "Mobile Number",
                 "State",
                 "District",
-                "Health Block",
                 "Taluka",
+                "Health Block",
                 "Health Facility",
                 "Health Sub Facility",
                 "Village",
-                "ASHA Name",
-                "ASHA MCTS/RCH ID",
                 "ASHA Creation Date",
                 "ASHA Job Status",
                 "First Completion Date",
@@ -1493,16 +1509,17 @@ public class AdminServiceImpl implements AdminService {
         }
         for (MACourseFirstCompletion maCourseFirstCompletion : successfulCandidates) {
             empinfo.put((counter.toString()), new Object[]{
+                    counter-1,
+                    (maCourseFirstCompletion.getFullName() == null) ? "No Name":maCourseFirstCompletion.getFullName(),
+                    (maCourseFirstCompletion.getExternalFlwId() == null) ? "No FLW_ID":maCourseFirstCompletion.getExternalFlwId(),
                     (maCourseFirstCompletion.getMsisdn() == null) ? "No Phone":maCourseFirstCompletion.getMsisdn(),
                     (maCourseFirstCompletion.getStateId() == null) ? "No State":stateDao.findByStateId(maCourseFirstCompletion.getStateId()).getStateName(),
                     (maCourseFirstCompletion.getDistrictId() == null) ? "No District":districtDao.findByDistrictId(maCourseFirstCompletion.getDistrictId()).getDistrictName(),
-                    (maCourseFirstCompletion.getBlockId() == null) ? "No Block" : blockDao.findByblockId(maCourseFirstCompletion.getBlockId()).getBlockName(),
                     (maCourseFirstCompletion.getTalukaId() == null) ? "No Taluka" : talukaDao.findByTalukaId(maCourseFirstCompletion.getTalukaId()).getTalukaName(),
+                    (maCourseFirstCompletion.getBlockId() == null) ? "No Block" : blockDao.findByblockId(maCourseFirstCompletion.getBlockId()).getBlockName(),
                     (maCourseFirstCompletion.getHealthFacilityId() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(maCourseFirstCompletion.getHealthFacilityId()).getHealthFacilityName(),
                     (maCourseFirstCompletion.getHealthSubFacilityId() == null) ? "No Health Subfacility" : healthSubFacilityDao.findByHealthSubFacilityId(maCourseFirstCompletion.getHealthSubFacilityId()).getHealthSubFacilityName(),
                     (maCourseFirstCompletion.getVillageId() == null) ? "No Village" : villageDao.findByVillageId(maCourseFirstCompletion.getVillageId()).getVillageName(),
-                    (maCourseFirstCompletion.getFullName() == null) ? "No Name":maCourseFirstCompletion.getFullName(),
-                    (maCourseFirstCompletion.getExternalFlwId() == null) ? "No FLW_ID":maCourseFirstCompletion.getExternalFlwId(),
                     (maCourseFirstCompletion.getCreationDate() == null) ? "No Creation_date":maCourseFirstCompletion.getCreationDate(),
                     (maCourseFirstCompletion.getJobStatus() == null) ? "No Designation":maCourseFirstCompletion.getJobStatus(),
                     (maCourseFirstCompletion.getFirstCompletionDate() == null) ? "No Phone":maCourseFirstCompletion.getFirstCompletionDate(),
@@ -1522,17 +1539,20 @@ public class AdminServiceImpl implements AdminService {
             int cellid = 0;
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
-                if(rowid!=8&&((cellid==1&&!obj.toString().equalsIgnoreCase("No Phone"))
-                        ||(cellid==10&&!obj.toString().equalsIgnoreCase("No FLW_ID")))){
+                if(rowid!=8&&((cellid==4&&!obj.toString().equalsIgnoreCase("No Phone"))
+                        ||(cellid==3&&!obj.toString().equalsIgnoreCase("No FLW_ID")))){
                 cell.setCellValue(Float.parseFloat(obj.toString()));}
                 else{
                     cell.setCellValue(obj.toString());
+                }
+                if(rowid!=8&&cellid==1&& !successfulCandidates.isEmpty()){
+                    cell.setCellValue(rowid-8);
                 }
                 if(rowid==8){
                     cell.setCellStyle(style);}
                 else if(rowid == 9 && successfulCandidates.isEmpty()){
                     CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
-                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:N9"));
+                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:O9"));
                 }
                 else{
                     cell.setCellStyle(borderStyle);
@@ -1676,6 +1696,7 @@ public class AdminServiceImpl implements AdminService {
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
         empinfo.put("1", new Object[]{
+                "S.No",
                 "Circle Name",
                 "Mobile Number",
                 "Last Called Date"
@@ -1686,6 +1707,7 @@ public class AdminServiceImpl implements AdminService {
         }
         for (AnonymousUsers anonymousUser : anonymousUsersList) {
             empinfo.put((counter.toString()), new Object[]{
+                    counter-1,
                     anonymousUser.getCircleName(),
                     anonymousUser.getMsisdn(),
                     anonymousUser.getLastCalledDate()
@@ -1704,16 +1726,19 @@ public class AdminServiceImpl implements AdminService {
             int cellid = 0;
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
-                if(rowid!=8&&(cellid==2)){
+                if(rowid!=8&&(cellid==3)){
                 cell.setCellValue(Float.parseFloat(obj.toString()));}
                 else{
                     cell.setCellValue(obj.toString());
+                }
+                if(rowid!=8&&cellid==1&& !anonymousUsersList.isEmpty()){
+                    cell.setCellValue(rowid-8);
                 }
                 if(rowid==8){
                     cell.setCellStyle(style);}
                 else if(rowid==9 && anonymousUsersList.isEmpty()) {
                     CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
-                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:C9"));
+                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:D9"));
                 }
                 else{
                     cell.setCellStyle(borderStyle);
@@ -1784,16 +1809,17 @@ public class AdminServiceImpl implements AdminService {
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
         empinfo.put("1", new Object[]{
+                "S.No",
+                "ASHA Name",
+                "ASHA MCTS/RCH ID",
                 "Mobile Number",
                 "State",
                 "District",
-                "Health Block",
                 "Taluka",
+                "Health Block",
                 "Health Facility",
                 "Health Sub Facility",
                 "Village",
-                "ASHA Name",
-                "ASHA MCTS/RCH ID",
                 "ASHA Creation Date",
                 "ASHA Job Status"
         });
@@ -1803,16 +1829,17 @@ public class AdminServiceImpl implements AdminService {
         }
         for (FrontLineWorkers frontLineWorker : inactiveCandidates) {
             empinfo.put((counter.toString()), new Object[]{
+                    counter-1,
+                    (frontLineWorker.getFullName() == null) ? "No Name":frontLineWorker.getFullName(),
+                    (frontLineWorker.getExternalFlwId() == null) ? "No FLW_ID":frontLineWorker.getExternalFlwId(),
                     (frontLineWorker.getMobileNumber() == null) ? "No Phone":frontLineWorker.getMobileNumber(),
                     (frontLineWorker.getState() == null) ? "No State":stateDao.findByStateId(frontLineWorker.getState()).getStateName(),
                     (frontLineWorker.getDistrict() == null) ? "No District":districtDao.findByDistrictId(frontLineWorker.getDistrict()).getDistrictName(),
-                    (frontLineWorker.getBlock() == null) ? "No Block" : blockDao.findByblockId(frontLineWorker.getBlock()).getBlockName(),
                     (frontLineWorker.getTaluka() == null) ? "No Taluka" : talukaDao.findByTalukaId(frontLineWorker.getTaluka()).getTalukaName(),
+                    (frontLineWorker.getBlock() == null) ? "No Block" : blockDao.findByblockId(frontLineWorker.getBlock()).getBlockName(),
                     (frontLineWorker.getFacility() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(frontLineWorker.getFacility()).getHealthFacilityName(),
                     (frontLineWorker.getSubfacility() == null) ? "No Health Subfacility" : healthSubFacilityDao.findByHealthSubFacilityId(frontLineWorker.getSubfacility()).getHealthSubFacilityName(),
                     (frontLineWorker.getVillage() == null) ? "No Village" : villageDao.findByVillageId(frontLineWorker.getVillage()).getVillageName(),
-                    (frontLineWorker.getFullName() == null) ? "No Name":frontLineWorker.getFullName(),
-                    (frontLineWorker.getExternalFlwId() == null) ? "No FLW_ID":frontLineWorker.getExternalFlwId(),
                     (frontLineWorker.getCreationDate() == null) ? "No Creation_date":frontLineWorker.getCreationDate(),
                     (frontLineWorker.getJobStatus() == null) ? "No Designation":frontLineWorker.getJobStatus()
             });
@@ -1830,17 +1857,21 @@ public class AdminServiceImpl implements AdminService {
             for (Object obj : objectArr) {
 
                 Cell cell = row.createCell(cellid++);
-                if(rowid!=8&&((cellid==1&&!obj.toString().equalsIgnoreCase("No Phone"))
-                        ||(cellid==10&&!obj.toString().equalsIgnoreCase("No FLW_ID")))){
+
+                if(rowid!=8&&((cellid==4&&!obj.toString().equalsIgnoreCase("No Phone"))
+                        ||(cellid==3&&!obj.toString().equalsIgnoreCase("No FLW_ID")))){
                 cell.setCellValue(Long.parseLong(obj.toString()));}
                 else{
                     cell.setCellValue(obj.toString());
+                }
+                if(rowid!=8&&cellid==1&& !inactiveCandidates.isEmpty()){
+                    cell.setCellValue(rowid-8);
                 }
                 if(rowid==8){
                     cell.setCellStyle(style);}
                 else if(rowid==9 && inactiveCandidates.isEmpty()) {
                     CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
-                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:L9"));
+                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:M9"));
                 }
                 else{
                     cell.setCellStyle(borderStyle);
@@ -2060,17 +2091,18 @@ public class AdminServiceImpl implements AdminService {
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
         empinfo.put("1", new Object[]{
+                "S.No",
+                "Benificiary Name",
+                "Beneficiary MCTS Id",
+                "Beneficiary RCH Id",
+                "Mobile Number",
                 "State",
                 "District",
-                "Health block",
                 "Taluka",
+                "Health block",
                 "Health Facility",
                 "Health SubFacility",
                 "Village",
-                "Beneficiary MCTS Id",
-                "Beneficiary RCH Id",
-                "Benificiary Name",
-                "Mobile Number",
                 "Age On Service In Weeks"});
         Integer counter = 2;
         if(kilkariSixWeeksNoAnswersList.isEmpty()) {
@@ -2078,17 +2110,18 @@ public class AdminServiceImpl implements AdminService {
         }
         for (KilkariDeactivationOther kilkari : kilkariSixWeeksNoAnswersList) {
             empinfo.put((counter.toString()), new Object[]{
+                    counter-1,
+                    (kilkari.getName() == null) ? "No Name" : kilkari.getName(),
+                    (kilkari.getMctsId() == null) ? "No MCTS Id" : kilkari.getMctsId(),
+                    (kilkari.getRchId() == null) ? "No RCH Id" : kilkari.getRchId(),
+                    (kilkari.getMsisdn() == null) ? "No MSISDN" : kilkari.getMsisdn(),
                     (kilkari.getStateId() == null) ? "No State" : stateDao.findByStateId(kilkari.getStateId()).getStateName(),
                     (kilkari.getDistrictId() == null) ? "No District" : districtDao.findByDistrictId(kilkari.getDistrictId()).getDistrictName(),
-                    (kilkari.getBlockId() == null) ? "No Block" : blockDao.findByblockId(kilkari.getBlockId()).getBlockName(),
                     (kilkari.getVillageId() == null) ? "No Taluka" : talukaDao.findByTalukaId(villageDao.findByVillageId(kilkari.getVillageId()).getTalukaOfVillage()).getTalukaName(),
+                    (kilkari.getBlockId() == null) ? "No Block" : blockDao.findByblockId(kilkari.getBlockId()).getBlockName(),
                     (kilkari.getHsubcenterId() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthFacilityOfHealthSubFacility()).getHealthFacilityName(),
                     (kilkari.getHsubcenterId() == null) ? "No Health Subfacility" : healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthSubFacilityName(),
                     (kilkari.getVillageId() == null) ? "No Village" : villageDao.findByVillageId(kilkari.getVillageId()).getVillageName(),
-                    (kilkari.getMctsId() == null) ? "No MCTS Id" : kilkari.getMctsId(),
-                    (kilkari.getRchId() == null) ? "No RCH Id" : kilkari.getRchId(),
-                    (kilkari.getName() == null) ? "No Name" : kilkari.getName(),
-                    (kilkari.getMsisdn() == null) ? "No MSISDN" : kilkari.getMsisdn(),
                     (kilkari.getAgeOnService() == null) ? "No Age_Data" : kilkari.getAgeOnService()
 
             });
@@ -2105,18 +2138,21 @@ public class AdminServiceImpl implements AdminService {
             int cellid = 0;
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
-                if(rowid!=8&&((cellid==8&&!obj.toString().equalsIgnoreCase("No MCTS Id"))
-                        ||(cellid==9&&!obj.toString().equalsIgnoreCase("No RCH Id"))
-                        ||(cellid==11&&!obj.toString().equalsIgnoreCase("No MSISDN")))){
+                if(rowid!=8&&((cellid==3&&!obj.toString().equalsIgnoreCase("No MCTS Id"))
+                        ||(cellid==4&&!obj.toString().equalsIgnoreCase("No RCH Id"))
+                        ||(cellid==5&&!obj.toString().equalsIgnoreCase("No MSISDN")))){
                 cell.setCellValue(Float.parseFloat(obj.toString()));}
                 else{
                     cell.setCellValue(obj.toString());
+                }
+                if(rowid!=8&&cellid==1&& !kilkariSixWeeksNoAnswersList.isEmpty()){
+                    cell.setCellValue(rowid-8);
                 }
                 if(rowid==8){
                     cell.setCellStyle(style);}
                 else if(rowid==9 && kilkariSixWeeksNoAnswersList.isEmpty()) {
                     CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
-                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:L9"));
+                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:M9"));
                 }
                 else{
                     cell.setCellStyle(borderStyle);
@@ -2186,17 +2222,18 @@ public class AdminServiceImpl implements AdminService {
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
         empinfo.put("1", new Object[]{
+                "S.No",
+                "Benificiary Name",
+                "Beneficiary MCTS Id",
+                "Beneficiary RCH Id",
+                "Mobile Number",
                 "State",
                 "District",
-                "Health block",
                 "Taluka",
+                "Health block",
                 "Health Facility",
                 "Health SubFacility",
                 "Village",
-                "Beneficiary MCTS Id",
-                "Beneficiary RCH Id",
-                "Benificiary Name",
-                "Mobile Number",
                 "Age On Service In Weeks"});
         Integer counter = 2;
         if(lowListenershipList.isEmpty()) {
@@ -2204,17 +2241,18 @@ public class AdminServiceImpl implements AdminService {
         }
         for (KilkariDeactivationOther kilkari : lowListenershipList) {
             empinfo.put((counter.toString()), new Object[]{
+                    counter-1,
+                    (kilkari.getName() == null) ? "No Name" : kilkari.getName(),
+                    (kilkari.getMctsId() == null) ? "No MCTS Id" : kilkari.getMctsId(),
+                    (kilkari.getRchId() == null) ? "No RCH Id" : kilkari.getRchId(),
+                    (kilkari.getMsisdn() == null) ? "No MSISDN" : kilkari.getMsisdn(),
                     (kilkari.getStateId() == null) ? "No State" : stateDao.findByStateId(kilkari.getStateId()).getStateName(),
                     (kilkari.getDistrictId() == null) ? "No District" : districtDao.findByDistrictId(kilkari.getDistrictId()).getDistrictName(),
-                    (kilkari.getBlockId() == null) ? "No Block" : blockDao.findByblockId(kilkari.getBlockId()).getBlockName(),
                     (kilkari.getVillageId() == null) ? "No Taluka" : talukaDao.findByTalukaId(villageDao.findByVillageId(kilkari.getVillageId()).getTalukaOfVillage()).getTalukaName(),
+                    (kilkari.getBlockId() == null) ? "No Block" : blockDao.findByblockId(kilkari.getBlockId()).getBlockName(),
                     (kilkari.getHsubcenterId() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthFacilityOfHealthSubFacility()).getHealthFacilityName(),
                     (kilkari.getHsubcenterId() == null) ? "No Health Subfacility" : healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthSubFacilityName(),
                     (kilkari.getVillageId() == null) ? "No Village" : villageDao.findByVillageId(kilkari.getVillageId()).getVillageName(),
-                    (kilkari.getMctsId() == null) ? "No MCTS Id" : kilkari.getMctsId(),
-                    (kilkari.getRchId() == null) ? "No RCH Id" : kilkari.getRchId(),
-                    (kilkari.getName() == null) ? "No Name" : kilkari.getName(),
-                    (kilkari.getMsisdn() == null) ? "No MSISDN" : kilkari.getMsisdn(),
                     (kilkari.getAgeOnService() == null) ? "No Age_Data" : kilkari.getAgeOnService()
 
             });
@@ -2231,18 +2269,22 @@ public class AdminServiceImpl implements AdminService {
             int cellid = 0;
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
-                if(rowid!=8&&((cellid==8&&!obj.toString().equalsIgnoreCase("No MCTS Id"))
-                        ||(cellid==9&&!obj.toString().equalsIgnoreCase("No RCH Id"))
-                        ||(cellid==11&&!obj.toString().equalsIgnoreCase("No MSISDN")))){
+                if(rowid!=8&&((cellid==3&&!obj.toString().equalsIgnoreCase("No MCTS Id"))
+                        ||(cellid==4&&!obj.toString().equalsIgnoreCase("No RCH Id"))
+                        ||(cellid==5&&!obj.toString().equalsIgnoreCase("No MSISDN"))
+                        ||(cellid==13&&!obj.toString().equalsIgnoreCase("No Age_Data")))){
                 cell.setCellValue(Float.parseFloat(obj.toString()));}
                 else{
                     cell.setCellValue(obj.toString());
+                }
+                if(rowid!=8&&cellid==1 && !lowListenershipList.isEmpty()){
+                    cell.setCellValue(rowid-8);
                 }
                 if(rowid==8){
                     cell.setCellStyle(style);}
                 else if(rowid==6 && lowListenershipList.isEmpty()) {
                     CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
-                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:L9"));
+                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:M9"));
                 }
                 else{
                     cell.setCellStyle(borderStyle);
@@ -2313,17 +2355,18 @@ public class AdminServiceImpl implements AdminService {
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
         empinfo.put("1", new Object[]{
+                "S.No",
+                "Benificiary Name",
+                "Beneficiary MCTS Id",
+                "Beneficiary RCH Id",
+                "Mobile Number",
                 "State",
                 "District",
-                "Health block",
                 "Taluka",
+                "Health block",
                 "Health Facility",
                 "Health SubFacility",
                 "Village",
-                "Beneficiary MCTS Id",
-                "Beneficiary RCH Id",
-                "Benificiary Name",
-                "Mobile Number",
                 "Age On Service In Weeks",
                 "Date of activation",
                 "Date when beneficiary self-deactivated",
@@ -2335,17 +2378,18 @@ public class AdminServiceImpl implements AdminService {
         }
         for (KilkariSelfDeactivated kilkari : kilkariSelfDeactivatedList) {
             empinfo.put((counter.toString()), new Object[]{
+                    counter-1,
+                    (kilkari.getName() == null) ? "No Name" : kilkari.getName(),
+                    (kilkari.getMctsId() == null) ? "No MCTS Id" : kilkari.getMctsId(),
+                    (kilkari.getRchId() == null) ? "No RCH Id" : kilkari.getRchId(),
+                    (kilkari.getMsisdn() == null) ? "No MSISDN" : kilkari.getMsisdn(),
                     (kilkari.getStateId() == null) ? "No State" : stateDao.findByStateId(kilkari.getStateId()).getStateName(),
                     (kilkari.getDistrictId() == null) ? "No District" : districtDao.findByDistrictId(kilkari.getDistrictId()).getDistrictName(),
-                    (kilkari.getBlockId() == null) ? "No Block" : blockDao.findByblockId(kilkari.getBlockId()).getBlockName(),
                     (kilkari.getVillageId() == null) ? "No Taluka" : talukaDao.findByTalukaId(villageDao.findByVillageId(kilkari.getVillageId()).getTalukaOfVillage()).getTalukaName(),
+                    (kilkari.getBlockId() == null) ? "No Block" : blockDao.findByblockId(kilkari.getBlockId()).getBlockName(),
                     (kilkari.getHsubcenterId() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthFacilityOfHealthSubFacility()).getHealthFacilityName(),
                     (kilkari.getHsubcenterId() == null) ? "No Health Subfacility" : healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthSubFacilityName(),
                     (kilkari.getVillageId() == null) ? "No Village" : villageDao.findByVillageId(kilkari.getVillageId()).getVillageName(),
-                    (kilkari.getMctsId() == null) ? "No MCTS Id" : kilkari.getMctsId(),
-                    (kilkari.getRchId() == null) ? "No RCH Id" : kilkari.getRchId(),
-                    (kilkari.getName() == null) ? "No Name" : kilkari.getName(),
-                    (kilkari.getMsisdn() == null) ? "No MSISDN" : kilkari.getMsisdn(),
                     (kilkari.getAgeOnService() == null) ? "No Age_Data" : kilkari.getAgeOnService(),
                     (kilkari.getPackActivationDate() == null) ? "No Activation_date" :kilkari.getPackActivationDate(),
                     (kilkari.getDeactivationDate() == null) ? "No Deactivation_date" :kilkari.getDeactivationDate(),
@@ -2365,19 +2409,22 @@ public class AdminServiceImpl implements AdminService {
             int cellid = 0;
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
-                if(rowid!=8&&((cellid==8&&!obj.toString().equalsIgnoreCase("No MCTS Id"))
-                        ||(cellid==9&&!obj.toString().equalsIgnoreCase("No RCH Id"))
-                        ||(cellid==11&&!obj.toString().equalsIgnoreCase("No MSISDN")))){
+                if(rowid!=8&&((cellid==3&&!obj.toString().equalsIgnoreCase("No MCTS Id"))
+                        ||(cellid==4&&!obj.toString().equalsIgnoreCase("No RCH Id"))
+                        ||(cellid==5&&!obj.toString().equalsIgnoreCase("No MSISDN")))){
                 cell.setCellValue(Float.parseFloat(obj.toString()));}
                 else{
                     cell.setCellValue(obj.toString());
+                }
+                if(rowid!=8&&cellid==1&& !kilkariSelfDeactivatedList.isEmpty()){
+                    cell.setCellValue(rowid-8);
                 }
                 if(rowid==8){
                     row.setHeight((short)1100);
                     cell.setCellStyle(style);}
                 else if(rowid==9 && kilkariSelfDeactivatedList.isEmpty()) {
                     CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
-                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:O9"));
+                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:P9"));
                 }
                 else{
                     cell.setCellStyle(borderStyle);
@@ -2447,17 +2494,18 @@ public class AdminServiceImpl implements AdminService {
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
         empinfo.put("1", new Object[]{
+                "S.No",
+                "Benificiary Name",
+                "Beneficiary MCTS Id",
+                "Beneficiary RCH Id",
+                "Mobile Number",
                 "State",
                 "District",
-                "Health block",
                 "Taluka",
+                "Health block",
                 "Health Facility",
                 "Health SubFacility",
                 "Village",
-                "Beneficiary MCTS Id",
-                "Beneficiary RCH Id",
-                "Benificiary Name",
-                "Mobile Number",
                 "Age On Service In Weeks"
         });
         Integer counter = 2;
@@ -2466,17 +2514,18 @@ public class AdminServiceImpl implements AdminService {
         }
         for (KilkariLowUsage kilkari : kilkariLowUsageList) {
             empinfo.put((counter.toString()), new Object[]{
+                    counter-1,
+                    (kilkari.getName() == null) ? "No Name" : kilkari.getName(),
+                    (kilkari.getMctsId() == null) ? "No MCTS Id" : kilkari.getMctsId(),
+                    (kilkari.getRchId() == null) ? "No RCH Id" : kilkari.getRchId(),
+                    (kilkari.getMsisdn() == null) ? "No MSISDN" : kilkari.getMsisdn(),
                     (kilkari.getStateId() == null) ? "No State" : stateDao.findByStateId(kilkari.getStateId()).getStateName(),
                     (kilkari.getDistrictId() == null) ? "No District" : districtDao.findByDistrictId(kilkari.getDistrictId()).getDistrictName(),
-                    (kilkari.getBlockId() == null) ? "No Block" : blockDao.findByblockId(kilkari.getBlockId()).getBlockName(),
                     (kilkari.getVillageId() == null) ? "No Taluka" : talukaDao.findByTalukaId(villageDao.findByVillageId(kilkari.getVillageId()).getTalukaOfVillage()).getTalukaName(),
+                    (kilkari.getBlockId() == null) ? "No Block" : blockDao.findByblockId(kilkari.getBlockId()).getBlockName(),
                     (kilkari.getHsubcenterId() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthFacilityOfHealthSubFacility()).getHealthFacilityName(),
                     (kilkari.getHsubcenterId() == null) ? "No Health Subfacility" : healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthSubFacilityName(),
                     (kilkari.getVillageId() == null) ? "No Village" : villageDao.findByVillageId(kilkari.getVillageId()).getVillageName(),
-                    (kilkari.getMctsId() == null) ? "No MCTS Id" : kilkari.getMctsId(),
-                    (kilkari.getRchId() == null) ? "No RCH Id" : kilkari.getRchId(),
-                    (kilkari.getName() == null) ? "No Name" : kilkari.getName(),
-                    (kilkari.getMsisdn() == null) ? "No MSISDN" : kilkari.getMsisdn(),
                     (kilkari.getAgeOnService() == null) ? "No Age_Data" : kilkari.getAgeOnService(),
             });
             counter++;
@@ -2492,18 +2541,21 @@ public class AdminServiceImpl implements AdminService {
             int cellid = 0;
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
-                if(rowid!=8&&((cellid==8&&!obj.toString().equalsIgnoreCase("No MCTS Id"))
-                        ||(cellid==9&&!obj.toString().equalsIgnoreCase("No RCH Id"))
-                        ||(cellid==11&&!obj.toString().equalsIgnoreCase("No MSISDN")))){
+                if(rowid!=8&&((cellid==3&&!obj.toString().equalsIgnoreCase("No MCTS Id"))
+                        ||(cellid==4&&!obj.toString().equalsIgnoreCase("No RCH Id"))
+                        ||(cellid==5&&!obj.toString().equalsIgnoreCase("No MSISDN")))){
                     cell.setCellValue(Float.parseFloat(obj.toString()));}
                 else{
                     cell.setCellValue(obj.toString());
+                }
+                if(rowid!=8&&cellid==1&& !kilkariLowUsageList.isEmpty()){
+                    cell.setCellValue(rowid-8);
                 }
                 if(rowid==8){
                     cell.setCellStyle(style);}
                 else if(rowid==9 && kilkariLowUsageList.isEmpty()) {
                     CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
-                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:L9"));
+                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:M9"));
                 }
                 else{
                     cell.setCellStyle(borderStyle);
@@ -2611,6 +2663,9 @@ public class AdminServiceImpl implements AdminService {
             }
             cell3.setCellValue("Month:");
             cell4.setCellValue(getMonthYearName(reportRequest.getFromDate()));
+            CellRangeAddress range4 = new CellRangeAddress(3,4,8,11);
+            cleanBeforeMergeOnValidCells(spreadsheet,range4,style );
+            spreadsheet.addMergedRegion(range4);
             cell5.setCellValue("Circle:");
             cell6.setCellValue(circleName);
         }else {
@@ -2660,20 +2715,23 @@ public class AdminServiceImpl implements AdminService {
         cell4.setCellStyle(style);
         cell5.setCellStyle(style);
         cell6.setCellStyle(style);
+        if(!reportRequest.getReportType().equals(ReportType.maAnonymous.getReportType())) {
         cell7.setCellStyle(style);
         cell8.setCellStyle(style);
         cell9.setCellStyle(style);
-        cell10.setCellStyle(style);
+        cell10.setCellStyle(style);}
 
         CellRangeAddress range5 =new CellRangeAddress(5,5,1,3);
             cleanBeforeMergeOnValidCells(spreadsheet,range5,style );
             spreadsheet.addMergedRegion(range5);
-        CellRangeAddress range6 =new CellRangeAddress(5,5,5,7);
-            cleanBeforeMergeOnValidCells(spreadsheet,range6,style );
+        if(!reportRequest.getReportType().equals(ReportType.maAnonymous.getReportType())) {
+            CellRangeAddress range6 = new CellRangeAddress(5, 5, 5, 7);
+            cleanBeforeMergeOnValidCells(spreadsheet, range6, style);
             spreadsheet.addMergedRegion(range6);
-        CellRangeAddress range7 =new CellRangeAddress(5,5,9,11);
-            cleanBeforeMergeOnValidCells(spreadsheet,range7,style );
+            CellRangeAddress range7 = new CellRangeAddress(5, 5, 9, 11);
+            cleanBeforeMergeOnValidCells(spreadsheet, range7, style);
             spreadsheet.addMergedRegion(range7);
+        }
 
     }
     @Override
