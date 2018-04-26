@@ -1050,10 +1050,10 @@ public class AdminServiceImpl implements AdminService {
         //Create row object
         XSSFRow row;
         //This data needs to be written (Object[])
-        CellStyle style = workbook.createCellStyle();//Create style
+        XSSFCellStyle style = workbook.createCellStyle();//Create style
         style.setAlignment(CellStyle.ALIGN_CENTER);
         style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-        style.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
+        style.setFillForegroundColor(new XSSFColor(new java.awt.Color(33, 100, 178)));
         style.setFillPattern(CellStyle.SOLID_FOREGROUND);
         style.setBorderBottom(CellStyle.BORDER_THIN);
         style.setBottomBorderColor(IndexedColors.WHITE.getIndex());
@@ -1185,10 +1185,10 @@ public class AdminServiceImpl implements AdminService {
         XSSFRow row;
         //This data needs to be written (Object[])
 
-        CellStyle style = workbook.createCellStyle();//Create style
+        XSSFCellStyle style = workbook.createCellStyle();//Create style
         style.setAlignment(CellStyle.ALIGN_CENTER);
         style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-        style.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
+        style.setFillForegroundColor(new XSSFColor(new java.awt.Color(33, 100, 178)));
         style.setFillPattern(CellStyle.SOLID_FOREGROUND);
         style.setBorderBottom(CellStyle.BORDER_THIN);
         style.setBottomBorderColor(IndexedColors.WHITE.getIndex());
@@ -1318,10 +1318,10 @@ public class AdminServiceImpl implements AdminService {
         XSSFRow row;
         //This data needs to be written (Object[])
 
-        CellStyle style = workbook.createCellStyle();//Create style
+        XSSFCellStyle style = workbook.createCellStyle();//Create style
         style.setAlignment(CellStyle.ALIGN_CENTER);
         style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-        style.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
+        style.setFillForegroundColor(new XSSFColor(new java.awt.Color(33, 100, 178)));
         style.setFillPattern(CellStyle.SOLID_FOREGROUND);
         style.setBorderBottom(CellStyle.BORDER_THIN);
         style.setBottomBorderColor(IndexedColors.WHITE.getIndex());
@@ -1452,10 +1452,10 @@ public class AdminServiceImpl implements AdminService {
         XSSFRow row;
         //This data needs to be written (Object[])
 
-        CellStyle style = workbook.createCellStyle();//Create style
+        XSSFCellStyle style = workbook.createCellStyle();//Create style
         style.setAlignment(CellStyle.ALIGN_CENTER);
         style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-        style.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
+        style.setFillForegroundColor(new XSSFColor(new java.awt.Color(33, 100, 178)));
         style.setFillPattern(CellStyle.SOLID_FOREGROUND);
         style.setBorderBottom(CellStyle.BORDER_THIN);
         style.setBottomBorderColor(IndexedColors.WHITE.getIndex());
@@ -1661,10 +1661,10 @@ public class AdminServiceImpl implements AdminService {
         XSSFRow row;
         //This data needs to be written (Object[])
 
-        CellStyle style = workbook.createCellStyle();//Create style
+        XSSFCellStyle style = workbook.createCellStyle();//Create style
         style.setAlignment(CellStyle.ALIGN_CENTER);
         style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-        style.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
+        style.setFillForegroundColor(new XSSFColor(new java.awt.Color(33, 100, 178)));
         style.setFillPattern(CellStyle.SOLID_FOREGROUND);
         style.setBorderBottom(CellStyle.BORDER_THIN);
         style.setBottomBorderColor(IndexedColors.WHITE.getIndex());
@@ -1774,10 +1774,10 @@ public class AdminServiceImpl implements AdminService {
         XSSFRow row;
         //This data needs to be written (Object[])
 
-        CellStyle style = workbook.createCellStyle();//Create style
+        XSSFCellStyle style = workbook.createCellStyle();//Create style
         style.setAlignment(CellStyle.ALIGN_CENTER);
         style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-        style.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
+        style.setFillForegroundColor(new XSSFColor(new java.awt.Color(33, 100, 178)));
         style.setFillPattern(CellStyle.SOLID_FOREGROUND);
         style.setBorderBottom(CellStyle.BORDER_THIN);
         style.setBottomBorderColor(IndexedColors.WHITE.getIndex());
@@ -2056,10 +2056,10 @@ public class AdminServiceImpl implements AdminService {
         XSSFRow row;
         //This data needs to be written (Object[])
 
-        CellStyle style = workbook.createCellStyle();//Create style
+        XSSFCellStyle style = workbook.createCellStyle();//Create style
         style.setAlignment(CellStyle.ALIGN_CENTER);
         style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-        style.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
+        style.setFillForegroundColor(new XSSFColor(new java.awt.Color(33, 100, 178)));
         style.setFillPattern(CellStyle.SOLID_FOREGROUND);
         style.setBorderBottom(CellStyle.BORDER_THIN);
         style.setBottomBorderColor(IndexedColors.WHITE.getIndex());
@@ -2187,10 +2187,10 @@ public class AdminServiceImpl implements AdminService {
         XSSFRow row;
         //This data needs to be written (Object[])
 
-        CellStyle style = workbook.createCellStyle();//Create style
+        XSSFCellStyle style = workbook.createCellStyle();//Create style
         style.setAlignment(CellStyle.ALIGN_CENTER);
         style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-        style.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
+        style.setFillForegroundColor(new XSSFColor(new java.awt.Color(33, 100, 178)));
         style.setFillPattern(CellStyle.SOLID_FOREGROUND);
         style.setBorderBottom(CellStyle.BORDER_THIN);
         style.setBottomBorderColor(IndexedColors.WHITE.getIndex());
@@ -2320,10 +2320,10 @@ public class AdminServiceImpl implements AdminService {
         XSSFRow row;
         //This data needs to be written (Object[])
 
-        CellStyle style = workbook.createCellStyle();//Create style
+        XSSFCellStyle style = workbook.createCellStyle();//Create style
         style.setAlignment(CellStyle.ALIGN_CENTER);
         style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-        style.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
+        style.setFillForegroundColor(new XSSFColor(new java.awt.Color(33, 100, 178)));
         style.setFillPattern(CellStyle.SOLID_FOREGROUND);
         style.setBorderBottom(CellStyle.BORDER_THIN);
         style.setBottomBorderColor(IndexedColors.WHITE.getIndex());
@@ -2459,10 +2459,10 @@ public class AdminServiceImpl implements AdminService {
         XSSFRow row;
         //This data needs to be written (Object[])
 
-        CellStyle style = workbook.createCellStyle();//Create style
+        XSSFCellStyle style = workbook.createCellStyle();//Create style
         style.setAlignment(CellStyle.ALIGN_CENTER);
         style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-        style.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
+        style.setFillForegroundColor(new XSSFColor(new java.awt.Color(33, 100, 178)));
         style.setFillPattern(CellStyle.SOLID_FOREGROUND);
         style.setBorderBottom(CellStyle.BORDER_THIN);
         style.setBottomBorderColor(IndexedColors.WHITE.getIndex());

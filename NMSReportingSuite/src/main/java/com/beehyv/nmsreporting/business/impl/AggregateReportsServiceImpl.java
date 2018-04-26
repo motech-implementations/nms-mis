@@ -229,17 +229,17 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         Cell cell4=row.createCell(6);
 
         CellRangeAddress range1 = new CellRangeAddress(4,5,0,0);
-            cleanBeforeMergeOnValidCells(spreadsheet,range1,style );
-            spreadsheet.addMergedRegion(range1);
+        cleanBeforeMergeOnValidCells(spreadsheet,range1,style );
+        spreadsheet.addMergedRegion(range1);
         CellRangeAddress range2 = new CellRangeAddress(4,5,1,4);
-            cleanBeforeMergeOnValidCells(spreadsheet,range2,style );
-            spreadsheet.addMergedRegion(range2);
+        cleanBeforeMergeOnValidCells(spreadsheet,range2,style );
+        spreadsheet.addMergedRegion(range2);
         CellRangeAddress range3 = new CellRangeAddress(4,5,5,5);
-            cleanBeforeMergeOnValidCells(spreadsheet,range3,style );
-            spreadsheet.addMergedRegion(range3);
+        cleanBeforeMergeOnValidCells(spreadsheet,range3,style );
+        spreadsheet.addMergedRegion(range3);
         CellRangeAddress range4 = new CellRangeAddress(4,5,6,8);
-            cleanBeforeMergeOnValidCells(spreadsheet,range4,style );
-            spreadsheet.addMergedRegion(range4);
+        cleanBeforeMergeOnValidCells(spreadsheet,range4,style );
+        spreadsheet.addMergedRegion(range4);
         XSSFRow row1=spreadsheet.createRow(++rowid);
         Cell cell5=row1.createCell(0);
         Cell cell6=row1.createCell(1);
@@ -247,20 +247,20 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         Cell cell8=row1.createCell(4);
         Cell cell9=row1.createCell(6);
         Cell cell10=row1.createCell(7);
-            cell1.setCellValue("Report:");
-            cell2.setCellValue(gridData.getReportName());
+        cell1.setCellValue("Report:");
+        cell2.setCellValue(gridData.getReportName());
 
-            cell3.setCellValue("Period:");
-            cell4.setCellValue(gridData.getTimePeriod());
+        cell3.setCellValue("Period:");
+        cell4.setCellValue(gridData.getTimePeriod());
 
-            cell5.setCellValue("State:");
-            cell6.setCellValue(gridData.getStateName());
+        cell5.setCellValue("State:");
+        cell6.setCellValue(gridData.getStateName());
 
-            cell7.setCellValue("District:");
-            cell8.setCellValue(gridData.getDistrictName());
+        cell7.setCellValue("District:");
+        cell8.setCellValue(gridData.getDistrictName());
 
-            cell9.setCellValue("Block:");
-            cell10.setCellValue(gridData.getBlockName());
+        cell9.setCellValue("Block:");
+        cell10.setCellValue(gridData.getBlockName());
 
         cell1.setCellStyle(style);
         cell2.setCellStyle(style);
@@ -274,14 +274,14 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         cell10.setCellStyle(style);
 
         CellRangeAddress range5 = new CellRangeAddress(6,6,1,2);
-            cleanBeforeMergeOnValidCells(spreadsheet,range5,style );
-            spreadsheet.addMergedRegion(range5);
+        cleanBeforeMergeOnValidCells(spreadsheet,range5,style );
+        spreadsheet.addMergedRegion(range5);
         CellRangeAddress range6 = new CellRangeAddress(6,6,4,5);
-            cleanBeforeMergeOnValidCells(spreadsheet,range6,style );
-            spreadsheet.addMergedRegion(range6);
+        cleanBeforeMergeOnValidCells(spreadsheet,range6,style );
+        spreadsheet.addMergedRegion(range6);
         CellRangeAddress range7 = new CellRangeAddress(6,6,7,8);
-            cleanBeforeMergeOnValidCells(spreadsheet,range7,style );
-            spreadsheet.addMergedRegion(range7);
+        cleanBeforeMergeOnValidCells(spreadsheet,range7,style );
+        spreadsheet.addMergedRegion(range7);
 
         XSSFRow dateRow=spreadsheet.createRow(7);
         Cell cellA = dateRow.createCell(0);
@@ -289,19 +289,19 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         cellA.setCellStyle(style);
         Cell cellB = dateRow.createCell(1);
 
-            Calendar calendar=Calendar.getInstance();
-            calendar.setTime(new Date());
-            int DateValue =calendar.get(Calendar.DATE);
-            int DateYear =(calendar.get(Calendar.YEAR));
-            String DateString;
-            if(DateValue <10) {
-                DateString ="0"+String.valueOf(DateValue);
-            }
-            else {
-                DateString =String.valueOf(DateValue);
-            }
-            String MonthString = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH );
-            String YearString =String.valueOf(DateYear);
+        Calendar calendar=Calendar.getInstance();
+        calendar.setTime(new Date());
+        int DateValue =calendar.get(Calendar.DATE);
+        int DateYear =(calendar.get(Calendar.YEAR));
+        String DateString;
+        if(DateValue <10) {
+            DateString ="0"+String.valueOf(DateValue);
+        }
+        else {
+            DateString =String.valueOf(DateValue);
+        }
+        String MonthString = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH );
+        String YearString =String.valueOf(DateYear);
 
         cellB.setCellValue(DateString+" "+MonthString+" "+YearString);
         CellRangeAddress dateRange = new CellRangeAddress(7,7,1,3);
@@ -317,33 +317,69 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
 
         XSSFSheet spreadsheet = workbook.getSheetAt(0);
 
-        CellStyle backgroundStyle = workbook.createCellStyle();
-        CellStyle backgroundStyle1 = workbook.createCellStyle();
+        XSSFCellStyle backgroundStyle = workbook.createCellStyle();
+        XSSFCellStyle backgroundStyle1 = workbook.createCellStyle();
+        XSSFCellStyle backgroundStyle2 = workbook.createCellStyle();
+        XSSFCellStyle backgroundStyle3 = workbook.createCellStyle();
 
+        backgroundStyle1.setAlignment(CellStyle.ALIGN_CENTER);
         backgroundStyle1.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+        backgroundStyle1.setFillForegroundColor(new XSSFColor(new java.awt.Color(255, 255, 255)));
+        backgroundStyle1.setFillPattern(CellStyle.SOLID_FOREGROUND);
         backgroundStyle1.setBorderBottom(CellStyle.BORDER_THIN);
-        backgroundStyle1.setBottomBorderColor(IndexedColors.GREY_40_PERCENT.getIndex());
+        backgroundStyle1.setBottomBorderColor(new XSSFColor(new java.awt.Color(212, 212, 212)));
         backgroundStyle1.setBorderLeft(CellStyle.BORDER_THIN);
-        backgroundStyle1.setLeftBorderColor(IndexedColors.GREY_40_PERCENT.getIndex());
+        backgroundStyle1.setLeftBorderColor(new XSSFColor(new java.awt.Color(212, 212, 212)));
         backgroundStyle1.setBorderRight(CellStyle.BORDER_THIN);
-        backgroundStyle1.setRightBorderColor(IndexedColors.GREY_40_PERCENT.getIndex());
+        backgroundStyle1.setRightBorderColor(new XSSFColor(new java.awt.Color(212, 212, 212)));
         backgroundStyle1.setBorderTop(CellStyle.BORDER_THIN);
         backgroundStyle1.setTopBorderColor(IndexedColors.WHITE.getIndex());
         backgroundStyle1.setWrapText(true);
 
+        backgroundStyle2.setAlignment(CellStyle.ALIGN_CENTER);
+        backgroundStyle2.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+        backgroundStyle2.setFillForegroundColor(new XSSFColor(new java.awt.Color(243, 243, 243)));
+        backgroundStyle2.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        backgroundStyle2.setBorderBottom(CellStyle.BORDER_THIN);
+        backgroundStyle2.setBottomBorderColor(new XSSFColor(new java.awt.Color(212, 212, 212)));
+        backgroundStyle2.setBorderLeft(CellStyle.BORDER_THIN);
+        backgroundStyle2.setLeftBorderColor(new XSSFColor(new java.awt.Color(212, 212, 212)));
+        backgroundStyle2.setBorderRight(CellStyle.BORDER_THIN);
+        backgroundStyle2.setRightBorderColor(new XSSFColor(new java.awt.Color(212, 212, 212)));
+        backgroundStyle2.setBorderTop(CellStyle.BORDER_THIN);
+        backgroundStyle2.setTopBorderColor(IndexedColors.WHITE.getIndex());
+        backgroundStyle2.setWrapText(true);
+
+        backgroundStyle3.setAlignment(CellStyle.ALIGN_CENTER);
+        backgroundStyle3.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+        backgroundStyle3.setFillForegroundColor(new XSSFColor(new java.awt.Color(233, 233, 233)));
+        backgroundStyle3.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        backgroundStyle3.setBorderBottom(CellStyle.BORDER_THIN);
+        backgroundStyle3.setBottomBorderColor(new XSSFColor(new java.awt.Color(212, 212, 212)));
+        backgroundStyle3.setBorderLeft(CellStyle.BORDER_THIN);
+        backgroundStyle3.setLeftBorderColor(new XSSFColor(new java.awt.Color(212, 212, 212)));
+        backgroundStyle3.setBorderRight(CellStyle.BORDER_THIN);
+        backgroundStyle3.setRightBorderColor(new XSSFColor(new java.awt.Color(212, 212, 212)));
+        backgroundStyle3.setBorderTop(CellStyle.BORDER_THIN);
+        backgroundStyle3.setTopBorderColor(new XSSFColor(new java.awt.Color(212, 212, 212)));
+        backgroundStyle3.setWrapText(true);
+
         backgroundStyle.setAlignment(CellStyle.ALIGN_CENTER);
         backgroundStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-        backgroundStyle.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
+        backgroundStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(33, 100, 178)));
         backgroundStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
         backgroundStyle.setBorderBottom(CellStyle.BORDER_THIN);
-        backgroundStyle.setBottomBorderColor(IndexedColors.WHITE.getIndex());
+        backgroundStyle.setBottomBorderColor(new XSSFColor(new java.awt.Color(212, 212, 212)));
         backgroundStyle.setBorderLeft(CellStyle.BORDER_THIN);
-        backgroundStyle.setLeftBorderColor(IndexedColors.WHITE.getIndex());
+        backgroundStyle.setLeftBorderColor(new XSSFColor(new java.awt.Color(212, 212, 212)));
         backgroundStyle.setBorderRight(CellStyle.BORDER_THIN);
-        backgroundStyle.setRightBorderColor(IndexedColors.WHITE.getIndex());
+        backgroundStyle.setRightBorderColor(new XSSFColor(new java.awt.Color(212, 212, 212)));
         backgroundStyle.setBorderTop(CellStyle.BORDER_THIN);
-        backgroundStyle.setTopBorderColor(IndexedColors.WHITE.getIndex());
+        backgroundStyle.setTopBorderColor(new XSSFColor(new java.awt.Color(212, 212, 212)));
         backgroundStyle.setWrapText(true);
+
+
+
 
         Font font = workbook.createFont();
         font.setColor(HSSFColor.WHITE.index);
@@ -354,6 +390,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         Font font1 = workbook.createFont();
         font1.setFontName(HSSFFont.FONT_ARIAL);
         backgroundStyle1.setFont(font1);
+        backgroundStyle2.setFont(font1);
 
         Font font2 = workbook.createFont();
         font2.setFontName(HSSFFont.FONT_ARIAL);
@@ -362,10 +399,11 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         XSSFCellStyle style = workbook.createCellStyle();//Create style
         style.setFont(font2);//set it to bold
         style.setWrapText(true);
+        backgroundStyle3.setFont(font2);
 
 
         for(int i =0;i<15;i++){
-        spreadsheet.setColumnWidth(i, 4000);}
+            spreadsheet.setColumnWidth(i, 4000);}
 
 
         XSSFRow row;
@@ -391,9 +429,9 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         row.setHeight((short)1100);
         int colid =0;
         int tabrow =0;
-            Cell sno = row.createCell(colid++);
-            sno.setCellValue("S.No");
-            sno.setCellStyle(backgroundStyle);
+        Cell sno = row.createCell(colid++);
+        sno.setCellValue("S.No");
+        sno.setCellStyle(backgroundStyle);
         for (String header : gridData.getColumnHeaders()) {
             Cell cell1 = row.createCell(colid++);
             cell1.setCellValue(header);
@@ -406,39 +444,36 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
             Cell SNrow = row.createCell(colid++);
             if((gridData.getReportName().equalsIgnoreCase("Kilkari Thematic Content")||gridData.getReportName().equalsIgnoreCase("Kilkari Listening Matrix"))&&tabrow+1==gridData.getReportData().size()){
                 SNrow.setCellValue("");
+                SNrow.setCellStyle(backgroundStyle3);
             }else{
-            SNrow.setCellValue(tabrow+1);}
-            if(tabrow %2 ==0){
-                backgroundStyle1.setFillForegroundColor(IndexedColors.WHITE.getIndex());
-                backgroundStyle1.setFillPattern(CellStyle.SOLID_FOREGROUND);
-            }
-            else {
-                backgroundStyle1.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
-                backgroundStyle1.setFillPattern(CellStyle.SOLID_FOREGROUND);
-            }
-            SNrow.setCellStyle(backgroundStyle1);
-            CellUtil.setAlignment(SNrow, workbook, CellStyle.ALIGN_CENTER);
+                SNrow.setCellValue(tabrow+1);
+                if(tabrow %2 ==0){
+                    SNrow.setCellStyle(backgroundStyle1);
+                }
+                else {
+                    SNrow.setCellStyle(backgroundStyle2);
+                }}
 
-            if((gridData.getReportName().equalsIgnoreCase("Kilkari Thematic Content")||gridData.getReportName().equalsIgnoreCase("Kilkari Listening Matrix"))&&tabrow+1==gridData.getReportData().size()){
-                backgroundStyle1.setFont(font2);
-            }
+
             for (String cellData : rowData) {
                 Cell cell1 = row.createCell(colid++);
                 if(colid==2||cellData.equalsIgnoreCase("N/A")||(gridData.getReportName().equalsIgnoreCase("Kilkari Thematic Content")&&colid==3)){
-                cell1.setCellValue(cellData);}
+                    cell1.setCellValue(cellData);}
                 else{cell1.setCellValue(parseDouble(cellData));}
 
                 if(tabrow %2 ==0){
-                    backgroundStyle1.setFillForegroundColor(IndexedColors.WHITE.getIndex());
-                    backgroundStyle1.setFillPattern(CellStyle.SOLID_FOREGROUND);
-                    }
+                    if((gridData.getReportName().equalsIgnoreCase("Kilkari Thematic Content")||gridData.getReportName().equalsIgnoreCase("Kilkari Listening Matrix"))&&tabrow+1==gridData.getReportData().size()){
+                        cell1.setCellStyle(backgroundStyle3);
+                    }else{
+                        cell1.setCellStyle(backgroundStyle1);}
+                }
                 else {
-                    backgroundStyle1.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
-                    backgroundStyle1.setFillPattern(CellStyle.SOLID_FOREGROUND);
-                    }
+                    if((gridData.getReportName().equalsIgnoreCase("Kilkari Thematic Content")||gridData.getReportName().equalsIgnoreCase("Kilkari Listening Matrix"))&&tabrow+1==gridData.getReportData().size()){
+                        cell1.setCellStyle(backgroundStyle3);
+                    }else{
+                        cell1.setCellStyle(backgroundStyle2);}
+                }
 
-                cell1.setCellStyle(backgroundStyle1);
-                CellUtil.setAlignment(cell1, workbook, CellStyle.ALIGN_CENTER);
             }
             tabrow++;
         }
@@ -448,40 +483,26 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         if(!(gridData.getReportName().equalsIgnoreCase("Kilkari Thematic Content")||gridData.getReportName().equalsIgnoreCase("Kilkari Listening Matrix")||gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix")||gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener Month Wise"))){
             Cell SNofooot = row.createCell(colid++);
             SNofooot.setCellValue("");
-        if(tabrow %2 ==0){
-            backgroundStyle1.setFillForegroundColor(IndexedColors.WHITE.getIndex());
-            backgroundStyle1.setFillPattern(CellStyle.SOLID_FOREGROUND);}
-        else {
-            backgroundStyle1.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
-            backgroundStyle1.setFillPattern(CellStyle.SOLID_FOREGROUND);}
-        SNofooot.setCellStyle(backgroundStyle1);
-        CellUtil.setAlignment(SNofooot, workbook, CellStyle.ALIGN_CENTER);}
+            SNofooot.setCellStyle(backgroundStyle3);
+        }
 
         for (String footer : gridData.getColunmFooters()) {
-            backgroundStyle1.setFont(font2);
             Cell cell1 = row.createCell(colid++);
             if(colid==2||footer.equalsIgnoreCase("N/A")){
-            cell1.setCellValue(footer);}
+                cell1.setCellValue(footer);}
             else{
                 cell1.setCellValue(parseDouble(footer));
             }
-            if(tabrow %2 ==0){
-                backgroundStyle1.setFillForegroundColor(IndexedColors.WHITE.getIndex());
-                backgroundStyle1.setFillPattern(CellStyle.SOLID_FOREGROUND);}
-            else {
-                backgroundStyle1.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
-                backgroundStyle1.setFillPattern(CellStyle.SOLID_FOREGROUND);}
-            cell1.setCellStyle(backgroundStyle1);
-            CellUtil.setAlignment(cell1, workbook, CellStyle.ALIGN_CENTER);
+            cell1.setCellStyle(backgroundStyle3);
         }
 
         if(gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix"))
         {row = spreadsheet.createRow(rowid++);
-        Cell cell = row.createCell(0);
-        cell.setCellStyle(style);
-        cell.setCellValue( "Kilkari Child Content Data");
-        CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
-           spreadsheet.addMergedRegion(new CellRangeAddress(rowid-1,rowid-1,0,gridData.getColumnHeaders1().size()));}
+            Cell cell = row.createCell(0);
+            cell.setCellStyle(style);
+            cell.setCellValue( "Kilkari Child Content Data");
+            CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
+            spreadsheet.addMergedRegion(new CellRangeAddress(rowid-1,rowid-1,0,gridData.getColumnHeaders1().size()));}
 
         if(gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener Month Wise"))
         {row = spreadsheet.createRow(rowid++);
@@ -493,53 +514,50 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
 
         row = spreadsheet.createRow(rowid++);
         if(gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix")||gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener Month Wise")){
-        row.setHeight((short)1100);
-         colid =0;
-        int tabrow1 =0;
-        Cell sno1 = row.createCell(colid++);
-        sno1.setCellValue("S.No");
-        sno1.setCellStyle(backgroundStyle);
-        for (String header : gridData.getColumnHeaders1()) {
-            Cell cell1 = row.createCell(colid++);
-            cell1.setCellValue(header);
-            cell1.setCellStyle(backgroundStyle);
-
-        }
-
-        for (ArrayList<String> rowData : gridData.getReportData1()) {
-            row = spreadsheet.createRow(rowid++);
+            row.setHeight((short)1100);
             colid =0;
-
-            Cell SNrow1 = row.createCell(colid++);
-            SNrow1.setCellValue(tabrow1+1);
-            if(tabrow1 %2 ==0){
-                backgroundStyle1.setFillForegroundColor(IndexedColors.WHITE.getIndex());
-                backgroundStyle1.setFillPattern(CellStyle.SOLID_FOREGROUND);}
-            else {
-                backgroundStyle1.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
-                backgroundStyle1.setFillPattern(CellStyle.SOLID_FOREGROUND);}
-            SNrow1.setCellStyle(backgroundStyle1);
-            CellUtil.setAlignment(SNrow1, workbook, CellStyle.ALIGN_CENTER);
-
-            for (String cellData : rowData) {
+            int tabrow1 =0;
+            Cell sno1 = row.createCell(colid++);
+            sno1.setCellValue("S.No");
+            sno1.setCellStyle(backgroundStyle);
+            for (String header : gridData.getColumnHeaders1()) {
                 Cell cell1 = row.createCell(colid++);
-                if(colid==2){
-                cell1.setCellValue(cellData);}
-                else{
-                    cell1.setCellValue(parseDouble(cellData));
-                }
-                if(tabrow1 %2 ==0){
-                    backgroundStyle1.setFillForegroundColor(IndexedColors.WHITE.getIndex());
-                    backgroundStyle1.setFillPattern(CellStyle.SOLID_FOREGROUND);}
-                else {
-                    backgroundStyle1.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
-                    backgroundStyle1.setFillPattern(CellStyle.SOLID_FOREGROUND);}
+                cell1.setCellValue(header);
+                cell1.setCellStyle(backgroundStyle);
 
-                cell1.setCellStyle(backgroundStyle1);
-                CellUtil.setAlignment(cell1, workbook, CellStyle.ALIGN_CENTER);
             }
-            tabrow1++;
-        }}
+
+            for (ArrayList<String> rowData : gridData.getReportData1()) {
+                row = spreadsheet.createRow(rowid++);
+                colid =0;
+
+                Cell SNrow1 = row.createCell(colid++);
+                SNrow1.setCellValue(tabrow1+1);
+                if(tabrow %2 ==0){
+                    SNrow1.setCellStyle(backgroundStyle1);
+                }
+                else {
+                    SNrow1.setCellStyle(backgroundStyle2);
+                }
+
+
+                for (String cellData : rowData) {
+                    Cell cell1 = row.createCell(colid++);
+                    if(colid==2){
+                        cell1.setCellValue(cellData);}
+                    else{
+                        cell1.setCellValue(parseDouble(cellData));
+                    }
+                    if(tabrow %2 ==0){
+                        cell1.setCellStyle(backgroundStyle1);
+                    }
+                    else {
+                        cell1.setCellStyle(backgroundStyle2);
+                    }
+
+                }
+                tabrow1++;
+            }}
         createHeadersForAggreagateExcels(workbook,gridData);
     }
 
