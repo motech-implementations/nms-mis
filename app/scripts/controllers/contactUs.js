@@ -25,69 +25,84 @@
 
 
             $scope.contactUs = function(e){
+              $(':input[type="submit"]').text('Submitting..');
+              $(':input[type="submit"]').prop('disabled', true);
+              $(':input[type="submit"]').css('background-color', 'red');
 
                 if(!$scope.email.name){
                     if(UserFormFactory.isInternetExplorer()){
-                        alert("Please enter the name")
+                        alert("Please enter the name");
+                        $scope.reverse();
                         return;
                     }
                     else{
-                        UserFormFactory.showAlert("Please enter the name")
+                        UserFormFactory.showAlert("Please enter the name");
+                        $scope.reverse();
                         return;
                     }
                 }
 
                 if(!$scope.email.phoneNo){
                     if(UserFormFactory.isInternetExplorer()){
-                        alert("Please enter a valid Phone Number")
+                        alert("Please enter a valid Phone Number");
+                        $scope.reverse();
                         return;
                     }
                     else{
-                        UserFormFactory.showAlert("Please enter a valid Phone Number")
+                        UserFormFactory.showAlert("Please enter a valid Phone Number");
+                        $scope.reverse();
                         return;
                     }
                 }
 
                 if(!validatePhoneNo($scope.email.phoneNo)){
                     if(UserFormFactory.isInternetExplorer()){
-                        alert("Please enter valid phone No.")
+                        alert("Please enter valid phone No.");
+                        $scope.reverse();
                         return;
                     }
                     else{
-                        UserFormFactory.showAlert("Please enter valid phone No.")
+                        UserFormFactory.showAlert("Please enter valid phone No.");
+                        $scope.reverse();
                         return;
                     }
                 }
 
                 if(!$scope.email.email){
                     if(UserFormFactory.isInternetExplorer()){
-                        alert("Please enter the email")
+                        alert("Please enter the email");
+                        $scope.reverse();
                         return;
                     }
                     else{
-                        UserFormFactory.showAlert("Please enter the email")
+                        UserFormFactory.showAlert("Please enter the email");
+                        $scope.reverse();
                         return;
                     }
                 }
 
                 if(!validateEmail($scope.email.email)){
                     if(UserFormFactory.isInternetExplorer()){
-                        alert("Please enter valid email")
+                        alert("Please enter valid email");
+                        $scope.reverse();
                         return;
                     }
                     else{
-                        UserFormFactory.showAlert("Please enter valid email")
+                        UserFormFactory.showAlert("Please enter valid email");
+                        $scope.reverse();
                         return;
                     }
                 }
 
                 if(!$scope.email.body){
                     if(UserFormFactory.isInternetExplorer()){
-                        alert("Please enter the Message")
+                        alert("Please enter the Message");
+                        $scope.reverse();
                         return;
                     }
                     else{
-                        UserFormFactory.showAlert("Please enter the Message")
+                        UserFormFactory.showAlert("Please enter the Message");
+                        $scope.reverse();
                         return;
                     }
                 }
@@ -112,5 +127,11 @@
                     })
                 }
 		    }
+
+            $scope.reverse = function(){
+                   $(':input[type="submit"]').text('Submit');
+                   $(':input[type="submit"]').prop('disabled', false);
+                   $(':input[type="submit"]').css('background-color', '#2164b2');
+                    }
 		}])
 })();
