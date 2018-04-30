@@ -2,16 +2,16 @@ package com.beehyv.nmsreporting.business.impl;
 
 import com.beehyv.nmsreporting.business.MAPerformanceService;
 import com.beehyv.nmsreporting.dao.*;
+import com.beehyv.nmsreporting.entity.MAPerformanceCountsDto;
 import com.beehyv.nmsreporting.model.Block;
 import com.beehyv.nmsreporting.model.District;
+import com.beehyv.nmsreporting.model.State;
 import com.beehyv.nmsreporting.model.Subcenter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by beehyv on 25/9/17.
@@ -38,6 +38,8 @@ public class MAPerformanceServiceImpl implements MAPerformanceService{
     @Autowired
     private SubcenterDao subcenterDao;
 
+    @Autowired
+    private StateServiceDao stateServiceDao;
 
     @Override
     public Long getAccessedCount(Integer locationId, String locationType, Date fromDate, Date toDate){
@@ -179,6 +181,160 @@ public class MAPerformanceServiceImpl implements MAPerformanceService{
                 }
             }
         }
+    }
+
+    @Override
+    public HashMap<Long,MAPerformanceCountsDto> getMAPerformanceCounts (Integer locationId, String locationType, Date fromDate, Date toDate){
+
+        Long count = (long)0;
+        Long addedCount = (long)0;
+        Long differenceCount = (long)0;
+        Date fromDateTemp = fromDate;
+        HashMap<Long,MAPerformanceCountsDto> countMap = new HashMap<>();
+
+        if(locationType.equalsIgnoreCase("State")){
+            List<State> states=stateDao.getStatesByServiceType("M");
+            for(State s:states){
+                Long accessedCount = 0L;
+                Long notAccessedCount = 0L;
+                Integer failedCount = 0;
+                if(fromDate.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"M"))){
+                    fromDateTemp = stateServiceDao.getServiceStartDateForState(s.getStateId(),"M");
+                }
+                MAPerformanceCountsDto statePerformance = new MAPerformanceCountsDto();
+                if(!toDate.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"M"))) {
+                    accessedCount = maPerformanceDao.accessedAtLeastOnce(s.getStateId(), locationType, fromDateTemp, toDate);
+                    notAccessedCount = maPerformanceDao.accessedNotOnce(s.getStateId(), locationType, fromDateTemp, toDate);
+                    failedCount = maPerformanceDao.getAshasFailed(s.getStateId(), locationType, fromDateTemp, toDate);
+                }
+                statePerformance.setAccessedAtleastOnce(accessedCount);
+                statePerformance.setAccessedNotOnce(notAccessedCount);
+                statePerformance.setAshasFailed(failedCount);
+                countMap.put((long)s.getStateId(),statePerformance);
+
+                fromDateTemp = fromDate;
+            }
+
+        }
+        else{
+            if(locationType.equalsIgnoreCase("District")){
+                if(fromDateTemp.before(stateServiceDao.getServiceStartDateForState(locationId,"M"))){
+                    fromDateTemp = stateServiceDao.getServiceStartDateForState(locationId,"M");
+                }
+                List<District> districts = districtDao.getDistrictsOfState(locationId);
+                Long stateCounts1 = maPerformanceDao.accessedAtLeastOnce(locationId,"State",fromDateTemp,toDate);
+                Long stateCounts2 = maPerformanceDao.accessedNotOnce(locationId,"State",fromDateTemp,toDate);
+                Integer stateCounts3 = maPerformanceDao.getAshasFailed(locationId,"State",fromDateTemp,toDate);
+                Long accessedCount = 0L;
+                Long notAccessedCount = 0L;
+                Integer failedCount = 0;
+                for(District d:districts){
+                    MAPerformanceCountsDto districtPerformance = new MAPerformanceCountsDto();
+                    Long districtCount1 = maPerformanceDao.accessedAtLeastOnce(d.getDistrictId(),locationType,fromDateTemp,toDate);
+                    Long districtCount2 = maPerformanceDao.accessedNotOnce(d.getDistrictId(),locationType,fromDateTemp,toDate);
+                    Integer districtCount3 = maPerformanceDao.getAshasFailed(d.getDistrictId(),locationType,fromDateTemp,toDate);
+                    districtPerformance.setAccessedAtleastOnce(districtCount1);
+                    districtPerformance.setAccessedNotOnce(districtCount2);
+                    districtPerformance.setAshasFailed(districtCount3);
+                     countMap.put((long)d.getDistrictId(),districtPerformance);
+                    accessedCount+=districtCount1;
+                    notAccessedCount+=districtCount2;
+                    failedCount+=districtCount3;
+
+                }
+                Long noDistrictCount1 = 0L;
+                Long noDistrictCount2 = 0L;
+                Integer noDistrictCount3 = 0;
+                MAPerformanceCountsDto noDistrictPerformance = new MAPerformanceCountsDto();
+                noDistrictCount1= stateCounts1 - accessedCount;
+                noDistrictCount2= stateCounts2 - notAccessedCount;
+                noDistrictCount3= stateCounts3 - failedCount;
+
+                noDistrictPerformance.setAccessedAtleastOnce(noDistrictCount1);
+                noDistrictPerformance.setAccessedNotOnce(noDistrictCount2);
+                noDistrictPerformance.setAshasFailed(noDistrictCount3);
+                countMap.put((long)-locationId,noDistrictPerformance);
+            }
+            else{
+                if(locationType.equalsIgnoreCase("Block")) {
+                    if(fromDateTemp.before(stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(),"M"))){
+                        fromDateTemp = stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(),"M");
+                    }
+                    List<Block> blocks = blockDao.getBlocksOfDistrict(locationId);
+                    Long districtCounts1 = maPerformanceDao.accessedAtLeastOnce(locationId,"District",fromDateTemp,toDate);
+                    Long districtCounts2 = maPerformanceDao.accessedNotOnce(locationId,"District",fromDateTemp,toDate);
+                    Integer districtCounts3 = maPerformanceDao.getAshasFailed(locationId,"District",fromDateTemp,toDate);
+                    Long accessedCount = 0L;
+                    Long notAccessedCount = 0L;
+                    Integer failedCount = 0;
+                    for (Block d : blocks) {
+                        MAPerformanceCountsDto blockPerformance = new MAPerformanceCountsDto();
+                        Long blockCount1 = maPerformanceDao.accessedAtLeastOnce(d.getBlockId(),locationType,fromDateTemp,toDate);
+                        Long blockCount2 = maPerformanceDao.accessedNotOnce(d.getBlockId(),locationType,fromDateTemp,toDate);
+                        Integer blockCount3 = maPerformanceDao.getAshasFailed(d.getBlockId(),locationType,fromDateTemp,toDate);
+
+                        blockPerformance.setAccessedAtleastOnce(blockCount1);
+                        blockPerformance.setAccessedNotOnce(blockCount2);
+                        blockPerformance.setAshasFailed(blockCount3);
+                        countMap.put((long)d.getBlockId(),blockPerformance);
+                        accessedCount+=blockCount1;
+                        notAccessedCount+=blockCount2;
+                        failedCount+=blockCount3;
+                    }
+                    Long noBlockCount1 = 0L;
+                    Long noBlockCount2 = 0L;
+                    Integer noBlockCount3 = 0;
+                    MAPerformanceCountsDto noBlockPerformance = new MAPerformanceCountsDto();
+                    noBlockCount1= districtCounts1 - accessedCount;
+                    noBlockCount2= districtCounts2 - notAccessedCount;
+                    noBlockCount3= districtCounts3 - failedCount;
+
+                    noBlockPerformance.setAccessedAtleastOnce(noBlockCount1);
+                    noBlockPerformance.setAccessedNotOnce(noBlockCount2);
+                    noBlockPerformance.setAshasFailed(noBlockCount3);
+                    countMap.put((long)-locationId,noBlockPerformance);
+                }
+                else {
+                    if(fromDateTemp.before(stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(),"M"))){
+                        fromDateTemp = stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(),"M");
+                    }
+                    List<Subcenter> subcenters = subcenterDao.getSubcentersOfBlock(locationId);
+                    Long blockCounts1 = maPerformanceDao.accessedAtLeastOnce(locationId,"block",fromDateTemp,toDate);
+                    Long blockCounts2 = maPerformanceDao.accessedNotOnce(locationId,"block",fromDateTemp,toDate);
+                    Integer blockCounts3 = maPerformanceDao.getAshasFailed(locationId,"block",fromDateTemp,toDate);
+                    Long accessedCount = 0L;
+                    Long notAccessedCount = 0L;
+                    Integer failedCount = 0;
+                    for(Subcenter s: subcenters){
+                        MAPerformanceCountsDto subcentrePerformance = new MAPerformanceCountsDto();
+                        Long subcentreCount1 = maPerformanceDao.accessedAtLeastOnce(s.getSubcenterId(),locationType,fromDateTemp,toDate);
+                        Long subcentreCount2 = maPerformanceDao.accessedNotOnce(s.getSubcenterId(),locationType,fromDateTemp,toDate);
+                        Integer subcentreCount3 = maPerformanceDao.getAshasFailed(s.getSubcenterId(),locationType,fromDateTemp,toDate);
+
+                        subcentrePerformance.setAccessedAtleastOnce(subcentreCount1);
+                        subcentrePerformance.setAccessedNotOnce(subcentreCount2);
+                        subcentrePerformance.setAshasFailed(subcentreCount3);
+                        countMap.put((long)s.getSubcenterId(),subcentrePerformance);
+                        accessedCount+=subcentreCount1;
+                        notAccessedCount+=subcentreCount2;
+                        failedCount+=subcentreCount3;
+                    }
+                    Long noSubcentreCount1 = 0L;
+                    Long noSubcentreCount2 = 0L;
+                    Integer noSubcentreCount3 = 0;
+                    MAPerformanceCountsDto noSubcentrePerformance = new MAPerformanceCountsDto();
+                    noSubcentreCount1= blockCounts1 - accessedCount;
+                    noSubcentreCount2= blockCounts2 - notAccessedCount;
+                    noSubcentreCount3= blockCounts3 - failedCount;
+
+                    noSubcentrePerformance.setAccessedAtleastOnce(noSubcentreCount1);
+                    noSubcentrePerformance.setAccessedNotOnce(noSubcentreCount2);
+                    noSubcentrePerformance.setAshasFailed(noSubcentreCount3);
+                    countMap.put((long)-locationId,noSubcentrePerformance);
+                }
+            }
+        }
+            return countMap;
     }
 
 }

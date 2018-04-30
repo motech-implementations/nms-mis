@@ -1,10 +1,7 @@
 package com.beehyv.nmsreporting.controller;
 
 import com.beehyv.nmsreporting.business.*;
-import com.beehyv.nmsreporting.dao.BlockDao;
-import com.beehyv.nmsreporting.dao.DistrictDao;
-import com.beehyv.nmsreporting.dao.StateDao;
-import com.beehyv.nmsreporting.dao.SubcenterDao;
+import com.beehyv.nmsreporting.dao.*;
 import com.beehyv.nmsreporting.entity.*;
 import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.AccessType;
@@ -85,6 +82,9 @@ public class UserController {
 
     @Autowired
     private BreadCrumbService breadCrumbService;
+
+    @Autowired
+    private StateServiceDao stateServiceDao;
 
     private final Date bigBang = new Date(0);
     private final String documents = retrieveDocuments();
@@ -491,23 +491,26 @@ public class UserController {
                 List<MAPerformanceDto> summaryDto = new ArrayList<>();
                 List<AggregateCumulativeMA> cumulativesummaryReportStart = new ArrayList<>();
                 List<AggregateCumulativeMA> cumulativesummaryReportEnd = new ArrayList<>();
+                HashMap<Long,MAPerformanceCountsDto> performanceCounts = new HashMap<>();
 
                 if (reportRequest.getStateId() == 0) {
-                    cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0, "State", fromDate));
-                    cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0, "State", toDate));
+                    cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0, "State", fromDate,false));
+                    cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0, "State", toDate,false));
+                    performanceCounts = maPerformanceService.getMAPerformanceCounts(0,"State",fromDate,toDate);
                 } else {
                     if (reportRequest.getDistrictId() == 0) {
-                        cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(), "District", fromDate));
-                        cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(), "District", toDate));
+                        cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(), "District", fromDate,false));
+                        cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(), "District", toDate,false));
+                        performanceCounts = maPerformanceService.getMAPerformanceCounts(reportRequest.getStateId(),"District",fromDate,toDate);
                     } else {
                         if (reportRequest.getBlockId() == 0) {
-                            cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(), "Block", fromDate));
-                            cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(), "Block", toDate));
-
+                            cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(), "Block", fromDate,false));
+                            cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(), "Block", toDate,false));
+                            performanceCounts = maPerformanceService.getMAPerformanceCounts(reportRequest.getDistrictId(),"Block",fromDate,toDate);
                         } else {
-                            cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(), "Subcenter", fromDate));
-                            cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(), "Subcenter", toDate));
-
+                            cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(), "Subcenter", fromDate,false));
+                            cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(), "Subcenter", toDate,false));
+                            performanceCounts = maPerformanceService.getMAPerformanceCounts(reportRequest.getBlockId(),"Subcenter",fromDate,toDate);
                         }
                     }
                 }
@@ -555,12 +558,17 @@ public class UserController {
                                 summaryDto1.setLocationId((long) -1);
 
                             }
-                            summaryDto1.setAshasFailed(maPerformanceService.getAshasFailed(a.getLocationId().intValue(), a.getLocationType(), fromDate, toDate));
-                            summaryDto1.setAshasAccessed(maPerformanceService.getAccessedCount(a.getLocationId().intValue(), a.getLocationType(), fromDate, toDate));
-//                        summaryDto1.setCompletedPercentage(a.getAshasCompleted()*100/a.getAshasStarted());
-//                        summaryDto1.setFailedpercentage(a.getAshasFailed()*100/a.getAshasStarted());
-//                        summaryDto1.setNotStartedpercentage(a.getAshasNotStarted()*100/a.getAshasRegistered());
-                            summaryDto1.setAshasNotAccessed(maPerformanceService.getNotAccessedcount(a.getLocationId().intValue(), a.getLocationType(), fromDate, toDate));
+                            MAPerformanceCountsDto MAperformanceCounts = performanceCounts.get(a.getLocationId());
+                            summaryDto1.setAshasFailed(MAperformanceCounts.getAshasFailed());
+                            summaryDto1.setAshasAccessed(MAperformanceCounts.getAccessedAtleastOnce());
+                            summaryDto1.setAshasNotAccessed(MAperformanceCounts.getAccessedNotOnce());
+
+//                            summaryDto1.setAshasFailed(maPerformanceService.getAshasFailed(a.getLocationId().intValue(), a.getLocationType(), fromDate, toDate));
+//                            summaryDto1.setAshasAccessed(maPerformanceService.getAccessedCount(a.getLocationId().intValue(), a.getLocationType(), fromDate, toDate));
+//                            summaryDto1.setCompletedPercentage(a.getAshasCompleted()*100/a.getAshasStarted());
+//                            summaryDto1.setFailedpercentage(a.getAshasFailed()*100/a.getAshasStarted());
+//                            summaryDto1.setNotStartedpercentage(a.getAshasNotStarted()*100/a.getAshasRegistered());
+//                            summaryDto1.setAshasNotAccessed(maPerformanceService.getNotAccessedcount(a.getLocationId().intValue(), a.getLocationType(), fromDate, toDate));
 
                             if (summaryDto1.getAshasCompleted() + summaryDto1.getAshasFailed() + summaryDto1.getAshasStarted() + summaryDto1.getAshasAccessed() + summaryDto1.getAshasNotAccessed() != 0 &&!locationType.equalsIgnoreCase("DifferenceState")) {
                                 summaryDto.add(summaryDto1);
@@ -584,19 +592,19 @@ public class UserController {
                 List<AggregateCumulativeMA> cumulativesummaryReportEnd = new ArrayList<>();
 
                 if (reportRequest.getStateId() == 0) {
-                    cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0, "State", fromDate));
-                    cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0, "State", toDate));
+                    cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0, "State", fromDate,false));
+                    cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0, "State", toDate,false));
                 } else {
                     if (reportRequest.getDistrictId() == 0) {
-                        cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(), "District", fromDate));
-                        cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(), "District", toDate));
+                        cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(), "District", fromDate,false));
+                        cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(), "District", toDate,false));
                     } else {
                         if (reportRequest.getBlockId() == 0) {
-                            cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(), "Block", fromDate));
-                            cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(), "Block", toDate));
+                            cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(), "Block", fromDate,false));
+                            cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(), "Block", toDate,false));
                         } else {
-                            cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(), "Subcenter", fromDate));
-                            cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(), "Subcenter", toDate));
+                            cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(), "Subcentre", fromDate,false));
+                            cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(), "Subcentre", toDate,false));
                         }
                     }
 
@@ -604,9 +612,9 @@ public class UserController {
                 }
 
                 for (int i = 0; i < cumulativesummaryReportEnd.size(); i++) {
-                    boolean notAvailable = true;
-                    for (int j = 0; j < cumulativesummaryReportStart.size(); j++) {
 
+                    for (int j = 0; j < cumulativesummaryReportStart.size(); j++) {
+                        boolean showRow = true;
                         if (cumulativesummaryReportEnd.get(i).getLocationId().equals(cumulativesummaryReportStart.get(j).getLocationId())) {
                             AggregateCumulativeMA a = cumulativesummaryReportEnd.get(i);
                             AggregateCumulativeMA b = cumulativesummaryReportStart.get(j);
@@ -633,7 +641,7 @@ public class UserController {
                             if (locationType.equalsIgnoreCase("Block")) {
                                 summaryDto1.setLocationName(blockDao.findByblockId(a.getLocationId().intValue()).getBlockName());
                             }
-                            if (locationType.equalsIgnoreCase("Subcenter")) {
+                            if (locationType.equalsIgnoreCase("Subcentre")) {
                                 summaryDto1.setLocationName(subcenterDao.findBySubcenterId(a.getLocationId().intValue()).getSubcenterName());
                             }
                             if (locationType.equalsIgnoreCase("DifferenceState")) {
@@ -654,10 +662,12 @@ public class UserController {
                                 summaryDto1.setLocationId((long) -1);
 
                             }
-                            notAvailable = false;
-                            if (summaryDto1.getAshasCompleted() + summaryDto1.getAshasStarted() + summaryDto1.getAshasFailed() + summaryDto1.getAshasRejected()
+                            if(a.getLocationType().equalsIgnoreCase("State")&& !serviceStarted(a.getLocationId().intValue(),"State",toDate,fromDate,"M"))
+                            { showRow = false;}
+
+                            if ((summaryDto1.getAshasCompleted() + summaryDto1.getAshasStarted() + summaryDto1.getAshasFailed() + summaryDto1.getAshasRejected()
                                     + summaryDto1.getAshasRegistered() + summaryDto1.getRegisteredNotCompletedend()
-                                    + summaryDto1.getRegisteredNotCompletedStart() + summaryDto1.getRecordsReceived() + summaryDto1.getAshasNotStarted() != 0 &&!locationType.equalsIgnoreCase("DifferenceState")) {
+                                    + summaryDto1.getRegisteredNotCompletedStart() + summaryDto1.getRecordsReceived() + summaryDto1.getAshasNotStarted() != 0 &&!locationType.equalsIgnoreCase("DifferenceState"))&&showRow) {
                                 summaryDto.add(summaryDto1);
                             }
 
@@ -681,15 +691,15 @@ public class UserController {
                 List<AggregateCumulativeMA> cumulativesummaryReport = new ArrayList<>();
 
                 if (reportRequest.getStateId() == 0) {
-                    cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0, "State", toDate));
+                    cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0, "State", toDate,true));
                 } else {
                     if (reportRequest.getDistrictId() == 0) {
-                        cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(), "District", toDate));
+                        cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(), "District", toDate,true));
                     } else {
                         if (reportRequest.getBlockId() == 0) {
-                            cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(), "Block", toDate));
+                            cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(), "Block", toDate,true));
                         } else {
-                            cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(), "Subcenter", toDate));
+                            cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(), "Subcentre", toDate,true));
                         }
                     }
 
@@ -719,7 +729,7 @@ public class UserController {
                     if (locationType.equalsIgnoreCase("Block")) {
                         summaryDto1.setLocationName(blockDao.findByblockId(a.getLocationId().intValue()).getBlockName());
                     }
-                    if (locationType.equalsIgnoreCase("Subcenter")) {
+                    if (locationType.equalsIgnoreCase("Subcentre")) {
                         summaryDto1.setLocationName(subcenterDao.findBySubcenterId(a.getLocationId().intValue()).getSubcenterName());
                     }
                     if (locationType.equalsIgnoreCase("DifferenceState")) {
@@ -1112,6 +1122,21 @@ public class UserController {
 
         return dateString + "_" + monthString+"_"+yearString;
 
+    }
+
+    private boolean serviceStarted(Integer locationId,String locationType, Date toDate, Date fromDate, String sreviceType){
+        if(locationType.equalsIgnoreCase("State")){
+            return !toDate.before(stateServiceDao.getServiceStartDateForState( locationId,sreviceType));
+        }else{
+            if(locationType.equalsIgnoreCase("District")){
+                return !toDate.before(stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(),sreviceType));
+            }else{
+                if(locationType.equalsIgnoreCase("Block")){
+                    return !toDate.before(stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(),sreviceType));
+                }
+            }
+        }
+        return true;
     }
 
 }

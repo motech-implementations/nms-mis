@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface AggregateReportsService {
 
-    List<AggregateCumulativeMA> getCumulativeSummaryMAReport(Integer locationId, String locationType, Date toDate);
+    List<AggregateCumulativeMA> getCumulativeSummaryMAReport(Integer locationId, String locationType, Date toDate, boolean isCumulative);
 
      void createSpecificAggreagateExcel(XSSFWorkbook workbook, AggregateExcelDto gridData);
 

@@ -62,22 +62,34 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
     @Autowired
     private AggregateCumulativekilkariDao aggregateCumulativekilkariDao;
 
+    @Autowired
+    private StateServiceDao stateServiceDao;
+
 
     @Override
-    public List<AggregateCumulativeMA> getCumulativeSummaryMAReport(Integer locationId,String locationType,Date toDate){
+    public List<AggregateCumulativeMA> getCumulativeSummaryMAReport(Integer locationId,String locationType,Date toDate, boolean isCumulative){
+        Date date = toDate;
         List<AggregateCumulativeMA> CumulativeSummery = new ArrayList<>();
         List<String> Headers = new ArrayList<>();
         if(locationType.equalsIgnoreCase("State")){
             List<State> states=stateDao.getStatesByServiceType("M");
             for(State s:states){
-                CumulativeSummery.add(aggregateCumulativeMADao.getMACumulativeSummery(s.getStateId(),locationType,toDate));
+                if(date.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"M"))&&!isCumulative){
+                    date = stateServiceDao.getServiceStartDateForState(s.getStateId(),"M");
+                }
+                if(!isCumulative||!toDate.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"M"))){
+                    CumulativeSummery.add(aggregateCumulativeMADao.getMACumulativeSummery(s.getStateId(),locationType,date));}
+                date = toDate;
             }
 
         }
         else{
             if(locationType.equalsIgnoreCase("District")){
+                if(date.before(stateServiceDao.getServiceStartDateForState(locationId,"M"))&&!isCumulative){
+                    date = stateServiceDao.getServiceStartDateForState(locationId,"M");
+                }
                 List<District> districts = districtDao.getDistrictsOfState(locationId);
-                AggregateCumulativeMA stateCounts = aggregateCumulativeMADao.getMACumulativeSummery(locationId,"State",toDate);
+                AggregateCumulativeMA stateCounts = aggregateCumulativeMADao.getMACumulativeSummery(locationId,"State",date);
                 Integer ashasRegistered = 0;
                 Integer ashasStarted = 0;
                 Integer ashasNotStarted = 0;
@@ -85,8 +97,8 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                 Integer ashasFailed = 0;
                 Integer ashasRejected = 0;
                 for(District d:districts){
-                    AggregateCumulativeMA distrcitCount = aggregateCumulativeMADao.getMACumulativeSummery(d.getDistrictId(),locationType,toDate);
-                    CumulativeSummery.add(aggregateCumulativeMADao.getMACumulativeSummery(d.getDistrictId(),locationType,toDate));
+                    AggregateCumulativeMA distrcitCount = aggregateCumulativeMADao.getMACumulativeSummery(d.getDistrictId(),locationType,date);
+                    CumulativeSummery.add(aggregateCumulativeMADao.getMACumulativeSummery(d.getDistrictId(),locationType,date));
                     ashasStarted+=distrcitCount.getAshasStarted();
                     ashasCompleted+=distrcitCount.getAshasCompleted();
                     ashasFailed+=distrcitCount.getAshasFailed();
@@ -108,8 +120,11 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
             }
             else{
                 if(locationType.equalsIgnoreCase("Block")) {
+                    if(date.before(stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(),"M"))&&!isCumulative){
+                        date = stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(),"M");
+                    }
                     List<Block> blocks = blockDao.getBlocksOfDistrict(locationId);
-                    AggregateCumulativeMA districtCounts = aggregateCumulativeMADao.getMACumulativeSummery(locationId,"District",toDate);
+                    AggregateCumulativeMA districtCounts = aggregateCumulativeMADao.getMACumulativeSummery(locationId,"District",date);
                     Integer ashasRegistered = 0;
                     Integer ashasStarted = 0;
                     Integer ashasNotStarted = 0;
@@ -117,8 +132,8 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                     Integer ashasFailed = 0;
                     Integer ashasRejected = 0;
                     for (Block d : blocks) {
-                        AggregateCumulativeMA blockCount = aggregateCumulativeMADao.getMACumulativeSummery(d.getBlockId(),locationType,toDate);
-                        CumulativeSummery.add(aggregateCumulativeMADao.getMACumulativeSummery(d.getBlockId(), locationType,toDate));
+                        AggregateCumulativeMA blockCount = aggregateCumulativeMADao.getMACumulativeSummery(d.getBlockId(),locationType,date);
+                        CumulativeSummery.add(aggregateCumulativeMADao.getMACumulativeSummery(d.getBlockId(), locationType,date));
                         ashasStarted+=blockCount.getAshasStarted();
                         ashasCompleted+=blockCount.getAshasCompleted();
                         ashasFailed+=blockCount.getAshasFailed();
@@ -139,8 +154,11 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                     CumulativeSummery.add(noBlockCount);
                 }
                 else {
+                    if(date.before(stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(),"M"))&&!isCumulative){
+                        date = stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(),"M");
+                    }
                     List<Subcenter> subcenters = subcenterDao.getSubcentersOfBlock(locationId);
-                    AggregateCumulativeMA blockCounts = aggregateCumulativeMADao.getMACumulativeSummery(locationId,"block",toDate);
+                    AggregateCumulativeMA blockCounts = aggregateCumulativeMADao.getMACumulativeSummery(locationId,"block",date);
                     Integer ashasRegistered = 0;
                     Integer ashasStarted = 0;
                     Integer ashasNotStarted = 0;
@@ -148,8 +166,8 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                     Integer ashasFailed = 0;
                     Integer ashasRejected = 0;
                     for(Subcenter s: subcenters){
-                        AggregateCumulativeMA subcenterCount = aggregateCumulativeMADao.getMACumulativeSummery(s.getSubcenterId(),locationType,toDate);
-                        CumulativeSummery.add(aggregateCumulativeMADao.getMACumulativeSummery(s.getSubcenterId(), locationType,toDate));
+                        AggregateCumulativeMA subcenterCount = aggregateCumulativeMADao.getMACumulativeSummery(s.getSubcenterId(),locationType,date);
+                        CumulativeSummery.add(aggregateCumulativeMADao.getMACumulativeSummery(s.getSubcenterId(), locationType,date));
                         ashasStarted+=subcenterCount.getAshasStarted();
                         ashasCompleted+=subcenterCount.getAshasCompleted();
                         ashasFailed+=subcenterCount.getAshasFailed();
@@ -173,7 +191,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         }
 
         return CumulativeSummery;
-    };
+    }
 
 
     private void createHeadersForAggreagateExcels(XSSFWorkbook workbook, AggregateExcelDto gridData)  {
