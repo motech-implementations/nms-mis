@@ -71,9 +71,6 @@ public class UserController {
     private BlockDao blockDao;
 
     @Autowired
-    private SubcenterDao subcenterDao;
-
-    @Autowired
     private MAPerformanceService maPerformanceService;
 
 
@@ -85,6 +82,9 @@ public class UserController {
 
     @Autowired
     private StateServiceDao stateServiceDao;
+
+    @Autowired
+    private HealthSubFacilityDao healthSubFacilityDao;
 
     private final Date bigBang = new Date(0);
     private final String documents = retrieveDocuments();
@@ -508,9 +508,9 @@ public class UserController {
                             cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(), "Block", toDate,false));
                             performanceCounts = maPerformanceService.getMAPerformanceCounts(reportRequest.getDistrictId(),"Block",fromDate,toDate);
                         } else {
-                            cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(), "Subcenter", fromDate,false));
-                            cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(), "Subcenter", toDate,false));
-                            performanceCounts = maPerformanceService.getMAPerformanceCounts(reportRequest.getBlockId(),"Subcenter",fromDate,toDate);
+                            cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(), "Subcentre", fromDate,false));
+                            cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(), "Subcentre", toDate,false));
+                            performanceCounts = maPerformanceService.getMAPerformanceCounts(reportRequest.getBlockId(),"Subcentre",fromDate,toDate);
                         }
                     }
                 }
@@ -538,8 +538,8 @@ public class UserController {
                             if (locationType.equalsIgnoreCase("Block")) {
                                 summaryDto1.setLocationName(blockDao.findByblockId(a.getLocationId().intValue()).getBlockName());
                             }
-                            if (locationType.equalsIgnoreCase("Subcenter")) {
-                                summaryDto1.setLocationName(subcenterDao.findBySubcenterId(a.getLocationId().intValue()).getSubcenterName());
+                            if (locationType.equalsIgnoreCase("Subcentre")) {
+                                summaryDto1.setLocationName(healthSubFacilityDao.findByHealthSubFacilityId(a.getLocationId().intValue()).getHealthSubFacilityName());
                             }
                             if (locationType.equalsIgnoreCase("DifferenceState")) {
                                 summaryDto1.setLocationName("No District Count");
@@ -642,7 +642,7 @@ public class UserController {
                                 summaryDto1.setLocationName(blockDao.findByblockId(a.getLocationId().intValue()).getBlockName());
                             }
                             if (locationType.equalsIgnoreCase("Subcentre")) {
-                                summaryDto1.setLocationName(subcenterDao.findBySubcenterId(a.getLocationId().intValue()).getSubcenterName());
+                                summaryDto1.setLocationName(healthSubFacilityDao.findByHealthSubFacilityId(a.getLocationId().intValue()).getHealthSubFacilityName());
                             }
                             if (locationType.equalsIgnoreCase("DifferenceState")) {
                                 summaryDto1.setLocationName("No District Count");
@@ -730,7 +730,7 @@ public class UserController {
                         summaryDto1.setLocationName(blockDao.findByblockId(a.getLocationId().intValue()).getBlockName());
                     }
                     if (locationType.equalsIgnoreCase("Subcentre")) {
-                        summaryDto1.setLocationName(subcenterDao.findBySubcenterId(a.getLocationId().intValue()).getSubcenterName());
+                        summaryDto1.setLocationName(healthSubFacilityDao.findByHealthSubFacilityId(a.getLocationId().intValue()).getHealthSubFacilityName());
                     }
                     if (locationType.equalsIgnoreCase("DifferenceState")) {
                         summaryDto1.setLocationName("No District");

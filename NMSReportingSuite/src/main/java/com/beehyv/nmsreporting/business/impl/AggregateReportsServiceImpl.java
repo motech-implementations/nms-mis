@@ -65,6 +65,12 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
     @Autowired
     private StateServiceDao stateServiceDao;
 
+    @Autowired
+    private HealthFacilityDao healthFacilitydao;
+
+    @Autowired
+    private HealthSubFacilityDao healthSubFacilityDao;
+
 
     @Override
     public List<AggregateCumulativeMA> getCumulativeSummaryMAReport(Integer locationId,String locationType,Date toDate, boolean isCumulative){
@@ -157,7 +163,11 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                     if(date.before(stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(),"M"))&&!isCumulative){
                         date = stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(),"M");
                     }
-                    List<Subcenter> subcenters = subcenterDao.getSubcentersOfBlock(locationId);
+                    List<HealthFacility> healthFacilities = healthFacilitydao.findByHealthBlockId(locationId);
+                    List<HealthSubFacility> subcenters = new ArrayList<>();
+                    for(HealthFacility hf :healthFacilities){
+                        subcenters.addAll(healthSubFacilityDao.findByHealthFacilityId(hf.getHealthFacilityId()));
+                    }
                     AggregateCumulativeMA blockCounts = aggregateCumulativeMADao.getMACumulativeSummery(locationId,"block",date);
                     Integer ashasRegistered = 0;
                     Integer ashasStarted = 0;
@@ -165,9 +175,9 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                     Integer ashasCompleted = 0;
                     Integer ashasFailed = 0;
                     Integer ashasRejected = 0;
-                    for(Subcenter s: subcenters){
-                        AggregateCumulativeMA subcenterCount = aggregateCumulativeMADao.getMACumulativeSummery(s.getSubcenterId(),locationType,date);
-                        CumulativeSummery.add(aggregateCumulativeMADao.getMACumulativeSummery(s.getSubcenterId(), locationType,date));
+                    for(HealthSubFacility s: subcenters){
+                        AggregateCumulativeMA subcenterCount = aggregateCumulativeMADao.getMACumulativeSummery(s.getHealthSubFacilityId(),locationType,date);
+                        CumulativeSummery.add(aggregateCumulativeMADao.getMACumulativeSummery(s.getHealthSubFacilityId(), locationType,date));
                         ashasStarted+=subcenterCount.getAshasStarted();
                         ashasCompleted+=subcenterCount.getAshasCompleted();
                         ashasFailed+=subcenterCount.getAshasFailed();

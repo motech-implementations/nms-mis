@@ -3,10 +3,7 @@ package com.beehyv.nmsreporting.business.impl;
 import com.beehyv.nmsreporting.business.MAPerformanceService;
 import com.beehyv.nmsreporting.dao.*;
 import com.beehyv.nmsreporting.entity.MAPerformanceCountsDto;
-import com.beehyv.nmsreporting.model.Block;
-import com.beehyv.nmsreporting.model.District;
-import com.beehyv.nmsreporting.model.State;
-import com.beehyv.nmsreporting.model.Subcenter;
+import com.beehyv.nmsreporting.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +37,12 @@ public class MAPerformanceServiceImpl implements MAPerformanceService{
 
     @Autowired
     private StateServiceDao stateServiceDao;
+
+    @Autowired
+    private HealthFacilityDao healthFacilitydao;
+
+    @Autowired
+    private HealthSubFacilityDao healthSubFacilityDao;
 
     @Override
     public Long getAccessedCount(Integer locationId, String locationType, Date fromDate, Date toDate){
@@ -298,23 +301,27 @@ public class MAPerformanceServiceImpl implements MAPerformanceService{
                     if(fromDateTemp.before(stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(),"M"))){
                         fromDateTemp = stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(),"M");
                     }
-                    List<Subcenter> subcenters = subcenterDao.getSubcentersOfBlock(locationId);
+                    List<HealthFacility> healthFacilities = healthFacilitydao.findByHealthBlockId(locationId);
+                    List<HealthSubFacility> subcenters = new ArrayList<>();
+                    for(HealthFacility hf :healthFacilities){
+                        subcenters.addAll(healthSubFacilityDao.findByHealthFacilityId(hf.getHealthFacilityId()));
+                    }
                     Long blockCounts1 = maPerformanceDao.accessedAtLeastOnce(locationId,"block",fromDateTemp,toDate);
                     Long blockCounts2 = maPerformanceDao.accessedNotOnce(locationId,"block",fromDateTemp,toDate);
                     Integer blockCounts3 = maPerformanceDao.getAshasFailed(locationId,"block",fromDateTemp,toDate);
                     Long accessedCount = 0L;
                     Long notAccessedCount = 0L;
                     Integer failedCount = 0;
-                    for(Subcenter s: subcenters){
+                    for(HealthSubFacility s: subcenters){
                         MAPerformanceCountsDto subcentrePerformance = new MAPerformanceCountsDto();
-                        Long subcentreCount1 = maPerformanceDao.accessedAtLeastOnce(s.getSubcenterId(),locationType,fromDateTemp,toDate);
-                        Long subcentreCount2 = maPerformanceDao.accessedNotOnce(s.getSubcenterId(),locationType,fromDateTemp,toDate);
-                        Integer subcentreCount3 = maPerformanceDao.getAshasFailed(s.getSubcenterId(),locationType,fromDateTemp,toDate);
+                        Long subcentreCount1 = maPerformanceDao.accessedAtLeastOnce(s.getHealthSubFacilityId(),locationType,fromDateTemp,toDate);
+                        Long subcentreCount2 = maPerformanceDao.accessedNotOnce(s.getHealthSubFacilityId(),locationType,fromDateTemp,toDate);
+                        Integer subcentreCount3 = maPerformanceDao.getAshasFailed(s.getHealthSubFacilityId(),locationType,fromDateTemp,toDate);
 
                         subcentrePerformance.setAccessedAtleastOnce(subcentreCount1);
                         subcentrePerformance.setAccessedNotOnce(subcentreCount2);
                         subcentrePerformance.setAshasFailed(subcentreCount3);
-                        countMap.put((long)s.getSubcenterId(),subcentrePerformance);
+                        countMap.put((long)s.getHealthSubFacilityId(),subcentrePerformance);
                         accessedCount+=subcentreCount1;
                         notAccessedCount+=subcentreCount2;
                         failedCount+=subcentreCount3;
