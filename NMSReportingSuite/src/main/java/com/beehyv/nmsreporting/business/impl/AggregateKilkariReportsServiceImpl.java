@@ -304,6 +304,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         if(!(kilkariSubscriberReportEnd.isEmpty()) && !(kilkariSubscriberReportStart.isEmpty())){
             for(int i = 0; i < kilkariSubscriberReportEnd.size(); i++){
                 for(int j = 0; j < kilkariSubscriberReportStart.size(); j++)  {
+                    boolean showRow = true;
                     if(kilkariSubscriberReportEnd.get(i).getLocationId().equals(kilkariSubscriberReportStart.get(j).getLocationId())){
                         KilkariSubscriber end = kilkariSubscriberReportEnd.get(i);
                         KilkariSubscriber start = kilkariSubscriberReportStart.get(j);
@@ -348,10 +349,11 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                             kilkariSubscriberDto.setLocationId((long)-1);
 
                         }
-
+                        if(end.getLocationType().equalsIgnoreCase("State")&& !serviceStarted(end.getLocationId().intValue(),"State",toDate,fromDate,"K"))
+                        { showRow = false;}
                         if((kilkariSubscriberDto.getTotalSubscriptionsEnd() + kilkariSubscriberDto.getTotalSubscriptionsStart() + kilkariSubscriberDto.getTotalBeneficiaryRecordsReceived()
                                 + kilkariSubscriberDto.getTotalBeneficiaryRecordsEligible() + kilkariSubscriberDto.getTotalBeneficiaryRecordsAccepted()
-                                + kilkariSubscriberDto.getTotalRecordsRejected() + kilkariSubscriberDto.getTotalSubscriptionsCompleted()) != 0 && !locationType.equalsIgnoreCase("DifferenceState")){
+                                + kilkariSubscriberDto.getTotalRecordsRejected() + kilkariSubscriberDto.getTotalSubscriptionsCompleted()) != 0 && !locationType.equalsIgnoreCase("DifferenceState") && showRow){
                             kilkariSubscriberDtoList.add(kilkariSubscriberDto);
                         }
                     }
@@ -2295,5 +2297,19 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             kilkariCall.add(noSubcenterCount);
         }
         return kilkariCall;
+    }
+    private boolean serviceStarted(Integer locationId,String locationType, Date toDate, Date fromDate, String sreviceType){
+        if(locationType.equalsIgnoreCase("State")){
+            return !toDate.before(stateServiceDao.getServiceStartDateForState( locationId,sreviceType));
+        }else{
+            if(locationType.equalsIgnoreCase("District")){
+                return !toDate.before(stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(),sreviceType));
+            }else{
+                if(locationType.equalsIgnoreCase("Block")){
+                    return !toDate.before(stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(),sreviceType));
+                }
+            }
+        }
+        return true;
     }
 }
