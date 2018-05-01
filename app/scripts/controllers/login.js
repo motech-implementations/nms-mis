@@ -11,7 +11,7 @@
             $scope.images = [0, 1, 2, 3, 4];
 
 			$scope.user = {};
-			$scope.captchaResponse = '';
+			$scope.user.captchaCode = '';
 			$scope.user.rememberMe = false;
 
 			$scope.loginUrl = backend_root + 'nms/login';
@@ -26,6 +26,34 @@
 			else{
 				$scope.errorMessage = "Invalid Username/Password";
 			}
+
+			$scope.Captcha = function(){
+                 var alpha = new Array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
+             	    	'0','1','2','3','4','5','6','7','8','9');
+                 var i;
+                 for (i=0;i<6;i++){
+                     var a = alpha[Math.floor(Math.random() * alpha.length)];
+                     var b = alpha[Math.floor(Math.random() * alpha.length)];
+                     var c = alpha[Math.floor(Math.random() * alpha.length)];
+                     var d = alpha[Math.floor(Math.random() * alpha.length)];
+                     var e = alpha[Math.floor(Math.random() * alpha.length)];
+                                  }
+                     var code = a + ' ' + b + ' ' + ' ' + c + ' ' + d + ' ' + e;
+                     $scope.user.mainCaptchaCode = code;
+
+
+                   }
+            $scope.ValidCaptcha = function(){
+            console.log($scope.user);
+                 var string1 = $scope.user.mainCaptchaCode.split(' ').join('');;
+                 var string2 = $scope.user.captchaCode.split(' ').join('');;
+                 if (string1 == string2){
+                        return true;
+                 }else{
+                      return false;
+                      }
+            }
+
 
 //			$scope.login = function(){
 //				$http.post($scope.loginUrl,
@@ -76,16 +104,27 @@
                     }
                 }
 
-                if($scope.captchaResponse ==''){
+                if($scope.user.captchaCode ==''){
+                console.log($scope.user);
                     if(UserFormFactory.isInternetExplorer()){
-                        alert("Please check the captcha")
+                        alert("Please fill the captcha")
                         return;
                     }
                     else{
-                        UserFormFactory.showAlert("Please check the captcha")
+                        UserFormFactory.showAlert("Please fill the captcha")
                         return;
                     }
 
+                }
+                if($scope.ValidCaptcha()==false){
+                           if(UserFormFactory.isInternetExplorer()){
+                               alert("Incorrect Captcha")
+                               return;
+                           }
+                           else{
+                               UserFormFactory.showAlert("Incorrect Captcha")
+                               return;
+                           }
                 }
 
 
