@@ -65,6 +65,9 @@ public class FrontLineWorkers {
     @Column(name="last_modified", columnDefinition = "DATE")
     private Date lastModifiedDate;
 
+    @Column(name="course_start_date", columnDefinition = "DATE")
+    private Date courseStartDate;
+
     public Long getFlwId() {
         return flwId;
     }
@@ -199,5 +202,13 @@ public class FrontLineWorkers {
 
     public void setLastModifiedDate(Date lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public Date getCourseStartDate() {
+        return courseStartDate;
+    }
+
+    public void setCourseStartDate(Date courseStartDate) {
+        this.courseStartDate = courseStartDate;
     }
 }
