@@ -19,10 +19,12 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
         criteria.add(Restrictions.lt("modificationDate", toDate))
                 .add(Restrictions.ge("modificationDate", fromDate))
                 .add(Restrictions.eq("accepted", false))
-                .add(Restrictions.ne("rejectionReason","INVALID_LMP_DATE"))
-                .add(Restrictions.ne("rejectionReason","ACTIVE_CHILD_PRESENT"))
-                .add(Restrictions.ne("rejectionReason","ABORT_STILLBIRTH_DEATH"))
-                .add(Restrictions.ne("rejectionReason","UPDATED_RECORD_ALREADY_EXISTS"));
+                .add(Restrictions.disjunction()
+                .add(Restrictions.eq("rejectionReason","DUPLICATE_MOBILE_NUMBER_IN_DATASET"))
+                .add(Restrictions.eq("rejectionReason","MOBILE_NUMBER_ALREADY_SUBSCRIBED"))
+                .add(Restrictions.eq("rejectionReason","MOBILE_NUMBER_EMPTY_OR_WRONG_FORMAT"))
+                .add(Restrictions.eq("rejectionReason","INVALID_CASE_NO"))
+                );
 
         return criteria.list();
     }
@@ -34,10 +36,12 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
                 .add(Restrictions.ge("modificationDate", fromDate))
                 .add(Restrictions.eq("accepted", false))
                 .add(Restrictions.eq("stateId", stateId))
-                .add(Restrictions.ne("rejectionReason","ACTIVE_CHILD_PRESENT"))
-                .add(Restrictions.ne("rejectionReason","ABORT_STILLBIRTH_DEATH"))
-                .add(Restrictions.ne("rejectionReason","INVALID_LMP_DATE"))
-                .add(Restrictions.ne("rejectionReason","UPDATED_RECORD_ALREADY_EXISTS"));
+                .add(Restrictions.disjunction()
+                .add(Restrictions.eq("rejectionReason","DUPLICATE_MOBILE_NUMBER_IN_DATASET"))
+                .add(Restrictions.eq("rejectionReason","MOBILE_NUMBER_ALREADY_SUBSCRIBED"))
+                .add(Restrictions.eq("rejectionReason","MOBILE_NUMBER_EMPTY_OR_WRONG_FORMAT"))
+                .add(Restrictions.eq("rejectionReason","INVALID_CASE_NO"))
+                );
 
         return criteria.list();
     }
@@ -49,10 +53,12 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
                 .add(Restrictions.ge("modificationDate", fromDate))
                 .add(Restrictions.eq("accepted", false))
                 .add(Restrictions.eq("districtId", districtId))
-                .add(Restrictions.ne("rejectionReason","INVALID_LMP_DATE"))
-                .add(Restrictions.ne("rejectionReason","ACTIVE_CHILD_PRESENT"))
-                .add(Restrictions.ne("rejectionReason","ABORT_STILLBIRTH_DEATH"))
-                .add(Restrictions.ne("rejectionReason","UPDATED_RECORD_ALREADY_EXISTS"));
+                .add(Restrictions.disjunction()
+                .add(Restrictions.eq("rejectionReason","DUPLICATE_MOBILE_NUMBER_IN_DATASET"))
+                .add(Restrictions.eq("rejectionReason","MOBILE_NUMBER_ALREADY_SUBSCRIBED"))
+                .add(Restrictions.eq("rejectionReason","MOBILE_NUMBER_EMPTY_OR_WRONG_FORMAT"))
+                .add(Restrictions.eq("rejectionReason","INVALID_CASE_NO"))
+                );
 
         return criteria.list();
     }
@@ -64,10 +70,12 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
                 .add(Restrictions.ge("modificationDate", fromDate))
                 .add(Restrictions.eq("accepted", false))
                 .add(Restrictions.eq("healthBlockId", blockId))
-                .add(Restrictions.ne("rejectionReason","INVALID_LMP_DATE"))
-                .add(Restrictions.ne("rejectionReason","ACTIVE_CHILD_PRESENT"))
-                .add(Restrictions.ne("rejectionReason","ABORT_STILLBIRTH_DEATH"))
-                .add(Restrictions.ne("rejectionReason","UPDATED_RECORD_ALREADY_EXISTS"));
+                .add(Restrictions.disjunction()
+                .add(Restrictions.eq("rejectionReason","DUPLICATE_MOBILE_NUMBER_IN_DATASET"))
+                .add(Restrictions.eq("rejectionReason","MOBILE_NUMBER_ALREADY_SUBSCRIBED"))
+                .add(Restrictions.eq("rejectionReason","MOBILE_NUMBER_EMPTY_OR_WRONG_FORMAT"))
+                .add(Restrictions.eq("rejectionReason","INVALID_CASE_NO"))
+                );
 
         return criteria.list();
     }
@@ -79,10 +87,11 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
                 .add(Restrictions.ge("modificationDate", fromDate))
                 .add(Restrictions.eq("accepted", false))
                 .add(Restrictions.eq("districtId", districtId))
-                .add(Restrictions.ne("rejectionReason","INVALID_LMP_DATE"))
-                .add(Restrictions.ne("rejectionReason","ACTIVE_CHILD_PRESENT"))
-                .add(Restrictions.ne("rejectionReason","ABORT_STILLBIRTH_DEATH"))
-                .add(Restrictions.ne("rejectionReason","UPDATED_RECORD_ALREADY_EXISTS"))
+                .add(Restrictions.disjunction()
+                .add(Restrictions.eq("rejectionReason","DUPLICATE_MOBILE_NUMBER_IN_DATASET"))
+                .add(Restrictions.eq("rejectionReason","MOBILE_NUMBER_ALREADY_SUBSCRIBED"))
+                .add(Restrictions.eq("rejectionReason","MOBILE_NUMBER_EMPTY_OR_WRONG_FORMAT"))
+                .add(Restrictions.eq("rejectionReason","INVALID_CASE_NO")))
                 .setProjection(Projections.rowCount());
 
         return (Long) criteria.uniqueResult();
