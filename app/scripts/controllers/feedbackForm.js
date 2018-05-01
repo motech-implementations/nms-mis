@@ -3,6 +3,16 @@
 		.module('nmsReports');
 
 	nmsReportsApp.controller("FeedbackFormController", ['$scope', '$state', 'UserFormFactory','$http', '$location','Captcha',function($scope, $state, UserFormFactory,$http,$location,Captcha){
+            UserFormFactory.isLoggedIn()
+            			.then(function(result){
+                        if(result.data){
+UserFormFactory.downloadCurrentUser()
+					.then(function(result){
+					                        $scope.email.name=result.data.fullName;
+					                        $scope.email.email=result.data.emailId;
+					})
+					}
+            			})
 
             $scope.feedbackUrl = backend_root + 'nms/mail/sendFeedback1';
 

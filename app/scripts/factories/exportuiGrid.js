@@ -839,11 +839,6 @@
                     colWidth[i+1] = 80;
                 }
                 }
-                else if(excelHeaderName.reportName == "Kilkari Thematic Content"){
-                for (i = 0; i < exportColumnHeaders.length; i++) {
-                    colWidth[i] = '*';
-                }
-                }
                 else if(excelHeaderName.reportName == "Kilkari Call"){
                 for (i = 0; i < exportColumnHeaders.length; i++) {
                     colWidth[i+1] = 65;

@@ -10,7 +10,7 @@
 				}
 				else{
 					UserFormFactory.downloadCurrentUser()
-					.then(function(result){
+					.then(function(result){ console.log(result.data);
 						UserFormFactory.setCurrentUser(result.data);
 						if($scope.currentUser.accessLevel == "STATE"){
 						    excelHeaderName.stateName = result.data.stateName;
