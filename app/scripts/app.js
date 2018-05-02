@@ -290,5 +290,7 @@ var nmsReportsApp = angular
 		$httpProvider.defaults.headers.post = {};
 		$httpProvider.defaults.headers.put = {};
 		$httpProvider.defaults.headers.patch = {};
+		$idleProvider.interrupt('keydown mousedown touchstart touchmove');
 		$idleProvider.setIdleTime(1800);
+
 	});

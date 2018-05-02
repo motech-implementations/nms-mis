@@ -137,7 +137,7 @@
                         return;
                     }
                     else{
-                      var a= UserFormFactory.showAlert2("You are already logged in with "+result.data.fullName);
+                      var a= UserFormFactory.showAlert("You are already logged in with "+result.data.fullName);
                       a.then(function () {
                           location.reload();
                           return;

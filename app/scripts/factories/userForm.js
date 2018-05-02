@@ -98,10 +98,10 @@
                         $mdDialog.alert()
                             .parent(angular.element(document.querySelector('#popupContainer')))
                             //.clickOutsideToClose(true)
-                            .title('MIS Alert!!')
+                            .title('Session Timeout')
                             .textContent(message)
                             .ariaLabel('Alert Dialog Demo')
-                            .ok('Ok!')
+                            .ok('OK')
                     );
 					return confirmAlert;
                 },

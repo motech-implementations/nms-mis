@@ -105,7 +105,7 @@
                 				}
 
                 				if($scope.showWeekTable() && ($scope.format == 'yyyy-MM-dd' || $scope.format == 'yyyy-MM' )){
-                                    $scope.getSundays($scope.dt);
+                                    $scope.getSundays($scope.dt1);
                                     $scope.sundaysTable = true;
 
                                 }
@@ -148,7 +148,7 @@
 			}
 
 			$scope.showWeekTable = function(){
-				return ($state.current.name == 'Kilkari Message Matrix' || $state.current.name == 'Kilkari Listening Matrix' || $state.current.name == 'Kilkari Usage' || $state.current.name == 'Kilkari Message Listenership' || $state.current.name == 'Kilkari Thematic Content' || $state.current.name == 'Kilkari Aggregate Beneficiaries');
+				return (($state.current.name == 'Kilkari Message Matrix' || $state.current.name == 'Kilkari Listening Matrix' || $state.current.name == 'Kilkari Usage' || $state.current.name == 'Kilkari Message Listenership' || $state.current.name == 'Kilkari Thematic Content' || $state.current.name == 'Kilkari Aggregate Beneficiaries')&& ($scope.periodDisplayType == 'Week'));
 
 			}
 

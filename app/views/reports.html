@@ -48,7 +48,7 @@
 							<button type="button" class="btn btn-sm btn-default" data-ng-click="open1()"  data-ng-disabled='disableDate()' ><i class="glyphicon glyphicon-calendar" data-ng-disabled="disableDate()" ></i></button>
 							</span>
 						</p>
-						<ul  class="sundays-list"  tabindex="-1" data-ng-blur="onBlur()" focus="true" data-ng-if= " (reportCategory == 'Mobile Academy Reports' ||  reportCategory == 'Kilkari Reports') &&  (report.name == 'Asha Rejected Records' || report.name =='Mother Rejected Records' || report.name =='Child Rejected Records') && dt != null " data-ng-show = "sundaysTable">
+						<ul  class="sundays-list"  tabindex="-1" data-ng-blur="onBlur()" focus="true" data-ng-if= " (reportCategory == 'Mobile Academy Reports' ||  reportCategory == 'Kilkari Reports') &&  (report.name == 'Asha Rejected Records' || report.name =='Mother Rejected Records' || report.name =='Child Rejected Records') && dt != null " data-ng-show = "popup1.opened">
 							<li class="sunday-list-header"><p>Sun</p></li>
 
 							<li data-ng-repeat="date in sundays"   data-ng-click='closeSundaysTable(date)' class="sunday-list-items"><p>{{date}}</p></li>
@@ -213,7 +213,7 @@
 							<button type="button" class="btn btn-sm btn-default" data-ng-click="open2()"  data-ng-disabled='disableDate()' ><i class="glyphicon glyphicon-calendar" data-ng-disabled="disableDate()" ></i></button>
 							</span>
                         </p>
-						<ul  class="sundays-list"  tabindex="-1" data-ng-blur="onBlur()" focus="true" data-ng-if= " showWeekTable() && dt1 != null " data-ng-show = "sundaysTable">
+						<ul  class="sundays-list"  tabindex="-1" data-ng-blur="onBlur()" focus="true" data-ng-if= " showWeekTable() && dt1 != null" data-ng-show = "popup2.opened">
 							<li class="sunday-list-header"><p>Sun</p></li>
 
 							<li data-ng-repeat="date in sundays"   data-ng-click='closeSundaysTable(date)' class="sunday-list-items"><p>{{date}}</p></li>
