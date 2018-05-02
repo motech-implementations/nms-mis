@@ -78,6 +78,9 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
     private MessageMatrixDao messageMatrixDao;
 
     @Autowired
+    private MessageMatrixWeekDao messageMatrixWeekDao;
+
+    @Autowired
     private KilkariRepeatListenerMonthWiseDao kilkariRepeatListenerMonthWiseDao;
 
     @Autowired
@@ -1758,8 +1761,11 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         MessageMatrixResponseDto messageMatrixResponseDto = new MessageMatrixResponseDto();
         List<MessageMatrixDto> motherMatrixDto = new ArrayList<>();
         List<MessageMatrixDto> childMatrixDto = new ArrayList<>();
-
-        List<MessageMatrix> messagelist= messageMatrixDao.getMessageMatrixData(locationId,locationType,fromDate);
+        List<MessageMatrix> messagelist = new ArrayList<>();
+        if(reportRequest.getPeriodType().equalsIgnoreCase("Week")){
+            messagelist= messageMatrixWeekDao.getMessageMatrixData(locationId,locationType,fromDate);}
+        else{
+         messagelist= messageMatrixDao.getMessageMatrixData(locationId,locationType,fromDate);}
         Long Mother_1_25=0L,Mother_25_50=0L,Mother_50_75=0L,Mother_75_100=0L,Child_1_25=0L,Child_25_50=0L,Child_50_75=0L,Child_75_100=0L;
         if(messagelist == null){
             messageMatrixResponseDto.setChildData(childMatrixDto);
