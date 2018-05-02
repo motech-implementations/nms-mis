@@ -3,9 +3,6 @@ package com.beehyv.nmsreporting.model;
 import javax.persistence.*;
 import java.util.Date;
 
-/**
- * Created by beehyv on 11/10/17.
- */
 @Entity
 @Table(name = "agg_kilkari_message_matrix_week")
 public class MessageMatrixWeek {

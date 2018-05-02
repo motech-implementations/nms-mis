@@ -66,10 +66,16 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
     private KilkariMessageListenershipReportDao kilkariMessageListenershipReportDao;
 
     @Autowired
+    private KilkariMessageListenershipWeekDao kilkariMessageListenershipWeekDao;
+
+    @Autowired
     private AggCumulativeBeneficiaryComplDao aggCumulativeBeneficiaryComplDao;
 
     @Autowired
     private ListeningMatrixDao listeningMatrixReportDao;
+
+    @Autowired
+    private ListeningMatrixWeekDao listeningMatrixWeekReportDao;
 
     @Autowired
     private KilkariThematicContentReportDao kilkariThematicContentReportDao;
@@ -1101,13 +1107,13 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         List<KilkariMessageListenership> kilkariMessageListenershipList = new ArrayList<>();
 
         if (reportRequest.getStateId() == 0) {
-            kilkariMessageListenershipList.addAll(getKilkariMessageListenershipData(0,"State",fromDate));
+            kilkariMessageListenershipList.addAll(getKilkariMessageListenershipData(0,"State",fromDate,reportRequest.getPeriodType()));
         } else if (reportRequest.getDistrictId() == 0) {
-            kilkariMessageListenershipList.addAll(getKilkariMessageListenershipData(reportRequest.getStateId(),"District",fromDate));
+            kilkariMessageListenershipList.addAll(getKilkariMessageListenershipData(reportRequest.getStateId(),"District",fromDate,reportRequest.getPeriodType()));
         } else if(reportRequest.getBlockId() == 0){
-            kilkariMessageListenershipList.addAll(getKilkariMessageListenershipData(reportRequest.getDistrictId(),"Block",fromDate));
+            kilkariMessageListenershipList.addAll(getKilkariMessageListenershipData(reportRequest.getDistrictId(),"Block",fromDate,reportRequest.getPeriodType()));
         } else {
-            kilkariMessageListenershipList.addAll(getKilkariMessageListenershipData(reportRequest.getBlockId(),"Subcentre",fromDate));
+            kilkariMessageListenershipList.addAll(getKilkariMessageListenershipData(reportRequest.getBlockId(),"Subcentre",fromDate,reportRequest.getPeriodType()));
         }
 
         if(!(kilkariMessageListenershipList.isEmpty())){
@@ -1158,18 +1164,26 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
     }
 
 
-    private List<KilkariMessageListenership> getKilkariMessageListenershipData(Integer locationId, String locationType, Date date){
+    private List<KilkariMessageListenership> getKilkariMessageListenershipData(Integer locationId, String locationType, Date date, String periodType){
         List<KilkariMessageListenership> kilkariMessageListenershipList = new ArrayList<>();
         if(locationType.equalsIgnoreCase("State")){
             List<State> states=stateDao.getStatesByServiceType("K");
             for(State s:states){
                 if(!date.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"K"))){
-                kilkariMessageListenershipList.add(kilkariMessageListenershipReportDao.getListenerData(s.getStateId(),locationType,date));
+                    if(periodType.equalsIgnoreCase("Week")){
+                        kilkariMessageListenershipList.add(kilkariMessageListenershipWeekDao.getListenerData(s.getStateId(),locationType,date));
+                    }else{
+                kilkariMessageListenershipList.add(kilkariMessageListenershipReportDao.getListenerData(s.getStateId(),locationType,date));}
             }}
         }
         else if(locationType.equalsIgnoreCase("District")){
             List<District> districts = districtDao.getDistrictsOfState(locationId);
-            KilkariMessageListenership stateCounts = kilkariMessageListenershipReportDao.getListenerData(locationId,"State",date);
+            KilkariMessageListenership stateCounts;
+            if(periodType.equalsIgnoreCase("Week")){
+                stateCounts = kilkariMessageListenershipWeekDao.getListenerData(locationId,"State",date);
+            }else{
+                stateCounts = kilkariMessageListenershipReportDao.getListenerData(locationId,"State",date);}
+
             Long answeredAtleastOneCall = (long)0;
             Long answeredMoreThan75Per = (long)0;
             Long answered50To75Per = (long)0;
@@ -1178,7 +1192,11 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             Long answeredNoCalls = (long)0;
             Long totalBeneficiariesCalled = (long)0;
             for(District d:districts){
-                KilkariMessageListenership districtCount = kilkariMessageListenershipReportDao.getListenerData(d.getDistrictId(),locationType,date);
+                KilkariMessageListenership districtCount;
+                if(periodType.equalsIgnoreCase("Week")){
+                    districtCount = kilkariMessageListenershipWeekDao.getListenerData(d.getDistrictId(),locationType,date);
+                }else{
+                    districtCount = kilkariMessageListenershipReportDao.getListenerData(d.getDistrictId(),locationType,date);}
                 kilkariMessageListenershipList.add(districtCount);
                 answeredAtleastOneCall += districtCount.getAnsweredAtleastOneCall();
                 answeredMoreThan75Per += districtCount.getAnsweredMoreThan75Per();
@@ -1203,7 +1221,11 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         }
         else if(locationType.equalsIgnoreCase("Block")) {
             List<Block> blocks = blockDao.getBlocksOfDistrict(locationId);
-            KilkariMessageListenership districtCounts = kilkariMessageListenershipReportDao.getListenerData(locationId,"district",date);
+            KilkariMessageListenership districtCounts ;
+            if(periodType.equalsIgnoreCase("Week")){
+                districtCounts = kilkariMessageListenershipWeekDao.getListenerData(locationId,"district",date);
+            }else{
+                districtCounts = kilkariMessageListenershipReportDao.getListenerData(locationId,"district",date);}
             Long answeredAtleastOneCall = (long)0;
             Long answeredMoreThan75Per = (long)0;
             Long answered50To75Per = (long)0;
@@ -1213,7 +1235,11 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             Long totalBeneficiariesCalled = (long)0;
 
             for (Block d : blocks) {
-                KilkariMessageListenership blockCount = kilkariMessageListenershipReportDao.getListenerData(d.getBlockId(),locationType,date);
+                KilkariMessageListenership blockCount;
+                if(periodType.equalsIgnoreCase("Week")){
+                    blockCount = kilkariMessageListenershipWeekDao.getListenerData(d.getBlockId(),locationType,date);
+                }else{
+                    blockCount = kilkariMessageListenershipReportDao.getListenerData(d.getBlockId(),locationType,date);}
                 kilkariMessageListenershipList.add(blockCount);
                 answeredAtleastOneCall += blockCount.getAnsweredAtleastOneCall();
                 answeredMoreThan75Per += blockCount.getAnsweredMoreThan75Per();
@@ -1242,7 +1268,11 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             for(HealthFacility hf :healthFacilities){
                 subcenters.addAll(healthSubFacilityDao.findByHealthFacilityId(hf.getHealthFacilityId()));
             }
-            KilkariMessageListenership blockCounts = kilkariMessageListenershipReportDao.getListenerData(locationId,"block",date);
+            KilkariMessageListenership blockCounts ;
+            if(periodType.equalsIgnoreCase("Week")){
+                blockCounts = kilkariMessageListenershipWeekDao.getListenerData(locationId,"block",date);
+            }else{
+                blockCounts = kilkariMessageListenershipReportDao.getListenerData(locationId,"block",date);}
             Long answeredAtleastOneCall = (long)0;
             Long answeredMoreThan75Per = (long)0;
             Long answered50To75Per = (long)0;
@@ -1252,7 +1282,11 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             Long totalBeneficiariesCalled = (long)0;
 
             for(HealthSubFacility s: subcenters){
-                KilkariMessageListenership subcenterCount = kilkariMessageListenershipReportDao.getListenerData(s.getHealthSubFacilityId(),locationType,date);
+                KilkariMessageListenership subcenterCount;
+                if(periodType.equalsIgnoreCase("Week")){
+                    subcenterCount = kilkariMessageListenershipWeekDao.getListenerData(s.getHealthSubFacilityId(),locationType,date);
+                }else{
+                    subcenterCount = kilkariMessageListenershipReportDao.getListenerData(s.getHealthSubFacilityId(),locationType,date);}
                 kilkariMessageListenershipList.add(subcenterCount);
                 answeredAtleastOneCall += subcenterCount.getAnsweredAtleastOneCall();
                 answeredMoreThan75Per += subcenterCount.getAnsweredMoreThan75Per();
@@ -1549,7 +1583,11 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
 
 
         List<ListeningMatrixDto> matrixDto = new ArrayList<>();
-        HashMap<String,ListeningMatrix> listeningMatrix = listeningMatrixReportDao.getListeningMatrix(locationId,locationType,fromDate);
+        HashMap<String,ListeningMatrix> listeningMatrix = new HashMap<>();
+        if(reportRequest.getPeriodType().equalsIgnoreCase("Week")) {
+            listeningMatrix = listeningMatrixWeekReportDao.getListeningMatrix(locationId,locationType,fromDate);
+        }else{
+        listeningMatrix = listeningMatrixReportDao.getListeningMatrix(locationId,locationType,fromDate);}
 
         if(listeningMatrix==null){
             return matrixDto;
