@@ -2,7 +2,7 @@
 	var nmsReportsApp = angular
 		.module('nmsReports');
 
-	nmsReportsApp.controller("FeedbackFormController", ['$scope', '$state', 'UserFormFactory','$http', '$location','Captcha',function($scope, $state, UserFormFactory,$http,$location,Captcha){
+	nmsReportsApp.controller("FeedbackFormController", ['$scope', '$state', 'UserFormFactory','$http', '$location',function($scope, $state, UserFormFactory,$http,$location){
             UserFormFactory.isLoggedIn()
             			.then(function(result){
                         if(result.data){
@@ -18,6 +18,35 @@ UserFormFactory.downloadCurrentUser()
 
 			$scope.feedback = {};
 			$scope.email = {};
+			$scope.email.captchaCode = '';
+
+
+$scope.Captcha = function(){
+                 var alpha = new Array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
+             	    	'0','1','2','3','4','5','6','7','8','9');
+                 var i;
+                 for (i=0;i<6;i++){
+                     var a = alpha[Math.floor(Math.random() * alpha.length)];
+                     var b = alpha[Math.floor(Math.random() * alpha.length)];
+                     var c = alpha[Math.floor(Math.random() * alpha.length)];
+                     var d = alpha[Math.floor(Math.random() * alpha.length)];
+                     var e = alpha[Math.floor(Math.random() * alpha.length)];
+                                  }
+                     var code = a + ' ' + b + ' '  + c + ' ' + d + ' ' + e;
+                     $scope.email.mainCaptchaCode = code;
+
+
+                   }
+            $scope.ValidCaptcha = function(){
+            console.log($scope.user);
+                 var string1 = $scope.email.mainCaptchaCode.split(' ').join('');;
+                 var string2 = $scope.email.captchaCode.split(' ').join('');;
+                 if (string1 == string2.toUpperCase()){
+                        return true;
+                 }else{
+                      return false;
+                      }
+            }
 
             var emailField = $scope.email.email;
 
@@ -98,17 +127,44 @@ UserFormFactory.downloadCurrentUser()
                     }
                 }
 
-                if(!$scope.captchaResponse){
+//                if(!$scope.captchaResponse){
+//                    if(UserFormFactory.isInternetExplorer()){
+//                        alert("Check captcha");
+//                         $scope.reverse();
+//                        return;
+//                    }
+//                    else{
+//                        UserFormFactory.showAlert("Check captcha");
+//                         $scope.reverse();
+//                        return;
+//                    }
+//                }
+
+               if($scope.email.captchaCode ==''){
+                console.log($scope.user);
                     if(UserFormFactory.isInternetExplorer()){
-                        alert("Check captcha");
-                         $scope.reverse();
+                        alert("Please fill the captcha");
+                        $scope.reverse();
                         return;
                     }
                     else{
-                        UserFormFactory.showAlert("Check captcha");
-                         $scope.reverse();
+                        UserFormFactory.showAlert("Please fill the captcha");
+                        $scope.reverse();
                         return;
                     }
+
+                }
+                if($scope.ValidCaptcha()==false){
+                           if(UserFormFactory.isInternetExplorer()){
+                               alert("Incorrect Captcha");
+                               $scope.reverse();
+                               return;
+                           }
+                           else{
+                               UserFormFactory.showAlert("Incorrect Captcha");
+                               $scope.reverse();
+                               return;
+                           }
                 }
 
                 else {

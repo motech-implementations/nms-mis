@@ -1,7 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("LoginController", ['$rootScope','$scope','$state', '$http', '$location','Captcha','UserFormFactory','vcRecaptchaService', function($rootScope, $scope,$state, $http, $location, Captcha,UserFormFactory){
+		.controller("LoginController", ['$rootScope','$scope','$state', '$http', '$location','UserFormFactory', function($rootScope, $scope,$state, $http, $location ,UserFormFactory){
 
 
             $scope.w = window.innerWidth;
@@ -38,7 +38,7 @@
                      var d = alpha[Math.floor(Math.random() * alpha.length)];
                      var e = alpha[Math.floor(Math.random() * alpha.length)];
                                   }
-                     var code = a + ' ' + b + ' ' + ' ' + c + ' ' + d + ' ' + e;
+                     var code = a + ' ' + b + ' ' + c + ' ' + d + ' ' + e;
                      $scope.user.mainCaptchaCode = code;
 
 
@@ -47,7 +47,7 @@
             console.log($scope.user);
                  var string1 = $scope.user.mainCaptchaCode.split(' ').join('');;
                  var string2 = $scope.user.captchaCode.split(' ').join('');;
-                 if (string1 == string2){
+                 if (string1 == string2.toUpperCase()){
                         return true;
                  }else{
                       return false;

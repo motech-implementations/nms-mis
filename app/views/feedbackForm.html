@@ -72,7 +72,17 @@
 
                     </div>
                     <input type="hidden" name="from" data-ng-model="email.from" value="nsp-reports@beehyv.com">
-                    <div vc-recaptcha key="'6LfKH08UAAAAAKmEugRBtMKYaagj-CiluRt9h1tK'"data-ng-model="captchaResponse" class="recaptcha ff-captcha"></div>
+                    <!--<div vc-recaptcha key="'6LfKH08UAAAAAKmEugRBtMKYaagj-CiluRt9h1tK'"data-ng-model="captchaResponse" class="recaptcha ff-captcha"></div>-->
+                    <div class="form-group row d-flex flex-row justify-content-between" data-ng-init="Captcha()">
+                        <div class=" col-xs-1"></div>
+                        <div class=" col-xs-3 ff-input-textalign">
+                            <label>Captcha<span style="color : red">*</span></label>
+                        </div>
+                        <button type="button" id="refresh" data-ng-click="Captcha()" class="m-2" style="margin-left:0px"><span class="glyphicon glyphicon-refresh"></span></button>
+                        <input type="text" ng-cut="$event.preventDefault()" ng-copy="$event.preventDefault()"  class="form-control input input-sm login-inputs" data-ng-disabled="true" name="mainCaptchaCode" style="background-color:#ea9c6e;font-weight:bold;height:40px;width:45%;padding-left:40px;color:black;" data-ng-model="email.mainCaptchaCode"/>
+                    </div>
+                    <div class="form-group"><input type="text" ng-paste="$event.preventDefault()" style="text-transform:uppercase" class="form-control input input-sm login-inputs" name="captchaCode" data-ng-model="email.captchaCode"/>
+                    </div>
                     <div class="form-group ff-submit"><button type="submit" id="hide_me" class="btn btn-sm btn-primary">Submit</button></div>
                 </form>
             </div>
