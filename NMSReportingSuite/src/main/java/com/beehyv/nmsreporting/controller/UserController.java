@@ -540,6 +540,7 @@ public class UserController {
                             }
                             if (locationType.equalsIgnoreCase("Subcentre")) {
                                 summaryDto1.setLocationName(healthSubFacilityDao.findByHealthSubFacilityId(a.getLocationId().intValue()).getHealthSubFacilityName());
+                                summaryDto1.setLink(true);
                             }
                             if (locationType.equalsIgnoreCase("DifferenceState")) {
                                 summaryDto1.setLocationName("No District Count");
@@ -643,6 +644,7 @@ public class UserController {
                             }
                             if (locationType.equalsIgnoreCase("Subcentre")) {
                                 summaryDto1.setLocationName(healthSubFacilityDao.findByHealthSubFacilityId(a.getLocationId().intValue()).getHealthSubFacilityName());
+                                summaryDto1.setLink(true);
                             }
                             if (locationType.equalsIgnoreCase("DifferenceState")) {
                                 summaryDto1.setLocationName("No District Count");
@@ -731,6 +733,7 @@ public class UserController {
                     }
                     if (locationType.equalsIgnoreCase("Subcentre")) {
                         summaryDto1.setLocationName(healthSubFacilityDao.findByHealthSubFacilityId(a.getLocationId().intValue()).getHealthSubFacilityName());
+                        summaryDto1.setLink(true);
                     }
                     if (locationType.equalsIgnoreCase("DifferenceState")) {
                         summaryDto1.setLocationName("No District");

@@ -730,7 +730,7 @@
                  return;
                 }
                 $scope.dateFormat = 'yyyy-MM';
-               	if($scope.showWeekTable && $scope.dt1 != null) {
+               	if($scope.showWeekTable() && $scope.dt1 != null) {
                		 $scope.getSundays($scope.dt1);
                      $scope.sundaysTable = true;
 			    	 $scope.popup2.opened = true;

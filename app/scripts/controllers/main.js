@@ -428,12 +428,12 @@
                 if (!($scope.checkLogin())){
 
                     if(UserFormFactory.isInternetExplorer()){
-                        alert("Sorry, Your Session timed out after a long time of inactivity. Please, click OK and sign in again");
+                        alert("Sorry, Your Session timed out after a long time of inactivity. Please, login again");
                         $scope.goToLogout();
                         return;
                     }
                     else{
-                      var a= UserFormFactory.showAlert2("Sorry, Your Session timed out after a long time of inactivity. Please, click OK and sign in again");
+                      var a= UserFormFactory.showAlert2("Sorry, Your Session timed out after a long time of inactivity. Please, login in again");
                       a.then(function () {
                           $scope.goToLogout();
                           return;
