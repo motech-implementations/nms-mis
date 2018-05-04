@@ -22,9 +22,11 @@ public class FrontLineWorkersDaoImpl extends AbstractDao<Integer,FrontLineWorker
     public List<FrontLineWorkers> getInactiveFrontLineWorkers(Date toDate) {
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("creationDate"));
         criteria.add(Restrictions.and(
-                Restrictions.eq("status","INACTIVE").ignoreCase(),
                 Restrictions.lt("creationDate",toDate),
-                Restrictions.gt("courseStartDate",toDate),
+                Restrictions.disjunction().add(Restrictions.and(
+                Restrictions.eq("status","ACTIVE").ignoreCase(),
+                Restrictions.gt("courseStartDate",toDate)))
+                .add(Restrictions.eq("status","INACTIVE").ignoreCase()),
                 Restrictions.eq("jobStatus","ACTIVE").ignoreCase(),
                 Restrictions.eq("designation","ASHA").ignoreCase()
         ));
@@ -35,9 +37,11 @@ public class FrontLineWorkersDaoImpl extends AbstractDao<Integer,FrontLineWorker
     public List<FrontLineWorkers> getInactiveFrontLineWorkersWithStateId(Date toDate, Integer stateId) {
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("creationDate"));
         criteria.add(Restrictions.and(
-                Restrictions.eq("status","INACTIVE").ignoreCase(),
                 Restrictions.lt("creationDate",toDate),
-                Restrictions.gt("courseStartDate",toDate),
+                Restrictions.disjunction().add(Restrictions.and(
+                        Restrictions.eq("status","ACTIVE").ignoreCase(),
+                        Restrictions.gt("courseStartDate",toDate)))
+                        .add(Restrictions.eq("status","INACTIVE").ignoreCase()),
                 Restrictions.eq("jobStatus","ACTIVE").ignoreCase(),
                 Restrictions.eq("designation","ASHA").ignoreCase(),
                 Restrictions.eq("state",stateId)
@@ -49,9 +53,11 @@ public class FrontLineWorkersDaoImpl extends AbstractDao<Integer,FrontLineWorker
     public List<FrontLineWorkers> getInactiveFrontLineWorkersWithDistrictId(Date toDate, Integer districtId) {
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("creationDate"));
         criteria.add(Restrictions.and(
-                Restrictions.eq("status","INACTIVE").ignoreCase(),
                 Restrictions.lt("creationDate",toDate),
-                Restrictions.gt("courseStartDate",toDate),
+                Restrictions.disjunction().add(Restrictions.and(
+                        Restrictions.eq("status","ACTIVE").ignoreCase(),
+                        Restrictions.gt("courseStartDate",toDate)))
+                        .add(Restrictions.eq("status","INACTIVE").ignoreCase()),
                 Restrictions.eq("jobStatus","ACTIVE").ignoreCase(),
                 Restrictions.eq("designation","ASHA").ignoreCase(),
                 Restrictions.eq("district",districtId)
@@ -63,9 +69,11 @@ public class FrontLineWorkersDaoImpl extends AbstractDao<Integer,FrontLineWorker
     public List<FrontLineWorkers> getInactiveFrontLineWorkersWithBlockId(Date toDate, Integer blockId) {
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("creationDate"));
         criteria.add(Restrictions.and(
-                Restrictions.eq("status","INACTIVE").ignoreCase(),
                 Restrictions.lt("creationDate",toDate),
-                Restrictions.gt("courseStartDate",toDate),
+                Restrictions.disjunction().add(Restrictions.and(
+                        Restrictions.eq("status","ACTIVE").ignoreCase(),
+                        Restrictions.gt("courseStartDate",toDate)))
+                        .add(Restrictions.eq("status","INACTIVE").ignoreCase()),
                 Restrictions.eq("jobStatus","ACTIVE").ignoreCase(),
                 Restrictions.eq("designation","ASHA").ignoreCase(),
                 Restrictions.eq("block",blockId)
@@ -77,9 +85,11 @@ public class FrontLineWorkersDaoImpl extends AbstractDao<Integer,FrontLineWorker
     public Long getCountOfInactiveFrontLineWorkersForGivenDistrict(Date toDate, Integer districtId) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.and(
-                Restrictions.eq("status","INACTIVE").ignoreCase(),
                 Restrictions.lt("creationDate",toDate),
-                Restrictions.gt("courseStartDate",toDate),
+                Restrictions.disjunction().add(Restrictions.and(
+                        Restrictions.eq("status","ACTIVE").ignoreCase(),
+                        Restrictions.gt("courseStartDate",toDate)))
+                        .add(Restrictions.eq("status","INACTIVE").ignoreCase()),
                 Restrictions.eq("jobStatus","ACTIVE").ignoreCase(),
                 Restrictions.eq("designation","ASHA").ignoreCase(),
                 Restrictions.eq("district",districtId)
