@@ -112,7 +112,6 @@ public class FrontLineWorkersDaoImpl extends AbstractDao<Integer,FrontLineWorker
         ));
         return (FrontLineWorkers) criteria.uniqueResult();
 
-
     }
 
     @Override
