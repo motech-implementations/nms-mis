@@ -10,7 +10,7 @@
 				}
 				else{
 					UserFormFactory.downloadCurrentUser()
-					.then(function(result){ console.log(result.data);
+					.then(function(result){
 						UserFormFactory.setCurrentUser(result.data);
 						if($scope.currentUser.accessLevel == "STATE"){
 						    excelHeaderName.stateName = result.data.stateName;
@@ -28,11 +28,6 @@
                         if((($state.current.name)===("reports"))){
                             $scope.getStatesByService(null);
                         }
-                        else{
-                        if($scope.disablePeriodType()){
-                            $scope.setDateOptions();
-                            $scope.selectPeriodType("Month");}
-                            }
 					})
 				}
 			})
@@ -96,6 +91,24 @@
 
             $scope.open2 = function() {
                 $scope.popup2.opened = true;
+                				var currentDate = new Date();
+
+                				if($scope.showWeekTable()){
+                				        if($scope.getSundays(currentDate) >0){
+                                            $scope.dateOptions.maxDate = new Date().setMonth(currentDate.getMonth());
+                                        }
+                                        else
+                                            $scope.dateOptions.maxDate = new Date().setMonth(currentDate.getMonth() - 1);
+                                        $scope.sundays = null;
+
+
+                				}
+
+                				if($scope.showWeekTable() && ($scope.format == 'yyyy-MM-dd' || $scope.format == 'yyyy-MM' )){
+                                    $scope.getSundays($scope.dt1);
+                                    $scope.sundaysTable = true;
+
+                                }
             };
 
             $scope.open3 = function() {
@@ -134,8 +147,8 @@
 				return $scope.circles[0]  == null || $scope.userHasOneCircle();
 			}
 
-			$scope.disablePeriodType = function(){
-				return ($state.current.name == 'Kilkari Message Matrix' || $state.current.name == 'Kilkari Listening Matrix' || $state.current.name == 'Kilkari Usage' || $state.current.name == 'Kilkari Message Listenership' || $state.current.name == 'Kilkari Thematic Content' || $state.current.name == 'Kilkari Aggregate Beneficiaries' || $state.current.name == 'Kilkari Repeat Listener');
+			$scope.showWeekTable = function(){
+				return (($state.current.name == 'Kilkari Message Matrix' || $state.current.name == 'Kilkari Listening Matrix' || $state.current.name == 'Kilkari Usage' || $state.current.name == 'Kilkari Message Listenership' || $state.current.name == 'Kilkari Thematic Content' || $state.current.name == 'Kilkari Aggregate Beneficiaries')&& ($scope.periodDisplayType == 'Week'));
 
 			}
 
@@ -225,6 +238,14 @@
                     $scope.datePickerOptions.minMode ='month';
                     $scope.datePickerOptions.maxDate = new Date().setMonth(new Date().getMonth() -1);
                 }
+                if($scope.periodDisplayType == 'Week'){
+                    $scope.periodTypeContent = "Select Week";
+                    $scope.dateFormat = "yyyy-MM-dd";
+                    $scope.datePickerOptions.minMode = '';
+                    $scope.datePickerOptions.datepickerMode = 'month';
+                    $scope.datePickerOptions.minMode ='month';
+//                    $scope.datePickerOptions.maxDate = new Date().setMonth(new Date().getMonth() -1);
+                }
                 if($scope.periodDisplayType == 'Custom Range'){
                     $scope.periodTypeContent = "Start Date";
                     $scope.dateFormat = "yyyy-MM-dd";
@@ -307,7 +328,7 @@
                 	$scope.selectCircle($scope.circles[0]);
                 }
                 if($scope.report.reportEnum == 'Kilkari_Message_Matrix' || $scope.report.reportEnum == 'Kilkari_Listening_Matrix' || $scope.report.reportEnum == 'Kilkari_Usage' || $scope.report.reportEnum == 'Kilkari_Message_Listenership' || $scope.report.reportEnum == 'Kilkari_Thematic_Content' || $scope.report.reportEnum == 'Kilkari_Aggregate_Beneficiaries'){
-                    $scope.periodType = [/*'Year',*/'Month'/*,'Quarter'*/];
+                    $scope.periodType = [/*'Year',*/'Month'/*,'Quarter'*/,'Week'];
                 }
                 else if($scope.report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise'){
                     $scope.periodType = ['Month'];
@@ -552,13 +573,7 @@
 					excelHeaderName.stateName = state.stateName;
 				}
 
-                        if($scope.disablePeriodType()){
-                            $scope.setDateOptions();
-                            $scope.selectPeriodType("Month");
-//                            console.log($scope.state);
 
-                        }
-                        else{
                             //console.log($scope.endDatePickerOptions);
                             $scope.periodDisplayType = '';
                             $scope.dt1 = null;
@@ -569,7 +584,7 @@
                             $scope.setDateOptions();
 //                            console.log($scope.endDatePickerOptions);
 //                            console.log($scope.state);
-                        }
+
 
 
 				$scope.clearFile();
@@ -580,12 +595,7 @@
 				excelHeaderName.stateName = "ALL";
 				$scope.clearDistrict();
 				$scope.districts = [];
-                        if($scope.disablePeriodType()){
 
-                            $scope.setDateOptions();
-                            $scope.selectPeriodType("Month");
-                        }
-                        else{
                             $scope.periodDisplayType = '';
                             $scope.dt1 = null;
                             $scope.dt2 = null;
@@ -593,7 +603,7 @@
                             $scope.hideMessageMatrix = true;
                             $scope.showEmptyData = false;
                             $scope.setDateOptions();
-                        }
+
 
 
                 //console.log($scope.reports);
@@ -606,19 +616,14 @@
 					$scope.district = district;
 					excelHeaderName.districtName = district.districtName;
 				}
-                        if($scope.disablePeriodType()){
 
-                            $scope.setDateOptions();
-                            $scope.selectPeriodType("Month");
-                        }
-                        else{
                             $scope.periodDisplayType = '';
                             $scope.dt1 = null;
                             $scope.dt2 = null;
                             $scope.hideGrid = true;
                             $scope.hideMessageMatrix = true;
                             $scope.showEmptyData = false;
-                        }
+
 
 
 
@@ -629,12 +634,7 @@
 				excelHeaderName.districtName = "ALL";
 				$scope.clearBlock();
 				$scope.blocks = [];
-                        if($scope.disablePeriodType()){
 
-                            $scope.setDateOptions();
-                            $scope.selectPeriodType("Month");
-                        }
-                        else{
                             $scope.periodDisplayType = '';
                             $scope.dt1 = null;
                             $scope.dt2 = null;
@@ -642,7 +642,7 @@
                             $scope.hideMessageMatrix = true;
                             $scope.showEmptyData = false;
                             $scope.setDateOptions();
-                        }
+
 
 
 
@@ -654,19 +654,14 @@
 					$scope.block = block;
 					excelHeaderName.blockName = block.blockName;
 				}
-                        if($scope.disablePeriodType()){
 
-                            $scope.setDateOptions();
-                            $scope.selectPeriodType("Month");
-                        }
-                        else{
                             $scope.periodDisplayType = '';
                             $scope.dt1 = null;
                             $scope.dt2 = null;
                             $scope.hideGrid = true;
                             $scope.hideMessageMatrix = true;
                             $scope.showEmptyData = false;
-                        }
+
 
 
 
@@ -675,12 +670,7 @@
 			$scope.clearBlock = function(){
 				$scope.block = null;
 				excelHeaderName.blockName = "ALL";
-                        if($scope.disablePeriodType()){
 
-                            $scope.setDateOptions();
-                            $scope.selectPeriodType("Month");
-                        }
-                        else{
                             $scope.periodDisplayType = '';
                             $scope.dt1 = null;
                             $scope.dt2 = null;
@@ -688,7 +678,7 @@
                             $scope.hideMessageMatrix = true;
                             $scope.showEmptyData = false;
                             $scope.setDateOptions();
-                        }
+
 
                 $scope.clearFile();
 			}
@@ -720,8 +710,8 @@
                  return;
                 }
                 $scope.format = 'yyyy-MM';
-			    if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).indexOf(angular.lowercase("rejected")) > -1) && $scope.dt != null) {
-			    	 $scope.getSundays($scope.dt);
+               	if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).indexOf(angular.lowercase("rejected")) > -1) && $scope.dt != null) {
+               		 $scope.getSundays($scope.dt);
                      $scope.sundaysTable = true;
 			    	 $scope.popup1.opened = true;
 			    }
@@ -729,6 +719,26 @@
                 if(!$scope.wasSundaySelected){
                     if((newDate != null) && newDate.getDate() == 1){
                         $scope.dt = new Date($scope.dt.getFullYear(), $scope.dt.getMonth() + 1, 0, 23, 59, 59);
+                     }
+                }
+			});
+
+			$scope.$watch('dt1', function(newDate){
+                if($scope.wasSundaySelected){
+                $scope.dateFormat = 'yyyy-MM-dd';
+                $scope.wasSundaySelected = false;
+                 return;
+                }
+                $scope.dateFormat = 'yyyy-MM';
+               	if($scope.showWeekTable() && $scope.dt1 != null) {
+               		 $scope.getSundays($scope.dt1);
+                     $scope.sundaysTable = true;
+			    	 $scope.popup2.opened = true;
+			    }
+
+                if(!$scope.wasSundaySelected){
+                    if((newDate != null) && newDate.getDate() == 1){
+                        $scope.dt1 = new Date($scope.dt1.getFullYear(), $scope.dt1.getMonth() + 1, 0, 23, 59, 59);
                      }
                 }
 			});
@@ -842,6 +852,17 @@
 
                 }
 
+		    	else if($scope.periodDisplayType == 'Week' && $scope.dateFormat == 'yyyy-MM'){
+                   if(UserFormFactory.isInternetExplorer()){
+                         alert("Please select a week")
+                         return;
+                   }
+                   else{
+                     UserFormFactory.showAlert("Please select a week")
+                     return;
+                   }
+		    	}
+
                 else if($scope.periodDisplayType == 'Quarter' && $scope.quarterDisplayType == '' && ($scope.isAggregateReport() )){
                    if(UserFormFactory.isInternetExplorer()){
                          alert("Please select a quarter type")
@@ -867,7 +888,6 @@
 
 
 			    reportRequest.reportType = $scope.report.reportEnum;
-
 			    reportRequest.stateId = 0;
 			    reportRequest.districtId = 0;
 			    reportRequest.blockId = 0;
@@ -991,6 +1011,16 @@
                                          "-" + reportRequest.toDate.getFullYear();
                          toDateVal = reportRequest.toDate;
 
+
+                    }
+                    else if($scope.periodDisplayType == 'Week' ){
+                        reportRequest.toDate = $scope.dt1;
+                        reportRequest.fromDate = new Date($scope.dt1.getFullYear(),$scope.dt1.getMonth(),$scope.dt1.getDate()-6);
+                        dateString = reportRequest.fromDate.getDate() + "_" + (reportRequest.fromDate.getMonth() + 1 ) + "_" + reportRequest.fromDate.getFullYear() + "to" + reportRequest.toDate.getDate() + "_" +  ( reportRequest.toDate.getMonth() + 1 ) +
+                                     "_" + reportRequest.toDate.getFullYear();
+                        excelHeaderName.timePeriod = reportRequest.fromDate.getDate() + "-" + (reportRequest.fromDate.getMonth() + 1 ) + "-" + reportRequest.fromDate.getFullYear() + " to " + reportRequest.toDate.getDate() + "-" +  ( reportRequest.toDate.getMonth() + 1 ) +
+                                                                                          "-" + reportRequest.toDate.getFullYear();
+                        toDateVal = reportRequest.toDate;
 
                     }
                     else if($scope.periodDisplayType == 'Custom Range' ){
@@ -1267,14 +1297,9 @@
 				$scope.dt2 = null;
 				$scope.hideGrid = true;
 				$scope.hideMessageMatrix = true;
-                        if($scope.disablePeriodType()){
 
-                            $scope.setDateOptions();
-                            $scope.selectPeriodType("Month");
-                        }
-                        else{
-                            $scope.periodDisplayType = '';
-                        }
+                $scope.periodDisplayType = '';
+
 
 
 				$scope.showEmptyData = false;
@@ -1313,10 +1338,10 @@
             var startDate = 18 //Start Date
 
 			$scope.open1 = function() {
-				$scope.popup1.opened = true;
+                $scope.popup1.opened = true;
 				var currentDate = new Date();
 
-				if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).indexOf(angular.lowercase("rejected")) > -1) ){
+				if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).indexOf(angular.lowercase("rejected"))  > -1 ) ){
 				    if(currentDate.getMonth() == startMonth && currentDate.getDate() >= startDate && currentDate.getFullYear() == 2017 && $scope.getSundays(currentDate) > 0){
 				        $scope.dateOptions.maxDate = new Date().setMonth(new Date().getMonth());
 				    }
@@ -1343,6 +1368,7 @@
                     $scope.sundaysTable = true;
 
                 }
+
 			};
 
 			$scope.setDate = function(year, month, day) {
@@ -1449,7 +1475,10 @@
 			$scope.closeSundaysTable = function(date) {
             	$scope.sundaysTable = false;
             	$scope.sundays = [];
-            	$scope.dt = new Date($scope.dt.getFullYear(),$scope.dt.getMonth(),date);
+            	if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).indexOf(angular.lowercase("rejected")) > -1)  ){
+            	$scope.dt = new Date($scope.dt.getFullYear(),$scope.dt.getMonth(),date);}
+            	if($scope.showWeekTable()){
+            	$scope.dt1 = new Date($scope.dt1.getFullYear(),$scope.dt1.getMonth(),date);}
             	$scope.wasSundaySelected = true;
             };
 

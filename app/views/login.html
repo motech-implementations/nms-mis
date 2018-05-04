@@ -55,20 +55,26 @@
 					<input type="password" class="form-control input input-sm login-inputs" data-ng-model="user.password" name="password" placeholder="Password" >
 
 				</div>
-                <div vc-recaptcha data-key="'6LfKH08UAAAAAKmEugRBtMKYaagj-CiluRt9h1tK'" data-ng-model="captchaResponse" class="recaptcha"></div>
+                <!--<div vc-recaptcha data-key="'6LfKH08UAAAAAKmEugRBtMKYaagj-CiluRt9h1tK'" data-ng-model="captchaResponse" class="recaptcha"></div>-->
 				<!--<div class="g-recaptcha" data-sitekey="6LeGqU4UAAAAAEIQzwTLGSCyK4n7XBuF6llOsK3o"></div>-->
 				<!--<div class="captcha">-->
 					<!--<botdetect-captcha styleName="AncientMosaic"></botdetect-captcha>-->
 					<!--<div id="tapa" style="background-color: #ffffff; height: 10px;width: 250px;position: relative;top: -10px;"></div>-->
                     <!--<p >Please enter the captcha code</p>-->
 					<!--<input type="text" id="captchaCode"  class ="captchaCode login-inputs" name="captchaCode" data-ng-model="user.captchaCode" correct-captcha>-->
-
+				<div class="form-group d-flex flex-row justify-content-between" data-ng-init="Captcha()">
+					<span class="login-texts">Captcha</span>
+					<button type="button" id="refresh" data-ng-click="Captcha()" class="m-2"><span class="glyphicon glyphicon-refresh"></span></button>
+					<input type="text" ng-cut="$event.preventDefault()" ng-copy="$event.preventDefault()"  class="form-control input input-sm login-inputs" data-ng-disabled="true" name="mainCaptchaCode" style="background-color:#ea9c6e;font-weight:bold;height:40px;width:45%;padding-left:40px;color:black;" data-ng-model="user.mainCaptchaCode"/>
+				</div>
+				<div class="form-group"><input type="text" ng-paste="$event.preventDefault()" class="form-control input input-sm login-inputs" name="captchaCode" style="text-transform:uppercase" autocomplete="off" data-ng-model="user.captchaCode"/>
+				</div>
 
 				<!--<div class="form-group">-->
 					<!--<a data-ui-sref="forgotPassword">Forgot Password?</a>-->
 				<!--</div>-->
 
-				<input type="hidden" name="fromUrl" data-data-ng-model="user.fromUrl" value={{preUrl}}>
+				<input type="hidden" name="fromUrl" data-ng-model="user.fromUrl" value={{preUrl}}>
 
                 <div class="row">
 

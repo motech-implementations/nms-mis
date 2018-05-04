@@ -43,12 +43,12 @@
 					<div class="form-group col-xs-4" data-ng-hide = "isAggregateReport()">
 						<label>{{datePickerContent}}</label><br>
 						<p class="input-group" data-ng-class="{disabled :disableDate() }" data-ng-disabled="disableDate()">
-							<input type="text" class="form-control input input-sm" data-uib-datepicker-popup="{{format}}" data-ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" datepicker-mode="'month'" data-ng-required = "true" close-text="Close" alt-input-formats="altInputFormats" data-ng-disabled='disableDate()' readonly />
+							<input type="text" class="form-control input input-sm" data-uib-datepicker-popup="{{format}}" data-ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" datepicker-mode='month' data-ng-required = "true" close-text="Close" alt-input-formats="altInputFormats" data-ng-disabled='disableDate()' readonly />
 							<span class="input-group-btn">
 							<button type="button" class="btn btn-sm btn-default" data-ng-click="open1()"  data-ng-disabled='disableDate()' ><i class="glyphicon glyphicon-calendar" data-ng-disabled="disableDate()" ></i></button>
 							</span>
 						</p>
-						<ul  class="sundays-list"  tabindex="-1" data-ng-blur="onBlur()" focus="true" data-ng-if= " (reportCategory == 'Mobile Academy Reports' ||  reportCategory == 'Kilkari Reports') &&  (report.name == 'Asha Rejected Records' || report.name =='Mother Rejected Records' || report.name =='Child Rejected Records') && dt != null " data-ng-show = "sundaysTable">
+						<ul  class="sundays-list"  tabindex="-1" data-ng-blur="onBlur()" focus="true" data-ng-if= " (reportCategory == 'Mobile Academy Reports' ||  reportCategory == 'Kilkari Reports') &&  (report.name == 'Asha Rejected Records' || report.name =='Mother Rejected Records' || report.name =='Child Rejected Records') && dt != null " data-ng-show = "popup1.opened">
 							<li class="sunday-list-header"><p>Sun</p></li>
 
 							<li data-ng-repeat="date in sundays"   data-ng-click='closeSundaysTable(date)' class="sunday-list-items"><p>{{date}}</p></li>
@@ -186,8 +186,8 @@
 
 					<div class="form-group col-xs-2" data-ng-hide = "report.name == 'MA Cumulative Summary' || report.reportEnum == 'Kilkari_Cumulative_Summary' ">
 						<label for="name"> Period Type</label><br>
-						<div class="btn-group " data-ng-class="{disabled: disablePeriodType()}" data-uib-dropdown dropdown-append-to-body>
-							<button data-ng-disabled="disablePeriodType()" id="btn-append-to-body9" type="button" class="btn btn-sm btn-default"  data-uib-dropdown-toggle >
+						<div class="btn-group " data-uib-dropdown dropdown-append-to-body>
+							<button id="btn-append-to-body9" type="button" class="btn btn-sm btn-default"  data-uib-dropdown-toggle >
 								<span class="block">
 									<span>{{periodDisplayType}}</span>
 									<span data-ng-if="reportDisplayType == null">ALL</span>
@@ -213,6 +213,12 @@
 							<button type="button" class="btn btn-sm btn-default" data-ng-click="open2()"  data-ng-disabled='disableDate()' ><i class="glyphicon glyphicon-calendar" data-ng-disabled="disableDate()" ></i></button>
 							</span>
                         </p>
+						<ul  class="sundays-list"  tabindex="-1" data-ng-blur="onBlur()" focus="true" data-ng-if= " showWeekTable() && dt1 != null" data-ng-show = "popup2.opened">
+							<li class="sunday-list-header"><p>Sun</p></li>
+
+							<li data-ng-repeat="date in sundays"   data-ng-click='closeSundaysTable(date)' class="sunday-list-items"><p>{{date}}</p></li>
+
+						</ul>
                     </div>
 
                     <div class="form-group col-xs-2" data-ng-hide = " (report.name != 'MA Cumulative Summary' &&  report.reportEnum != 'Kilkari_Cumulative_Summary' && periodDisplayType != 'Custom Range')">

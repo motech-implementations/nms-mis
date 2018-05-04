@@ -4,7 +4,7 @@
 		.controller("MainController", ['$scope', '$state', '$http', '$localStorage', '$rootScope', 'UserFormFactory','$idle','$window','$interval', function($scope, $state, $http, $localStorage, $rootScope, UserFormFactory,$idle,$window,$interval) {
 
 		    var logoutUrl = backend_root + "nms/logout";
-		    var timestamp = localStorage.lastEventTime;
+		    var timestamp = new Date().getTime();
 		    $scope.ondropdown = false;
 		    $scope.isCollapsed = true;
             $scope.aboutUsBool = true;
@@ -422,17 +422,18 @@
                     });
                 }
             });
+
             $scope.$on('$userIdle', function () {
             if(new Date().getTime()-localStorage.lastEventTime>1800000){
                 if (!($scope.checkLogin())){
 
                     if(UserFormFactory.isInternetExplorer()){
-                        alert("Session timed out! Please login again");
+                        alert("Sorry, Your Session timed out after a long time of inactivity. Please, login again");
                         $scope.goToLogout();
                         return;
                     }
                     else{
-                      var a= UserFormFactory.showAlert2("Session timed out! Please login again");
+                      var a= UserFormFactory.showAlert2("Sorry, Your Session timed out after a long time of inactivity. Please, login in again");
                       a.then(function () {
                           $scope.goToLogout();
                           return;
@@ -442,7 +443,6 @@
                 }}
 
             });
-
             $scope.$watch('online', function(newStatus) {
             if($rootScope.online){
             }
@@ -462,7 +462,7 @@
                      $idle.watch();
                      timestamp = localStorage.lastEventTime;
                 }
-            }, 5000);
+            }, 2000);
 
 		}
 	]);

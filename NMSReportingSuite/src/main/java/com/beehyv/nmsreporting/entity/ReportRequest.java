@@ -9,6 +9,8 @@ public class ReportRequest {
 
     private String reportType;
 
+    private String periodType;
+
     private Date toDate;
 
     private Date fromDate;
@@ -75,5 +77,13 @@ public class ReportRequest {
 
     public void setCircleId(Integer circleId) {
         this.circleId = circleId;
+    }
+
+    public String getPeriodType() {
+        return periodType;
+    }
+
+    public void setPeriodType(String periodType) {
+        this.periodType = periodType;
     }
 }
