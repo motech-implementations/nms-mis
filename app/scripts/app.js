@@ -285,8 +285,14 @@ var nmsReportsApp = angular
 //            captchaEndpoint: backend_root + 'botdetectcaptcha/'
 //        });
 
-			
-		$httpProvider.defaults.headers.common = {};
+		$httpProvider.defaults.headers.common['Cache-Control'] = 'no-cache';
+        $httpProvider.defaults.cache = false;
+
+        if (!$httpProvider.defaults.headers.get) {
+        $httpProvider.defaults.headers.get = {};
+        }
+        $httpProvider.defaults.headers.get['If-Modified-Since'] = '0';
+		//$httpProvider.defaults.headers.common = {};
 		$httpProvider.defaults.headers.post = {};
 		$httpProvider.defaults.headers.put = {};
 		$httpProvider.defaults.headers.patch = {};

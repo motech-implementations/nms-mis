@@ -361,10 +361,11 @@
 
 
             function storageChange (event) {
+            if(UserFormFactory.isInternetExplorer()){
                 if(event.key === 'logged_in') {
                     //alert('Logged in: ' + event.newValue);
                     $state.go('login');
-                }
+                }}
                 window.localStorage.setItem('logged_in', true);
             }
             window.addEventListener('storage', storageChange, false)
