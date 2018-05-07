@@ -284,15 +284,16 @@ var nmsReportsApp = angular
 //        captchaSettingsProvider.setSettings({
 //            captchaEndpoint: backend_root + 'botdetectcaptcha/'
 //        });
-
+        if($httpProvider.defaults.url=='http://localhost:8080/NMSReportingSuite/nms/mail/sendFeedback'||$httpProvider.defaults.url=='http://localhost:8080/NMSReportingSuite/nms/mail/sendEmailForContactUs'){
 		$httpProvider.defaults.headers.common['Cache-Control'] = 'no-cache';
         $httpProvider.defaults.cache = false;
 
         if (!$httpProvider.defaults.headers.get) {
         $httpProvider.defaults.headers.get = {};
         }
-        $httpProvider.defaults.headers.get['If-Modified-Since'] = '0';
-		//$httpProvider.defaults.headers.common = {};
+        $httpProvider.defaults.headers.get['If-Modified-Since'] = '0';}
+        else{
+		$httpProvider.defaults.headers.common = {};}
 		$httpProvider.defaults.headers.post = {};
 		$httpProvider.defaults.headers.put = {};
 		$httpProvider.defaults.headers.patch = {};
