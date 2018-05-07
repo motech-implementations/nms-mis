@@ -361,7 +361,7 @@
 
 
             function storageChange (event) {
-            if(UserFormFactory.isInternetExplorer()){
+            if(!UserFormFactory.isInternetExplorer()){
                 if(event.key === 'logged_in') {
                     //alert('Logged in: ' + event.newValue);
                     $state.go('login');

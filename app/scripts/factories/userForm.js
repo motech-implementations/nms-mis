@@ -106,7 +106,7 @@
 					return confirmAlert;
                 },
                 isInternetExplorer : function(){
-                    if(deviceDetector.browser === "ie" && (deviceDetector.browser_version = "10.0"))
+                    if(deviceDetector.browser === "ie" && ((deviceDetector.browser_version == "10.0")||(deviceDetector.browser_version == "9.0")))
                      return true;
                     else
                      return false;
