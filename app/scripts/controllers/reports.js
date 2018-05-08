@@ -149,7 +149,7 @@
 
 			$scope.showWeekTable = function(){
 				//return (($state.current.name == 'Kilkari Message Matrix' || $state.current.name == 'Kilkari Listening Matrix' || $state.current.name == 'Kilkari Usage' || $state.current.name == 'Kilkari Message Listenership' || $state.current.name == 'Kilkari Thematic Content' || $state.current.name == 'Kilkari Aggregate Beneficiaries')&& ($scope.periodDisplayType == 'Week'));
-				return true;
+				return (!($state.current.name == 'Kilkari Repeat Listener')&& ($scope.periodDisplayType == 'Week'));
 
 			}
 
@@ -232,6 +232,14 @@
                     $scope.datePickerOptions.minMode = 'year';
                     $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear() -1);
                 }
+                if($scope.periodDisplayType == 'Financial Year'){
+                    $scope.periodTypeContent = "Select Start Year";
+                    $scope.dateFormat = "yyyy";
+                    $scope.datePickerOptions.minMode = '';
+                    $scope.datePickerOptions.datepickerMode = 'year';
+                    $scope.datePickerOptions.minMode = 'year';
+                    $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear() -1);
+                }
                 if($scope.periodDisplayType == 'Month'){
                     $scope.periodTypeContent = " Month";
                     $scope.dateFormat = "yyyy-MM";
@@ -241,7 +249,7 @@
                     $scope.datePickerOptions.maxDate = new Date().setMonth(new Date().getMonth() -1);
                 }
                 if($scope.periodDisplayType == 'Week'){
-                    $scope.periodTypeContent = "Select Week";
+                    $scope.periodTypeContent = " Week";
                     $scope.dateFormat = "yyyy-MM-dd";
                     $scope.datePickerOptions.minMode = '';
                     $scope.datePickerOptions.datepickerMode = 'month';
@@ -330,13 +338,13 @@
                 	$scope.selectCircle($scope.circles[0]);
                 }
                 if($scope.report.reportEnum == 'Kilkari_Message_Matrix' || $scope.report.reportEnum == 'Kilkari_Listening_Matrix' || $scope.report.reportEnum == 'Kilkari_Usage' || $scope.report.reportEnum == 'Kilkari_Message_Listenership' || $scope.report.reportEnum == 'Kilkari_Thematic_Content' || $scope.report.reportEnum == 'Kilkari_Aggregate_Beneficiaries'){
-                    $scope.periodType = ['Year','Month','Quarter','Week'];
+                    $scope.periodType = ['Year',/*'Financial Year',*/'Quarter','Month','Week'];
                 }
                 else if($scope.report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise'){
                     $scope.periodType = ['Month'];
                 }
                 else
-                    $scope.periodType = ['Year','Month','Quarter','Week','Custom Range'];
+                    $scope.periodType = ['Year',/*'Financial Year',*/'Quarter','Month','Week','Custom Range'];
                 if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).indexOf(angular.lowercase("rejected")) > -1)  ){
                 	$scope.datePickerContent = "Select Week";
                 }
@@ -734,7 +742,8 @@
                 $scope.wasSundaySelected = false;
                  return;
                 }
-                $scope.dateFormat = 'yyyy-MM';
+                if($scope.periodDisplayType == 'Week'){
+                    $scope.dateFormat = 'yyyy-MM';}
                	if($scope.showWeekTable() && $scope.dt1 != null) {
                		 $scope.getSundays($scope.dt1);
                      $scope.sundaysTable = true;
@@ -973,6 +982,15 @@
                          dateString = $scope.dt1.getFullYear();
                          excelHeaderName.timePeriod = dateString;
                          toDateVal = reportRequest.toDate;
+                    }
+                    else if($scope.periodDisplayType == 'Financial Year' ){
+                         reportRequest.fromDate = new Date($scope.dt1.getFullYear(),3,1);
+                         reportRequest.toDate = new Date($scope.dt1.getFullYear()+1,2,31);
+                        dateString = reportRequest.fromDate.getDate() + "_" + (reportRequest.fromDate.getMonth() + 1 ) + "_" + reportRequest.fromDate.getFullYear() + "to" + reportRequest.toDate.getDate() + "_" +  ( reportRequest.toDate.getMonth() + 1 ) +
+                                     "_" + reportRequest.toDate.getFullYear();
+                        excelHeaderName.timePeriod = reportRequest.fromDate.getDate() + "-" + (reportRequest.fromDate.getMonth() + 1 ) + "-" + reportRequest.fromDate.getFullYear() + " to " + reportRequest.toDate.getDate() + "-" +  ( reportRequest.toDate.getMonth() + 1 ) +
+                                                                                          "-" + reportRequest.toDate.getFullYear();
+                        toDateVal = reportRequest.toDate;
                     }
 
                     else if($scope.periodDisplayType == 'Month' ){
