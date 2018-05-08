@@ -9,7 +9,7 @@ import java.util.Date;
  */
 public interface AggregateCumulativeBeneficiaryDao {
 
-    AggregateCumulativeBeneficiary getCumulativeBeneficiary(Long locationId, String locationType, Date toDate);
+    AggregateCumulativeBeneficiary getCumulativeBeneficiary(Long locationId, String locationType, Date toDate,String periodType);
 
     Long getTotalBeneficiariesCalled(Long locationId, String locationType, Date date);
 

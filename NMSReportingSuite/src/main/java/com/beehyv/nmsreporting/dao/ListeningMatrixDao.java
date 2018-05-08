@@ -11,5 +11,5 @@ import java.util.List;
  */
 public interface ListeningMatrixDao {
 
-    HashMap<String,ListeningMatrix> getListeningMatrix(Integer locationDate, String locationType, Date date);
+    HashMap<String,ListeningMatrix> getListeningMatrix(Integer locationDate, String locationType, Date date, String periodType);
 }

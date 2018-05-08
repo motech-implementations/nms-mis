@@ -39,6 +39,9 @@ public class KilkariThematicContent {
     @Column(name="minutes_consumed", columnDefinition = "BIGINT(20)")
     private Double minutesConsumed;
 
+    @Column(name="period_type", columnDefinition = "VARCHAR(45)")
+    private String periodType;
+
     public KilkariThematicContent(){
 
     }
@@ -114,5 +117,13 @@ public class KilkariThematicContent {
 
     public void setMinutesConsumed(Double minutesConsumed) {
         this.minutesConsumed = minutesConsumed;
+    }
+
+    public String getPeriodType() {
+        return periodType;
+    }
+
+    public void setPeriodType(String periodType) {
+        this.periodType = periodType;
     }
 }

@@ -148,7 +148,8 @@
 			}
 
 			$scope.showWeekTable = function(){
-				return (($state.current.name == 'Kilkari Message Matrix' || $state.current.name == 'Kilkari Listening Matrix' || $state.current.name == 'Kilkari Usage' || $state.current.name == 'Kilkari Message Listenership' || $state.current.name == 'Kilkari Thematic Content' || $state.current.name == 'Kilkari Aggregate Beneficiaries')&& ($scope.periodDisplayType == 'Week'));
+				//return (($state.current.name == 'Kilkari Message Matrix' || $state.current.name == 'Kilkari Listening Matrix' || $state.current.name == 'Kilkari Usage' || $state.current.name == 'Kilkari Message Listenership' || $state.current.name == 'Kilkari Thematic Content' || $state.current.name == 'Kilkari Aggregate Beneficiaries')&& ($scope.periodDisplayType == 'Week'));
+				return true;
 
 			}
 
@@ -222,6 +223,7 @@
                 $scope.hideGrid = true;
                 $scope.hideMessageMatrix = true;
                 $scope.showEmptyData = false;
+                $scope.setDateOptions();
                 if($scope.periodDisplayType == 'Year' || $scope.periodDisplayType == 'Quarter' ){
                     $scope.periodTypeContent = " Year";
                     $scope.dateFormat = "yyyy";
@@ -328,13 +330,13 @@
                 	$scope.selectCircle($scope.circles[0]);
                 }
                 if($scope.report.reportEnum == 'Kilkari_Message_Matrix' || $scope.report.reportEnum == 'Kilkari_Listening_Matrix' || $scope.report.reportEnum == 'Kilkari_Usage' || $scope.report.reportEnum == 'Kilkari_Message_Listenership' || $scope.report.reportEnum == 'Kilkari_Thematic_Content' || $scope.report.reportEnum == 'Kilkari_Aggregate_Beneficiaries'){
-                    $scope.periodType = [/*'Year',*/'Month'/*,'Quarter'*/,'Week'];
+                    $scope.periodType = ['Year','Month','Quarter','Week'];
                 }
                 else if($scope.report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise'){
                     $scope.periodType = ['Month'];
                 }
                 else
-                    $scope.periodType = [/*'Year',*/'Month',/*'Quarter',*/ 'Custom Range'];
+                    $scope.periodType = ['Year','Month','Quarter','Week','Custom Range'];
                 if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).indexOf(angular.lowercase("rejected")) > -1)  ){
                 	$scope.datePickerContent = "Select Week";
                 }
@@ -500,8 +502,11 @@
 
 
 			$scope.setDateOptions =function(){
-			    if($scope.isAggregateReport()){
+			    if($scope.isAggregateReport()&&($scope.periodDisplayType == 'Month'||$scope.periodDisplayType == 'Week'||$scope.periodDisplayType == 'Custom Range')){
 			        var minDate = new Date(2016, 11, 01);
+			    }
+			    else if($scope.isAggregateReport()&&($scope.periodDisplayType == 'Year'||$scope.periodDisplayType == 'Quarter'||$scope.periodDisplayType == 'Financial Year')){
+			        var minDate = new Date(2017, 00, 01);
 			    }
                 else{
                     var minDate = new Date(2015, 09, 01);

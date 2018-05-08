@@ -28,17 +28,18 @@ import java.util.List;
 public class KilkariMessageListenershipDaoImpl extends AbstractDao<Integer,KilkariMessageListenership> implements KilkariMessageListenershipReportDao {
     
     @Override
-    public KilkariMessageListenership getListenerData(Integer locationId, String locationType, Date date){
+    public KilkariMessageListenership getListenerData(Integer locationId, String locationType, Date date,String periodType){
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("locationId"));
         criteria.add(Restrictions.and(
                 Restrictions.eq("locationId",locationId.longValue()),
                 Restrictions.eq("locationType",locationType),
+                Restrictions.eq("periodType",periodType),
                 Restrictions.eq("date",date)
         ));
         List<KilkariMessageListenership> result = criteria.list();
         if(result.isEmpty()){
             Long a = (long)0;
-            KilkariMessageListenership kilkariMessageListenership = new KilkariMessageListenership(0,locationType,locationId.longValue(),date,a,a,a,a,a,a,a);
+            KilkariMessageListenership kilkariMessageListenership = new KilkariMessageListenership(0,locationType,locationId.longValue(),date,a,a,a,a,a,a,a,"");
             return kilkariMessageListenership;
         }
         KilkariMessageListenership kilkariMessageListenership =  result.get(0);

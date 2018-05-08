@@ -47,7 +47,10 @@ public class AggregateCumulativeBeneficiary {
     @Column(name="joined_subscription",columnDefinition = "BIGINT(20)")
     private Long joinedSubscription;
 
-    public AggregateCumulativeBeneficiary(Integer id, String locationType, Long locationId, Date date, Long selfDeactivated, Long notAnswering, Long lowListenership, Long systemDeactivation, Long motherCompletion, Long childCompletion, Long joinedSubscription) {
+    @Column(name="period_type", columnDefinition = "VARCHAR(45)")
+    private String periodType;
+
+    public AggregateCumulativeBeneficiary(Integer id, String locationType, Long locationId, Date date, Long selfDeactivated, Long notAnswering, Long lowListenership, Long systemDeactivation, Long motherCompletion, Long childCompletion, Long joinedSubscription, String periodType) {
         this.id = id;
         this.locationType = locationType;
         this.locationId = locationId;
@@ -59,7 +62,7 @@ public class AggregateCumulativeBeneficiary {
         this.motherCompletion = motherCompletion;
         this.childCompletion = childCompletion;
         this.joinedSubscription = joinedSubscription;
-
+        this.periodType = periodType;
     }
 
     public AggregateCumulativeBeneficiary(){
@@ -154,4 +157,11 @@ public class AggregateCumulativeBeneficiary {
         this.joinedSubscription = joinedSubscription;
     }
 
+    public String getPeriodType() {
+        return periodType;
+    }
+
+    public void setPeriodType(String periodType) {
+        this.periodType = periodType;
+    }
 }

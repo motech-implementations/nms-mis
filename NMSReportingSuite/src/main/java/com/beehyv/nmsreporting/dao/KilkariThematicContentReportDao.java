@@ -14,7 +14,7 @@ import java.util.Map;
 
 public interface KilkariThematicContentReportDao {
 
-    Map<String,KilkariThematicContent> getKilkariThematicContentReportData(Integer locationId, String locationType, Date date );
+    Map<String,KilkariThematicContent> getKilkariThematicContentReportData(Integer locationId, String locationType, Date date,String periodType );
 
     String getMessageWeekNumber(Integer messageWeekNumber);
 

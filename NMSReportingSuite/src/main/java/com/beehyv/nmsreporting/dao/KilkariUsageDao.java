@@ -10,5 +10,5 @@ import java.util.List;
  */
 public interface KilkariUsageDao {
 
-    KilkariUsage getUsage(Integer locationId, String locationType, Date toDate);
+    KilkariUsage getUsage(Integer locationId, String locationType, Date toDate,String periodType);
 }

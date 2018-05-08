@@ -16,5 +16,5 @@ import java.util.List;
 
 public interface KilkariMessageListenershipReportDao {
 
-    KilkariMessageListenership getListenerData(Integer locationId, String locationType, Date date);
+    KilkariMessageListenership getListenerData(Integer locationId, String locationType, Date date,String periodType);
 }
