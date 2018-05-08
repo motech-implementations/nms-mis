@@ -22,12 +22,13 @@ import java.util.List;
 public class ListeningMatrixDaoImpl extends AbstractDao<Integer,ListeningMatrix> implements ListeningMatrixDao{
 
     @Override
-    public HashMap<String,ListeningMatrix> getListeningMatrix(Integer locationId, String locationType, Date date){
+    public HashMap<String,ListeningMatrix> getListeningMatrix(Integer locationId, String locationType, Date date, String periodType){
 
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.and(
                 Restrictions.eq("locationId",locationId.longValue()),
                 Restrictions.eq("locationType",locationType),
+                Restrictions.eq("periodType",periodType),
                 Restrictions.eq("date", date)
         ));
 
@@ -43,13 +44,13 @@ public class ListeningMatrixDaoImpl extends AbstractDao<Integer,ListeningMatrix>
             String callPercent="";
             switch (count){
                 case 0: {callPercent = "callsListened_morethan75";
-                    listeningMatrixempty = new ListeningMatrix(0,"",a,date,callPercent,a,a,a,a);break;}
+                    listeningMatrixempty = new ListeningMatrix(0,"",a,date,callPercent,a,a,a,a,"");break;}
                 case 1: {callPercent = "callsListened_50_75";
-                    listeningMatrixempty = new ListeningMatrix(0,"",a,date,callPercent,a,a,a,a);break;}
+                    listeningMatrixempty = new ListeningMatrix(0,"",a,date,callPercent,a,a,a,a,"");break;}
                 case 2: {callPercent = "callsListened_25_50";
-                    listeningMatrixempty = new ListeningMatrix(0,"",a,date,callPercent,a,a,a,a);break;}
+                    listeningMatrixempty = new ListeningMatrix(0,"",a,date,callPercent,a,a,a,a,"");break;}
                 case 3: {callPercent = "callsListened_lessthan25";
-                    listeningMatrixempty = new ListeningMatrix(0,"",a,date,callPercent,a,a,a,a);break;}
+                    listeningMatrixempty = new ListeningMatrix(0,"",a,date,callPercent,a,a,a,a,"");break;}
 
             }
             listeningMatrix.put(callPercent,listeningMatrixempty);

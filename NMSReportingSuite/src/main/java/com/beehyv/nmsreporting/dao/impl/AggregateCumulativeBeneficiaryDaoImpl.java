@@ -20,19 +20,20 @@ import java.util.List;
 public class AggregateCumulativeBeneficiaryDaoImpl extends AbstractDao<Integer,AggregateCumulativeBeneficiary> implements AggregateCumulativeBeneficiaryDao {
 
     @Override
-    public AggregateCumulativeBeneficiary getCumulativeBeneficiary(Long locationId, String locationType, Date toDate){
+    public AggregateCumulativeBeneficiary getCumulativeBeneficiary(Long locationId, String locationType, Date toDate,String periodType){
 
 
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("locationId"));
         criteria.add(Restrictions.and(
                 Restrictions.eq("locationId",locationId.longValue()),
                 Restrictions.eq("locationType",locationType),
+                Restrictions.eq("periodType",periodType),
                 Restrictions.eq("date",toDate)
         ));
         List<AggregateCumulativeBeneficiary> result = criteria.list();
         if(result.size() < 1){
             Long a = (long)0;
-            AggregateCumulativeBeneficiary aggregateCumulativeBeneficiary = new AggregateCumulativeBeneficiary(0,locationType,locationId,toDate,a,a,a,a,a,a,a);
+            AggregateCumulativeBeneficiary aggregateCumulativeBeneficiary = new AggregateCumulativeBeneficiary(0,locationType,locationId,toDate,a,a,a,a,a,a,a,"");
             return aggregateCumulativeBeneficiary;
         }
         AggregateCumulativeBeneficiary aggregateCumulativeBeneficiary = result.get(0);

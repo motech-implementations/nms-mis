@@ -39,8 +39,11 @@ public class KilkariUsage {
     @Column(name="called_inbox",columnDefinition = "BIGINT(20)")
     private Long calledInbox;
 
+    @Column(name="period_type", columnDefinition = "VARCHAR(45)")
+    private String periodType;
 
-    public KilkariUsage(Integer id, String locationType, Long locationId, Date date, Long calls_75_100, Long calls_50_75, Long calls_25_50, Long calls_1_25, Long calledInbox) {
+
+    public KilkariUsage(Integer id, String locationType, Long locationId, Date date, Long calls_75_100, Long calls_50_75, Long calls_25_50, Long calls_1_25, Long calledInbox, String periodType) {
         this.id = id;
         this.locationType = locationType;
         this.locationId = locationId;
@@ -50,6 +53,7 @@ public class KilkariUsage {
         this.calls_25_50 = calls_25_50;
         this.calls_1_25 = calls_1_25;
         this.calledInbox = calledInbox;
+        this.periodType = periodType;
     }
 
     public KilkariUsage(){
@@ -126,5 +130,13 @@ public class KilkariUsage {
 
     public void setCalledInbox(Long calledInbox) {
         this.calledInbox = calledInbox;
+    }
+
+    public String getPeriodType() {
+        return periodType;
+    }
+
+    public void setPeriodType(String periodType) {
+        this.periodType = periodType;
     }
 }

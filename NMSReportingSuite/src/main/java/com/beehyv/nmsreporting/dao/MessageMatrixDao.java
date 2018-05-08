@@ -9,5 +9,5 @@ import java.util.List;
  * Created by beehyv on 12/10/17.
  */
 public interface MessageMatrixDao {
-    List<MessageMatrix> getMessageMatrixData(Integer locationId, String locationType, Date date);
+    List<MessageMatrix> getMessageMatrixData(Integer locationId, String locationType, Date date, String periodType);
 }

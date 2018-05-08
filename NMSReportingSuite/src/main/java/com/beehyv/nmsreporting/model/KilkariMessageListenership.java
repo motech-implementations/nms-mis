@@ -48,19 +48,23 @@ public class KilkariMessageListenership {
     @Column(name="total_beneficiaries_called", columnDefinition = "BIGINT(20)")
     private Long totalBeneficiariesCalled;
 
+    @Column(name="period_type", columnDefinition = "VARCHAR(45)")
+    private String periodType;
 
-    public KilkariMessageListenership(Integer id, String locationType, Long locationId, Date date, Long answeredAtleastOneCall, Long answered1To25Per, Long answered25To50Per, Long answered50To75Per, Long answeredMoreThan75Per, Long answeredNoCalls, Long totalBeneficiariesCalled){
+
+    public KilkariMessageListenership(Integer id, String locationType, Long locationId, Date date, Long answeredAtleastOneCall, Long answeredMoreThan75Per, Long answered50To75Per, Long answered25To50Per, Long answered1To25Per, Long answeredNoCalls, Long totalBeneficiariesCalled, String periodType) {
         this.id = id;
-        this.locationId = locationId;
         this.locationType = locationType;
+        this.locationId = locationId;
         this.date = date;
         this.answeredAtleastOneCall = answeredAtleastOneCall;
-        this.answered1To25Per = answered1To25Per;
-        this.answered25To50Per = answered25To50Per;
-        this.answered50To75Per = answered50To75Per;
         this.answeredMoreThan75Per = answeredMoreThan75Per;
+        this.answered50To75Per = answered50To75Per;
+        this.answered25To50Per = answered25To50Per;
+        this.answered1To25Per = answered1To25Per;
         this.answeredNoCalls = answeredNoCalls;
         this.totalBeneficiariesCalled = totalBeneficiariesCalled;
+        this.periodType = periodType;
     }
 
     public KilkariMessageListenership(){
@@ -153,5 +157,13 @@ public class KilkariMessageListenership {
 
     public void setTotalBeneficiariesCalled(Long totalBeneficiariesCalled) {
         this.totalBeneficiariesCalled = totalBeneficiariesCalled;
+    }
+
+    public String getPeriodType() {
+        return periodType;
+    }
+
+    public void setPeriodType(String periodType) {
+        this.periodType = periodType;
     }
 }

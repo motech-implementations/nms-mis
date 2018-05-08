@@ -18,18 +18,19 @@ import java.util.List;
 public class KilkariUsageDaoImpl extends AbstractDao<Integer,KilkariUsage> implements KilkariUsageDao {
 
     @Override
-    public KilkariUsage getUsage(Integer locationId, String locationType, Date toDate){
+    public KilkariUsage getUsage(Integer locationId, String locationType, Date toDate,String periodType){
 
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("locationId"));
         criteria.add(Restrictions.and(
                 Restrictions.eq("locationId",locationId.longValue()),
                 Restrictions.eq("locationType",locationType),
+                Restrictions.eq("periodType",periodType),
                 Restrictions.eq("date",toDate)
         ));
         List<KilkariUsage> result = criteria.list();
         if(result.isEmpty()){
             Long a = (long)0;
-            KilkariUsage kilkariUsage = new KilkariUsage(0,locationType,locationId.longValue(),toDate,a,a,a,a,a);
+            KilkariUsage kilkariUsage = new KilkariUsage(0,locationType,locationId.longValue(),toDate,a,a,a,a,a,"");
             return kilkariUsage;
         }
         KilkariUsage kilkariUsage =  result.get(0);

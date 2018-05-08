@@ -41,10 +41,13 @@ public class ListeningMatrix {
     @Column(name="contentListened_lessthan25", columnDefinition = "BIGINT(20)")
     private Long contentListened_lessthan25;
 
+    @Column(name="period_type", columnDefinition = "VARCHAR(45)")
+    private String periodType;
+
     public ListeningMatrix() {
     }
 
-    public ListeningMatrix(Integer id, String locationType, Long locationId, Date date, String calls_listened_percentage, Long contentListened_morethan75, Long contentListened_50_75, Long contentListened_25_50, Long contentListened_lessthan25) {
+    public ListeningMatrix(Integer id, String locationType, Long locationId, Date date, String calls_listened_percentage, Long contentListened_morethan75, Long contentListened_50_75, Long contentListened_25_50, Long contentListened_lessthan25, String periodType) {
         this.id = id;
         this.locationType = locationType;
         this.locationId = locationId;
@@ -54,6 +57,7 @@ public class ListeningMatrix {
         this.contentListened_50_75 = contentListened_50_75;
         this.contentListened_25_50 = contentListened_25_50;
         this.contentListened_lessthan25 = contentListened_lessthan25;
+        this.periodType = periodType;
     }
 
     public Integer getId() {
@@ -126,5 +130,13 @@ public class ListeningMatrix {
 
     public void setContentListened_lessthan25(Long contentListened_lessthan25) {
         this.contentListened_lessthan25 = contentListened_lessthan25;
+    }
+
+    public String getPeriodType() {
+        return periodType;
+    }
+
+    public void setPeriodType(String periodType) {
+        this.periodType = periodType;
     }
 }

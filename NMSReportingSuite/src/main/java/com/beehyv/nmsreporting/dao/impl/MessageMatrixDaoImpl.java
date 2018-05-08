@@ -19,12 +19,13 @@ import java.util.List;
 public class MessageMatrixDaoImpl extends AbstractDao<Integer,MessageMatrix> implements MessageMatrixDao {
 
     @Override
-    public List<MessageMatrix> getMessageMatrixData(Integer locationId,String locationType,Date date){
+    public List<MessageMatrix> getMessageMatrixData(Integer locationId,String locationType,Date date, String periodType){
 
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.and(
                 Restrictions.eq("locationId",locationId.longValue()),
                 Restrictions.eq("locationType",locationType),
+                Restrictions.eq("periodType",periodType),
                 Restrictions.eq("date", date)
         ));
 
@@ -42,29 +43,29 @@ public class MessageMatrixDaoImpl extends AbstractDao<Integer,MessageMatrix> imp
             String mW="";
             switch (count){
                 case 0: {mW = "mother_week_1_6";
-                     messageMatrixemp = new MessageMatrix(0,"",a,date,mW,a,a,a,a);break;}
+                     messageMatrixemp = new MessageMatrix(0,"",a,date,mW,a,a,a,a,"");break;}
                 case 1: {mW = "mother_week_7_12";
-                     messageMatrixemp = new MessageMatrix(0,"",a,date,mW,a,a,a,a);break;}
+                     messageMatrixemp = new MessageMatrix(0,"",a,date,mW,a,a,a,a,"");break;}
                 case 2: {mW = "mother_week_13_18";
-                     messageMatrixemp = new MessageMatrix(0,"",a,date,mW,a,a,a,a);break;}
+                     messageMatrixemp = new MessageMatrix(0,"",a,date,mW,a,a,a,a,"");break;}
                 case 3: {mW = "mother_week_19_24";
-                     messageMatrixemp = new MessageMatrix(0,"",a,date,mW,a,a,a,a);break;}
+                     messageMatrixemp = new MessageMatrix(0,"",a,date,mW,a,a,a,a,"");break;}
                 case 4: {mW = "child_week_1_6";
-                     messageMatrixemp = new MessageMatrix(0,"",a,date,mW,a,a,a,a);break;}
+                     messageMatrixemp = new MessageMatrix(0,"",a,date,mW,a,a,a,a,"");break;}
                 case 5: {mW = "child_week_7_12";
-                     messageMatrixemp = new MessageMatrix(0,"",a,date,mW,a,a,a,a);break;}
+                     messageMatrixemp = new MessageMatrix(0,"",a,date,mW,a,a,a,a,"");break;}
                 case 6: {mW = "child_week_13_18";
-                     messageMatrixemp = new MessageMatrix(0,"",a,date,mW,a,a,a,a);break;}
+                     messageMatrixemp = new MessageMatrix(0,"",a,date,mW,a,a,a,a,"");break;}
                 case 7: {mW = "child_week_19_24";
-                     messageMatrixemp = new MessageMatrix(0,"",a,date,mW,a,a,a,a);break;}
+                     messageMatrixemp = new MessageMatrix(0,"",a,date,mW,a,a,a,a,"");break;}
                 case 8: {mW = "child_week_25_30";
-                     messageMatrixemp = new MessageMatrix(0,"",a,date,mW,a,a,a,a);break;}
+                     messageMatrixemp = new MessageMatrix(0,"",a,date,mW,a,a,a,a,"");break;}
                 case 9: {mW = "child_week_31_36";
-                     messageMatrixemp = new MessageMatrix(0,"",a,date,mW,a,a,a,a);break;}
+                     messageMatrixemp = new MessageMatrix(0,"",a,date,mW,a,a,a,a,"");break;}
                 case 10: {mW = "child_week_37_42";
-                     messageMatrixemp = new MessageMatrix(0,"",a,date,mW,a,a,a,a);break;}
+                     messageMatrixemp = new MessageMatrix(0,"",a,date,mW,a,a,a,a,"");break;}
                 case 11: {mW = "child_week_43_48";
-                     messageMatrixemp = new MessageMatrix(0,"",a,date,mW,a,a,a,a);break;}
+                     messageMatrixemp = new MessageMatrix(0,"",a,date,mW,a,a,a,a,"");break;}
             }
             EmptyMatrix.put(mW,messageMatrixemp);
 
