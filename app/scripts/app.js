@@ -284,20 +284,34 @@ var nmsReportsApp = angular
 //        captchaSettingsProvider.setSettings({
 //            captchaEndpoint: backend_root + 'botdetectcaptcha/'
 //        });
-        if($httpProvider.defaults.url=='http://localhost:8080/NMSReportingSuite/nms/mail/sendFeedback'||$httpProvider.defaults.url=='http://localhost:8080/NMSReportingSuite/nms/mail/sendEmailForContactUs'){
-		$httpProvider.defaults.headers.common['Cache-Control'] = 'no-cache';
-        $httpProvider.defaults.cache = false;
 
-        if (!$httpProvider.defaults.headers.get) {
-        $httpProvider.defaults.headers.get = {};
-        }
-        $httpProvider.defaults.headers.get['If-Modified-Since'] = '0';}
-        else{
-		$httpProvider.defaults.headers.common = {};}
+		$httpProvider.defaults.headers.common = {};
+
 		$httpProvider.defaults.headers.post = {};
 		$httpProvider.defaults.headers.put = {};
 		$httpProvider.defaults.headers.patch = {};
 		$idleProvider.interrupt('keydown mousedown touchstart touchmove');
 		$idleProvider.setIdleTime(1800);
 
+		$httpProvider.interceptors.push(['$q',function($q) {
+                        return {
+            request: function(config) {
+            // console.log(config);
+             if(config.url != backend_root+'nms/mail/sendEmailForContactUs' || config.url!= backend_root + 'nms/mail/sendFeedback'){
+             $httpProvider.defaults.headers.common['Cache-Control'] = 'no-cache';
+                     $httpProvider.defaults.cache = false;
+
+                     if (!$httpProvider.defaults.headers.get) {
+                     $httpProvider.defaults.headers.get = {};
+                     }
+                     $httpProvider.defaults.headers.get['If-Modified-Since'] = '0';
+
+             }
+            return config;
+        }
+
+                        };
+
+                      }
+                    ]);
 	});
