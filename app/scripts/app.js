@@ -286,32 +286,33 @@ var nmsReportsApp = angular
 //        });
 
 		$httpProvider.defaults.headers.common = {};
+        		           $httpProvider.defaults.headers.common['Cache-Control'] = 'no-cache';
+                                     $httpProvider.defaults.cache = false;
 
-		$httpProvider.defaults.headers.post = {};
-		$httpProvider.defaults.headers.put = {};
-		$httpProvider.defaults.headers.patch = {};
-		$idleProvider.interrupt('keydown mousedown touchstart touchmove');
-		$idleProvider.setIdleTime(1800);
+                                     if (!$httpProvider.defaults.headers.get) {
+                                     $httpProvider.defaults.headers.get = {};
+                                     }
+        $httpProvider.defaults.headers.get['If-Modified-Since'] = 'Mon, 26 Jul 1997 05:00:00 GMT';
+        		$httpProvider.defaults.headers.post = {};
+        		$httpProvider.defaults.headers.put = {};
+        		$httpProvider.defaults.headers.patch = {};
+        		$idleProvider.interrupt('keydown mousedown touchstart touchmove');
+        		$idleProvider.setIdleTime(1800);
 
-		$httpProvider.interceptors.push(['$q',function($q) {
-                        return {
-            request: function(config) {
-            // console.log(config);
-             if(config.url != backend_root+'nms/mail/sendEmailForContactUs' || config.url!= backend_root + 'nms/mail/sendFeedback'){
-             $httpProvider.defaults.headers.common['Cache-Control'] = 'no-cache';
-                     $httpProvider.defaults.cache = false;
+        		$httpProvider.interceptors.push(['$q',function($q) {
+                                return {
+                    request: function(config) {
+                    // console.log(config);
+                     //if(config.url != backend_root+'nms/mail/sendEmailForContactUs' || config.url!= backend_root + 'nms/mail/sendFeedback'){
 
-                     if (!$httpProvider.defaults.headers.get) {
-                     $httpProvider.defaults.headers.get = {};
-                     }
-                     $httpProvider.defaults.headers.get['If-Modified-Since'] = '0';
+                      //    $httpProvider.defaults.headers.get['If-Modified-Since'] = 'Mon, 26 Jul 1997 05:00:00 GMT';
 
-             }
-            return config;
-        }
+                     //}
+                    return config;
+                }
 
-                        };
+                                };
 
-                      }
-                    ]);
-	});
+                              }
+                            ]);
+        	});
