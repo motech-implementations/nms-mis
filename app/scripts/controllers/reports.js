@@ -153,7 +153,6 @@
 
 			}
 
-
 			$scope.userHasState = function(){
 				return UserFormFactory.getCurrentUser().stateId != null;
 			}
@@ -224,7 +223,7 @@
                 $scope.hideMessageMatrix = true;
                 $scope.showEmptyData = false;
                 $scope.setDateOptions();
-                if($scope.periodDisplayType == 'Year' || $scope.periodDisplayType == 'Quarter' ){
+                if($scope.periodDisplayType == 'Year'){
                     $scope.periodTypeContent = " Year";
                     $scope.dateFormat = "yyyy";
                     $scope.datePickerOptions.minMode = '';
@@ -232,13 +231,31 @@
                     $scope.datePickerOptions.minMode = 'year';
                     $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear() -1);
                 }
+                if( $scope.periodDisplayType == 'Quarter'){
+                    $scope.periodTypeContent = " Year";
+                    $scope.dateFormat = "yyyy";
+                    $scope.datePickerOptions.minMode = '';
+                    $scope.datePickerOptions.datepickerMode = 'year';
+                    $scope.datePickerOptions.minMode = 'year';
+                    if(new Date().getMonth()>3){
+                        $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear());
+                    }else{
+                        $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear() -1);
+                    }
+
+                }
                 if($scope.periodDisplayType == 'Financial Year'){
                     $scope.periodTypeContent = "Select Start Year";
                     $scope.dateFormat = "yyyy";
                     $scope.datePickerOptions.minMode = '';
                     $scope.datePickerOptions.datepickerMode = 'year';
                     $scope.datePickerOptions.minMode = 'year';
-                    $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear() -1);
+                    if(new Date().getMonth()>3){
+                        $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear() -1);
+                    }else{
+                        $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear() -2);
+                    }
+
                 }
                 if($scope.periodDisplayType == 'Month'){
                     $scope.periodTypeContent = " Month";
@@ -338,13 +355,13 @@
                 	$scope.selectCircle($scope.circles[0]);
                 }
                 if($scope.report.reportEnum == 'Kilkari_Message_Matrix' || $scope.report.reportEnum == 'Kilkari_Listening_Matrix' || $scope.report.reportEnum == 'Kilkari_Usage' || $scope.report.reportEnum == 'Kilkari_Message_Listenership' || $scope.report.reportEnum == 'Kilkari_Thematic_Content' || $scope.report.reportEnum == 'Kilkari_Aggregate_Beneficiaries'){
-                    $scope.periodType = ['Year',/*'Financial Year',*/'Quarter','Month','Week'];
+                    $scope.periodType = ['Year','Financial Year','Quarter','Month','Week'];
                 }
                 else if($scope.report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise'){
                     $scope.periodType = ['Month'];
                 }
                 else
-                    $scope.periodType = ['Year',/*'Financial Year',*/'Quarter','Month','Week','Custom Range'];
+                    $scope.periodType = ['Year','Financial Year','Quarter','Month','Week','Custom Range'];
                 if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).indexOf(angular.lowercase("rejected")) > -1)  ){
                 	$scope.datePickerContent = "Select Week";
                 }
@@ -744,6 +761,21 @@
                 }
                 if($scope.periodDisplayType == 'Week'){
                     $scope.dateFormat = 'yyyy-MM';}
+                if($scope.periodDisplayType == 'Quarter'){
+                    $scope.quarterDisplayType = '';
+                        if(($scope.dt1.getFullYear() == new Date().getFullYear())){
+                            if(new Date().getMonth()<7){
+                                $scope.quarterType = ['Q1 (Jan to Mar)'];
+                            }else if(new Date().getMonth()<10){
+                                $scope.quarterType = ['Q1 (Jan to Mar)','Q2 (Apr to Jun)'];
+                            }else{
+                               $scope.quarterType = ['Q1 (Jan to Mar)','Q2 (Apr to Jun)','Q3 (Jul to Sep)'];
+                            }
+                            }
+                        else{
+                            $scope.quarterType = ['Q1 (Jan to Mar)','Q2 (Apr to Jun)','Q3 (Jul to Sep)', 'Q4 (Oct to Dec)'];
+                        }
+                    }
                	if($scope.showWeekTable() && $scope.dt1 != null) {
                		 $scope.getSundays($scope.dt1);
                      $scope.sundaysTable = true;
