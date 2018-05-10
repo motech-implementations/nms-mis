@@ -65,7 +65,7 @@
 				<div class="form-group d-flex flex-row justify-content-between" data-ng-init="Captcha()">
 					<span class="login-texts">Captcha</span>
 					<button type="button" id="refresh" data-ng-click="Captcha()" class="m-2"><span class="glyphicon glyphicon-refresh"></span></button>
-					<input type="text" ng-cut="$event.preventDefault()" ng-copy="$event.preventDefault()"  class="form-control input input-sm login-inputs" data-ng-disabled="true" name="mainCaptchaCode" style="background-color:#ea9c6e;font-weight:bold;height:40px;width:45%;padding-left:40px;color:black;" data-ng-model="user.mainCaptchaCode"/>
+					<input type="text" ng-cut="$event.preventDefault()" ng-copy="$event.preventDefault()"  class="form-control input input-sm login-inputs" data-ng-disabled="true" name="mainCaptchaCode" style="background-color:black;font-weight:bold;font-style:italic;height:40px;width:45%;padding-left:40px;color:white;" data-ng-model="user.mainCaptchaCode"/>
 				</div>
 				<div class="form-group"><input type="text" ng-paste="$event.preventDefault()" class="form-control input input-sm login-inputs" name="captchaCode" style="text-transform:uppercase" autocomplete="off" data-ng-model="user.captchaCode"/>
 				</div>

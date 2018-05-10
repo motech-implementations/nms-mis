@@ -12,7 +12,11 @@
                 default :$scope.active1 = 'wi';break;
             }
             // localStorage.getItem('role') = 'Anonymous';
-            $scope.selectRole = 0;
+            if(localStorage.getItem('role') == null ||localStorage.getItem('role') == ''||localStorage.getItem('role') === undefined){
+                $scope.selectRole = 0;
+                $scope.selectRoleValue = 'Anonymous';
+                localStorage.setItem('role', $scope.selectRole);
+            }
             (function () {
             $scope.roles = [
                             {"id": 0, "role" : "Anonymous"},
@@ -27,9 +31,10 @@
                         ];
                 if(localStorage.getItem('role') === undefined) {
                     $scope.selectRole = 0;
+                    $scope.selectRoleValue = 'Anonymous';
                 } else {
-
                     $scope.selectRole = localStorage.getItem('role');
+                    $scope.selectRoleValue = $scope.roles[$scope.selectRole].role;
                 }
             }
             )();
@@ -61,7 +66,9 @@
                 }
             };
 
-            $scope.fnk = function () {
+            $scope.fnk = function (x) {
+                $scope.selectRole = x.id;
+                $scope.selectRoleValue = x.role;
                 localStorage.setItem('role', $scope.selectRole);
                 if(($scope.selectRole < 5 && $state.current.name ==="userManual.userManual_Management") || ($scope.selectRole < 1 && $state.current.name ==="userManual.kilkari") || ($scope.selectRole < 1 && $state.current.name ==="userManual.mobileAcademy")) {
                     $scope.active1 = 'wi';

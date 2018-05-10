@@ -2,10 +2,26 @@
 
     <div class="userManual-block container-fluid">
     <p>Welcome! This guide will walk through portal about how to access the website and information. Select the below role to start with</p>
-    <p>I am a:
+  <!--  <p>I am a:
         <select data-ng-model="selectRole" data-ng-change="fnk();" class="userManualSelectpicker">
             <option data-ng-repeat="x in roles" value="{{x.id}}">{{x.role}}</option>
-        </select></p>
+        </select></p>-->
+        <span class = "dropdown"> I am a:</span>
+
+        <div class="btn-group" data-uib-dropdown dropdown-append-to-body>
+            <button id="btn-append-to-body-3" type="button" class="btn btn-sm btn-default" data-uib-dropdown-toggle >
+                {{selectRoleValue}}
+                <span data-ng-if="selectRoleValue == null">Select Role</span>
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu report-dropdown-menu" data-uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
+                <li role="menuitem" data-ng-repeat="x in roles">
+                    <a class="report_category" data-ng-click='fnk(x);'>
+                        <span>{{x.role}}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
 
     </div>
     <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3 user-manual">

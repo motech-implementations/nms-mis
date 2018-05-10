@@ -299,20 +299,4 @@ var nmsReportsApp = angular
         		$idleProvider.interrupt('keydown mousedown touchstart touchmove');
         		$idleProvider.setIdleTime(1800);
 
-        		$httpProvider.interceptors.push(['$q',function($q) {
-                                return {
-                    request: function(config) {
-                    // console.log(config);
-                     //if(config.url != backend_root+'nms/mail/sendEmailForContactUs' || config.url!= backend_root + 'nms/mail/sendFeedback'){
-
-                      //    $httpProvider.defaults.headers.get['If-Modified-Since'] = 'Mon, 26 Jul 1997 05:00:00 GMT';
-
-                     //}
-                    return config;
-                }
-
-                                };
-
-                              }
-                            ]);
         	});

@@ -885,6 +885,17 @@ a.adisabled:active { text-decoration: none; }
 	font-size: 16px;
 }
 
+.userManual-block span.dropdown{
+	padding: 4px 32px 4px 32px;
+	color:white;
+	font-family: 'Roboto', sans-serif;
+	font-size: 16px;
+}
+.userManual-block button{
+    width: 219px;
+    font-size: large;
+}
+
 .user-manual div {
     margin:  0px 20px 13px 20px;
     padding: 11px 8px 11px 20px;
