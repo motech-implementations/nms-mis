@@ -14,6 +14,7 @@ public class AggregateExcelDto {
     private String blockName;
     private String reportName;
     private String timePeriod;
+    private String fileName;
 
     public ArrayList<ArrayList<String>> getReportData() {
         return reportData;
@@ -93,5 +94,13 @@ public class AggregateExcelDto {
 
     public void setTimePeriod(String timePeriod) {
         this.timePeriod = timePeriod;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String excelFileName) {
+        fileName = excelFileName;
     }
 }

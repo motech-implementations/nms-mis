@@ -1,7 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("ReportsController", ['$scope', '$state', '$http', 'UserFormFactory','$window','$q','uiGridConstants','exportUiGridService','uiGridExporterService','uiGridExporterConstants', function($scope, $state, $http, UserFormFactory,$window,$q,uiGridConstants,exportUiGridService,uiGridExporterService,uiGridExporterConstants){
+		.controller("ReportsController", ['$scope', '$state', '$http', 'UserFormFactory','$window','$q','uiGridConstants','exportUiGridService','uiGridExporterService','uiGridExporterConstants','$location', function($scope, $state, $http, UserFormFactory,$window,$q,uiGridConstants,exportUiGridService,uiGridExporterService,uiGridExporterConstants,$location){
 
 			UserFormFactory.isLoggedIn()
 			.then(function(result){
@@ -1675,30 +1675,23 @@
                   ExcelData.blockName = excelHeaderName.blockName;
                   ExcelData.reportName = excelHeaderName.reportName;
                   ExcelData.timePeriod = excelHeaderName.timePeriod;
+                  ExcelData.fileName = $scope.gridApi.grid.options.exporterExcelFilename ? $scope.gridApi.grid.options.exporterExcelFilename : 'dokuman';
 
                 $http({
                                     method  : 'POST',
-                                    url     : backend_root + 'nms/user/downloadAgg',
+                                    url     : backend_root + 'nms/user/generateAgg',
                                     data    : ExcelData, //forms user object
-                                    responseType: 'arraybuffer',
+                                    //responseType: 'arraybuffer',
                                     headers : {'Content-Type': 'application/json '}
                                 }).then(function(response){
-                                //console.log(response);
+                                    if(response.data =="success"){
+                                    var fileName = $scope.gridApi.grid.options.exporterExcelFilename ? $scope.gridApi.grid.options.exporterExcelFilename : 'dokuman';
+                                       fileName += '.xlsx';
+                                       window.location.href = backend_root + 'nms/user/downloadAgg?fileName='+fileName;
 
-                                     var fileName = $scope.gridApi.grid.options.exporterExcelFilename ? $scope.gridApi.grid.options.exporterExcelFilename : 'dokuman';
-                                                         fileName = fileName.replace("*","");
-                                                         fileName += '.xlsx';
+                                    }
 
-                                         saveAs(new Blob([response.data], {
-                                                                 type: 'application/octet-stream'
-                                                             }), fileName);
 
-                                         if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-                                             window.navigator.msSaveOrOpenBlob(blob, fileName);
-                                         } else {
-                                             var objectUrl = URL.createObjectURL(blob);
-                                             window.open(objectUrl);
-                                         }
                                      }
                                 );
 

@@ -23,9 +23,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.QueryParam;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -410,7 +408,7 @@ public class UserController {
             aggregateResponseDto.setTableData(aggregateCumulativeKilkariDtos);
             return aggregateResponseDto;
         }
-        
+
         if (reportRequest.getReportType().equals(ReportType.kilkariSubscriber.getReportType())) {
 
             aggregateKilkariResponseDto = aggregateKilkariReportsService.getKilkariSubscriberCountReport(reportRequest);
@@ -481,88 +479,88 @@ public class UserController {
             return aggregateResponseDto;
         }
 
-            if (reportRequest.getReportType().equals(ReportType.maPerformance.getReportType())) {
+        if (reportRequest.getReportType().equals(ReportType.maPerformance.getReportType())) {
 
-                Date fromDate = dateAdder(reportRequest.getFromDate(),0);
+            Date fromDate = dateAdder(reportRequest.getFromDate(),0);
 
-                Date toDate = dateAdder(reportRequest.getToDate(),1);
+            Date toDate = dateAdder(reportRequest.getToDate(),1);
 
 
-                List<MAPerformanceDto> summaryDto = new ArrayList<>();
-                List<AggregateCumulativeMA> cumulativesummaryReportStart = new ArrayList<>();
-                List<AggregateCumulativeMA> cumulativesummaryReportEnd = new ArrayList<>();
-                HashMap<Long,MAPerformanceCountsDto> performanceCounts = new HashMap<>();
+            List<MAPerformanceDto> summaryDto = new ArrayList<>();
+            List<AggregateCumulativeMA> cumulativesummaryReportStart = new ArrayList<>();
+            List<AggregateCumulativeMA> cumulativesummaryReportEnd = new ArrayList<>();
+            HashMap<Long,MAPerformanceCountsDto> performanceCounts = new HashMap<>();
 
-                if (reportRequest.getStateId() == 0) {
-                    cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0, "State", fromDate,false));
-                    cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0, "State", toDate,false));
-                    performanceCounts = maPerformanceService.getMAPerformanceCounts(0,"State",fromDate,toDate);
+            if (reportRequest.getStateId() == 0) {
+                cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0, "State", fromDate,false));
+                cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0, "State", toDate,false));
+                performanceCounts = maPerformanceService.getMAPerformanceCounts(0,"State",fromDate,toDate);
+            } else {
+                if (reportRequest.getDistrictId() == 0) {
+                    cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(), "District", fromDate,false));
+                    cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(), "District", toDate,false));
+                    performanceCounts = maPerformanceService.getMAPerformanceCounts(reportRequest.getStateId(),"District",fromDate,toDate);
                 } else {
-                    if (reportRequest.getDistrictId() == 0) {
-                        cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(), "District", fromDate,false));
-                        cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(), "District", toDate,false));
-                        performanceCounts = maPerformanceService.getMAPerformanceCounts(reportRequest.getStateId(),"District",fromDate,toDate);
+                    if (reportRequest.getBlockId() == 0) {
+                        cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(), "Block", fromDate,false));
+                        cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(), "Block", toDate,false));
+                        performanceCounts = maPerformanceService.getMAPerformanceCounts(reportRequest.getDistrictId(),"Block",fromDate,toDate);
                     } else {
-                        if (reportRequest.getBlockId() == 0) {
-                            cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(), "Block", fromDate,false));
-                            cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(), "Block", toDate,false));
-                            performanceCounts = maPerformanceService.getMAPerformanceCounts(reportRequest.getDistrictId(),"Block",fromDate,toDate);
-                        } else {
-                            cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(), "Subcentre", fromDate,false));
-                            cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(), "Subcentre", toDate,false));
-                            performanceCounts = maPerformanceService.getMAPerformanceCounts(reportRequest.getBlockId(),"Subcentre",fromDate,toDate);
-                        }
+                        cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(), "Subcentre", fromDate,false));
+                        cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(), "Subcentre", toDate,false));
+                        performanceCounts = maPerformanceService.getMAPerformanceCounts(reportRequest.getBlockId(),"Subcentre",fromDate,toDate);
                     }
                 }
+            }
 
-                for (int i = 0; i < cumulativesummaryReportEnd.size(); i++) {
-                    for (int j = 0; j < cumulativesummaryReportStart.size(); j++) {
-                        if (cumulativesummaryReportEnd.get(i).getLocationId().equals(cumulativesummaryReportStart.get(j).getLocationId())) {
-                            AggregateCumulativeMA a = cumulativesummaryReportEnd.get(i);
-                            AggregateCumulativeMA b = cumulativesummaryReportStart.get(j);
-                            MAPerformanceDto summaryDto1 = new MAPerformanceDto();
-                            summaryDto1.setId(a.getId());
-                            summaryDto1.setLocationId(a.getLocationId());
-                            summaryDto1.setAshasCompleted(a.getAshasCompleted() - b.getAshasCompleted());
+            for (int i = 0; i < cumulativesummaryReportEnd.size(); i++) {
+                for (int j = 0; j < cumulativesummaryReportStart.size(); j++) {
+                    if (cumulativesummaryReportEnd.get(i).getLocationId().equals(cumulativesummaryReportStart.get(j).getLocationId())) {
+                        AggregateCumulativeMA a = cumulativesummaryReportEnd.get(i);
+                        AggregateCumulativeMA b = cumulativesummaryReportStart.get(j);
+                        MAPerformanceDto summaryDto1 = new MAPerformanceDto();
+                        summaryDto1.setId(a.getId());
+                        summaryDto1.setLocationId(a.getLocationId());
+                        summaryDto1.setAshasCompleted(a.getAshasCompleted() - b.getAshasCompleted());
 //                            summaryDto1.setAshasFailed(a.getAshasFailed() - b.getAshasFailed());
-                            summaryDto1.setAshasStarted(a.getAshasStarted() - b.getAshasStarted());
-                            summaryDto1.setLocationType(a.getLocationType());
+                        summaryDto1.setAshasStarted(a.getAshasStarted() - b.getAshasStarted());
+                        summaryDto1.setLocationType(a.getLocationType());
 
-                            String locationType = a.getLocationType();
-                            if (locationType.equalsIgnoreCase("State")) {
-                                summaryDto1.setLocationName(stateDao.findByStateId(a.getLocationId().intValue()).getStateName());
-                            }
-                            if (locationType.equalsIgnoreCase("District")) {
-                                summaryDto1.setLocationName(districtDao.findByDistrictId(a.getLocationId().intValue()).getDistrictName());
-                            }
-                            if (locationType.equalsIgnoreCase("Block")) {
-                                summaryDto1.setLocationName(blockDao.findByblockId(a.getLocationId().intValue()).getBlockName());
-                            }
-                            if (locationType.equalsIgnoreCase("Subcentre")) {
-                                summaryDto1.setLocationName(healthSubFacilityDao.findByHealthSubFacilityId(a.getLocationId().intValue()).getHealthSubFacilityName());
-                                summaryDto1.setLink(true);
-                            }
-                            if (locationType.equalsIgnoreCase("DifferenceState")) {
-                                summaryDto1.setLocationName("No District Count");
-                                summaryDto1.setLink(true);
-                                summaryDto1.setLocationId((long) -1);
-                            }
-                            if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
-                                summaryDto1.setLocationName("No Block Count");
-                                summaryDto1.setLink(true);
-                                summaryDto1.setLocationId((long) -1);
+                        String locationType = a.getLocationType();
+                        if (locationType.equalsIgnoreCase("State")) {
+                            summaryDto1.setLocationName(stateDao.findByStateId(a.getLocationId().intValue()).getStateName());
+                        }
+                        if (locationType.equalsIgnoreCase("District")) {
+                            summaryDto1.setLocationName(districtDao.findByDistrictId(a.getLocationId().intValue()).getDistrictName());
+                        }
+                        if (locationType.equalsIgnoreCase("Block")) {
+                            summaryDto1.setLocationName(blockDao.findByblockId(a.getLocationId().intValue()).getBlockName());
+                        }
+                        if (locationType.equalsIgnoreCase("Subcentre")) {
+                            summaryDto1.setLocationName(healthSubFacilityDao.findByHealthSubFacilityId(a.getLocationId().intValue()).getHealthSubFacilityName());
+                            summaryDto1.setLink(true);
+                        }
+                        if (locationType.equalsIgnoreCase("DifferenceState")) {
+                            summaryDto1.setLocationName("No District Count");
+                            summaryDto1.setLink(true);
+                            summaryDto1.setLocationId((long) -1);
+                        }
+                        if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
+                            summaryDto1.setLocationName("No Block Count");
+                            summaryDto1.setLink(true);
+                            summaryDto1.setLocationId((long) -1);
 
-                            }
-                            if (locationType.equalsIgnoreCase("DifferenceBlock")) {
-                                summaryDto1.setLocationName("No Subcenter Count");
-                                summaryDto1.setLink(true);
-                                summaryDto1.setLocationId((long) -1);
+                        }
+                        if (locationType.equalsIgnoreCase("DifferenceBlock")) {
+                            summaryDto1.setLocationName("No Subcenter Count");
+                            summaryDto1.setLink(true);
+                            summaryDto1.setLocationId((long) -1);
 
-                            }
-                            MAPerformanceCountsDto MAperformanceCounts = performanceCounts.get(a.getLocationId());
-                            summaryDto1.setAshasFailed(MAperformanceCounts.getAshasFailed());
-                            summaryDto1.setAshasAccessed(MAperformanceCounts.getAccessedAtleastOnce());
-                            summaryDto1.setAshasNotAccessed(MAperformanceCounts.getAccessedNotOnce());
+                        }
+                        MAPerformanceCountsDto MAperformanceCounts = performanceCounts.get(a.getLocationId());
+                        summaryDto1.setAshasFailed(MAperformanceCounts.getAshasFailed());
+                        summaryDto1.setAshasAccessed(MAperformanceCounts.getAccessedAtleastOnce());
+                        summaryDto1.setAshasNotAccessed(MAperformanceCounts.getAccessedNotOnce());
 
 //                            summaryDto1.setAshasFailed(maPerformanceService.getAshasFailed(a.getLocationId().intValue(), a.getLocationType(), fromDate, toDate));
 //                            summaryDto1.setAshasAccessed(maPerformanceService.getAccessedCount(a.getLocationId().intValue(), a.getLocationType(), fromDate, toDate));
@@ -571,262 +569,262 @@ public class UserController {
 //                            summaryDto1.setNotStartedpercentage(a.getAshasNotStarted()*100/a.getAshasRegistered());
 //                            summaryDto1.setAshasNotAccessed(maPerformanceService.getNotAccessedcount(a.getLocationId().intValue(), a.getLocationType(), fromDate, toDate));
 
-                            if (summaryDto1.getAshasCompleted() + summaryDto1.getAshasFailed() + summaryDto1.getAshasStarted() + summaryDto1.getAshasAccessed() + summaryDto1.getAshasNotAccessed() != 0 &&!locationType.equalsIgnoreCase("DifferenceState")) {
-                                summaryDto.add(summaryDto1);
-                            }
+                        if (summaryDto1.getAshasCompleted() + summaryDto1.getAshasFailed() + summaryDto1.getAshasStarted() + summaryDto1.getAshasAccessed() + summaryDto1.getAshasNotAccessed() != 0 &&!locationType.equalsIgnoreCase("DifferenceState")) {
+                            summaryDto.add(summaryDto1);
                         }
                     }
                 }
-                aggregateResponseDto.setTableData(summaryDto);
-                aggregateResponseDto.setBreadCrumbData(breadCrumbs);
-                return aggregateResponseDto;
             }
-
-            if (reportRequest.getReportType().equals(ReportType.maSubscriber.getReportType())) {
-                Date fromDate = dateAdder(reportRequest.getFromDate(),0);
-
-                Date toDate = dateAdder(reportRequest.getToDate(),1);
-
-
-                List<MASubscriberDto> summaryDto = new ArrayList<>();
-                List<AggregateCumulativeMA> cumulativesummaryReportStart = new ArrayList<>();
-                List<AggregateCumulativeMA> cumulativesummaryReportEnd = new ArrayList<>();
-
-                if (reportRequest.getStateId() == 0) {
-                    cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0, "State", fromDate,false));
-                    cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0, "State", toDate,false));
-                } else {
-                    if (reportRequest.getDistrictId() == 0) {
-                        cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(), "District", fromDate,false));
-                        cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(), "District", toDate,false));
-                    } else {
-                        if (reportRequest.getBlockId() == 0) {
-                            cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(), "Block", fromDate,false));
-                            cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(), "Block", toDate,false));
-                        } else {
-                            cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(), "Subcentre", fromDate,false));
-                            cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(), "Subcentre", toDate,false));
-                        }
-                    }
-
-
-                }
-
-                for (int i = 0; i < cumulativesummaryReportEnd.size(); i++) {
-
-                    for (int j = 0; j < cumulativesummaryReportStart.size(); j++) {
-                        boolean showRow = true;
-                        if (cumulativesummaryReportEnd.get(i).getLocationId().equals(cumulativesummaryReportStart.get(j).getLocationId())) {
-                            AggregateCumulativeMA a = cumulativesummaryReportEnd.get(i);
-                            AggregateCumulativeMA b = cumulativesummaryReportStart.get(j);
-                            MASubscriberDto summaryDto1 = new MASubscriberDto();
-                            summaryDto1.setId(a.getId());
-                            summaryDto1.setLocationId(a.getLocationId());
-                            summaryDto1.setAshasCompleted(a.getAshasCompleted() - b.getAshasCompleted());
-                            summaryDto1.setAshasFailed(a.getAshasFailed() - b.getAshasFailed());
-                            summaryDto1.setAshasRegistered(a.getAshasRegistered() - b.getAshasRegistered());
-                            summaryDto1.setAshasNotStarted(a.getAshasNotStarted() - b.getAshasNotStarted());
-                            summaryDto1.setAshasStarted(a.getAshasStarted() - b.getAshasStarted());
-                            summaryDto1.setAshasRejected(a.getAshasRejected() - b.getAshasRejected());
-                            summaryDto1.setLocationType(a.getLocationType());
-                            summaryDto1.setRegisteredNotCompletedStart(b.getAshasRegistered() - b.getAshasCompleted());
-                            summaryDto1.setRegisteredNotCompletedend(a.getAshasRegistered() - a.getAshasCompleted());
-                            summaryDto1.setRecordsReceived((a.getAshasRegistered() + a.getAshasRejected()) - (b.getAshasRejected() + b.getAshasRegistered()));
-                            String locationType = a.getLocationType();
-                            if (locationType.equalsIgnoreCase("State")) {
-                                summaryDto1.setLocationName(stateDao.findByStateId(a.getLocationId().intValue()).getStateName());
-                            }
-                            if (locationType.equalsIgnoreCase("District")) {
-                                summaryDto1.setLocationName(districtDao.findByDistrictId(a.getLocationId().intValue()).getDistrictName());
-                            }
-                            if (locationType.equalsIgnoreCase("Block")) {
-                                summaryDto1.setLocationName(blockDao.findByblockId(a.getLocationId().intValue()).getBlockName());
-                            }
-                            if (locationType.equalsIgnoreCase("Subcentre")) {
-                                summaryDto1.setLocationName(healthSubFacilityDao.findByHealthSubFacilityId(a.getLocationId().intValue()).getHealthSubFacilityName());
-                                summaryDto1.setLink(true);
-                            }
-                            if (locationType.equalsIgnoreCase("DifferenceState")) {
-                                summaryDto1.setLocationName("No District Count");
-                                summaryDto1.setLink(true);
-                                summaryDto1.setLocationId((long) -1);
-
-                            }
-                            if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
-                                summaryDto1.setLocationName("No Block Count");
-                                summaryDto1.setLink(true);
-                                summaryDto1.setLocationId((long) -1);
-
-                            }
-                            if (locationType.equalsIgnoreCase("DifferenceBlock")) {
-                                summaryDto1.setLocationName("No Subcenter Count");
-                                summaryDto1.setLink(true);
-                                summaryDto1.setLocationId((long) -1);
-
-                            }
-                            if(a.getLocationType().equalsIgnoreCase("State")&& !serviceStarted(a.getLocationId().intValue(),"State",toDate,fromDate,"M"))
-                            { showRow = false;}
-
-                            if ((summaryDto1.getAshasCompleted() + summaryDto1.getAshasStarted() + summaryDto1.getAshasFailed() + summaryDto1.getAshasRejected()
-                                    + summaryDto1.getAshasRegistered() + summaryDto1.getRegisteredNotCompletedend()
-                                    + summaryDto1.getRegisteredNotCompletedStart() + summaryDto1.getRecordsReceived() + summaryDto1.getAshasNotStarted() != 0 &&!locationType.equalsIgnoreCase("DifferenceState"))&&showRow) {
-                                summaryDto.add(summaryDto1);
-                            }
-
-                        }
-
-
-                    }
-                }
-
-                aggregateResponseDto.setTableData(summaryDto);
-                aggregateResponseDto.setBreadCrumbData(breadCrumbs);
-                return aggregateResponseDto;
-
-
-            }
-
-            if (reportRequest.getReportType().equals(ReportType.maCumulative.getReportType())) {
-
-                Date toDate = dateAdder(reportRequest.getToDate(),1);
-                List<AggregateCumulativeMADto> summaryDto = new ArrayList<>();
-                List<AggregateCumulativeMA> cumulativesummaryReport = new ArrayList<>();
-
-                if (reportRequest.getStateId() == 0) {
-                    cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0, "State", toDate,true));
-                } else {
-                    if (reportRequest.getDistrictId() == 0) {
-                        cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(), "District", toDate,true));
-                    } else {
-                        if (reportRequest.getBlockId() == 0) {
-                            cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(), "Block", toDate,true));
-                        } else {
-                            cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(), "Subcentre", toDate,true));
-                        }
-                    }
-
-
-                }
-
-                for (AggregateCumulativeMA a : cumulativesummaryReport) {
-                    AggregateCumulativeMADto summaryDto1 = new AggregateCumulativeMADto();
-                    summaryDto1.setId(a.getId());
-                    summaryDto1.setLocationId(a.getLocationId());
-                    summaryDto1.setAshasCompleted(a.getAshasCompleted());
-                    summaryDto1.setAshasFailed(a.getAshasFailed());
-                    summaryDto1.setAshasRegistered(a.getAshasRegistered());
-                    summaryDto1.setAshasNotStarted(a.getAshasNotStarted());
-                    summaryDto1.setAshasStarted(a.getAshasStarted());
-                    summaryDto1.setLocationType(a.getLocationType());
-                    summaryDto1.setCompletedPercentage((float) (a.getAshasStarted() == 0 ? 0 : (Math.round((a.getAshasCompleted() * 10000.0f/ a.getAshasStarted())))) / 100f);
-                    summaryDto1.setFailedpercentage((float) (a.getAshasStarted() == 0 ? 0 : (Math.round((a.getAshasFailed() * 10000.0f / a.getAshasStarted())))) / 100f);
-                    summaryDto1.setNotStartedpercentage((float) (a.getAshasRegistered() == 0 ? 0 : (Math.round((a.getAshasNotStarted() * 10000.0f / a.getAshasRegistered())))) / 100f);
-                    String locationType = a.getLocationType();
-                    if (locationType.equalsIgnoreCase("State")) {
-                        summaryDto1.setLocationName(stateDao.findByStateId(a.getLocationId().intValue()).getStateName());
-                    }
-                    if (locationType.equalsIgnoreCase("District")) {
-                        summaryDto1.setLocationName(districtDao.findByDistrictId(a.getLocationId().intValue()).getDistrictName());
-                    }
-                    if (locationType.equalsIgnoreCase("Block")) {
-                        summaryDto1.setLocationName(blockDao.findByblockId(a.getLocationId().intValue()).getBlockName());
-                    }
-                    if (locationType.equalsIgnoreCase("Subcentre")) {
-                        summaryDto1.setLocationName(healthSubFacilityDao.findByHealthSubFacilityId(a.getLocationId().intValue()).getHealthSubFacilityName());
-                        summaryDto1.setLink(true);
-                    }
-                    if (locationType.equalsIgnoreCase("DifferenceState")) {
-                        summaryDto1.setLocationName("No District");
-                        summaryDto1.setLink(true);
-                        summaryDto1.setLocationId((long) -1);
-
-                    }
-                    if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
-                        summaryDto1.setLocationName("No Block");
-                        summaryDto1.setLink(true);
-                        summaryDto1.setLocationId((long) -1);
-
-                    }
-                    if (locationType.equalsIgnoreCase("DifferenceBlock")) {
-                        summaryDto1.setLocationName("No Subcenter");
-                        summaryDto1.setLink(true);
-                        summaryDto1.setLocationId((long) -1);
-
-                    }
-
-                    if (summaryDto1.getAshasRegistered()+summaryDto1.getAshasCompleted()+summaryDto1.getAshasNotStarted()+summaryDto1.getAshasStarted()
-                        +summaryDto1.getAshasFailed() !=0 && a.getId() != 0 && !locationType.equalsIgnoreCase("DifferenceState")) {
-                        summaryDto.add(summaryDto1);
-                    }
-
-                }
-                aggregateResponseDto.setTableData(summaryDto);
-                aggregateResponseDto.setBreadCrumbData(breadCrumbs);
-                return aggregateResponseDto;
-
-            }
-
-            if (reportRequest.getReportType().equals(ReportType.maAnonymous.getReportType())) {
-                if (!currentUser.getAccessLevel().equals(AccessLevel.NATIONAL.getAccessLevel()) && reportRequest.getCircleId() == 0) {
-                    m.put("status", "fail");
-                    return m;
-                }
-
-                if (reportRequest.getCircleId() != 0) {
-                    place = StReplace(locationService.findCircleById(reportRequest.getCircleId()).getCircleFullName());
-                    rootPath += place + "/";
-                }
-            } else {
-                if (currentUser.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel()) && !currentUser.getStateId().equals(reportRequest.getStateId())) {
-                    m.put("status", "fail");
-                    return m;
-                }
-                if (currentUser.getAccessLevel().equals(AccessLevel.DISTRICT.getAccessLevel()) && !currentUser.getDistrictId().equals(reportRequest.getDistrictId())) {
-                    m.put("status", "fail");
-                    return m;
-                }
-                if (currentUser.getAccessLevel().equals(AccessLevel.BLOCK.getAccessLevel()) && !currentUser.getBlockId().equals(reportRequest.getBlockId())) {
-                    m.put("status", "fail");
-                    return m;
-                }
-
-                if (reportRequest.getStateId() != 0) {
-                    place = StReplace(locationService.findStateById(reportRequest.getStateId()).getStateName());
-                    rootPath += place + "/";
-                }
-
-                if (reportRequest.getDistrictId() != 0) {
-                    place = StReplace(locationService.findDistrictById(reportRequest.getDistrictId()).getDistrictName());
-                    rootPath += place + "/";
-                }
-
-                if (reportRequest.getBlockId() != 0) {
-                    place = StReplace(locationService.findBlockById(reportRequest.getBlockId()).getBlockName());
-                    rootPath += place + "/";
-                }
-            }
-            String filename = reportRequest.getReportType() + "_" + place + "_" + getMonthYear(reportRequest.getFromDate()) + ".xlsx";
-            if (reportRequest.getReportType().equals(ReportType.flwRejected.getReportType()) ||
-                    reportRequest.getReportType().equals(ReportType.motherRejected.getReportType()) ||
-                    reportRequest.getReportType().equals(ReportType.childRejected.getReportType())) {
-                filename = reportRequest.getReportType() + "_" + place + "_" + getDateMonthYear(reportRequest.getFromDate()) + ".xlsx";
-            }
-            reportPath = reports + reportRequest.getReportType() + "/" + rootPath;
-            reportName = filename;
-
-            File file = new File(reportPath + reportName);
-
-
-            if (!(file.exists())) {
-                adminService.createSpecificReport(reportRequest);
-            }
-
-            m.put("status", "success");
-            m.put("file", reportName);
-            m.put("path", reportRequest.getReportType() + "/" + rootPath);
-            return m;
+            aggregateResponseDto.setTableData(summaryDto);
+            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
+            return aggregateResponseDto;
         }
-    
+
+        if (reportRequest.getReportType().equals(ReportType.maSubscriber.getReportType())) {
+            Date fromDate = dateAdder(reportRequest.getFromDate(),0);
+
+            Date toDate = dateAdder(reportRequest.getToDate(),1);
+
+
+            List<MASubscriberDto> summaryDto = new ArrayList<>();
+            List<AggregateCumulativeMA> cumulativesummaryReportStart = new ArrayList<>();
+            List<AggregateCumulativeMA> cumulativesummaryReportEnd = new ArrayList<>();
+
+            if (reportRequest.getStateId() == 0) {
+                cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0, "State", fromDate,false));
+                cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0, "State", toDate,false));
+            } else {
+                if (reportRequest.getDistrictId() == 0) {
+                    cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(), "District", fromDate,false));
+                    cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(), "District", toDate,false));
+                } else {
+                    if (reportRequest.getBlockId() == 0) {
+                        cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(), "Block", fromDate,false));
+                        cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(), "Block", toDate,false));
+                    } else {
+                        cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(), "Subcentre", fromDate,false));
+                        cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(), "Subcentre", toDate,false));
+                    }
+                }
+
+
+            }
+
+            for (int i = 0; i < cumulativesummaryReportEnd.size(); i++) {
+
+                for (int j = 0; j < cumulativesummaryReportStart.size(); j++) {
+                    boolean showRow = true;
+                    if (cumulativesummaryReportEnd.get(i).getLocationId().equals(cumulativesummaryReportStart.get(j).getLocationId())) {
+                        AggregateCumulativeMA a = cumulativesummaryReportEnd.get(i);
+                        AggregateCumulativeMA b = cumulativesummaryReportStart.get(j);
+                        MASubscriberDto summaryDto1 = new MASubscriberDto();
+                        summaryDto1.setId(a.getId());
+                        summaryDto1.setLocationId(a.getLocationId());
+                        summaryDto1.setAshasCompleted(a.getAshasCompleted() - b.getAshasCompleted());
+                        summaryDto1.setAshasFailed(a.getAshasFailed() - b.getAshasFailed());
+                        summaryDto1.setAshasRegistered(a.getAshasRegistered() - b.getAshasRegistered());
+                        summaryDto1.setAshasNotStarted(a.getAshasNotStarted() - b.getAshasNotStarted());
+                        summaryDto1.setAshasStarted(a.getAshasStarted() - b.getAshasStarted());
+                        summaryDto1.setAshasRejected(a.getAshasRejected() - b.getAshasRejected());
+                        summaryDto1.setLocationType(a.getLocationType());
+                        summaryDto1.setRegisteredNotCompletedStart(b.getAshasRegistered() - b.getAshasCompleted());
+                        summaryDto1.setRegisteredNotCompletedend(a.getAshasRegistered() - a.getAshasCompleted());
+                        summaryDto1.setRecordsReceived((a.getAshasRegistered() + a.getAshasRejected()) - (b.getAshasRejected() + b.getAshasRegistered()));
+                        String locationType = a.getLocationType();
+                        if (locationType.equalsIgnoreCase("State")) {
+                            summaryDto1.setLocationName(stateDao.findByStateId(a.getLocationId().intValue()).getStateName());
+                        }
+                        if (locationType.equalsIgnoreCase("District")) {
+                            summaryDto1.setLocationName(districtDao.findByDistrictId(a.getLocationId().intValue()).getDistrictName());
+                        }
+                        if (locationType.equalsIgnoreCase("Block")) {
+                            summaryDto1.setLocationName(blockDao.findByblockId(a.getLocationId().intValue()).getBlockName());
+                        }
+                        if (locationType.equalsIgnoreCase("Subcentre")) {
+                            summaryDto1.setLocationName(healthSubFacilityDao.findByHealthSubFacilityId(a.getLocationId().intValue()).getHealthSubFacilityName());
+                            summaryDto1.setLink(true);
+                        }
+                        if (locationType.equalsIgnoreCase("DifferenceState")) {
+                            summaryDto1.setLocationName("No District Count");
+                            summaryDto1.setLink(true);
+                            summaryDto1.setLocationId((long) -1);
+
+                        }
+                        if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
+                            summaryDto1.setLocationName("No Block Count");
+                            summaryDto1.setLink(true);
+                            summaryDto1.setLocationId((long) -1);
+
+                        }
+                        if (locationType.equalsIgnoreCase("DifferenceBlock")) {
+                            summaryDto1.setLocationName("No Subcenter Count");
+                            summaryDto1.setLink(true);
+                            summaryDto1.setLocationId((long) -1);
+
+                        }
+                        if(a.getLocationType().equalsIgnoreCase("State")&& !serviceStarted(a.getLocationId().intValue(),"State",toDate,fromDate,"M"))
+                        { showRow = false;}
+
+                        if ((summaryDto1.getAshasCompleted() + summaryDto1.getAshasStarted() + summaryDto1.getAshasFailed() + summaryDto1.getAshasRejected()
+                                + summaryDto1.getAshasRegistered() + summaryDto1.getRegisteredNotCompletedend()
+                                + summaryDto1.getRegisteredNotCompletedStart() + summaryDto1.getRecordsReceived() + summaryDto1.getAshasNotStarted() != 0 &&!locationType.equalsIgnoreCase("DifferenceState"))&&showRow) {
+                            summaryDto.add(summaryDto1);
+                        }
+
+                    }
+
+
+                }
+            }
+
+            aggregateResponseDto.setTableData(summaryDto);
+            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
+            return aggregateResponseDto;
+
+
+        }
+
+        if (reportRequest.getReportType().equals(ReportType.maCumulative.getReportType())) {
+
+            Date toDate = dateAdder(reportRequest.getToDate(),1);
+            List<AggregateCumulativeMADto> summaryDto = new ArrayList<>();
+            List<AggregateCumulativeMA> cumulativesummaryReport = new ArrayList<>();
+
+            if (reportRequest.getStateId() == 0) {
+                cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0, "State", toDate,true));
+            } else {
+                if (reportRequest.getDistrictId() == 0) {
+                    cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(), "District", toDate,true));
+                } else {
+                    if (reportRequest.getBlockId() == 0) {
+                        cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(), "Block", toDate,true));
+                    } else {
+                        cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(), "Subcentre", toDate,true));
+                    }
+                }
+
+
+            }
+
+            for (AggregateCumulativeMA a : cumulativesummaryReport) {
+                AggregateCumulativeMADto summaryDto1 = new AggregateCumulativeMADto();
+                summaryDto1.setId(a.getId());
+                summaryDto1.setLocationId(a.getLocationId());
+                summaryDto1.setAshasCompleted(a.getAshasCompleted());
+                summaryDto1.setAshasFailed(a.getAshasFailed());
+                summaryDto1.setAshasRegistered(a.getAshasRegistered());
+                summaryDto1.setAshasNotStarted(a.getAshasNotStarted());
+                summaryDto1.setAshasStarted(a.getAshasStarted());
+                summaryDto1.setLocationType(a.getLocationType());
+                summaryDto1.setCompletedPercentage((float) (a.getAshasStarted() == 0 ? 0 : (Math.round((a.getAshasCompleted() * 10000.0f/ a.getAshasStarted())))) / 100f);
+                summaryDto1.setFailedpercentage((float) (a.getAshasStarted() == 0 ? 0 : (Math.round((a.getAshasFailed() * 10000.0f / a.getAshasStarted())))) / 100f);
+                summaryDto1.setNotStartedpercentage((float) (a.getAshasRegistered() == 0 ? 0 : (Math.round((a.getAshasNotStarted() * 10000.0f / a.getAshasRegistered())))) / 100f);
+                String locationType = a.getLocationType();
+                if (locationType.equalsIgnoreCase("State")) {
+                    summaryDto1.setLocationName(stateDao.findByStateId(a.getLocationId().intValue()).getStateName());
+                }
+                if (locationType.equalsIgnoreCase("District")) {
+                    summaryDto1.setLocationName(districtDao.findByDistrictId(a.getLocationId().intValue()).getDistrictName());
+                }
+                if (locationType.equalsIgnoreCase("Block")) {
+                    summaryDto1.setLocationName(blockDao.findByblockId(a.getLocationId().intValue()).getBlockName());
+                }
+                if (locationType.equalsIgnoreCase("Subcentre")) {
+                    summaryDto1.setLocationName(healthSubFacilityDao.findByHealthSubFacilityId(a.getLocationId().intValue()).getHealthSubFacilityName());
+                    summaryDto1.setLink(true);
+                }
+                if (locationType.equalsIgnoreCase("DifferenceState")) {
+                    summaryDto1.setLocationName("No District");
+                    summaryDto1.setLink(true);
+                    summaryDto1.setLocationId((long) -1);
+
+                }
+                if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
+                    summaryDto1.setLocationName("No Block");
+                    summaryDto1.setLink(true);
+                    summaryDto1.setLocationId((long) -1);
+
+                }
+                if (locationType.equalsIgnoreCase("DifferenceBlock")) {
+                    summaryDto1.setLocationName("No Subcenter");
+                    summaryDto1.setLink(true);
+                    summaryDto1.setLocationId((long) -1);
+
+                }
+
+                if (summaryDto1.getAshasRegistered()+summaryDto1.getAshasCompleted()+summaryDto1.getAshasNotStarted()+summaryDto1.getAshasStarted()
+                        +summaryDto1.getAshasFailed() !=0 && a.getId() != 0 && !locationType.equalsIgnoreCase("DifferenceState")) {
+                    summaryDto.add(summaryDto1);
+                }
+
+            }
+            aggregateResponseDto.setTableData(summaryDto);
+            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
+            return aggregateResponseDto;
+
+        }
+
+        if (reportRequest.getReportType().equals(ReportType.maAnonymous.getReportType())) {
+            if (!currentUser.getAccessLevel().equals(AccessLevel.NATIONAL.getAccessLevel()) && reportRequest.getCircleId() == 0) {
+                m.put("status", "fail");
+                return m;
+            }
+
+            if (reportRequest.getCircleId() != 0) {
+                place = StReplace(locationService.findCircleById(reportRequest.getCircleId()).getCircleFullName());
+                rootPath += place + "/";
+            }
+        } else {
+            if (currentUser.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel()) && !currentUser.getStateId().equals(reportRequest.getStateId())) {
+                m.put("status", "fail");
+                return m;
+            }
+            if (currentUser.getAccessLevel().equals(AccessLevel.DISTRICT.getAccessLevel()) && !currentUser.getDistrictId().equals(reportRequest.getDistrictId())) {
+                m.put("status", "fail");
+                return m;
+            }
+            if (currentUser.getAccessLevel().equals(AccessLevel.BLOCK.getAccessLevel()) && !currentUser.getBlockId().equals(reportRequest.getBlockId())) {
+                m.put("status", "fail");
+                return m;
+            }
+
+            if (reportRequest.getStateId() != 0) {
+                place = StReplace(locationService.findStateById(reportRequest.getStateId()).getStateName());
+                rootPath += place + "/";
+            }
+
+            if (reportRequest.getDistrictId() != 0) {
+                place = StReplace(locationService.findDistrictById(reportRequest.getDistrictId()).getDistrictName());
+                rootPath += place + "/";
+            }
+
+            if (reportRequest.getBlockId() != 0) {
+                place = StReplace(locationService.findBlockById(reportRequest.getBlockId()).getBlockName());
+                rootPath += place + "/";
+            }
+        }
+        String filename = reportRequest.getReportType() + "_" + place + "_" + getMonthYear(reportRequest.getFromDate()) + ".xlsx";
+        if (reportRequest.getReportType().equals(ReportType.flwRejected.getReportType()) ||
+                reportRequest.getReportType().equals(ReportType.motherRejected.getReportType()) ||
+                reportRequest.getReportType().equals(ReportType.childRejected.getReportType())) {
+            filename = reportRequest.getReportType() + "_" + place + "_" + getDateMonthYear(reportRequest.getFromDate()) + ".xlsx";
+        }
+        reportPath = reports + reportRequest.getReportType() + "/" + rootPath;
+        reportName = filename;
+
+        File file = new File(reportPath + reportName);
+
+
+        if (!(file.exists())) {
+            adminService.createSpecificReport(reportRequest);
+        }
+
+        m.put("status", "success");
+        m.put("file", reportName);
+        m.put("path", reportRequest.getReportType() + "/" + rootPath);
+        return m;
+    }
+
 
 
     @RequestMapping(value = "/downloadReport", method = RequestMethod.GET,produces = "application/vnd.ms-excel")
@@ -859,30 +857,76 @@ public class UserController {
         return "success";
     }
 
-    @RequestMapping(value = "/downloadAgg", method = RequestMethod.POST,produces = "application/vnd.ms-excel")
+    @RequestMapping(value = "/generateAgg", method = RequestMethod.POST,produces = "application/vnd.ms-excel")
     @ResponseBody
-    public String downloadAggregates(@RequestBody AggregateExcelDto data, HttpServletResponse response) throws ParseException, java.text.ParseException {
+    public String generateAggregates(@RequestBody AggregateExcelDto data, HttpServletResponse response) throws ParseException, java.text.ParseException {
         response.setContentType("APPLICATION/OCTECT-STREAM");
 
+        String filename = data.getFileName()+".xlsx";
+
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet spreadsheet = workbook.createSheet(
+                "Sheet 1");
+        aggregateReportsService.createSpecificAggreagateExcel(workbook,data);
+
+        File dir = new File(reports+"/Aggregates");
+        if (!dir.exists())
+            dir.mkdirs();
+        FileOutputStream out1 = null;
+        try {
+            out1 = new FileOutputStream(new File(reports+"/Aggregates/"+filename));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            workbook.write(out1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            out1.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // workbook.write(response.getOutputStream());
+
+        return "success";
+    }
+
+    @RequestMapping(value = "/downloadAgg", method = RequestMethod.GET,produces = "application/vnd.ms-excel")
+    @ResponseBody
+    public String downloadAggregates(HttpServletResponse response, @DefaultValue("") @QueryParam("fileName") String fileName) throws ParseException, java.text.ParseException {
+//        adminService.getBulkDataImportCSV();
+        response.setContentType("APPLICATION/OCTECT-STREAM");
+        if (StringUtils.isEmpty(fileName)) {
+            fileName = "";
+            return "fail";
+        }
         try {
             ServletOutputStream out = response.getOutputStream();
-
-            String filename = "sample.xlsx";
-            response.setHeader("Content-Disposition", "attachment;filename=\"" + filename + "\"");
-
-            XSSFWorkbook workbook = new XSSFWorkbook();
-            XSSFSheet spreadsheet = workbook.createSheet(
-                "Sheet 1");
-            aggregateReportsService.createSpecificAggreagateExcel(workbook,data);
-
-
-            workbook.write(response.getOutputStream());
+            response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\"");
+            FileInputStream fl = new FileInputStream(reports+"/Aggregates/"+fileName);
+            int i;
+            while ((i = fl.read()) != -1) {
+                out.write(i);
+            }
+            fl.close();
+            out.close();
             //workbook.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        try {
+            File file = new File(reports + "/Aggregates/" + fileName);
+            file.delete();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
         return "success";
     }
+
 
     @RequestMapping(value={"/reportsMenu"})
     public @ResponseBody List<Map<String, Object>> getReportsMenu() {
@@ -1007,30 +1051,30 @@ public class UserController {
                 ReportType.kilkariCalls.getServiceType(),showAggregateReports)
         );
 
-            kList.add(new Report(
-                    ReportType.messageMatrix.getReportName(),
-                    ReportType.messageMatrix.getReportType(),
-                    "images/drop-down-2.png",
-                    ReportType.messageMatrix.getServiceType(),showAggregateReports)
-            );
-            kList.add(new Report(
-                    ReportType.listeningMatrix.getReportName(),
-                    ReportType.listeningMatrix.getReportType(),
-                    "images/drop-down-2.png",
-                    ReportType.listeningMatrix.getServiceType(),showAggregateReports)
-            );
-            kList.add(new Report(
-                    ReportType.kilkariThematicContent.getReportName(),
-                    ReportType.kilkariThematicContent.getReportType(),
-                    "images/drop-down-2.png",
-                    ReportType.kilkariThematicContent.getServiceType(),showAggregateReports)
-            );
-            kList.add(new Report(
-                    ReportType.kilkariRepeatListenerMonthWise.getReportName(),
-                    ReportType.kilkariRepeatListenerMonthWise.getReportType(),
-                    "images/drop-down-2.png",
-                    ReportType.kilkariRepeatListenerMonthWise.getServiceType(),showAggregateReports)
-            );
+        kList.add(new Report(
+                ReportType.messageMatrix.getReportName(),
+                ReportType.messageMatrix.getReportType(),
+                "images/drop-down-2.png",
+                ReportType.messageMatrix.getServiceType(),showAggregateReports)
+        );
+        kList.add(new Report(
+                ReportType.listeningMatrix.getReportName(),
+                ReportType.listeningMatrix.getReportType(),
+                "images/drop-down-2.png",
+                ReportType.listeningMatrix.getServiceType(),showAggregateReports)
+        );
+        kList.add(new Report(
+                ReportType.kilkariThematicContent.getReportName(),
+                ReportType.kilkariThematicContent.getReportType(),
+                "images/drop-down-2.png",
+                ReportType.kilkariThematicContent.getServiceType(),showAggregateReports)
+        );
+        kList.add(new Report(
+                ReportType.kilkariRepeatListenerMonthWise.getReportName(),
+                ReportType.kilkariRepeatListenerMonthWise.getReportType(),
+                "images/drop-down-2.png",
+                ReportType.kilkariRepeatListenerMonthWise.getServiceType(),showAggregateReports)
+        );
 
         kList.add(new Report(
                 ReportType.kilkariSubscriber.getReportName(),
@@ -1093,7 +1137,7 @@ public class UserController {
         int month=c.get(Calendar.MONTH)+1;
         String monthString = "";
         int year=(c.get(Calendar.YEAR))%100;
-    //        String monthString = c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH );
+        //        String monthString = c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH );
         if(month<10){
             monthString="0"+String.valueOf(month);
         }
