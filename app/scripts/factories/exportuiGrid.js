@@ -169,6 +169,15 @@
                     type: 'text/csv;charset=utf-8;'
                 }), fileName + ".csv");
             } else {
+
+            if (navigator.appName == "Microsoft Internet Explorer") {
+                var oWin = window.open();
+                oWin.document.write('sep=,\r\n' + CSV);
+                oWin.document.close();
+                oWin.document.execCommand('SaveAs', true, fileName + ".csv");
+                oWin.close();
+              }  else{
+
                 var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
 
                 //this trick will generate a temp <a /> tag
@@ -183,7 +192,7 @@
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
-            }
+            }}
         }
 
         function indianDecimal( value){
