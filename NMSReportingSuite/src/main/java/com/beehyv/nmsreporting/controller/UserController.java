@@ -8,6 +8,7 @@ import com.beehyv.nmsreporting.enums.AccessType;
 import com.beehyv.nmsreporting.enums.ModificationType;
 import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.*;
+import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ import java.util.*;
 import static com.beehyv.nmsreporting.utils.Global.retrieveDocuments;
 import static com.beehyv.nmsreporting.utils.ServiceFunctions.StReplace;
 import static com.beehyv.nmsreporting.utils.ServiceFunctions.dateAdder;
-
+import org.apache.pdfbox.pdmodel.PDDocument;
 /**
  * Created by beehyv on 15/3/17.
  */
@@ -486,10 +487,10 @@ public class UserController {
             Date toDate = dateAdder(reportRequest.getToDate(),1);
 
 
-            List<MAPerformanceDto> summaryDto = new ArrayList<>();
-            List<AggregateCumulativeMA> cumulativesummaryReportStart = new ArrayList<>();
-            List<AggregateCumulativeMA> cumulativesummaryReportEnd = new ArrayList<>();
-            HashMap<Long,MAPerformanceCountsDto> performanceCounts = new HashMap<>();
+                List<MAPerformanceDto> summaryDto = new ArrayList<>();
+                List<AggregateCumulativeMA> cumulativesummaryReportStart = new ArrayList<>();
+                List<AggregateCumulativeMA> cumulativesummaryReportEnd = new ArrayList<>();
+                HashMap<Long,MAPerformanceCountsDto> performanceCounts = new HashMap<>();
 
             if (reportRequest.getStateId() == 0) {
                 cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0, "State", fromDate,false));
@@ -556,11 +557,11 @@ public class UserController {
                             summaryDto1.setLink(true);
                             summaryDto1.setLocationId((long) -1);
 
-                        }
-                        MAPerformanceCountsDto MAperformanceCounts = performanceCounts.get(a.getLocationId());
-                        summaryDto1.setAshasFailed(MAperformanceCounts.getAshasFailed());
-                        summaryDto1.setAshasAccessed(MAperformanceCounts.getAccessedAtleastOnce());
-                        summaryDto1.setAshasNotAccessed(MAperformanceCounts.getAccessedNotOnce());
+                            }
+                            MAPerformanceCountsDto MAperformanceCounts = performanceCounts.get(a.getLocationId());
+                            summaryDto1.setAshasFailed(MAperformanceCounts.getAshasFailed());
+                            summaryDto1.setAshasAccessed(MAperformanceCounts.getAccessedAtleastOnce());
+                            summaryDto1.setAshasNotAccessed(MAperformanceCounts.getAccessedNotOnce());
 
 //                            summaryDto1.setAshasFailed(maPerformanceService.getAshasFailed(a.getLocationId().intValue(), a.getLocationType(), fromDate, toDate));
 //                            summaryDto1.setAshasAccessed(maPerformanceService.getAccessedCount(a.getLocationId().intValue(), a.getLocationType(), fromDate, toDate));
@@ -583,7 +584,7 @@ public class UserController {
         if (reportRequest.getReportType().equals(ReportType.maSubscriber.getReportType())) {
             Date fromDate = dateAdder(reportRequest.getFromDate(),0);
 
-            Date toDate = dateAdder(reportRequest.getToDate(),1);
+                Date toDate = dateAdder(reportRequest.getToDate(),1);
 
 
             List<MASubscriberDto> summaryDto = new ArrayList<>();
@@ -610,7 +611,7 @@ public class UserController {
 
             }
 
-            for (int i = 0; i < cumulativesummaryReportEnd.size(); i++) {
+                for (int i = 0; i < cumulativesummaryReportEnd.size(); i++) {
 
                 for (int j = 0; j < cumulativesummaryReportStart.size(); j++) {
                     boolean showRow = true;
@@ -655,15 +656,15 @@ public class UserController {
                             summaryDto1.setLink(true);
                             summaryDto1.setLocationId((long) -1);
 
-                        }
-                        if (locationType.equalsIgnoreCase("DifferenceBlock")) {
-                            summaryDto1.setLocationName("No Subcenter Count");
-                            summaryDto1.setLink(true);
-                            summaryDto1.setLocationId((long) -1);
+                            }
+                            if (locationType.equalsIgnoreCase("DifferenceBlock")) {
+                                summaryDto1.setLocationName("No Subcenter Count");
+                                summaryDto1.setLink(true);
+                                summaryDto1.setLocationId((long) -1);
 
-                        }
-                        if(a.getLocationType().equalsIgnoreCase("State")&& !serviceStarted(a.getLocationId().intValue(),"State",toDate,fromDate,"M"))
-                        { showRow = false;}
+                            }
+                            if(a.getLocationType().equalsIgnoreCase("State")&& !serviceStarted(a.getLocationId().intValue(),"State",toDate,fromDate,"M"))
+                            { showRow = false;}
 
                         if ((summaryDto1.getAshasCompleted() + summaryDto1.getAshasStarted() + summaryDto1.getAshasFailed() + summaryDto1.getAshasRejected()
                                 + summaryDto1.getAshasRegistered() + summaryDto1.getRegisteredNotCompletedend()
@@ -674,34 +675,34 @@ public class UserController {
                     }
 
 
+                    }
                 }
-            }
 
-            aggregateResponseDto.setTableData(summaryDto);
-            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
-            return aggregateResponseDto;
+                aggregateResponseDto.setTableData(summaryDto);
+                aggregateResponseDto.setBreadCrumbData(breadCrumbs);
+                return aggregateResponseDto;
 
 
         }
 
-        if (reportRequest.getReportType().equals(ReportType.maCumulative.getReportType())) {
+            if (reportRequest.getReportType().equals(ReportType.maCumulative.getReportType())) {
 
-            Date toDate = dateAdder(reportRequest.getToDate(),1);
-            List<AggregateCumulativeMADto> summaryDto = new ArrayList<>();
-            List<AggregateCumulativeMA> cumulativesummaryReport = new ArrayList<>();
+                Date toDate = dateAdder(reportRequest.getToDate(),1);
+                List<AggregateCumulativeMADto> summaryDto = new ArrayList<>();
+                List<AggregateCumulativeMA> cumulativesummaryReport = new ArrayList<>();
 
-            if (reportRequest.getStateId() == 0) {
-                cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0, "State", toDate,true));
-            } else {
-                if (reportRequest.getDistrictId() == 0) {
-                    cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(), "District", toDate,true));
+                if (reportRequest.getStateId() == 0) {
+                    cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0, "State", toDate,true));
                 } else {
-                    if (reportRequest.getBlockId() == 0) {
-                        cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(), "Block", toDate,true));
+                    if (reportRequest.getDistrictId() == 0) {
+                        cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(), "District", toDate,true));
                     } else {
-                        cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(), "Subcentre", toDate,true));
+                        if (reportRequest.getBlockId() == 0) {
+                            cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(), "Block", toDate,true));
+                        } else {
+                            cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(), "Subcentre", toDate,true));
+                        }
                     }
-                }
 
 
             }
@@ -757,10 +758,10 @@ public class UserController {
                     summaryDto.add(summaryDto1);
                 }
 
-            }
-            aggregateResponseDto.setTableData(summaryDto);
-            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
-            return aggregateResponseDto;
+                }
+                aggregateResponseDto.setTableData(summaryDto);
+                aggregateResponseDto.setBreadCrumbData(breadCrumbs);
+                return aggregateResponseDto;
 
         }
 
@@ -788,10 +789,10 @@ public class UserController {
                 return m;
             }
 
-            if (reportRequest.getStateId() != 0) {
-                place = StReplace(locationService.findStateById(reportRequest.getStateId()).getStateName());
-                rootPath += place + "/";
-            }
+                if (reportRequest.getStateId() != 0) {
+                    place = StReplace(locationService.findStateById(reportRequest.getStateId()).getStateName());
+                    rootPath += place + "/";
+                }
 
             if (reportRequest.getDistrictId() != 0) {
                 place = StReplace(locationService.findDistrictById(reportRequest.getDistrictId()).getDistrictName());
@@ -857,7 +858,7 @@ public class UserController {
         return "success";
     }
 
-    @RequestMapping(value = "/generateAgg", method = RequestMethod.POST,produces = "application/vnd.ms-excel")
+    @RequestMapping(value = "/downloadAgg", method = RequestMethod.POST,produces = "application/vnd.ms-excel")
     @ResponseBody
     public String generateAggregates(@RequestBody AggregateExcelDto data, HttpServletResponse response) throws ParseException, java.text.ParseException {
         response.setContentType("APPLICATION/OCTECT-STREAM");

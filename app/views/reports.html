@@ -318,9 +318,11 @@
         <p class="ng-binding" style="display: inline-block;"> {{reportHeaderName}} Report</p>
 		<div style="display: inline-block;float: right">
 			<i class="glyphicon glyphicon-calendar aggregate-calender"> <span data-ng-if=" report.name != 'MA Cumulative Summary' && report.reportEnum != 'Kilkari_Cumulative_Summary' " class="calender-date">{{ headerFromDate | date:'dd/MM/y'}}</span> <span class="calender-date" style="font-size: 13px" data-ng-if=" report.name == 'MA Cumulative Summary' || report.reportEnum == 'Kilkari_Cumulative_Summary' ">Up</span><span class="calender-date">to</span> <span class="calender-date">{{headerToDate | date:'dd/MM/y'}}</span></i>
+			<img data-ng-click = "exportToPdf1()" style="float: right;margin-right: 7px; cursor : pointer" src="images/export2.png">
 			<img data-ng-click = "exportToExcel()" style="float: right;margin-right: 7px; cursor : pointer" src="images/export3.png">
 			<img data-ng-click = "exportCsv()" style="float: right;margin-right: 7px; cursor : pointer" src="images/export1.png">
 			<img data-ng-click = "exportPdf()" style="float: right;margin-right: 7px; cursor : pointer" src="images/export2.png">
+
 		</div>
 
     </div>
