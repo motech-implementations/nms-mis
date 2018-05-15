@@ -1,28 +1,39 @@
 package com.beehyv.nmsreporting.business.impl;
 
+import be.quodlibet.boxable.BaseTable;
 import com.beehyv.nmsreporting.business.AggregateReportsService;
-
 import com.beehyv.nmsreporting.dao.*;
 import com.beehyv.nmsreporting.entity.AggregateExcelDto;
 import com.beehyv.nmsreporting.model.*;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.PDPageContentStream.AppendMode;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellUtil;
 import org.apache.poi.xssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.*;
+
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.*;
-import java.util.List;
 
 import static com.beehyv.nmsreporting.utils.Constants.image_base64;
 import static java.lang.Double.parseDouble;
-import static java.lang.Integer.parseInt;
+
+
+
 
 
 /**
@@ -589,6 +600,392 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         createHeadersForAggreagateExcels(workbook,gridData);
     }
 
+    @Override
+    public void createSpecificAggreagatePdf(PDDocument document, AggregateExcelDto gridData) throws IOException {
+        PDFont font = PDType1Font.TIMES_BOLD;
+        PDFont font1 = PDType1Font.TIMES_ROMAN;
+
+        int fontSize = 16;
+        int fontSize1=12;
+
+//            //Creating a blank page
+//
+            PDPage page = new PDPage();
+//            //Adding the blank page to the document
+           document.addPage( page );
+
+
+        //Creating PDImageXObject object
+        PDImageXObject pdImage1 = PDImageXObject.createFromFile("/home/beehyv/NMS-Reporting/nms-mis/app/images/national emblem.jpeg",document);
+        PDImageXObject pdImage2 = PDImageXObject.createFromFile("/home/beehyv/NMS-Reporting/nms-mis/app/images/national-health-mission.png",document);
+        PDImageXObject pdImage3 = PDImageXObject.createFromFile("/home/beehyv/NMS-Reporting/nms-mis/app/images/digital_logo.png",document);
+        //combineImagesIntoPDF("/home/beehyv/Documents/my_doc.pdf","/home/beehyv/NMS-Reporting/nms-mis/app/images/national emblem.jpeg","/home/beehyv/NMS-Reporting/nms-mis/app/images/national-health-mission.png","/home/beehyv/NMS-Reporting/nms-mis/app/images/digital_logo.png");
+        //creating the PDPageContentStream object
+        PDPageContentStream contents = new PDPageContentStream(document, page, AppendMode.APPEND, true, true);
+        PDRectangle mediaBox = page.getMediaBox();
+//        System.out.println("Image inserted");
+        contents.beginText();
+        contents.setFont(font,fontSize1);
+        //Setting the leading
+        contents.setLeading(14.5f);
+
+        //Setting the position for the line
+        contents.newLineAtOffset(200, 90);
+
+        //Adding text in the form of string
+        contents.showText("Management and Information System");
+        //contents.newLine();
+        contents.newLineAtOffset(25, 20);
+        contents.setFont(font,fontSize1);
+        contents.showText("Mobile Academy and Kilkari");
+        //contents.newLine();
+        contents.setFont(font,fontSize);
+        contents.newLineAtOffset(-50, 30);
+        contents.showText("Ministry of Health and Family Welfare");
+        contents.newLine();
+        contents.endText();
+
+
+
+        //Drawing the image in the PDF document
+        try { float startX=(mediaBox.getWidth() - 200) / 2;
+            contents.drawImage(pdImage1, startX, 520 ,200, 150);
+            startX=(mediaBox.getWidth() - 120) / 2;
+            contents.drawImage(pdImage2, startX, 360,120,100);
+            startX=(mediaBox.getWidth() - 120) / 2;
+            contents.drawImage(pdImage3, startX, 240,120,100);
+            //Closing the PDPageContentStream object
+            contents.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Image inserted");
+
+
+        page = new PDPage();
+          //Adding the blank page to the document
+        document.addPage( page );
+
+
+
+       // contents = new PDPageContentStream(document, page, AppendMode.APPEND, true, true);
+
+//        // Define the table structure first
+//
+//        TableBuilder tableBuilder = new TableBuilder();
+//        tableBuilder.addColumnOfWidth(25).setFontSize(8)
+//                .setFont(PDType1Font.HELVETICA);
+//        for(int i=0;i<gridData.getColumnHeaders().size();i++){
+//            tableBuilder.addColumnOfWidth(120);
+//            }
+//
+//
+//
+//        // Header ...
+//
+//        RowBuilder headerRow= new RowBuilder();
+//        headerRow.add(org.vandeseer.pdfbox.easytable.Cell.withText("S No").setHorizontalAlignment(CENTER));
+//
+//        for(int i=0;i<gridData.getColumnHeaders().size();i++){
+//            headerRow.add(org.vandeseer.pdfbox.easytable.Cell.withText(gridData.getColumnHeaders().get(i)).setHorizontalAlignment(CENTER));
+//        }
+//        headerRow.setBackgroundColor(java.awt.Color.YELLOW);
+//        tableBuilder.addRow(headerRow.build());
+////        tableBuilder.addRow(new RowBuilder()
+////                .add(org.vandeseer.pdfbox.easytable.Cell.withText("This is right aligned without a border").setHorizontalAlignment(RIGHT))
+////                .add(org.vandeseer.pdfbox.easytable.Cell.withText("And this is another cell"))
+////                .add(org.vandeseer.pdfbox.easytable.Cell.withText("Sum").setBackgroundColor(java.awt.Color.ORANGE))
+////                .setBackgroundColor(java.awt.Color.BLUE)
+////                .build());
+//
+////        for (int i = 0; i < 10; i++) {
+////            tableBuilder.addRow(new RowBuilder()
+////                    .add(org.vandeseer.pdfbox.easytable.Cell.withText(i).withAllBorders())
+////                    .add(org.vandeseer.pdfbox.easytable.Cell.withText(i * i).withAllBorders())
+////                    .add(org.vandeseer.pdfbox.easytable.Cell.withText(i + (i * i)).withAllBorders())
+////                    .setBackgroundColor(i % 2 == 0 ? java.awt.Color.LIGHT_GRAY : java.awt.Color.WHITE)
+////                    .build());
+////        }
+//
+//        // Define the starting point
+//        final float startY = page.getMediaBox().getHeight() - 50;
+//        final int startX = 50;
+//
+//// Draw!
+//        (new TableDrawer(contents, tableBuilder.build(), startX, startY)).draw();
+
+
+////Dummy Table
+//        float margin = 10;
+//// starting y position is whole page height subtracted by top and bottom margin
+//        float yStartNewPage = page.getMediaBox().getHeight() - (2 * margin);
+//// we want table across whole page width (subtracted by left and right margin ofcourse)
+//        float tableWidth = page.getMediaBox().getWidth() - (2 * margin);
+//
+//        boolean drawContent = true;
+//        float yStart = yStartNewPage;
+//        float bottomMargin = 70;
+//// y position is your coordinate of top left corner of the table
+//        float yPosition = 550;
+//
+//        BaseTable table = new BaseTable(yPosition, yStartNewPage, bottomMargin, tableWidth, margin, document, page, true, drawContent);
+//        be.quodlibet.boxable.Row<PDPage> headerRow = table.createRow(15f);
+//        be.quodlibet.boxable.Cell<PDPage> cell = headerRow.createCell(10, "S No");
+//        for(int i=0;i<gridData.getColumnHeaders().size();i++){
+//        cell = headerRow.createCell(15, gridData.getColumnHeaders().get(i));}
+//
+//        table.addHeaderRow(headerRow);
+//
+//
+//       // be.quodlibet.boxable.Row<PDPage> row = table.createRow(12);
+//        for(int i=0;i<gridData.getReportData().size();i++){
+//            be.quodlibet.boxable.Row<PDPage> row = table.createRow(12);
+//            cell = row.createCell(10, Integer.toString(i+1));
+//
+//            for(int j=0;j<gridData.getReportData().get(i).size();j++){
+//                cell=row.createCell(15,gridData.getReportData().get(i).get(j));
+//
+//            }
+//
+//        table.addHeaderRow(row);
+//        }
+//
+////        cell = row.createCell(30, "Data 1");
+////        cell = row.createCell(70, "Some value");
+//
+//        table.draw();
+
+       // System.out.println(gridData.getReportData().size()+"lololololololololololololololol");
+
+
+
+        float cellWidth=0;
+        float tableMargin=10;
+        float tableFont=7;
+        //contents.close();
+
+        if(gridData.getReportName().equalsIgnoreCase("MA Cumulative Summary")||gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener Month Wise")){
+            cellWidth=10f; tableMargin=60; tableFont=7;
+        } else if(gridData.getReportName().equalsIgnoreCase("MA Subscriber")||gridData.getReportName().equalsIgnoreCase("Kilkari Beneficiary Completion")){
+            cellWidth=12f; tableMargin=75;
+        } else if(gridData.getReportName().equalsIgnoreCase("MA Performance")||gridData.getReportName().equalsIgnoreCase("Kilkari Listening Matrix")){
+                cellWidth=15f; tableMargin=60;
+        }else if(gridData.getReportName().equalsIgnoreCase("Kilkari Thematic Content")||gridData.getReportName().equalsIgnoreCase("Kilkari Cumulative Summary")||gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix")){
+            cellWidth=15f; tableMargin=90;
+        }
+        else if(gridData.getReportName().equalsIgnoreCase("Kilkari Usage")||gridData.getReportName().equalsIgnoreCase("Kilkari Subscriber")||gridData.getReportName().equalsIgnoreCase("Kilkari Message Listenership")){
+            cellWidth=12f; tableMargin=45;
+        } else if(gridData.getReportName().equalsIgnoreCase("Kilkari Call")){
+            cellWidth=10f; tableMargin=30;
+        } else if(gridData.getReportName().equalsIgnoreCase("Kilkari Aggregate Beneficiaries")){
+            cellWidth=9f; tableMargin=30;
+        }
+
+        //System.out.println("this is the cellwidth " + gridData.getReportName());
+        PDPageContentStream stream = new PDPageContentStream(document, page);
+
+        String title=gridData.getReportName() + " Report";
+        float titleWidth=font.getStringWidth(title) / 1000 * fontSize;
+        float x=(page.getMediaBox().getWidth()-titleWidth)/2;
+        be.quodlibet.boxable.utils.PDStreamUtils.write(stream, title, font, fontSize, x, 700, java.awt.Color.BLACK);
+
+        //stream.newLine();
+       title="State : "+gridData.getStateName();
+         titleWidth=font1.getStringWidth(title) / 1000 * fontSize1;
+         x=(page.getMediaBox().getWidth()-titleWidth)/2;
+        be.quodlibet.boxable.utils.PDStreamUtils.write(stream, title, font1, fontSize1, x, 650, java.awt.Color.BLACK);
+        title="District : "+gridData.getDistrictName();
+        titleWidth=font1.getStringWidth(title) / 1000 * fontSize1;
+        x=(page.getMediaBox().getWidth()-titleWidth)/2;
+        be.quodlibet.boxable.utils.PDStreamUtils.write(stream, title, font1, fontSize1, x, 630, java.awt.Color.BLACK);
+        title="Block : "+gridData.getBlockName();
+        titleWidth=font1.getStringWidth(title) / 1000 * fontSize1;
+        x=(page.getMediaBox().getWidth()-titleWidth)/2;
+        be.quodlibet.boxable.utils.PDStreamUtils.write(stream, title, font1, fontSize1, x, 610, java.awt.Color.BLACK);
+        title="Period : "+gridData.getTimePeriod();
+        titleWidth=font1.getStringWidth(title) / 1000 * fontSize1;
+        x=(page.getMediaBox().getWidth()-titleWidth)/2;
+        be.quodlibet.boxable.utils.PDStreamUtils.write(stream, title, font1, fontSize1, x, 590, java.awt.Color.BLACK);
+
+        float margin = 10;
+
+
+
+
+        float yStartNewPage = page.getMediaBox().getHeight() - (2 * margin);
+
+        // Initialize table
+
+        if(gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix")){
+            title="Kilkari Pregnancy Content Data";
+            titleWidth=font1.getStringWidth(title) / 1000 * fontSize1;
+            x=(page.getMediaBox().getWidth()-titleWidth)/2;
+            be.quodlibet.boxable.utils.PDStreamUtils.write(stream, title, font, fontSize1, x, 540, java.awt.Color.BLACK);
+
+        }
+
+        if(gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener Month Wise")){
+            title="Beneficiary Count";
+            titleWidth=font1.getStringWidth(title) / 1000 * fontSize1;
+            x=(page.getMediaBox().getWidth()-titleWidth)/2;
+            be.quodlibet.boxable.utils.PDStreamUtils.write(stream, title, font, fontSize1, x, 540, java.awt.Color.BLACK);
+
+        }
+        stream.close();
+
+        float tableWidth = page.getMediaBox().getWidth() - (2 * 50);
+        cellWidth=tableWidth/(gridData.getColumnHeaders().size()+1)/5;
+        boolean drawContent = true;
+        float yStart = 500;
+        float bottomMargin = 50;
+        BaseTable table = new BaseTable(yStart, yStartNewPage, bottomMargin, tableWidth, tableMargin, document, page, true,
+                drawContent);
+
+        System.out.println("Tablewidthhhhhhhhhhhhhhhhhhhhh"+tableWidth);
+        System.out.println("cellwidthhhhhhhhhhh"+cellWidth);
+
+
+        // Create Header row
+        be.quodlibet.boxable.Row<PDPage> headerRow = table.createRow(15f);
+       be.quodlibet.boxable.Cell<PDPage> cell = headerRow.createCell((8), "S No",be.quodlibet.boxable.HorizontalAlignment.get("center"),be.quodlibet.boxable.VerticalAlignment.get("middle"));
+        for(int i=0;i<gridData.getColumnHeaders().size();i++){
+        cell = headerRow.createCell(cellWidth, gridData.getColumnHeaders().get(i),be.quodlibet.boxable.HorizontalAlignment.get("center"),be.quodlibet.boxable.VerticalAlignment.get("middle"));
+        cell.setFontSize(tableFont);
+            cell.setFont(PDType1Font.TIMES_BOLD);
+            cell.setFillColor( java.awt.Color.LIGHT_GRAY);
+
+//            cell.setFont(PDType1Font.HELVETICA_BOLD);
+
+//            cell.setTextColor(java.awt.Color.WHITE);
+        }
+//
+
+
+
+        // Create 2 column row
+        be.quodlibet.boxable.Row<PDPage> row ;
+
+
+        for(int i=0;i<gridData.getReportData().size();i++){
+            row = table.createRow(10f);
+            cell = row.createCell((8) , Integer.toString(i+1) ,be.quodlibet.boxable.HorizontalAlignment.get("center"),be.quodlibet.boxable.VerticalAlignment.get("middle"));
+            for(int j=0;j<gridData.getReportData().get(i).size();j++){
+                cell=row.createCell((cellWidth),gridData.getReportData().get(i).get(j),be.quodlibet.boxable.HorizontalAlignment.get("center"),be.quodlibet.boxable.VerticalAlignment.get("middle"));
+                cell.setFontSize(tableFont);
+
+            }
+
+
+        }
+
+        table.draw();
+
+        if(gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener Month Wise")){
+            page = new PDPage();
+            //Adding the blank page to the document
+            document.addPage( page );
+             stream = new PDPageContentStream(document, page);
+            yStart=yStartNewPage;
+            tableWidth = page.getMediaBox().getWidth() - (2 * 50);
+
+            title="Beneficiary Percentage";
+            titleWidth=font1.getStringWidth(title) / 1000 * fontSize1;
+            x=(page.getMediaBox().getWidth()-titleWidth)/2;
+            be.quodlibet.boxable.utils.PDStreamUtils.write(stream, title, font, fontSize1, x, yStart, java.awt.Color.BLACK);
+            stream.close();
+            table = new BaseTable(yStart-30, yStartNewPage, bottomMargin, tableWidth, tableMargin, document, page, true,
+                    drawContent);
+
+            // Create Header row
+             headerRow = table.createRow(15f);
+             cell = headerRow.createCell(8f, "S No",be.quodlibet.boxable.HorizontalAlignment.get("center"),be.quodlibet.boxable.VerticalAlignment.get("middle"));
+            for(int i=0;i<gridData.getColumnHeaders1().size();i++){
+                cell = headerRow.createCell(cellWidth, gridData.getColumnHeaders1().get(i),be.quodlibet.boxable.HorizontalAlignment.get("center"),be.quodlibet.boxable.VerticalAlignment.get("middle"));
+                cell.setFontSize(tableFont);
+            cell.setFont(PDType1Font.TIMES_BOLD);
+//            cell.setFillColor(java.awt.Color.BLACK);
+//            cell.setTextColor(java.awt.Color.WHITE);
+            }
+
+
+            for(int i=0;i<gridData.getReportData1().size();i++){
+                row = table.createRow(10f);
+                cell = row.createCell(8f , Integer.toString(i+1) ,be.quodlibet.boxable.HorizontalAlignment.get("center"),be.quodlibet.boxable.VerticalAlignment.get("middle"));
+
+                for(int j=0;j<gridData.getReportData1().get(i).size();j++){
+                    cell=row.createCell((cellWidth),gridData.getReportData1().get(i).get(j),be.quodlibet.boxable.HorizontalAlignment.get("center"),be.quodlibet.boxable.VerticalAlignment.get("middle"));
+                    cell.setFontSize(tableFont);
+
+                }
+
+
+            }
+            table.draw();
+
+
+
+        }
+
+        if(gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix")){
+            page = new PDPage();
+            cellWidth=12; tableMargin=60;
+            //Adding the blank page to the document
+            document.addPage( page );
+            stream = new PDPageContentStream(document, page);
+            yStart=yStartNewPage;
+            tableWidth = page.getMediaBox().getWidth() - (2 * 50);
+
+            title="Kilkari Child Content Data";
+            titleWidth=font1.getStringWidth(title) / 1000 * fontSize1;
+            x=(page.getMediaBox().getWidth()-titleWidth)/2;
+            be.quodlibet.boxable.utils.PDStreamUtils.write(stream, title, font, fontSize1, x, yStart, java.awt.Color.BLACK);
+            stream.close();
+            table = new BaseTable(yStart-30, yStartNewPage, bottomMargin, tableWidth, tableMargin, document, page, true,
+                    drawContent);
+
+            // Create Header row
+            headerRow = table.createRow(15f);
+            cell = headerRow.createCell((8), "S No",be.quodlibet.boxable.HorizontalAlignment.get("center"),be.quodlibet.boxable.VerticalAlignment.get("middle"));
+            for(int i=0;i<gridData.getColumnHeaders1().size();i++){
+                cell = headerRow.createCell(cellWidth, gridData.getColumnHeaders1().get(i),be.quodlibet.boxable.HorizontalAlignment.get("center"),be.quodlibet.boxable.VerticalAlignment.get("middle"));
+                cell.setFontSize(tableFont);
+                cell.setFont(PDType1Font.TIMES_BOLD);
+//            cell.setFillColor(java.awt.Color.BLACK);
+//            cell.setTextColor(java.awt.Color.WHITE);
+            }
+
+
+            for(int i=0;i<gridData.getReportData1().size();i++){
+                row = table.createRow(10f);
+                cell = row.createCell((8) , Integer.toString(i+1) ,be.quodlibet.boxable.HorizontalAlignment.get("center"),be.quodlibet.boxable.VerticalAlignment.get("middle"));
+
+                for(int j=0;j<gridData.getReportData1().get(i).size();j++){
+                    cell=row.createCell((cellWidth),gridData.getReportData1().get(i).get(j),be.quodlibet.boxable.HorizontalAlignment.get("center"),be.quodlibet.boxable.VerticalAlignment.get("middle"));
+                    cell.setFontSize(tableFont);
+
+                }
+
+
+            }
+            table.draw();
+
+
+
+        }
+
+
+
+        try {document.save("/home/beehyv/Documents/sample.pdf");
+            document.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
     private void cleanBeforeMergeOnValidCells(XSSFSheet sheet,CellRangeAddress region, XSSFCellStyle cellStyle )
     {
         for(int rowNum =region.getFirstRow();rowNum<=region.getLastRow();rowNum++){
@@ -610,6 +1007,73 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
 
 
     }
+//    private static void addImage(){
+//
+//
+//        float startY = mediaBox.getHeight() - marginTop - titleHeight;
+//
+//    }
 
+
+    private static List<String[]> getFacts() {
+        List<String[]> facts = new ArrayList<String[]>();
+        facts.add(new String[] { "Oil Painting was invented by the Belgian van Eyck brothers", "art", "inventions",
+                "science" });
+        facts.add(new String[] { "The Belgian Adolphe Sax invented the Saxophone", "inventions", "music", "" });
+        facts.add(new String[] { "11 sites in Belgium are on the UNESCO World Heritage List", "art", "history", "" });
+        facts.add(new String[] { "Belgium was the second country in the world to legalize same-sex marriage",
+                "politics", "image:150dpi.png", "" });
+        facts.add(new String[] { "In the seventies, schools served light beer during lunch", "health", "school",
+                "beer" });
+        facts.add(new String[] { "Belgium has the sixth fastest domestic internet connection in the world", "science",
+                "technology", "" });
+        facts.add(new String[] { "Belgium hosts the World's Largest Sand Sculpture Festival", "art", "festivals",
+                "world championship" });
+        facts.add(
+                new String[] { "Belgium has compulsary education between the ages of 6 and 18", "education", "", "" });
+        facts.add(new String[] {
+                "Belgium also has more comic makers per square kilometer than any other country in the world", "art",
+                "social", "world championship" });
+        facts.add(new String[] {
+                "Belgium has one of the lowest proportion of McDonald's restaurants per inhabitant in the developed world",
+                "food", "health", "" });
+        facts.add(new String[] { "Belgium has approximately 178 beer breweries", "beer", "food", "" });
+        facts.add(new String[] { "Gotye was born in Bruges, Belgium", "music", "celebrities", "" });
+        facts.add(new String[] { "The Belgian Coast Tram is the longest tram line in the world", "technology",
+                "world championship", "" });
+        facts.add(new String[] { "Stefan Everts is the only motocross racer with 10 World Championship titles.",
+                "celebrities", "sports", "world champions" });
+        facts.add(new String[] { "Tintin was conceived by Belgian artist Hergé", "art", "celebrities", "inventions" });
+        facts.add(new String[] { "Brussels Airport is the world's biggest selling point of chocolate", "food",
+                "world champions", "" });
+        facts.add(new String[] { "Tomorrowland is the biggest electronic dance music festival in the world",
+                "festivals", "music", "world champion" });
+        facts.add(new String[] { "French Fries are actually from Belgium", "food", "inventions", "image:300dpi.png" });
+        facts.add(new String[] { "Herman Van Rompy is the first full-time president of the European Council",
+                "politics", "", "" });
+        facts.add(new String[] { "Belgians are the fourth most money saving people in the world", "economy", "social",
+                "" });
+        facts.add(new String[] {
+                "The Belgian highway system is the only man-made structure visible from the moon at night",
+                "technology", "world champions", "" });
+        facts.add(new String[] { "Andreas Vesalius, the founder of modern human anatomy, is from Belgium",
+                "celebrities", "education", "history" });
+        facts.add(
+                new String[] { "Napoleon was defeated in Waterloo, Belgium", "celebrities", "history", "politicians" });
+        facts.add(new String[] {
+                "The first natural color picture in National Geographic was of a flower garden in Gent, Belgium in 1914",
+                "art", "history", "science" });
+        facts.add(new String[] { "Rock Werchter is the Best Festival in the World", "festivals", "music",
+                "world champions" });
+
+        // Make the table a bit bigger
+        facts.addAll(facts);
+        facts.addAll(facts);
+        facts.addAll(facts);
+
+        return facts;
+    }
 }
+
+
 

@@ -8,6 +8,7 @@ import com.beehyv.nmsreporting.enums.AccessType;
 import com.beehyv.nmsreporting.enums.ModificationType;
 import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.*;
+import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ import java.util.*;
 import static com.beehyv.nmsreporting.utils.Global.retrieveDocuments;
 import static com.beehyv.nmsreporting.utils.ServiceFunctions.StReplace;
 import static com.beehyv.nmsreporting.utils.ServiceFunctions.dateAdder;
-
+import org.apache.pdfbox.pdmodel.PDDocument;
 /**
  * Created by beehyv on 15/3/17.
  */
@@ -881,6 +882,31 @@ public class UserController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return "success";
+    }
+
+    @RequestMapping(value = "/downloadAggPdf", method = RequestMethod.POST,produces = "application/pdf")
+    @ResponseBody
+    public String downloadAggregatesPdf(@RequestBody AggregateExcelDto data, HttpServletResponse response) throws ParseException, java.text.ParseException {
+        response.setContentType("application/pdf");
+
+//Creating PDF document object
+        PDDocument document = new PDDocument();
+
+
+        //Saving the document
+        try {
+            aggregateReportsService.createSpecificAggreagatePdf(document,data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+        //Closing the document
+
+
         return "success";
     }
 
