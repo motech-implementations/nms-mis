@@ -1731,6 +1731,175 @@
             exportUiGridService.exportToPdf1($scope.gridApi,$scope.gridApi1,excelHeaderName,$scope.reportCategory,$scope.matrixContent1,$scope.matrixContent2,uiGridExporterConstants,'visible', 'visible',fileName1,rejectionStart);
             };
 
+        $scope.exportToPdf1 = function(){
+
+                columns = $scope.gridApi.grid.options.showHeader ? uiGridExporterService.getColumnHeaders($scope.gridApi.grid, 'visible') : [];
+
+                var headers=[]
+                columns.forEach(function (c) {
+                                        headers.push( c.displayName || c.value || columns[i].name);
+                                    }, this);
+                ExcelData.columnHeaders = headers;
+
+                var exportData = uiGridExporterService.getData($scope.gridApi.grid, "visible", "visible");
+                var data = [];
+
+                for (i = 0; i < exportData.length; i++) {
+                       var temprow=[];
+                       for (j = 0; j < exportData[i].length; j++) {
+                              var temp = exportData[i][j].value;
+                                    if((excelHeaderName.reportName == "Kilkari Call" && (j == "7"||j == "8") )||
+                                        (excelHeaderName.reportName == "MA Cumulative Summary" && (j == "6"||j == "7"||j == "8"))||
+                                        (excelHeaderName.reportName == "Kilkari Cumulative Summary" && (j == "4"||j == "3") )||
+                                        (excelHeaderName.reportName == "Kilkari Thematic Content" && (j == "4") )||
+                                        (excelHeaderName.reportName == "Kilkari Beneficiary Completion" && (j == "2") )){
+                                         temp = (temp.toFixed(2));
+                                    }
+                           temprow.push(temp);
+                       }
+                       data.push(temprow);
+                    }
+            ExcelData.reportData = data;
+
+            var footerData = [];
+                        var v;
+                                if(excelHeaderName.reportName != "Kilkari Message Matrix" && excelHeaderName.reportName != "Kilkari Listening Matrix" && excelHeaderName.reportName != "Kilkari Repeat Listener Month Wise"&& excelHeaderName.reportName != "Kilkari Thematic Content"){
+                                    $scope.gridApi.grid.columns.forEach(function (ft) {
+
+                                       if(ft.displayName == "State" || ft.displayName == "District" || ft.displayName == "Block" || ft.displayName == "Subcenter" || ft.displayName == "Message Number (Week)" )
+                                           v = "Total";
+
+                                       else if(ft.displayName == "Average Duration Of Call" && excelHeaderName.reportName == "Kilkari Cumulative Summary"){
+                                           var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[4].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue());
+                                           v = (temp.toFixed(2));
+                                       }
+                                       else if(ft.displayName == "Average Number Of Weeks In Service" && excelHeaderName.reportName == "Kilkari Beneficiary Completion"){
+                                           var temp = $scope.gridApi.grid.columns.length==0?0.00: ($scope.gridApi.grid.columns[3].getAggregationValue());
+                                           v = (temp.toFixed(2));
+                                       }
+                                       else if(ft.displayName == "Average Duration Of Calls" && excelHeaderName.reportName == "Kilkari Call"){
+                                           var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[8].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue());
+                                           v = (temp.toFixed(2));
+                                       }
+                                       else if(ft.displayName == "Total Billable Minutes" && excelHeaderName.reportName == "Kilkari Call"){
+                                           var temp = ft.getAggregationValue();
+                                           v = (temp.toFixed(2));
+                                       }
+                                       else if(ft.displayName == "Total Billable Minutes Played" && excelHeaderName.reportName == "Kilkari Cumulative Summary"){
+                                           var temp = ft.getAggregationValue();
+                                           v = (temp.toFixed(2));
+                                       }
+                                       else if(ft.displayName == "Total Beneficiary Records Rejected" && excelHeaderName.reportName == "Kilkari Subscriber"&&!rejectionStart){
+                                           v = "N/A";
+                                       }
+                                       else if(ft.displayName == "% Not Started Course" && excelHeaderName.reportName == "MA Cumulative Summary"){
+                                          var temp = $scope.gridApi.grid.columns[2].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[4].getAggregationValue()/$scope.gridApi.grid.columns[2].getAggregationValue())*100;
+                                          v = (temp.toFixed(2));
+                                       }
+                                       else if(ft.displayName == "% Successfully Completed" && excelHeaderName.reportName == "MA Cumulative Summary"){
+                                          var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00:($scope.gridApi.grid.columns[5].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue())*100;
+                                          v = (temp.toFixed(2));
+                                       }
+                                       else if(ft.displayName == "% Failed the course" && excelHeaderName.reportName == "MA Cumulative Summary"){
+                                          var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00:($scope.gridApi.grid.columns[6].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue())*100;
+                                          v = (temp.toFixed(2));
+                                       }
+                                       else{
+                                           v = ft.getAggregationValue();
+                                       }
+
+                                       if(ft.displayName != "S No."){
+                                            footerData.push(v);
+                                       }
+
+                                   }, this);
+
+                                }
+                if(excelHeaderName.reportName == "Kilkari Message Matrix" ||  excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise"){
+                columns1 = $scope.gridApi1.grid.options.showHeader ? uiGridExporterService.getColumnHeaders($scope.gridApi1.grid, 'visible') : [];
+
+                var headers1=[]
+                columns1.forEach(function (c) {
+                                        headers1.push( c.displayName || c.value || columns1[i].name);
+                                    }, this);
+                ExcelData.columnHeaders1 = headers1;
+
+                var exportData1 = uiGridExporterService.getData($scope.gridApi1.grid, "visible", "visible");
+                var data1 = [];
+
+                for (i = 0; i < exportData1.length; i++) {
+                       var temprow1=[];
+                       for (j = 0; j < exportData1[i].length; j++) {
+                              var temp1 = exportData1[i][j].value;
+                                    if((excelHeaderName.reportName == "Kilkari Call" && (j == "7"||j == "8") )||
+                                        (excelHeaderName.reportName == "MA Cumulative Summary" && (j == "6"||j == "7"||j == "8"))||
+                                        (excelHeaderName.reportName == "Kilkari Cumulative Summary" && (j == "4"||j=="3") )||
+                                        (excelHeaderName.reportName == "Kilkari Thematic Content" && (j == "4") )||
+                                        (excelHeaderName.reportName == "Kilkari Beneficiary Completion" && (j == "2") )){
+                                         temp1 = (temp1.toFixed(2));
+                                    }
+                           temprow1.push(temp1);
+                       }
+                       data1.push(temprow1);
+                    }
+            ExcelData.reportData1 = data1;}else{
+            ExcelData.columnHeaders1 = [];
+            ExcelData.reportData1 = [];
+            }
+
+                  var months    = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                  var toDateString = $scope.headerToDate.getDate()<10?"0"+$scope.headerToDate.getDate():$scope.headerToDate.getDate();
+
+                  if($scope.report.reportEnum == 'Kilkari_Cumulative_Summary'||$scope.report.reportEnum == 'MA_Cumulative_Summary'){
+                   excelHeaderName.timePeriod = "till "+toDateString+" "+months[$scope.headerToDate.getMonth()]+" "+$scope.headerToDate.getFullYear();}
+                  else{
+                  var fromDateString = $scope.headerFromDate.getDate()<10?"0"+$scope.headerFromDate.getDate():$scope.headerFromDate.getDate();
+                  excelHeaderName.timePeriod = fromDateString+" "+months[$scope.headerFromDate.getMonth()]+" "+$scope.headerFromDate.getFullYear()+
+                  " to "+toDateString+" "+months[$scope.headerToDate.getMonth()]+" "+$scope.headerToDate.getFullYear();
+                  }
+
+                  ExcelData.colunmFooters = footerData;
+                  ExcelData.stateName = excelHeaderName.stateName;
+                  ExcelData.districtName = excelHeaderName.districtName;
+                  ExcelData.blockName = excelHeaderName.blockName;
+                  ExcelData.reportName = excelHeaderName.reportName;
+                  ExcelData.timePeriod = excelHeaderName.timePeriod;
+
+                $http({
+                                    method  : 'POST',
+                                    url     : backend_root + 'nms/user/downloadAggPdf',
+                                    data    : ExcelData, //forms user object
+//                                    responseType: 'arraybuffer',
+                                    headers : {'Content-Type': 'application/json '}
+                                }).then(function(response){
+                                //console.log(response);
+
+//                                     var fileName = $scope.gridApi.grid.options.exporterExcelFilename ? $scope.gridApi.grid.options.exporterExcelFilename : 'dokuman';
+//                                                         fileName = fileName.replace("*","");
+//                                                         fileName += '.xlsx';
+//
+//                                         saveAs(new Blob([response.data], {
+//                                                                 type: 'application/octet-stream'
+//                                                             }), fileName);
+//
+//                                         if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+//                                             window.navigator.msSaveOrOpenBlob(blob, fileName);
+//                                         } else {
+//                                             var objectUrl = URL.createObjectURL(blob);
+//                                             window.open(objectUrl);
+//                                         }
+                                     if(response.data=="success"){
+
+                                                                          alert("done");}
+                                     }
+
+                                );
+
+                  // exportUiGridService.exportToExcel('sheet 1', $scope.gridApi,$scope.gridApi1, 'visible', 'visible', excelHeaderName);
+
+            }
+
+
             var canceler = $q.defer();
             $scope.gridOptions1 = {
                 enableSorting: true,
