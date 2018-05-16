@@ -1167,7 +1167,10 @@
 					         $scope.gridOptions1.columnDefs = $scope.Kilkari_Listening_Matrix_Definitions;
 					    }
 					    else if($scope.report.reportEnum == 'Kilkari_Subscriber'){
-                             $scope.gridOptions1.columnDefs = $scope.Kilkari_Subscriber_Definitions;
+					        if(!rejectionStart)
+                                {$scope.gridOptions1.columnDefs = $scope.Kilkari_Subscriber_Definitions;}
+                            if(rejectionStart)
+                                {$scope.gridOptions1.columnDefs = $scope.Kilkari_Subscriber_Definitions2;}
                         }
                         else if($scope.report.reportEnum == 'Kilkari_Message_Listenership'){
                              $scope.gridOptions1.columnDefs = $scope.Kilkari_Message_Listenership_Definitions;
@@ -1542,7 +1545,7 @@
                 $scope.sundaysTable = false;
             });
 
-            $scope.exportToExcel = function(){
+            $scope.exportDataFn = function(){
 
                 columns = $scope.gridApi.grid.options.showHeader ? uiGridExporterService.getColumnHeaders($scope.gridApi.grid, 'visible') : [];
 
@@ -1677,6 +1680,10 @@
                   ExcelData.timePeriod = excelHeaderName.timePeriod;
                   ExcelData.fileName = $scope.gridApi.grid.options.exporterExcelFilename ? $scope.gridApi.grid.options.exporterExcelFilename : 'dokuman';
 
+            }
+
+            $scope.exportToExcel = function(){
+                $scope.exportDataFn();
                 $http({
                                     method  : 'POST',
                                     url     : backend_root + 'nms/user/generateAgg',
@@ -1690,12 +1697,8 @@
                                        window.location.href = backend_root + 'nms/user/downloadAgg?fileName='+fileName;
 
                                     }
-
-
-                                     }
+                                    }
                                 );
-
-                  // exportUiGridService.exportToExcel('sheet 1', $scope.gridApi,$scope.gridApi1, 'visible', 'visible', excelHeaderName);
 
             }
 
@@ -2085,7 +2088,7 @@
                                                      { field: 'beneficiariesAnsweredNoCalls', name: 'Beneficiaries who have not answered any calls', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
             ]
 
-            if(!rejectionStart){$scope.Kilkari_Subscriber_Definitions = [
+            $scope.Kilkari_Subscriber_Definitions = [
                                                      {name: 'S No.', displayName: 'S No.',width:"4%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
                                                      { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents">Total</div>',defaultSort: { direction: uiGridConstants.ASC },
                                                         cellTemplate:'<a   ng-if= !row.entity.link class="btn aggregate-location" title="{{COL_FIELD}}"  ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a><p ng-if= row.entity.link class="ui-grid-cell-contents" title="{{COL_FIELD}}" >{{ COL_FIELD }}</p>',
@@ -2098,8 +2101,8 @@
                                                      { field: 'totalBeneficiaryRecordsAccepted', name: 'Total beneficiary Records accepted As Subscriptions', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                      { field: 'totalSubscriptionsCompleted', name: 'Total number of subscriptions who have completed their packs', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                      { field: 'totalSubscriptionsEnd', name: 'Total Subscription at the end of the period', width:"10%", cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, enableHiding: false },
-            ]}else{
-            $scope.Kilkari_Subscriber_Definitions = [
+            ]
+            $scope.Kilkari_Subscriber_Definitions2 = [
                                                      {name: 'S No.', displayName: 'S No.',width:"4%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
                                                      { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents">Total</div>',defaultSort: { direction: uiGridConstants.ASC },
                                                         cellTemplate:'<a   ng-if= !row.entity.link class="btn aggregate-location" title="{{COL_FIELD}}"  ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a><p ng-if= row.entity.link class="ui-grid-cell-contents" title="{{COL_FIELD}}" >{{ COL_FIELD }}</p>',
@@ -2113,7 +2116,7 @@
                                                      { field: 'totalSubscriptionsCompleted', name: 'Total number of subscriptions who have completed their packs', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                      { field: 'totalSubscriptionsEnd', name: 'Total Subscription at the end of the period', width:"10%", cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, enableHiding: false },
             ]
-            }
+
 
             $scope.Kilkari_Thematic_Content_Definitions = [
                                                     // {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
