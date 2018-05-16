@@ -110,6 +110,13 @@
                      return true;
                     else
                      return false;
+                },
+
+                isInternetExplorer9 : function(){
+                                    if(deviceDetector.browser === "ie" && (deviceDetector.browser_version == "9.0"))
+                                     return true;
+                                    else
+                                     return false;
                 }
 
 			};

@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 
 import static com.beehyv.nmsreporting.utils.Global.retrieveDocuments;
 import static com.beehyv.nmsreporting.utils.ServiceFunctions.StReplace;
-import static com.beehyv.nmsreporting.utils.Constants.image_base64;
+import static com.beehyv.nmsreporting.utils.Constants.header_base64;
 import static java.lang.Integer.parseInt;
 
 /**
@@ -2588,7 +2588,7 @@ public class AdminServiceImpl implements AdminService {
 
 
             String encodingPrefix = "base64,";
-            String pngImageURL = image_base64;
+            String pngImageURL = header_base64;
             int contentStartIndex = pngImageURL.indexOf(encodingPrefix) + encodingPrefix.length();
             byte[] imageData = org.apache.commons.codec.binary.Base64.decodeBase64(pngImageURL.substring(contentStartIndex));//workbook.addPicture can use this byte array
 
