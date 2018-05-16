@@ -858,7 +858,7 @@ public class UserController {
         return "success";
     }
 
-    @RequestMapping(value = "/downloadAgg", method = RequestMethod.POST,produces = "application/vnd.ms-excel")
+    @RequestMapping(value = "/generateAgg", method = RequestMethod.POST,produces = "application/vnd.ms-excel")
     @ResponseBody
     public String generateAggregates(@RequestBody AggregateExcelDto data, HttpServletResponse response) throws ParseException, java.text.ParseException {
         response.setContentType("APPLICATION/OCTECT-STREAM");
@@ -898,6 +898,70 @@ public class UserController {
     @RequestMapping(value = "/downloadAgg", method = RequestMethod.GET,produces = "application/vnd.ms-excel")
     @ResponseBody
     public String downloadAggregates(HttpServletResponse response, @DefaultValue("") @QueryParam("fileName") String fileName) throws ParseException, java.text.ParseException {
+//        adminService.getBulkDataImportCSV();
+        response.setContentType("APPLICATION/OCTECT-STREAM");
+        if (StringUtils.isEmpty(fileName)) {
+            fileName = "";
+            return "fail";
+        }
+        try {
+            ServletOutputStream out = response.getOutputStream();
+            response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\"");
+            FileInputStream fl = new FileInputStream(reports+"/Aggregates/"+fileName);
+            int i;
+            while ((i = fl.read()) != -1) {
+                out.write(i);
+            }
+            fl.close();
+            out.close();
+            //workbook.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            File file = new File(reports + "/Aggregates/" + fileName);
+            file.delete();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        return "success";
+    }
+
+    @RequestMapping(value = "/downloadAggPdf", method = RequestMethod.POST,produces = "application/pdf")
+    @ResponseBody
+    public String downloadAggregatesPdf(@RequestBody AggregateExcelDto data, HttpServletResponse response) throws ParseException, java.text.ParseException {
+        response.setContentType("application/pdf");
+
+//Creating PDF document object
+        PDDocument document = new PDDocument();
+
+
+        //Saving the document
+        try {
+            aggregateReportsService.createSpecificAggreagatePdf(document,data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        File dir = new File(reports+"/Aggregates");
+        if (!dir.exists())
+            dir.mkdirs();
+        try {document.save(reports + "/Aggregates/"+data.getFileName()+".pdf");
+            document.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        //Closing the document
+
+
+        return "success";
+    }
+
+    @RequestMapping(value = "/downloadpdf", method = RequestMethod.GET,produces = "application/pdf")
+    @ResponseBody
+    public String downloadpdf1(HttpServletResponse response, @DefaultValue("") @QueryParam("fileName") String fileName) throws ParseException, java.text.ParseException {
 //        adminService.getBulkDataImportCSV();
         response.setContentType("APPLICATION/OCTECT-STREAM");
         if (StringUtils.isEmpty(fileName)) {

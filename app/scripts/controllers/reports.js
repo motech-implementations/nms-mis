@@ -169,6 +169,10 @@
 			$scope.footerBold = function(){
             	return $scope.report.reportEnum == 'Kilkari_Thematic_Content'|| $scope.report.reportEnum == 'Kilkari_Listening_Matrix';
             }
+
+            $scope.isIE9 = function(){
+                return UserFormFactory.isInternetExplorer9();
+            }
 			
 			$scope.reportsLoading = true;
 			UserFormFactory.getReportsMenu()
@@ -1752,7 +1756,7 @@
                        }
                        data.push(temprow);
                     }
-            ExcelData.reportData = data;
+
 
             var footerData = [];
                         var v;
@@ -1808,6 +1812,13 @@
                                    }, this);
 
                                 }
+
+        if(excelHeaderName.reportName != "Kilkari Message Matrix" && excelHeaderName.reportName != "Kilkari Listening Matrix" && excelHeaderName.reportName != "Kilkari Repeat Listener Month Wise"&& excelHeaderName.reportName != "Kilkari Thematic Content"){
+              data.push(footerData);
+        }
+
+
+                                ExcelData.reportData = data;
                 if(excelHeaderName.reportName == "Kilkari Message Matrix" ||  excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise"){
                 columns1 = $scope.gridApi1.grid.options.showHeader ? uiGridExporterService.getColumnHeaders($scope.gridApi1.grid, 'visible') : [];
 
@@ -1857,7 +1868,7 @@
                   ExcelData.blockName = excelHeaderName.blockName;
                   ExcelData.reportName = excelHeaderName.reportName;
                   ExcelData.timePeriod = excelHeaderName.timePeriod;
-
+ExcelData.fileName = $scope.gridApi.grid.options.exporterExcelFilename ? $scope.gridApi.grid.options.exporterExcelFilename : 'dokuman';
                 $http({
                                     method  : 'POST',
                                     url     : backend_root + 'nms/user/downloadAggPdf',
@@ -1882,8 +1893,10 @@
 //                                             window.open(objectUrl);
 //                                         }
                                      if(response.data=="success"){
-
-                                                                          alert("done");}
+             var fileName = $scope.gridApi.grid.options.exporterExcelFilename ? $scope.gridApi.grid.options.exporterExcelFilename : 'dokuman';
+                                                   fileName += '.pdf';
+                                                   window.location.href = backend_root + 'nms/user/downloadpdf?fileName='+fileName;
+                                                                         }
                                      }
 
                                 );
