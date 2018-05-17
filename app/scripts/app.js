@@ -9,7 +9,7 @@
  * Main module of the application.
  */
 var nmsReportsApp = angular
-	.module('nmsReports', ['ui.bootstrap', 'ui.validate', 'ngMessages', 'ui.router', 'ui.grid', 'ngMaterial','ng.deviceDetector','ui.grid.exporter', 'ngStorage','ngAnimate','$idle'])
+	.module('nmsReports', ['ui.bootstrap', 'ui.validate', 'ngMessages', 'ui.router', 'ui.grid', 'ngMaterial','ngFileUpload','ng.deviceDetector','ui.grid.exporter', 'ngStorage','ngAnimate','$idle'])
 	.run( ['$rootScope', '$state', '$stateParams','$idle','$http','$window',
 		function ($rootScope, $state, $stateParams,$idle,$http,$window) {
 			$rootScope.$state = $state;

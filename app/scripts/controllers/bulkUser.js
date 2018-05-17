@@ -1,7 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("BulkUserController", ['$scope', '$state', 'UserFormFactory', '$http', function($scope, $state, UserFormFactory, $http){
+		.controller("BulkUserController", ['$scope', '$state','Upload', 'UserFormFactory', '$http', function($scope, $state,Upload, UserFormFactory, $http){
 			
 			UserFormFactory.isLoggedIn()
 			.then(function(result){
@@ -10,18 +10,18 @@
 				}
 			})
 
-			var formdata = new FormData();
-			$scope.getTheFiles = function ($files) {
-				angular.forEach($files, function (value, key) {
-					formdata.append(key, value);
-				});
-			};
+//			var formdata = new FormData();
+//			$scope.getTheFiles = function ($files) {
+//				angular.forEach($files, function (value, key) {
+//					formdata.append(key, value);
+//				});
+//			};
 
 			$scope.uploadFile = function(){
-				var file = $scope.myFile;
-				var fd = new FormData();
+				var file1 = $scope.myFile;
 
-				if(file == null){
+
+				if(file1 == null){
                     if(UserFormFactory.isInternetExplorer()){
                         alert("Please select a CSV file")
                          return;
@@ -32,19 +32,15 @@
                     }
 				}
 
-				fd.append('bulkCsv', file);
-	//We can send anything in name parameter, 
-//it is hard coded to abc as it is irrelavant in this case.
+
 				var uploadUrl = backend_root + "nms/admin/uploadFile";
-				$http.post(uploadUrl, fd, {
-					transformRequest: angular.identity,
-					headers: {'Content-Type': undefined}
-				})
-				.then(function(result){
-					$scope.listErrors(result.data)
-				})
-				// .error(function(){
-				// });
+
+				Upload.upload({
+                            url: uploadUrl,
+                            data: {bulkCsv: file1}
+                        }).then(function (resp) {
+                        $scope.listErrors(resp.data)
+                        });
 			}
 
 			$scope.downloadTemplateUrl = backend_root + 'nms/admin/getBulkDataImportCSV'
@@ -69,18 +65,7 @@
 				}
 			}
 		}])
-		// .directive('ngFiles', ['$parse', function ($parse) {
-		// 	function fn_link(scope, element, attrs) {
-		// 		var onChange = $parse(attrs.ngFiles);
-		// 		element.on('change', function (event) {
-		// 			onChange(scope, { $files: event.target.files });
-		// 		});
-		// 	};
 
-		// 	return {
-		// 		link: fn_link
-		// 	}
-		// } ])
 		.directive('fileModel', ['$parse', function ($parse) {
 			return {
 				restrict: 'A',

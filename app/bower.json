@@ -19,6 +19,7 @@
     "ngstorage": "^0.3.11",
     "angular-ui-carousel": "^0.1.10",
     "pdfmake": "^0.1.36",
-    "angular-idle-service": "^1.0.4"
+    "angular-idle-service": "^1.0.4",
+    "ng-file-upload": "^12.2.13"
   }
 }
