@@ -1754,8 +1754,11 @@
                                         (excelHeaderName.reportName == "Kilkari Cumulative Summary" && (j == "4"||j == "3") )||
                                         (excelHeaderName.reportName == "Kilkari Thematic Content" && (j == "4") )||
                                         (excelHeaderName.reportName == "Kilkari Beneficiary Completion" && (j == "2") )){
-                                         temp = (temp.toFixed(2));
-                                    }
+                                         temp = Number(temp);
+                                         temp = indianDecimal(temp);
+                                    }else if((j!="0")&&!(excelHeaderName.reportName == "Kilkari Thematic Content"&&j=="1")){
+                                                             temp=indianInteger(temp);
+                                                             }
                            temprow.push(temp);
                        }
                        data.push(temprow);
@@ -1772,41 +1775,45 @@
 
                                        else if(ft.displayName == "Average Duration Of Call" && excelHeaderName.reportName == "Kilkari Cumulative Summary"){
                                            var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[4].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue());
-                                           v = (temp.toFixed(2));
+                                           v = indianDecimal(temp);;
                                        }
                                        else if(ft.displayName == "Average Number Of Weeks In Service" && excelHeaderName.reportName == "Kilkari Beneficiary Completion"){
                                            var temp = $scope.gridApi.grid.columns.length==0?0.00: ($scope.gridApi.grid.columns[3].getAggregationValue());
-                                           v = (temp.toFixed(2));
+                                           v = indianDecimal(temp);;
                                        }
                                        else if(ft.displayName == "Average Duration Of Calls" && excelHeaderName.reportName == "Kilkari Call"){
                                            var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[8].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue());
-                                           v = (temp.toFixed(2));
+                                           v = indianDecimal(temp);;
                                        }
                                        else if(ft.displayName == "Total Billable Minutes" && excelHeaderName.reportName == "Kilkari Call"){
                                            var temp = ft.getAggregationValue();
-                                           v = (temp.toFixed(2));
+                                           v = indianDecimal(temp);
                                        }
                                        else if(ft.displayName == "Total Billable Minutes Played" && excelHeaderName.reportName == "Kilkari Cumulative Summary"){
                                            var temp = ft.getAggregationValue();
-                                           v = (temp.toFixed(2));
+                                           v = indianDecimal(temp);;
                                        }
                                        else if(ft.displayName == "Total Beneficiary Records Rejected" && excelHeaderName.reportName == "Kilkari Subscriber"&&!rejectionStart){
                                            v = "N/A";
                                        }
                                        else if(ft.displayName == "% Not Started Course" && excelHeaderName.reportName == "MA Cumulative Summary"){
                                           var temp = $scope.gridApi.grid.columns[2].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[4].getAggregationValue()/$scope.gridApi.grid.columns[2].getAggregationValue())*100;
-                                          v = (temp.toFixed(2));
+                                          v = indianDecimal(temp);;
                                        }
                                        else if(ft.displayName == "% Successfully Completed" && excelHeaderName.reportName == "MA Cumulative Summary"){
                                           var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00:($scope.gridApi.grid.columns[5].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue())*100;
-                                          v = (temp.toFixed(2));
+                                          v = indianDecimal(temp);;
                                        }
                                        else if(ft.displayName == "% Failed the course" && excelHeaderName.reportName == "MA Cumulative Summary"){
                                           var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00:($scope.gridApi.grid.columns[6].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue())*100;
-                                          v = (temp.toFixed(2));
+                                          v = indianDecimal(temp);;
                                        }
                                        else{
-                                           v = ft.getAggregationValue();
+                                           if (ft.displayName != "S No.") {
+                                                                   v = indianInteger(ft.getAggregationValue());}
+                                                                   else{
+                                                                   v = ft.getAggregationValue();
+                                                                   }
                                        }
 
                                        if(ft.displayName != "S No."){
@@ -1836,12 +1843,11 @@
                        var temprow1=[];
                        for (j = 0; j < exportData1[i].length; j++) {
                               var temp1 = exportData1[i][j].value;
-                                    if((excelHeaderName.reportName == "Kilkari Call" && (j == "7"||j == "8") )||
-                                        (excelHeaderName.reportName == "MA Cumulative Summary" && (j == "6"||j == "7"||j == "8"))||
-                                        (excelHeaderName.reportName == "Kilkari Cumulative Summary" && (j == "4"||j=="3") )||
-                                        (excelHeaderName.reportName == "Kilkari Thematic Content" && (j == "4") )||
-                                        (excelHeaderName.reportName == "Kilkari Beneficiary Completion" && (j == "2") )){
-                                         temp1 = (temp1.toFixed(2));
+                                    if(!j=="0") {
+                                    if(excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise"){
+                                    temp1 = indianDecimal(temp1);
+                                    }else{
+                                    temp1 = indianInteger(temp1);}
                                     }
                            temprow1.push(temp1);
                        }
@@ -1893,6 +1899,34 @@
                   // exportUiGridService.exportToExcel('sheet 1', $scope.gridApi,$scope.gridApi1, 'visible', 'visible', excelHeaderName);
 
             }
+
+            function indianDecimal( value){
+                            x=value.toString();
+                            var afterPoint = '';
+                            if(x.indexOf('.') > 0)
+                               afterPoint = x.substring(x.indexOf('.'),x.length);
+                               afterPoint = Number(afterPoint).toFixed(2);
+                               afterPoint = afterPoint.substring(afterPoint.indexOf('.'),afterPoint.length);
+                            x = Math.floor(x);
+                            x=x.toString();
+                            var lastThree = x.substring(x.length-3);
+                            var otherNumbers = x.substring(0,x.length-3);
+                            if(otherNumbers != '')
+                                lastThree = ',' + lastThree;
+                            var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree + afterPoint;
+                            return res;
+                    }
+
+                    function indianInteger(value){
+                                        x=value.toString();
+                                    var lastThree = x.substring(x.length-3);
+                                    var otherNumbers = x.substring(0,x.length-3);
+                                    if(otherNumbers != '')
+                                        lastThree = ',' + lastThree;
+                                    var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree ;
+                                    return res;
+
+                    }
 
 
             var canceler = $q.defer();
