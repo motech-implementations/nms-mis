@@ -765,7 +765,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         titleWidth = font1.getStringWidth(title) / 1000 * fontSize1;
         x = (page.getMediaBox().getWidth() - titleWidth) / 2;
         be.quodlibet.boxable.utils.PDStreamUtils.write(stream, title, font1, fontSize1, x, 630, java.awt.Color.BLACK);
-        title = "Block : " + gridData.getBlockName();
+        title = "Health Block : " + gridData.getBlockName();
         titleWidth = font1.getStringWidth(title) / 1000 * fontSize1;
         x = (page.getMediaBox().getWidth() - titleWidth) / 2;
         be.quodlibet.boxable.utils.PDStreamUtils.write(stream, title, font1, fontSize1, x, 610, java.awt.Color.BLACK);

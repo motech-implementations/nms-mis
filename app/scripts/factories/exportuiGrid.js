@@ -436,7 +436,7 @@
                                                 vLineColor:'#d4d4d4',
                                                 hLineColor:'#d4d4d4',
                                        fillColor: function(i) {
-                                             if (i % 2 === 0 && i != 0) {
+                                             if (i % 2 === 0 ) {
 
                                                 return '#f4f3f3';
                                             } else {
@@ -1037,7 +1037,7 @@
                                         fillColor: function(i) {
                                             if (i === 0) {
                                                 return '#2164b2';
-                                            } else if (i % 2 === 0 && i != 0) {
+                                            } else if (i % 2 === 0 ) {
 
                                                 return '#f4f3f3';
                                             } else {
