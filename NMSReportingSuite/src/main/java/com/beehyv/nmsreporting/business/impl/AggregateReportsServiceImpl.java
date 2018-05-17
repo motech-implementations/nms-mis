@@ -10,6 +10,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.PDPageContentStream.AppendMode;
+import org.apache.pdfbox.pdmodel.PDPageTree;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
@@ -670,42 +671,44 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         image3 = image3.scaleByWidth(imageWidth);
         image3.draw(document, contents, startX, 300);
 
-        contents.beginText();
-        contents.setFont(font, fontSize1);
-        //Setting the leading
-        contents.setLeading(14.5f);
-
-        //Setting the position for the line
-        contents.newLineAtOffset(200, 90);
-
-        //Adding text in the form of string
-        contents.showText("Management and Information System");
-        //contents.newLine();
-        contents.newLineAtOffset(25, 20);
-        contents.setFont(font, fontSize1);
-        contents.showText("Mobile Academy and Kilkari");
-        //contents.newLine();
-        contents.setFont(font, fontSize);
-        contents.newLineAtOffset(-50, 30);
-        contents.showText("Ministry of Health and Family Welfare");
-        contents.newLine();
-        contents.endText();
-        contents.close();
-
-
-//        //Drawing the image in the PDF document
-//        try { //float startX=(mediaBox.getWidth() - 200) / 2;
-////            contents.drawImage(pdImage1, startX, 520 ,200, 150);
-////            startX=(mediaBox.getWidth() - 120) / 2;
-////            contents.drawImage(pdImage2, startX, 360,120,100);
-////            startX=(mediaBox.getWidth() - 120) / 2;
-////            contents.drawImage(pdImage3, startX, 240,120,100);
-////            //Closing the PDPageContentStream object
-////            contents.close();
+//        contents.beginText();
+//        contents.setFont(font, fontSize1);
+//        //Setting the leading
+//        contents.setLeading(14.5f);
 //
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+//        //Setting the position for the line
+//        contents.newLineAtOffset(200, 90);
+//
+//        //Adding text in the form of string
+//        contents.showText("Management and Information System");
+//        //contents.newLine();
+//        contents.newLineAtOffset(25, 20);
+//        contents.setFont(font, fontSize1);
+//        contents.showText("Mobile Academy and Kilkari");
+//        //contents.newLine();
+//        contents.setFont(font, fontSize);
+//        contents.newLineAtOffset(-50, 30);
+//        contents.showText("Ministry of Health and Family Welfare");
+//        contents.newLine();
+//        contents.endText();
+        String title = "Ministry of Health and Family Welfare";
+        float titleWidth = font.getStringWidth(title) / 1000 * fontSize;
+        float x = (page.getMediaBox().getWidth() - titleWidth) / 2;
+        be.quodlibet.boxable.utils.PDStreamUtils.write(contents, title, font, fontSize, x, 150, java.awt.Color.BLACK);
+
+         title = "Mobile Academy and Kilkari";
+         titleWidth = font.getStringWidth(title) / 1000 * fontSize1;
+         x = (page.getMediaBox().getWidth() - titleWidth) / 2;
+        be.quodlibet.boxable.utils.PDStreamUtils.write(contents, title, font, fontSize1, x, 120, java.awt.Color.BLACK);
+
+         title = "Management and Information System";
+         titleWidth = font.getStringWidth(title) / 1000 * fontSize1;
+         x = (page.getMediaBox().getWidth() - titleWidth) / 2;
+        be.quodlibet.boxable.utils.PDStreamUtils.write(contents, title, font, fontSize1, x, 100, java.awt.Color.BLACK);
+
+
+
+        contents.close();
 
         System.out.println("Image inserted");
 
@@ -714,95 +717,6 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         //Adding the blank page to the document
         document.addPage(page);
 
-
-        // contents = new PDPageContentStream(document, page, AppendMode.APPEND, true, true);
-
-//        // Define the table structure first
-//
-//        TableBuilder tableBuilder = new TableBuilder();
-//        tableBuilder.addColumnOfWidth(25).setFontSize(8)
-//                .setFont(PDType1Font.HELVETICA);
-//        for(int i=0;i<gridData.getColumnHeaders().size();i++){
-//            tableBuilder.addColumnOfWidth(120);
-//            }
-//
-//
-//
-//        // Header ...
-//
-//        RowBuilder headerRow= new RowBuilder();
-//        headerRow.add(org.vandeseer.pdfbox.easytable.Cell.withText("S No").setHorizontalAlignment(CENTER));
-//
-//        for(int i=0;i<gridData.getColumnHeaders().size();i++){
-//            headerRow.add(org.vandeseer.pdfbox.easytable.Cell.withText(gridData.getColumnHeaders().get(i)).setHorizontalAlignment(CENTER));
-//        }
-//        headerRow.setBackgroundColor(java.awt.Color.YELLOW);
-//        tableBuilder.addRow(headerRow.build());
-////        tableBuilder.addRow(new RowBuilder()
-////                .add(org.vandeseer.pdfbox.easytable.Cell.withText("This is right aligned without a border").setHorizontalAlignment(RIGHT))
-////                .add(org.vandeseer.pdfbox.easytable.Cell.withText("And this is another cell"))
-////                .add(org.vandeseer.pdfbox.easytable.Cell.withText("Sum").setBackgroundColor(java.awt.Color.ORANGE))
-////                .setBackgroundColor(java.awt.Color.BLUE)
-////                .build());
-//
-////        for (int i = 0; i < 10; i++) {
-////            tableBuilder.addRow(new RowBuilder()
-////                    .add(org.vandeseer.pdfbox.easytable.Cell.withText(i).withAllBorders())
-////                    .add(org.vandeseer.pdfbox.easytable.Cell.withText(i * i).withAllBorders())
-////                    .add(org.vandeseer.pdfbox.easytable.Cell.withText(i + (i * i)).withAllBorders())
-////                    .setBackgroundColor(i % 2 == 0 ? java.awt.Color.LIGHT_GRAY : java.awt.Color.WHITE)
-////                    .build());
-////        }
-//
-//        // Define the starting point
-//        final float startY = page.getMediaBox().getHeight() - 50;
-//        final int startX = 50;
-//
-//// Draw!
-//        (new TableDrawer(contents, tableBuilder.build(), startX, startY)).draw();
-
-
-////Dummy Table
-//        float margin = 10;
-//// starting y position is whole page height subtracted by top and bottom margin
-//        float yStartNewPage = page.getMediaBox().getHeight() - (2 * margin);
-//// we want table across whole page width (subtracted by left and right margin ofcourse)
-//        float tableWidth = page.getMediaBox().getWidth() - (2 * margin);
-//
-//        boolean drawContent = true;
-//        float yStart = yStartNewPage;
-//        float bottomMargin = 70;
-//// y position is your coordinate of top left corner of the table
-//        float yPosition = 550;
-//
-//        BaseTable table = new BaseTable(yPosition, yStartNewPage, bottomMargin, tableWidth, margin, document, page, true, drawContent);
-//        be.quodlibet.boxable.Row<PDPage> headerRow = table.createRow(15f);
-//        be.quodlibet.boxable.Cell<PDPage> cell = headerRow.createCell(10, "S No");
-//        for(int i=0;i<gridData.getColumnHeaders().size();i++){
-//        cell = headerRow.createCell(15, gridData.getColumnHeaders().get(i));}
-//
-//        table.addHeaderRow(headerRow);
-//
-//
-//       // be.quodlibet.boxable.Row<PDPage> row = table.createRow(12);
-//        for(int i=0;i<gridData.getReportData().size();i++){
-//            be.quodlibet.boxable.Row<PDPage> row = table.createRow(12);
-//            cell = row.createCell(10, Integer.toString(i+1));
-//
-//            for(int j=0;j<gridData.getReportData().get(i).size();j++){
-//                cell=row.createCell(15,gridData.getReportData().get(i).get(j));
-//
-//            }
-//
-//        table.addHeaderRow(row);
-//        }
-//
-////        cell = row.createCell(30, "Data 1");
-////        cell = row.createCell(70, "Some value");
-//
-//        table.draw();
-
-        // System.out.println(gridData.getReportData().size()+"lololololololololololololololol");
 
 
         float cellWidth = 0;
@@ -837,9 +751,9 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         //System.out.println("this is the cellwidth " + gridData.getReportName());
         PDPageContentStream stream = new PDPageContentStream(document, page);
 
-        String title = gridData.getReportName() + " Report";
-        float titleWidth = font.getStringWidth(title) / 1000 * fontSize;
-        float x = (page.getMediaBox().getWidth() - titleWidth) / 2;
+         title = gridData.getReportName() + " Report";
+         titleWidth = font.getStringWidth(title) / 1000 * fontSize;
+         x = (page.getMediaBox().getWidth() - titleWidth) / 2;
         be.quodlibet.boxable.utils.PDStreamUtils.write(stream, title, font, fontSize, x, 700, java.awt.Color.BLACK);
 
         //stream.newLine();
@@ -892,8 +806,6 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         BaseTable table = new BaseTable(yStart, yStartNewPage, bottomMargin, tableWidth, tableMargin, document, page, true,
                 drawContent);
 
-        System.out.println("Tablewidthhhhhhhhhhhhhhhhhhhhh" + tableWidth);
-        System.out.println("cellwidthhhhhhhhhhh" + cellWidth);
 
 
         // Create Header row
@@ -904,13 +816,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
             cell.setFontSize(tableFont);
             cell.setFont(PDType1Font.TIMES_BOLD);
 
-
-//            cell.setFont(PDType1Font.HELVETICA_BOLD);
-
-//            cell.setTextColor(java.awt.Color.WHITE);
         }
-//
-
 
         // Create 2 column row
         be.quodlibet.boxable.Row<PDPage> row;
@@ -922,6 +828,10 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
             for (int j = 0; j < gridData.getReportData().get(i).size(); j++) {
                 cell = row.createCell((cellWidth), gridData.getReportData().get(i).get(j), be.quodlibet.boxable.HorizontalAlignment.get("center"), be.quodlibet.boxable.VerticalAlignment.get("middle"));
                 cell.setFontSize(tableFont);
+                if(!gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener Month Wise")&&!gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix"))
+                if(i ==gridData.getReportData().size()-1){
+                    cell.setFont(PDType1Font.TIMES_BOLD);
+                }
 
             }
 
@@ -942,9 +852,9 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
             title = "Beneficiary Percentage";
             titleWidth = font1.getStringWidth(title) / 1000 * fontSize1;
             x = (page.getMediaBox().getWidth() - titleWidth) / 2;
-            be.quodlibet.boxable.utils.PDStreamUtils.write(stream, title, font, fontSize1, x, yStart, java.awt.Color.BLACK);
+            be.quodlibet.boxable.utils.PDStreamUtils.write(stream, title, font, fontSize1, x, yStart-20, java.awt.Color.BLACK);
             stream.close();
-            table = new BaseTable(yStart - 40, yStartNewPage, bottomMargin, tableWidth, tableMargin, document, page, true,
+            table = new BaseTable(yStart - 60, yStartNewPage, bottomMargin, tableWidth, tableMargin, document, page, true,
                     drawContent);
 
             // Create Header row
@@ -989,9 +899,9 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
             title = "Kilkari Child Content Data";
             titleWidth = font1.getStringWidth(title) / 1000 * fontSize1;
             x = (page.getMediaBox().getWidth() - titleWidth) / 2;
-            be.quodlibet.boxable.utils.PDStreamUtils.write(stream, title, font, fontSize1, x, yStart, java.awt.Color.BLACK);
+            be.quodlibet.boxable.utils.PDStreamUtils.write(stream, title, font, fontSize1, x, yStart-20, java.awt.Color.BLACK);
             stream.close();
-            table = new BaseTable(yStart - 40, yStartNewPage, bottomMargin, tableWidth, tableMargin, document, page, true,
+            table = new BaseTable(yStart - 60, yStartNewPage, bottomMargin, tableWidth, tableMargin, document, page, true,
                     drawContent);
 
             // Create Header row
@@ -1014,6 +924,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                     cell = row.createCell((cellWidth), gridData.getReportData1().get(i).get(j), be.quodlibet.boxable.HorizontalAlignment.get("center"), be.quodlibet.boxable.VerticalAlignment.get("middle"));
                     cell.setFontSize(tableFont);
 
+
                 }
 
 
@@ -1021,6 +932,31 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
             table.draw();
 
 
+        }
+
+        for(int i=0;i<document.getNumberOfPages();i++){
+            PDPage docPage= document.getPage(i);
+            PDPageContentStream footerContent = new PDPageContentStream(document, docPage,AppendMode.APPEND, true, true);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            int DateValue = calendar.get(Calendar.DATE);
+            int DateYear = (calendar.get(Calendar.YEAR));
+            String DateString;
+            if (DateValue < 10) {
+                DateString = "0" + String.valueOf(DateValue);
+            } else {
+                DateString = String.valueOf(DateValue);
+            }
+            String MonthString = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH);
+            String YearString = String.valueOf(DateYear);
+
+
+            String dateFiled = "Date Filed : " + DateString + " " + MonthString + " " + YearString;
+            fontSize=8;
+            float dateWidth = font.getStringWidth(dateFiled) / 1000 * fontSize;
+            x = page.getMediaBox().getWidth()-dateWidth-10;
+            be.quodlibet.boxable.utils.PDStreamUtils.write(footerContent, dateFiled, font1, fontSize, x, 20, java.awt.Color.BLACK);
+            footerContent.close();
         }
 
 

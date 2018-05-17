@@ -81,6 +81,7 @@
             var rejectionStart;
 
 
+
             $scope.popup2 = {
                 opened: false
             };
@@ -1579,7 +1580,7 @@
                     }
             ExcelData.reportData = data;
 
-            var footerData = [];
+
                         var v;
                                 if(excelHeaderName.reportName != "Kilkari Message Matrix" && excelHeaderName.reportName != "Kilkari Listening Matrix" && excelHeaderName.reportName != "Kilkari Repeat Listener Month Wise"&& excelHeaderName.reportName != "Kilkari Thematic Content"){
                                     $scope.gridApi.grid.columns.forEach(function (ft) {
@@ -1733,7 +1734,7 @@
 
         $scope.exportToPdf1 = function(){
 
-                columns = $scope.gridApi.grid.options.showHeader ? uiGridExporterService.getColumnHeaders($scope.gridApi.grid, 'visible') : [];
+ columns = $scope.gridApi.grid.options.showHeader ? uiGridExporterService.getColumnHeaders($scope.gridApi.grid, 'visible') : [];
 
                 var headers=[]
                 columns.forEach(function (c) {
@@ -1760,8 +1761,8 @@
                        data.push(temprow);
                     }
 
+                        var footerData=[];
 
-            var footerData = [];
                         var v;
                                 if(excelHeaderName.reportName != "Kilkari Message Matrix" && excelHeaderName.reportName != "Kilkari Listening Matrix" && excelHeaderName.reportName != "Kilkari Repeat Listener Month Wise"&& excelHeaderName.reportName != "Kilkari Thematic Content"){
                                     $scope.gridApi.grid.columns.forEach(function (ft) {
@@ -1815,13 +1816,10 @@
                                    }, this);
 
                                 }
-
-        if(excelHeaderName.reportName != "Kilkari Message Matrix" && excelHeaderName.reportName != "Kilkari Listening Matrix" && excelHeaderName.reportName != "Kilkari Repeat Listener Month Wise"&& excelHeaderName.reportName != "Kilkari Thematic Content"){
-              data.push(footerData);
-        }
-
-
-                                ExcelData.reportData = data;
+       if(excelHeaderName.reportName != "Kilkari Message Matrix" && excelHeaderName.reportName != "Kilkari Listening Matrix" && excelHeaderName.reportName != "Kilkari Repeat Listener Month Wise"&& excelHeaderName.reportName != "Kilkari Thematic Content"){
+                              data.push(footerData);
+                 }
+           ExcelData.reportData = data;
                 if(excelHeaderName.reportName == "Kilkari Message Matrix" ||  excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise"){
                 columns1 = $scope.gridApi1.grid.options.showHeader ? uiGridExporterService.getColumnHeaders($scope.gridApi1.grid, 'visible') : [];
 
@@ -1871,7 +1869,10 @@
                   ExcelData.blockName = excelHeaderName.blockName;
                   ExcelData.reportName = excelHeaderName.reportName;
                   ExcelData.timePeriod = excelHeaderName.timePeriod;
-ExcelData.fileName = $scope.gridApi.grid.options.exporterExcelFilename ? $scope.gridApi.grid.options.exporterExcelFilename : 'dokuman';
+                  ExcelData.fileName = $scope.gridApi.grid.options.exporterExcelFilename ? $scope.gridApi.grid.options.exporterExcelFilename : 'dokuman';
+
+
+
                 $http({
                                     method  : 'POST',
                                     url     : backend_root + 'nms/user/downloadAggPdf',
@@ -1879,22 +1880,7 @@ ExcelData.fileName = $scope.gridApi.grid.options.exporterExcelFilename ? $scope.
 //                                    responseType: 'arraybuffer',
                                     headers : {'Content-Type': 'application/json '}
                                 }).then(function(response){
-                                //console.log(response);
 
-//                                     var fileName = $scope.gridApi.grid.options.exporterExcelFilename ? $scope.gridApi.grid.options.exporterExcelFilename : 'dokuman';
-//                                                         fileName = fileName.replace("*","");
-//                                                         fileName += '.xlsx';
-//
-//                                         saveAs(new Blob([response.data], {
-//                                                                 type: 'application/octet-stream'
-//                                                             }), fileName);
-//
-//                                         if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-//                                             window.navigator.msSaveOrOpenBlob(blob, fileName);
-//                                         } else {
-//                                             var objectUrl = URL.createObjectURL(blob);
-//                                             window.open(objectUrl);
-//                                         }
                                      if(response.data=="success"){
              var fileName = $scope.gridApi.grid.options.exporterExcelFilename ? $scope.gridApi.grid.options.exporterExcelFilename : 'dokuman';
                                                    fileName += '.pdf';
