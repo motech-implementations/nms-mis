@@ -426,7 +426,7 @@
 
             $scope.$on('$userIdle', function () {
             if(new Date().getTime()-localStorage.lastEventTime>1800000){
-                if (!($scope.checkLogin())){
+                if ($scope.currentUser){
 
                     if(UserFormFactory.isInternetExplorer()){
                         alert("Sorry, Your Session timed out after a long time of inactivity. Please, login again");
