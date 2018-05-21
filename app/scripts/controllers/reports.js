@@ -1580,7 +1580,7 @@
                     }
             ExcelData.reportData = data;
 
-
+                        var footerData=[];
                         var v;
                                 if(excelHeaderName.reportName != "Kilkari Message Matrix" && excelHeaderName.reportName != "Kilkari Listening Matrix" && excelHeaderName.reportName != "Kilkari Repeat Listener Month Wise"&& excelHeaderName.reportName != "Kilkari Thematic Content"){
                                     $scope.gridApi.grid.columns.forEach(function (ft) {
