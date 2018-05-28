@@ -105,7 +105,7 @@
 
         <div class="nav">
 
-			<ul class="nav-menu-left" >
+			<ul class="nav-menu-left" data-ng-hide='$state.current.name=="login" || $state.current.name=="forgotPassword" || currentUser.default  || currentUser.default == null '>
 				<li data-ng-class="{active: activeTab('AboutUs')}">
 					<a  data-ng-class="{dis1: disableCursor()}" data-ng-click="goToAboutus()" class="pointer">About us</a>
 				</li>
@@ -123,7 +123,7 @@
 				</li>
 			</ul>
 
-			<ul class="nav-menu right ">
+			<ul class="nav-menu right " data-ng-hide='$state.current.name=="login" || $state.current.name=="forgotPassword" || currentUser.default  || currentUser.default == null '>
 				<li  data-ng-if='checkLogin()' data-ng-class="{active: activeTab('login')}">
 					<a data-ng-if='(loginBool==true)' class="pointer"  data-ng-click="goToLogin()" >Login</a>
 					<a data-ng-if='!(loginBool==true)' style="cursor: not-allowed" data-ng-click="goToLogin()" >Login</a>
@@ -157,7 +157,7 @@
 
 
 
-    <div ng-mouseleave="removed()" >
+    <div ng-mouseleave="removed()" data-ng-hide='$state.current.name=="login" || $state.current.name=="forgotPassword" || currentUser.default  || currentUser.default == null '>
         <div ng-if="(show==true)" class="pd" data-ng-class="{pd1:show}"   >
             <ul class="profile-dropdown">
                 <li data-ng-class="{activeP: activeTabProfile('profile')}" >
@@ -181,7 +181,7 @@
     <div class = "login-page content"  data-ui-view >
     </div>
 
-	<div class='footer'>
+	<div class='footer' data-ng-hide='$state.current.name=="login" || $state.current.name=="forgotPassword" || currentUser.default  || currentUser.default == null ' >
 		<div class="col-md-4 col-sm-4 col-xs-4">
 			<div>
 				<a  data-ng-click="goToTandC()" class="pointer" data-ng-class="{dis: disableCursor()}">terms and conditions </a>

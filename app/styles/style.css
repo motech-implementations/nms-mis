@@ -1159,15 +1159,15 @@ Use of this source code is governed by an MIT-style license that can be foundin 
 }
 #refresh{
 
-    margin-left:9%;
+    margin-left:12%;
 	width:10%;
 	height:40px;
 
 }
 .login-texts{
-	padding-left: 15px;
+	padding-left: 4%;
 	vertical-align: middle;
-    margin-left: 15px;
+    margin-left: 4%;
 }
 .carousel .carousel-inner{
     height: 325px;

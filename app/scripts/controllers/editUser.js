@@ -142,10 +142,10 @@
 					}).then(function(result){
                         if (UserFormFactory.isInternetExplorer()) {
                             alert(result.data['0']);
-                             return;
+
                         } else {
                             UserFormFactory.showAlert(result.data['0']);
-                            return;
+
                         }
 
 						if (result.data['0'] === 'User Updated') {
@@ -175,11 +175,13 @@
                 }).then(function(result){
                     if(UserFormFactory.isInternetExplorer()){
                         alert(result.data['0']);
-                         return;
                     }
                     else{
                         UserFormFactory.showAlert(result.data['0']);
-                        return;
+                    }
+
+                    if (result.data['0'] === 'Password changed successfully') {
+                        $state.go('userManagement.userTable', {});
                     }
 
                 })
@@ -191,10 +193,12 @@
                 .then(function(result){
                     if (UserFormFactory.isInternetExplorer()) {
                         alert(result.data['0']);
-                         return;
                     } else {
                         UserFormFactory.showAlert(result.data['0']);
-                        return;
+                    }
+
+                    if (result.data['0'] === 'User deleted') {
+                        $state.go('userManagement.userTable', {});
                     }
                 });
             };

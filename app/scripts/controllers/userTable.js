@@ -106,7 +106,7 @@
 			$scope.$watch('stateName', $scope.resetDistrict);
 			$scope.$watch('stateName', $scope.resetBlock);
 			$scope.$watch('currentPageNo', function() {
-				if (($scope.filterData.length !== 0) || lessRecordsFilter) {
+				if (lessRecordsFilter) {
                     $state.transitionTo('userManagement.userTable', {pageNum: $scope.currentPageNo}, {notify: false});
                     lessRecordsFilter = false;
 				} else {

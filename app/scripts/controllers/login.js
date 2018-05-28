@@ -75,7 +75,11 @@
             $rootScope.$on('$locationChangeStart', function (event, current, previous) {
                 if(!(current.indexOf("login?error") > 0)){
                     window.localStorage.setItem('preUrl', previous);
-                    $scope.preUrl = localStorage.preUrl;
+//                    if(localStorage.preUrl == "http://localhost:8080/app/#!/changePassword"){
+//                        $scope.preUrl = "";
+//                    }
+//                    else
+                      $scope.preUrl = "";
                 }
             });
             $scope.goToDownloads = function () {

@@ -114,11 +114,11 @@
 					}).then(function(result){
 					    if(UserFormFactory.isInternetExplorer()){
                             alert(result.data['0'])
-                             return;
+
                         }
                         else{
                             UserFormFactory.showAlert(result.data['0'])
-                            return;
+
                         }
 						if(result.data['0'] == 'User Created'){
 							$state.go('userManagement.userTable', {});
