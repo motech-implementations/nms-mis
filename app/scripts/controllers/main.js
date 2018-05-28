@@ -409,6 +409,7 @@
 			UserFormFactory.downloadCurrentUser().then(function(result){
 				UserFormFactory.setCurrentUser(result.data);
 				$scope.currentUser = UserFormFactory.getCurrentUser();
+				window.localStorage.setItem('prev_userId', $scope.currentUser.userId);
 			});
 
 

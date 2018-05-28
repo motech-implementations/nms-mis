@@ -420,7 +420,6 @@
 				return name;
 			}
 
-
 			$scope.cropAggregate = function(name){
                 if(name == null){
                     return "";
@@ -1482,20 +1481,41 @@
 				if(!$scope.userHasBlock()){
 					$scope.clearBlock();
 				}
-				$scope.clearCircle();
-				$scope.clearFile();
-				$scope.dt = null;
-				$scope.datePickerContent = " Month";
-				$scope.dt1 = null;
-				$scope.dt2 = null;
-				$scope.hideGrid = true;
-				$scope.hideMessageMatrix = true;
 
-                $scope.periodDisplayType = '';
+				 if((($state.current.name)===("reports"))){
+                                    $scope.clearCircle();
+                                    				$scope.clearFile();
+                                    				$scope.dt = null;
+                                    				$scope.datePickerContent = " Month";
+                                    				$scope.dt1 = null;
+                                    				$scope.dt2 = null;
+                                    				$scope.hideGrid = true;
+                                    				$scope.hideMessageMatrix = true;
+                                                    $scope.periodDisplayType = '';
+
+                                    				$scope.showEmptyData = false;
+
+                                    }
+                                 if(!(($state.current.name)===("reports"))){
+                                 if($state.current.name == "MA Cumulative Summary" || $state.current.name == "Kilkari Cumulative Summary" ){
+                                                         $scope.dateFormat = 'yyyy-MM-dd';
+                                                         $scope.endDatePickerOptions.minDate = new Date(2016,11,01)
+                                                         $scope.endDatePickerOptions.maxDate = new Date(2016,11,31);
+                                                    }
+                                                    else{
+                                                        $scope.periodDisplayType="Month";
+                                                        $scope.periodTypeContent = " Month";
+                                                        $scope.dateFormat = "yyyy-MM";
+                                                        $scope.datePickerOptions.minMode = '';
+                                                        $scope.datePickerOptions.datepickerMode = 'month';
+                                                        $scope.datePickerOptions.minMode ='month';
+                                                        $scope.dt1 = new Date(2016, 11, 01);
+                                                    }
+
+                                }
 
 
 
-				$scope.showEmptyData = false;
 				}
 			})
 			}

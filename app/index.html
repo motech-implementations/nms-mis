@@ -14,6 +14,16 @@
 	<meta name="keywords" content="Ante Natal Care, Post Natal Care, Ministry of Health and Family Welfare, National Motech System, Out Bound Calls, Kilkari Service,
 	Maternity, Child health, IVR service, ASHA Foundation, ASHAs, weekly messages, ANC,PNC, MoHFW, Ministry of Health, Family Welfare, Family, Welfare, Bound Calls">
 
+
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-119876170-1"></script>
+	<script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+	        gtag('config', 'UA-119876170-1');
+	</script>
     <script type="text/javascript" src="bower_components/pdfmake/build/pdfmake.js"></script>
     <script type="text/javascript" src="bower_components/pdfmake/build/vfs_fonts.js"></script>
 	<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
@@ -215,7 +225,7 @@
 			<img class="footer-logo" alt="india-logo" src="images/india-logo.png">
 		</div>
 		<div class="col-md-3 col-sm-3 col-xs-3 footer-right">
-			<div>last updated</div>
+			<div>last updated {{last_updated}}</div>
 			<div>Visitors: <!--<hit-counter style="background-color: #a4574c;color: white"></hit-counter></div>-->
 				<img src='https://www.counter12.com/img-y1ZZZZDZD6BZy4C0-3.gif' class="visitors" alt='count'><script type='text/javascript' src='https://www.counter12.com/ad.js?id=y1ZZZZDZD6BZy4C0'></script></div>
 			<div>Dt:  {{date | date:'medium'}}</div>

@@ -14,6 +14,8 @@
 			$scope.user.captchaCode = '';
 			$scope.user.rememberMe = false;
 
+
+
 			$scope.loginUrl = backend_root + 'nms/login';
 
 			var url = $location.absUrl();
@@ -55,6 +57,8 @@
             }
 
 
+
+
 //			$scope.login = function(){
 //				$http.post($scope.loginUrl,
 //					angular.toJson($scope.user),
@@ -75,13 +79,31 @@
             $rootScope.$on('$locationChangeStart', function (event, current, previous) {
                 if(!(current.indexOf("login?error") > 0)){
                     window.localStorage.setItem('preUrl', previous);
-//                    if(localStorage.preUrl == "http://localhost:8080/app/#!/changePassword"){
-//                        $scope.preUrl = "";
-//                    }
-//                    else
-                      $scope.preUrl = "";
+                    if(localStorage.preUrl == base_url + "/app/#!/reports/ma/cumulative-summary-report" ||
+                       localStorage.preUrl == base_url + "/app/#!/reports/ma/subscriber-report" ||
+                       localStorage.preUrl == base_url + "/app/#!/reports/ma/performance-report" ||
+                       localStorage.preUrl == base_url + "/app/#!/reports/kilkari/repeat-listener-report" ||
+                       localStorage.preUrl == base_url + "/app/#!/reports/kilkari/message-matrix-report" ||
+                       localStorage.preUrl == base_url + "/app/#!/reports/kilkari/call-report" ||
+                       localStorage.preUrl == base_url + "/app/#!/reports/kilkari/thematic-content-report" ||
+                       localStorage.preUrl == base_url + "/app/#!/reports/kilkari/listening-matrix-report" ||
+                       localStorage.preUrl == base_url + "/app/#!/reports/kilkari/message-listenership-report" ||
+                       localStorage.preUrl == base_url + "/app/#!/reports/kilkari/aggregate-beneficiary-report" ||
+                       localStorage.preUrl == base_url + "/app/#!/reports/kilkari/usage-report" ||
+                       localStorage.preUrl == base_url + "/app/#!/reports/kilkari/cumulative-summary-report" ||
+                       localStorage.preUrl == base_url + "/app/#!/reports/kilkari/subscriber-report" ||
+                       localStorage.preUrl == base_url + "/app/#!/reports/kilkari/beneficiary-completion-report" 
+                    ){
+                       $scope.preUrl = localStorage.preUrl;
+                    }
+                    else
+                       $scope.preUrl = "";
+
                 }
             });
+
+
+
             $scope.goToDownloads = function () {
                 $state.go('Downloads', {pageNum: 1});
             }
