@@ -115,7 +115,7 @@
 
         <div class="nav">
 
-			<ul class="nav-menu-left" data-ng-hide='$state.current.name=="login" || $state.current.name=="forgotPassword" || currentUser.default  || currentUser.default == null '>
+			<ul class="nav-menu-left" data-ng-hide = 'menuChecker()'>
 				<li data-ng-class="{active: activeTab('AboutUs')}">
 					<a  data-ng-class="{dis1: disableCursor()}" data-ng-click="goToAboutus()" class="pointer">About us</a>
 				</li>
@@ -133,7 +133,7 @@
 				</li>
 			</ul>
 
-			<ul class="nav-menu right " data-ng-hide='$state.current.name=="login" || $state.current.name=="forgotPassword" || currentUser.default  || currentUser.default == null '>
+			<ul class="nav-menu right " data-ng-hide='menuChecker()'>
 				<li  data-ng-if='checkLogin()' data-ng-class="{active: activeTab('login')}">
 					<a data-ng-if='(loginBool==true)' class="pointer"  data-ng-click="goToLogin()" >Login</a>
 					<a data-ng-if='!(loginBool==true)' style="cursor: not-allowed" data-ng-click="goToLogin()" >Login</a>
@@ -152,7 +152,7 @@
 
 			</ul>
 
-            <ul class="nav-menu" data-ng-hide='$state.current.name=="login" || $state.current.name=="forgotPassword" || currentUser.default  || currentUser.default == null '>
+            <ul class="nav-menu" data-ng-hide='menuChecker()'>
 
                 <li class="pd" data-ng-class="{active: activeTab('userManagement'),pd1:!checkLogin()}" data-ng-if="currentUser.roleId!= null && currentUser.roleName != 'USER'">
                     <a  class="pointer" data-ng-class="{dis1: disableCursor()}" data-ng-click="goToUserTable()"  >User Management</a>
@@ -167,9 +167,9 @@
 
 
 
-    <div ng-mouseleave="removed()" data-ng-hide='$state.current.name=="login" || $state.current.name=="forgotPassword" || currentUser.default  || currentUser.default == null '>
+    <div ng-mouseleave="removed()" data-ng-hide='menuChecker()'>
         <div ng-if="(show==true)" class="pd" data-ng-class="{pd1:show}"   >
-            <ul class="profile-dropdown">
+            <ul class="profile-dropdown" style="text-align : left">
                 <li data-ng-class="{activeP: activeTabProfile('profile')}" >
                     <a class="dropdown-buttons pointer" class="pointer" data-ng-class="{dis1: disableCursor()}" data-ng-click="goToProfile()">My Profile</a>
 
@@ -191,7 +191,7 @@
     <div class = "login-page content"  data-ui-view >
     </div>
 
-	<div class='footer' data-ng-hide='$state.current.name=="login" || $state.current.name=="forgotPassword" || currentUser.default  || currentUser.default == null ' >
+	<div class='footer' data-ng-hide='menuChecker()' >
 		<div class="col-md-4 col-sm-4 col-xs-4">
 			<div>
 				<a  data-ng-click="goToTandC()" class="pointer" data-ng-class="{dis: disableCursor()}">terms and conditions </a>
@@ -225,7 +225,7 @@
 			<img class="footer-logo" alt="india-logo" src="images/india-logo.png">
 		</div>
 		<div class="col-md-3 col-sm-3 col-xs-3 footer-right">
-			<div>last updated {{last_updated}}</div>
+			<div>Last updated : {{last_updated}}</div>
 			<div>Visitors: <!--<hit-counter style="background-color: #a4574c;color: white"></hit-counter></div>-->
 				<img src='https://www.counter12.com/img-y1ZZZZDZD6BZy4C0-3.gif' class="visitors" alt='count'><script type='text/javascript' src='https://www.counter12.com/ad.js?id=y1ZZZZDZD6BZy4C0'></script></div>
 			<div>Dt:  {{date | date:'medium'}}</div>

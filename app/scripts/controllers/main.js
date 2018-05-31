@@ -99,6 +99,9 @@
                 ]
 			};
 
+
+			$scope.last_updated = last_updated;
+
             $scope.child = {};
             $scope.checkLogin = function(){
                 return (($state.current.name=="login" || $state.current.name=="forgotPassword" || !$scope.currentUser));
@@ -106,6 +109,31 @@
             $scope.checkProfile = function(){
                 return (($state.current.name=="profile" || $state.current.name=="changePassword" ));
             };
+
+            UserFormFactory.downloadCurrentUser().then(function(result){
+            				UserFormFactory.setCurrentUser(result.data);
+            				$scope.currentUser = UserFormFactory.getCurrentUser();
+            				window.localStorage.setItem('prev_userId', $scope.currentUser.userId);
+            });
+
+
+            $scope.menuChecker = function(){
+
+                if($state.current.name=="login" || $state.current.name=="forgotPassword"){
+
+                    return false;
+
+                }
+
+                if($state.current.name!="login" &&  $state.current.name!="logout" &&  ($scope.currentUser.default  || $scope.currentUser.default == null)){
+                    return true;
+                }
+//
+//                if($state.current.name=="login" || $state.current.name=="forgotPassword"){
+//                    return false;
+//                }
+
+            }
 
 			$scope.getBreadCrumb = function(state){
 				return $scope.breadCrumbDict[state];
@@ -406,11 +434,7 @@
                                                                       (($state.current.name)===("Kilkari Message Listenership"))||(($state.current.name)===("Kilkari Aggregate Beneficiaries"));
             			};
 
-			UserFormFactory.downloadCurrentUser().then(function(result){
-				UserFormFactory.setCurrentUser(result.data);
-				$scope.currentUser = UserFormFactory.getCurrentUser();
-				window.localStorage.setItem('prev_userId', $scope.currentUser.userId);
-			});
+
 
 
             $scope.date = new Date();

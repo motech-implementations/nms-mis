@@ -31,7 +31,7 @@
                                 alert(result.data['0']);
                                 UserFormFactory.logoutUser().then(function(result){
                                     if(result.data){
-                                        $scope.goToLogout();
+                                       $state.go('login', {});
                                     }
                                 })
                                 return;
@@ -50,7 +50,7 @@
                                 UserFormFactory.showAlert(result.data['0'])
                                 UserFormFactory.logoutUser().then(function(result){
                                     if(result.data){
-                                        $scope.goToLogout();
+                                        $state.go('login', {});
                                     }
                                 })
                                 return;
@@ -83,7 +83,7 @@
                          alert("Login and Change your Password");
                          UserFormFactory.logoutUser().then(function(result){
                              if(result.data){
-                                 $state.go('logout', {});
+                                 $state.go('login', {});
                              }
                          })
                          return;
@@ -92,7 +92,7 @@
                          UserFormFactory.showAlert("Login and Change your Password")
                          UserFormFactory.logoutUser().then(function(result){
                              if(result.data){
-                                 $state.go('logout', {});
+                                 $state.go('login', {});
                              }
                          })
                          return;
