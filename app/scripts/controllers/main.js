@@ -119,19 +119,16 @@
 
             $scope.menuChecker = function(){
 
-                if($state.current.name=="login" || $state.current.name=="forgotPassword"){
+                if($scope.currentUser !== undefined){
+                    if($state.current.name=="login" || $state.current.name=="forgotPassword"){
+                                        return false;
+                     }
 
-                    return false;
+                    if($state.current.name!="login" &&  $state.current.name!="logout" &&  ($scope.currentUser.default  || $scope.currentUser.default == null)){
+                        return true;
+                    }
 
                 }
-
-                if($state.current.name!="login" &&  $state.current.name!="logout" &&  ($scope.currentUser.default  || $scope.currentUser.default == null)){
-                    return true;
-                }
-//
-//                if($state.current.name=="login" || $state.current.name=="forgotPassword"){
-//                    return false;
-//                }
 
             }
 

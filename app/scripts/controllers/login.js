@@ -46,7 +46,6 @@
 
                    }
             $scope.ValidCaptcha = function(){
-            console.log($scope.user);
                  var string1 = $scope.user.mainCaptchaCode.split(' ').join('');;
                  var string2 = $scope.user.captchaCode.split(' ').join('');;
                  if (string1 == string2.toUpperCase()){
