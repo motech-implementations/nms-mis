@@ -1,12 +1,12 @@
 <div  class="container-fluid" data-ng-controller="ReportsController">
 
 	<div class="block reports-header">
-		<form name="reportsForm" class="form container-fluid block" role="form" novalidate="novalidate">
+		<form name="reportsForm" class="form container-fluid block"  novalidate="novalidate">
 			<div class="row">
 				<div class="col-xs-7 left">
 					<div class="form-group col-xs-4">
 						<label> Reports Category</label><br>
-						<div class="btn-group" data-ng-class="{loading: reportsLoading, disabled:disableReportCategory()&&!reportsLoading }" data-uib-dropdown dropdown-append-to-body>
+						<div class="btn-group" data-ng-class="{loading: reportsLoading, disabled:disableReportCategory()&&!reportsLoading }" data-uib-dropdown data-dropdown-append-to-body>
 							<button id="btn-append-to-body-3" type="button" class="btn btn-sm btn-default" data-uib-dropdown-toggle data-ng-disabled="disableReportCategory()" >
 								{{reportCategory}}
 								<span data-ng-if="reportCategory == null">Select</span>
@@ -23,7 +23,7 @@
 					</div>
 					<div class="form-group col-xs-4">
 						<label> Reports</label><br>
-						<div class="btn-group" data-uib-dropdown data-ng-class="{ disabled: disableReport()}" dropdown-append-to-body>
+						<div class="btn-group" data-uib-dropdown data-ng-class="{ disabled: disableReport()}" data-dropdown-append-to-body>
 							<button id="btn-append-to-body-4" type="button" class="btn btn-sm btn-default" data-ng-disabled='disableReport()' data-uib-dropdown-toggle>
 								<span>{{report.name}}</span>
 								<span data-ng-if="report.name == null">Select</span>
@@ -32,7 +32,7 @@
 							<ul class="dropdown-menu" data-uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
 								<li role="menuitem" data-ng-repeat="item in reportNames">
 									<a data-ng-if="item.showItem" class="select_report" data-ng-click='selectReport(item)'>
-										<img class='block' src="{{item.icon}}">
+										<img alt="Report Icon" class='block' src="{{item.icon}}">
 										<span>{{item.name}}</span>
 									</a>
 								</li>
@@ -58,7 +58,7 @@
 
 
 					<div class="form-group col-xs-4" data-ng-if = "isAggregateReport()">
-						<label for="name"> State</label><br>
+						<label> State</label><br>
 						<div class="btn-group" data-ng-class="{loading: statesLoading, disabled: disableState()&&!statesLoading}" data-uib-dropdown dropdown-append-to-body>
 							<button id="btn-append-to-body-5" type="button" class="btn btn-sm btn-default" data-ng-disabled="disableState()" data-uib-dropdown-toggle >
 								<span class="block">
@@ -78,7 +78,7 @@
 
 				<div class="col-xs-5 right" data-ng-if="!isCircleReport()">
 					<div class="form-group col-xs-4" data-ng-if = "!isAggregateReport()">
-						<label for="name"> State</label><br>
+						<label> State</label><br>
 						<div class="btn-group" data-ng-class="{loading: statesLoading, disabled: disableState()&&!statesLoading }" data-uib-dropdown dropdown-append-to-body>
 							<button id="btn-append-to-body-6" type="button" class="btn btn-sm btn-default" data-ng-disabled="disableState()" data-uib-dropdown-toggle >
 								<span class="block">
@@ -93,7 +93,7 @@
 					</div>
 					<div class="form-group col-xs-6" data-ng-if = "isAggregateReport()" >
 						<!-- <div> -->
-						<label for="email"> District</label><br>
+						<label> District</label><br>
 						<div class="btn-group" data-ng-class="{loading: districtsLoading, autoSelected, disabled: disableDistrict()&&!(districtsLoading || autoSelected)}" data-uib-dropdown dropdown-append-to-body>
 							<button id="btn-append-to-body-7" type="button" class="btn btn-sm btn-default" data-ng-disabled="disableDistrict()" data-uib-dropdown-toggle >
 								<span class="block">
@@ -110,9 +110,9 @@
 					</div>
 					<div class="form-group col-xs-4" data-ng-if = "!isAggregateReport()">
 					<!-- <div> -->
-						<label for="email"> District</label><br>
+						<label> District</label><br>
 						<div class="btn-group" data-ng-class="{loading: districtsLoading, autoSelected, disabled: disableDistrict()&&!(districtsLoading || autoSelected)}" data-uib-dropdown dropdown-append-to-body>
-							<button id="btn-append-to-body-7" type="button" class="btn btn-sm btn-default" data-ng-disabled="disableDistrict()" data-uib-dropdown-toggle >
+							<button id="btn-append-to-body-8" type="button" class="btn btn-sm btn-default" data-ng-disabled="disableDistrict()" data-uib-dropdown-toggle >
 								<span class="block">
 									<span>{{crop(district.districtName)}}</span>
 									<span data-ng-if="district == null">ALL</span>
@@ -126,9 +126,9 @@
 						</div>
 					</div>
 					<div class="form-group col-xs-6" data-ng-if = "isAggregateReport()">
-						<label for="pwd"> Block</label><br>
+						<label> Block</label><br>
 						<div class="btn-group" data-ng-class="{loading: blocksLoading, disabled: disableBlock()&&!blocksLoading}" data-uib-dropdown dropdown-append-to-body>
-							<button id="btn-append-to-body-8" type="button" class="btn btn-sm btn-default" data-ng-disabled="disableBlock()" data-uib-dropdown-toggle>
+							<button id="btn-append-to-body-9" type="button" class="btn btn-sm btn-default" data-ng-disabled="disableBlock()" data-uib-dropdown-toggle>
 								<span class="block">
 									<span>{{cropAggregate(block.blockName)}}</span>
 									<span data-ng-if="block == null">ALL</span>
@@ -142,9 +142,9 @@
 						</div>
 					</div>
 					<div class="form-group col-xs-4" data-ng-if = "!isAggregateReport()">
-						<label for="pwd"> Block</label><br>
+						<label> Block</label><br>
 						<div class="btn-group" data-ng-class="{loading: blocksLoading, disabled: disableBlock()&&!blocksLoading}" data-uib-dropdown dropdown-append-to-body>
-							<button id="btn-append-to-body-8" type="button" class="btn btn-sm btn-default" data-ng-disabled="disableBlock()" data-uib-dropdown-toggle >
+							<button id="btn-append-to-body-10" type="button" class="btn btn-sm btn-default" data-ng-disabled="disableBlock()" data-uib-dropdown-toggle >
 								<span class="block">
 									<span>{{crop(block.blockName)}}</span>
 									<span data-ng-if="block == null">ALL</span>
@@ -161,7 +161,7 @@
 
 				<div class="col-xs-5 right" data-ng-if="isCircleReport()">
 					<div class="form-group col-xs-4">
-						<label for="name"> Circle</label><br>
+						<label> Circle</label><br>
 						<div class="btn-group" data-ng-class="{loading: circlesLoading, disabled : disableCircle()&&!circlesLoading}" data-uib-dropdown dropdown-append-to-body>
 							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" data-ng-disabled="disableCircle()" data-uib-dropdown-toggle >
 								<span class="block">
@@ -185,7 +185,7 @@
 				<div class="col-xs-12 left">
 
 					<div class="form-group col-xs-2" data-ng-hide = "report.name == 'MA Cumulative Summary' || report.reportEnum == 'Kilkari_Cumulative_Summary' ">
-						<label for="name"> Period Type</label><br>
+						<label> Period Type</label><br>
 						<div class="btn-group " data-uib-dropdown dropdown-append-to-body >
 							<button id="btn-append-to-body9" type="button" data-ng-disabled="true" class="btn btn-sm btn-default"  data-uib-dropdown-toggle >
 								<span class="block">
@@ -232,7 +232,7 @@
                     </div>
 
 					<div class="form-group col-xs-2" data-ng-hide = "periodDisplayType != 'Quarter'">
-						<label for="name">Quarter</label><br>
+						<label>Quarter</label><br>
 						<div class="btn-group" data-uib-dropdown dropdown-append-to-body>
 							<button id="btn-append-to-body10" type="button" class="btn btn-sm btn-default"  data-uib-dropdown-toggle >
 								<span class="block">
@@ -252,7 +252,7 @@
 					</div>
 
 					<div class="form-group col-xs-2">
-						<label for="name"> Report Type</label><br>
+						<label> Report Type</label><br>
 						<div class="btn-group disabled" data-uib-dropdown dropdown-append-to-body>
 							<button data-ng-disabled = "true"  id="btn-append-to-body1" type="button" class="btn btn-sm btn-default"  data-uib-dropdown-toggle >
 								<span class="block">
@@ -318,10 +318,10 @@
         <p class="ng-binding" style="display: inline-block;"> {{reportHeaderName}} Report</p>
 		<div style="display: inline-block;float: right">
 			<i class="glyphicon glyphicon-calendar aggregate-calender"> <span data-ng-if=" report.name != 'MA Cumulative Summary' && report.reportEnum != 'Kilkari_Cumulative_Summary' " class="calender-date">{{ headerFromDate | date:'dd/MM/y'}}</span> <span class="calender-date" style="font-size: 13px" data-ng-if=" report.name == 'MA Cumulative Summary' || report.reportEnum == 'Kilkari_Cumulative_Summary' ">Up</span><span class="calender-date">to</span> <span class="calender-date">{{headerToDate | date:'dd/MM/y'}}</span></i>
-			<img data-ng-click = "exportToExcel()" style="float: right;margin-right: 7px; cursor : pointer" src="images/export3.png">
-			<img data-ng-click = "exportCsv()" style="float: right;margin-right: 7px; cursor : pointer" src="images/export1.png">
-			<img data-ng-hide="isIE9()"data-ng-click = "exportPdf()" style="float: right;margin-right: 7px; cursor : pointer" src="images/export2.png">
-			<img data-ng-hide="!isIE9()" data-ng-click = "exportToPdf1()" style="float: right;margin-right: 7px; cursor : pointer" src="images/export2.png">
+			<img alt="export to excel" data-ng-click = "exportToExcel()" style="float: right;margin-right: 7px; cursor : pointer" src="images/export3.png">
+			<img alt="export to csv" data-ng-click = "exportCsv()" style="float: right;margin-right: 7px; cursor : pointer" src="images/export1.png">
+			<img alt="export to pdf" data-ng-hide="isIE9()"data-ng-click = "exportPdf()" style="float: right;margin-right: 7px; cursor : pointer" src="images/export2.png">
+			<img alt="export to pdf" data-ng-hide="!isIE9()" data-ng-click = "exportToPdf1()" style="float: right;margin-right: 7px; cursor : pointer" src="images/export2.png">
 		</div>
 
     </div>
@@ -333,7 +333,7 @@
 
 	<div class="row">
 		<div class="block reports-body loading" data-ng-if="waiting && isAggregateReport()">
-			<img src="images/pageloader.gif">
+			<img alt="page loading" src="images/pageloader.gif">
 			<p>Aggregate Report is being generated...</p>
 		</div>
 		<div >
@@ -348,7 +348,7 @@
 
 	<div class="row">
 		<div class="block reports-body loading" data-ng-if="waiting && (report.reportEnum == 'Kilkari_Message_Matrix' && report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise')">
-			<img src="images/pageloader.gif">
+			<img alt="page loading" src="images/pageloader.gif">
 			<p>Aggregate Report is being generated...</p>
 		</div>
 		<div >
@@ -371,7 +371,7 @@
 	</div>
 
 	<div class="block reports-body loading" data-ng-if="waiting && !isAggregateReport()">
-		<img src="images/pageloader.gif">
+		<img alt="page loading" src="images/pageloader.gif">
 		<p>Report is being generated...</p>
 	</div>
 
@@ -379,7 +379,7 @@
 		<p>The following report has been generated: </p>
 		<p>{{fileName}}</p>
 		<span data-ng-click="clearFile()">
-			<a id="downloadReportLink" href="{{downloadReportUrl}}">Click here to download. <img src="images/export3.png"></a>
+			<a id="downloadReportLink" href="{{downloadReportUrl}}">Click here to download. <img alt="download" src="images/export3.png"></a>
 		</span>
 
 	</div>

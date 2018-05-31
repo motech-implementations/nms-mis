@@ -1,8 +1,6 @@
 <!DOCTYPE html>
-<html data-ng-app="nmsReports" data-ng-controller="MainController">
+<html lang="en" data-ng-app="nmsReports" data-ng-controller="MainController">
 <head>
-	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
-	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
 
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,73 +22,65 @@
 
 	        gtag('config', 'UA-119876170-1');
 	</script>
-    <script type="text/javascript" src="bower_components/pdfmake/build/pdfmake.js"></script>
-    <script type="text/javascript" src="bower_components/pdfmake/build/vfs_fonts.js"></script>
-	<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
-	<script type="text/javascript" src="bower_components/angular-animate/angular-animate.js"></script>
-	<script type="text/javascript" src="bower_components/angular-ui-validate/dist/validate.min.js"></script>
-	<script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
-	<script type="text/javascript" src="bower_components/angular-messages/angular-messages.min.js"></script>
-	<script type="text/javascript" src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
-	<script type="text/javascript" src="bower_components/angular-ui-grid/ui-grid.js"></script>
-	<script type="text/javascript" src="bower_components/angular-animate/angular-animate.min.js"></script>
-	<script type="text/javascript" src="bower_components/angular-aria/angular-aria.min.js"></script>
-	<script type="text/javascript" src="bower_components/angular-material/angular-material.min.js"></script>
-	<!--<script type="text/javascript" src="bower_components/angularjs-captcha/dist/angularjs-captcha.min.js"></script>-->
-	<script type="text/javascript" src="bower_components/re-tree/re-tree.js"></script>
-	<script type="text/javascript" src="bower_components/angular-ui-carousel/dist/ui-carousel.js"></script>
-	<script type="text/javascript" src="bower_components/ng-device-detector/ng-device-detector.js"></script>
-	<script type="text/javascript" src="bower_components/ngstorage/ngStorage.min.js"></script>
-	<script type="text/javascript" src="bower_components/ng-file-upload/ng-file-upload-shim.min.js"></script>
-	<script type="text/javascript" src="bower_components/ng-file-upload/ng-file-upload.min.js"></script>
-<!--<script type="text/javascript" src="bower_components/angular-hitcounter/src/angular-hitcounter.js"></script>-->
-	<!--<script type="text/javascript" src="bower_components/underscore/underscore.js"></script>-->
+    <script src="bower_components/pdfmake/build/pdfmake.js"></script>
+    <script src="bower_components/pdfmake/build/vfs_fonts.js"></script>
+	<script src="bower_components/angular/angular.min.js"></script>
+	<script src="bower_components/angular-animate/angular-animate.js"></script>
+	<script src="bower_components/angular-ui-validate/dist/validate.min.js"></script>
+	<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+	<script src="bower_components/angular-messages/angular-messages.min.js"></script>
+	<script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+	<script src="bower_components/angular-ui-grid/ui-grid.js"></script>
+	<script src="bower_components/angular-animate/angular-animate.min.js"></script>
+	<script src="bower_components/angular-aria/angular-aria.min.js"></script>
+	<script src="bower_components/angular-material/angular-material.min.js"></script>
+	<script src="bower_components/re-tree/re-tree.js"></script>
+	<script src="bower_components/angular-ui-carousel/dist/ui-carousel.js"></script>
+	<script src="bower_components/ng-device-detector/ng-device-detector.js"></script>
+	<script src="bower_components/ngstorage/ngStorage.min.js"></script>
+	<script src="bower_components/ng-file-upload/ng-file-upload-shim.min.js"></script>
+	<script src="bower_components/ng-file-upload/ng-file-upload.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.9.12/xlsx.full.min.js"></script>
     <script src="https://fastcdn.org/FileSaver.js/1.1.20151003/FileSaver.min.js"></script>
     <script src="bower_components/angular-idle-service/dist/angular-idle-service.js"></script>
-
-
-	<script type="text/javascript" src="scripts/global/urls.js"></script>
+	<script src="scripts/global/urls.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 	<!-- main -->
-	<script type="text/javascript" src="scripts/app.js"></script>
-	<script type="text/javascript" src="scripts/json/user.json"></script>
+	<script src="scripts/app.js"></script>
+	<script src="scripts/json/user.json"></script>
 
 	<!-- Controllers -->
-	<script type="text/javascript" src="scripts/controllers/main.js"></script>
-	<script type="text/javascript" src="scripts/controllers/userManagement.js"></script>
-	<script type="text/javascript" src="scripts/controllers/userTable.js"></script>
-	<script type="text/javascript" src="scripts/controllers/editUser.js"></script>
-	<script type="text/javascript" src="scripts/controllers/bulkUser.js"></script>
-	<script type="text/javascript" src="scripts/controllers/createUser.js"></script>
-	<script type="text/javascript" src="scripts/controllers/reports.js"></script>
-	<script type="text/javascript" src="scripts/controllers/profile.js"></script>
-	<script type="text/javascript" src="scripts/controllers/login.js"></script>
-	<script type="text/javascript" src="scripts/controllers/forgotPassword.js"></script>
-    <script type="text/javascript" src="scripts/controllers/changePassword.js"></script>
+	<script src="scripts/controllers/main.js"></script>
+	<script src="scripts/controllers/userManagement.js"></script>
+	<script src="scripts/controllers/userTable.js"></script>
+	<script src="scripts/controllers/editUser.js"></script>
+	<script src="scripts/controllers/bulkUser.js"></script>
+	<script src="scripts/controllers/createUser.js"></script>
+	<script src="scripts/controllers/reports.js"></script>
+	<script src="scripts/controllers/profile.js"></script>
+	<script src="scripts/controllers/login.js"></script>
+	<script src="scripts/controllers/forgotPassword.js"></script>
+    <script src="scripts/controllers/changePassword.js"></script>
+	<script src="scripts/controllers/feedbackForm.js"></script>
+	<script src="scripts/controllers/contactUs.js"></script>
+	<script src="scripts/controllers/contactUsResponse.js"></script>
+	<script  src="scripts/controllers/userManual.js"></script>
+	<script  src="scripts/controllers/faq.js"></script>
+	<script  src="scripts/controllers/downloads.js"></script>
+	<script  src="scripts/controllers/staticPages.js"></script>
 
-
-	<script type="text/javascript" src="scripts/controllers/feedbackForm.js"></script>
-	<script type="text/javascript" src="scripts/controllers/contactUs.js"></script>
-	<script type="text/javascript" src="scripts/controllers/contactUsResponse.js"></script>
-
-	<script type="text/javascript" src="scripts/controllers/userManual.js"></script>
-	<script type="text/javascript" src="scripts/controllers/faq.js"></script>
-	<script type="text/javascript" src="scripts/controllers/downloads.js"></script>
-	<script type="text/javascript" src="scripts/controllers/staticPages.js"></script>
 	<!-- Factory -->
-	<!-- <script type="text/javascript" src="scripts/factories/navbar.js"></script> -->
-	<script type="text/javascript" src="scripts/factories/userTable.js"></script>
-	<script type="text/javascript" src="scripts/factories/auth.js"></script>
-	<script type="text/javascript" src="scripts/factories/userForm.js"></script>
-	<script type="text/javascript" src="scripts/factories/exportuiGrid.js"></script>
+	<script src="scripts/factories/userTable.js"></script>
+	<script src="scripts/factories/auth.js"></script>
+	<script src="scripts/factories/userForm.js"></script>
+	<script src="scripts/factories/exportuiGrid.js"></script>
 
 	<!-- Directives -->
-	<script type="text/javascript" src="scripts/directives/pagination.js"></script>
+	<script src="scripts/directives/pagination.js"></script>
 
-
-	<!--<script type="text/javascript" src="bower_components/angular-recaptcha/release/angular-recaptcha.js"></script>-->
-
+	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="styleSheet" href="bower_components/angular-ui-grid/ui-grid.min.css"/>
@@ -138,8 +128,8 @@
 					<a data-ng-if='(loginBool==true)' class="pointer"  data-ng-click="goToLogin()" >Login</a>
 					<a data-ng-if='!(loginBool==true)' style="cursor: not-allowed" data-ng-click="goToLogin()" >Login</a>
 				</li>
-				<li data-ng-if='!checkLogin()' class="pd" data-ng-class="{active: checkProfile(),pd1:!checkLogin()}" >
-					<a ng-mouseleave="ondropdownfn()" ng-click="hovered()" class="pointer" href>
+				<li data-ng-if='!checkLogin()'  class="pd" data-ng-class="{active: checkProfile(),pd1:!checkLogin()}" >
+					<a ng-mouseleave="ondropdownfn()" ng-click="hovered()" class="pointer">
 						{{currentUser.fullName}}<span  class="caret"></span>
 					</a>
 				</li>
@@ -167,11 +157,11 @@
 
 
 
-    <div ng-mouseleave="removed()" data-ng-hide='menuChecker()'>
-        <div ng-if="(show==true)" class="pd" data-ng-class="{pd1:show}"   >
-            <ul class="profile-dropdown" style="text-align : left">
+    <div  data-ng-hide='menuChecker()'>
+        <div  class="pd" data-ng-class="{pd1:show}"   >
+            <ul ng-mouseleave="removed()" ng-if="(show==true)" class="profile-dropdown" style="text-align : left">
                 <li data-ng-class="{activeP: activeTabProfile('profile')}" >
-                    <a class="dropdown-buttons pointer" class="pointer" data-ng-class="{dis1: disableCursor()}" data-ng-click="goToProfile()">My Profile</a>
+                    <a class="dropdown-buttons pointer"  data-ng-class="{dis1: disableCursor()}" data-ng-click="goToProfile()">My Profile</a>
 
                 </li>
                 <li data-ng-class="{activeP: activeTabProfile('changePassword')}" >
@@ -227,7 +217,7 @@
 		<div class="col-md-3 col-sm-3 col-xs-3 footer-right">
 			<div>Last updated : {{last_updated}}</div>
 			<div>Visitors: <!--<hit-counter style="background-color: #a4574c;color: white"></hit-counter></div>-->
-				<img src='https://www.counter12.com/img-y1ZZZZDZD6BZy4C0-3.gif' class="visitors" alt='count'><script type='text/javascript' src='https://www.counter12.com/ad.js?id=y1ZZZZDZD6BZy4C0'></script></div>
+				<img src='https://www.counter12.com/img-y1ZZZZDZD6BZy4C0-3.gif' class="visitors" alt='count'><script  src='https://www.counter12.com/ad.js?id=y1ZZZZDZD6BZy4C0'></script></div>
 			<div>Dt:  {{date | date:'medium'}}</div>
 		</div>
 
