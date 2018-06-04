@@ -10,15 +10,16 @@
 				}
 			})
 
-//			var formdata = new FormData();
-//			$scope.getTheFiles = function ($files) {
-//				angular.forEach($files, function (value, key) {
-//					formdata.append(key, value);
-//				});
-//			};
+			var formdata = new FormData();
+			$scope.getTheFiles = function ($files) {
+				angular.forEach($files, function (value, key) {
+					formdata.append(key, value);
+				});
+			};
 
 			$scope.uploadFile = function(){
-				var file1 = $scope.myFile;
+				var file = $scope.myFile;
+				var fd = new FormData();
 
 
 				if(file1 == null){
@@ -32,15 +33,19 @@
                     }
 				}
 
-
+				fd.append('bulkCsv', file);
+	//We can send anything in name parameter,
+//it is hard coded to abc as it is irrelavant in this case.
 				var uploadUrl = backend_root + "nms/admin/uploadFile";
-
-				Upload.upload({
-                            url: uploadUrl,
-                            data: {bulkCsv: file1}
-                        }).then(function (resp) {
-                        $scope.listErrors(resp.data)
-                        });
+				$http.post(uploadUrl, fd, {
+					transformRequest: angular.identity,
+					headers: {'Content-Type': undefined}
+				})
+				.then(function(result){
+					$scope.listErrors(result.data)
+				})
+				// .error(function(){
+				// });
 			}
 
 			$scope.downloadTemplateUrl = backend_root + 'nms/admin/getBulkDataImportCSV'

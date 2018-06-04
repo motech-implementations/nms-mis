@@ -1860,7 +1860,7 @@ public class AdminServiceImpl implements AdminService {
 
                 if(rowid!=8&&((cellid==4&&!obj.toString().equalsIgnoreCase("No Phone"))
                         ||(cellid==3&&!obj.toString().equalsIgnoreCase("No FLW_ID")))){
-                cell.setCellValue(Long.parseLong(obj.toString()));}
+                cell.setCellValue(obj.toString());}
                 else{
                     cell.setCellValue(obj.toString());
                 }
