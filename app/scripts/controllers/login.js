@@ -77,7 +77,9 @@
 
             $rootScope.$on('$locationChangeStart', function (event, current, previous) {
                 if(!(current.indexOf("login?error") > 0)){
-                    window.localStorage.setItem('preUrl', previous);
+                    if(previous != base_url + "/app/#!/changePassword"){
+                         window.localStorage.setItem('preUrl', previous);
+                    }
                     if(localStorage.preUrl == base_url + "/app/#!/reports/ma/cumulative-summary-report" ||
                        localStorage.preUrl == base_url + "/app/#!/reports/ma/subscriber-report" ||
                        localStorage.preUrl == base_url + "/app/#!/reports/ma/performance-report" ||
@@ -94,9 +96,24 @@
                        localStorage.preUrl == base_url + "/app/#!/reports/kilkari/beneficiary-completion-report" 
                     ){
                        $scope.preUrl = localStorage.preUrl;
+                       console.log($scope.preUrl);
+                       console.log($scope.user);
                     }
+//                    else if(localStorage.preUrl == base_url + "/app/#!/changePassword"){
+//                        if($scope.currentUser !== undefined || $scope.currentUser != ''){
+//
+//                             if(!($scope.currentUser.default || $scope.currentUser.default == null)){
+//                                 $scope.preUrl = "";
+//                                 console.log($scope.preUrl);
+//                                 console.log($scope.user);
+//                             }
+//                        }
+//
+//                    }
                     else
                        $scope.preUrl = "";
+                       console.log($scope.preUrl);
+                       console.log($scope.user);
 
                 }
             });
