@@ -1137,7 +1137,7 @@ public class AdminServiceImpl implements AdminService {
                 if(rowid!=8&&((cellid==3&&!obj.toString().equalsIgnoreCase("No MCTS ID"))
                         ||(cellid==4&&!obj.toString().equalsIgnoreCase("No RCH ID"))
                         ||(cellid==5&&!obj.toString().equalsIgnoreCase("No Mobile Number")))){
-                cell.setCellValue(Float.parseFloat(obj.toString()));}
+                cell.setCellValue(obj.toString());}
                 else{
                     cell.setCellValue(obj.toString());
                 }
@@ -1270,7 +1270,7 @@ public class AdminServiceImpl implements AdminService {
                 if(rowid!=8&&((cellid==3&&!obj.toString().equalsIgnoreCase("No MCTS ID"))
                         ||(cellid==4&&!obj.toString().equalsIgnoreCase("No RCH ID"))
                         ||(cellid==5&&!obj.toString().equalsIgnoreCase("No Mobile Number")))){
-                    cell.setCellValue(Float.parseFloat(obj.toString()));}
+                    cell.setCellValue(obj.toString());}
                 else{
                     cell.setCellValue(obj.toString());
                 }
@@ -1403,7 +1403,7 @@ public class AdminServiceImpl implements AdminService {
                 Cell cell = row.createCell(cellid++);
                 if(rowid!=8&&((cellid==4&&!obj.toString().equalsIgnoreCase("No ASHA Mobile Number"))
                         ||(cellid==3&&!obj.toString().equalsIgnoreCase("No ASHA ID")))){
-                cell.setCellValue(Float.parseFloat(obj.toString()));}
+                cell.setCellValue(obj.toString());}
                 else{
                     cell.setCellValue(obj.toString());
                 }
@@ -1541,7 +1541,7 @@ public class AdminServiceImpl implements AdminService {
                 Cell cell = row.createCell(cellid++);
                 if(rowid!=8&&((cellid==4&&!obj.toString().equalsIgnoreCase("No Phone"))
                         ||(cellid==3&&!obj.toString().equalsIgnoreCase("No FLW_ID")))){
-                cell.setCellValue(Float.parseFloat(obj.toString()));}
+                cell.setCellValue(obj.toString());}
                 else{
                     cell.setCellValue(obj.toString());
                 }
@@ -1727,7 +1727,7 @@ public class AdminServiceImpl implements AdminService {
             for (Object obj : objectArr) {
                 Cell cell = row.createCell(cellid++);
                 if(rowid!=8&&(cellid==3)){
-                cell.setCellValue(Float.parseFloat(obj.toString()));}
+                cell.setCellValue(obj.toString());}
                 else{
                     cell.setCellValue(obj.toString());
                 }
@@ -2141,7 +2141,7 @@ public class AdminServiceImpl implements AdminService {
                 if(rowid!=8&&((cellid==3&&!obj.toString().equalsIgnoreCase("No MCTS Id"))
                         ||(cellid==4&&!obj.toString().equalsIgnoreCase("No RCH Id"))
                         ||(cellid==5&&!obj.toString().equalsIgnoreCase("No MSISDN")))){
-                cell.setCellValue(Float.parseFloat(obj.toString()));}
+                cell.setCellValue(obj.toString());}
                 else{
                     cell.setCellValue(obj.toString());
                 }
@@ -2273,7 +2273,7 @@ public class AdminServiceImpl implements AdminService {
                         ||(cellid==4&&!obj.toString().equalsIgnoreCase("No RCH Id"))
                         ||(cellid==5&&!obj.toString().equalsIgnoreCase("No MSISDN"))
                         ||(cellid==13&&!obj.toString().equalsIgnoreCase("No Age_Data")))){
-                cell.setCellValue(Float.parseFloat(obj.toString()));}
+                cell.setCellValue(obj.toString());}
                 else{
                     cell.setCellValue(obj.toString());
                 }
@@ -2412,7 +2412,7 @@ public class AdminServiceImpl implements AdminService {
                 if(rowid!=8&&((cellid==3&&!obj.toString().equalsIgnoreCase("No MCTS Id"))
                         ||(cellid==4&&!obj.toString().equalsIgnoreCase("No RCH Id"))
                         ||(cellid==5&&!obj.toString().equalsIgnoreCase("No MSISDN")))){
-                cell.setCellValue(Float.parseFloat(obj.toString()));}
+                cell.setCellValue(obj.toString());}
                 else{
                     cell.setCellValue(obj.toString());
                 }
@@ -2544,7 +2544,7 @@ public class AdminServiceImpl implements AdminService {
                 if(rowid!=8&&((cellid==3&&!obj.toString().equalsIgnoreCase("No MCTS Id"))
                         ||(cellid==4&&!obj.toString().equalsIgnoreCase("No RCH Id"))
                         ||(cellid==5&&!obj.toString().equalsIgnoreCase("No MSISDN")))){
-                    cell.setCellValue(Float.parseFloat(obj.toString()));}
+                    cell.setCellValue(obj.toString());}
                 else{
                     cell.setCellValue(obj.toString());
                 }
