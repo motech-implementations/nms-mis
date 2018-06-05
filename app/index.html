@@ -129,7 +129,7 @@
 					<a data-ng-if='!(loginBool==true)' style="cursor: not-allowed" data-ng-click="goToLogin()" >Login</a>
 				</li>
 				<li data-ng-if='!checkLogin()'  class="pd" data-ng-class="{active: checkProfile(),pd1:!checkLogin()}" >
-					<a ng-mouseleave="ondropdownfn()" ng-click="hovered()" class="pointer">
+					<a data-ng-mouseleave="ondropdownfn()" data-ng-click="hovered()" class="pointer">
 						{{currentUser.fullName}}<span  class="caret"></span>
 					</a>
 				</li>
@@ -159,8 +159,8 @@
 
     <div  data-ng-hide='menuChecker()'>
         <div  class="pd" data-ng-class="{pd1:show}"   >
-            <ul ng-mouseleave="removed()" ng-if="(show==true)" class="profile-dropdown" style="text-align : left">
-                <li data-ng-class="{activeP: activeTabProfile('profile')}" >
+            <ul  class="profile-dropdown" style="text-align : left">
+                <li data-ng-mouseleave="removed()" data-ng-if="(show==true)" data-ng-class="{activeP: activeTabProfile('profile')}" >
                     <a class="dropdown-buttons pointer"  data-ng-class="{dis1: disableCursor()}" data-ng-click="goToProfile()">My Profile</a>
 
                 </li>
