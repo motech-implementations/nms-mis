@@ -3,14 +3,14 @@
     <h1 style="font-size: 24px"><b>FAQ's Profile Section</b></h1>
     <div>
         <div class="panel-group">
-            <div ng-repeat="profile in profiles">
+            <div data-ng-repeat="profile in profiles">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h4 class="panel-title">
+                        <div class="panel-title">
                             <div data-ng-click="active = !active" data-ng-class="{'expandcollapse-heading-collapsed': active, 'expandcollapse-heading-expanded': !active}" style="outline:0px"><span data-ng-class="{'glyphicon glyphicon-chevron-up': !active, 'glyphicon glyphicon-chevron-down': active}"></span>
                                 <div>{{profile.question}}</div>
                             </div>
-                        </h4>
+                        </div>
                     </div>
                     <div data-ng-hide="active" class="panel-collapse slideDown">
                         <div class="panel-body">

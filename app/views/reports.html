@@ -59,7 +59,7 @@
 
 					<div class="form-group col-xs-4" data-ng-if = "isAggregateReport()">
 						<label> State</label><br>
-						<div class="btn-group" data-ng-class="{loading: statesLoading, disabled: disableState()&&!statesLoading}" data-uib-dropdown dropdown-append-to-body>
+						<div class="btn-group" data-ng-class="{loading: statesLoading, disabled: disableState()&&!statesLoading}" data-uib-dropdown data-dropdown-append-to-body>
 							<button id="btn-append-to-body-5" type="button" class="btn btn-sm btn-default" data-ng-disabled="disableState()" data-uib-dropdown-toggle >
 								<span class="block">
 									<span>{{state.stateName}}</span>
@@ -79,7 +79,7 @@
 				<div class="col-xs-5 right" data-ng-if="!isCircleReport()">
 					<div class="form-group col-xs-4" data-ng-if = "!isAggregateReport()">
 						<label> State</label><br>
-						<div class="btn-group" data-ng-class="{loading: statesLoading, disabled: disableState()&&!statesLoading }" data-uib-dropdown dropdown-append-to-body>
+						<div class="btn-group" data-ng-class="{loading: statesLoading, disabled: disableState()&&!statesLoading }" data-uib-dropdown data-dropdown-append-to-body>
 							<button id="btn-append-to-body-6" type="button" class="btn btn-sm btn-default" data-ng-disabled="disableState()" data-uib-dropdown-toggle >
 								<span class="block">
 									<span>{{cropState(state.stateName)}}</span>
@@ -94,7 +94,7 @@
 					<div class="form-group col-xs-6" data-ng-if = "isAggregateReport()" >
 						<!-- <div> -->
 						<label> District</label><br>
-						<div class="btn-group" data-ng-class="{loading: districtsLoading, autoSelected, disabled: disableDistrict()&&!(districtsLoading || autoSelected)}" data-uib-dropdown dropdown-append-to-body>
+						<div class="btn-group" data-ng-class="{loading: districtsLoading, autoSelected, disabled: disableDistrict()&&!(districtsLoading || autoSelected)}" data-uib-dropdown data-dropdown-append-to-body>
 							<button id="btn-append-to-body-7" type="button" class="btn btn-sm btn-default" data-ng-disabled="disableDistrict()" data-uib-dropdown-toggle >
 								<span class="block">
 									<span>{{cropAggregate(district.districtName)}}</span>
@@ -111,7 +111,7 @@
 					<div class="form-group col-xs-4" data-ng-if = "!isAggregateReport()">
 					<!-- <div> -->
 						<label> District</label><br>
-						<div class="btn-group" data-ng-class="{loading: districtsLoading, autoSelected, disabled: disableDistrict()&&!(districtsLoading || autoSelected)}" data-uib-dropdown dropdown-append-to-body>
+						<div class="btn-group" data-ng-class="{loading: districtsLoading, autoSelected, disabled: disableDistrict()&&!(districtsLoading || autoSelected)}" data-uib-dropdown data-dropdown-append-to-body>
 							<button id="btn-append-to-body-8" type="button" class="btn btn-sm btn-default" data-ng-disabled="disableDistrict()" data-uib-dropdown-toggle >
 								<span class="block">
 									<span>{{crop(district.districtName)}}</span>
@@ -127,7 +127,7 @@
 					</div>
 					<div class="form-group col-xs-6" data-ng-if = "isAggregateReport()">
 						<label> Block</label><br>
-						<div class="btn-group" data-ng-class="{loading: blocksLoading, disabled: disableBlock()&&!blocksLoading}" data-uib-dropdown dropdown-append-to-body>
+						<div class="btn-group" data-ng-class="{loading: blocksLoading, disabled: disableBlock()&&!blocksLoading}" data-uib-dropdown data-dropdown-append-to-body>
 							<button id="btn-append-to-body-9" type="button" class="btn btn-sm btn-default" data-ng-disabled="disableBlock()" data-uib-dropdown-toggle>
 								<span class="block">
 									<span>{{cropAggregate(block.blockName)}}</span>
@@ -143,7 +143,7 @@
 					</div>
 					<div class="form-group col-xs-4" data-ng-if = "!isAggregateReport()">
 						<label> Block</label><br>
-						<div class="btn-group" data-ng-class="{loading: blocksLoading, disabled: disableBlock()&&!blocksLoading}" data-uib-dropdown dropdown-append-to-body>
+						<div class="btn-group" data-ng-class="{loading: blocksLoading, disabled: disableBlock()&&!blocksLoading}" data-uib-dropdown data-dropdown-append-to-body>
 							<button id="btn-append-to-body-10" type="button" class="btn btn-sm btn-default" data-ng-disabled="disableBlock()" data-uib-dropdown-toggle >
 								<span class="block">
 									<span>{{crop(block.blockName)}}</span>
@@ -162,7 +162,7 @@
 				<div class="col-xs-5 right" data-ng-if="isCircleReport()">
 					<div class="form-group col-xs-4">
 						<label> Circle</label><br>
-						<div class="btn-group" data-ng-class="{loading: circlesLoading, disabled : disableCircle()&&!circlesLoading}" data-uib-dropdown dropdown-append-to-body>
+						<div class="btn-group" data-ng-class="{loading: circlesLoading, disabled : disableCircle()&&!circlesLoading}" data-uib-dropdown data-dropdown-append-to-body>
 							<button id="btn-append-to-body" type="button" class="btn btn-sm btn-default" data-ng-disabled="disableCircle()" data-uib-dropdown-toggle >
 								<span class="block">
 									<span>{{circle.circleName}}</span>
@@ -186,7 +186,7 @@
 
 					<div class="form-group col-xs-2" data-ng-hide = "report.name == 'MA Cumulative Summary' || report.reportEnum == 'Kilkari_Cumulative_Summary' ">
 						<label> Period Type</label><br>
-						<div class="btn-group " data-uib-dropdown dropdown-append-to-body >
+						<div class="btn-group " data-uib-dropdown data-dropdown-append-to-body >
 							<button id="btn-append-to-body9" type="button" data-ng-disabled="true" class="btn btn-sm btn-default"  data-uib-dropdown-toggle >
 								<span class="block">
 									<span>{{periodDisplayType}}</span>
@@ -233,7 +233,7 @@
 
 					<div class="form-group col-xs-2" data-ng-hide = "periodDisplayType != 'Quarter'">
 						<label>Quarter</label><br>
-						<div class="btn-group" data-uib-dropdown dropdown-append-to-body>
+						<div class="btn-group" data-uib-dropdown data-dropdown-append-to-body>
 							<button id="btn-append-to-body10" type="button" class="btn btn-sm btn-default"  data-uib-dropdown-toggle >
 								<span class="block">
 									<span>{{quarterDisplayType}}</span>
@@ -253,7 +253,7 @@
 
 					<div class="form-group col-xs-2">
 						<label> Report Type</label><br>
-						<div class="btn-group disabled" data-uib-dropdown dropdown-append-to-body>
+						<div class="btn-group disabled" data-uib-dropdown data-dropdown-append-to-body>
 							<button data-ng-disabled = "true"  id="btn-append-to-body1" type="button" class="btn btn-sm btn-default"  data-uib-dropdown-toggle >
 								<span class="block">
 									<span>{{reportDisplayType}}</span>

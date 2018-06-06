@@ -5,14 +5,16 @@
         <div class="row">
             <div class="col-sm-12 col-xs-12 col-lg-12">
                 <table class="contactPageHeading">
-                    <th><h2>Contact us</h2></th>
+                    <tr>
+                    <th><p style = "font-size: 30px; margin-top: 10px; padding-left: 15px;font-weight: 300">Contact us</p></th>
                     <th><hr class="infoHR"/></th>
+                    </tr>
                 </table>
             </div>
         </div>
     <div class="row cs-content contactUs-paddingLeft">
         <div class="col-sm-3 col-xs-3 col-lg-3 contactUs-locationColumn">
-            <div class="contactUs-locationColumn-icon"><img src="images/contact_location.png"></div>
+            <div class="contactUs-locationColumn-icon"><img alt="contact location" src="images/contact_location.png"></div>
             <div style="text-align: justify;">
                 Lorem ipsum dolor sit nostra
                 Lorem ipsum dolor sit nostra
@@ -24,7 +26,7 @@
             </div>
         </div>
         <div class="col-sm-2 col-xs-2 col-lg-2 contactUs-phoneColumn">
-            <div class="contactUs-phoneColumn-icon"><img src="images/contact_phone.png"></div>
+            <div class="contactUs-phoneColumn-icon"><img alt ="contact phone" src="images/contact_phone.png"></div>
             <div>
                 080 235252352
                 040 523652365
@@ -32,7 +34,7 @@
             </div>
         </div>
         <div class="col-sm-3 col-xs-3 col-lg-3 contactUs-mailColumn">
-            <div class="contactUs-mailColumn-icon"><img src="images/contact_mail.png"></div>
+            <div class="contactUs-mailColumn-icon"><img alt ="contact mail" src="images/contact_mail.png"></div>
             <div>
                 Sampleemail@sampleemail.com
                 Sampleemail@sampleemail.com
@@ -91,7 +93,7 @@
                         </div>
                         <div data-ng-class="{'has-error':ContactUsForm.email.$invalid &amp;&amp; !ContactUsForm.email.$pristine}" style="">
                             <div class="col-sm-8 col-xs-8 col-lg-8">
-                                <input id="email" name="email" type="email" class="form-control input input-sm ng-touched ng-dirty ng-invalid ng-not-empty ng-invalid-email ng-valid-required ng-invalid-remove ng-valid-email-add ng-invalid-email-remove" data-ng-model="email.email" placeholder="Email" required="" aria-invalid="true" style="width:220px;" required>
+                                <input id="email" name="email" type="email" class="form-control input input-sm ng-touched ng-dirty ng-invalid ng-not-empty ng-invalid-email ng-valid-required ng-invalid-remove ng-valid-email-add ng-invalid-email-remove" data-ng-model="email.email" placeholder="Email"  aria-invalid="true" style="width:220px;" required>
                                 <div class="errorMessage ng-active" data-ng-messages="ContactUsForm.email.$error" role="alert" data-ng-show="!ContactUsForm.email.$pristine" aria-live="assertive" aria-hidden="false" style="">
                                     <!-- ngMessage: required --><div data-ng-message="required">This field cannot be empty</div>
                                     <!-- ngMessage: email --><div data-ng-message="email" class="ng-scope" style="">Enter a valid email</div>

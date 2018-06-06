@@ -8,7 +8,7 @@
 
 		<div class="col-md-8 col-sm-8 col-xs-8 image-content " >
 			<div class="row ">
-			<div  class="col-lg-12 login-tb"><img class="icons" data-ng-src="images/welcome.png">Welcome to MIS Portal</div>
+			<div  class="col-lg-12 login-tb"><img alt="welcome" class="icons" src="images/welcome.png">Welcome to MIS Portal</div>
 			</div>
             <div class="row">
                 <div  class="col-lg-12 transparent-text">Training programmes in 2017</div>
@@ -20,7 +20,7 @@
 					<li data-target="#myCarousel" data-ng-repeat="img in images" class="{active : (img === 0)}" data-slide-to="{{img}}"></li>
 				</ol>
 				<div class="carousel-inner">
-					<div data-ng-class="{item: true, active : (img === 0)}" data-ng-repeat="img in images"> <img class="carousel-image" data-ng-src="/app/images/carousal{{img}}.png" alt="Slide numder {{img}}">
+					<div data-ng-class="{item: true, active : (img === 0)}" data-ng-repeat="img in images"> <img  class="carousel-image" src="/app/images/carousal{{img}}.png" alt="Slide numder {{img}}">
 						<div class="container">
 							<div class="carousel-caption"> </div>
 						</div>
@@ -36,7 +36,7 @@
 		</div>
 		<div class="form-horizontal col-md-3 col-sm-3 col-xs-3 login-form">
 			<div class="row">
-			<div id="login" class="col-lg-12 login-tb"><img class="icons" data-ng-src="images/login.png">Login</div>
+			<div id="login" class="col-lg-12 login-tb"><img alt="login" class="icons" src="images/login.png">Login</div>
 			</div><!--	<h1>Login</h1>-->
 			<div class="row">
 			<form  id="loginForm" name="loginForm" data-ng-submit="login($event)">
@@ -65,9 +65,9 @@
 				<div class="form-group d-flex flex-row justify-content-between" data-ng-init="Captcha()">
 					<span class="login-texts">Captcha</span>
 					<button type="button" id="refresh" data-ng-click="Captcha()" class="m-2"><span class="glyphicon glyphicon-refresh"></span></button>
-					<input type="text" ng-cut="$event.preventDefault()" ng-copy="$event.preventDefault()"  class="form-control input input-sm login-inputs" data-ng-disabled="true" name="mainCaptchaCode" style="background-color:black;font-weight:bold;font-style:italic;height:40px;width:42%;padding-left:40px;color:white;" data-ng-model="user.mainCaptchaCode"/>
+					<input type="text" data-ng-cut="$event.preventDefault()" data-ng-copy="$event.preventDefault()"  class="form-control input input-sm login-inputs" data-ng-disabled="true" name="mainCaptchaCode" style="background-color:black;font-weight:bold;font-style:italic;height:40px;width:42%;padding-left:40px;color:white;" data-ng-model="user.mainCaptchaCode"/>
 				</div>
-				<div class="form-group"><input type="text" ng-paste="$event.preventDefault()" class="form-control input input-sm login-inputs" name="captchaCode" style="text-transform:uppercase" autocomplete="off" data-ng-model="user.captchaCode"/>
+				<div class="form-group"><input type="text" data-ng-paste="$event.preventDefault()" class="form-control input input-sm login-inputs" name="captchaCode" style="text-transform:uppercase" autocomplete="off" data-ng-model="user.captchaCode"/>
 				</div>
 
 				<!--<div class="form-group">-->
@@ -85,17 +85,17 @@
                 </div>
                 <div class="row">
 				<div class="col-lg-12  forgotPassword" >
-					<a ui-sref="forgotPassword" class="forgotPasswordLink" >Forgot Password?</a>
+					<a data-ui-sref="forgotPassword" class="forgotPasswordLink" >Forgot Password?</a>
 				</div>
                 </div>
 			</form>
 			</div>
 
 			<div class="row">
-				<div  class="col-lg-12 login-tb"><img class="icons" alt="downloads icon" data-ng-src="images/downloads.png" ><a data-ui-sref="Downloads" class="pointer downloadsLink">Downloads</a></div></div>
+				<div  class="col-lg-12 login-tb"><img  class="icons" alt="downloads icon" src="images/downloads.png" ><a data-ui-sref="Downloads" class="pointer downloadsLink">Downloads</a></div></div>
 			</div>
 
 		</div>
 	</div>
-</div>
+
 
