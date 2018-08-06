@@ -12,16 +12,16 @@ public enum ReportType {
 //    selfDeactivated("selfDeactivated"),
 //    sixWeeks("sixWeeks");
 
-    maCourse("MA_Cumulative_Course_Completion", "Cumulative Course Completion", "M","MA Completion Line-Listing Report"),
-    maAnonymous("MA_Anonymous_Users", "Circle wise Anonymous Users", "M", "MA Circle Wise Anonymous Line-Listing Report"),
-    maInactive("MA_Cumulative_Inactive_Users", "Cumulative Inactive Users", "M", "MA Inactive Users Line-Listing Report"),
-    lowUsage("Kilkari_Low_Usage", "Listen to < 25% this month", "K","Kilkari Low Listenership Line Listing Report"),
-    selfDeactivated("Kilkari_Self_Deactivated", "Self Deactivations", "K","Kilkari Self–deactivation line listing Report"),
-    sixWeeks("Kilkari_Six_Weeks_No_Answer", "Deactivated for not answering", "K","Kilkari Deactivations for not answering Report"),
-    flwRejected("MA_Asha_Import_Rejects","Asha Rejected Records", "M", "MA Rejected Line-Listing Report"),
-    childRejected("Kilkari_Child_Import_Rejects","Child Rejected Records", "K","Kilkari Rejected Child Line Listing Report"),
-    motherRejected("Kilkari_Mother_Import_Rejects","Mother Rejected Records", "K" ,"Kilkari Rejected Mother Line Listing Report"),
-    lowListenership("Kilkari_Low_Listenership_Deactivation", "Deactivated for Low Listenership","K",
+    maCourse("MA_Cumulative_Course_Completion", "Cumulative Course Completion", "MOBILE_ACADEMY","MA Completion Line-Listing Report"),
+    maAnonymous("MA_Anonymous_Users", "Circle wise Anonymous Users", "MOBILE_ACADEMY", "MA Circle Wise Anonymous Line-Listing Report"),
+    maInactive("MA_Cumulative_Inactive_Users", "Cumulative Inactive Users", "MOBILE_ACADEMY", "MA Inactive Users Line-Listing Report"),
+    lowUsage("Kilkari_Low_Usage", "Listen to < 25% this month", "KILKARI","Kilkari Low Listenership Line Listing Report"),
+    selfDeactivated("Kilkari_Self_Deactivated", "Self Deactivations", "KILKARI","Kilkari Self–deactivation line listing Report"),
+    sixWeeks("Kilkari_Six_Weeks_No_Answer", "Deactivated for not answering", "KILKARI","Kilkari Deactivations for not answering Report"),
+    flwRejected("MA_Asha_Import_Rejects","Asha Rejected Records", "MOBILE_ACADEMY", "MA Rejected Line-Listing Report"),
+    childRejected("Kilkari_Child_Import_Rejects","Child Rejected Records", "KILKARI","Kilkari Rejected Child Line Listing Report"),
+    motherRejected("Kilkari_Mother_Import_Rejects","Mother Rejected Records", "KILKARI" ,"Kilkari Rejected Mother Line Listing Report"),
+    lowListenership("Kilkari_Low_Listenership_Deactivation", "Deactivated for Low Listenership","KILKARI",
             "Kilkari Deactivations for For Low Listening Report");
 
     private String reportType;
