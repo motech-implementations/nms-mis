@@ -55,14 +55,7 @@ public interface LocationService {
 
     District getDistrictOfBlock(Integer blockId);
 
-    List<Subcenter> getChildSubcenters(Integer blockId);
-
-    /*----------------------Subcenter-------------------------*/
-    Subcenter findSubcenterById(Integer subcenterId);
-
-    Subcenter findSubcenterByName(String subcenterName);
-
-    Block getBlockOfSubcenter(Integer subcenterId);
+    List<HealthSubFacility> getChildSubcenters(Integer blockId);
 
      /*----------------------Circle-------------------------*/
     Circle findCircleById(Integer circleId);

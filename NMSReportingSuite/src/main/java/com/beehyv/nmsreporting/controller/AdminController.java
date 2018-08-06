@@ -319,15 +319,4 @@ public class AdminController {
         return locationService.getServiceStartdateForState(stateId, serviceType);
     }
 
-    @RequestMapping(value = "/updateBeneficiaryCallMeasure", method = RequestMethod.GET)
-    @ResponseBody
-    public String updateBeneficiaryCallMeasureUsingCsv() throws ParseException, java.text.ParseException{
-
-
-
-        return "Database updated";
-    }
-
-
-
 }

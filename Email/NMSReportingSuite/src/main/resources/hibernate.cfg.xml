@@ -18,7 +18,7 @@
         <mapping class="com.beehyv.nmsreporting.model.FrontLineWorkers"/>
         <mapping class="com.beehyv.nmsreporting.model.KilkariLowUsage"/>
         <mapping class="com.beehyv.nmsreporting.model.KilkariSelfDeactivated"/>
-        <mapping class="com.beehyv.nmsreporting.model.KilkariDeactivationOther"/>
+        <mapping class="com.beehyv.nmsreporting.model.KilkariManualDeactivations"/>
         <mapping class="com.beehyv.nmsreporting.model.StateCircle"/>
 
 

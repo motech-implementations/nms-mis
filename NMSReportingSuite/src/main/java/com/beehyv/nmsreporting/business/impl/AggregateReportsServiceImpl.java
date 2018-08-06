@@ -61,9 +61,6 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
     private RoleDao roleDao;
 
     @Autowired
-    private SubcenterDao subcenterDao;
-
-    @Autowired
     private ModificationTrackerDao modificationTrackerDao;
 
     @Autowired
@@ -91,12 +88,12 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         List<AggregateCumulativeMA> CumulativeSummery = new ArrayList<>();
         List<String> Headers = new ArrayList<>();
         if (locationType.equalsIgnoreCase("State")) {
-            List<State> states = stateDao.getStatesByServiceType("M");
+            List<State> states = stateDao.getStatesByServiceType("MOBILE_ACADEMY");
             for (State s : states) {
-                if (date.before(stateServiceDao.getServiceStartDateForState(s.getStateId(), "M")) && !isCumulative) {
-                    date = stateServiceDao.getServiceStartDateForState(s.getStateId(), "M");
+                if (date.before(stateServiceDao.getServiceStartDateForState(s.getStateId(), "MOBILE_ACADEMY")) && !isCumulative) {
+                    date = stateServiceDao.getServiceStartDateForState(s.getStateId(), "MOBILE_ACADEMY");
                 }
-                if (!isCumulative || !toDate.before(stateServiceDao.getServiceStartDateForState(s.getStateId(), "M"))) {
+                if (!isCumulative || !toDate.before(stateServiceDao.getServiceStartDateForState(s.getStateId(), "MOBILE_ACADEMY"))) {
                     CumulativeSummery.add(aggregateCumulativeMADao.getMACumulativeSummery(s.getStateId(), locationType, date));
                 }
                 date = toDate;
@@ -104,8 +101,8 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
 
         } else {
             if (locationType.equalsIgnoreCase("District")) {
-                if (date.before(stateServiceDao.getServiceStartDateForState(locationId, "M")) && !isCumulative) {
-                    date = stateServiceDao.getServiceStartDateForState(locationId, "M");
+                if (date.before(stateServiceDao.getServiceStartDateForState(locationId, "MOBILE_ACADEMY")) && !isCumulative) {
+                    date = stateServiceDao.getServiceStartDateForState(locationId, "MOBILE_ACADEMY");
                 }
                 List<District> districts = districtDao.getDistrictsOfState(locationId);
                 AggregateCumulativeMA stateCounts = aggregateCumulativeMADao.getMACumulativeSummery(locationId, "State", date);
@@ -138,8 +135,8 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                 CumulativeSummery.add(noDistrictCount);
             } else {
                 if (locationType.equalsIgnoreCase("Block")) {
-                    if (date.before(stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(), "M")) && !isCumulative) {
-                        date = stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(), "M");
+                    if (date.before(stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(), "MOBILE_ACADEMY")) && !isCumulative) {
+                        date = stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(), "MOBILE_ACADEMY");
                     }
                     List<Block> blocks = blockDao.getBlocksOfDistrict(locationId);
                     AggregateCumulativeMA districtCounts = aggregateCumulativeMADao.getMACumulativeSummery(locationId, "District", date);
@@ -171,8 +168,8 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                     noBlockCount.setLocationId((long) -locationId);
                     CumulativeSummery.add(noBlockCount);
                 } else {
-                    if (date.before(stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(), "M")) && !isCumulative) {
-                        date = stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(), "M");
+                    if (date.before(stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(), "MOBILE_ACADEMY")) && !isCumulative) {
+                        date = stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(), "MOBILE_ACADEMY");
                     }
                     List<HealthFacility> healthFacilities = healthFacilitydao.findByHealthBlockId(locationId);
                     List<HealthSubFacility> subcenters = new ArrayList<>();

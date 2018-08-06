@@ -11,14 +11,14 @@ import java.util.Date;
 public class Circle {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", columnDefinition = "TINYINT(4)")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name="id", columnDefinition = "TINYINT(4)")
     private Integer circleId;
 
-    @Column(name = "circle_name", columnDefinition = "VARCHAR(255)")
+    @Column(name="circle_name", columnDefinition = "VARCHAR(255)")
     private String circleName;
 
-    @Column(name = "last_modified", columnDefinition = "TIMESTAMP")
+    @Column(name = "modificationdate",columnDefinition = "TIMESTAMP")
     private Date lastModifiedDate;
 
     @Column(name = "circle_full_name", columnDefinition = "VARCHAR(255)")

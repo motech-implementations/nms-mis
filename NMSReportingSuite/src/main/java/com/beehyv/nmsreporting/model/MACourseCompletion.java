@@ -32,7 +32,7 @@ public class MACourseCompletion {
     @Column(name="sent_notification")
     private Boolean senrNotification;
 
-    @Column(name="last_modified")
+    @Column(name="modificationdate")
     private Date lastModifiedDate;
 
     public Long getId() {

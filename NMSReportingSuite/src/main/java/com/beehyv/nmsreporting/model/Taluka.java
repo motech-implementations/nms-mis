@@ -18,7 +18,7 @@ public class Taluka {
     @Column(name="taluka_name")
     private String talukaName;
 
-    @Column(name="last_modified", columnDefinition = "TIMESTAMP")
+    @Column(name="modificationdate", columnDefinition = "TIMESTAMP")
     private Date lastModified;
 
     @Column(name="loc_id", columnDefinition = "BIGINT(20)")

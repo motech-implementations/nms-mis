@@ -22,7 +22,10 @@ public class MACourseAttemptDaoImpl extends AbstractDao<Integer, User> implement
     @Override
     public List<MACourseFirstCompletion> getSuccessFulCompletion(Date toDate) {
         Criteria criteria = getSession().createCriteria(MACourseFirstCompletion.class);
-        criteria.add(Restrictions.lt("firstCompletionDate",toDate));
+        criteria.add(Restrictions.lt("firstCompletionDate",toDate))
+        .add((Restrictions.not(
+                Restrictions.in("districtId", new Integer[] {471,474,483,490})
+        )));
         return criteria.list();
     }
 
@@ -30,7 +33,10 @@ public class MACourseAttemptDaoImpl extends AbstractDao<Integer, User> implement
     public List<MACourseFirstCompletion> getSuccessFulCompletionWithStateId(Date toDate, Integer stateId) {
         Criteria criteria = getSession().createCriteria(MACourseFirstCompletion.class);
         criteria.add(Restrictions.lt("firstCompletionDate",toDate))
-                .add(Restrictions.eq("stateId",stateId));
+                .add(Restrictions.eq("stateId",stateId))
+                .add((Restrictions.not(
+                        Restrictions.in("districtId", new Integer[] {471,474,483,490})
+                )));
         return criteria.list();
     }
 

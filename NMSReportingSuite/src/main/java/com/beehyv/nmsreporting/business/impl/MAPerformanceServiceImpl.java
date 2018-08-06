@@ -33,9 +33,6 @@ public class MAPerformanceServiceImpl implements MAPerformanceService{
     private RoleDao roleDao;
 
     @Autowired
-    private SubcenterDao subcenterDao;
-
-    @Autowired
     private StateServiceDao stateServiceDao;
 
     @Autowired
@@ -44,147 +41,147 @@ public class MAPerformanceServiceImpl implements MAPerformanceService{
     @Autowired
     private HealthSubFacilityDao healthSubFacilityDao;
 
-    @Override
-    public Long getAccessedCount(Integer locationId, String locationType, Date fromDate, Date toDate){
-
-        Long count = (long)0;
-        Long addedCount = (long)0;
-        Long differenceCount = (long)0;
-
-        if(locationType.equalsIgnoreCase("DifferenceState")){
-            count =  maPerformanceDao.accessedAtLeastOnce(-locationId,"State",fromDate,toDate);
-            List<District> districts = districtDao.getDistrictsOfState(-locationId);
-            for(District d:districts){
-                addedCount += maPerformanceDao.accessedAtLeastOnce(d.getDistrictId(),"District",fromDate,toDate);
-            }
-            differenceCount = count - addedCount;
-            return differenceCount;
-        }
-        else{
-            if(locationType.equalsIgnoreCase("DifferenceDistrict")){
-
-                count =  maPerformanceDao.accessedAtLeastOnce(-locationId,"District",fromDate,toDate);
-                List<Block> blocks = blockDao.getBlocksOfDistrict(-locationId);
-                for (Block d : blocks) {
-                    addedCount += maPerformanceDao.accessedAtLeastOnce(d.getBlockId(),"Block",fromDate,toDate);
-                    }
-                differenceCount = count - addedCount;
-                return differenceCount;
-                }
-            else{
-                if(locationType.equalsIgnoreCase("DifferenceBlock")) {
-
-                    count =  maPerformanceDao.accessedAtLeastOnce(-locationId,"Block",fromDate,toDate);
-                    List<Subcenter> subcenters = subcenterDao.getSubcentersOfBlock(-locationId);
-                    for(Subcenter s: subcenters){
-                        addedCount += maPerformanceDao.accessedAtLeastOnce(s.getSubcenterId(),"Subcenter",fromDate,toDate);
-                        }
-                    differenceCount = count - addedCount;
-                    return differenceCount;
-                }
-                else {
-                    count =  maPerformanceDao.accessedAtLeastOnce(locationId,locationType,fromDate,toDate);
-                    return count;
-                }
-
-            }
-        }
-
-    }
-
-    @Override
-    public Long getNotAccessedcount(Integer locationId, String locationType, Date fromDate, Date toDate){
-
-        Long count = (long)0;
-        Long addedCount = (long)0;
-        Long differenceCount = (long)0;
-
-
-        if(locationType.equalsIgnoreCase("DifferenceState")){
-            count =  maPerformanceDao.accessedNotOnce(-locationId,"State",fromDate,toDate);
-            List<District> districts = districtDao.getDistrictsOfState(-locationId);
-            for(District d:districts){
-                addedCount += maPerformanceDao.accessedNotOnce(d.getDistrictId(),"District",fromDate,toDate);
-            }
-            differenceCount = count - addedCount;
-            return differenceCount;
-        }
-        else{
-            if(locationType.equalsIgnoreCase("DifferenceDistrict")){
-
-                count =  maPerformanceDao.accessedNotOnce(-locationId,"District",fromDate,toDate);
-                List<Block> blocks = blockDao.getBlocksOfDistrict(-locationId);
-                for (Block d : blocks) {
-                    addedCount += maPerformanceDao.accessedNotOnce(d.getBlockId(),"Block",fromDate,toDate);
-                }
-                differenceCount = count - addedCount;
-                return differenceCount;
-            }
-            else{
-                if(locationType.equalsIgnoreCase("DifferenceBlock")) {
-
-                    count =  maPerformanceDao.accessedNotOnce(-locationId,"Block",fromDate,toDate);
-                    List<Subcenter> subcenters = subcenterDao.getSubcentersOfBlock(-locationId);
-                    for(Subcenter s: subcenters){
-                        addedCount += maPerformanceDao.accessedNotOnce(s.getSubcenterId(),"Subcenter",fromDate,toDate);
-                    }
-                    differenceCount = count - addedCount;
-                    return differenceCount;
-                }
-                else{
-                    count =  maPerformanceDao.accessedNotOnce(locationId,locationType,fromDate,toDate);
-                    return count;
-                }
-            }
-        }
-    }
-
-    @Override
-    public Integer getAshasFailed(Integer locationId, String locationType, Date fromDate, Date toDate){
-
-        Integer count = 0;
-        Integer addedCount = 0;
-        Integer differenceCount = 0;
-
-
-        if(locationType.equalsIgnoreCase("DifferenceState")){
-            count =  maPerformanceDao.getAshasFailed(-locationId,"State",fromDate,toDate);
-            List<District> districts = districtDao.getDistrictsOfState(-locationId);
-            for(District d:districts){
-                addedCount += maPerformanceDao.getAshasFailed(d.getDistrictId(),"District",fromDate,toDate);
-            }
-            differenceCount = count - addedCount;
-            return differenceCount;
-        }
-        else{
-            if(locationType.equalsIgnoreCase("DifferenceDistrict")){
-
-                count =  maPerformanceDao.getAshasFailed(-locationId,"District",fromDate,toDate);
-                List<Block> blocks = blockDao.getBlocksOfDistrict(-locationId);
-                for (Block d : blocks) {
-                    addedCount += maPerformanceDao.getAshasFailed(d.getBlockId(),"Block",fromDate,toDate);
-                }
-                differenceCount = count - addedCount;
-                return differenceCount;
-            }
-            else{
-                if(locationType.equalsIgnoreCase("DifferenceBlock")) {
-
-                    count =  maPerformanceDao.getAshasFailed(-locationId,"Block",fromDate,toDate);
-                    List<Subcenter> subcenters = subcenterDao.getSubcentersOfBlock(-locationId);
-                    for(Subcenter s: subcenters){
-                        addedCount += maPerformanceDao.getAshasFailed(s.getSubcenterId(),"Subcenter",fromDate,toDate);
-                    }
-                    differenceCount = count - addedCount;
-                    return differenceCount;
-                }
-                else{
-                    count =  maPerformanceDao.getAshasFailed(locationId,locationType,fromDate,toDate);
-                    return count;
-                }
-            }
-        }
-    }
+//    @Override
+//    public Long getAccessedCount(Integer locationId, String locationType, Date fromDate, Date toDate){
+//
+//        Long count = (long)0;
+//        Long addedCount = (long)0;
+//        Long differenceCount = (long)0;
+//
+//        if(locationType.equalsIgnoreCase("DifferenceState")){
+//            count =  maPerformanceDao.accessedAtLeastOnce(-locationId,"State",fromDate,toDate);
+//            List<District> districts = districtDao.getDistrictsOfState(-locationId);
+//            for(District d:districts){
+//                addedCount += maPerformanceDao.accessedAtLeastOnce(d.getDistrictId(),"District",fromDate,toDate);
+//            }
+//            differenceCount = count - addedCount;
+//            return differenceCount;
+//        }
+//        else{
+//            if(locationType.equalsIgnoreCase("DifferenceDistrict")){
+//
+//                count =  maPerformanceDao.accessedAtLeastOnce(-locationId,"District",fromDate,toDate);
+//                List<Block> blocks = blockDao.getBlocksOfDistrict(-locationId);
+//                for (Block d : blocks) {
+//                    addedCount += maPerformanceDao.accessedAtLeastOnce(d.getBlockId(),"Block",fromDate,toDate);
+//                    }
+//                differenceCount = count - addedCount;
+//                return differenceCount;
+//                }
+//            else{
+//                if(locationType.equalsIgnoreCase("DifferenceBlock")) {
+//
+//                    count =  maPerformanceDao.accessedAtLeastOnce(-locationId,"Block",fromDate,toDate);
+//                    List<Subcenter> subcenters = subcenterDao.getSubcentersOfBlock(-locationId);
+//                    for(Subcenter s: subcenters){
+//                        addedCount += maPerformanceDao.accessedAtLeastOnce(s.getSubcenterId(),"Subcenter",fromDate,toDate);
+//                        }
+//                    differenceCount = count - addedCount;
+//                    return differenceCount;
+//                }
+//                else {
+//                    count =  maPerformanceDao.accessedAtLeastOnce(locationId,locationType,fromDate,toDate);
+//                    return count;
+//                }
+//
+//            }
+//        }
+//
+//    }
+//
+//    @Override
+//    public Long getNotAccessedcount(Integer locationId, String locationType, Date fromDate, Date toDate){
+//
+//        Long count = (long)0;
+//        Long addedCount = (long)0;
+//        Long differenceCount = (long)0;
+//
+//
+//        if(locationType.equalsIgnoreCase("DifferenceState")){
+//            count =  maPerformanceDao.accessedNotOnce(-locationId,"State",fromDate,toDate);
+//            List<District> districts = districtDao.getDistrictsOfState(-locationId);
+//            for(District d:districts){
+//                addedCount += maPerformanceDao.accessedNotOnce(d.getDistrictId(),"District",fromDate,toDate);
+//            }
+//            differenceCount = count - addedCount;
+//            return differenceCount;
+//        }
+//        else{
+//            if(locationType.equalsIgnoreCase("DifferenceDistrict")){
+//
+//                count =  maPerformanceDao.accessedNotOnce(-locationId,"District",fromDate,toDate);
+//                List<Block> blocks = blockDao.getBlocksOfDistrict(-locationId);
+//                for (Block d : blocks) {
+//                    addedCount += maPerformanceDao.accessedNotOnce(d.getBlockId(),"Block",fromDate,toDate);
+//                }
+//                differenceCount = count - addedCount;
+//                return differenceCount;
+//            }
+//            else{
+//                if(locationType.equalsIgnoreCase("DifferenceBlock")) {
+//
+//                    count =  maPerformanceDao.accessedNotOnce(-locationId,"Block",fromDate,toDate);
+//                    List<Subcenter> subcenters = subcenterDao.getSubcentersOfBlock(-locationId);
+//                    for(Subcenter s: subcenters){
+//                        addedCount += maPerformanceDao.accessedNotOnce(s.getSubcenterId(),"Subcenter",fromDate,toDate);
+//                    }
+//                    differenceCount = count - addedCount;
+//                    return differenceCount;
+//                }
+//                else{
+//                    count =  maPerformanceDao.accessedNotOnce(locationId,locationType,fromDate,toDate);
+//                    return count;
+//                }
+//            }
+//        }
+//    }
+//
+//    @Override
+//    public Integer getAshasFailed(Integer locationId, String locationType, Date fromDate, Date toDate){
+//
+//        Integer count = 0;
+//        Integer addedCount = 0;
+//        Integer differenceCount = 0;
+//
+//
+//        if(locationType.equalsIgnoreCase("DifferenceState")){
+//            count =  maPerformanceDao.getAshasFailed(-locationId,"State",fromDate,toDate);
+//            List<District> districts = districtDao.getDistrictsOfState(-locationId);
+//            for(District d:districts){
+//                addedCount += maPerformanceDao.getAshasFailed(d.getDistrictId(),"District",fromDate,toDate);
+//            }
+//            differenceCount = count - addedCount;
+//            return differenceCount;
+//        }
+//        else{
+//            if(locationType.equalsIgnoreCase("DifferenceDistrict")){
+//
+//                count =  maPerformanceDao.getAshasFailed(-locationId,"District",fromDate,toDate);
+//                List<Block> blocks = blockDao.getBlocksOfDistrict(-locationId);
+//                for (Block d : blocks) {
+//                    addedCount += maPerformanceDao.getAshasFailed(d.getBlockId(),"Block",fromDate,toDate);
+//                }
+//                differenceCount = count - addedCount;
+//                return differenceCount;
+//            }
+//            else{
+//                if(locationType.equalsIgnoreCase("DifferenceBlock")) {
+//
+//                    count =  maPerformanceDao.getAshasFailed(-locationId,"Block",fromDate,toDate);
+//                    List<Subcenter> subcenters = subcenterDao.getSubcentersOfBlock(-locationId);
+//                    for(Subcenter s: subcenters){
+//                        addedCount += maPerformanceDao.getAshasFailed(s.getSubcenterId(),"Subcenter",fromDate,toDate);
+//                    }
+//                    differenceCount = count - addedCount;
+//                    return differenceCount;
+//                }
+//                else{
+//                    count =  maPerformanceDao.getAshasFailed(locationId,locationType,fromDate,toDate);
+//                    return count;
+//                }
+//            }
+//        }
+//    }
 
     @Override
     public HashMap<Long,MAPerformanceCountsDto> getMAPerformanceCounts (Integer locationId, String locationType, Date fromDate, Date toDate){
@@ -196,16 +193,16 @@ public class MAPerformanceServiceImpl implements MAPerformanceService{
         HashMap<Long,MAPerformanceCountsDto> countMap = new HashMap<>();
 
         if(locationType.equalsIgnoreCase("State")){
-            List<State> states=stateDao.getStatesByServiceType("M");
+            List<State> states=stateDao.getStatesByServiceType("MOBILE_ACADEMY");
             for(State s:states){
                 Long accessedCount = 0L;
                 Long notAccessedCount = 0L;
                 Integer failedCount = 0;
-                if(fromDate.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"M"))){
-                    fromDateTemp = stateServiceDao.getServiceStartDateForState(s.getStateId(),"M");
+                if(fromDate.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"MOBILE_ACADEMY"))){
+                    fromDateTemp = stateServiceDao.getServiceStartDateForState(s.getStateId(),"MOBILE_ACADEMY");
                 }
                 MAPerformanceCountsDto statePerformance = new MAPerformanceCountsDto();
-                if(!toDate.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"M"))) {
+                if(!toDate.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"MOBILE_ACADEMY"))) {
                     accessedCount = maPerformanceDao.accessedAtLeastOnce(s.getStateId(), locationType, fromDateTemp, toDate);
                     notAccessedCount = maPerformanceDao.accessedNotOnce(s.getStateId(), locationType, fromDateTemp, toDate);
                     failedCount = maPerformanceDao.getAshasFailed(s.getStateId(), locationType, fromDateTemp, toDate);
@@ -221,8 +218,8 @@ public class MAPerformanceServiceImpl implements MAPerformanceService{
         }
         else{
             if(locationType.equalsIgnoreCase("District")){
-                if(fromDateTemp.before(stateServiceDao.getServiceStartDateForState(locationId,"M"))){
-                    fromDateTemp = stateServiceDao.getServiceStartDateForState(locationId,"M");
+                if(fromDateTemp.before(stateServiceDao.getServiceStartDateForState(locationId,"MOBILE_ACADEMY"))){
+                    fromDateTemp = stateServiceDao.getServiceStartDateForState(locationId,"MOBILE_ACADEMY");
                 }
                 List<District> districts = districtDao.getDistrictsOfState(locationId);
                 Long stateCounts1 = maPerformanceDao.accessedAtLeastOnce(locationId,"State",fromDateTemp,toDate);
@@ -260,8 +257,8 @@ public class MAPerformanceServiceImpl implements MAPerformanceService{
             }
             else{
                 if(locationType.equalsIgnoreCase("Block")) {
-                    if(fromDateTemp.before(stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(),"M"))){
-                        fromDateTemp = stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(),"M");
+                    if(fromDateTemp.before(stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(),"MOBILE_ACADEMY"))){
+                        fromDateTemp = stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(),"MOBILE_ACADEMY");
                     }
                     List<Block> blocks = blockDao.getBlocksOfDistrict(locationId);
                     Long districtCounts1 = maPerformanceDao.accessedAtLeastOnce(locationId,"District",fromDateTemp,toDate);
@@ -298,8 +295,8 @@ public class MAPerformanceServiceImpl implements MAPerformanceService{
                     countMap.put((long)-locationId,noBlockPerformance);
                 }
                 else {
-                    if(fromDateTemp.before(stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(),"M"))){
-                        fromDateTemp = stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(),"M");
+                    if(fromDateTemp.before(stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(),"MOBILE_ACADEMY"))){
+                        fromDateTemp = stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(),"MOBILE_ACADEMY");
                     }
                     List<HealthFacility> healthFacilities = healthFacilitydao.findByHealthBlockId(locationId);
                     List<HealthSubFacility> subcenters = new ArrayList<>();

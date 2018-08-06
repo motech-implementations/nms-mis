@@ -178,9 +178,9 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         List<KilkariCalls> CumulativeSummary = new ArrayList<>();
         List<String> Headers = new ArrayList<>();
         if(locationType.equalsIgnoreCase("State")){
-            List<State> states=stateDao.getStatesByServiceType("K");
+            List<State> states=stateDao.getStatesByServiceType("KILKARI");
             for(State s:states){
-                if(!toDate.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"K"))){
+                if(!toDate.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"KILKARI"))){
                     CumulativeSummary.add(kilkariCallReportDao.getKilkariCallreport(s.getStateId(),locationType,toDate));}
             }
         }
@@ -349,7 +349,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                             kilkariSubscriberDto.setLocationId((long)-1);
 
                         }
-                        if(end.getLocationType().equalsIgnoreCase("State")&& !serviceStarted(end.getLocationId().intValue(),"State",toDate,fromDate,"K"))
+                        if(end.getLocationType().equalsIgnoreCase("State")&& !serviceStarted(end.getLocationId().intValue(),"State",toDate,fromDate,"KILKARI"))
                         { showRow = false;}
                         if((kilkariSubscriberDto.getTotalSubscriptionsEnd() + kilkariSubscriberDto.getTotalSubscriptionsStart() + kilkariSubscriberDto.getTotalBeneficiaryRecordsReceived()
                                 + kilkariSubscriberDto.getTotalBeneficiaryRecordsEligible() + kilkariSubscriberDto.getTotalBeneficiaryRecordsAccepted()
@@ -369,17 +369,17 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         List<KilkariSubscriber> kilkariSubscribersCountList = new ArrayList<>();
 
         if(locationType.equalsIgnoreCase("State")) {
-            List<State> states = stateDao.getStatesByServiceType("K");
+            List<State> states = stateDao.getStatesByServiceType("KILKARI");
             for(State state:states){
-                if(date.before(stateServiceDao.getServiceStartDateForState(state.getStateId(),"K"))){
-                    date = stateServiceDao.getServiceStartDateForState(state.getStateId(),"K");
+                if(date.before(stateServiceDao.getServiceStartDateForState(state.getStateId(),"KILKARI"))){
+                    date = stateServiceDao.getServiceStartDateForState(state.getStateId(),"KILKARI");
                 }
                 kilkariSubscribersCountList.add(kilkariSubscriberReportDao.getKilkariSubscriberCounts(state.getStateId(),locationType, date));
                 date = toDate;
             }
         } else if(locationType.equalsIgnoreCase("District")){
-            if(date.before(stateServiceDao.getServiceStartDateForState(locationId,"K"))){
-                date = stateServiceDao.getServiceStartDateForState(locationId,"K");
+            if(date.before(stateServiceDao.getServiceStartDateForState(locationId,"KILKARI"))){
+                date = stateServiceDao.getServiceStartDateForState(locationId,"KILKARI");
             }
             List<District> districts = districtDao.getDistrictsOfState(locationId);
             KilkariSubscriber kilkariStateCounts = kilkariSubscriberReportDao.getKilkariSubscriberCounts(locationId,"State", date);
@@ -410,8 +410,8 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             kilkariNoDistrictCount.setLocationId((long)-locationId);
             kilkariSubscribersCountList.add(kilkariNoDistrictCount);
         } else if(locationType.equalsIgnoreCase("Block")) {
-            if(date.before(stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(),"K"))){
-                date = stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(),"K");
+            if(date.before(stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(),"KILKARI"))){
+                date = stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(),"KILKARI");
             }
             List<Block> blocks = blockDao.getBlocksOfDistrict(locationId);
             KilkariSubscriber kilkariDistrictCounts = kilkariSubscriberReportDao.getKilkariSubscriberCounts(locationId,"District", date);
@@ -442,8 +442,8 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             kilkariNoBlockCount.setLocationId((long)-locationId);
             kilkariSubscribersCountList.add(kilkariNoBlockCount);
         } else {
-            if(date.before(stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(),"K"))){
-                date = stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(),"K");
+            if(date.before(stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(),"KILKARI"))){
+                date = stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(),"KILKARI");
             }
             List<HealthFacility> healthFacilities = healthFacilitydao.findByHealthBlockId(locationId);
             List<HealthSubFacility> subcenters = new ArrayList<>();
@@ -579,9 +579,9 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         List<KilkariAggregateBeneficiariesDto> CumulativeBeneficiary = new ArrayList<>();
         KilkariAggregateBeneficiariesDto kilkariAggregateBeneficiariesDto = new KilkariAggregateBeneficiariesDto();
         if(locationType.equalsIgnoreCase("State")){
-            List<State> states = stateDao.getStatesByServiceType("K");
+            List<State> states = stateDao.getStatesByServiceType("KILKARI");
             for(State s:states){
-                if(!toDate.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"K"))){
+                if(!toDate.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"KILKARI"))){
                     AggregateCumulativeBeneficiary stateCount1=(aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary((long)s.getStateId(),locationType,fromDate,periodType));
                     KilkariUsage stateCount2=(kilkariUsageDao.getUsage(s.getStateId(),locationType,fromDate,periodType));
                     KilkariMessageListenership stateCount3 = kilkariMessageListenershipReportDao.getListenerData(s.getStateId(),locationType,fromDate,periodType);
@@ -894,9 +894,9 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
     private List<UsageDto> getKilkariUsage(Integer locationId,String locationType,Date fromDate,Date toDate,String periodType){
         List<UsageDto> KilkariUsageDto = new ArrayList<>();
         if(locationType.equalsIgnoreCase("State")){
-            List<State> states=stateDao.getStatesByServiceType("K");
+            List<State> states=stateDao.getStatesByServiceType("KILKARI");
             for(State s:states){
-                if(!toDate.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"K"))){
+                if(!toDate.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"KILKARI"))){
                     KilkariUsage statecount1=(kilkariUsageDao.getUsage(s.getStateId(),locationType,fromDate,periodType));
                     KilkariMessageListenership statecount2 = kilkariMessageListenershipReportDao.getListenerData(s.getStateId(),locationType,fromDate,periodType);
                     UsageDto stateCount = new UsageDto();
@@ -1158,9 +1158,9 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
     private List<KilkariMessageListenership> getKilkariMessageListenershipData(Integer locationId, String locationType, Date date,Date toDate,String periodType){
         List<KilkariMessageListenership> kilkariMessageListenershipList = new ArrayList<>();
         if(locationType.equalsIgnoreCase("State")){
-            List<State> states=stateDao.getStatesByServiceType("K");
+            List<State> states=stateDao.getStatesByServiceType("KILKARI");
             for(State s:states){
-                if(!toDate.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"K"))){
+                if(!toDate.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"KILKARI"))){
                     kilkariMessageListenershipList.add(kilkariMessageListenershipReportDao.getListenerData(s.getStateId(),locationType,date,periodType));
                 }}
         }
@@ -1386,18 +1386,18 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         Date date = toDate;
         List<AggregateCumulativeBeneficiaryCompletion> CumulativeCompletion = new ArrayList<>();
         if(locationType.equalsIgnoreCase("State")){
-            List<State> states=stateDao.getStatesByServiceType("K");
+            List<State> states=stateDao.getStatesByServiceType("KILKARI");
             for(State s:states){
-                if(date.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"K"))){
-                    date = stateServiceDao.getServiceStartDateForState(s.getStateId(),"K");
+                if(date.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"KILKARI"))){
+                    date = stateServiceDao.getServiceStartDateForState(s.getStateId(),"KILKARI");
                 }
                 CumulativeCompletion.add(aggCumulativeBeneficiaryComplDao.getBeneficiaryCompletion(s.getStateId(),locationType,date));
                 date = toDate;
             }
         }
         else if(locationType.equalsIgnoreCase("District")){
-            if(date.before(stateServiceDao.getServiceStartDateForState(locationId,"K"))){
-                date = stateServiceDao.getServiceStartDateForState(locationId,"K");
+            if(date.before(stateServiceDao.getServiceStartDateForState(locationId,"KILKARI"))){
+                date = stateServiceDao.getServiceStartDateForState(locationId,"KILKARI");
             }
             List<District> districts = districtDao.getDistrictsOfState(locationId);
             AggregateCumulativeBeneficiaryCompletion stateCounts = aggCumulativeBeneficiaryComplDao.getBeneficiaryCompletion(locationId,"State",date);
@@ -1429,8 +1429,8 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             noDistrictCount.setLocationId((long)(-1));
             CumulativeCompletion.add(noDistrictCount);
         } else if(locationType.equalsIgnoreCase("Block")) {
-            if(date.before(stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(),"K"))){
-                date = stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(),"K");
+            if(date.before(stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(),"KILKARI"))){
+                date = stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(),"KILKARI");
             }
             List<Block> blocks = blockDao.getBlocksOfDistrict(locationId);
             AggregateCumulativeBeneficiaryCompletion districtCounts = aggCumulativeBeneficiaryComplDao.getBeneficiaryCompletion(locationId,"District",date);
@@ -1462,8 +1462,8 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             noBlockCount.setLocationId((long)(-1));
             CumulativeCompletion.add(noBlockCount);
         } else {
-            if(date.before(stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(),"K"))){
-                date = stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(),"K");
+            if(date.before(stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(),"KILKARI"))){
+                date = stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(),"KILKARI");
             }
             List<HealthFacility> healthFacilities = healthFacilitydao.findByHealthBlockId(locationId);
             List<HealthSubFacility> subcenters = new ArrayList<>();
@@ -1687,9 +1687,9 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         }
 
         if(locationType.equalsIgnoreCase("National")){
-            List<State> states=stateDao.getStatesByServiceType("K");
+            List<State> states=stateDao.getStatesByServiceType("KILKARI");
             for(State s :states){
-                if(!toDate.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"K"))) {
+                if(!toDate.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"KILKARI"))) {
                     KilkariMessageListenership kilkariMessageListenership = kilkariMessageListenershipReportDao.getListenerData(s.getStateId(), "State", fromDate,reportRequest.getPeriodType());
                     totalBenefeciariesCalled += kilkariMessageListenership.getTotalBeneficiariesCalled();
                 }
@@ -2165,18 +2165,18 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         Date date = toDate;
         List<KilkariCalls> kilkariCall = new ArrayList<>();
         if(locationType.equalsIgnoreCase("State")){
-            List<State> states=stateDao.getStatesByServiceType("K");
+            List<State> states=stateDao.getStatesByServiceType("KILKARI");
             for(State s:states){
-                if(date.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"K"))){
-                    date = stateServiceDao.getServiceStartDateForState(s.getStateId(),"K");
+                if(date.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"KILKARI"))){
+                    date = stateServiceDao.getServiceStartDateForState(s.getStateId(),"KILKARI");
                 }
                 kilkariCall.add(kilkariCallReportDao.getKilkariCallreport(s.getStateId(),locationType,date));
                 date = toDate;
             }
 
         }  else if(locationType.equalsIgnoreCase("District")){
-            if(date.before(stateServiceDao.getServiceStartDateForState(locationId,"K"))){
-                date = stateServiceDao.getServiceStartDateForState(locationId,"K");
+            if(date.before(stateServiceDao.getServiceStartDateForState(locationId,"KILKARI"))){
+                date = stateServiceDao.getServiceStartDateForState(locationId,"KILKARI");
             }
             List<District> districts = districtDao.getDistrictsOfState(locationId);
             KilkariCalls stateCounts = kilkariCallReportDao.getKilkariCallreport(locationId,"State",date);
@@ -2214,8 +2214,8 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             noDistrictCount.setLocationId((long)(-1));
             kilkariCall.add(noDistrictCount);
         } else if(locationType.equalsIgnoreCase("Block")) {
-            if(date.before(stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(),"K"))){
-                date = stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(),"K");
+            if(date.before(stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(),"KILKARI"))){
+                date = stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(),"KILKARI");
             }
             List<Block> blocks = blockDao.getBlocksOfDistrict(locationId);
             KilkariCalls districtCounts = kilkariCallReportDao.getKilkariCallreport(locationId,"District",date);
@@ -2253,8 +2253,8 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             noBlockCount.setLocationId((long)(-1));
             kilkariCall.add(noBlockCount);
         } else {
-            if(date.before(stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(),"K"))){
-                date = stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(),"K");
+            if(date.before(stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(),"KILKARI"))){
+                date = stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(),"KILKARI");
             }
             List<HealthFacility> healthFacilities = healthFacilitydao.findByHealthBlockId(locationId);
             List<HealthSubFacility> subcenters = new ArrayList<>();

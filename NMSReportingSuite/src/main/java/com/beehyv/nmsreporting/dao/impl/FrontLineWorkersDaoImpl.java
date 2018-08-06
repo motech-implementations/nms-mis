@@ -23,6 +23,9 @@ public class FrontLineWorkersDaoImpl extends AbstractDao<Integer,FrontLineWorker
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("creationDate"));
         criteria.add(Restrictions.and(
                 Restrictions.lt("creationDate",toDate),
+                (Restrictions.not(
+                        Restrictions.in("districtId", new Integer[] {471,474,483,490})
+                )),
                 Restrictions.disjunction().add(Restrictions.and(
                         Restrictions.eq("status","ACTIVE").ignoreCase(),
                         Restrictions.gt("courseStartDate",toDate)))
@@ -38,6 +41,9 @@ public class FrontLineWorkersDaoImpl extends AbstractDao<Integer,FrontLineWorker
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("creationDate"));
         criteria.add(Restrictions.and(
                 Restrictions.lt("creationDate",toDate),
+                (Restrictions.not(
+                        Restrictions.in("districtId", new Integer[] {471,474,483,490})
+                )),
                 Restrictions.disjunction().add(Restrictions.and(
                         Restrictions.eq("status","ACTIVE").ignoreCase(),
                         Restrictions.gt("courseStartDate",toDate)))

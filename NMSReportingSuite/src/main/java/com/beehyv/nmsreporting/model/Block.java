@@ -18,7 +18,7 @@ public class Block {
     @Column(name="healthblock_name")
     private String blockName;
 
-    @Column(name="last_modified", columnDefinition = "TIMESTAMP")
+    @Column(name="modificationdate", columnDefinition = "TIMESTAMP")
     private Date lastModified;
 
     @Column(name="loc_id", columnDefinition = "BIGINT(20)")

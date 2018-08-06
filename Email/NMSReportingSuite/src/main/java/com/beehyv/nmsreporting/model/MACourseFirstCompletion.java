@@ -7,57 +7,57 @@ import java.util.Date;
  * Created by beehyv on 31/5/17.
  */
 @Entity
-@Table(name = "ma_course_completion_first")
+@Table(name="ma_course_completion_first")
 public class MACourseFirstCompletion {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name="id")
     private Integer Id;
 
-    @Column(name = "flw_id", columnDefinition = "BIGINT(20)")
+    @Column(name="flw_id", columnDefinition = "BIGINT(20)")
     private Long flwId;
 
-    @Column(name = "flw_msisdn", columnDefinition = "BIGINT(20)")
+    @Column(name="flw_msisdn", columnDefinition = "BIGINT(20)")
     private Long msisdn;
 
-    @Column(name = "state_id", columnDefinition = "TINYINT(4)")
+    @Column(name="state_id", columnDefinition = "TINYINT(4)")
     private Integer stateId;
 
-    @Column(name = "district_id", columnDefinition = "SMALLINT(6)")
+    @Column(name="district_id", columnDefinition = "SMALLINT(6)")
     private Integer districtId;
 
-    @Column(name = "taluka_id", columnDefinition = "SMALLINT(6)")
+    @Column(name="taluka_id", columnDefinition = "SMALLINT(6)")
     private Integer talukaId;
 
-    @Column(name = "village_id", columnDefinition = "BIGINT(20)")
+    @Column(name="village_id", columnDefinition = "BIGINT(20)")
     private Integer villageId;
 
-    @Column(name = "block_id", columnDefinition = "BIGINT(20)")
+    @Column(name="block_id", columnDefinition = "BIGINT(20)")
     private Integer blockId;
 
-    @Column(name = "healthfacility_id", columnDefinition = "BIGINT(20)")
+    @Column(name="healthfacility_id", columnDefinition = "BIGINT(20)")
     private Integer healthFacilityId;
 
-    @Column(name = "healthsubfacility_id", columnDefinition = "BIGINT(20)")
+    @Column(name="healthsubfacility_id", columnDefinition = "BIGINT(20)")
     private Integer healthSubFacilityId;
 
-    @Column(name = "flw_name", columnDefinition = "VARCHAR(255)")
+    @Column(name="flw_name", columnDefinition = "VARCHAR(255)")
     private String fullName;
 
-    @Column(name = "external_flw_id", columnDefinition = "VARCHAR(255)")
+    @Column(name="external_flw_id", columnDefinition = "VARCHAR(255)")
     private Long externalFlwId;
 
-    @Column(name = "job_status", columnDefinition = "VARCHAR(255)")
+    @Column(name="job_status", columnDefinition = "VARCHAR(255)")
     private String jobStatus;
 
-    @Column(name = "creation_date", columnDefinition = "DATE")
+    @Column(name="creationdate", columnDefinition = "DATE")
     private Date creationDate;
 
-    @Column(name = "first_completion", columnDefinition = "DATE")
+    @Column(name="first_completion", columnDefinition = "DATE")
     private Date firstCompletionDate;
 
-    @Column(name = "sent_notification")
+    @Column(name="sent_notification")
     private Boolean sentNotification;
 
     public Integer getId() {

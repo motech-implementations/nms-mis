@@ -13,4 +13,7 @@ public interface HealthSubFacilityDao {
 
     public List<HealthSubFacility> findByHealthFacilityId(Integer healthFacilityid);
 
+    public List<HealthSubFacility> getSubcentersOfBlock(Integer blockId);
+
+
 }

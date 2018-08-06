@@ -42,9 +42,6 @@ public class UserServiceImpl implements UserService{
     private RoleDao roleDao;
 
     @Autowired
-    private SubcenterDao subcenterDao;
-
-    @Autowired
     private ModificationTrackerDao modificationTrackerDao;
 
     @Autowired

@@ -51,7 +51,7 @@ public class MACourseFirstCompletion {
     @Column(name="job_status", columnDefinition = "VARCHAR(255)")
     private String jobStatus;
 
-    @Column(name="creation_date", columnDefinition = "DATE")
+    @Column(name="creationdate", columnDefinition = "DATE")
     private Date creationDate;
 
     @Column(name="first_completion", columnDefinition = "DATE")

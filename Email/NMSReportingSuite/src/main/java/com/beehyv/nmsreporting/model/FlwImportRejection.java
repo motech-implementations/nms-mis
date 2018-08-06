@@ -11,11 +11,11 @@ import java.util.Date;
  * Created by beehyv on 3/8/17.
  */
 @Entity
-@Table(name = "flw_import_rejection")
+@Table(name="flw_import_rejection")
 public class FlwImportRejection {
 
     @Id
-    @Column(name = "id")
+    @Column(name="id")
     private Long id;
 
     @Column(name = "state_id")

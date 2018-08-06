@@ -2,7 +2,7 @@ package com.beehyv.nmsreporting.dao.impl;
 
 import com.beehyv.nmsreporting.dao.AbstractDao;
 import com.beehyv.nmsreporting.dao.KilkariSixWeeksNoAnswerDao;
-import com.beehyv.nmsreporting.model.KilkariDeactivationOther;
+import com.beehyv.nmsreporting.model.KilkariManualDeactivations;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -16,35 +16,41 @@ import java.util.List;
  * Created by beehyv on 23/5/17.
  */
 @Repository("kilkariSixWeeksNoAnswerDao")
-public class KilkariSixWeeksNoAnswerDaoImpl extends AbstractDao<Integer, KilkariDeactivationOther> implements KilkariSixWeeksNoAnswerDao {
+public class KilkariSixWeeksNoAnswerDaoImpl extends AbstractDao<Integer, KilkariManualDeactivations> implements KilkariSixWeeksNoAnswerDao {
     @Override
-    public List<KilkariDeactivationOther> getKilkariUsers(Date fromDate, Date toDate) {
-        Criteria criteria = getSession().createCriteria(KilkariDeactivationOther.class);
+    public List<KilkariManualDeactivations> getKilkariUsers(Date fromDate, Date toDate) {
+        Criteria criteria = getSession().createCriteria(KilkariManualDeactivations.class);
         criteria.add(Restrictions.and(
+                (Restrictions.not(
+                        Restrictions.in("districtId", new Integer[] {471,474,483,490})
+                )),
                 Restrictions.lt("deactivationDate",toDate),
                 Restrictions.ge("deactivationDate",fromDate),
                 Restrictions.eq("deactivationReason","WEEKLY_CALLS_NOT_ANSWERED")
         ));
         criteria.addOrder(Order.asc("deactivationDate"));
-        return (List<KilkariDeactivationOther>) criteria.list();
+        return (List<KilkariManualDeactivations>) criteria.list();
     }
 
     @Override
-    public List<KilkariDeactivationOther> getKilkariUsersWithStateId(Date fromDate, Date toDate, Integer stateId) {
-        Criteria criteria = getSession().createCriteria(KilkariDeactivationOther.class);
+    public List<KilkariManualDeactivations> getKilkariUsersWithStateId(Date fromDate, Date toDate, Integer stateId) {
+        Criteria criteria = getSession().createCriteria(KilkariManualDeactivations.class);
         criteria.add(Restrictions.and(
+                (Restrictions.not(
+                        Restrictions.in("districtId", new Integer[] {471,474,483,490})
+                )),
                 Restrictions.lt("deactivationDate",toDate),
                 Restrictions.ge("deactivationDate",fromDate),
                 Restrictions.eq("deactivationReason","WEEKLY_CALLS_NOT_ANSWERED")
         ))
                 .add(Restrictions.eq("stateId",stateId));
         criteria.addOrder(Order.asc("deactivationDate"));
-        return (List<KilkariDeactivationOther>) criteria.list();
+        return (List<KilkariManualDeactivations>) criteria.list();
     }
 
     @Override
-    public List<KilkariDeactivationOther> getKilkariUsersWithDistrictId(Date fromDate, Date toDate, Integer districtId) {
-        Criteria criteria = getSession().createCriteria(KilkariDeactivationOther.class);
+    public List<KilkariManualDeactivations> getKilkariUsersWithDistrictId(Date fromDate, Date toDate, Integer districtId) {
+        Criteria criteria = getSession().createCriteria(KilkariManualDeactivations.class);
         criteria.add(Restrictions.and(
                 Restrictions.lt("deactivationDate",toDate),
                 Restrictions.ge("deactivationDate",fromDate),
@@ -52,12 +58,12 @@ public class KilkariSixWeeksNoAnswerDaoImpl extends AbstractDao<Integer, Kilkari
         ))
                 .add(Restrictions.eq("districtId",districtId));
         criteria.addOrder(Order.asc("deactivationDate"));
-        return (List<KilkariDeactivationOther>) criteria.list();
+        return (List<KilkariManualDeactivations>) criteria.list();
     }
 
     @Override
-    public List<KilkariDeactivationOther> getKilkariUsersWithBlockId(Date fromDate, Date toDate, Integer blockId) {
-        Criteria criteria = getSession().createCriteria(KilkariDeactivationOther.class);
+    public List<KilkariManualDeactivations> getKilkariUsersWithBlockId(Date fromDate, Date toDate, Integer blockId) {
+        Criteria criteria = getSession().createCriteria(KilkariManualDeactivations.class);
         criteria.add(Restrictions.and(
                 Restrictions.lt("deactivationDate",toDate),
                 Restrictions.ge("deactivationDate",fromDate),
@@ -65,12 +71,12 @@ public class KilkariSixWeeksNoAnswerDaoImpl extends AbstractDao<Integer, Kilkari
         ))
                 .add(Restrictions.eq("blockId",blockId));
         criteria.addOrder(Order.asc("deactivationDate"));
-        return (List<KilkariDeactivationOther>) criteria.list();
+        return (List<KilkariManualDeactivations>) criteria.list();
     }
 
     @Override
     public Long getCountOfDeactivatedForDistrict(Date fromDate, Date toDate, Integer districtId) {
-        Criteria criteria = getSession().createCriteria(KilkariDeactivationOther.class);
+        Criteria criteria = getSession().createCriteria(KilkariManualDeactivations.class);
         criteria.add(Restrictions.and(
                 Restrictions.lt("deactivationDate",toDate),
                 Restrictions.ge("deactivationDate",fromDate),
@@ -84,33 +90,39 @@ public class KilkariSixWeeksNoAnswerDaoImpl extends AbstractDao<Integer, Kilkari
 
 
     @Override
-    public List<KilkariDeactivationOther> getLowListenershipUsers(Date fromDate, Date toDate) {
-        Criteria criteria = getSession().createCriteria(KilkariDeactivationOther.class);
+    public List<KilkariManualDeactivations> getLowListenershipUsers(Date fromDate, Date toDate) {
+        Criteria criteria = getSession().createCriteria(KilkariManualDeactivations.class);
         criteria.add(Restrictions.and(
+                (Restrictions.not(
+                        Restrictions.in("districtId", new Integer[] {471,474,483,490})
+                )),
                 Restrictions.lt("deactivationDate",toDate),
                 Restrictions.ge("deactivationDate",fromDate),
                 Restrictions.eq("deactivationReason","LOW_LISTENERSHIP")
         ));
         criteria.addOrder(Order.asc("deactivationDate"));
-        return (List<KilkariDeactivationOther>) criteria.list();
+        return (List<KilkariManualDeactivations>) criteria.list();
     }
 
     @Override
-    public List<KilkariDeactivationOther> getLowListenershipUsersWithStateId(Date fromDate, Date toDate, Integer stateId) {
-        Criteria criteria = getSession().createCriteria(KilkariDeactivationOther.class);
+    public List<KilkariManualDeactivations> getLowListenershipUsersWithStateId(Date fromDate, Date toDate, Integer stateId) {
+        Criteria criteria = getSession().createCriteria(KilkariManualDeactivations.class);
         criteria.add(Restrictions.and(
+                (Restrictions.not(
+                        Restrictions.in("districtId", new Integer[] {471,474,483,490})
+                )),
                 Restrictions.lt("deactivationDate",toDate),
                 Restrictions.ge("deactivationDate",fromDate),
                 Restrictions.eq("deactivationReason","LOW_LISTENERSHIP")
         ))
                 .add(Restrictions.eq("stateId",stateId));
         criteria.addOrder(Order.asc("deactivationDate"));
-        return (List<KilkariDeactivationOther>) criteria.list();
+        return (List<KilkariManualDeactivations>) criteria.list();
     }
 
     @Override
-    public List<KilkariDeactivationOther> getLowListenershipUsersWithDistrictId(Date fromDate, Date toDate, Integer districtId) {
-        Criteria criteria = getSession().createCriteria(KilkariDeactivationOther.class);
+    public List<KilkariManualDeactivations> getLowListenershipUsersWithDistrictId(Date fromDate, Date toDate, Integer districtId) {
+        Criteria criteria = getSession().createCriteria(KilkariManualDeactivations.class);
         criteria.add(Restrictions.and(
                 Restrictions.lt("deactivationDate",toDate),
                 Restrictions.ge("deactivationDate",fromDate),
@@ -118,12 +130,12 @@ public class KilkariSixWeeksNoAnswerDaoImpl extends AbstractDao<Integer, Kilkari
         ))
                 .add(Restrictions.eq("districtId",districtId));
         criteria.addOrder(Order.asc("deactivationDate"));
-        return (List<KilkariDeactivationOther>) criteria.list();
+        return (List<KilkariManualDeactivations>) criteria.list();
     }
 
     @Override
-    public List<KilkariDeactivationOther> getLowListenershipUsersWithBlockId(Date fromDate, Date toDate, Integer blockId) {
-        Criteria criteria = getSession().createCriteria(KilkariDeactivationOther.class);
+    public List<KilkariManualDeactivations> getLowListenershipUsersWithBlockId(Date fromDate, Date toDate, Integer blockId) {
+        Criteria criteria = getSession().createCriteria(KilkariManualDeactivations.class);
         criteria.add(Restrictions.and(
                 Restrictions.lt("deactivationDate",toDate),
                 Restrictions.ge("deactivationDate",fromDate),
@@ -131,12 +143,12 @@ public class KilkariSixWeeksNoAnswerDaoImpl extends AbstractDao<Integer, Kilkari
         ))
                 .add(Restrictions.eq("blockId",blockId));
         criteria.addOrder(Order.asc("deactivationDate"));
-        return (List<KilkariDeactivationOther>) criteria.list();
+        return (List<KilkariManualDeactivations>) criteria.list();
     }
 
     @Override
     public Long getCountOfLowListenershipUsersForDistrict(Date fromDate, Date toDate, Integer districtId) {
-        Criteria criteria = getSession().createCriteria(KilkariDeactivationOther.class);
+        Criteria criteria = getSession().createCriteria(KilkariManualDeactivations.class);
         criteria.add(Restrictions.and(
                 Restrictions.lt("deactivationDate",toDate),
                 Restrictions.ge("deactivationDate",fromDate),

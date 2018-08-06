@@ -35,7 +35,10 @@ public class DistrictDaoImpl extends AbstractDao<Integer, District> implements D
 
     public List<District> getDistrictsOfState(Integer stateId) {
         Criteria criteria = createEntityCriteria();
-        criteria.add(Restrictions.eq("stateOfDistrict", stateId));
+        criteria.add(Restrictions.and(Restrictions.eq("stateOfDistrict", stateId),
+                (Restrictions.not(
+                        Restrictions.in("districtId", new Integer[] {471,474,483,490})
+                ))));
         return (List<District>) criteria.list();
     }
 

@@ -20,7 +20,7 @@ public class HealthFacility {
     @Column(name="healthBlock_id", columnDefinition = "INT")
     private Integer blockOfHealthFacility;
 
-    @Column(name="last_modified", columnDefinition = "TIMESTAMP")
+    @Column(name="modificationdate", columnDefinition = "TIMESTAMP")
     private Date lastModified;
 
     public Integer getHealthFacilityId() {

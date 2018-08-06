@@ -10,11 +10,11 @@ import java.util.HashMap;
  */
 public interface MAPerformanceService {
 
-    Long getAccessedCount(Integer locationId, String locationType, Date fromDate, Date toDate);
-
-    Long getNotAccessedcount(Integer locationId, String locationType, Date fromDate, Date toDate);
-
-    Integer getAshasFailed(Integer locationId, String locationType, Date fromDate, Date toDate);
+//    Long getAccessedCount(Integer locationId, String locationType, Date fromDate, Date toDate);
+//
+//    Long getNotAccessedcount(Integer locationId, String locationType, Date fromDate, Date toDate);
+//
+//    Integer getAshasFailed(Integer locationId, String locationType, Date fromDate, Date toDate);
 
     public HashMap<Long,MAPerformanceCountsDto> getMAPerformanceCounts (Integer locationId, String locationType, Date fromDate, Date toDate);
 

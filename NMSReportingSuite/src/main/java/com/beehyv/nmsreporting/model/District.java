@@ -17,7 +17,7 @@ public class District {
     @Column(name="district_name")
     private String districtName;
 
-    @Column(name="last_modified", columnDefinition = "TIMESTAMP")
+    @Column(name="modificationdate", columnDefinition = "TIMESTAMP")
     private Date lastModified;
 
     @Column(name="loc_id", columnDefinition = "BIGINT(20)")

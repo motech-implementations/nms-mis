@@ -663,7 +663,7 @@ public class UserController {
                                 summaryDto1.setLocationId((long) -1);
 
                             }
-                            if(a.getLocationType().equalsIgnoreCase("State")&& !serviceStarted(a.getLocationId().intValue(),"State",toDate,fromDate,"M"))
+                            if(a.getLocationType().equalsIgnoreCase("State")&& !serviceStarted(a.getLocationId().intValue(),"State",toDate,fromDate,"MOBILE_ACADEMY"))
                             { showRow = false;}
 
                         if ((summaryDto1.getAshasCompleted() + summaryDto1.getAshasStarted() + summaryDto1.getAshasFailed() + summaryDto1.getAshasRejected()
@@ -1173,10 +1173,10 @@ public class UserController {
         }
         else{
             State state = locationService.findStateById(currentUser.getStateId());
-            if(state.getServiceType().equals("M") || state.getServiceType().equals("ALL")){
+            if(state.getServiceType().equals("MOBILE_ACADEMY") || state.getServiceType().equals("ALL")){
                 l.add(maMenu);
             }
-            if(state.getServiceType().equals("K") || state.getServiceType().equals("ALL")){
+            if(state.getServiceType().equals("KILKARI") || state.getServiceType().equals("ALL")){
                 l.add(kMenu);
             }
         }

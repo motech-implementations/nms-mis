@@ -7,25 +7,25 @@ import java.sql.Date;
  * Created by beehyv on 4/5/17.
  */
 @Entity
-@Table(name = "dim_state")
+@Table(name="dim_state")
 public class State {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", columnDefinition = "TINYINT")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name="id", columnDefinition = "TINYINT")
     private Integer stateId;
 
-    @Column(name = "state_name")
+    @Column(name="state_name")
     private String stateName;
 
 
-    @Column(name = "loc_id", columnDefinition = "BIGINT(20)")
+    @Column(name="loc_id", columnDefinition = "BIGINT(20)")
     private Long locationId;
 
-    @Column(name = "last_modified", columnDefinition = "TIMESTAMP")
+    @Column(name="modificationdate", columnDefinition = "TIMESTAMP")
     private Date lastModified;
 
-    @Column(name = "serviceType", columnDefinition = "VARCHAR(10)")
+    @Column(name="serviceType",columnDefinition = "VARCHAR(10)")
     private String serviceType;
 
     public Integer getStateId() {

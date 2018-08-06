@@ -22,7 +22,10 @@ public class FlwImportRejectionDaoImpl extends AbstractDao<Long, FlwImportReject
                 .add(Restrictions.ne("rejectionReason","UPDATED_RECORD_ALREADY_EXISTS"))
                 .add(Restrictions.ne("rejectionReason","FLW_TYPE_NOT_ASHA"))
                 .add(Restrictions.ne("rejectionReason","FLW_IMPORT_ERROR"))
-                .add(Restrictions.ne("rejectionReason","GF_STATUS_INACTIVE"));
+                .add(Restrictions.ne("rejectionReason","GF_STATUS_INACTIVE"))
+                .add((Restrictions.not(
+                        Restrictions.in("districtId", new Integer[] {471,474,483,490})
+                )));
 
         return criteria.list();
     }
@@ -37,7 +40,10 @@ public class FlwImportRejectionDaoImpl extends AbstractDao<Long, FlwImportReject
                 .add(Restrictions.ne("rejectionReason","UPDATED_RECORD_ALREADY_EXISTS"))
                 .add(Restrictions.ne("rejectionReason","FLW_TYPE_NOT_ASHA"))
                 .add(Restrictions.ne("rejectionReason","FLW_IMPORT_ERROR"))
-                .add(Restrictions.ne("rejectionReason","GF_STATUS_INACTIVE"));
+                .add(Restrictions.ne("rejectionReason","GF_STATUS_INACTIVE"))
+                .add((Restrictions.not(
+                        Restrictions.in("districtId", new Integer[] {471,474,483,490})
+                )));
         return criteria.list();
     }
     @Override

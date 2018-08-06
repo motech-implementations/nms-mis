@@ -2,7 +2,7 @@ package com.beehyv.nmsreporting.dao.impl;
 
 import com.beehyv.nmsreporting.dao.AbstractDao;
 import com.beehyv.nmsreporting.dao.KilkariSixWeeksNoAnswerDao;
-import com.beehyv.nmsreporting.model.KilkariDeactivationOther;
+import com.beehyv.nmsreporting.model.KilkariManualDeactivations;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -14,11 +14,11 @@ import java.util.Date;
  * Created by beehyv on 23/5/17.
  */
 @Repository("kilkariSixWeeksNoAnswerDao")
-public class KilkariSixWeeksNoAnswerDaoImpl extends AbstractDao<Integer, KilkariDeactivationOther> implements KilkariSixWeeksNoAnswerDao {
+public class KilkariSixWeeksNoAnswerDaoImpl extends AbstractDao<Integer, KilkariManualDeactivations> implements KilkariSixWeeksNoAnswerDao {
 
     @Override
     public Long getCountOfDeactivatedForDistrict(Date fromDate, Date toDate, Integer districtId) {
-        Criteria criteria = getSession().createCriteria(KilkariDeactivationOther.class);
+        Criteria criteria = getSession().createCriteria(KilkariManualDeactivations.class);
         criteria.add(Restrictions.and(
                 Restrictions.lt("deactivationDate", toDate),
                 Restrictions.ge("deactivationDate", fromDate),
@@ -32,7 +32,7 @@ public class KilkariSixWeeksNoAnswerDaoImpl extends AbstractDao<Integer, Kilkari
 
     @Override
     public Long getCountOfLowListenershipUsersForDistrict(Date fromDate, Date toDate, Integer districtId) {
-        Criteria criteria = getSession().createCriteria(KilkariDeactivationOther.class);
+        Criteria criteria = getSession().createCriteria(KilkariManualDeactivations.class);
         criteria.add(Restrictions.and(
                 Restrictions.lt("deactivationDate", toDate),
                 Restrictions.ge("deactivationDate", fromDate),

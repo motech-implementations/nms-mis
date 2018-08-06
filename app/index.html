@@ -157,12 +157,11 @@
 
 
 
-    <div  data-ng-hide='menuChecker()'>
+    <div data-ng-mouseleave="removed()" data-ng-hide='menuChecker()'>
         <div  class="pd" data-ng-class="{pd1:show}"   >
             <ul  class="profile-dropdown" style="text-align : left">
-                <li data-ng-mouseleave="removed()" data-ng-if="(show==true)" data-ng-class="{activeP: activeTabProfile('profile')}" >
+                <li  data-ng-if="(show==true)" data-ng-class="{activeP: activeTabProfile('profile')}" >
                     <a class="dropdown-buttons pointer"  data-ng-class="{dis1: disableCursor()}" data-ng-click="goToProfile()">My Profile</a>
-
                 </li>
                 <li data-ng-class="{activeP: activeTabProfile('changePassword')}" >
                     <a class="dropdown-buttons pointer"  data-ng-click="goToChangePassword()" data-ng-class="{dis1: disableCursor()}" >Change Password</a>

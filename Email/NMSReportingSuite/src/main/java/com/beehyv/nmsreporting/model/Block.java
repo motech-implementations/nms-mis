@@ -7,30 +7,30 @@ import java.sql.Date;
  * Created by beehyv on 4/5/17.
  */
 @Entity
-@Table(name = "dim_healthblock")
+@Table(name="dim_healthblock")
 public class Block {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", columnDefinition = "INT")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name="id", columnDefinition = "INT")
     private Integer blockId;
 
-    @Column(name = "healthblock_name")
+    @Column(name="healthblock_name")
     private String blockName;
 
-    @Column(name = "last_modified", columnDefinition = "TIMESTAMP")
+    @Column(name="modificationdate", columnDefinition = "TIMESTAMP")
     private Date lastModified;
 
-    @Column(name = "loc_id", columnDefinition = "BIGINT(20)")
+    @Column(name="loc_id", columnDefinition = "BIGINT(20)")
     private Long locationId;
 
-    @Column(name = "taluka_id", columnDefinition = "SMALLINT")
+    @Column(name="taluka_id", columnDefinition = "SMALLINT")
     private Integer talukaOfBlock;
 
-    @Column(name = "district_id", columnDefinition = "SMALLINT")
+    @Column(name="district_id", columnDefinition = "SMALLINT")
     private Integer districtOfBlock;
 
-    @Column(name = "state_id", columnDefinition = "TINYINT")
+    @Column(name="state_id", columnDefinition = "TINYINT")
     private Integer stateOfBlock;
 
     public Integer getBlockId() {

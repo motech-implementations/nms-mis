@@ -8,7 +8,7 @@ import java.util.Date;
  * Created by beehyv on 16/5/17.
  */
 @Entity
-@Table(name="ma_anonymous_users")
+@Table(name="ma_anonymous_users_monthly")
 public class AnonymousUsers {
 
     @Id
@@ -19,17 +19,14 @@ public class AnonymousUsers {
     @Column(name="circle_name", columnDefinition = "VARCHAR(45)")
     private String circleName;
 
-    @Column(name="msisdn", columnDefinition = "BIGINT(20)")
+    @Column(name="callingNumber", columnDefinition = "BIGINT(20)")
     private Long msisdn;
 
-    @Column(name="last_called_date", columnDefinition = "DATE")
+    @Column(name="LastCalledDate", columnDefinition = "DATE")
     private Date lastCalledDate;
 
-    @Column(name="last_called_time", columnDefinition = "DATETIME")
-    private Timestamp lastCalledTime;
-
-    @Column(name="last_modified", columnDefinition = "DATETIME")
-    private Timestamp lastModified;
+    @Column(name="for_month", columnDefinition = "VARCHAR(45)")
+    private String forMonth;
 
     public Integer getAnonymousId() {
         return anonymousId;
@@ -63,19 +60,11 @@ public class AnonymousUsers {
         this.lastCalledDate = lastCalledDate;
     }
 
-    public Timestamp getLastCalledTime() {
-        return lastCalledTime;
+    public String getForMonth() {
+        return forMonth;
     }
 
-    public void setLastCalledTime(Timestamp lastCalledTime) {
-        this.lastCalledTime = lastCalledTime;
-    }
-
-    public Timestamp getLastModified() {
-        return lastModified;
-    }
-
-    public void setLastModified(Timestamp lastModified) {
-        this.lastModified = lastModified;
+    public void setForMonth(String forMonth) {
+        this.forMonth = forMonth;
     }
 }

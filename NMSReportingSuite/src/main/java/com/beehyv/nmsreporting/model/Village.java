@@ -18,11 +18,8 @@ public class Village {
     @Column(name="village_name")
     private String villageName;
 
-    @Column(name="last_modified", columnDefinition = "TIMESTAMP")
+    @Column(name="modificationdate", columnDefinition = "TIMESTAMP")
     private Date lastModified;
-
-    @Column(name="hblock_id", columnDefinition = "INT")
-    private Integer blockOfVillage;
 
     @Column(name="taluka_id", columnDefinition = "SMALLINT")
     private Integer talukaOfVillage;
@@ -55,14 +52,6 @@ public class Village {
 
     public void setLastModified(Date lastModified) {
         this.lastModified = lastModified;
-    }
-
-    public Integer getBlockOfVillage() {
-        return blockOfVillage;
-    }
-
-    public void setBlockOfVillage(Integer blockOfVillage) {
-        this.blockOfVillage = blockOfVillage;
     }
 
     public Integer getTalukaOfVillage() {

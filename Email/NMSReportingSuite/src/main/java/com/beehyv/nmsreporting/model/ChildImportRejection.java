@@ -11,11 +11,11 @@ import java.util.Date;
  * Created by beehyv on 12/7/17.
  */
 @Entity
-@Table(name = "child_import_rejection")
+@Table(name="child_import_rejection")
 public class ChildImportRejection {
 
     @Id
-    @Column(name = "id")
+    @Column(name="id")
     private Long id;
 
     @Column(name = "state_id")

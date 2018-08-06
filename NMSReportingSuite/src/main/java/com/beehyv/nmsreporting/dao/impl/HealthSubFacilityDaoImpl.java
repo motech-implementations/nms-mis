@@ -25,4 +25,12 @@ public class HealthSubFacilityDaoImpl extends AbstractDao<Integer, HealthSubFaci
         criteria.add(Restrictions.eq("healthFacilityOfHealthSubFacility", healthFacilityid));
         return (List<HealthSubFacility>) criteria.list();
     }
+
+    @Override
+    public List<HealthSubFacility> getSubcentersOfBlock(Integer blockId) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.eq("blockOfSubcenter", blockId));
+        return (List<HealthSubFacility>) criteria.list();
+    }
+
 }

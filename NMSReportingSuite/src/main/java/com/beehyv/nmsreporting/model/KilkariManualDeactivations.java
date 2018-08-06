@@ -7,8 +7,8 @@ import java.util.Date;
  * Created by beehyv on 14/5/17.
  */
 @Entity
-@Table(name="kilkari_six_weeks_no_answer")
-public class KilkariDeactivationOther {
+@Table(name="kilkari_manual_deactivations")
+public class KilkariManualDeactivations {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="id", columnDefinition = "INT(11)")
@@ -29,22 +29,22 @@ public class KilkariDeactivationOther {
     @Column(name="age_on_service", columnDefinition = "TINYINT(4)")
     private Integer ageOnService;
 
-    @Column(name="name", columnDefinition = "VARCHAR(100)")
+    @Column(name="beneficiary_name", columnDefinition = "VARCHAR(100)")
     private String name;
 
-    @Column(name="state_id", columnDefinition = "TINYINT")
+    @Column(name="state_id", columnDefinition = "BIGINT(20)")
     private Integer stateId;
 
-    @Column(name="district_id", columnDefinition = "SMALLINT(6)")
+    @Column(name="district_id", columnDefinition = "BIGINT(20)")
     private Integer districtId;
 
-    @Column(name="block_id", columnDefinition = "INT(11)")
+    @Column(name="block_id", columnDefinition = "BIGINT(20)")
     private Integer blockId;
 
-    @Column(name="hsubcenter_id", columnDefinition = "INT(11)")
+    @Column(name="healthSubFacility_id", columnDefinition = "BIGINT(20)")
     private Integer hsubcenterId;
 
-    @Column(name="village_id", columnDefinition = "INT(11)")
+    @Column(name="village_id", columnDefinition = "BIGINT(20)")
     private Integer villageId;
 
     @Column(name="deactivation_reason", columnDefinition = "VARCHAR(100)")

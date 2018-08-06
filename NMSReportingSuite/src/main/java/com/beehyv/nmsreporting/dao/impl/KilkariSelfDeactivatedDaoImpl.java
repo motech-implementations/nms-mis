@@ -21,6 +21,9 @@ public class KilkariSelfDeactivatedDaoImpl extends AbstractDao<Integer, KilkariS
     public List<KilkariSelfDeactivated> getSelfDeactivatedUsers(Date fromDate, Date toDate) {
         Criteria criteria = getSession().createCriteria(KilkariSelfDeactivated.class);
         criteria.add(Restrictions.and(
+                (Restrictions.not(
+                        Restrictions.in("districtId", new Integer[] {471,474,483,490})
+                )),
                 Restrictions.lt("deactivationDate",toDate),
                 Restrictions.ge("deactivationDate",fromDate)
         ));
@@ -32,6 +35,9 @@ public class KilkariSelfDeactivatedDaoImpl extends AbstractDao<Integer, KilkariS
     public List<KilkariSelfDeactivated> getSelfDeactivatedUsersWithStateId(Date fromDate, Date toDate, Integer stateId) {
         Criteria criteria = getSession().createCriteria(KilkariSelfDeactivated.class);
         criteria.add(Restrictions.and(
+                (Restrictions.not(
+                        Restrictions.in("districtId", new Integer[] {471,474,483,490})
+                )),
                 Restrictions.lt("deactivationDate",toDate),
                 Restrictions.ge("deactivationDate",fromDate)
         ))

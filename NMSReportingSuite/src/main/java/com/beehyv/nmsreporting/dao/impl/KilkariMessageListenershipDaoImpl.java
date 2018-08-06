@@ -5,10 +5,8 @@ package com.beehyv.nmsreporting.dao.impl;
  */
 
 import com.beehyv.nmsreporting.dao.AbstractDao;
-import com.beehyv.nmsreporting.dao.BeneficiaryCallMeasureDao;
 import com.beehyv.nmsreporting.dao.KilkariMessageListenershipReportDao;
 import com.beehyv.nmsreporting.dao.KilkariThematicContentReportDao;
-import com.beehyv.nmsreporting.model.BeneficiaryCallMeasure;
 import com.beehyv.nmsreporting.model.KilkariMessageListenership;
 import com.beehyv.nmsreporting.model.KilkariThematicContent;
 import com.beehyv.nmsreporting.model.State;

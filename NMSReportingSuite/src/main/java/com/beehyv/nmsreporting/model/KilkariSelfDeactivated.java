@@ -23,7 +23,7 @@ public class KilkariSelfDeactivated {
     @Column(name="msisdn", columnDefinition = "BIGINT(20)")
     private Long msisdn;
 
-    @Column(name="pack_activation_date", columnDefinition = "DATE")
+    @Column(name="activation_date", columnDefinition = "DATE")
     private Date packActivationDate;
 
     @Column(name="deactivation_date", columnDefinition = "DATE")
@@ -35,7 +35,7 @@ public class KilkariSelfDeactivated {
     @Column(name="calls_answered", columnDefinition = "INT(11)")
     private Integer callsAnswered;
 
-    @Column(name="name", columnDefinition = "VARCHAR(100)")
+    @Column(name="beneficiary_name", columnDefinition = "VARCHAR(100)")
     private String name;
 
     @Column(name="state_id", columnDefinition = "TINYINT")
@@ -47,7 +47,7 @@ public class KilkariSelfDeactivated {
     @Column(name="block_id", columnDefinition = "INT(11)")
     private Integer blockId;
 
-    @Column(name="hsubcenter_id", columnDefinition = "INT(11)")
+    @Column(name="healthSubFacility_id", columnDefinition = "INT(11)")
     private Integer hsubcenterId;
 
     @Column(name="village_id", columnDefinition = "INT(11)")

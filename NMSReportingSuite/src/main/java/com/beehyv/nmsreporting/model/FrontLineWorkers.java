@@ -29,9 +29,6 @@ public class FrontLineWorkers {
     @Column(name="flw_designation", columnDefinition = "VARCHAR(255)")
     private String designation;
 
-    @Column(name="language", columnDefinition = "VARCHAR(255)")
-    private String language;
-
     @Column(name="flw_status", columnDefinition = "VARCHAR(255)")
     private String status;
 
@@ -59,10 +56,10 @@ public class FrontLineWorkers {
     @Column(name="healthsubfacility_id", columnDefinition = "INT(11)")
     private Integer subfacility;
 
-    @Column(name="creation_date", columnDefinition = "DATE")
+    @Column(name="creationdate", columnDefinition = "DATE")
     private Date creationDate;
 
-    @Column(name="last_modified", columnDefinition = "DATE")
+    @Column(name="modificationdate", columnDefinition = "DATE")
     private Date lastModifiedDate;
 
     @Column(name="course_first_completion_date", columnDefinition = "DATE")
@@ -125,14 +122,6 @@ public class FrontLineWorkers {
 
     public void setDesignation(String designation) {
         this.designation = designation;
-    }
-
-    public String getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
     }
 
     public String getStatus() {

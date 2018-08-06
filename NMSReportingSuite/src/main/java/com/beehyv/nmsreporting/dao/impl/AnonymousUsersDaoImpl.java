@@ -18,21 +18,19 @@ import java.util.List;
 public class  AnonymousUsersDaoImpl extends AbstractDao<Integer,AnonymousUsers> implements AnonymousUsersDao{
 
     @Override
-    public List<AnonymousUsers> getAnonymousUsers(Date fromDate,Date toDate) {
-        Criteria criteria = createEntityCriteria().addOrder(Order.asc("lastCalledTime"));
-        criteria.add(Restrictions.and(
-                Restrictions.lt("lastCalledTime",toDate),
-                Restrictions.ge("lastCalledTime",fromDate)
-        ));
+    public List<AnonymousUsers> getAnonymousUsers(String forMonth) {
+        Criteria criteria = createEntityCriteria().addOrder(Order.asc("lastCalledDate"));
+        criteria.add(
+                Restrictions.like("forMonth",forMonth)
+        );
         return (List<AnonymousUsers>)criteria.list();
     }
 
     @Override
-    public List<AnonymousUsers> getAnonymousUsersCircle(Date fromDate,Date toDate,String circleName) {
+    public List<AnonymousUsers> getAnonymousUsersCircle(String forMonth,String circleName) {
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("lastCalledDate"));
         criteria.add(Restrictions.and(
-                Restrictions.lt("lastCalledTime",toDate),
-                Restrictions.ge("lastCalledTime",fromDate),
+                Restrictions.like("forMonth",forMonth),
                 Restrictions.eq("circleName",circleName)));
         return (List<AnonymousUsers>)criteria.list();
     }

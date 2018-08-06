@@ -21,8 +21,11 @@ public class HealthSubFacility {
     @Column(name="healthFacility_id", columnDefinition = "INT")
     private Integer healthFacilityOfHealthSubFacility;
 
-    @Column(name="last_modified", columnDefinition = "TIMESTAMP")
+    @Column(name="modificationdate", columnDefinition = "TIMESTAMP")
     private Date lastModified;
+
+    @Column(name="block_id", columnDefinition = "INT")
+    private Integer blockOfhealthSubFacility;
 
     public Integer getHealthSubFacilityId() {
         return healthSubFacilityId;
@@ -54,5 +57,13 @@ public class HealthSubFacility {
 
     public void setLastModified(Date lastModified) {
         this.lastModified = lastModified;
+    }
+
+    public Integer getBlockOfhealthSubFacility() {
+        return blockOfhealthSubFacility;
+    }
+
+    public void setBlockOfhealthSubFacility(Integer blockOfhealthSubFacility) {
+        this.blockOfhealthSubFacility = blockOfhealthSubFacility;
     }
 }

@@ -22,7 +22,7 @@ public class State {
     @Column(name="loc_id", columnDefinition = "BIGINT(20)")
     private Long locationId;
 
-    @Column(name="last_modified", columnDefinition = "TIMESTAMP")
+    @Column(name="modificationdate", columnDefinition = "TIMESTAMP")
     private Date lastModified;
 
     @Column(name="serviceType",columnDefinition = "VARCHAR(10)")

@@ -1,6 +1,6 @@
 package com.beehyv.nmsreporting.dao;
 
-import com.beehyv.nmsreporting.model.KilkariDeactivationOther;
+import com.beehyv.nmsreporting.model.KilkariManualDeactivations;
 
 import java.util.Date;
 import java.util.List;
@@ -9,23 +9,23 @@ import java.util.List;
  * Created by beehyv on 23/5/17.
  */
 public interface KilkariSixWeeksNoAnswerDao {
-    List<KilkariDeactivationOther> getKilkariUsers(Date fromDate, Date toDate);
+    List<KilkariManualDeactivations> getKilkariUsers(Date fromDate, Date toDate);
 
-    List<KilkariDeactivationOther> getKilkariUsersWithStateId(Date fromDate, Date toDate, Integer stateId);
+    List<KilkariManualDeactivations> getKilkariUsersWithStateId(Date fromDate, Date toDate, Integer stateId);
 
-    List<KilkariDeactivationOther> getKilkariUsersWithDistrictId(Date fromDate, Date toDate, Integer districtId);
+    List<KilkariManualDeactivations> getKilkariUsersWithDistrictId(Date fromDate, Date toDate, Integer districtId);
 
-    List<KilkariDeactivationOther> getKilkariUsersWithBlockId(Date fromDate, Date toDate, Integer blockId);
+    List<KilkariManualDeactivations> getKilkariUsersWithBlockId(Date fromDate, Date toDate, Integer blockId);
 
     Long getCountOfDeactivatedForDistrict(Date fromDate, Date toDate, Integer districtId);
 
-    List<KilkariDeactivationOther> getLowListenershipUsers(Date fromDate, Date toDate);
+    List<KilkariManualDeactivations> getLowListenershipUsers(Date fromDate, Date toDate);
 
-    List<KilkariDeactivationOther> getLowListenershipUsersWithStateId(Date fromDate, Date toDate, Integer stateId);
+    List<KilkariManualDeactivations> getLowListenershipUsersWithStateId(Date fromDate, Date toDate, Integer stateId);
 
-    List<KilkariDeactivationOther> getLowListenershipUsersWithDistrictId(Date fromDate, Date toDate, Integer districtId);
+    List<KilkariManualDeactivations> getLowListenershipUsersWithDistrictId(Date fromDate, Date toDate, Integer districtId);
 
-    List<KilkariDeactivationOther> getLowListenershipUsersWithBlockId(Date fromDate, Date toDate, Integer blockId);
+    List<KilkariManualDeactivations> getLowListenershipUsersWithBlockId(Date fromDate, Date toDate, Integer blockId);
 
     Long getCountOfLowListenershipUsersForDistrict(Date fromDate, Date toDate, Integer districtId);
 
