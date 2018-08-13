@@ -20,4 +20,6 @@ public interface EmailService {
 
     public String sendMailTest(EmailTest emailInfo);
 
+    public String getBody(String emailType, String name);
+
 }

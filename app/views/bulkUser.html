@@ -17,7 +17,7 @@
 				<span data-ng-if="!myFile">Click here to select CSV file</span>
 				<span data-ng-if="myFile">{{myFile.name}}</span>
 			</label>
-			<input id="file-upload" class="input input-sm" type="file" name="bulkCsv" data-file-model="myFile" style="display: none;" />
+			<input id="file-upload" class="input input-sm" type="file" name="bulkCsv" file-model="myFile" style="display: none;" />
 
 			<button class="btn btn-sm btn-primary" data-ng-click="uploadFile()">Upload Bulk User</button>
 

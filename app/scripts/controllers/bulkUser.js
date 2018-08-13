@@ -22,7 +22,7 @@
 				var fd = new FormData();
 
 
-				if(file1 == null){
+				if(file == null){
                     if(UserFormFactory.isInternetExplorer()){
                         alert("Please select a CSV file")
                          return;

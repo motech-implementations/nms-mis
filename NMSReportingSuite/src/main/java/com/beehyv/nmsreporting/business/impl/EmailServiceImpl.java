@@ -66,6 +66,7 @@ public class EmailServiceImpl implements EmailService{
     @Autowired
     ChildImportRejectionDao childImportRejectionDao;
 
+
     @Override
     public String sendMail(EmailInfo mailInfo) {
         try {
@@ -133,7 +134,23 @@ public class EmailServiceImpl implements EmailService{
 
 
 
+    @Override
+    public String getBody(String emailType, String name) {
+        String body = "";
+        body+= "Dear "+name+",\n\n";
 
+        if(emailType.equalsIgnoreCase("FeedBack")) {
+            body+="\tWe have received your feedback. Thank you for sending us your valuable feedback.\n\n";
+        }
+        else if(emailType.equalsIgnoreCase("ContactUs")) {
+            body+="We have received your message. Thank you for contacting us.\t\n\n";
+        }
+
+        body+="Regards\n";
+        body+= "NSP Support Team \n \n \n";
+        body+= "P.S: This an auto-generated email. Please do not reply";
+        return body;
+    }
 
 
 

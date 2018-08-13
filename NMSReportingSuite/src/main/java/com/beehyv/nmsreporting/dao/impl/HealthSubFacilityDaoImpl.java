@@ -29,7 +29,7 @@ public class HealthSubFacilityDaoImpl extends AbstractDao<Integer, HealthSubFaci
     @Override
     public List<HealthSubFacility> getSubcentersOfBlock(Integer blockId) {
         Criteria criteria = createEntityCriteria();
-        criteria.add(Restrictions.eq("blockOfSubcenter", blockId));
+        criteria.add(Restrictions.eq("blockOfhealthSubFacility", blockId));
         return (List<HealthSubFacility>) criteria.list();
     }
 

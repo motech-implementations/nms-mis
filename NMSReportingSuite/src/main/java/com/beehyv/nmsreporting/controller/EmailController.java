@@ -4,6 +4,7 @@ import com.beehyv.nmsreporting.business.EmailService;
 import com.beehyv.nmsreporting.business.LocationService;
 import com.beehyv.nmsreporting.business.ReportService;
 import com.beehyv.nmsreporting.business.UserService;
+import com.beehyv.nmsreporting.entity.EmailBody;
 import com.beehyv.nmsreporting.entity.EmailInfo;
 import com.beehyv.nmsreporting.entity.EmailTest;
 import com.beehyv.nmsreporting.enums.ReportType;
@@ -36,6 +37,10 @@ public class EmailController {
     @Autowired
     LocationService locationService;
 
+    private static final String feedbackBody = "Received your feedback. Tahnking you sending feedback";
+
+    private static final String feedbackSubject = "Feedback Received";
+
     @RequestMapping(value = "/sendAll/{reportEnum}", method = RequestMethod.GET)
     public @ResponseBody HashMap sendAllMails(@PathVariable String reportEnum){
         ReportType reportType = reportService.getReportTypeByName(reportEnum);
@@ -60,28 +65,28 @@ public class EmailController {
     }
 
     @RequestMapping(value = "/sendFeedback", method = RequestMethod.POST)
-        public @ResponseBody String sendFeedback(@RequestBody EmailInfo mailInfo){
+        public @ResponseBody String sendFeedback(@RequestBody EmailBody mailInfo){
         EmailTest newMail = new EmailTest();
         newMail.setFrom("nsp-reports@beehyv.com");
-        newMail.setTo(mailInfo.getTo());
+        newMail.setTo(mailInfo.getEmail());
         Calendar c = Calendar.getInstance();   // this takes current date
         c.add(Calendar.MONTH, -1);
         c.set(Calendar.DATE, 1);
-        newMail.setSubject(mailInfo.getSubject());
-        newMail.setBody(mailInfo.getBody());
+        newMail.setSubject("Feedback Received");
+        newMail.setBody(emailService.getBody("FeedBack",mailInfo.getName() ));
         return emailService.sendMailTest(newMail);
    }
 
     @RequestMapping(value = "/sendEmailForContactUs", method = RequestMethod.POST)
-    public @ResponseBody String sendEmailForContactUs(@RequestBody EmailInfo mailInfo){
+    public @ResponseBody String sendEmailForContactUs(@RequestBody EmailBody mailInfo){
         EmailTest newMail = new EmailTest();
         newMail.setFrom("nsp-reports@beehyv.com");
-        newMail.setTo(mailInfo.getTo());
+        newMail.setTo(mailInfo.getEmail());
         Calendar c = Calendar.getInstance();   // this takes current date
         c.add(Calendar.MONTH, -1);
         c.set(Calendar.DATE, 1);
-        newMail.setSubject("Subject for Contact");
-        newMail.setBody(mailInfo.getBody());
+        newMail.setSubject("Message Received");
+        newMail.setBody(emailService.getBody("ContactUs",mailInfo.getName() ));
         return emailService.sendMailTest(newMail);
     }
 
