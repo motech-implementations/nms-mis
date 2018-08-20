@@ -60,6 +60,9 @@ public class MACourseFirstCompletion {
     @Column(name="sent_notification")
     private Boolean sentNotification;
 
+    @Column(name="for_month", columnDefinition = "VARCHAR(45)")
+    private String forMonth;
+
     public Integer getId() {
         return Id;
     }
@@ -186,5 +189,13 @@ public class MACourseFirstCompletion {
 
     public void setSentNotification(Boolean sentNotification) {
         this.sentNotification = sentNotification;
+    }
+
+    public String getForMonth() {
+        return forMonth;
+    }
+
+    public void setForMonth(String forMonth) {
+        this.forMonth = forMonth;
     }
 }

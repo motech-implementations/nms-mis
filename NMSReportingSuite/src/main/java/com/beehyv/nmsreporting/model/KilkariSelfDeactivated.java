@@ -44,7 +44,7 @@ public class KilkariSelfDeactivated {
     @Column(name="district_id", columnDefinition = "SMALLINT(6)")
     private Integer districtId;
 
-    @Column(name="block_id", columnDefinition = "INT(11)")
+    @Column(name="healthBlock_id", columnDefinition = "INT(11)")
     private Integer blockId;
 
     @Column(name="healthSubFacility_id", columnDefinition = "INT(11)")

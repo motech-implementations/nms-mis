@@ -10,17 +10,17 @@ import java.util.List;
  */
 public interface MACourseAttemptDao {
 
-   List<MACourseFirstCompletion> getSuccessFulCompletion(Date toDate);
+   List<MACourseFirstCompletion> getSuccessFulCompletion(String forMonth);
 
-   List<MACourseFirstCompletion> getSuccessFulCompletionWithStateId(Date toDate, Integer stateId);
+   List<MACourseFirstCompletion> getSuccessFulCompletionWithStateId(String forMonth, Integer stateId);
 
-   List<MACourseFirstCompletion> getSuccessFulCompletionWithDistrictId(Date toDate, Integer districtId);
+   List<MACourseFirstCompletion> getSuccessFulCompletionWithDistrictId(String forMonth, Integer districtId);
 
-   List<MACourseFirstCompletion> getSuccessFulCompletionWithBlockId(Date toDate, Integer blockId);
+   List<MACourseFirstCompletion> getSuccessFulCompletionWithBlockId(String forMonth, Integer blockId);
 
-   Long getCountForGivenDistrict(Date toDate,Integer districtId);
+   Long getCountForGivenDistrict(String forMonth,Integer districtId);
 
-   public MACourseFirstCompletion getSuccessFulCompletionByExtrnalFlwId(Date toDate, Long Extr_Flw_Id, Integer state_id);
+   public MACourseFirstCompletion getSuccessFulCompletionByExtrnalFlwId(String forMonth, Long Extr_Flw_Id, Integer state_id);
 
    public void updateMACourseFirstCompletion(MACourseFirstCompletion maCourseFirstCompletion);
 }

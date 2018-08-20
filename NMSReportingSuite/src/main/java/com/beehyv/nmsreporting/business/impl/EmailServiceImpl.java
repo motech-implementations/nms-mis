@@ -336,7 +336,7 @@ public class EmailServiceImpl implements EmailService{
                     ) {
 
                 body=body+"<tr align='center'>"+"<td>" + district.getDistrictName() + "</td>"
-                        + "<td>" +maCourseAttemptDao.getCountForGivenDistrict(toDate, district.getDistrictId())+ "</td>"+"</tr>";
+                        + "<td>" +maCourseAttemptDao.getCountForGivenDistrict(getMonthYear(toDate), district.getDistrictId())+ "</td>"+"</tr>";
             }
         } else if(reportType.equals(ReportType.maInactive.getReportType())){
             body+="<pre>   </pre>Please find below the district wise count of ASHAs who have not yet started the Mobile Academy course." +

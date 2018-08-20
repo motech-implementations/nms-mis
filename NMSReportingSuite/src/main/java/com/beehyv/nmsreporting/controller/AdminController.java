@@ -180,6 +180,42 @@ public class AdminController {
         adminService.createFiles(ReportType.flwRejected.getReportType());
     }
 
+
+    @RequestMapping(value = "/generateMaCourseReports/{reportType}", method = RequestMethod.GET)
+    @ResponseBody
+    public String getReportsByNameAndMonth(@PathVariable("reportType") String reportType) throws ParseException, java.text.ParseException{
+
+        ReportType tempReportType = ReportType.valueOf(reportType);
+
+        for (int i =1; i < 33 ; i++ ) {
+            Calendar aCalendar = Calendar.getInstance();
+            Date toDate;
+
+            aCalendar.add(Calendar.MONTH, (-1) * i);
+            aCalendar.set(Calendar.DATE, 1);
+            aCalendar.set(Calendar.MILLISECOND, 0);
+            aCalendar.set(Calendar.SECOND, 0);
+            aCalendar.set(Calendar.MINUTE, 0);
+            aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+
+            aCalendar.add(Calendar.MONTH, 1);
+
+            toDate = aCalendar.getTime();
+
+
+            switch (tempReportType) {
+                case maCourse: {
+                    adminService.getCumulativeCourseCompletionFiles(toDate);
+                    break;
+                }
+
+            }
+        }
+        return "Reports Generated";
+    }
+
+
+
     @RequestMapping(value = "/generateReports/{reportType}/{relativeMonth}", method = RequestMethod.GET)
     @ResponseBody
     public String getReportsByNameAndMonth(@PathVariable("reportType") String reportType, @PathVariable("relativeMonth") Integer relativeMonth) throws ParseException, java.text.ParseException{
@@ -259,45 +295,57 @@ public class AdminController {
         return "Reports Generated";
     }
 
-    @RequestMapping(value = "/updateReports/{reportType}/{stateId}/{relativeMonth}", method = RequestMethod.GET)
+    @RequestMapping(value = "/updateReports/{reportType}", method = RequestMethod.GET)
     @ResponseBody
-    public String updateReportsByNameStateAndMonth(@PathVariable("reportType") String reportType, @PathVariable("relativeMonth") Integer relativeMonth,@PathVariable("stateId") Integer stateId) throws ParseException, java.text.ParseException{
+    public String updateReportsByNameStateAndMonth(@PathVariable("reportType") String reportType) throws ParseException, java.text.ParseException{
 //        User user=userService.getCurrentUser();
 //        if(user==null || ! (user.getRoleName().equals(AccessType.MASTER_ADMIN.getAccessType()))) {
 //            return "You are not authorised";
 //        }
 
         ReportType tempReportType = ReportType.valueOf(reportType);
-        Calendar aCalendar = Calendar.getInstance();
-        Date toDate;
 
-            aCalendar.add(Calendar.MONTH, (-1) * relativeMonth);
-            aCalendar.set(Calendar.DATE, 1);
-            aCalendar.set(Calendar.MILLISECOND, 0);
-            aCalendar.set(Calendar.SECOND, 0);
-            aCalendar.set(Calendar.MINUTE, 0);
-            aCalendar.set(Calendar.HOUR_OF_DAY, 0);
-            aCalendar.add(Calendar.MONTH, 1);
+        List<State> states= locationService.getStatesByServiceType("MOBILE_ACADEMY");
+//
+        for (State state : states) {
 
-            toDate = aCalendar.getTime();
+            for (int i =1; i < 33 ; i++ ) {
 
 
-        switch (tempReportType) {
+                Calendar aCalendar = Calendar.getInstance();
+                Date toDate;
+
+                aCalendar.add(Calendar.MONTH, (-1) * i);
+                aCalendar.set(Calendar.DATE, 1);
+                aCalendar.set(Calendar.MILLISECOND, 0);
+                aCalendar.set(Calendar.SECOND, 0);
+                aCalendar.set(Calendar.MINUTE, 0);
+                aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+                aCalendar.add(Calendar.MONTH, 1);
+
+                toDate = aCalendar.getTime();
+
+
+                switch (tempReportType) {
 //            case maCourse: {
 //                adminService.modifyCumulativeCourseCompletionFiles(toDate,stateId);
 //                break;
 //            }
 
-            case maInactive:{
-                adminService.modifyCumulativeInactiveFiles(toDate,stateId);
-                break;
-            }
+                    case maInactive: {
+                        adminService.modifyCumulativeInactiveFiles(toDate, state.getStateId());
+                        break;
+                    }
 
-            default:{
-                return "Incorrect Report Type";
-            }
+                    default: {
+                        return "Incorrect Report Type";
+                    }
 
+                }
+
+            }
         }
+
         return "Reports Updated";
     }
 
