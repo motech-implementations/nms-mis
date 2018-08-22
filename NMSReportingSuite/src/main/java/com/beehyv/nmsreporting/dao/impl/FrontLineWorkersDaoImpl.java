@@ -24,7 +24,7 @@ public class FrontLineWorkersDaoImpl extends AbstractDao<Integer,FrontLineWorker
         criteria.add(Restrictions.and(
                 Restrictions.lt("creationDate",toDate),
                 (Restrictions.not(
-                        Restrictions.in("districtId", new Integer[] {471,474,483,490})
+                        Restrictions.in("district", new Integer[] {471,474,483,490})
                 )),
                 Restrictions.disjunction().add(Restrictions.and(
                         Restrictions.eq("status","ACTIVE").ignoreCase(),
@@ -42,7 +42,7 @@ public class FrontLineWorkersDaoImpl extends AbstractDao<Integer,FrontLineWorker
         criteria.add(Restrictions.and(
                 Restrictions.lt("creationDate",toDate),
                 (Restrictions.not(
-                        Restrictions.in("districtId", new Integer[] {471,474,483,490})
+                        Restrictions.in("district", new Integer[] {471,474,483,490})
                 )),
                 Restrictions.disjunction().add(Restrictions.and(
                         Restrictions.eq("status","ACTIVE").ignoreCase(),
