@@ -91,7 +91,7 @@
 			<div class="form-group" data-ng-class="{'has-error':createUserForm.emailId.$invalid && !createUserForm.emailId.$pristine}">
 				<label class="control-label col-xs-2">Email</label>
 				<div class="col-xs-10">
-					<input name="emailId" id="emailId" type="email" class="form-control input input-sm" data-ng-model="newUser.emailId" placeholder="Email" required>
+					<input name="emailId" id="emailId" autocomplete="off" type="email" class="form-control input input-sm" data-ng-model="newUser.emailId" placeholder="Email" required>
 
 					<div class="errorMessage" data-ng-messages="createUserForm.emailId.$error" role="alert" data-ng-show="!createUserForm.emailId.$pristine">
 						<div data-ng-message="required">This field cannot be empty</div>
@@ -103,7 +103,7 @@
 			<div class="form-group" data-ng-class="{'has-error':createUserForm.phoneNumber.$invalid && !createUserForm.phoneNumber.$pristine}">
 				<label class="control-label col-xs-2">Contact no.</label>
 				<div class="col-xs-10">
-					<input name="phoneNumber" id="phoneNumber" type="text" class="form-control input input-sm" data-ng-model="newUser.phoneNumber" placeholder="Contact no." required
+					<input name="phoneNumber" id="phoneNumber" autocomplete="off" type="text" class="form-control input input-sm" data-ng-model="newUser.phoneNumber" placeholder="Contact no." required
 					data-ng-pattern="/^[0-9]*$/" data-ng-minlength="10" data-ng-maxlength="10">
 
 					<div class="errorMessage" data-ng-messages="createUserForm.phoneNumber.$error" role="alert" data-ng-show="!createUserForm.phoneNumber.$pristine">

@@ -16,7 +16,7 @@
                         <label for="name">Name<span style="color : red">*</span></label>
                         </div>
                         <div class="col-xs-8">
-                            <input name="name" id="name" type="text" class="form-control input input-sm" data-ng-model="email.name" placeholder="Name" style="width: 220px;" required>
+                            <input name="name" id="name" autocomplete="off"  type="text" class="form-control input input-sm" data-ng-model="email.name" placeholder="Name" style="width: 220px;" required>
 
                             <div class="errorMessage" data-ng-messages="FeedbackForm.name.$error" role="alert" data-ng-show="!FeedbackForm.name.$pristine">
                                 <div data-ng-message="required">This field cannot be empty</div>
@@ -29,7 +29,7 @@
                         <label for="subject">Subject<span style="color : red">*</span></label>
                         </div>
                         <div class="col-xs-8">
-                            <input name="subject" id="subject" type="text" class="form-control input input-sm" data-ng-model="email.subject" placeholder="Subject" style="width: 220px;" required>
+                            <input name="subject" autocomplete="off"  id="subject" type="text" class="form-control input input-sm" data-ng-model="email.subject" placeholder="Subject" style="width: 220px;" required>
 
                             <div class="errorMessage" data-ng-messages="FeedbackForm.subject.$error" role="alert" data-ng-show="!FeedbackForm.subject.$pristine">
                                 <div data-ng-message="required">This field cannot be empty</div>
@@ -43,7 +43,7 @@
                         </div>
                         <div data-ng-class="{'has-error':FeedbackForm.email.$invalid &amp;&amp; !FeedbackForm.email.$pristine}" style="">
                             <div class="col-xs-8 ">
-                                <input id="email" name="email" type="email" class="form-control input input-sm ng-touched ng-dirty ng-invalid ng-not-empty ng-invalid-email ng-valid-required ng-invalid-remove ng-valid-email-add ng-invalid-email-remove" data-ng-model="email.email" placeholder="Email"  aria-invalid="true" style="width:220px;" required>
+                                <input id="email" name="email" type="email" autocomplete="off"  class="form-control input input-sm ng-touched ng-dirty ng-invalid ng-not-empty ng-invalid-email ng-valid-required ng-invalid-remove ng-valid-email-add ng-invalid-email-remove" data-ng-model="email.email" placeholder="Email"  aria-invalid="true" style="width:220px;" required>
                                 <div class="errorMessage ng-active" data-ng-messages="FeedbackForm.email.$error" role="alert" data-ng-show="!FeedbackForm.email.$pristine" aria-live="assertive" aria-hidden="false" style="">
                                     <!-- ngMessage: required --><div data-ng-message="required">This field cannot be empty</div>
                                     <!-- ngMessage: email --><div data-ng-message="email" class="ng-scope" style="">Enter a valid email</div>
@@ -79,7 +79,7 @@
                             <label>Captcha<span style="color : red">*</span></label>
                         </div>
                         <button type="button" id="refresh" data-ng-click="Captcha()" class="m-2" style="margin-left:0px"><span class="glyphicon glyphicon-refresh"></span></button>
-                        <input type="text" data-ng-cut="$event.preventDefault()" data-ng-copy="$event.preventDefault()"  class="form-control input input-sm login-inputs" data-ng-disabled="true" name="mainCaptchaCode" style="background-color:black;font-weight:bold;font-style:italic;height:40px;width:45%;padding-left:40px;color:white;" data-ng-model="email.mainCaptchaCode"/>
+                        <input type="text" autocomplete="off" data-ng-cut="$event.preventDefault()" data-ng-copy="$event.preventDefault()"  class="form-control input input-sm login-inputs" data-ng-disabled="true" name="mainCaptchaCode" style="background-color:black;font-weight:bold;font-style:italic;height:40px;width:45%;padding-left:40px;color:white;" data-ng-model="email.mainCaptchaCode"/>
                     </div>
                     <div class="form-group"><input type="text" data-ng-paste="$event.preventDefault()" style="text-transform:uppercase" class="form-control input input-sm login-inputs" name="captchaCode" autocomplete="off" data-ng-model="email.captchaCode"/>
                     </div>

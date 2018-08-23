@@ -9,7 +9,7 @@
 			<div class="form-group" data-ng-class="{'has-error':editUserForm.fullName.$invalid && !editUserForm.fullName.$pristine}">
 				<label class="control-label col-xs-2">Full Name</label>
 				<div class="col-xs-10">
-					<input name="fullName" id="fullName" type="text" class="form-control input input-sm" placeholder="Name" data-ng-model="editUser.fullName" required
+					<input name="fullName" id="fullName" autocomplete="off" type="text" class="form-control input input-sm" placeholder="Name" data-ng-model="editUser.fullName" required
 					data-ng-pattern="/^[A-Za-z ]*$/" data-ng-minlength="3">
 
 					<div class="errorMessage" data-ng-messages="editUserForm.fullName.$error" role="alert" data-ng-show="!editUserForm.fullName.$pristine">
@@ -22,7 +22,7 @@
 			<div class="form-group" data-ng-class="{'has-error':editUserForm.username.$invalid && !editUserForm.username.$pristine}">
 				<label class="control-label col-xs-2">Username</label>
 				<div class="col-xs-10">
-					<input name="username" type="text" class="form-control input input-sm" placeholder="Username" data-ng-model="editUser.username" data-ng-disabled="true">
+					<input name="username" type="text" autocomplete="off" class="form-control input input-sm" placeholder="Username" data-ng-model="editUser.username" data-ng-disabled="true">
 				</div>
 			</div>
 
@@ -79,7 +79,7 @@
 			<div class="form-group" data-ng-class="{'has-error':editUserForm.emailId.$invalid && !editUserForm.emailId.$pristine}">
 				<label class="control-label col-xs-2">Email Id</label>
 				<div class="col-xs-10">
-					<input name="emailId" id="emailId" type="email" class="form-control input input-sm" data-ng-model="editUser.emailId" placeholder="Email" required>
+					<input name="emailId" id="emailId" autocomplete="off"  type="email" class="form-control input input-sm" data-ng-model="editUser.emailId" placeholder="Email" required>
 
 					<div class="errorMessage" data-ng-messages="editUserForm.emailId.$error" role="alert" data-ng-show="!editUserForm.emailId.$pristine">
 						<div data-ng-message="required">This field cannot be empty</div>
@@ -91,7 +91,7 @@
 			<div class="form-group" data-ng-class="{'has-error':editUserForm.phoneNumber.$invalid && !editUserForm.phoneNumber.$pristine}">
 				<label class="control-label col-xs-2">Contact no.</label>
 				<div class="col-xs-10">
-					<input name="phoneNumber" id="phoneNumber" type="text" class="form-control input input-sm" data-ng-model="editUser.phoneNumber" placeholder="Contact no." required
+					<input name="phoneNumber" id="phoneNumber" autocomplete="off" type="text" class="form-control input input-sm" data-ng-model="editUser.phoneNumber" placeholder="Contact no." required
 					data-ng-pattern="/^[0-9]*$/" data-ng-minlength="10" data-ng-maxlength="10">
 
 					<div class="errorMessage" data-ng-messages="editUserForm.phoneNumber.$error" role="alert" data-ng-show="!editUserForm.phoneNumber.$pristine">

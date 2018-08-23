@@ -59,7 +59,7 @@
                         <div data-ng-class="{'has-error':ContactUsForm.name.$invalid && !ContactUsForm.name.$pristine}">
 
                             <div class="col-sm-8 col-xs-8 col-lg-8">
-                                <input name="name" id="name" type="text" class="form-control input input-sm" data-ng-model="email.name" placeholder="Name" style="width: 220px;" required>
+                                <input name="name" id="name" type="text" autocomplete="off" class="form-control input input-sm" data-ng-model="email.name" placeholder="Name" style="width: 220px;" required>
 
                                 <div class="errorMessage" data-ng-messages="ContactUsForm.name.$error" role="alert" data-ng-show="!ContactUsForm.name.$pristine">
                                     <div data-ng-message="required">This field cannot be empty</div>
@@ -74,7 +74,7 @@
                         <div data-ng-class="{'has-error':ContactUsForm.phoneNo.$invalid && !ContactUsForm.phoneNo.$pristine}">
 
                             <div class="col-sm-8 col-xs-8 col-lg-8 fake-input">
-                                <input name="phoneNo" id="phoneNo" type="text" class="form-control input input-sm" data-ng-model="email.phoneNo" placeholder="Contact no." required
+                                <input name="phoneNo" autocomplete="off"  id="phoneNo" type="text" class="form-control input input-sm" data-ng-model="email.phoneNo" placeholder="Contact no." required
                                        style="width: 220px;" data-ng-pattern="/^[0-9]*$/" data-ng-minlength="10" data-ng-maxlength="10">
                                 <p class="fake-input"><b>+91</b></p>
                                 <div class="errorMessage" data-ng-messages="ContactUsForm.phoneNo.$error" role="alert" data-ng-show="!ContactUsForm.phoneNo.$pristine">
@@ -93,7 +93,7 @@
                         </div>
                         <div data-ng-class="{'has-error':ContactUsForm.email.$invalid &amp;&amp; !ContactUsForm.email.$pristine}" style="">
                             <div class="col-sm-8 col-xs-8 col-lg-8">
-                                <input id="email" name="email" type="email" class="form-control input input-sm ng-touched ng-dirty ng-invalid ng-not-empty ng-invalid-email ng-valid-required ng-invalid-remove ng-valid-email-add ng-invalid-email-remove" data-ng-model="email.email" placeholder="Email"  aria-invalid="true" style="width:220px;" required>
+                                <input id="email" name="email" type="email" autocomplete="off" class="form-control input input-sm ng-touched ng-dirty ng-invalid ng-not-empty ng-invalid-email ng-valid-required ng-invalid-remove ng-valid-email-add ng-invalid-email-remove" data-ng-model="email.email" placeholder="Email"  aria-invalid="true" style="width:220px;" required>
                                 <div class="errorMessage ng-active" data-ng-messages="ContactUsForm.email.$error" role="alert" data-ng-show="!ContactUsForm.email.$pristine" aria-live="assertive" aria-hidden="false" style="">
                                     <!-- ngMessage: required --><div data-ng-message="required">This field cannot be empty</div>
                                     <!-- ngMessage: email --><div data-ng-message="email" class="ng-scope" style="">Enter a valid email</div>

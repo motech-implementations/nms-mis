@@ -116,7 +116,12 @@ public class LocationController {
 
     @RequestMapping(value = {"/SoD/{districtId}"}, method = RequestMethod.GET)
     public @ResponseBody State getStateOfDistrict(@PathVariable("districtId") Integer districtId) {
-        return locationService.getStateOfDistrict(districtId);
+        User user = userService.getCurrentUser();
+        if(user != null){
+            return locationService.getStateOfDistrict(districtId);
+        } else
+            return null;
+
     }
 
     /*--------------------------Block-----------------------------*/
@@ -149,7 +154,12 @@ public class LocationController {
 
     @RequestMapping(value = {"/DoB/{blockId}"}, method = RequestMethod.GET)
     public @ResponseBody District getDistrictOfBlock(@PathVariable("blockId") Integer blockId) {
-        return locationService.getDistrictOfBlock(blockId);
+        User user = userService.getCurrentUser();
+        if(user != null){
+            return locationService.getDistrictOfBlock(blockId);
+        } else
+            return null;
+
     }
 
 
@@ -181,7 +191,10 @@ public class LocationController {
     @RequestMapping(value = {"/circles"}, method = RequestMethod.GET)
     @ResponseBody List<Circle> getCircles() {
         User currentUser = userService.getCurrentUser();
-        return reportService.getUserCircles(currentUser);
+        if(currentUser != null) {
+            return reportService.getUserCircles(currentUser);
+        } else
+            return null;
     }
 
     @RequestMapping(value = {"/circle/{serviceType}"}, method = RequestMethod.GET)

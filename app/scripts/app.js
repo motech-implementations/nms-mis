@@ -286,12 +286,14 @@ var nmsReportsApp = angular
 //        });
 
 		$httpProvider.defaults.headers.common = {};
-        		           $httpProvider.defaults.headers.common['Cache-Control'] = 'no-cache';
-                                     $httpProvider.defaults.cache = false;
+        $httpProvider.defaults.headers.common['Cache-Control'] = 'no-cache';
+        $httpProvider.defaults.cache = false;
 
-                                     if (!$httpProvider.defaults.headers.get) {
-                                     $httpProvider.defaults.headers.get = {};
-                                     }
+         if (!$httpProvider.defaults.headers.get) {
+            $httpProvider.defaults.headers.get = {};
+         }
+         $httpProvider.defaults.headers.get = { 'Pragma' : 'no-cache' };
+         $httpProvider.defaults.headers.get = { 'X-Frame-Options' : 'DENY' };
         $httpProvider.defaults.headers.get['If-Modified-Since'] = 'Mon, 26 Jul 1997 05:00:00 GMT';
         		$httpProvider.defaults.headers.post = {};
         		$httpProvider.defaults.headers.put = {};
@@ -299,4 +301,4 @@ var nmsReportsApp = angular
         		$idleProvider.interrupt('keydown mousedown touchstart touchmove');
         		$idleProvider.setIdleTime(1800);
 
-        	});
+        });

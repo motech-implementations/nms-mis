@@ -101,16 +101,26 @@ public class UserController {
 
     @RequestMapping(value={"/myUserList"})
     public @ResponseBody List<User> getMyUsers() {
-        return userService.findMyUsers(userService.getCurrentUser());
+        User currentUser = userService.getCurrentUser();
+        if(currentUser != null){
+            return userService.findMyUsers(userService.getCurrentUser());
+        } else
+            return null;
+
     }
 
     @RequestMapping(value={"/roles"})
     public @ResponseBody List<Role> getRoles() {
-        return roleService.getRoles();
+        User currentUser = userService.getCurrentUser();
+        if(currentUser != null){
+            return roleService.getRoles();
+        } else
+            return null;
     }
 
     @RequestMapping(value={"/currentUser"})
     public @ResponseBody User getCurrentUser() {
+
         return userService.getCurrentUser();
     }
 
@@ -167,50 +177,62 @@ public class UserController {
     //To be changed
     @RequestMapping(value={"/tableList"})
     public @ResponseBody List<UserDto> getTableList() {
-        List<UserDto> tabDto = new ArrayList<>();
-        List<User> tabUsers = userService.findMyUsers(userService.getCurrentUser());
-        String[] levels = {"National", "State", "District", "Block"};
-        for(User user: tabUsers){
-            UserDto user1 = new UserDto();
-            user1.setId(user.getUserId());
-            user1.setName(user.getFullName());
-            user1.setUsername(user.getUsername());
-            user1.setEmail(user.getEmailId());
-            user1.setPhoneNumber(user.getPhoneNumber());
-            user1.setAccessLevel(user.getAccessLevel());
-            if(user.getStateId() == null){
-                user1.setState("");
-            } else{
-                user1.setState(user.getStateName());
-            }
-            if(user.getDistrictId() == null){
-                user1.setDistrict("");
-            } else{
-                user1.setDistrict(user.getDistrictName());
-            }
-            if(user.getBlockId() == null){
-                user1.setBlock("");
-            } else{
-                user1.setBlock(user.getBlockName());
-            }
-            user1.setAccessType(user.getRoleName());
-            int a;
-            try{
-                a = user.getCreatedByUser().getUserId();
-            } catch (NullPointerException e){
-                a = 0;
-            }
-            int b = getCurrentUser().getUserId();
-            user1.setCreatedBy(a == b || getCurrentUser().getRoleId() == 1);
-            tabDto.add(user1);
 
-        }
-        return tabDto;
+        User currentUser = userService.getCurrentUser();
+        if(currentUser != null){
+            List<UserDto> tabDto = new ArrayList<>();
+            List<User> tabUsers = userService.findMyUsers(userService.getCurrentUser());
+            String[] levels = {"National", "State", "District", "Block"};
+            for(User user: tabUsers){
+                UserDto user1 = new UserDto();
+                user1.setId(user.getUserId());
+                user1.setName(user.getFullName());
+                user1.setUsername(user.getUsername());
+                user1.setEmail(user.getEmailId());
+                user1.setPhoneNumber(user.getPhoneNumber());
+                user1.setAccessLevel(user.getAccessLevel());
+                if(user.getStateId() == null){
+                    user1.setState("");
+                } else{
+                    user1.setState(user.getStateName());
+                }
+                if(user.getDistrictId() == null){
+                    user1.setDistrict("");
+                } else{
+                    user1.setDistrict(user.getDistrictName());
+                }
+                if(user.getBlockId() == null){
+                    user1.setBlock("");
+                } else{
+                    user1.setBlock(user.getBlockName());
+                }
+                user1.setAccessType(user.getRoleName());
+                int a;
+                try{
+                    a = user.getCreatedByUser().getUserId();
+                } catch (NullPointerException e){
+                    a = 0;
+                }
+                int b = getCurrentUser().getUserId();
+                user1.setCreatedBy(a == b || getCurrentUser().getRoleId() == 1);
+                tabDto.add(user1);
+
+            }
+            return tabDto;
+        } else
+            return null;
+
+
+
     }
 
     @RequestMapping(value={"/user/{userId}"})
     public @ResponseBody User getUserById(@PathVariable("userId") Integer userId) {
-        return userService.findUserByUserId(userId);
+        User currentUser = userService.getCurrentUser();
+        if(currentUser != null){
+            return userService.findUserByUserId(userId);
+        } else
+            return null;
     }
 
 //    @RequestMapping(value={"/dto/{userId}"})
@@ -247,100 +269,127 @@ public class UserController {
     @RequestMapping(value = {"/createUser"}, method = RequestMethod.POST)
     @ResponseBody public Map<Integer, String> createNewUser(@RequestBody User user) {
 
-        user = locationService.SetLocations(user);
-        Map<Integer,String> map = userService.createNewUser(user);
-        if(map.get(0).equals("User Created")){
-            ModificationTracker modification = new ModificationTracker();
-            modification.setModificationDate(new Date(System.currentTimeMillis()));
-            modification.setModificationType(ModificationType.CREATE.getModificationType());
-            modification.setModifiedUserId(userService.findUserByUsername(user.getUsername()).getUserId());
-            modification.setModifiedByUserId(userService.getCurrentUser().getUserId());
-            modificationTrackerService.saveModification(modification);
-        }
-        return map;
+        User currentUser = userService.getCurrentUser();
+        if(currentUser != null){
+            user = locationService.SetLocations(user);
+            Map<Integer,String> map = userService.createNewUser(user);
+            if(map.get(0).equals("User Created")){
+                ModificationTracker modification = new ModificationTracker();
+                modification.setModificationDate(new Date(System.currentTimeMillis()));
+                modification.setModificationType(ModificationType.CREATE.getModificationType());
+                modification.setModifiedUserId(userService.findUserByUsername(user.getUsername()).getUserId());
+                modification.setModifiedByUserId(userService.getCurrentUser().getUserId());
+                modificationTrackerService.saveModification(modification);
+            }
+            return map;
+        } else
+            return null;
+
     }
 
     @RequestMapping(value = {"/updateUser"}, method = RequestMethod.POST)
     @ResponseBody public Map updateExistingUser(@RequestBody User user) {
 
-        user = locationService.SetLocations(user);
-        User oldUser = userService.findUserByUserId(user.getUserId());
-        Map<Integer,String> map = userService.updateExistingUser(user);
-        if(map.get(0).equals("User Updated")){
-            userService.TrackModifications(oldUser, user);
-        }
-        return map;
+        User currentUser = userService.getCurrentUser();
+        if(currentUser != null){
+            user = locationService.SetLocations(user);
+            User oldUser = userService.findUserByUserId(user.getUserId());
+            Map<Integer,String> map = userService.updateExistingUser(user);
+            if(map.get(0).equals("User Updated")){
+                userService.TrackModifications(oldUser, user);
+            }
+            return map;
+        } else
+            return null;
+
     }
 
     @RequestMapping(value = {"/updateContacts"}, method = RequestMethod.POST)
     @ResponseBody public Map updateContacts(@RequestBody ContactInfo contactInfo) {
-        User user=userService.findUserByUserId(contactInfo.getUserId());
-        Map<Integer, String> map=userService.updateContacts(contactInfo);
-        if(map.get(0).equals("Contacts Updated")){
-            TrackContactInfoModifications(user, contactInfo);
-        }
-        return map;
+
+        User currentUser = userService.getCurrentUser();
+        if(currentUser != null){
+            User user=userService.findUserByUserId(contactInfo.getUserId());
+            Map<Integer, String> map=userService.updateContacts(contactInfo);
+            if(map.get(0).equals("Contacts Updated")){
+                TrackContactInfoModifications(user, contactInfo);
+            }
+            return map;
+        } else
+            return null;
+
     }
 
     private void TrackContactInfoModifications(User oldUser, ContactInfo contactInfo) {
-        if(!oldUser.getEmailId().equals(contactInfo.getEmail())) {
-            ModificationTracker modification = new ModificationTracker();
-            modification.setModificationDate(new Date(System.currentTimeMillis()));
-            modification.setModificationType(ModificationType.UPDATE.getModificationType());
-            modification.setModifiedField("email_id");
-            modification.setPreviousValue(oldUser.getEmailId());
-            modification.setNewValue(contactInfo.getEmail());
-            modification.setModifiedUserId(oldUser.getUserId());
-            modification.setModifiedByUserId(userService.getCurrentUser().getUserId());
-            modificationTrackerService.saveModification(modification);
+        User currentUser = userService.getCurrentUser();
+        if(currentUser != null){
+            if(!oldUser.getEmailId().equals(contactInfo.getEmail())) {
+                ModificationTracker modification = new ModificationTracker();
+                modification.setModificationDate(new Date(System.currentTimeMillis()));
+                modification.setModificationType(ModificationType.UPDATE.getModificationType());
+                modification.setModifiedField("email_id");
+                modification.setPreviousValue(oldUser.getEmailId());
+                modification.setNewValue(contactInfo.getEmail());
+                modification.setModifiedUserId(oldUser.getUserId());
+                modification.setModifiedByUserId(userService.getCurrentUser().getUserId());
+                modificationTrackerService.saveModification(modification);
+            }
+            if(!oldUser.getPhoneNumber().equals(contactInfo.getPhoneNumber())){
+                ModificationTracker modification = new ModificationTracker();
+                modification.setModificationDate(new Date(System.currentTimeMillis()));
+                modification.setModificationType(ModificationType.UPDATE.getModificationType());
+                modification.setModifiedField("phone_no");
+                modification.setPreviousValue(oldUser.getPhoneNumber());
+                modification.setNewValue(contactInfo.getPhoneNumber());
+                modification.setModifiedUserId(oldUser.getUserId());
+                modification.setModifiedByUserId(userService.getCurrentUser().getUserId());
+                modificationTrackerService.saveModification(modification);
+            }
         }
-        if(!oldUser.getPhoneNumber().equals(contactInfo.getPhoneNumber())){
-            ModificationTracker modification = new ModificationTracker();
-            modification.setModificationDate(new Date(System.currentTimeMillis()));
-            modification.setModificationType(ModificationType.UPDATE.getModificationType());
-            modification.setModifiedField("phone_no");
-            modification.setPreviousValue(oldUser.getPhoneNumber());
-            modification.setNewValue(contactInfo.getPhoneNumber());
-            modification.setModifiedUserId(oldUser.getUserId());
-            modification.setModifiedByUserId(userService.getCurrentUser().getUserId());
-            modificationTrackerService.saveModification(modification);
-        }
+
     }
 
     @RequestMapping(value = {"/resetPassword"}, method = RequestMethod.POST)
     @ResponseBody public Map resetPassword(@RequestBody PasswordDto passwordDto){
-
-        User user=userService.findUserByUserId(passwordDto.getUserId());
-        Map<Integer, String >map=  userService.changePassword(passwordDto);
-        if(map.get(0).equals("Password changed successfully")){
-            ModificationTracker modification = new ModificationTracker();
-            modification.setModificationDate(new Date(System.currentTimeMillis()));
-            modification.setModificationType(ModificationType.UPDATE.getModificationType());
-            modification.setModifiedUserId(passwordDto.getUserId());
-            modification.setModifiedField("password");
-            modification.setModifiedByUserId(userService.getCurrentUser().getUserId());
-            modificationTrackerService.saveModification(modification);
-        }
-        return map;
+        User currentUser = userService.getCurrentUser();
+        if(currentUser != null){
+            User user=userService.findUserByUserId(passwordDto.getUserId());
+            Map<Integer, String >map=  userService.changePassword(passwordDto);
+            if(map.get(0).equals("Password changed successfully")){
+                ModificationTracker modification = new ModificationTracker();
+                modification.setModificationDate(new Date(System.currentTimeMillis()));
+                modification.setModificationType(ModificationType.UPDATE.getModificationType());
+                modification.setModifiedUserId(passwordDto.getUserId());
+                modification.setModifiedField("password");
+                modification.setModifiedByUserId(userService.getCurrentUser().getUserId());
+                modificationTrackerService.saveModification(modification);
+            }
+            return map;
+        } else
+            return null;
     }
 
 
     @RequestMapping(value = {"/forgotPassword"}, method = RequestMethod.POST)
     @ResponseBody
     public Map forgotPassword(@RequestBody ForgotPasswordDto forgotPasswordDto){
+        User currentUser = userService.getCurrentUser();
+        if(currentUser != null){
+            User user=userService.findUserByUsername(forgotPasswordDto.getUsername());
+            Map<Integer, String >map=  userService.forgotPasswordCredentialChecker(forgotPasswordDto);
+            if(map.get(0).equals("Password changed successfully")){
+                ModificationTracker modification = new ModificationTracker();
+                modification.setModificationDate(new Date(System.currentTimeMillis()));
+                modification.setModificationType(ModificationType.UPDATE.getModificationType());
+                modification.setModifiedUserId(user.getUserId());
+                modification.setModifiedField("password");
+                modification.setModifiedByUserId(user.getUserId());
+                modificationTrackerService.saveModification(modification);
+            }
+            return map;
+        } else
+            return null;
 
-        User user=userService.findUserByUsername(forgotPasswordDto.getUsername());
-        Map<Integer, String >map=  userService.forgotPasswordCredentialChecker(forgotPasswordDto);
-        if(map.get(0).equals("Password changed successfully")){
-            ModificationTracker modification = new ModificationTracker();
-            modification.setModificationDate(new Date(System.currentTimeMillis()));
-            modification.setModificationType(ModificationType.UPDATE.getModificationType());
-            modification.setModifiedUserId(user.getUserId());
-            modification.setModifiedField("password");
-            modification.setModifiedByUserId(user.getUserId());
-            modificationTrackerService.saveModification(modification);
-        }
-        return map;
     }
 
 
@@ -348,18 +397,22 @@ public class UserController {
     @RequestMapping(value = {"/deleteUser/{id}"}, method = RequestMethod.GET)
     @ResponseBody
     public Map deleteExistingUser(@PathVariable("id") Integer id) {
+        User currentUser = userService.getCurrentUser();
+        if(currentUser != null){
+            Map<Integer, String> map=userService.deleteExistingUser(id);
+            if(map.get(0).equals("User deleted")) {
+                ModificationTracker modification = new ModificationTracker();
+                modification.setModificationDate(new Date(System.currentTimeMillis()));
+                modification.setModificationType(ModificationType.DELETE.getModificationType());
+                modification.setModifiedField("account_status");
+                modification.setModifiedUserId(id);
+                modification.setModifiedByUserId(userService.getCurrentUser().getUserId());
+                modificationTrackerService.saveModification(modification);
+            }
+            return map;
+        } else
+            return null;
 
-        Map<Integer, String> map=userService.deleteExistingUser(id);
-        if(map.get(0).equals("User deleted")) {
-            ModificationTracker modification = new ModificationTracker();
-            modification.setModificationDate(new Date(System.currentTimeMillis()));
-            modification.setModificationType(ModificationType.DELETE.getModificationType());
-            modification.setModifiedField("account_status");
-            modification.setModifiedUserId(id);
-            modification.setModifiedByUserId(userService.getCurrentUser().getUserId());
-            modificationTrackerService.saveModification(modification);
-        }
-        return map;
     }
 
     private String getPrincipal(){

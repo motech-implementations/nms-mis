@@ -47,12 +47,12 @@
 
 				<div class="form-group" >
 					<span class="login-texts" >Login Id</span>
-					<input type="text" class="form-control input input-sm login-inputs" data-ng-model="user.username" name="username" placeholder="Username" >
+					<input type="text" class="form-control input input-sm login-inputs" data-ng-model="user.username" name="username" placeholder="Username" autocomplete="off"  >
 
 				</div>
 				<div class="form-group" >
 					<span class="login-texts">Password</span>
-					<input type="password" class="form-control input input-sm login-inputs" data-ng-model="user.password" name="password" placeholder="Password" >
+					<input type="password" class="form-control input input-sm login-inputs" data-ng-model="user.password" name="password" placeholder="Password" autocomplete="off"  >
 
 				</div>
                 <!--<div vc-recaptcha data-key="'6LfKH08UAAAAAKmEugRBtMKYaagj-CiluRt9h1tK'" data-ng-model="captchaResponse" class="recaptcha"></div>-->
@@ -65,7 +65,7 @@
 				<div class="form-group d-flex flex-row justify-content-between" data-ng-init="Captcha()">
 					<span class="login-texts">Captcha</span>
 					<button type="button" id="refresh" data-ng-click="Captcha()" class="m-2"><span class="glyphicon glyphicon-refresh"></span></button>
-					<input type="text" data-ng-cut="$event.preventDefault()" data-ng-copy="$event.preventDefault()"  class="form-control input input-sm login-inputs" data-ng-disabled="true" name="mainCaptchaCode" style="background-color:black;font-weight:bold;font-style:italic;height:40px;width:42%;padding-left:40px;color:white;" data-ng-model="user.mainCaptchaCode"/>
+					<input type="text" data-ng-cut="$event.preventDefault()" data-ng-copy="$event.preventDefault()"  class="form-control input input-sm login-inputs" data-ng-disabled="true" autocomplete="off"  name="mainCaptchaCode" style="background-color:black;font-weight:bold;font-style:italic;height:40px;width:42%;padding-left:40px;color:white;" data-ng-model="user.mainCaptchaCode"/>
 				</div>
 				<div class="form-group"><input type="text" data-ng-paste="$event.preventDefault()" class="form-control input input-sm login-inputs" name="captchaCode" style="text-transform:uppercase" autocomplete="off" data-ng-model="user.captchaCode"/>
 				</div>
