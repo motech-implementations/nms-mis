@@ -1552,7 +1552,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             return matrixDto;
         }
         ListeningMatrixDto matrixDto1 = new ListeningMatrixDto();
-        matrixDto1.setPercentageCalls("Beneficiaries Listening > 75 % calls");
+        matrixDto1.setPercentageCalls("Beneficiaries Answered > 75 % calls");
         matrixDto1.setContent_1_25(listeningMatrix.get("callsListened_morethan75").getContentListened_lessthan25());
         matrixDto1.setContent_25_50(listeningMatrix.get("callsListened_morethan75").getContentListened_25_50());
         matrixDto1.setContent_50_75(listeningMatrix.get("callsListened_morethan75").getContentListened_50_75());
@@ -1560,7 +1560,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         matrixDto1.setTotal(listeningMatrix.get("callsListened_morethan75").getContentListened_lessthan25()+listeningMatrix.get("callsListened_morethan75").getContentListened_25_50()+listeningMatrix.get("callsListened_morethan75").getContentListened_50_75()+listeningMatrix.get("callsListened_morethan75").getContentListened_morethan75());
 
         ListeningMatrixDto matrixDto2 = new ListeningMatrixDto();
-        matrixDto2.setPercentageCalls("Beneficiaries Listening 50 to 75 % calls");
+        matrixDto2.setPercentageCalls("Beneficiaries Answered 50 to 75 % calls");
         matrixDto2.setContent_1_25(listeningMatrix.get("callsListened_50_75").getContentListened_lessthan25());
         matrixDto2.setContent_25_50(listeningMatrix.get("callsListened_50_75").getContentListened_25_50());
         matrixDto2.setContent_50_75(listeningMatrix.get("callsListened_50_75").getContentListened_50_75());
@@ -1568,7 +1568,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         matrixDto2.setTotal(listeningMatrix.get("callsListened_50_75").getContentListened_lessthan25()+listeningMatrix.get("callsListened_50_75").getContentListened_25_50()+listeningMatrix.get("callsListened_50_75").getContentListened_50_75()+listeningMatrix.get("callsListened_50_75").getContentListened_morethan75());
 
         ListeningMatrixDto matrixDto3 = new ListeningMatrixDto();
-        matrixDto3.setPercentageCalls("Beneficiaries Listening 25 to 50 % calls");
+        matrixDto3.setPercentageCalls("Beneficiaries Answered 25 to 50 % calls");
         matrixDto3.setContent_1_25(listeningMatrix.get("callsListened_25_50").getContentListened_lessthan25());
         matrixDto3.setContent_25_50(listeningMatrix.get("callsListened_25_50").getContentListened_25_50());
         matrixDto3.setContent_50_75(listeningMatrix.get("callsListened_25_50").getContentListened_50_75());
@@ -1576,7 +1576,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         matrixDto3.setTotal(listeningMatrix.get("callsListened_25_50").getContentListened_lessthan25()+listeningMatrix.get("callsListened_25_50").getContentListened_25_50()+listeningMatrix.get("callsListened_25_50").getContentListened_50_75()+listeningMatrix.get("callsListened_25_50").getContentListened_morethan75());
 
         ListeningMatrixDto matrixDto4 = new ListeningMatrixDto();
-        matrixDto4.setPercentageCalls("Beneficiaries Listening < 25 % calls");
+        matrixDto4.setPercentageCalls("Beneficiaries Answered < 25 % calls");
         matrixDto4.setContent_1_25(listeningMatrix.get("callsListened_lessthan25").getContentListened_lessthan25());
         matrixDto4.setContent_25_50(listeningMatrix.get("callsListened_lessthan25").getContentListened_25_50());
         matrixDto4.setContent_50_75(listeningMatrix.get("callsListened_lessthan25").getContentListened_50_75());

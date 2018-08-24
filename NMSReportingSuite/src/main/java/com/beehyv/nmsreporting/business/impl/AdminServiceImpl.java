@@ -668,7 +668,7 @@ public class AdminServiceImpl implements AdminService {
             }
         }
         else if(reportRequest.getReportType().equals(ReportType.lowUsage.getReportType())){
-
+            reportRequest.setFromDate(toDate);
             if(stateId==0){
                 List<KilkariLowUsage> kilkariLowUsageList = kilkariLowUsageDao.getKilkariLowUsageUsers(getMonthYear(toDate));
                 getKilkariLowUsage(kilkariLowUsageList, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate, reportRequest);

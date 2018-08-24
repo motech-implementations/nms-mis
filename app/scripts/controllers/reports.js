@@ -132,7 +132,7 @@
 			}
 
 			$scope.disableDate = function(){
-				return ($scope.report == null || $scope.report.reportEnum == null || ( !(($state.current.name)===("reports")) &&  $state.current.name != "Kilkari Cumulative Summary" && $state.current.name != "MA Cumulative Summary"));
+				return ($scope.report == null || $scope.report.reportEnum == null );
 			}
 			$scope.disableState = function(){
 				return $scope.states[0]  == null || $scope.userHasState() || $scope.report == null;
@@ -327,20 +327,9 @@
                     $scope.selectReport ($scope.getArrayElementByName(item.options,$state.current.name));
                     if($state.current.name == "MA Cumulative Summary" || $state.current.name == "Kilkari Cumulative Summary" ){
                          $scope.dateFormat = 'yyyy-MM-dd';
-                         $scope.endDatePickerOptions.minDate = new Date(2016,11,01)
-                         $scope.endDatePickerOptions.maxDate = new Date(2016,11,31);
+                         $scope.endDatePickerOptions.minDate = new Date(2016,00,01)
+                         $scope.endDatePickerOptions.maxDate = new Date();
                     }
-                    else{
-                        $scope.periodDisplayType="Month";
-                        $scope.periodTypeContent = " Month";
-                        $scope.dateFormat = "yyyy-MM";
-                        $scope.datePickerOptions.minMode = '';
-                        $scope.datePickerOptions.datepickerMode = 'month';
-                        $scope.datePickerOptions.minMode ='month';
-                        $scope.dt1 = new Date(2016, 11, 01);
-                    }
-
-                    //console.log();
                 }
 			}
 
@@ -546,7 +535,7 @@
 
 			$scope.setDateOptions =function(){
 			    if($scope.isAggregateReport()&&($scope.periodDisplayType == 'Month'||$scope.periodDisplayType == 'Week'||$scope.periodDisplayType == 'Custom Range')){
-			        var minDate = new Date(2016, 11, 01);
+			        var minDate = new Date(2016, 00, 01);
 			    }
 			    else if($scope.isAggregateReport()&&($scope.periodDisplayType == 'Year'||$scope.periodDisplayType == 'Quarter'||$scope.periodDisplayType == 'Financial Year')){
 			        var minDate = new Date(2017, 00, 01);

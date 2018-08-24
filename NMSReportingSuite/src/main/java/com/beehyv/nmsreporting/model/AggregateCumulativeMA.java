@@ -7,7 +7,7 @@ import java.util.Date;
  * Created by beehyv on 13/9/17.
  */
 @Entity
-@Table(name="aggregate_cumulative_MA_counts")
+@Table(name="agg_MobileAcademy_Reports")
 public class AggregateCumulativeMA {
 
     @Id
