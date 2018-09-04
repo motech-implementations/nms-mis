@@ -30,6 +30,7 @@
         <mapping class="com.beehyv.nmsreporting.model.StateService"/>
         <mapping class="com.beehyv.nmsreporting.model.LoginTracker"/>
         <mapping class="com.beehyv.nmsreporting.model.AggregateCumulativeMA"/>
+        <mapping class="com.beehyv.nmsreporting.model.AuditLog"/>
 
     </session-factory>
 </hibernate-configuration>

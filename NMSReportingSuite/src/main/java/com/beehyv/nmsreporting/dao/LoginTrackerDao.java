@@ -18,5 +18,5 @@ public interface LoginTrackerDao {
 
     public List<LoginTracker> getAllLoginDetailsByDate(Date fromDate, Date toDate);
 
-
+    public Date getLastLoginTime(Integer userId);
 }

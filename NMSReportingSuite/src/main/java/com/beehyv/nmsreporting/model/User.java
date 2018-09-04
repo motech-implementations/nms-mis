@@ -82,6 +82,8 @@ public class User {
 	@Column(name = "isPasswordDefault")
 	private Boolean isDefault;
 
+	private Integer unSuccessfulAttempts = 0;
+
 	public Integer getUserId() {
 		return userId;
 	}
@@ -248,5 +250,13 @@ public class User {
 
 	public void setDefault(Boolean aDefault) {
 		isDefault = aDefault;
+	}
+
+	public Integer getUnSuccessfulAttempts() {
+		return unSuccessfulAttempts;
+	}
+
+	public void setUnSuccessfulAttempts(Integer unSuccessfulAttempts) {
+		this.unSuccessfulAttempts = unSuccessfulAttempts;
 	}
 }

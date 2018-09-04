@@ -12,6 +12,8 @@ import com.beehyv.nmsreporting.enums.ModificationType;
 import com.beehyv.nmsreporting.model.*;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -619,7 +621,23 @@ public class UserServiceImpl implements UserService{
     @Override
     public void setLoggedIn(){
         User currentUser = getCurrentUser();
+        currentUser.setUnSuccessfulAttempts(0);
         currentUser.setLoggedAtLeastOnce(true);
+    }
+
+    @Override
+    public void setUnSuccessfulAttemptsCount(Integer userId, Integer unSuccessfulCount) {
+        User user = userDao.findByUserId(userId);
+        if (unSuccessfulCount  == null) {
+            if (user.getUnSuccessfulAttempts() == null) {
+                user.setUnSuccessfulAttempts(0);
+            }
+
+            user.setUnSuccessfulAttempts(user.getUnSuccessfulAttempts() + 1);
+        } else {
+            user.setUnSuccessfulAttempts(unSuccessfulCount);
+        }
+
     }
 
     @Override

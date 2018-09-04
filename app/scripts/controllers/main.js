@@ -487,8 +487,13 @@
             }, 2000);
 
 		}
-	]);
-
+	])
+    .config(function ($idleProvider, $keepaliveProvider) {
+        $idleProvider.setIdleTime(1800);
+        $idleProvider.setTimeoutTime(10);
+    }).run(function ($idle) {
+              $idle.watch();
+          });
 	 }
 
 )();

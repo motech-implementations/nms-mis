@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static com.beehyv.nmsreporting.utils.Global.retrieveUiAddress;
 
@@ -57,52 +58,71 @@ public class LoginController extends HttpServlet{
 
     @RequestMapping(value={"/nms/login"}, method= RequestMethod.POST)
     public String login( Model model, @ModelAttribute LoginUser loginUser, BindingResult errors) {
-        validator.validate(loginUser, errors);
-        System.out.println("username = " + loginUser.getUsername());
-        System.out.println("password = " + loginUser.getPassword());
-        System.out.println("rememberme " + loginUser.isRememberMe());
-        if( errors.hasErrors() ) {
-            ensureUserIsLoggedOut();
-            return "redirect:"+ retrieveUiAddress() +"login?error";
+        User user = userService.findUserByUsername(loginUser.getUsername());
+        if (user!= null && user.getUnSuccessfulAttempts() ==3) {
+            Date lastLogin = loginTrackerService.getLastLoginTime(user.getUserId());
+            if (lastLogin != null) {
+                long diff = TimeUnit.DAYS.convert(new Date().getTime() - lastLogin.getTime(), TimeUnit.MILLISECONDS);
+                if ( diff >= 1) {
+                    user.setUnSuccessfulAttempts(0);
+                    userService.setUnSuccessfulAttemptsCount(user.getUserId(), 0);
+                }
+
+            }
         }
-        Subject subject = SecurityUtils.getSubject();
-        UsernamePasswordToken token = new UsernamePasswordToken(loginUser.getUsername(), loginUser.getPassword(), loginUser.isRememberMe());
-        try {
-            ensureUserIsLoggedOut();
-            subject.login(token);
-        } catch (AuthenticationException e) {
-            errors.reject( "error.login.generic", "Invalid username or password.  Please try again." );
-        }
-        User user=userService.findUserByUsername(loginUser.getUsername());
-        if( errors.hasErrors() ) {
-            LoginTracker loginTracker=new LoginTracker();
-            if((user) !=null) {
+
+        if (user!= null && (user.getUnSuccessfulAttempts() < 3 || user.getUnSuccessfulAttempts() == null)) {
+            validator.validate(loginUser, errors);
+            System.out.println("username = " + loginUser.getUsername());
+            System.out.println("password = " + loginUser.getPassword());
+            System.out.println("rememberme " + loginUser.isRememberMe());
+            if (errors.hasErrors()) {
+                ensureUserIsLoggedOut();
+                return "redirect:" + retrieveUiAddress() + "login?error";
+            }
+            Subject subject = SecurityUtils.getSubject();
+            UsernamePasswordToken token = new UsernamePasswordToken(loginUser.getUsername(), loginUser.getPassword(), loginUser.isRememberMe());
+            try {
+                ensureUserIsLoggedOut();
+                subject.login(token);
+            } catch (AuthenticationException e) {
+                errors.reject("error.login.generic", "Invalid username or password.  Please try again.");
+            }
+            user = userService.findUserByUsername(loginUser.getUsername());
+            if (errors.hasErrors()) {
+                LoginTracker loginTracker = new LoginTracker();
+                if ((user) != null) {
+                    userService.setUnSuccessfulAttemptsCount(user.getUserId(), null);
+                    loginTracker.setUserId(user.getUserId());
+                    loginTracker.setLoginSuccessful(false);
+                    loginTracker.setLoginTime(new Date());
+                    loginTrackerService.saveLoginDetails(loginTracker);
+                }
+                ensureUserIsLoggedOut();
+
+                return "redirect:" + retrieveUiAddress() + "login?error";
+            } else {
+                user.setUnSuccessfulAttempts(0);
+                LoginTracker loginTracker = new LoginTracker();
                 loginTracker.setUserId(user.getUserId());
-                loginTracker.setLoginSuccessful(false);
+                loginTracker.setLoginSuccessful(true);
                 loginTracker.setLoginTime(new Date());
                 loginTrackerService.saveLoginDetails(loginTracker);
-            }
-            ensureUserIsLoggedOut();
+                if (user.getDefault() == null) {
+                    user.setDefault(true);
+                }
+                if (user.getDefault()) {
+                    return "redirect:" + retrieveUiAddress() + "changePassword";
+                }
+                userService.setLoggedIn();
+                if (loginUser.getFromUrl().equals(null) || loginUser.getFromUrl().equals("")) {
+                    return "redirect:" + retrieveUiAddress() + "reports";
+                }
+                return "redirect:" + loginUser.getFromUrl();
 
-            return "redirect:"+ retrieveUiAddress() +"login?error";
+            }
         } else {
-            LoginTracker loginTracker=new LoginTracker();
-            loginTracker.setUserId(user.getUserId());
-            loginTracker.setLoginSuccessful(true);
-            loginTracker.setLoginTime(new Date());
-            loginTrackerService.saveLoginDetails(loginTracker);
-            if(user.getDefault() == null){
-                user.setDefault(true);
-            }
-            if(user.getDefault()){
-                return "redirect:"+ retrieveUiAddress() +"changePassword";
-            }
-            userService.setLoggedIn();
-            if(loginUser.getFromUrl().equals(null)||loginUser.getFromUrl().equals("") ){
-                return "redirect:"+ retrieveUiAddress() +"reports";
-            }
-            return "redirect:"+ loginUser.getFromUrl();
-
+            return "redirect:" + retrieveUiAddress() + "login?blocked";
         }
     }
 

@@ -1,9 +1,30 @@
+
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("LoginController", ['$rootScope','$scope','$state', '$http', '$location','UserFormFactory', function($rootScope, $scope,$state, $http, $location ,UserFormFactory){
+		.controller("LoginController", ['$rootScope','$scope','$state', '$http', '$location','UserFormFactory', 'SaltHashFactory',
+		 function($rootScope, $scope,$state, $http, $location ,UserFormFactory, SaltHashFactory){
 
-
+            SaltHashFactory.saltHashPassword('MYPASSWORD');
+//            , 'cjs77.crypto'
+//            var encrypted = CryptoJS.AES.encrypt(
+//                            $scope.source_string,
+//                            $rootScope.base64Key,
+//                            { iv: $rootScope.iv });
+//                  console.log('encrypted = ' + encrypted);
+//
+//                   $scope.ciphertext = encrypted.ciphertext.toString(CryptoJS.enc.Base64);
+//                   console.log('ciphertext = ' + $scope.ciphertext);
+//
+//                   var cipherParams = CryptoJS.lib.CipherParams.create({
+//                            ciphertext: CryptoJS.enc.Base64.parse($scope.ciphertext)
+//                            });
+//                   var decrypted = CryptoJS.AES.decrypt(
+//                              cipherParams,
+//                              $rootScope.base64Key,
+//                              { iv: $rootScope.iv });
+//                              $scope.descrString = decrypted.toString(CryptoJS.enc.Utf8);
+//                  console.log('decrypted='+$scope.descrString);
             $scope.w = window.innerWidth;
             $scope.h = window.innerHeight;
 
@@ -25,9 +46,11 @@
 			if(error == null){
 				$scope.errorMessage = "";
 			}
-			else{
-				$scope.errorMessage = "Invalid Username/Password";
-			}
+			else if (error == 'blocked'){
+				$scope.errorMessage = "3 unsuccessful attempts.Please try again in 24 hrs.";
+			} else {
+			    $scope.errorMessage = "Invalid Username/Password";
+            }
 
 			$scope.Captcha = function(){
                  var alpha = new Array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','P','Q','R','S','T','U','V','W','X','Y','Z',
@@ -77,29 +100,29 @@
 
             $rootScope.$on('$locationChangeStart', function (event, current, previous) {
                 if(!(current.indexOf("login?error") > 0)){
-                    if(previous != base_url + "/app/#!/changePassword"){
+                    if(previous != base_url + "/#!/changePassword"){
                          window.localStorage.setItem('preUrl', previous);
                     }
-                    if(localStorage.preUrl == base_url + "/app/#!/reports/ma/cumulative-summary-report" ||
-                       localStorage.preUrl == base_url + "/app/#!/reports/ma/subscriber-report" ||
-                       localStorage.preUrl == base_url + "/app/#!/reports/ma/performance-report" ||
-                       localStorage.preUrl == base_url + "/app/#!/reports/kilkari/repeat-listener-report" ||
-                       localStorage.preUrl == base_url + "/app/#!/reports/kilkari/message-matrix-report" ||
-                       localStorage.preUrl == base_url + "/app/#!/reports/kilkari/call-report" ||
-                       localStorage.preUrl == base_url + "/app/#!/reports/kilkari/thematic-content-report" ||
-                       localStorage.preUrl == base_url + "/app/#!/reports/kilkari/listening-matrix-report" ||
-                       localStorage.preUrl == base_url + "/app/#!/reports/kilkari/message-listenership-report" ||
-                       localStorage.preUrl == base_url + "/app/#!/reports/kilkari/aggregate-beneficiary-report" ||
-                       localStorage.preUrl == base_url + "/app/#!/reports/kilkari/usage-report" ||
-                       localStorage.preUrl == base_url + "/app/#!/reports/kilkari/cumulative-summary-report" ||
-                       localStorage.preUrl == base_url + "/app/#!/reports/kilkari/subscriber-report" ||
-                       localStorage.preUrl == base_url + "/app/#!/reports/kilkari/beneficiary-completion-report" 
+                    if(localStorage.preUrl == base_url + "/#!/reports/ma/cumulative-summary-report" ||
+                       localStorage.preUrl == base_url + "/#!/reports/ma/subscriber-report" ||
+                       localStorage.preUrl == base_url + "/#!/reports/ma/performance-report" ||
+                       localStorage.preUrl == base_url + "/#!/reports/kilkari/repeat-listener-report" ||
+                       localStorage.preUrl == base_url + "/#!/reports/kilkari/message-matrix-report" ||
+                       localStorage.preUrl == base_url + "/#!/reports/kilkari/call-report" ||
+                       localStorage.preUrl == base_url + "/#!/reports/kilkari/thematic-content-report" ||
+                       localStorage.preUrl == base_url + "/#!/reports/kilkari/listening-matrix-report" ||
+                       localStorage.preUrl == base_url + "/#!/reports/kilkari/message-listenership-report" ||
+                       localStorage.preUrl == base_url + "/#!/reports/kilkari/aggregate-beneficiary-report" ||
+                       localStorage.preUrl == base_url + "/#!/reports/kilkari/usage-report" ||
+                       localStorage.preUrl == base_url + "/#!/reports/kilkari/cumulative-summary-report" ||
+                       localStorage.preUrl == base_url + "/#!/reports/kilkari/subscriber-report" ||
+                       localStorage.preUrl == base_url + "/#!/reports/kilkari/beneficiary-completion-report" 
                     ){
                        $scope.preUrl = localStorage.preUrl;
                        console.log($scope.preUrl);
                        console.log($scope.user);
                     }
-//                    else if(localStorage.preUrl == base_url + "/app/#!/changePassword"){
+//                    else if(localStorage.preUrl == base_url + "/#!/changePassword"){
 //                        if($scope.currentUser !== undefined || $scope.currentUser != ''){
 //
 //                             if(!($scope.currentUser.default || $scope.currentUser.default == null)){

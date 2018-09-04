@@ -122,6 +122,7 @@ public class UserController {
     public @ResponseBody User getCurrentUser() {
 
         return userService.getCurrentUser();
+
     }
 
     @RequestMapping(value={"/profile"})
@@ -162,6 +163,9 @@ public class UserController {
 
     @RequestMapping(value={"/isLoggedIn"})
     public @ResponseBody Boolean isLoggedIn() {
+//        if (userService.getCurrentUser() == null) {
+//            isAdminLoggedIn();
+//        }
         return userService.getCurrentUser() != null;
     }
 

@@ -286,7 +286,8 @@ var nmsReportsApp = angular
 //        });
 
 		$httpProvider.defaults.headers.common = {};
-        $httpProvider.defaults.headers.common['Cache-Control'] = 'no-cache';
+        $httpProvider.defaults.headers.common['Cache-Control'] = 'no-cache, no-store, must-revalidate';
+        $httpProvider.defaults.headers.common['Expires'] = '0';
         $httpProvider.defaults.cache = false;
 
          if (!$httpProvider.defaults.headers.get) {

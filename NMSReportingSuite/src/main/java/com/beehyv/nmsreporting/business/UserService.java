@@ -24,6 +24,8 @@ public interface UserService {
 
     void setLoggedIn();
 
+    void setUnSuccessfulAttemptsCount(Integer userId, Integer unSuccessfulCount);
+
     User findUserByEmailId(String emailId);
 
     List<User> findUsersByPhoneNumber(String phoneNumber);
