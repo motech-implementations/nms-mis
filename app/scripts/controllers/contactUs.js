@@ -17,6 +17,7 @@
 
             $scope.contactUs = {};
             $scope.email = {};
+            $scope.email.captchaCode = '';
 
             var emailField = $scope.email.email
             function validateEmail(emailField){
@@ -32,6 +33,35 @@
                 var reg = /^[6-9]\d{9}$/;
                 return reg.test(phoneNoField);
             }
+
+
+            $scope.Captcha = function(){
+                             var alpha = new Array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','P','Q','R','S','T','U','V','W','X','Y','Z',
+                         	    	'1','2','3','4','5','6','7','8','9');
+                             var i;
+                             for (i=0;i<6;i++){
+                                 var a = alpha[Math.floor(Math.random() * alpha.length)];
+                                 var b = alpha[Math.floor(Math.random() * alpha.length)];
+                                 var c = alpha[Math.floor(Math.random() * alpha.length)];
+                                 var d = alpha[Math.floor(Math.random() * alpha.length)];
+                                 var e = alpha[Math.floor(Math.random() * alpha.length)];
+                                              }
+                                 var code = a + ' ' + b + ' '  + c + ' ' + d + ' ' + e;
+                                 $scope.email.mainCaptchaCode = code;
+
+
+                               }
+                        $scope.ValidCaptcha = function(){
+                        console.log($scope.user);
+                             var string1 = $scope.email.mainCaptchaCode.split(' ').join('');;
+                             var string2 = $scope.email.captchaCode.split(' ').join('');;
+                             if (string1 == string2.toUpperCase()){
+                                    return true;
+                             }else{
+                                  return false;
+                                  }
+                        }
+
 
 
             $scope.contactUs = function(e){
@@ -116,6 +146,35 @@
                         return;
                     }
                 }
+
+                if($scope.email.captchaCode ==''){
+
+                        if(UserFormFactory.isInternetExplorer()){
+                            alert("Please fill the captcha");
+                            $scope.reverse();
+                            return;
+                        }
+                        else{
+                            UserFormFactory.showAlert("Please fill the captcha");
+                            $scope.reverse();
+                            return;
+                        }
+
+                 }
+
+                if($scope.ValidCaptcha()==false){
+                   if(UserFormFactory.isInternetExplorer()){
+                       alert("Incorrect Captcha");
+                       $scope.reverse();
+                       return;
+                   }
+                   else{
+                       UserFormFactory.showAlert("Incorrect Captcha");
+                       $scope.reverse();
+                       return;
+                   }
+                }
+
 
                 else {
                     $http({

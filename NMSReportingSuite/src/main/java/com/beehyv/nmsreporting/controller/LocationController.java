@@ -101,10 +101,10 @@ public class LocationController {
     public @ResponseBody List<District> getDistrictsOfState(@PathVariable("stateId") Integer stateId) {
         User user = userService.getCurrentUser();
         List<District> districts;
-        if(user.getAccessLevel().equals(AccessLevel.NATIONAL.getAccessLevel())) {
+        if((AccessLevel.NATIONAL.getAccessLevel()).equals(user.getAccessLevel())) {
             districts = locationService.getChildDistricts(stateId);
         }
-        else if(user.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel())) {
+        else if((AccessLevel.STATE.getAccessLevel()).equals(user.getAccessLevel())) {
             districts = locationService.getChildDistricts(user.getStateId());
         }
         else{

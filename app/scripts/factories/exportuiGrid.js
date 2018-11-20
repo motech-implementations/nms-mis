@@ -62,13 +62,13 @@
 
                 //2nd loop will extract each column and convert it in string comma-seprated
                 for (var index in data[i]) {
-                    var temp = data[i][index].value;
+                    var temp = data[i][index].value.replace(/,/g, "");
                     if ((excelHeaderName.reportName == "Kilkari Call" && (index == "7" || index == "8")) ||
                         (excelHeaderName.reportName == "MA Cumulative Summary" && (index == "6" || index == "7" || index == "8")) ||
                         (excelHeaderName.reportName == "Kilkari Cumulative Summary" && (index == "4" || index == "3")) ||
                         (excelHeaderName.reportName == "Kilkari Thematic Content" && (index == "4")) ||
                         (excelHeaderName.reportName == "Kilkari Beneficiary Completion" && (index == "2"))) {
-                        temp = (temp.toFixed(2));
+                        temp = parseFloat(temp);
                     }
 
                     row += temp + ',';
@@ -90,38 +90,41 @@
 
                     else if (ft.displayName == "Average Duration Of Call" && excelHeaderName.reportName == "Kilkari Cumulative Summary") {
                         var temp = gridApi.grid.columns[3].getAggregationValue() == 0 ? 0.00 : (gridApi.grid.columns[4].getAggregationValue() / gridApi.grid.columns[3].getAggregationValue());
-                        v = (temp.toFixed(2));
+                        v = Math.floor(parseFloat(temp) * 100) / 100;
                     } else if (ft.displayName == "Average Number Of Weeks In Service" && excelHeaderName.reportName == "Kilkari Beneficiary Completion") {
                         var temp = gridApi.grid.columns.length == 0 ? 0.00 : (gridApi.grid.columns[3].getAggregationValue());
-                        v = (temp.toFixed(2));
+                        v = Math.floor(parseFloat(temp) * 100) / 100;
                     } else if (ft.displayName == "Average Duration Of Calls" && excelHeaderName.reportName == "Kilkari Call") {
                         var temp = gridApi.grid.columns[3].getAggregationValue() == 0 ? 0.00 : (gridApi.grid.columns[8].getAggregationValue() / gridApi.grid.columns[3].getAggregationValue());
-                        v = (temp.toFixed(2));
+                        v = Math.floor(parseFloat(temp) * 100) / 100;
                     } else if (ft.displayName == "Total Billable Minutes" && excelHeaderName.reportName == "Kilkari Call") {
                         var temp = ft.getAggregationValue();
-                        v = (temp.toFixed(2));
+                       v = Math.floor(parseFloat(temp) * 100) / 100;
                     } else if (ft.displayName == "Total Billable Minutes Played" && excelHeaderName.reportName == "Kilkari Cumulative Summary") {
                         var temp = ft.getAggregationValue();
-                        v = (temp.toFixed(2));
+                        v = Math.floor(parseFloat(temp) * 100) / 100;
                     } else if (ft.displayName == "% Not Started Course" && excelHeaderName.reportName == "MA Cumulative Summary") {
                         var temp = gridApi.grid.columns[2].getAggregationValue() == 0 ? 0.00 : (gridApi.grid.columns[4].getAggregationValue() / gridApi.grid.columns[2].getAggregationValue()) * 100;
-                        v = (temp.toFixed(2));
+                        v = Math.floor(parseFloat(temp) * 100) / 100;
                     } else if (ft.displayName == "% Successfully Completed" && excelHeaderName.reportName == "MA Cumulative Summary") {
                         var temp = gridApi.grid.columns[3].getAggregationValue() == 0 ? 0.00 : (gridApi.grid.columns[5].getAggregationValue() / gridApi.grid.columns[3].getAggregationValue()) * 100;
-                        v = (temp.toFixed(2));
+                        v = Math.floor(parseFloat(temp) * 100) / 100;
                     }else if(ft.displayName == "Total Beneficiary Records Rejected" && excelHeaderName.reportName == "Kilkari Subscriber"&&!rejectionStart){
                         v = "N/A";
                     }else if (ft.displayName == "% Failed the course" && excelHeaderName.reportName == "MA Cumulative Summary") {
                         var temp = gridApi.grid.columns[3].getAggregationValue() == 0 ? 0.00 : (gridApi.grid.columns[6].getAggregationValue() / gridApi.grid.columns[3].getAggregationValue()) * 100;
-                        v = (temp.toFixed(2));
+                        v = Math.floor(parseFloat(temp) * 100) / 100;
+//                        parseFloat(Math.round(temp * 100) / 100).toFixed(2);
                     } else {
                         v = ft.getAggregationValue();
                     }
 
                     if (ft.displayName != "S No.") {
-                        if (v == undefined) {
+                    if (ft.displayName == "Location Name") {
+                        v = "Total";
+                    } else if (v == undefined) {
                             v = "";
-                        }
+                    }
                         row += v + ',';
                     }
 
@@ -146,7 +149,7 @@
                 data1.forEach(function(ds) {
                     var row = "";
                     ds.forEach(function(d) {
-                        var v = d.value;
+                        var v = d.value.replace(/,/g, "");
                         row += v + ',';
                     });
                     row = row.slice(0, -1);
@@ -200,8 +203,8 @@
                 var afterPoint = '';
                 if(x.indexOf('.') > 0)
                    afterPoint = x.substring(x.indexOf('.'),x.length);
-                   afterPoint = Number(afterPoint).toFixed(2);
-                   afterPoint = afterPoint.substring(afterPoint.indexOf('.'),afterPoint.length);
+                   afterPoint = parseFloat(Number(afterPoint));
+                   afterPoint = afterPoint.toString().substring(afterPoint.toString().indexOf('.'),afterPoint.length);
                 x = Math.floor(x);
                 x=x.toString();
                 var lastThree = x.substring(x.length-3);
@@ -261,7 +264,7 @@
                 //First Table
                 var grid = gridApi.grid;
                 var exportColumnHeaders = uiGridExporterService.getColumnHeaders(grid, uiGridExporterConstants.ALL);
-                var exportData = uiGridExporterService.getData(grid, uiGridExporterConstants.ALL, uiGridExporterConstants.ALL, true);
+                var exportData = uiGridExporterService.getData(grid, rowTypes, colTypes);
                 var datapdf = [];
                 var tempHeader = ["S No"];
                 //Pushing the Column Headers into the table
@@ -282,7 +285,7 @@
                 //Second Table
                 var grid1 = gridApi1.grid;
                 var exportColumnHeaders1 = uiGridExporterService.getColumnHeaders(grid1, uiGridExporterConstants.ALL);
-                var exportData1 = uiGridExporterService.getData(grid1, uiGridExporterConstants.ALL, uiGridExporterConstants.ALL, true);
+                var exportData1 = uiGridExporterService.getData(grid1, rowTypes, colTypes);
                 var datapdf1 = [];
                 var tempHeader1 = ["S No"];
                 for (i = 0; i < exportColumnHeaders1.length; i++) {
@@ -611,11 +614,10 @@
                         //Value after decimal till 2 digits
                         if (
                             (excelHeaderName.reportName == "Kilkari Thematic Content" && (j == "4")) ) {
-                            temp = Number(temp);
-                            temp = indianDecimal(temp);
+
                         }
                         else if((j!="0")&&!(excelHeaderName.reportName == "Kilkari Thematic Content"&&j=="1")){
-                        temp=indianInteger(temp);
+                        //temp=indianInteger(temp);
                         }
 
                         tempcol.push(temp);
@@ -869,10 +871,10 @@
                             (excelHeaderName.reportName == "Kilkari Cumulative Summary" && (j == "4" || j == "3")) ||
                             (excelHeaderName.reportName == "Kilkari Thematic Content" && (j == "4")) ||
                             (excelHeaderName.reportName == "Kilkari Beneficiary Completion" && (j == "2"))) {
-                            temp = Number(temp);
-                            temp = indianDecimal(temp);
+//                            temp = Number(temp);
+//                            temp = indianDecimal(temp);
                         }
-                        else if(!j=="0") {temp = indianInteger(temp);}
+                        //else if(!j=="0") {temp = indianInteger(temp);}
                         tempcol.push(temp);
                     }
                     datapdf.push(tempcol);
@@ -889,33 +891,38 @@
 
                     else if (ft.displayName == "Average Duration Of Call" && excelHeaderName.reportName == "Kilkari Cumulative Summary") {
                         var temp = gridApi.grid.columns[3].getAggregationValue() == 0 ? 0.00 : (gridApi.grid.columns[4].getAggregationValue() / gridApi.grid.columns[3].getAggregationValue());
-                        v = indianDecimal(temp);
+                        v = Math.floor(parseFloat(temp) * 100) / 100;
                     } else if (ft.displayName == "Average Number Of Weeks In Service" && excelHeaderName.reportName == "Kilkari Beneficiary Completion") {
                         var temp = gridApi.grid.columns.length == 0 ? 0.00 : (gridApi.grid.columns[3].getAggregationValue());
-                        v = indianDecimal(temp);
+                        v = Math.floor(parseFloat(temp) * 100) / 100;
                     } else if (ft.displayName == "Average Duration Of Calls" && excelHeaderName.reportName == "Kilkari Call") {
                         var temp = gridApi.grid.columns[3].getAggregationValue() == 0 ? 0.00 : (gridApi.grid.columns[8].getAggregationValue() / gridApi.grid.columns[3].getAggregationValue());
-                        v = indianDecimal(temp);
+                        v = Math.floor(parseFloat(temp)* 100) / 100;
                     } else if (ft.displayName == "Total Billable Minutes" && excelHeaderName.reportName == "Kilkari Call") {
                         var temp = ft.getAggregationValue();
-                        v = indianDecimal(temp);
+                        v = Math.floor(parseFloat(temp)* 100) / 100;
                     } else if (ft.displayName == "Total Billable Minutes Played" && excelHeaderName.reportName == "Kilkari Cumulative Summary") {
                         var temp = ft.getAggregationValue();
-                        v = indianDecimal(temp);
+                        v = Math.floor(parseFloat(temp)* 100) / 100;
                     } else if(ft.displayName == "Total Beneficiary Records Rejected" && excelHeaderName.reportName == "Kilkari Subscriber"&&!rejectionStart){
                         v = "N/A";
                     }else if (ft.displayName == "% Not Started Course" && excelHeaderName.reportName == "MA Cumulative Summary") {
                         var temp = gridApi.grid.columns[2].getAggregationValue() == 0.00 ? 0.00 : (gridApi.grid.columns[4].getAggregationValue() / gridApi.grid.columns[2].getAggregationValue()) * 100;
-                        v = indianDecimal(temp);
+                        v = Math.floor(indianDecimal(temp) * 100) / 100;
                     } else if (ft.displayName == "% Successfully Completed" && excelHeaderName.reportName == "MA Cumulative Summary") {
                         var temp = gridApi.grid.columns[3].getAggregationValue() == 0.00 ? 0.00 : (gridApi.grid.columns[5].getAggregationValue() / gridApi.grid.columns[3].getAggregationValue()) * 100;
-                        v = indianDecimal(temp);
+                        v = Math.floor(indianDecimal(temp) * 100) / 100;
                     } else if (ft.displayName == "% Failed the course" && excelHeaderName.reportName == "MA Cumulative Summary") {
                         var temp = gridApi.grid.columns[3].getAggregationValue() == 0.00 ? 0.00 : (gridApi.grid.columns[6].getAggregationValue() / gridApi.grid.columns[3].getAggregationValue()) * 100;
-                        v = indianDecimal(temp);
+                        v = Math.floor(indianDecimal(temp) * 100) / 100;
                     } else {
                              if (ft.displayName != "S No.") {
-                        v = indianInteger(ft.getAggregationValue());}
+                                if (ft.displayName == "Location Name") {
+                                   v = "Total";
+                                } else {
+                                    v = indianInteger(ft.getAggregationValue());
+                                  }
+                            }
                         else{
                         v = ft.getAggregationValue();
                         }
@@ -1760,22 +1767,22 @@
 
                     else if (ft.displayName == "Average Duration Of Call" && excelHeaderName.reportName == "Kilkari Cumulative Summary") {
                         var temp = gridApi.grid.columns[3].getAggregationValue() == 0 ? 0.00 : (gridApi.grid.columns[4].getAggregationValue() / gridApi.grid.columns[3].getAggregationValue());
-                        v = Number(temp.toFixed(2));
+                        v = Math.floor(NumberparseFloat(temp) * 100) / 100;
                     } else if (ft.displayName == "Average Number Of Weeks In Service" && excelHeaderName.reportName == "Kilkari Beneficiary Completion") {
                         var temp = gridApi.grid.columns.length == 0 ? 0.00 : (gridApi.grid.columns[3].getAggregationValue());
-                        v = Number(temp.toFixed(2));
+                        v = Math.floor(NumberparseFloat(temp) * 100) / 100;
                     } else if (ft.displayName == "Average Duration Of Calls" && excelHeaderName.reportName == "Kilkari Call") {
                         var temp = gridApi.grid.columns[3].getAggregationValue() == 0 ? 0.00 : (gridApi.grid.columns[8].getAggregationValue() / gridApi.grid.columns[3].getAggregationValue());
-                        v = Number(temp.toFixed(2));
+                        v = Math.floor(NumberparseFloat(temp) * 100) / 100;
                     } else if (ft.displayName == "% Not Started Course" && excelHeaderName.reportName == "MA Cumulative Summary") {
                         var temp = gridApi.grid.columns[2].getAggregationValue() == 0 ? 0.00 : (gridApi.grid.columns[4].getAggregationValue() / gridApi.grid.columns[2].getAggregationValue()) * 100;
-                        v = Number(temp.toFixed(2));
+                        v = Math.floor(NumberparseFloat(temp) * 100) / 100;
                     } else if (ft.displayName == "% Successfully Completed" && excelHeaderName.reportName == "MA Cumulative Summary") {
                         var temp = gridApi.grid.columns[3].getAggregationValue() == 0 ? 0.00 : (gridApi.grid.columns[5].getAggregationValue() / gridApi.grid.columns[3].getAggregationValue()) * 100;
-                        v = Number(temp.toFixed(2));
+                        v = Math.floor(NumberparseFloat(temp) * 100) / 100;
                     } else if (ft.displayName == "% Failed the course" && excelHeaderName.reportName == "MA Cumulative Summary") {
                         var temp = gridApi.grid.columns[3].getAggregationValue() == 0 ? 0.00 : (gridApi.grid.columns[6].getAggregationValue() / gridApi.grid.columns[3].getAggregationValue()) * 100;
-                        v = Number(temp.toFixed(2));
+                        v = Math.floor(NumberparseFloat(temp) * 100) / 100;
                     } else {
                         v = ft.getAggregationValue();
                     }

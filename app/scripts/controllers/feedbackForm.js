@@ -88,31 +88,31 @@ $scope.Captcha = function(){
                     }
                 }
 
-                if(!$scope.email.email){
-                    if(UserFormFactory.isInternetExplorer()){
-                        alert("Please enter the email");
-                         $scope.reverse();
-                        return;
-                    }
-                    else{
-                        UserFormFactory.showAlert("Please enter the email");
-                         $scope.reverse();
-                        return;
-                    }
-                }
-
-                if(!validateEmail($scope.email.email)){
-                    if(UserFormFactory.isInternetExplorer()){
-                        alert("Please enter valid email");
-                         $scope.reverse();
-                        return;
-                    }
-                    else{
-                        UserFormFactory.showAlert("Please enter valid email");
-                         $scope.reverse();
-                        return;
-                    }
-                }
+//                if(!$scope.email.email){
+//                    if(UserFormFactory.isInternetExplorer()){
+//                        alert("Please enter the email");
+//                         $scope.reverse();
+//                        return;
+//                    }
+//                    else{
+//                        UserFormFactory.showAlert("Please enter the email");
+//                         $scope.reverse();
+//                        return;
+//                    }
+//                }
+//
+//                if(!validateEmail($scope.email.email)){
+//                    if(UserFormFactory.isInternetExplorer()){
+//                        alert("Please enter valid email");
+//                         $scope.reverse();
+//                        return;
+//                    }
+//                    else{
+//                        UserFormFactory.showAlert("Please enter valid email");
+//                         $scope.reverse();
+//                        return;
+//                    }
+//                }
 
                 if(!$scope.email.body){
                     if(UserFormFactory.isInternetExplorer()){

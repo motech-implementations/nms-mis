@@ -37,7 +37,7 @@ public class EmailController {
     @Autowired
     LocationService locationService;
 
-    private static final String feedbackBody = "Received your feedback. Tahnking you sending feedback";
+    private static final String feedbackBody = "Received your feedback. Thanking you sending feedback";
 
     private static final String feedbackSubject = "Feedback Received";
 
@@ -65,16 +65,21 @@ public class EmailController {
     }
 
     @RequestMapping(value = "/sendFeedback", method = RequestMethod.POST)
-        public @ResponseBody String sendFeedback(@RequestBody EmailBody mailInfo){
-        EmailTest newMail = new EmailTest();
-        newMail.setFrom("nsp-reports@beehyv.com");
-        newMail.setTo(mailInfo.getEmail());
-        Calendar c = Calendar.getInstance();   // this takes current date
-        c.add(Calendar.MONTH, -1);
-        c.set(Calendar.DATE, 1);
-        newMail.setSubject("Feedback Received");
-        newMail.setBody(emailService.getBody("FeedBack",mailInfo.getName() ));
-        return emailService.sendMailTest(newMail);
+        public @ResponseBody String sendFeedback(@RequestBody EmailBody mailInfo) {
+        if (mailInfo.getEmail() != null) {
+
+            EmailTest newMail = new EmailTest();
+            newMail.setFrom("nsp-reports@beehyv.com");
+            newMail.setTo(mailInfo.getEmail());
+            Calendar c = Calendar.getInstance();   // this takes current date
+            c.add(Calendar.MONTH, -1);
+            c.set(Calendar.DATE, 1);
+            newMail.setSubject("Feedback Received");
+            newMail.setBody(emailService.getBody("FeedBack", mailInfo.getName()));
+            return emailService.sendMailTest(newMail);
+         }
+         else
+             return "success";
    }
 
     @RequestMapping(value = "/sendEmailForContactUs", method = RequestMethod.POST)

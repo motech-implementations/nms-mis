@@ -58,8 +58,8 @@ public class User {
     @Column(name = "role_id")
     private Integer roleId;
 
-    @Column(name = "account_status")
-    private String accountStatus = AccountStatus.PENDING.getAccountStatus();
+	@Column(name="account_status")
+	private String accountStatus = AccountStatus.ACTIVE.getAccountStatus();
 
     @Column(name = "access_level")
     private String accessLevel;

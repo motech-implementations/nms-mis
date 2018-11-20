@@ -21,7 +21,7 @@ public class KilkariLowUsage {
     @Column(name="rch_id", columnDefinition = "VARCHAR(45)")
     private String rchId;
 
-    @Column(name="name", columnDefinition = "VARCHAR(100)")
+    @Column(name="beneficiary_name", columnDefinition = "VARCHAR(100)")
     private String name;
 
     @Column(name="msisdn", columnDefinition = "BIGINT(20)")
@@ -36,10 +36,16 @@ public class KilkariLowUsage {
     @Column(name="district_id", columnDefinition = "SMALLINT(6)")
     private Integer districtId;
 
-    @Column(name="block_id", columnDefinition = "INT(11)")
+    @Column(name="taluka_id", columnDefinition = "BIGINT(20)")
+    private Integer talukaId;
+
+    @Column(name="healthBlock_id", columnDefinition = "INT(11)")
     private Integer blockId;
 
-    @Column(name="hsubcenter_id", columnDefinition = "INT(11)")
+    @Column(name="healthFacility_id", columnDefinition = "BIGINT(20)")
+    private Integer hcenterId;
+
+    @Column(name="healthSubFacility_id", columnDefinition = "INT(11)")
     private Integer hsubcenterId;
 
     @Column(name="village_id", columnDefinition = "INT(11)")
@@ -115,12 +121,28 @@ public class KilkariLowUsage {
         this.districtId = districtId;
     }
 
+    public Integer getTalukaId() {
+        return talukaId;
+    }
+
+    public void setTalukaId(Integer talukaId) {
+        this.talukaId = talukaId;
+    }
+
     public Integer getBlockId() {
         return blockId;
     }
 
     public void setBlockId(Integer blockId) {
         this.blockId = blockId;
+    }
+
+    public Integer getHcenterId() {
+        return hcenterId;
+    }
+
+    public void setHcenterId(Integer hcenterId) {
+        this.hcenterId = hcenterId;
     }
 
     public Integer getHsubcenterId() {

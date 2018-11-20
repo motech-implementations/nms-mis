@@ -40,7 +40,7 @@
 			$scope.districts = [];
 			$scope.blocks = [];
 			$scope.circles = [];
-			$scope.datePickerContent = " Month";
+			$scope.datePickerContent = " Monthly";
 			$scope.reportDisplayType = 'TABLE';
 			$scope.gridOptions = {};
 			$scope.gridOptions1 = {};
@@ -53,6 +53,7 @@
 			$scope.content = "There is no data available for the selected inputs";
 			$scope.periodType = ['Year','Month','Quarter', 'Custom Range'];
 			$scope.quarterType = ['Q1 (Jan to Mar)','Q2 (Apr to Jun)','Q3 (Jul to Sep)', 'Q4 (Oct to Dec)'];
+			$scope.currentPeriodType = ['Year', 'Quarter', 'Financial Year'];
 			$scope.periodDisplayType = "";
 			$scope.dataPickermode = "";
 			$scope.periodTypeContent = "";
@@ -139,7 +140,7 @@
 			}
 
 			$scope.disableDistrict = function(){
-				return $scope.districts[0]  == null || $scope.userHasDistrict();	
+				return $scope.districts[0]  == null || $scope.userHasDistrict();
 			}
 			$scope.disableBlock = function(){
 				return $scope.blocks[0]  == null || $scope.userHasBlock();
@@ -150,7 +151,7 @@
 
 			$scope.showWeekTable = function(){
 				//return (($state.current.name == 'Kilkari Message Matrix' || $state.current.name == 'Kilkari Listening Matrix' || $state.current.name == 'Kilkari Usage' || $state.current.name == 'Kilkari Message Listenership' || $state.current.name == 'Kilkari Thematic Content' || $state.current.name == 'Kilkari Aggregate Beneficiaries')&& ($scope.periodDisplayType == 'Week'));
-				return (!($state.current.name == 'Kilkari Repeat Listener')&& ($scope.periodDisplayType == 'Week'));
+				return ( $scope.isAggregateReport() &&  !($scope.report.reportEnum == 'Kilkari_Repeat_Listener') && ($scope.periodDisplayType == 'Week'));
 
 			}
 
@@ -174,7 +175,7 @@
             $scope.isIE9 = function(){
                 return UserFormFactory.isInternetExplorer9();
             }
-			
+
 			$scope.reportsLoading = true;
 			UserFormFactory.getReportsMenu()
 			.then(function(result){
@@ -183,30 +184,6 @@
 				if($scope.reports.length == 1){
 				    $scope.selectReportCategory($scope.reports[0]);
 				}
-
-				if(!(($state.current.name)===("reports"))){
-                    switch($state.current.name){
-                        case "MA Cumulative Summary":
-                        case "MA Subscriber":
-                        case "MA Performance":
-                        var reportCategorytemp = $scope.getArrayElementByName($scope.reports,"Mobile Academy Reports");
-                        break;
-                        case "Kilkari Cumulative Summary":
-                        case "Kilkari Beneficiary Completion":
-                        case "Kilkari Usage":
-                        case "Kilkari Call":
-                        case "Kilkari Message Matrix":
-                        case "Kilkari Listening Matrix":
-                        case "Kilkari Thematic Content":
-                        case "Kilkari Repeat Listener":
-                        case "Kilkari Subscriber":
-                        case "Kilkari Message Listenership":
-                        case "Kilkari Aggregate Beneficiaries":
-                        var reportCategorytemp = $scope.getArrayElementByName($scope.reports,"Kilkari Reports");
-                        break;
-                    }
-                    $scope.selectReportCategory (reportCategorytemp);
-                }
 			})
 
 			$scope.reportCategory=null;
@@ -234,7 +211,13 @@
                     $scope.datePickerOptions.minMode = '';
                     $scope.datePickerOptions.datepickerMode = 'year';
                     $scope.datePickerOptions.minMode = 'year';
-                    $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear() -1);
+                    if(new Date().getMonth()>0){
+                        $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear());
+                    }
+                    else
+                        $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear() -1);
+
+
                 }
                 if( $scope.periodDisplayType == 'Quarter'){
                     $scope.periodTypeContent = " Year";
@@ -256,9 +239,9 @@
                     $scope.datePickerOptions.datepickerMode = 'year';
                     $scope.datePickerOptions.minMode = 'year';
                     if(new Date().getMonth()>3){
-                        $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear() -1);
+                        $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear());
                     }else{
-                        $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear() -2);
+                        $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear() -1);
                     }
 
                 }
@@ -302,7 +285,7 @@
 				$scope.reportNames = item.options;
 
 				$scope.report = null;
-				
+
 				if(!$scope.userHasState()){
 					$scope.clearState();
 				}
@@ -323,14 +306,7 @@
 				$scope.clearFile();
 				$scope.getStatesByService(item.service);
 				$scope.getCirclesByService(item.service);
-                if(!(($state.current.name)===("reports"))){
-                    $scope.selectReport ($scope.getArrayElementByName(item.options,$state.current.name));
-                    if($state.current.name == "MA Cumulative Summary" || $state.current.name == "Kilkari Cumulative Summary" ){
-                         $scope.dateFormat = 'yyyy-MM-dd';
-                         $scope.endDatePickerOptions.minDate = new Date(2016,00,01)
-                         $scope.endDatePickerOptions.maxDate = new Date();
-                    }
-                }
+
 			}
 
 			$scope.getArrayElementByName = function(arr, value) {
@@ -362,20 +338,28 @@
 				if($scope.userHasOneCircle()){
                 	$scope.selectCircle($scope.circles[0]);
                 }
-                if($scope.report.reportEnum == 'Kilkari_Message_Matrix' || $scope.report.reportEnum == 'Kilkari_Listening_Matrix' || $scope.report.reportEnum == 'Kilkari_Usage' || $scope.report.reportEnum == 'Kilkari_Message_Listenership' || $scope.report.reportEnum == 'Kilkari_Thematic_Content' || $scope.report.reportEnum == 'Kilkari_Aggregate_Beneficiaries'){
+                if($scope.report.reportEnum == 'Kilkari_Message_Matrix' || $scope.report.reportEnum == 'Kilkari_Listening_Matrix' || $scope.report.reportEnum == 'Kilkari_Usage' || $scope.report.reportEnum == 'Kilkari_Message_Listenership' || $scope.report.reportEnum == 'Kilkari_Thematic_Content' || $scope.report.reportEnum == 'Kilkari_Aggregate_Beneficiaries' || $scope.report.reportEnum == 'Kilkari_Beneficiary_Completion'){
                     $scope.periodType = ['Year','Financial Year','Quarter','Month','Week'];
                 }
                 else if($scope.report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise'){
                     $scope.periodType = ['Month'];
+                    $scope.periodDisplayType = "Month";
                 }
                 else
                     $scope.periodType = ['Year','Financial Year','Quarter','Month','Week','Custom Range'];
-                if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).indexOf(angular.lowercase("rejected")) > -1)  ){
+                if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  ($scope.report.name.toLowerCase().indexOf(("rejected").toLowerCase()) > -1)  ){
                 	$scope.datePickerContent = "Select Week";
                 }
                 else
-                    $scope.datePickerContent = " Month";
-                $scope.periodDisplayType = '';
+                    $scope.datePickerContent = "Monthly";
+
+
+                if($scope.report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise'){
+                    $scope.periodDisplayType = "Month";
+                }
+                else{
+                     $scope.periodDisplayType = '';
+                }
                 $scope.dt1 = null;
                 $scope.dt2 = null;
                 $scope.hideGrid = true;
@@ -383,6 +367,8 @@
                 $scope.showEmptyData = false;
                 if($scope.report.name == 'MA Cumulative Summary' || $scope.report.reportEnum == 'Kilkari_Cumulative_Summary'){
                     $scope.dateFormat = 'yyyy-MM-dd';
+                    $scope.endDatePickerOptions.minDate = new Date(2016,11,01)
+                    $scope.endDatePickerOptions.maxDate = new Date();
                 }
 
                 $scope.gridOptions1.exporterExcelSheetName = $scope.report.name;
@@ -420,6 +406,17 @@
             }
 
             $scope.cropState = function(name){
+                if(name == null){
+                    return "";
+                }
+                if(name.length > 12){
+                    return name.substring(0, 10) + ".."
+                }
+                return name;
+            }
+
+
+            $scope.cropCircle = function(name){
                 if(name == null){
                     return "";
                 }
@@ -470,19 +467,8 @@
                         }
                     });
                 }
-//				return returnFactory()
-//                    .then(function(result){
-//                        $scope.states = result.data;
-//                        $scope.districts = [];
-//                        $scope.blocks = [];
-//                        $scope.statesLoading = false;
-//
-//                        if($scope.userHasState()){
-//                            $scope.selectState($scope.states[0]);
-//                        }
-//                    });
 			}
-			
+
 			$scope.getDistricts = function(stateId){
 				$scope.districtsLoading = true;
 				return UserFormFactory.getDistricts(stateId)
@@ -535,13 +521,13 @@
 
 			$scope.setDateOptions =function(){
 			    if($scope.isAggregateReport()&&($scope.periodDisplayType == 'Month'||$scope.periodDisplayType == 'Week'||$scope.periodDisplayType == 'Custom Range')){
-			        var minDate = new Date(2016, 00, 01);
+			        var minDate = new Date(2016, 11, 01);
 			    }
 			    else if($scope.isAggregateReport()&&($scope.periodDisplayType == 'Year'||$scope.periodDisplayType == 'Quarter'||$scope.periodDisplayType == 'Financial Year')){
 			        var minDate = new Date(2017, 00, 01);
 			    }
                 else{
-                    var minDate = new Date(2015, 09, 01);
+                    var minDate = new Date(2016, 11, 30);
                 }
 				if($scope.report != null && $scope.report.service == 'M'){
 					minDate = new Date(2015, 10, 01);
@@ -553,7 +539,7 @@
                     minDate = new Date(2017, 04, 30);
                 }
                 if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Low_Usage'){
-                    minDate = new Date(2017, 03, 30);
+                    minDate = new Date(2016, 11, 30);
                 }
 //                if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Low_Listenership_Deactivation'){
 //                    minDate = new Date(2017, 08, 30);
@@ -564,10 +550,10 @@
                     minDate = new Date(2017, 10, 01);
                  }
                  if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Mother_Import_Rejects'){
-                    minDate = new Date(2017, 10, 01);
+                    minDate = new Date(2017, 08, 01);
                  }
                  if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Child_Import_Rejects'){
-                    minDate = new Date(2017, 10, 01);
+                    minDate = new Date(2017, 08, 01);
                  }
 
 				if(!$scope.isCircleReport() && $scope.state != null && Date.parse($scope.state.serviceStartDate) > minDate){
@@ -609,77 +595,103 @@
 					$scope.state = state;
 					excelHeaderName.stateName = state.stateName;
 				}
-                   if((($state.current.name)===("reports"))){
-                    $scope.periodDisplayType = '';
-                    $scope.dt1 = null;
-                    $scope.dt2 = null;
-                    $scope.hideGrid = true;
-                    $scope.hideMessageMatrix = true;
-                    $scope.showEmptyData = false;
-                    $scope.setDateOptions();
 
-                    }
-                 if(!(($state.current.name)===("reports"))){
-                 if($state.current.name == "MA Cumulative Summary" || $state.current.name == "Kilkari Cumulative Summary" ){
-                                         $scope.dateFormat = 'yyyy-MM-dd';
-                                         $scope.endDatePickerOptions.minDate = new Date(2016,11,01)
-                                         $scope.endDatePickerOptions.maxDate = new Date(2016,11,31);
-                                    }
-                                    else{
-                                        $scope.periodDisplayType="Month";
-                                        $scope.periodTypeContent = " Month";
-                                        $scope.dateFormat = "yyyy-MM";
-                                        $scope.datePickerOptions.minMode = '';
-                                        $scope.datePickerOptions.datepickerMode = 'month';
-                                        $scope.datePickerOptions.minMode ='month';
-                                        $scope.dt1 = new Date(2016, 11, 01);
-                                    }
-
-                }
-
-				$scope.clearFile();
+                 $scope.dt1 = null;
+                 $scope.dt2 = null;
+                 $scope.hideGrid = true;
+                 $scope.hideMessageMatrix = true;
+                 $scope.showEmptyData = false;
+                 $scope.setDateMode();
+				 $scope.clearFile();
 
 			}
+
+
+
+			$scope.setDateMode = function(){
+
+			     $scope.setDateOptions();
+                                 if($scope.periodDisplayType == 'Year'){
+                                     $scope.periodTypeContent = " Year";
+                                     $scope.dateFormat = "yyyy";
+                                     $scope.datePickerOptions.minMode = '';
+                                     $scope.datePickerOptions.datepickerMode = 'year';
+                                     $scope.datePickerOptions.minMode = 'year';
+                                     if(new Date().getMonth()>0){
+                                         $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear());
+                                     }
+                                     else
+                                         $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear() -1);
+
+
+                                 }
+                                 if( $scope.periodDisplayType == 'Quarter'){
+                                     $scope.periodTypeContent = " Year";
+                                     $scope.dateFormat = "yyyy";
+                                     $scope.datePickerOptions.minMode = '';
+                                     $scope.datePickerOptions.datepickerMode = 'year';
+                                     $scope.datePickerOptions.minMode = 'year';
+                                     if(new Date().getMonth()>3){
+                                         $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear());
+                                     }else{
+                                         $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear() -1);
+                                     }
+
+                                 }
+                                 if($scope.periodDisplayType == 'Financial Year'){
+                                     $scope.periodTypeContent = "Select Start Year";
+                                     $scope.dateFormat = "yyyy";
+                                     $scope.datePickerOptions.minMode = '';
+                                     $scope.datePickerOptions.datepickerMode = 'year';
+                                     $scope.datePickerOptions.minMode = 'year';
+                                     if(new Date().getMonth()>3){
+                                         $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear());
+                                     }else{
+                                         $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear() -1);
+                                     }
+
+                                 }
+                                 if($scope.periodDisplayType == 'Month'){
+                                     $scope.periodTypeContent = " Month";
+                                     $scope.dateFormat = "yyyy-MM";
+                                      $scope.datePickerOptions.minMode = '';
+                                     $scope.datePickerOptions.datepickerMode = 'month';
+                                     $scope.datePickerOptions.minMode ='month';
+                                     $scope.datePickerOptions.maxDate = new Date().setMonth(new Date().getMonth() -1);
+                                 }
+                                 if($scope.periodDisplayType == 'Week'){
+                                     $scope.periodTypeContent = " Week";
+                                     $scope.dateFormat = "yyyy-MM-dd";
+                                     $scope.datePickerOptions.minMode = '';
+                                     $scope.datePickerOptions.datepickerMode = 'month';
+                                     $scope.datePickerOptions.minMode ='month';
+                 //                    $scope.datePickerOptions.maxDate = new Date().setMonth(new Date().getMonth() -1);
+                                 }
+                                 if($scope.periodDisplayType == 'Custom Range'){
+                                     $scope.periodTypeContent = "Start Date";
+                                     $scope.dateFormat = "yyyy-MM-dd";
+                                     delete $scope.datePickerOptions.datepickerMode;
+                                     $scope.datePickerOptions.minMode = '';
+                                     $scope.datePickerOptions.maxDate = new Date().setDate(new Date().getDate() - 1);
+                                 }
+
+			}
+
 			$scope.clearState = function(){
-				$scope.state = null;
-				excelHeaderName.stateName = "ALL";
-				$scope.clearDistrict();
-				$scope.districts = [];
-
-
-                   if((($state.current.name)===("reports"))){
-                    $scope.periodDisplayType = '';
-                    $scope.dt1 = null;
-                    $scope.dt2 = null;
-                    $scope.hideGrid = true;
-                    $scope.hideMessageMatrix = true;
-                    $scope.showEmptyData = false;
-                    $scope.setDateOptions();
-
-                    }
-                 if(!(($state.current.name)===("reports"))){
-                 if($state.current.name == "MA Cumulative Summary" || $state.current.name == "Kilkari Cumulative Summary" ){
-                                         $scope.dateFormat = 'yyyy-MM-dd';
-                                         $scope.endDatePickerOptions.minDate = new Date(2016,11,01)
-                                         $scope.endDatePickerOptions.maxDate = new Date(2016,11,31);
-                                    }
-                                    else{
-                                        $scope.periodDisplayType="Month";
-                                        $scope.periodTypeContent = " Month";
-                                        $scope.dateFormat = "yyyy-MM";
-                                        $scope.datePickerOptions.minMode = '';
-                                        $scope.datePickerOptions.datepickerMode = 'month';
-                                        $scope.datePickerOptions.minMode ='month';
-                                        $scope.dt1 = new Date(2016, 11, 01);
-                                    }
-
-                }
-
-
-
-                //console.log($scope.reports);
-                $scope.clearFile();
+				 $scope.state = null;
+				 excelHeaderName.stateName = "ALL";
+				 $scope.clearDistrict();
+				 $scope.districts = [];
+                 $scope.dt1 = null;
+                 $scope.dt2 = null;
+                 $scope.hideGrid = true;
+                 $scope.hideMessageMatrix = true;
+                 $scope.showEmptyData = false;
+                 $scope.setDateMode();
+                 $scope.clearFile();
 			}
+
+
 			$scope.selectDistrict = function(district){
 				if(district != null){
 					$scope.getBlocks(district.districtId);
@@ -687,157 +699,63 @@
 					$scope.district = district;
 					excelHeaderName.districtName = district.districtName;
 				}
-
-
-                   if((($state.current.name)===("reports"))){
-                    $scope.periodDisplayType = '';
-                    $scope.dt1 = null;
-                    $scope.dt2 = null;
-                    $scope.hideGrid = true;
-                    $scope.hideMessageMatrix = true;
-                    $scope.showEmptyData = false;
-                    $scope.setDateOptions();
-
-                    }
-                 if(!(($state.current.name)===("reports"))){
-                 if($state.current.name == "MA Cumulative Summary" || $state.current.name == "Kilkari Cumulative Summary" ){
-                                         $scope.dateFormat = 'yyyy-MM-dd';
-                                         $scope.endDatePickerOptions.minDate = new Date(2016,11,01)
-                                         $scope.endDatePickerOptions.maxDate = new Date(2016,11,31);
-                                    }
-                                    else{
-                                        $scope.periodDisplayType="Month";
-                                        $scope.periodTypeContent = " Month";
-                                        $scope.dateFormat = "yyyy-MM";
-                                        $scope.datePickerOptions.minMode = '';
-                                        $scope.datePickerOptions.datepickerMode = 'month';
-                                        $scope.datePickerOptions.minMode ='month';
-                                        $scope.dt1 = new Date(2016, 11, 01);
-                                    }
-
-                }
-
-
-				$scope.clearFile();
+              $scope.dt1 = null;
+              $scope.dt2 = null;
+              $scope.hideGrid = true;
+              $scope.hideMessageMatrix = true;
+              $scope.showEmptyData = false;
+              $scope.setDateMode();
+			  $scope.clearFile();
 			}
+
+
+
 			$scope.clearDistrict = function(){
 				$scope.district = null;
 				excelHeaderName.districtName = "ALL";
 				$scope.clearBlock();
 				$scope.blocks = [];
-
-
-                   if((($state.current.name)===("reports"))){
-                    $scope.periodDisplayType = '';
-                    $scope.dt1 = null;
-                    $scope.dt2 = null;
-                    $scope.hideGrid = true;
-                    $scope.hideMessageMatrix = true;
-                    $scope.showEmptyData = false;
-                    $scope.setDateOptions();
-
-                    }
-                 if(!(($state.current.name)===("reports"))){
-                 if($state.current.name == "MA Cumulative Summary" || $state.current.name == "Kilkari Cumulative Summary" ){
-                                         $scope.dateFormat = 'yyyy-MM-dd';
-                                         $scope.endDatePickerOptions.minDate = new Date(2016,11,01)
-                                         $scope.endDatePickerOptions.maxDate = new Date(2016,11,31);
-                                    }
-                                    else{
-                                        $scope.periodDisplayType="Month";
-                                        $scope.periodTypeContent = " Month";
-                                        $scope.dateFormat = "yyyy-MM";
-                                        $scope.datePickerOptions.minMode = '';
-                                        $scope.datePickerOptions.datepickerMode = 'month';
-                                        $scope.datePickerOptions.minMode ='month';
-                                        $scope.dt1 = new Date(2016, 11, 01);
-                                    }
-
-                }
-
-
-
-
+                $scope.dt1 = null;
+                $scope.dt2 = null;
+                $scope.hideGrid = true;
+                $scope.hideMessageMatrix = true;
+                $scope.showEmptyData = false;
+                $scope.setDateMode();
                 $scope.clearFile();
 			}
+
+
 			$scope.selectBlock = function(block){
 				if(block != null){
 					$scope.clearBlock();
 					$scope.block = block;
 					excelHeaderName.blockName = block.blockName;
 				}
-
-
-                   if((($state.current.name)===("reports"))){
-                    $scope.periodDisplayType = '';
-                    $scope.dt1 = null;
-                    $scope.dt2 = null;
-                    $scope.hideGrid = true;
-                    $scope.hideMessageMatrix = true;
-                    $scope.showEmptyData = false;
-                    $scope.setDateOptions();
-
-                    }
-                 if(!(($state.current.name)===("reports"))){
-                 if($state.current.name == "MA Cumulative Summary" || $state.current.name == "Kilkari Cumulative Summary" ){
-                                         $scope.dateFormat = 'yyyy-MM-dd';
-                                         $scope.endDatePickerOptions.minDate = new Date(2016,11,01)
-                                         $scope.endDatePickerOptions.maxDate = new Date(2016,11,31);
-                                    }
-                                    else{
-                                        $scope.periodDisplayType="Month";
-                                        $scope.periodTypeContent = " Month";
-                                        $scope.dateFormat = "yyyy-MM";
-                                        $scope.datePickerOptions.minMode = '';
-                                        $scope.datePickerOptions.datepickerMode = 'month';
-                                        $scope.datePickerOptions.minMode ='month';
-                                        $scope.dt1 = new Date(2016, 11, 01);
-                                    }
-
-                }
-
-
-                $scope.clearFile();
+              $scope.dt1 = null;
+              $scope.dt2 = null;
+              $scope.hideGrid = true;
+              $scope.hideMessageMatrix = true;
+              $scope.showEmptyData = false;
+              $scope.setDateMode();
+              $scope.clearFile();
 			}
+
+
 			$scope.clearBlock = function(){
 				$scope.block = null;
 				excelHeaderName.blockName = "ALL";
-
-
-                   if((($state.current.name)===("reports"))){
-                    $scope.periodDisplayType = '';
-                    $scope.dt1 = null;
-                    $scope.dt2 = null;
-                    $scope.hideGrid = true;
-                    $scope.hideMessageMatrix = true;
-                    $scope.showEmptyData = false;
-                    $scope.setDateOptions();
-
-                    }
-                 if(!(($state.current.name)===("reports"))){
-                 if($state.current.name == "MA Cumulative Summary" || $state.current.name == "Kilkari Cumulative Summary" ){
-                                         $scope.dateFormat = 'yyyy-MM-dd';
-                                         $scope.endDatePickerOptions.minDate = new Date(2016,11,01)
-                                         $scope.endDatePickerOptions.maxDate = new Date(2016,11,31);
-                                    }
-                                    else{
-                                        $scope.periodDisplayType="Month";
-                                        $scope.periodTypeContent = " Month";
-                                        $scope.dateFormat = "yyyy-MM";
-                                        $scope.datePickerOptions.minMode = '';
-                                        $scope.datePickerOptions.datepickerMode = 'month';
-                                        $scope.datePickerOptions.minMode ='month';
-                                        $scope.dt1 = new Date(2016, 11, 01);
-                                    }
-
-                }
-
-
+                $scope.dt1 = null;
+                $scope.dt2 = null;
+                $scope.hideGrid = true;
+                $scope.hideMessageMatrix = true;
+                $scope.showEmptyData = false;
+                $scope.setDateMode();
                 $scope.clearFile();
 			}
+
+
 			$scope.selectCircle = function(circle){
 				if(circle != null){
-//					$scope.clearBlock();
 					$scope.circle = circle;
 				}
                 $scope.periodDisplayType = '';
@@ -847,6 +765,9 @@
 				$scope.showEmptyData = false;
 				$scope.clearFile();
 			}
+
+
+
 			$scope.clearCircle = function(){
 				$scope.circle = null;
 			}
@@ -863,7 +784,7 @@
                  return;
                 }
                 $scope.format = 'yyyy-MM';
-               	if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).indexOf(angular.lowercase("rejected")) > -1) && $scope.dt != null) {
+               	if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  ($scope.report.name.toLowerCase().indexOf(("rejected").toLowerCase()) > -1) && $scope.dt != null) {
                		 $scope.getSundays($scope.dt);
                      $scope.sundaysTable = true;
 			    	 $scope.popup1.opened = true;
@@ -887,25 +808,28 @@
                 if($scope.periodDisplayType == 'Quarter'){
                     $scope.quarterDisplayType = '';
                         if(($scope.dt1.getFullYear() == new Date().getFullYear())){
-                            if(new Date().getMonth()<7){
+                            if(new Date().getMonth()> 0 && new Date().getMonth()< 4){
                                 $scope.quarterType = ['Q1 (Jan to Mar)'];
-                            }else if(new Date().getMonth()<10){
+                            }else if(new Date().getMonth() >= 4 && new Date().getMonth()< 7){
                                 $scope.quarterType = ['Q1 (Jan to Mar)','Q2 (Apr to Jun)'];
-                            }else{
+                            }else if(new Date().getMonth() >= 7 && new Date().getMonth()< 10){
                                $scope.quarterType = ['Q1 (Jan to Mar)','Q2 (Apr to Jun)','Q3 (Jul to Sep)'];
+                            }
+                            else {
+                                $scope.quarterType = ['Q1 (Jan to Mar)','Q2 (Apr to Jun)','Q3 (Jul to Sep)', 'Q4 (Oct to Dec)'];
                             }
                             }
                         else{
                             $scope.quarterType = ['Q1 (Jan to Mar)','Q2 (Apr to Jun)','Q3 (Jul to Sep)', 'Q4 (Oct to Dec)'];
                         }
                     }
-               	if($scope.showWeekTable() && $scope.dt1 != null) {
+               	if($scope.isAggregateReport() &&  $scope.showWeekTable() && $scope.dt1 != null) {
                		 $scope.getSundays($scope.dt1);
                      $scope.sundaysTable = true;
 			    	 $scope.popup2.opened = true;
 			    }
 
-                if(!$scope.wasSundaySelected){
+                if(!$scope.wasSundaySelected && $scope.periodDisplayType == 'Week'){
                     if((newDate != null) && newDate.getDate() == 1){
                         $scope.dt1 = new Date($scope.dt1.getFullYear(), $scope.dt1.getMonth() + 1, 0, 23, 59, 59);
                      }
@@ -946,7 +870,7 @@
                         return;
                     }
 				}
-				if($scope.dt == null && (angular.lowercase($scope.report.name).indexOf(angular.lowercase("rejected")) > -1) ){
+				if($scope.dt == null && ($scope.report.name.toLowerCase().indexOf(("rejected").toLowerCase()) > -1) ){
 					if(UserFormFactory.isInternetExplorer()){
                         alert("Please select a week")
                          return;
@@ -977,7 +901,7 @@
                        return;
                    }
                 }
-				else if($scope.dt1 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType != 'Custom Range' && $scope.periodDisplayType != 'Quarter' && $scope.report.name != 'MA Cumulative Summary' && $scope.report.reportEnum != 'Kilkari_Cumulative_Summary') ){
+				else if($scope.dt1 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType != 'Custom Range' && $scope.periodDisplayType != 'Current Period' && $scope.periodDisplayType != 'Quarter' && $scope.report.name != 'MA Cumulative Summary' && $scope.report.reportEnum != 'Kilkari_Cumulative_Summary') ){
                     if(UserFormFactory.isInternetExplorer()){
                           alert("Please select a " +  $scope.periodDisplayType)
                           return;
@@ -1062,7 +986,7 @@
 			    reportRequest.blockId = 0;
 
 			    reportRequest.circleId = 0;
-			    
+
 			    if(!$scope.isCircleReport() ){
 
 			    	if(!$scope.isAggregateReport())
@@ -1111,7 +1035,7 @@
                     }
 		    	}
 
-		    	if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).indexOf(angular.lowercase("rejected")) > -1) && $scope.format == 'yyyy-MM'){
+		    	if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  ($scope.report.name.toLowerCase().indexOf(("rejected").toLowerCase()) > -1) && $scope.format == 'yyyy-MM'){
                    if(UserFormFactory.isInternetExplorer()){
                          alert("Please select a week")
                          return;
@@ -1128,19 +1052,46 @@
                 }
                 else
                 {
-
+                    $scope.currentDate = new Date();
+                    $scope.currentPeriodDate = new Date($scope.currentDate.getFullYear(), $scope.currentDate.getMonth(), 0).getDate();
                     reportRequest.periodType = $scope.periodDisplayType;
 
                     if($scope.periodDisplayType == 'Year' ){
-                         reportRequest.fromDate = new Date($scope.dt1.getFullYear(),0,1);
-                         reportRequest.toDate = new Date($scope.dt1.getFullYear(),11,31);
+
+                        if($scope.dt1.getFullYear() == new Date().getFullYear()){
+                            reportRequest.fromDate = new Date($scope.dt1.getFullYear(),0,1);
+                            reportRequest.toDate = new Date($scope.dt1.getFullYear(),$scope.currentDate.getMonth() -1 ,$scope.currentPeriodDate);
+                            reportRequest.periodType = 'CURRENT YEAR';
+
+                        }
+                        else{
+                            reportRequest.fromDate = new Date($scope.dt1.getFullYear(),0,1);
+                            reportRequest.toDate = new Date($scope.dt1.getFullYear(),11,31);
+
+                        }
+
                          dateString = $scope.dt1.getFullYear();
                          excelHeaderName.timePeriod = dateString;
                          toDateVal = reportRequest.toDate;
                     }
                     else if($scope.periodDisplayType == 'Financial Year' ){
-                         reportRequest.fromDate = new Date($scope.dt1.getFullYear(),3,1);
-                         reportRequest.toDate = new Date($scope.dt1.getFullYear()+1,2,31);
+                         if($scope.dt1.getFullYear() == new Date().getFullYear() && $scope.currentDate.getMonth() >=3){
+                            reportRequest.fromDate = new Date($scope.dt1.getFullYear(),3,1);
+                            reportRequest.toDate = new Date($scope.dt1.getFullYear(),$scope.currentDate.getMonth() -1,$scope.currentPeriodDate);
+                            reportRequest.periodType = 'CURRENT FINANCIAL YEAR';
+
+                         }
+                         else if($scope.dt1.getFullYear() == new Date().getFullYear() && $scope.currentDate.getMonth() < 3) {
+                            reportRequest.fromDate = new Date($scope.dt1.getFullYear()-1,3,1);
+                            reportRequest.toDate = new Date($scope.dt1.getFullYear()+1,$scope.currentDate.getMonth() -1,$scope.currentPeriodDate);
+                            reportRequest.periodType = 'CURRENT FINANCIAL YEAR';
+
+                         }
+                         else{
+                             reportRequest.fromDate = new Date($scope.dt1.getFullYear(),3,1);
+                             reportRequest.toDate = new Date($scope.dt1.getFullYear()+1,2,31);
+                         }
+
                         dateString = reportRequest.fromDate.getDate() + "_" + (reportRequest.fromDate.getMonth() + 1 ) + "_" + reportRequest.fromDate.getFullYear() + "to" + reportRequest.toDate.getDate() + "_" +  ( reportRequest.toDate.getMonth() + 1 ) +
                                      "_" + reportRequest.toDate.getFullYear();
                         excelHeaderName.timePeriod = reportRequest.fromDate.getDate() + "-" + (reportRequest.fromDate.getMonth() + 1 ) + "-" + reportRequest.fromDate.getFullYear() + " to " + reportRequest.toDate.getDate() + "-" +  ( reportRequest.toDate.getMonth() + 1 ) +
@@ -1168,19 +1119,55 @@
                     else if($scope.periodDisplayType == 'Quarter' ){
                          if($scope.quarterDisplayType == 'Q1 (Jan to Mar)'){
                          reportRequest.fromDate = new Date($scope.dt1.getFullYear(),0,1);
-                         reportRequest.toDate = new Date($scope.dt1.getFullYear(),2,31);
+
+                         if($scope.dt1.getFullYear() == new Date().getFullYear() && $scope.currentDate.getMonth() > 0 && $scope.currentDate.getMonth()< 4){
+                            reportRequest.toDate = new Date($scope.dt1.getFullYear(),$scope.currentDate.getMonth()-1,$scope.currentDate.getMonth()-1,$scope.currentPeriodDate);
+                            if($scope.currentDate.getMonth()!= 3){
+                                reportRequest.periodType = 'CURRENT QUARTER';
+                            }
+
+                         }
+                         else{
+                            reportRequest.toDate = new Date($scope.dt1.getFullYear(),2,31);
+                         }
                          }
                          if($scope.quarterDisplayType == 'Q2 (Apr to Jun)'){
                          reportRequest.fromDate = new Date($scope.dt1.getFullYear(),3,1);
-                         reportRequest.toDate = new Date($scope.dt1.getFullYear(),5,30);
+                         if($scope.dt1.getFullYear() == new Date().getFullYear() && $scope.currentDate.getMonth() >=4  && $scope.currentDate.getMonth()< 7){
+                            reportRequest.toDate = new Date($scope.dt1.getFullYear(),$scope.currentDate.getMonth()-1,$scope.currentPeriodDate);
+                            if($scope.currentDate.getMonth()!= 6){
+                                reportRequest.periodType = 'CURRENT QUARTER';
+                             }
+                         }
+                         else{
+                             reportRequest.toDate = new Date($scope.dt1.getFullYear(),5,30);
+                         }
                          }
                          if($scope.quarterDisplayType == 'Q3 (Jul to Sep)'){
                          reportRequest.fromDate = new Date($scope.dt1.getFullYear(),6,1);
+
+                         if($scope.dt1.getFullYear() == new Date().getFullYear() && $scope.currentDate.getMonth() >=7 && $scope.currentDate.getMonth()< 10){
+                            reportRequest.toDate = new Date($scope.dt1.getFullYear(),$scope.currentDate.getMonth()-1,$scope.currentPeriodDate);
+                            if($scope.currentDate.getMonth()!= 9){
+                                reportRequest.periodType = 'CURRENT QUARTER';
+                            }
+                         }
+                         else{
+                             reportRequest.toDate = new Date($scope.dt1.getFullYear(),8,30);
+                         }
                          reportRequest.toDate = new Date($scope.dt1.getFullYear(),8,30);
                          }
                          if($scope.quarterDisplayType == 'Q4 (Oct to Dec)'){
                          reportRequest.fromDate = new Date($scope.dt1.getFullYear(),9,1);
-                         reportRequest.toDate = new Date($scope.dt1.getFullYear(),11,31);
+
+                         if($scope.dt1.getFullYear() == new Date().getFullYear() &&  $scope.currentDate.getMonth() >= 10){
+                             reportRequest.toDate = new Date($scope.dt1.getFullYear(),$scope.currentDate.getMonth()-1,$scope.currentPeriodDate);
+                             reportRequest.periodType = 'CURRENT QUARTER';
+
+                          }
+                          else{
+                              reportRequest.toDate = new Date($scope.dt1.getFullYear(),11,31);
+                          }
                          }
 
                          dateString = (reportRequest.fromDate.getMonth() + 1) + "_" + reportRequest.fromDate.getFullYear() + "to" + (reportRequest.toDate.getMonth() + 1)  +
@@ -1191,6 +1178,8 @@
 
 
                     }
+
+
                     else if($scope.periodDisplayType == 'Week' ){
                         reportRequest.toDate = $scope.dt1;
                         reportRequest.fromDate = new Date($scope.dt1.getFullYear(),$scope.dt1.getMonth(),$scope.dt1.getDate()-6);
@@ -1236,7 +1225,7 @@
 					method  : 'POST',
 					url     : $scope.getReportUrl,
 					data    : reportRequest, //forms user object
-					headers : {'Content-Type': 'application/json'} 
+					headers : {'Content-Type': 'application/json'}
 				})
 				.then(function(result){
 
@@ -1320,18 +1309,18 @@
                              $scope.reportBreadCrumbData = result.data.breadCrumbData;
                              $scope.hideGrid = false;
                             // console.log(angular.lowercase(result.data.tableData[0].locationType));
-                             if(angular.lowercase(result.data.tableData[0].locationType) == 'state'){
+                             if(result.data.tableData[0].locationType.toLowerCase() == 'state'){
                                      $scope.gridOptions1.columnDefs[1].displayName = 'State';
                                  }
-                                 else if(angular.lowercase(result.data.tableData[0].locationType) == 'district' || angular.lowercase(result.data.tableData[0].locationType) == 'differencestate'){
+                                 else if(result.data.tableData[0].locationType.toLowerCase() == 'district' || result.data.tableData[0].locationType.toLowerCase() == 'differencestate'){
                                      $scope.gridOptions1.columnDefs[1].displayName = 'District';
 
                                  }
-                                  else if(angular.lowercase(result.data.tableData[0].locationType) == 'block' || angular.lowercase(result.data.tableData[0].locationType) == 'differencedistrict'){
+                                  else if(result.data.tableData[0].locationType.toLowerCase() == 'block' || result.data.tableData[0].locationType.toLowerCase() == 'differencedistrict'){
                                      $scope.gridOptions1.columnDefs[1].displayName = 'Block';
 
                                  }
-                                 else if(angular.lowercase(result.data.tableData[0].locationType) == 'subcenter' || angular.lowercase(result.data.tableData[0].locationType) == 'differenceblock'){
+                                 else if(result.data.tableData[0].locationType.toLowerCase() == 'subcenter' || result.data.tableData[0].locationType.toLowerCase() == 'differenceblock'){
                                      $scope.gridOptions1.columnDefs[1].displayName = 'Subcenter';
                                  }
                             }
@@ -1475,7 +1464,7 @@
                                     $scope.clearCircle();
                                     				$scope.clearFile();
                                     				$scope.dt = null;
-                                    				$scope.datePickerContent = " Month";
+                                    				$scope.datePickerContent = " Monthly";
                                     				$scope.dt1 = null;
                                     				$scope.dt2 = null;
                                     				$scope.hideGrid = true;
@@ -1485,21 +1474,16 @@
                                     				$scope.showEmptyData = false;
 
                                     }
-                                 if(!(($state.current.name)===("reports"))){
-                                 if($state.current.name == "MA Cumulative Summary" || $state.current.name == "Kilkari Cumulative Summary" ){
-                                                         $scope.dateFormat = 'yyyy-MM-dd';
-                                                         $scope.endDatePickerOptions.minDate = new Date(2016,11,01)
-                                                         $scope.endDatePickerOptions.maxDate = new Date(2016,11,31);
-                                                    }
-                                                    else{
-                                                        $scope.periodDisplayType="Month";
-                                                        $scope.periodTypeContent = " Month";
-                                                        $scope.dateFormat = "yyyy-MM";
-                                                        $scope.datePickerOptions.minMode = '';
-                                                        $scope.datePickerOptions.datepickerMode = 'month';
-                                                        $scope.datePickerOptions.minMode ='month';
-                                                        $scope.dt1 = new Date(2016, 11, 01);
-                                                    }
+                                 if($scope.isAggregateReport()){
+
+                                                    $scope.clearFile();
+                                                    $scope.dt = null;
+                                                    $scope.dt1 = null;
+                                                    $scope.dt2 = null;
+                                                    $scope.hideGrid = true;
+                                                    $scope.hideMessageMatrix = true;
+                                                    $scope.periodDisplayType = '';
+                                                    $scope.showEmptyData = false;
 
                                 }
 
@@ -1508,16 +1492,6 @@
 				}
 			})
 			}
-
-			// datepicker stuff
-
-			// $scope.select = function(date) {
-			// 	$scope.dt = date;
-			// }
-
-			// $scope.today = function() {
-			// 	$scope.dt = new Date();
-			// };
 
 			$scope.clear = function() {
 				$scope.dt = null;
@@ -1543,7 +1517,7 @@
                 $scope.popup1.opened = true;
 				var currentDate = new Date();
 
-				if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).indexOf(angular.lowercase("rejected"))  > -1 ) ){
+				if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  ($scope.report.name.toLowerCase().indexOf(("rejected").toLowerCase())  > -1 ) ){
 				    if(currentDate.getMonth() == startMonth && currentDate.getDate() >= startDate && currentDate.getFullYear() == 2017 && $scope.getSundays(currentDate) > 0){
 				        $scope.dateOptions.maxDate = new Date().setMonth(new Date().getMonth());
 				    }
@@ -1565,7 +1539,7 @@
 
 				}
 
-				if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).indexOf(angular.lowercase("rejected")) > -1) && ($scope.format == 'yyyy-MM-dd' || $scope.format == 'yyyy-MM' )){
+				if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  ($scope.report.name.toLowerCase().indexOf(("rejected").toLowerCase()) > -1) && ($scope.format == 'yyyy-MM-dd' || $scope.format == 'yyyy-MM' )){
                     $scope.getSundays($scope.dt);
                     $scope.sundaysTable = true;
 
@@ -1677,7 +1651,7 @@
 			$scope.closeSundaysTable = function(date) {
             	$scope.sundaysTable = false;
             	$scope.sundays = [];
-            	if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  (angular.lowercase($scope.report.name).indexOf(angular.lowercase("rejected")) > -1)  ){
+            	if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  ($scope.report.name.toLowerCase().indexOf(("rejected").toLowerCase()) > -1)  ){
             	$scope.dt = new Date($scope.dt.getFullYear(),$scope.dt.getMonth(),date);}
             	if($scope.showWeekTable()){
             	$scope.dt1 = new Date($scope.dt1.getFullYear(),$scope.dt1.getMonth(),date);}
@@ -1711,7 +1685,7 @@
                                         (excelHeaderName.reportName == "Kilkari Cumulative Summary" && (j == "4"||j == "3") )||
                                         (excelHeaderName.reportName == "Kilkari Thematic Content" && (j == "4") )||
                                         (excelHeaderName.reportName == "Kilkari Beneficiary Completion" && (j == "2") )){
-                                         temp = (temp.toFixed(2));
+//                                         temp = parseFloat(temp);
                                     }
                            temprow.push(temp);
                        }
@@ -1729,44 +1703,47 @@
 
                                        else if(ft.displayName == "Average Duration Of Call" && excelHeaderName.reportName == "Kilkari Cumulative Summary"){
                                            var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[4].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue());
-                                           v = (temp.toFixed(2));
+                                           v = (parseFloat(temp));
                                        }
                                        else if(ft.displayName == "Average Number Of Weeks In Service" && excelHeaderName.reportName == "Kilkari Beneficiary Completion"){
                                            var temp = $scope.gridApi.grid.columns.length==0?0.00: ($scope.gridApi.grid.columns[3].getAggregationValue());
-                                           v = (temp.toFixed(2));
+                                           v = (parseFloat(temp));
                                        }
                                        else if(ft.displayName == "Average Duration Of Calls" && excelHeaderName.reportName == "Kilkari Call"){
                                            var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[8].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue());
-                                           v = (temp.toFixed(2));
+                                           v = (parseFloat(temp));
                                        }
                                        else if(ft.displayName == "Total Billable Minutes" && excelHeaderName.reportName == "Kilkari Call"){
                                            var temp = ft.getAggregationValue();
-                                           v = (temp.toFixed(2));
+                                           v = (parseFloat(temp));
                                        }
                                        else if(ft.displayName == "Total Billable Minutes Played" && excelHeaderName.reportName == "Kilkari Cumulative Summary"){
                                            var temp = ft.getAggregationValue();
-                                           v = (temp.toFixed(2));
+                                           v = (parseFloat(temp));
                                        }
                                        else if(ft.displayName == "Total Beneficiary Records Rejected" && excelHeaderName.reportName == "Kilkari Subscriber"&&!rejectionStart){
                                            v = "N/A";
                                        }
                                        else if(ft.displayName == "% Not Started Course" && excelHeaderName.reportName == "MA Cumulative Summary"){
                                           var temp = $scope.gridApi.grid.columns[2].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[4].getAggregationValue()/$scope.gridApi.grid.columns[2].getAggregationValue())*100;
-                                          v = (temp.toFixed(2));
+                                          v = (parseFloat(temp));
                                        }
                                        else if(ft.displayName == "% Successfully Completed" && excelHeaderName.reportName == "MA Cumulative Summary"){
                                           var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00:($scope.gridApi.grid.columns[5].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue())*100;
-                                          v = (temp.toFixed(2));
+                                          v = (parseFloat(temp));
                                        }
                                        else if(ft.displayName == "% Failed the course" && excelHeaderName.reportName == "MA Cumulative Summary"){
                                           var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00:($scope.gridApi.grid.columns[6].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue())*100;
-                                          v = (temp.toFixed(2));
+                                          v = (parseFloat(temp));
                                        }
                                        else{
                                            v = ft.getAggregationValue();
                                        }
 
                                        if(ft.displayName != "S No."){
+                                       if (ft.displayName == "Location Name") {
+                                           v = "Total";
+                                       }
                                             footerData.push(v);
                                        }
 
@@ -1794,7 +1771,6 @@
                                         (excelHeaderName.reportName == "Kilkari Cumulative Summary" && (j == "4"||j=="3") )||
                                         (excelHeaderName.reportName == "Kilkari Thematic Content" && (j == "4") )||
                                         (excelHeaderName.reportName == "Kilkari Beneficiary Completion" && (j == "2") )){
-                                         temp1 = (temp1.toFixed(2));
                                     }
                            temprow1.push(temp1);
                        }
@@ -1894,9 +1870,9 @@
                                         (excelHeaderName.reportName == "Kilkari Thematic Content" && (j == "4") )||
                                         (excelHeaderName.reportName == "Kilkari Beneficiary Completion" && (j == "2") )){
                                          temp = Number(temp);
-                                         temp = indianDecimal(temp);
+                                        // temp = indianDecimal(temp);
                                     }else if((j!="0")&&!(excelHeaderName.reportName == "Kilkari Thematic Content"&&j=="1")){
-                                                             temp=indianInteger(temp);
+                                                             //temp=indianInteger(temp);
                                                              }
                            temprow.push(temp);
                        }
@@ -1984,15 +1960,15 @@
                               var temp1 = exportData1[i][j].value;
                                     if(!j=="0") {
                                     if(excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise"){
-                                    temp1 = indianDecimal(temp1);
+                                    //temp1 = indianDecimal(temp1);
                                     }else{
-                                    temp1 = indianInteger(temp1);}
+                                    //temp1 = indianInteger(temp1);}
                                     }
                            temprow1.push(temp1);
                        }
                        data1.push(temprow1);
                     }
-            ExcelData.reportData1 = data1;}else{
+            ExcelData.reportData1 = data1;}
             ExcelData.columnHeaders1 = [];
             ExcelData.reportData1 = [];
             }
@@ -2044,15 +2020,19 @@
                             var afterPoint = '';
                             if(x.indexOf('.') > 0)
                                afterPoint = x.substring(x.indexOf('.'),x.length);
-                               afterPoint = Number(afterPoint).toFixed(2);
-                               afterPoint = afterPoint.substring(afterPoint.indexOf('.'),afterPoint.length);
+                               afterPoint = parseFloat(Number(afterPoint));
+                               afterPoint = afterPoint.toString().substring(afterPoint.toString().indexOf('.'),afterPoint.length);
                             x = Math.floor(x);
                             x=x.toString();
                             var lastThree = x.substring(x.length-3);
                             var otherNumbers = x.substring(0,x.length-3);
                             if(otherNumbers != '')
                                 lastThree = ',' + lastThree;
-                            var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree + afterPoint;
+                            if (afterPoint != 0) {
+                                var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree + afterPoint;
+                             } else {
+                                res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+                            }
                             return res;
                     }
 
@@ -2144,7 +2124,7 @@
                                                              { field: 'uniqueBeneficiaries', name: 'Total unique beneficiaries',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                              { field: 'successfulCalls', name: 'Total successful calls',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                              { field: 'billableMinutes',cellFilter: 'indianDecimalFilter', name: 'Total billable minutes played', footerCellFilter: 'indianDecimalFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
-                                                             { field: 'averageDuration',cellFilter: 'indianDecimalFilter', name: 'Average duration of call', footerCellTemplate: '<div class="ui-grid-cell-contents" >{{grid.columns[3].getAggregationValue()==0 ? 0.00 : grid.columns[4].getAggregationValue()/grid.columns[3].getAggregationValue() | number:2}}</div>',   width:"*", enableHiding: false},
+                                                             { field: 'averageDuration',cellFilter: 'indianDecimalFilter', footerCellFilter: 'indianDecimalFilter', name: 'Average duration of call', footerCellTemplate: '<div class="ui-grid-cell-contents" >{{grid.columns[3].getAggregationValue()==0 ? 0.00 : grid.columns[4].getAggregationValue()/grid.columns[3].getAggregationValue() | number:2}}</div>',   width:"*", enableHiding: false},
 
             ]
 
@@ -2174,7 +2154,7 @@
                                                      { field: 'answeredAtleastOneCall', name: 'Beneficiaries who have answered at least one call',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                      { field: 'selfDeactivated', name: 'Beneficiaries who have self-deactivated',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
                                                      { field: 'notAnswering', name: 'Beneficiaries deactivated for not answering',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
-                                                     { field: 'lowListenership', name: 'Beneficiaries deactivated for low listenership',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
+                                                     { field: 'lowListenership', name: 'Beneficiaries deactivated for low listenership', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
                                                      { field: 'systemDeactivation', displayName: 'Beneficiaries deactivated by system through MCTS/RCH updates', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"11%", enableHiding: false },
                                                      { field: 'motherCompletion', name: 'Beneficiaries completed Mother Pack',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
                                                      { field: 'childCompletion', name: 'Beneficiaries completed Child Pack',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
@@ -2221,7 +2201,7 @@
                                                      { field: 'content_25_50', name: 'Total calls where greater than or equal to 25% to less than 50% content listened to',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                      { field: 'content_1_25', name: 'Total calls where less than 25%  content listened to',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                      { field: 'billableMinutes', name: 'Total Billable minutes',cellFilter: 'indianDecimalFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, footerCellFilter: 'indianDecimalFilter', width:"*", enableHiding: false },
-                                                     { field: 'avgDuration', name: 'Average Duration of Calls',cellFilter: 'indianDecimalFilter',footerCellTemplate: '<div class="ui-grid-cell-contents" >{{(grid.columns[3].getAggregationValue()==0)?0.00: grid.columns[8].getAggregationValue()/grid.columns[3].getAggregationValue() | number:2}}</div>', width:"*", enableHiding: false},
+                                                     { field: 'avgDuration', name: 'Average Duration of Calls',cellFilter: 'indianDecimalFilter', footerCellFilter: 'indianDecimalFilter', footerCellTemplate: '<div class="ui-grid-cell-contents" >{{(grid.columns[3].getAggregationValue()==0)?0.00: grid.columns[8].getAggregationValue()/grid.columns[3].getAggregationValue() | number:2}}</div>', width:"*", enableHiding: false},
                                                      { field: 'callsToInbox', name: 'Total number of calls to inbox where content is played',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
             ]
 
@@ -2296,7 +2276,7 @@
                                                      { field: 'messageWeekNumber',cellTooltip: true, name: 'Message Number (Week)', width:"35%", cellClass: 'text-left', enableHiding: false,enableSorting: false },
                                                      { field: 'uniqueBeneficiariesCalled', name: 'Number of unique beneficiaries called',cellFilter: 'indianFilter',  width:"*", enableHiding: false,enableSorting: false },
                                                      { field: 'callsAnswered', name: 'Number of calls answered', cellFilter: 'indianFilter',  width:"*", enableHiding: false,enableSorting: false},
-                                                     { field: 'minutesConsumed', name: 'Number of minutes consumed', cellFilter: 'indianDecimalFilter', width:"*", enableHiding: false,enableSorting: false }
+                                                     { field: 'minutesConsumed', name: 'Number of minutes consumed', cellFilter: 'indianDecimalFilter', footerCellFilter: 'indianDecimalFilter', width:"*", enableHiding: false,enableSorting: false }
              ]
 
             $scope.Kilkari_RepeatListener_Numberdata_Definitions =[
@@ -2326,7 +2306,7 @@
 
             $scope.drillDownData = function(locationId,locationType,locationName){
 
-                  if(angular.lowercase(locationType) == "state"){
+                  if(locationType.toLowerCase() == "state"){
                     reportRequest.stateId = locationId;
                     reportRequest.districtId = 0;
                     reportRequest.blockId = 0;
@@ -2371,7 +2351,7 @@
 
                         })
                   }
-                  else if(angular.lowercase(locationType) == "national"){
+                  else if(locationType.toLowerCase() == "national"){
                        reportRequest.stateId = 0;
                        reportRequest.districtId = 0;
                        reportRequest.blockId = 0;
@@ -2415,7 +2395,7 @@
 
                            })
                      }
-                  else if(angular.lowercase(locationType) == "district"){
+                  else if(locationType.toLowerCase() == "district"){
                      reportRequest.districtId = locationId;
                      reportRequest.blockId = 0;
                      $scope.waiting = true;
@@ -2457,7 +2437,7 @@
 
                          })
                   }
-                  else if(angular.lowercase(locationType) == "block"){
+                  else if(locationType.toLowerCase() == "block"){
                     reportRequest.blockId = locationId;
                     $scope.waiting = true;
                     $http({

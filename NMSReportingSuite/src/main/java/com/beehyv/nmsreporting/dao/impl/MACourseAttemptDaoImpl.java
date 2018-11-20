@@ -25,7 +25,8 @@ public class MACourseAttemptDaoImpl extends AbstractDao<Integer, User> implement
         criteria.add(Restrictions.like("forMonth",forMonth))
         .add((Restrictions.not(
                 Restrictions.in("districtId", new Integer[] {471,474,483,490})
-        )));
+        )))
+        .add(Restrictions.eq("jobStatus","ACTIVE").ignoreCase());
         return criteria.list();
     }
 
@@ -36,7 +37,8 @@ public class MACourseAttemptDaoImpl extends AbstractDao<Integer, User> implement
                 .add(Restrictions.eq("stateId",stateId))
                 .add((Restrictions.not(
                         Restrictions.in("districtId", new Integer[] {471,474,483,490})
-                )));
+                )))
+        .add(Restrictions.eq("jobStatus","ACTIVE").ignoreCase());
         return criteria.list();
     }
 
@@ -44,7 +46,8 @@ public class MACourseAttemptDaoImpl extends AbstractDao<Integer, User> implement
     public List<MACourseFirstCompletion> getSuccessFulCompletionWithDistrictId(String forMonth, Integer districtId) {
         Criteria criteria = getSession().createCriteria(MACourseFirstCompletion.class);
         criteria.add(Restrictions.like("forMonth",forMonth))
-                .add(Restrictions.eq("districtId",districtId));
+                .add(Restrictions.eq("districtId",districtId))
+                .add(Restrictions.eq("jobStatus","ACTIVE").ignoreCase());
         return criteria.list();
     }
 
@@ -52,7 +55,8 @@ public class MACourseAttemptDaoImpl extends AbstractDao<Integer, User> implement
     public List<MACourseFirstCompletion> getSuccessFulCompletionWithBlockId(String forMonth, Integer blockId) {
         Criteria criteria = getSession().createCriteria(MACourseFirstCompletion.class);
         criteria.add(Restrictions.like("forMonth",forMonth))
-                .add(Restrictions.eq("blockId",blockId));
+                .add(Restrictions.eq("blockId",blockId))
+                .add(Restrictions.eq("jobStatus","ACTIVE").ignoreCase());
         return criteria.list();
     }
 
@@ -61,6 +65,7 @@ public class MACourseAttemptDaoImpl extends AbstractDao<Integer, User> implement
         Criteria criteria= getSession().createCriteria(MACourseFirstCompletion.class);
         criteria.add(Restrictions.like("forMonth",forMonth))
                 .add(Restrictions.eq("districtId",districtId))
+                .add(Restrictions.eq("jobStatus","ACTIVE").ignoreCase())
                 .setProjection(Projections.rowCount());
 
         return (Long) criteria.uniqueResult();
@@ -71,7 +76,8 @@ public class MACourseAttemptDaoImpl extends AbstractDao<Integer, User> implement
     public MACourseFirstCompletion getSuccessFulCompletionByExtrnalFlwId(String forMonth, Long Extr_Flw_Id, Integer state_id){
         Criteria criteria = getSession().createCriteria(MACourseFirstCompletion.class);
         criteria.add(Restrictions.like("forMonth",forMonth))
-                .add(Restrictions.eq("externalFlwId",Extr_Flw_Id))/*
+                .add(Restrictions.eq("externalFlwId",Extr_Flw_Id))
+                .add(Restrictions.eq("jobStatus","ACTIVE").ignoreCase())/*
                 .add(Restrictions.eq("stateId",state_id))*/;
         return (MACourseFirstCompletion) criteria.uniqueResult();
     }

@@ -77,7 +77,7 @@ public class User {
 	private String roleName;
 
 	@Column(name = "isLoggedOnce")
-	private Boolean loggedAtLeastOnce;
+	private Boolean loggedAtLeastOnce = false;
 
 	@Column(name = "isPasswordDefault")
 	private Boolean isDefault;

@@ -21,7 +21,7 @@ public class CircleDto {
 
     public CircleDto(Circle circle){
         this.circleId = circle.getCircleId();
-        this.circleName = circle.getCircleName();
+        this.circleName = circle.getCircleFullName();
     }
 
     public Integer getCircleId() {

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 public class CircleDaoImpl extends AbstractDao<Integer, Circle> implements CircleDao {
 
     @Override
-    public Circle getByCircleId(Integer circleId) {
-        return getByKey(circleId);
+    public Circle getByCircleId(Integer locId) {
+        return getByKey(locId);
     }
 }

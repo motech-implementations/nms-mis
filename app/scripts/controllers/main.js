@@ -125,7 +125,7 @@
                      }
                 if($scope.currentUser !== undefined && $scope.currentUser != ""){
                     if($state.current.name!="login" &&  $state.current.name!="logout" &&  ($scope.currentUser.default  || $scope.currentUser.default == null)){
-                        return true;
+                        return false;
                     }
                  }
 

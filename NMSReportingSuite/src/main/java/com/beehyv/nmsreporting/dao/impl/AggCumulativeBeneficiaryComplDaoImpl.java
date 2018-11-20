@@ -17,17 +17,18 @@ import java.util.List;
 @Repository("aggCumulativeBeneficiaryComplDao")
 public class AggCumulativeBeneficiaryComplDaoImpl extends AbstractDao<Integer,AggregateCumulativeBeneficiaryCompletion> implements AggCumulativeBeneficiaryComplDao
     {
-        public AggregateCumulativeBeneficiaryCompletion getBeneficiaryCompletion(Integer locationId,String locationType,Date date) {
+        public AggregateCumulativeBeneficiaryCompletion getBeneficiaryCompletion(Integer locationId,String locationType,Date date, String periodType) {
             Criteria criteria = createEntityCriteria().addOrder(Order.asc("locationId"));
             criteria.add(Restrictions.and(
                     Restrictions.eq("locationId", locationId.longValue()),
                     Restrictions.eq("locationType", locationType),
-                    Restrictions.eq("date", date)
+                    Restrictions.eq("date", date),
+                    Restrictions.eq("periodType",periodType)
             ));
             List<AggregateCumulativeBeneficiaryCompletion> result = criteria.list();
             if (result.isEmpty()) {
                 Long a = (long) 0;
-                AggregateCumulativeBeneficiaryCompletion aggregateCumulativeBeneficiaryCompletion = new AggregateCumulativeBeneficiaryCompletion(0, locationType, locationId.longValue(), date, a, a, a, a, a, 0);
+                AggregateCumulativeBeneficiaryCompletion aggregateCumulativeBeneficiaryCompletion = new AggregateCumulativeBeneficiaryCompletion(0, locationType, locationId.longValue(), date, a, a, a, a, a, 0.00, "");
                 return aggregateCumulativeBeneficiaryCompletion;
             }
             AggregateCumulativeBeneficiaryCompletion aggregateCumulativeBeneficiaryCompletion = result.get(0);

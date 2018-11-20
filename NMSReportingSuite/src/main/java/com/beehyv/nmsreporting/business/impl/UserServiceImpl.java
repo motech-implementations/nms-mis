@@ -10,6 +10,7 @@ import com.beehyv.nmsreporting.enums.AccessType;
 import com.beehyv.nmsreporting.enums.AccountStatus;
 import com.beehyv.nmsreporting.enums.ModificationType;
 import com.beehyv.nmsreporting.model.*;
+import com.beehyv.nmsreporting.utils.LoginUser;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +22,8 @@ import javax.transaction.Transactional;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.beehyv.nmsreporting.utils.CryptoService.decrypt;
 
 /**
  * Created by beehyv on 15/3/17.
@@ -641,7 +644,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Map<Integer, String> changePassword(PasswordDto passwordDto) {
+    public Map<Integer, String> changePassword(PasswordDto passwordDto) throws Exception {
 
         Integer rowNum = 0;
         Map<Integer, String> responseMap = new HashMap<>();
@@ -667,12 +670,14 @@ public class UserServiceImpl implements UserService{
 
         System.out.println(passwordDto.getNewPassword());
         System.out.println(currentUser.getPassword());
-        if(!passwordEncoder.matches(passwordDto.getOldPassword(), currentUser.getPassword())){
+        String oldPassword  = decrypt(new LoginUser(passwordDto.getCipherTextHexOld(), passwordDto.getSaltHexOld()));
+        if(!passwordEncoder.matches(oldPassword, currentUser.getPassword())){
             String authorityError = "Current Password is incorrect";
             responseMap.put(rowNum, authorityError);
             return responseMap;
         }
-        currentUser.setPassword(passwordEncoder.encode(passwordDto.getNewPassword()));
+        String newPassword  = decrypt(new LoginUser(passwordDto.getCipherTextHexNew(), passwordDto.getSaltHexNew()));
+        currentUser.setPassword(passwordEncoder.encode(newPassword));
         currentUser.setDefault(false);
         String success="Password changed successfully";
         responseMap.put(rowNum, success);
@@ -680,7 +685,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Map<Integer, String> forgotPasswordCredentialChecker(ForgotPasswordDto forgotPasswordDto){
+    public Map<Integer, String> forgotPasswordCredentialChecker(ForgotPasswordDto forgotPasswordDto) throws Exception{
 
         Integer rowNum = 0;
         Map<Integer, String> responseMap = new HashMap<>();
@@ -693,7 +698,9 @@ public class UserServiceImpl implements UserService{
         }
 
         if(entity.getPhoneNumber().equals(forgotPasswordDto.getPhoneNumber())){
-            entity.setPassword(passwordEncoder.encode(forgotPasswordDto.getConfirmPassword()));
+            String newPassword  = decrypt(new LoginUser(forgotPasswordDto.getCipherTextHexNew(), forgotPasswordDto.getSaltHexNew()));
+            entity.setPassword(passwordEncoder.encode(newPassword));
+            entity.setDefault(false);
             String success="Password changed successfully";
             responseMap.put(rowNum, success);
             return responseMap;
@@ -713,6 +720,9 @@ public class UserServiceImpl implements UserService{
         User entity = userDao.findByUserId(userId);
         Integer rowNum = 0;
         Map<Integer, String> responseMap = new HashMap<>();
+        if (entity.getLoggedAtLeastOnce() == null) {
+            entity.setLoggedAtLeastOnce(true);
+        }
         if((entity != null) && (getCurrentUser().equals(entity.getCreatedByUser())) && !(entity.getLoggedAtLeastOnce())) {
             entity.setAccountStatus(AccountStatus.INACTIVE.getAccountStatus());
             responseMap.put(rowNum,"User deleted");

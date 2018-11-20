@@ -9,5 +9,5 @@ import java.util.Date;
  */
 public interface AggCumulativeBeneficiaryComplDao {
 
-    AggregateCumulativeBeneficiaryCompletion getBeneficiaryCompletion(Integer locationId,String locationType,Date date);
+    AggregateCumulativeBeneficiaryCompletion getBeneficiaryCompletion(Integer locationId,String locationType,Date date, String periodType);
 }

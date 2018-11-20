@@ -8,6 +8,8 @@ import com.beehyv.nmsreporting.entity.ReportRequest;
 import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -34,6 +36,7 @@ import static com.beehyv.nmsreporting.utils.ServiceFunctions.getMonthYear;
 @Transactional
 public class EmailServiceImpl implements EmailService{
 
+    private Logger logger =LoggerFactory.getLogger(EmailServiceImpl.class);
     @Autowired
     JavaMailSender mailSender;
     @Autowired
@@ -125,9 +128,11 @@ public class EmailServiceImpl implements EmailService{
             message.setSubject(mail.getSubject(), "UTF-8");
             message.setText(mail.getBody(),"UTF-8");
             Transport.send(message);
+            logger.error("success");
             return "success";
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(ex);
+            logger.error("Error while sending mail ", ex);
             return "failure";
         }
     }

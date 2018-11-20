@@ -20,7 +20,7 @@
 					<li data-target="#myCarousel" data-ng-repeat="img in images" class="{active : (img === 0)}" data-slide-to="{{img}}"></li>
 				</ol>
 				<div class="carousel-inner">
-					<div data-ng-class="{item: true, active : (img === 0)}" data-ng-repeat="img in images"> <img  class="carousel-image" src="/images/carousal{{img}}.png" alt="Slide numder {{img}}">
+					<div data-ng-class="{item: true, active : (img === 0)}" data-ng-repeat="img in images"> <img  class="carousel-image" src="/images/carousal0.png" alt="Slide numder {{img}}">
 						<div class="container">
 							<div class="carousel-caption"> </div>
 						</div>
@@ -44,7 +44,9 @@
 				<div class="form-group">
 					<p class="error">{{errorMessage}}</p>
 				</div>
-
+				<div class="hidden">
+					<input type="password"/>
+				</div>
 				<div class="form-group" >
 					<span class="login-texts" >Login Id</span>
 					<input type="text" class="form-control input input-sm login-inputs" data-ng-model="user.username" name="username" placeholder="Username" autocomplete="off"  >

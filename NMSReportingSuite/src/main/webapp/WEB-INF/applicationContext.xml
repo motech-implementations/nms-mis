@@ -121,7 +121,7 @@
         <property name="password" value="${mail.password}" />
         <property name="javaMailProperties">
             <props>
-                <prop key="mail.smtp.host">smtp.bizmail.yahoo.com</prop>
+                <prop key="mail.smtp.host">smtp.mail.yahoo.com</prop>
                 <prop key="mail.smtp.port">465</prop>
                 <prop key="mail.smtp.email">nsp-reports@beehyv.com</prop>
                 <prop key="mail.smtp.auth">true</prop>
@@ -130,7 +130,7 @@
                 <prop key="mail.smtp.ssl.enable">true</prop>
                 <prop key="mail.smtp.ssl.required">true</prop>
                 <!--for server using email SSL -->
-                <prop key="mail.smtp.ssl.trust">smtp.bizmail.yahoo.com</prop>
+                <prop key="mail.smtp.ssl.trust">smtp.mail.yahoo.com</prop>
             </props>
         </property>
     </bean>

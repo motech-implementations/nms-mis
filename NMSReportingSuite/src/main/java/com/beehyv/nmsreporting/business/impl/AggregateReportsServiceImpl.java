@@ -20,6 +20,8 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellUtil;
 import org.apache.poi.xssf.usermodel.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,13 +31,12 @@ import javax.transaction.Transactional;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.*;
 
 import static com.beehyv.nmsreporting.utils.Constants.*;
 import static java.lang.Double.parseDouble;
-
-
-
+import static java.lang.Float.parseFloat;
 
 
 /**
@@ -45,6 +46,7 @@ import static java.lang.Double.parseDouble;
 @Transactional
 public class AggregateReportsServiceImpl implements AggregateReportsService {
 
+    private Logger logger = LoggerFactory.getLogger(AggregateReportsServiceImpl.class);
     @Autowired
     private UserDao userDao;
 
@@ -494,7 +496,12 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                 if (colid == 2 || cellData.equalsIgnoreCase("N/A") || (gridData.getReportName().equalsIgnoreCase("Kilkari Thematic Content") && colid == 3)) {
                     cell1.setCellValue(cellData);
                 } else {
-                    cell1.setCellValue(parseDouble(cellData));
+                    try {
+                        cell1.setCellValue(cellData);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace(); //prints error
+                        logger.error("Error while parsing double ", e);
+                    }
                 }
 
                 if (tabrow % 2 == 0) {
@@ -528,7 +535,10 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
             if (colid == 2 || footer.equalsIgnoreCase("N/A")) {
                 cell1.setCellValue(footer);
             } else {
-                cell1.setCellValue(parseDouble(footer));
+                com.ibm.icu.text.NumberFormat format = com.ibm.icu.text.NumberFormat.getNumberInstance(new Locale("en", "in"));
+                format.setMaximumFractionDigits(2);
+                double value = parseDouble(footer);
+                cell1.setCellValue(format.format(value));
             }
             cell1.setCellStyle(backgroundStyle3);
         }
@@ -581,11 +591,11 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
 
                 for (String cellData : rowData) {
                     Cell cell1 = row.createCell(colid++);
-                    if (colid == 2) {
+//                    if (colid == 2) {
                         cell1.setCellValue(cellData);
-                    } else {
-                        cell1.setCellValue(parseDouble(cellData));
-                    }
+//                    } else {
+//                        cell1.setCellValue(parseDouble(cellData));
+//                    }
                     if (tabrow % 2 == 0) {
                         cell1.setCellStyle(backgroundStyle1);
                     } else {
@@ -729,7 +739,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
             cellWidth = 12f;
             tableMargin = 75;
         } else if (gridData.getReportName().equalsIgnoreCase("MA Performance") || gridData.getReportName().equalsIgnoreCase("Kilkari Listening Matrix")) {
-            cellWidth = 15f;
+            cellWidth = 18f;
             tableMargin = 60;
         } else if (gridData.getReportName().equalsIgnoreCase("Kilkari Thematic Content") || gridData.getReportName().equalsIgnoreCase("Kilkari Cumulative Summary") || gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix")) {
             cellWidth = 16f;

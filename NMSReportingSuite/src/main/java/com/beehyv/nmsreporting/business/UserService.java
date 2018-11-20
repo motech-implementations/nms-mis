@@ -54,13 +54,13 @@ public interface UserService {
 
     String createMaster();
 
-    Map<Integer, String> changePassword(PasswordDto changePasswordDTO);
+    Map<Integer, String> changePassword(PasswordDto changePasswordDTO) throws Exception;
 
     Role getRoleById(Integer roleId);
 
     void TrackModifications(User oldUser, User newUser);
 
-    Map<Integer, String> forgotPasswordCredentialChecker(ForgotPasswordDto forgotPasswordDto);
+    Map<Integer, String> forgotPasswordCredentialChecker(ForgotPasswordDto forgotPasswordDto) throws Exception;
 
 
 }

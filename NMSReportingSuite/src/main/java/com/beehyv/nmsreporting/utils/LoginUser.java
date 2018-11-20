@@ -10,7 +10,19 @@ public class LoginUser {
 
     private boolean rememberMe;
 
+    private String cipherTextHex;
+
+    private String saltHex;
+
     private String fromUrl;
+
+    public LoginUser() {
+    }
+
+    public LoginUser(String cipherTextHex, String saltHex) {
+        this.cipherTextHex = cipherTextHex;
+        this.saltHex = saltHex;
+    }
 
     public String getUsername() {
         return username;
@@ -34,6 +46,22 @@ public class LoginUser {
 
     public void setRememberMe(boolean rememberMe) {
         this.rememberMe = rememberMe;
+    }
+
+    public String getCipherTextHex() {
+        return cipherTextHex;
+    }
+
+    public void setCipherTextHex(String cipherTextHex) {
+        this.cipherTextHex = cipherTextHex;
+    }
+
+    public String getSaltHex() {
+        return saltHex;
+    }
+
+    public void setSaltHex(String saltHex) {
+        this.saltHex = saltHex;
     }
 
     public String getFromUrl() {

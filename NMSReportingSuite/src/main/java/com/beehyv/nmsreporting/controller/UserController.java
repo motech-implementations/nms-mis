@@ -8,6 +8,8 @@ import com.beehyv.nmsreporting.enums.AccessType;
 import com.beehyv.nmsreporting.enums.ModificationType;
 import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.*;
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -81,6 +83,9 @@ public class UserController {
 
     @Autowired
     private StateServiceDao stateServiceDao;
+
+    @Autowired
+    private AshaEachBlockServiceDao ashaEachBlockServiceDao;
 
     @Autowired
     private HealthSubFacilityDao healthSubFacilityDao;
@@ -354,7 +359,7 @@ public class UserController {
     }
 
     @RequestMapping(value = {"/resetPassword"}, method = RequestMethod.POST)
-    @ResponseBody public Map resetPassword(@RequestBody PasswordDto passwordDto){
+    @ResponseBody public Map resetPassword(@RequestBody PasswordDto passwordDto) throws Exception {
         User currentUser = userService.getCurrentUser();
         if(currentUser != null){
             User user=userService.findUserByUserId(passwordDto.getUserId());
@@ -376,9 +381,8 @@ public class UserController {
 
     @RequestMapping(value = {"/forgotPassword"}, method = RequestMethod.POST)
     @ResponseBody
-    public Map forgotPassword(@RequestBody ForgotPasswordDto forgotPasswordDto){
-        User currentUser = userService.getCurrentUser();
-        if(currentUser != null){
+    public Map forgotPassword(@RequestBody ForgotPasswordDto forgotPasswordDto) throws Exception{
+
             User user=userService.findUserByUsername(forgotPasswordDto.getUsername());
             Map<Integer, String >map=  userService.forgotPasswordCredentialChecker(forgotPasswordDto);
             if(map.get(0).equals("Password changed successfully")){
@@ -391,8 +395,6 @@ public class UserController {
                 modificationTrackerService.saveModification(modification);
             }
             return map;
-        } else
-            return null;
 
     }
 
@@ -1054,7 +1056,7 @@ public class UserController {
     public @ResponseBody List<Map<String, Object>> getReportsMenu() {
         User currentUser = userService.getCurrentUser();
         Map<String, Object> maMenu = new HashMap<>();
-        boolean showAggregateReports = false;
+        boolean showAggregateReports = true;
         boolean showLinelistingReports =true;
         maMenu.put("name", "Mobile Academy Reports");
         maMenu.put("icon", "images/drop-down-3.png");
@@ -1063,42 +1065,49 @@ public class UserController {
         maList.add(new Report(
                 ReportType.maCourse.getReportName(),
                 ReportType.maCourse.getReportType(),
+                ReportType.maCourse.getSimpleName(),
                 "images/drop-down-3.png",
                 ReportType.maCourse.getServiceType(),showLinelistingReports)
         );
         maList.add(new Report(
                 ReportType.maAnonymous.getReportName(),
                 ReportType.maAnonymous.getReportType(),
+                ReportType.maAnonymous.getSimpleName(),
                 "images/drop-down-3.png",
                 ReportType.maAnonymous.getServiceType(),showLinelistingReports)
         );
         maList.add(new Report(
                 ReportType.maInactive.getReportName(),
                 ReportType.maInactive.getReportType(),
+                ReportType.maInactive.getSimpleName(),
                 "images/drop-down-3.png",
                 ReportType.maInactive.getServiceType(),showLinelistingReports)
         );
         maList.add(new Report(
                 ReportType.flwRejected.getReportName(),
                 ReportType.flwRejected.getReportType(),
+                ReportType.flwRejected.getSimpleName(),
                 "images/drop-down-3.png",
                 ReportType.flwRejected.getServiceType(),showLinelistingReports)
         );
         maList.add(new Report(
                 ReportType.maPerformance.getReportName(),
                 ReportType.maPerformance.getReportType(),
+                ReportType.maPerformance.getSimpleName(),
                 "images/drop-down-2.png",
                 ReportType.maPerformance.getServiceType(),showAggregateReports)
         );
         maList.add(new Report(
                 ReportType.maSubscriber.getReportName(),
                 ReportType.maSubscriber.getReportType(),
+                ReportType.maSubscriber.getSimpleName(),
                 "images/drop-down-2.png",
                 ReportType.maSubscriber.getServiceType(),showAggregateReports)
         );
         maList.add(new Report(
                 ReportType.maCumulative.getReportName(),
                 ReportType.maCumulative.getReportType(),
+                ReportType.maCumulative.getSimpleName(),
                 "images/drop-down-2.png",
                 ReportType.maCumulative.getServiceType(),showAggregateReports)
         );
@@ -1115,60 +1124,70 @@ public class UserController {
         kList.add(new Report(
                 ReportType.sixWeeks.getReportName(),
                 ReportType.sixWeeks.getReportType(),
+                ReportType.sixWeeks.getSimpleName(),
                 "images/drop-down-3.png",
                 ReportType.sixWeeks.getServiceType(),showLinelistingReports)
         );
         kList.add(new Report(
                 ReportType.lowListenership.getReportName(),
                 ReportType.lowListenership.getReportType(),
+                ReportType.lowListenership.getSimpleName(),
                 "images/drop-down-3.png",
                 ReportType.lowListenership.getServiceType(),showLinelistingReports)
         );
         kList.add(new Report(
                 ReportType.lowUsage.getReportName(),
                 ReportType.lowUsage.getReportType(),
+                ReportType.lowUsage.getSimpleName(),
                 "images/drop-down-3.png",
                 ReportType.lowUsage.getServiceType(),showLinelistingReports)
         );
         kList.add(new Report(
                 ReportType.selfDeactivated.getReportName(),
                 ReportType.selfDeactivated.getReportType(),
+                ReportType.selfDeactivated.getSimpleName(),
                 "images/drop-down-3.png",
                 ReportType.selfDeactivated.getServiceType(),showLinelistingReports)
         );
         kList.add(new Report(
                 ReportType.motherRejected.getReportName(),
                 ReportType.motherRejected.getReportType(),
+                ReportType.motherRejected.getSimpleName(),
                 "images/drop-down-3.png",
                 ReportType.motherRejected.getServiceType(),showLinelistingReports)
         );
         kList.add(new Report(
                 ReportType.childRejected.getReportName(),
                 ReportType.childRejected.getReportType(),
+                ReportType.childRejected.getSimpleName(),
                 "images/drop-down-3.png",
                 ReportType.childRejected.getServiceType(),showLinelistingReports)
         );
         kList.add(new Report(
                 ReportType.kilkariCumulative.getReportName(),
                 ReportType.kilkariCumulative.getReportType(),
+                ReportType.kilkariCumulative.getSimpleName(),
                 "images/drop-down-2.png",
                 ReportType.kilkariCumulative.getServiceType(),showAggregateReports)
         );
         kList.add(new Report(
                 ReportType.beneficiaryCompletion.getReportName(),
                 ReportType.beneficiaryCompletion.getReportType(),
+                ReportType.beneficiaryCompletion.getSimpleName(),
                 "images/drop-down-2.png",
                 ReportType.beneficiaryCompletion.getServiceType(),showAggregateReports)
         );
         kList.add(new Report(
                 ReportType.usage.getReportName(),
                 ReportType.usage.getReportType(),
+                ReportType.usage.getSimpleName(),
                 "images/drop-down-2.png",
                 ReportType.usage.getServiceType(),showAggregateReports)
         );
         kList.add(new Report(
                 ReportType.kilkariCalls.getReportName(),
                 ReportType.kilkariCalls.getReportType(),
+                ReportType.kilkariCalls.getSimpleName(),
                 "images/drop-down-2.png",
                 ReportType.kilkariCalls.getServiceType(),showAggregateReports)
         );
@@ -1176,24 +1195,28 @@ public class UserController {
         kList.add(new Report(
                 ReportType.messageMatrix.getReportName(),
                 ReportType.messageMatrix.getReportType(),
+                ReportType.messageMatrix.getSimpleName(),
                 "images/drop-down-2.png",
                 ReportType.messageMatrix.getServiceType(),showAggregateReports)
         );
         kList.add(new Report(
                 ReportType.listeningMatrix.getReportName(),
                 ReportType.listeningMatrix.getReportType(),
+                ReportType.listeningMatrix.getSimpleName(),
                 "images/drop-down-2.png",
                 ReportType.listeningMatrix.getServiceType(),showAggregateReports)
         );
         kList.add(new Report(
                 ReportType.kilkariThematicContent.getReportName(),
                 ReportType.kilkariThematicContent.getReportType(),
+                ReportType.kilkariThematicContent.getSimpleName(),
                 "images/drop-down-2.png",
                 ReportType.kilkariThematicContent.getServiceType(),showAggregateReports)
         );
         kList.add(new Report(
                 ReportType.kilkariRepeatListenerMonthWise.getReportName(),
                 ReportType.kilkariRepeatListenerMonthWise.getReportType(),
+                ReportType.kilkariRepeatListenerMonthWise.getSimpleName(),
                 "images/drop-down-2.png",
                 ReportType.kilkariRepeatListenerMonthWise.getServiceType(),showAggregateReports)
         );
@@ -1201,12 +1224,14 @@ public class UserController {
         kList.add(new Report(
                 ReportType.kilkariSubscriber.getReportName(),
                 ReportType.kilkariSubscriber.getReportType(),
+                ReportType.kilkariSubscriber.getSimpleName(),
                 "images/drop-down-2.png",
                 ReportType.kilkariSubscriber.getServiceType(),showAggregateReports)
         );
         kList.add(new Report(
                 ReportType.kilkariMessageListenership.getReportName(),
                 ReportType.kilkariMessageListenership.getReportType(),
+                ReportType.kilkariMessageListenership.getSimpleName(),
                 "images/drop-down-2.png",
                 ReportType.kilkariMessageListenership.getServiceType(),showAggregateReports)
         );
@@ -1214,6 +1239,7 @@ public class UserController {
         kList.add(new Report(
                 ReportType.beneficiary.getReportName(),
                 ReportType.beneficiary.getReportType(),
+                ReportType.beneficiary.getSimpleName(),
                 "images/drop-down-2.png",
                 ReportType.beneficiary.getServiceType(),showAggregateReports)
         );
@@ -1230,10 +1256,10 @@ public class UserController {
         }
         else{
             State state = locationService.findStateById(currentUser.getStateId());
-            if(state.getServiceType().equals("MOBILE_ACADEMY") || state.getServiceType().equals("ALL")){
+            if(("MOBILE_ACADEMY").equals(state.getServiceType()) || ("ALL").equals(state.getServiceType())){
                 l.add(maMenu);
             }
-            if(state.getServiceType().equals("KILKARI") || state.getServiceType().equals("ALL")){
+            if(("KILKARI").equals(state.getServiceType()) || ("ALL").equals(state.getServiceType())){
                 l.add(kMenu);
             }
         }
@@ -1306,6 +1332,14 @@ public class UserController {
             }
         }
         return true;
+    }
+
+
+
+    @RequestMapping(value={"asha/district/{districtId}/{year}"})
+    public @ResponseBody List<AshaInEachBlock> downloadReport(@PathVariable("districtId") Integer districtId, @PathVariable("year") Integer year) {
+
+        return ashaEachBlockServiceDao.setQuery(districtId, year);
     }
 
 }

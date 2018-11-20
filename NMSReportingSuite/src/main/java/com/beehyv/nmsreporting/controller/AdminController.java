@@ -81,6 +81,11 @@ public class AdminController {
                 stream.close();
 
                 User user = userService.getCurrentUser();
+                if (user == null) {
+                    responseMap.put(0, "fail");
+                    responseMap.put(1, "No user logged in");
+                    return responseMap;
+                }
                 HashMap object= adminService.startBulkDataImport(user);
                 return object;
 
@@ -354,9 +359,13 @@ public class AdminController {
     public @ResponseBody
     List<State> getStatesByServiceType(@PathVariable("serviceType") String serviceType) {
 
-        List<State> states= locationService.getStatesByServiceType(serviceType);
+        User currentUser = userService.getCurrentUser();
 
-        return states;
+        if(currentUser != null) {
+            return locationService.getStatesByServiceType(serviceType);
+        } else
+            return null;
+
     }
 
     @RequestMapping(value = {"/state/{serviceType}/{stateId}"}, method = RequestMethod.GET)
@@ -364,7 +373,12 @@ public class AdminController {
     Date getStateServiceStartDate(@PathVariable("serviceType") String serviceType,@PathVariable("stateId") Integer stateId) {
 
 
-        return locationService.getServiceStartdateForState(stateId, serviceType);
+        User currentUser = userService.getCurrentUser();
+        if(currentUser != null) {
+            return locationService.getServiceStartdateForState(stateId, serviceType);
+        } else
+            return null;
+
     }
 
 }

@@ -5,7 +5,7 @@
     "icon": "images/drop-down-3.png",
     "options": [
       {
-        "name": "Cumulative Course Completion",
+        "name": "Course Completion",
         "reportEnum": "MA_Cumulative_Course_Completion",
         "icon": "images/drop-down-3.png",
         "service": "M"

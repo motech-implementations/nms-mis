@@ -1,35 +1,14 @@
-
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("LoginController", ['$rootScope','$scope','$state', '$http', '$location','UserFormFactory', 'SaltHashFactory',
-		 function($rootScope, $scope,$state, $http, $location ,UserFormFactory, SaltHashFactory){
+		.controller("LoginController", ['$rootScope','$scope','$state', '$http', '$location','$window','UserFormFactory', '$crypto',
+		 function($rootScope, $scope,$state, $http, $location, $window, UserFormFactory, $crypto){
 
-            SaltHashFactory.saltHashPassword('MYPASSWORD');
-//            , 'cjs77.crypto'
-//            var encrypted = CryptoJS.AES.encrypt(
-//                            $scope.source_string,
-//                            $rootScope.base64Key,
-//                            { iv: $rootScope.iv });
-//                  console.log('encrypted = ' + encrypted);
-//
-//                   $scope.ciphertext = encrypted.ciphertext.toString(CryptoJS.enc.Base64);
-//                   console.log('ciphertext = ' + $scope.ciphertext);
-//
-//                   var cipherParams = CryptoJS.lib.CipherParams.create({
-//                            ciphertext: CryptoJS.enc.Base64.parse($scope.ciphertext)
-//                            });
-//                   var decrypted = CryptoJS.AES.decrypt(
-//                              cipherParams,
-//                              $rootScope.base64Key,
-//                              { iv: $rootScope.iv });
-//                              $scope.descrString = decrypted.toString(CryptoJS.enc.Utf8);
-//                  console.log('decrypted='+$scope.descrString);
             $scope.w = window.innerWidth;
             $scope.h = window.innerHeight;
 
            // $scope.uri = imageurl;
-            $scope.images = [0, 1, 2, 3, 4];
+            $scope.images = [0];
 
 			$scope.user = {};
 			$scope.user.captchaCode = '';
@@ -79,25 +58,6 @@
             }
 
 
-
-
-//			$scope.login = function(){
-//				$http.post($scope.loginUrl,
-//					angular.toJson($scope.user),
-//					{
-//						headers: {
-//							'Content-Type': 'application/json'
-//						}
-//					})
-//					.success(function (data, status, headers, config) {
-//						console.log(data);
-//					})
-//					.error(function (data, status, header, config) {
-//						console.log(data);
-//					});
-//				}
-//			}
-
             $rootScope.$on('$locationChangeStart', function (event, current, previous) {
                 if(!(current.indexOf("login?error") > 0)){
                     if(previous != base_url + "/#!/changePassword"){
@@ -135,8 +95,6 @@
 //                    }
                     else
                        $scope.preUrl = "";
-                       console.log($scope.preUrl);
-                       console.log($scope.user);
 
                 }
             });
@@ -170,7 +128,6 @@
                 }
 
                 if($scope.user.captchaCode ==''){
-                console.log($scope.user);
                     if(UserFormFactory.isInternetExplorer()){
                         alert("Please fill the captcha")
                         return;
@@ -212,63 +169,30 @@
 
                 }
                 else{
-                    var formElement = angular.element(e.target);
-                    formElement.attr("action", $scope.loginUrl);
-                    formElement.attr("method", "post");
-                    formElement[0].submit();
+                var encrypted = CryptoJS.AES.encrypt($scope.user.password, 'ABCD123');
+                var decrypted = $crypto.decrypt(encrypted);
+                var data = {
+                "username": $scope.user.username,
+                "password": encrypted.toString(),
+                "cipherTextHex": encrypted.ciphertext.toString(),
+                "saltHex": encrypted.salt.toString(),
+                "rememberMe": $scope.user.rememberMe
+                };
+                $http({
+                    method: 'POST',
+                    url: $scope.loginUrl,
+                    data: JSON.stringify(data),
+                    headers: {'Content-Type': 'application/json'}
+                })
+                .then(function(success) {
+                  $window.location.replace(success.data);
+                  $window.location.reload();
+                }, function (error) {
+                   $window.location.href = error.data;
+                });
 
                 }});
 
-                /*
-                if($scope.user.captchaCode == null || $scope.user.captchaCode == ""){
-                    if(UserFormFactory.isInternetExplorer()){
-                        alert("Please enter the captchaCode")
-                        return;
-                    }
-                    else{
-                        UserFormFactory.showAlert("Please enter the captchaCode")
-                        return;
-                    }
-                }
-
-                var captcha = new Captcha();
-
-               // }
-
-                // captcha code input value for validating captcha at server-side
-                var captchaCode = angular.uppercase($scope.user.captchaCode);
-
-                var postData = {
-                  captchaId: captchaId,
-                  captchaCode: captchaCode
-                };
-
-                $http({
-                    method  : 'POST',
-                    url     : backend_root + 'nms/captcha',
-                    data    : postData, //forms user object
-                    headers : {'Content-Type': 'application/json'}
-                }).then(function(response){
-
-                      if(response.data.success){
-                         var formElement = angular.element(e.target);
-                         formElement.attr("action", $scope.loginUrl);
-                         formElement.attr("method", "post");
-                         formElement[0].submit();
-
-                      }
-                      else{
-                        if(UserFormFactory.isInternetExplorer()){
-                            alert("Incorrect Captcha")
-                            return;
-                        }
-                        else{
-                            UserFormFactory.showAlert("Incorrect Captcha")
-                            return;
-                        }
-
-                      }
-                })*/
 
             }
 

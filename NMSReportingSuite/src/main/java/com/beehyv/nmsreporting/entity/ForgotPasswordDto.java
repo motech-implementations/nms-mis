@@ -9,6 +9,8 @@ public class ForgotPasswordDto {
     String phoneNumber;
     String newPassword;
     String confirmPassword;
+    private String cipherTextHexNew;
+    private String saltHexNew;
 
     public String getUsername() {
         return username;
@@ -34,11 +36,30 @@ public class ForgotPasswordDto {
         this.newPassword = newPassword;
     }
 
+    public String getCipherTextHexNew() {
+        return cipherTextHexNew;
+    }
+
+    public void setCipherTextHexNew(String cipherTextHexNew) {
+        this.cipherTextHexNew = cipherTextHexNew;
+    }
+
+    public String getSaltHexNew() {
+        return saltHexNew;
+    }
+
+    public void setSaltHexNew(String saltHexNew) {
+        this.saltHexNew = saltHexNew;
+    }
+
     public String getConfirmPassword() {
         return confirmPassword;
     }
 
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
+
+
+
     }
 }

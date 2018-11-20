@@ -40,10 +40,13 @@ public class AggregateCumulativeBeneficiaryCompletion {
     private Long calls_1_25;
 
     @Column(name="total_age", columnDefinition = "INT(11)")
-    private Integer totalAge;
+    private Double totalAge;
+
+    @Column(name="period_type", columnDefinition = "VARCHAR(45)")
+    private String periodType;
 
 
-    public AggregateCumulativeBeneficiaryCompletion(Integer id, String locationType, Long locationId, Date date, Long completedBeneficiaries, Long calls_75_100, Long calls_50_75, Long calls_25_50, Long calls_1_25, Integer totalAge) {
+    public AggregateCumulativeBeneficiaryCompletion(Integer id, String locationType, Long locationId, Date date, Long completedBeneficiaries, Long calls_75_100, Long calls_50_75, Long calls_25_50, Long calls_1_25, Double totalAge, String periodType) {
         this.id = id;
         this.locationType = locationType;
         this.locationId = locationId;
@@ -54,17 +57,18 @@ public class AggregateCumulativeBeneficiaryCompletion {
         this.calls_25_50 = calls_25_50;
         this.calls_1_25 = calls_1_25;
         this.totalAge = totalAge;
+        this.periodType = periodType;
     }
 
     public AggregateCumulativeBeneficiaryCompletion(){
 
     }
 
-    public Integer getTotalAge() {
+    public Double getTotalAge() {
         return totalAge;
     }
 
-    public void setTotalAge(Integer totalAge) {
+    public void setTotalAge(Double totalAge) {
         this.totalAge = totalAge;
     }
 
@@ -106,6 +110,14 @@ public class AggregateCumulativeBeneficiaryCompletion {
 
     public void setCompletedBeneficiaries(Long completedBeneficiaries) {
         this.completedBeneficiaries = completedBeneficiaries;
+    }
+
+    public String getPeriodType() {
+        return periodType;
+    }
+
+    public void setPeriodType(String periodType) {
+        this.periodType = periodType;
     }
 
     public Long getCalls_75_100() {

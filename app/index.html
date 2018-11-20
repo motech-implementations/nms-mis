@@ -13,7 +13,73 @@
 	Maternity, Child health, IVR service, ASHA Foundation, ASHAs, weekly messages, ANC,PNC, MoHFW, Ministry of Health, Family Welfare, Family, Welfare, Bound Calls">
 
 
-	<!-- Global site tag (gtag.js) - Google Analytics -->
+	 <!--Global site tag (gtag.js) - Google Analytics-->
+
+
+	<script src="bower_components/angular/angular.min.js" ></script>
+	<script src="bower_components/angular-animate/angular-animate.min.js"></script>
+
+
+	<!-- main -->
+	<script src="scripts/app.js"></script>
+
+	<!-- Controllers -->
+	<script src="scripts/controllers/main.js" ></script>
+	<script src="scripts/controllers/login.js"></script>
+	<script src="scripts/factories/userForm.js" ></script>
+	<script src="scripts/controllers/reports.js" ></script>
+
+	<!-- bower components -->
+
+	<script src="bower_components/angular-ui-validate/dist/validate.min.js"></script>
+	<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+	<script src="bower_components/angular-messages/angular-messages.min.js"></script>
+	<script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+	<script src="bower_components/angular-ui-grid/ui-grid.min.js"></script>
+	<script src="bower_components/angular-animate/angular-animate.min.js"></script>
+	<script src="bower_components/angular-aria/angular-aria.min.js"></script>
+	<script src="bower_components/angular-material/angular-material.min.js"></script>
+	<script src="bower_components/re-tree/re-tree.min.js"></script>
+	<script src="bower_components/angular-ui-carousel/dist/ui-carousel.min.js"></script>
+	<script src="bower_components/ng-device-detector/ng-device-detector.min.js"></script>
+	<script src="bower_components/ngstorage/ngStorage.min.js"></script>
+	<script src="bower_components/ng-file-upload/ng-file-upload-shim.min.js"></script>
+	<script src="bower_components/ng-file-upload/ng-file-upload.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.9.12/xlsx.full.min.js"></script>
+	<script src="https://fastcdn.org/FileSaver.js/1.1.20151003/FileSaver.min.js"></script>
+	<script src="bower_components/angular-idle-service/dist/angular-idle-service.js"></script>
+	<script src="bower_components/cryptojslib/rollups/aes.js"></script>
+	<script src="bower_components/angular-cryptography/mdo-angular-cryptography.js"></script>
+	<script src="bower_components/pdfmake/build/pdfmake.min.js" ></script>
+	<script src="bower_components/pdfmake/build/vfs_fonts.js" ></script>
+
+
+    <!--<script src="dist/app.js" ></script>-->
+
+	<script src="scripts/factories/exportuiGrid.js"  ></script>
+	<script src="scripts/controllers/userManagement.js" ></script>
+	<script src="scripts/controllers/userTable.js"></script>
+	<script src="scripts/controllers/editUser.js" ></script>
+	<script src="scripts/controllers/bulkUser.js" ></script>
+	<script src="scripts/controllers/createUser.js" ></script>
+	<script src="scripts/controllers/reports.js" ></script>
+	<script src="scripts/controllers/profile.js" ></script>
+	<script src="scripts/controllers/forgotPassword.js" ></script>
+	<script src="scripts/controllers/changePassword.js" ></script>
+	<script src="scripts/controllers/feedbackForm.js" ></script>
+	<script src="scripts/controllers/contactUs.js" ></script>
+	<script src="scripts/controllers/contactUsResponse.js" ></script>
+	<script src="scripts/controllers/userManual.js" ></script>
+	<script src="scripts/controllers/faq.js" ></script>
+	<script src="scripts/controllers/downloads.js" ></script>
+	<script src="scripts/controllers/staticPages.js" ></script>
+	<script src="scripts/factories/userTable.js"  ></script>
+	<script src="scripts/factories/auth.js"  ></script>
+	<script src="scripts/global/urls.js"></script>
+
+
+	<script src="scripts/directives/pagination.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-119876170-1"></script>
 	<script>
             window.dataLayer = window.dataLayer || [];
@@ -22,75 +88,19 @@
 
 	        gtag('config', 'UA-119876170-1');
 	</script>
-    <script src="bower_components/pdfmake/build/pdfmake.js"></script>
-    <script src="bower_components/pdfmake/build/vfs_fonts.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="bower_components/angular/angular.min.js"></script>
-	<script src="bower_components/angular-animate/angular-animate.js"></script>
-	<script src="bower_components/angular-ui-validate/dist/validate.min.js"></script>
-	<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
-	<script src="bower_components/angular-messages/angular-messages.min.js"></script>
-	<script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
-	<script src="bower_components/angular-ui-grid/ui-grid.js"></script>
-	<script src="bower_components/angular-animate/angular-animate.min.js"></script>
-	<script src="bower_components/angular-aria/angular-aria.min.js"></script>
-	<script src="bower_components/angular-material/angular-material.min.js"></script>
-	<script src="bower_components/re-tree/re-tree.js"></script>
-	<script src="bower_components/angular-ui-carousel/dist/ui-carousel.js"></script>
-	<script src="bower_components/ng-device-detector/ng-device-detector.js"></script>
-	<script src="bower_components/ngstorage/ngStorage.min.js"></script>
-	<script src="bower_components/ng-file-upload/ng-file-upload-shim.min.js"></script>
-	<script src="bower_components/ng-file-upload/ng-file-upload.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.9.12/xlsx.full.min.js"></script>
-    <script src="https://fastcdn.org/FileSaver.js/1.1.20151003/FileSaver.min.js"></script>
-    <script src="bower_components/angular-idle-service/dist/angular-idle-service.js"></script>
-    <script src="bower_components/crypto-js/crypto-js.js"></script>
-	<script src="scripts/global/urls.js"></script>
+	<!-- endbuild -->
 
-	<!-- main -->
-	<script src="scripts/app.js"></script>
-	<script src="scripts/json/user.json"></script>
-
-	<!-- Controllers -->
-	<script src="scripts/controllers/main.js"></script>
-	<script src="scripts/controllers/userManagement.js"></script>
-	<script src="scripts/controllers/userTable.js"></script>
-	<script src="scripts/controllers/editUser.js"></script>
-	<script src="scripts/controllers/bulkUser.js"></script>
-	<script src="scripts/controllers/createUser.js"></script>
-	<script src="scripts/controllers/reports.js"></script>
-	<script src="scripts/controllers/profile.js"></script>
-	<script src="scripts/controllers/forgotPassword.js"></script>
-    <script src="scripts/controllers/changePassword.js"></script>
-	<script src="scripts/controllers/feedbackForm.js"></script>
-	<script src="scripts/controllers/contactUs.js"></script>
-	<script src="scripts/controllers/contactUsResponse.js"></script>
-	<script  src="scripts/controllers/userManual.js"></script>
-	<script  src="scripts/controllers/faq.js"></script>
-	<script  src="scripts/controllers/downloads.js"></script>
-	<script  src="scripts/controllers/staticPages.js"></script>
-
-	<!-- Factory -->
-	<script src="scripts/factories/userTable.js"></script>
-	<script src="scripts/factories/auth.js"></script>
-	<script src="scripts/factories/userForm.js"></script>
-	<script src="scripts/factories/exportuiGrid.js"></script>
-	<script src="scripts/factories/saltHash.js"></script>
-
-    <script src="scripts/controllers/login.js"></script>
-
-    <!-- Directives -->
-	<script src="scripts/directives/pagination.js"></script>
-
+	<!-- build:css assets/css/phpflow.min.css -->
+	<link rel="styleSheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.5/angular-material.min.css"/>
+	<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="styleSheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-grid/4.6.3/ui-grid.min.css" />
 	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-	<link rel="styleSheet" href="bower_components/angular-ui-grid/ui-grid.min.css"/>
-	<link rel="styleSheet" href="bower_components/angular-material/angular-material.min.css"/>
-    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="styles/style.css">
+	<!-- endbuild -->
 
 	<title>NMS Reporting - {{getTitle($state.current.name)}}</title>
 
@@ -180,7 +190,7 @@
 	<div class="pd" data-ng-show="!online" data-ng-class="{offline:!online}" >You are offline</div>
 
 
-    <div class = "login-page content"  data-ui-view >
+    <div class = "login-page content"  data-ui-view>
     </div>
 
 	<div class='footer' data-ng-hide='menuChecker()' >
@@ -225,7 +235,9 @@
 
     </div>
 </div>
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+
+
 </body>
 
 </html>

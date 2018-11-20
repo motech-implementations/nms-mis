@@ -30,7 +30,6 @@ public class AuditLogServiceImpl implements AuditLogService {
 
     @Override
     public void saveAuditLog(HttpServletRequest request) {
-        User currentUser = userService.getCurrentUser();
         String ipAddres = null;
         String xForwardedForHeader = request.getHeader("X-Forwarded-For");
         if (xForwardedForHeader == null) {
@@ -50,11 +49,7 @@ public class AuditLogServiceImpl implements AuditLogService {
         auditLog.setIpAddress(ipAddres);
         auditLog.setDate(new Date());
         auditLog.setUrl(url);
-        if (currentUser == null) {
-            auditLog.setUserName("None");
-        } else {
-            auditLog.setUserName(currentUser.getUsername());
-        }
+        auditLog.setUserName((String) request.getSession().getAttribute("userName"));
         auditLogDao.saveAduitLog(auditLog);
 
     }

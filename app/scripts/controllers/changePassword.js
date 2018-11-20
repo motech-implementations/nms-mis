@@ -1,7 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("ChangePassword", ['$scope', '$state','$http', 'UserFormFactory', function($scope, $state, $http, UserFormFactory){
+		.controller("ChangePassword", ['$scope', '$state','$http', 'UserFormFactory', '$crypto', function($scope, $state, $http, UserFormFactory, $crypto){
 
 			UserFormFactory.isLoggedIn()
             .then(function(result){
@@ -19,12 +19,35 @@
                 if ($scope.changePasswordForm.$valid) {
                     delete $scope.password.$$hashKey;
                     $scope.password.userId = $scope.user.id;
-                    $http({
-                        method  : 'POST',
-                        url     : backend_root + 'nms/user/resetPassword',
-                        data    : $scope.password, //forms user object
-                        headers : {'Content-Type': 'application/json'}
-                    }).then(function(result){
+                    var encryptedNew = CryptoJS.AES.encrypt($scope.password.newPassword, 'ABCD123');
+                    var encryptedOld = CryptoJS.AES.encrypt($scope.password.oldPassword, 'ABCD123');
+                                    console.log(encryptedNew.toString());
+                                    console.log(encryptedNew.ciphertext.toString());
+                                    console.log(encryptedNew.salt.toString());
+                                    console.log(encryptedOld.toString());
+                                    console.log(encryptedOld.ciphertext.toString());
+                                    console.log(encryptedOld.salt.toString());
+                                    var data = {
+                                    "userId": $scope.user.id,
+                                    "newPassword": encryptedNew.toString(),
+                                    "cipherTextHexNew": encryptedNew.ciphertext.toString(),
+                                    "saltHexNew": encryptedNew.salt.toString(),
+                                    "oldPassword": encryptedOld.toString(),
+                                    "cipherTextHexOld": encryptedOld.ciphertext.toString(),
+                                    "saltHexOld": encryptedOld.salt.toString()
+                                    };
+                                    $http({
+                                        method: 'POST',
+                                        url: backend_root + 'nms/user/resetPassword',
+                                        data: JSON.stringify(data),
+                                        headers: {'Content-Type': 'application/json'}
+                                    }).then(function(result){
+//                    $http({
+//                        method  : 'POST',
+//                        url     : backend_root + 'nms/user/resetPassword',
+//                        data    : $scope.password, //forms user object
+//                        headers : {'Content-Type': 'application/json'}
+//                    }).then(function(result){
                         if(UserFormFactory.isInternetExplorer()){
 
                             if(result.data['0'] != "Current Password is incorrect"){

@@ -21,7 +21,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -30,9 +29,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import static com.beehyv.nmsreporting.utils.CryptoService.decrypt;
 import static com.beehyv.nmsreporting.utils.Global.retrieveUiAddress;
 
 /**
@@ -56,10 +55,15 @@ public class LoginController extends HttpServlet{
         return "redirect:"+ retrieveUiAddress() +"login";
     }
 
+    @ResponseBody
     @RequestMapping(value={"/nms/login"}, method= RequestMethod.POST)
-    public String login( Model model, @ModelAttribute LoginUser loginUser, BindingResult errors) {
+    public String login(@RequestBody LoginUser loginUser, BindingResult errors, HttpServletResponse response) throws Exception {
         User user = userService.findUserByUsername(loginUser.getUsername());
-        if (user!= null && user.getUnSuccessfulAttempts() ==3) {
+        if (user!= null && user.getUnSuccessfulAttempts() == null) {
+            user.setUnSuccessfulAttempts(0);
+            userService.setUnSuccessfulAttemptsCount(user.getUserId(), 0);
+        }
+        if (user!= null && user.getUnSuccessfulAttempts() == 3) {
             Date lastLogin = loginTrackerService.getLastLoginTime(user.getUserId());
             if (lastLogin != null) {
                 long diff = TimeUnit.DAYS.convert(new Date().getTime() - lastLogin.getTime(), TimeUnit.MILLISECONDS);
@@ -81,7 +85,7 @@ public class LoginController extends HttpServlet{
                 return "redirect:" + retrieveUiAddress() + "login?error";
             }
             Subject subject = SecurityUtils.getSubject();
-            UsernamePasswordToken token = new UsernamePasswordToken(loginUser.getUsername(), loginUser.getPassword(), loginUser.isRememberMe());
+            UsernamePasswordToken token = new UsernamePasswordToken(loginUser.getUsername(), decrypt(loginUser), loginUser.isRememberMe());
             try {
                 ensureUserIsLoggedOut();
                 subject.login(token);
@@ -100,7 +104,7 @@ public class LoginController extends HttpServlet{
                 }
                 ensureUserIsLoggedOut();
 
-                return "redirect:" + retrieveUiAddress() + "login?error";
+                return retrieveUiAddress() + "login?error";
             } else {
                 user.setUnSuccessfulAttempts(0);
                 LoginTracker loginTracker = new LoginTracker();
@@ -108,28 +112,30 @@ public class LoginController extends HttpServlet{
                 loginTracker.setLoginSuccessful(true);
                 loginTracker.setLoginTime(new Date());
                 loginTrackerService.saveLoginDetails(loginTracker);
+                Session session = SecurityUtils.getSubject().getSession();
+                session.setAttribute( "userName", user.getUsername());
                 if (user.getDefault() == null) {
                     user.setDefault(true);
                 }
                 if (user.getDefault()) {
-                    return "redirect:" + retrieveUiAddress() + "changePassword";
+                    return retrieveUiAddress() + "changePassword";
                 }
                 userService.setLoggedIn();
-                if (loginUser.getFromUrl().equals(null) || loginUser.getFromUrl().equals("")) {
-                    return "redirect:" + retrieveUiAddress() + "reports";
+                if (!user.getDefault() && (loginUser.getFromUrl() == null || loginUser.getFromUrl().equals(""))) {
+                    return retrieveUiAddress() + "reports";
                 }
-                return "redirect:" + loginUser.getFromUrl();
+                return loginUser.getFromUrl();
 
             }
         } else {
-            return "redirect:" + retrieveUiAddress() + "login?blocked";
+            return retrieveUiAddress() + "login?blocked";
         }
     }
 
     @RequestMapping(value = {"/nms/index"}, method = RequestMethod.GET)
     protected String returnHomeView(Model model) {
 //        System.out.println("\n\n" + SecurityUtils.getSubject().getSession()+ "!!!!!!!!!!!\n\n");
-        return "redirect:"+ retrieveUiAddress() +"userManagement";
+        return "redirect:" + retrieveUiAddress() +"userManagement";
     }
 
     @RequestMapping(value = {"/nms/loginDummy"}, method = RequestMethod.GET)

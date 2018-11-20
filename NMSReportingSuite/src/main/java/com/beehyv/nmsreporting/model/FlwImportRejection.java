@@ -45,6 +45,8 @@ public class FlwImportRejection {
     @Column(name = "phc_name")
     private String phcName;
 
+    private String type;
+
     @Column(name = "subcentre_id")
     private Long subcentreId;
 
@@ -156,6 +158,14 @@ public class FlwImportRejection {
 
     public void setPhcName(String phcName) {
         this.phcName = phcName;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Long getSubcentreId() {

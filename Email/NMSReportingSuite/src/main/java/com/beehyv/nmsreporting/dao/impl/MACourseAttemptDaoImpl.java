@@ -18,10 +18,11 @@ import java.util.Date;
 public class MACourseAttemptDaoImpl extends AbstractDao<Integer, User> implements MACourseAttemptDao {
 
     @Override
-    public Long getCountForGivenDistrict(Date toDate, Integer districtId) {
+    public Long getCountForGivenDistrict(String forMonth, Integer districtId) {
         Criteria criteria= getSession().createCriteria(MACourseFirstCompletion.class);
-        criteria.add(Restrictions.lt("firstCompletionDate",toDate))
+        criteria.add(Restrictions.like("forMonth",forMonth))
                 .add(Restrictions.eq("districtId",districtId))
+                .add(Restrictions.eq("jobStatus","ACTIVE").ignoreCase())
                 .setProjection(Projections.rowCount());
 
         return (Long) criteria.uniqueResult();

@@ -1,1 +1,1 @@
-<% response.sendRedirect("https://rchivrreports.in/app/#!/login"); %>
+<% response.sendRedirect("http://192.168.200.66:8080/app/#!/login"); %>

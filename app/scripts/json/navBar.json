@@ -4,8 +4,8 @@
 		"icon":{
 			"reg":"../images/nav3-3.png",
 			"active":"../images/nav3.png"
-		},
-	},
+		}
+	}
 	/*{
 		"title":"Mobile Academy Records",
 		"icon":{

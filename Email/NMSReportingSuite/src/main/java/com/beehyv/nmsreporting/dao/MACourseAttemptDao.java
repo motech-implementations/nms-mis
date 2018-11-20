@@ -7,5 +7,5 @@ import java.util.Date;
  */
 public interface MACourseAttemptDao {
 
-    Long getCountForGivenDistrict(Date toDate, Integer districtId);
+    Long getCountForGivenDistrict(String forMonth, Integer districtId);
 }

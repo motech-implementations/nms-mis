@@ -5,6 +5,7 @@ import com.beehyv.nmsreporting.dao.*;
 import com.beehyv.nmsreporting.entity.ReportRequest;
 import com.beehyv.nmsreporting.enums.*;
 import com.beehyv.nmsreporting.model.*;
+import com.google.common.base.Strings;
 import com.opencsv.CSVReader;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.util.HSSFColor;
@@ -26,6 +27,7 @@ import static com.beehyv.nmsreporting.utils.Global.retrieveDocuments;
 import static com.beehyv.nmsreporting.utils.ServiceFunctions.StReplace;
 import static com.beehyv.nmsreporting.utils.Constants.header_base64;
 import static java.lang.Integer.parseInt;
+import static java.util.Objects.isNull;
 
 /**
  * Created by beehyv on 19/4/17.
@@ -663,7 +665,7 @@ public class AdminServiceImpl implements AdminService {
                 String circleName=StReplace(circleDao.getByCircleId(circleId).getCircleName());
                 String circleFullName = StReplace(circleDao.getByCircleId(circleId).getCircleFullName());
                 String rootPathCircle=rootPath+circleFullName+"/";
-                List<AnonymousUsers> anonymousUsersListCircle = anonymousUsersDao.getAnonymousUsersCircle(getMonthYear(toDate), StReplace(circleDao.getByCircleId(circleId).getCircleName()));
+                List<AnonymousUsers> anonymousUsersListCircle = anonymousUsersDao.getAnonymousUsersCircle(getMonthYear(toDate), StReplace(circleDao.getByCircleId(circleId).getCircleFullName()));
                 getCircleWiseAnonymousUsers(anonymousUsersListCircle, rootPathCircle, circleFullName, toDate, reportRequest);
             }
         }
@@ -1723,27 +1725,63 @@ public class AdminServiceImpl implements AdminService {
                 row.setHeight((short)1100);}
 
             Object[] objectArr = empinfo.get(key);
-            int cellid = 0;
-            for (Object obj : objectArr) {
-                Cell cell = row.createCell(cellid++);
-                if(rowid!=8&&(cellid==3)){
-                cell.setCellValue(obj.toString());}
-                else{
-                    cell.setCellValue(obj.toString());
+
+                Cell cell1=row.createCell(0);
+                Cell cell2=row.createCell(1);
+                Cell cell3=row.createCell(4);
+                Cell cell4=row.createCell(7);
+
+
+                if(rowid == 8){
+                    CellRangeAddress range1 =new CellRangeAddress(rowid-1,rowid-1,0,0);
+                    spreadsheet.addMergedRegion(range1);
+                    CellRangeAddress range2 = new CellRangeAddress(rowid-1,rowid-1,1,3);
+                    spreadsheet.addMergedRegion(range2);
+                    CellRangeAddress range3 = new CellRangeAddress(rowid-1,rowid-1,4,6);
+                    spreadsheet.addMergedRegion(range3);
+                    CellRangeAddress range4 = new CellRangeAddress(rowid-1,rowid-1,7,9);
+                    spreadsheet.addMergedRegion(range4);
+//                    cleanBeforeMergeOnValidCells(spreadsheet,range1,style );
+//                    cleanBeforeMergeOnValidCells(spreadsheet,range2,style );
+//                    cleanBeforeMergeOnValidCells(spreadsheet,range3,style );
+//                    cleanBeforeMergeOnValidCells(spreadsheet,range4,style );
+                    cell1.setCellValue(objectArr[0].toString());
+                    cell2.setCellValue(objectArr[1].toString());
+                    cell3.setCellValue(objectArr[2].toString());
+                    cell4.setCellValue(objectArr[3].toString());
+                    cell1.setCellStyle(style);
+                    cell2.setCellStyle(style);
+                    cell3.setCellStyle(style);
+                    cell4.setCellStyle(style);
                 }
-                if(rowid!=8&&cellid==1&& !anonymousUsersList.isEmpty()){
-                    cell.setCellValue(rowid-8);
+
+                if(rowid == 9 && anonymousUsersList.isEmpty()){
+                    CellUtil.setAlignment(cell1, workbook, CellStyle.ALIGN_CENTER);
+                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:J9"));
+                    cell1.setCellValue("No Records to display");
                 }
-                if(rowid==8){
-                    cell.setCellStyle(style);}
-                else if(rowid==9 && anonymousUsersList.isEmpty()) {
-                    CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
-                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:D9"));
+
+                if(rowid != 8 && !anonymousUsersList.isEmpty()){
+
+                    CellRangeAddress range1 =new CellRangeAddress(rowid-1,rowid-1,0,0);
+                    spreadsheet.addMergedRegion(range1);
+                    CellRangeAddress range2 = new CellRangeAddress(rowid-1,rowid-1,1,3);
+                    spreadsheet.addMergedRegion(range2);
+                    CellRangeAddress range3 = new CellRangeAddress(rowid-1,rowid-1,4,6);
+                    spreadsheet.addMergedRegion(range3);
+                    CellRangeAddress range4 = new CellRangeAddress(rowid-1,rowid-1,7,9);
+                    spreadsheet.addMergedRegion(range4);
+                    cell1.setCellValue(rowid - 8);
+                    cell2.setCellValue(objectArr[1].toString());
+                    cell3.setCellValue(objectArr[2].toString());
+                    cell4.setCellValue(objectArr[3].toString());
+                    cell1.setCellStyle(borderStyle);
+                    cell2.setCellStyle(borderStyle);
+                    cell3.setCellStyle(borderStyle);
+                    cell4.setCellStyle(borderStyle);
                 }
-                else{
-                    cell.setCellStyle(borderStyle);
-                }
-            }
+
+
         }
         //Write the workbook in file system
         FileOutputStream out = null;
@@ -2285,9 +2323,11 @@ public class AdminServiceImpl implements AdminService {
                     (kilkari.getMsisdn() == null) ? "No MSISDN" : kilkari.getMsisdn(),
                     (kilkari.getStateId() == null) ? "No State" : stateDao.findByStateId(kilkari.getStateId()).getStateName(),
                     (kilkari.getDistrictId() == null) ? "No District" : districtDao.findByDistrictId(kilkari.getDistrictId()).getDistrictName(),
-                    (kilkari.getVillageId() == null) ? "No Taluka" : talukaDao.findByTalukaId(villageDao.findByVillageId(kilkari.getVillageId()).getTalukaOfVillage()).getTalukaName(),
+//                    (kilkari.getVillageId() == null) ? "No Taluka" : talukaDao.findByTalukaId(villageDao.findByVillageId(kilkari.getVillageId()).getTalukaOfVillage()).getTalukaName(),
+                    (kilkari.getTalukaId() == null) ? "No Taluka" : talukaDao.findByTalukaId(kilkari.getTalukaId()).getTalukaName(),
                     (kilkari.getBlockId() == null) ? "No Block" : blockDao.findByblockId(kilkari.getBlockId()).getBlockName(),
-                    (kilkari.getHsubcenterId() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthFacilityOfHealthSubFacility()).getHealthFacilityName(),
+//                    (kilkari.getHsubcenterId() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthFacilityOfHealthSubFacility()).getHealthFacilityName(),
+                    (kilkari.getHcenterId() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(kilkari.getHcenterId()).getHealthFacilityName(),
                     (kilkari.getHsubcenterId() == null) ? "No Health Subfacility" : healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthSubFacilityName(),
                     (kilkari.getVillageId() == null) ? "No Village" : villageDao.findByVillageId(kilkari.getVillageId()).getVillageName(),
                     (kilkari.getAgeOnService() == null) ? "No Age_Data" : kilkari.getAgeOnService()
@@ -2416,12 +2456,13 @@ public class AdminServiceImpl implements AdminService {
                     (kilkari.getMsisdn() == null) ? "No MSISDN" : kilkari.getMsisdn(),
                     (kilkari.getStateId() == null) ? "No State" : stateDao.findByStateId(kilkari.getStateId()).getStateName(),
                     (kilkari.getDistrictId() == null) ? "No District" : districtDao.findByDistrictId(kilkari.getDistrictId()).getDistrictName(),
-                    (kilkari.getVillageId() == null) ? "No Taluka" : talukaDao.findByTalukaId(villageDao.findByVillageId(kilkari.getVillageId()).getTalukaOfVillage()).getTalukaName(),
+                    (kilkari.getTalukaId() == null) ? "No Taluka" : talukaDao.findByTalukaId(kilkari.getTalukaId()).getTalukaName(),
                     (kilkari.getBlockId() == null) ? "No Block" : blockDao.findByblockId(kilkari.getBlockId()).getBlockName(),
-                    (kilkari.getHsubcenterId() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthFacilityOfHealthSubFacility()).getHealthFacilityName(),
+                    (kilkari.getHcenterId() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(kilkari.getHcenterId()).getHealthFacilityName(),
                     (kilkari.getHsubcenterId() == null) ? "No Health Subfacility" : healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthSubFacilityName(),
                     (kilkari.getVillageId() == null) ? "No Village" : villageDao.findByVillageId(kilkari.getVillageId()).getVillageName(),
-                    (kilkari.getAgeOnService() == null) ? "No Age_Data" : kilkari.getAgeOnService()
+                    (kilkari.getAgeOnService() == null) ? "No Age_Data" : kilkari.getAgeOnService(),
+//                    checkEmptyOrNull(kilkari.getAgeOnService())
 
             });
             counter++;
@@ -2476,6 +2517,10 @@ public class AdminServiceImpl implements AdminService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private Boolean checkEmptyOrNull(String value) {
+        return Strings.isNullOrEmpty(value) || "null".equalsIgnoreCase(value);
     }
 
     private void getKilkariSelfDeactivation(List<KilkariSelfDeactivated> kilkariSelfDeactivatedList, String rootPath,
@@ -2553,9 +2598,9 @@ public class AdminServiceImpl implements AdminService {
                     (kilkari.getMsisdn() == null) ? "No MSISDN" : kilkari.getMsisdn(),
                     (kilkari.getStateId() == null) ? "No State" : stateDao.findByStateId(kilkari.getStateId()).getStateName(),
                     (kilkari.getDistrictId() == null) ? "No District" : districtDao.findByDistrictId(kilkari.getDistrictId()).getDistrictName(),
-                    (kilkari.getVillageId() == null) ? "No Taluka" : talukaDao.findByTalukaId(villageDao.findByVillageId(kilkari.getVillageId()).getTalukaOfVillage()).getTalukaName(),
+                    (kilkari.getTalukaId() == null) ? "No Taluka" : talukaDao.findByTalukaId(kilkari.getTalukaId()).getTalukaName(),
                     (kilkari.getBlockId() == null) ? "No Block" : blockDao.findByblockId(kilkari.getBlockId()).getBlockName(),
-                    (kilkari.getHsubcenterId() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthFacilityOfHealthSubFacility()).getHealthFacilityName(),
+                    (kilkari.getHcenterId() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(kilkari.getHcenterId()).getHealthFacilityName(),
                     (kilkari.getHsubcenterId() == null) ? "No Health Subfacility" : healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthSubFacilityName(),
                     (kilkari.getVillageId() == null) ? "No Village" : villageDao.findByVillageId(kilkari.getVillageId()).getVillageName(),
                     (kilkari.getAgeOnService() == null) ? "No Age_Data" : kilkari.getAgeOnService(),
@@ -2689,9 +2734,9 @@ public class AdminServiceImpl implements AdminService {
                     (kilkari.getMsisdn() == null) ? "No MSISDN" : kilkari.getMsisdn(),
                     (kilkari.getStateId() == null) ? "No State" : stateDao.findByStateId(kilkari.getStateId()).getStateName(),
                     (kilkari.getDistrictId() == null) ? "No District" : districtDao.findByDistrictId(kilkari.getDistrictId()).getDistrictName(),
-                    (kilkari.getVillageId() == null) ? "No Taluka" : talukaDao.findByTalukaId(villageDao.findByVillageId(kilkari.getVillageId()).getTalukaOfVillage()).getTalukaName(),
+                    (kilkari.getTalukaId() == null) ? "No Taluka" : talukaDao.findByTalukaId(kilkari.getTalukaId()).getTalukaName(),
                     (kilkari.getBlockId() == null) ? "No Block" : blockDao.findByblockId(kilkari.getBlockId()).getBlockName(),
-                    (kilkari.getHsubcenterId() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthFacilityOfHealthSubFacility()).getHealthFacilityName(),
+                    (kilkari.getHcenterId() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(kilkari.getHcenterId()).getHealthFacilityName(),
                     (kilkari.getHsubcenterId() == null) ? "No Health Subfacility" : healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthSubFacilityName(),
                     (kilkari.getVillageId() == null) ? "No Village" : villageDao.findByVillageId(kilkari.getVillageId()).getVillageName(),
                     (kilkari.getAgeOnService() == null) ? "No Age_Data" : kilkari.getAgeOnService(),
@@ -3257,7 +3302,7 @@ public class AdminServiceImpl implements AdminService {
             String rootPathCircle=rootPath+circleFullName+"/";
             List<AnonymousUsers> anonymousUsersListCircle = new ArrayList<>();
             for(AnonymousUsers anonymousUser : anonymousUsersList){
-                if(anonymousUser.getCircleName().equalsIgnoreCase(circleName)){
+                if(anonymousUser.getCircleName().equalsIgnoreCase(circleFullName)){
                     anonymousUsersListCircle.add(anonymousUser);
                 }
             }

@@ -38,8 +38,14 @@ public class KilkariManualDeactivations {
     @Column(name="district_id", columnDefinition = "BIGINT(20)")
     private Integer districtId;
 
+    @Column(name="taluka_id", columnDefinition = "BIGINT(20)")
+    private Integer talukaId;
+
     @Column(name="block_id", columnDefinition = "BIGINT(20)")
     private Integer blockId;
+
+    @Column(name="healthFacility_id", columnDefinition = "BIGINT(20)")
+    private Integer hcenterId;
 
     @Column(name="healthSubFacility_id", columnDefinition = "BIGINT(20)")
     private Integer hsubcenterId;
@@ -122,12 +128,28 @@ public class KilkariManualDeactivations {
         this.districtId = districtId;
     }
 
+    public Integer getTalukaId() {
+        return talukaId;
+    }
+
+    public void setTalukaId(Integer talukaId) {
+        this.talukaId = talukaId;
+    }
+
     public Integer getBlockId() {
         return blockId;
     }
 
     public void setBlockId(Integer blockId) {
         this.blockId = blockId;
+    }
+
+    public Integer getHcenterId() {
+        return hcenterId;
+    }
+
+    public void setHcenterId(Integer hcenterId) {
+        this.hcenterId = hcenterId;
     }
 
     public Integer getHsubcenterId() {
