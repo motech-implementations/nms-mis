@@ -1,19 +1,20 @@
 package com.beehyv.nmsreporting.controller;
 
-import com.beehyv.nmsreporting.business.EmailService;
-import com.beehyv.nmsreporting.business.LocationService;
-import com.beehyv.nmsreporting.business.ReportService;
-import com.beehyv.nmsreporting.business.UserService;
+import com.beehyv.nmsreporting.business.*;
 import com.beehyv.nmsreporting.entity.EmailBody;
 import com.beehyv.nmsreporting.entity.EmailInfo;
 import com.beehyv.nmsreporting.entity.EmailTest;
 import com.beehyv.nmsreporting.enums.ReportType;
+import com.beehyv.nmsreporting.model.ContactUs;
+import com.beehyv.nmsreporting.model.Feedback;
+import com.beehyv.nmsreporting.utils.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import static com.beehyv.nmsreporting.utils.CryptoService.decrypt;
 
 import java.io.File;
 import java.util.Calendar;
@@ -36,6 +37,10 @@ public class EmailController {
     EmailService emailService;
     @Autowired
     LocationService locationService;
+    @Autowired
+    FeedbackService feedbackService;
+    @Autowired
+    ContactUsService contactUsService;
 
     private static final String feedbackBody = "Received your feedback. Thanking you sending feedback";
 
@@ -65,34 +70,50 @@ public class EmailController {
     }
 
     @RequestMapping(value = "/sendFeedback", method = RequestMethod.POST)
-        public @ResponseBody String sendFeedback(@RequestBody EmailBody mailInfo) {
-        if (mailInfo.getEmail() != null) {
+        public @ResponseBody String sendFeedback(@RequestBody EmailBody mailInfo) throws Exception {
+        LoginUser loginUser = new LoginUser();
+        loginUser.setSaltHex(mailInfo.getSaltHex());
+        loginUser.setCipherTextHex(mailInfo.getCipherTextHex());
+        if(mailInfo.getCaptcha().equals(decrypt(loginUser))) {
+            Feedback feedback = new Feedback(mailInfo.getName(), mailInfo.getSubject(), mailInfo.getPhoneNo(), mailInfo.getEmail(), mailInfo.getBody());
+            feedbackService.saveFeedback(feedback);
+            if (mailInfo.getEmail() != null) {
+                EmailTest newMail = new EmailTest();
+                newMail.setFrom("nsp-reports@beehyv.com");
+                newMail.setTo(mailInfo.getEmail());
+                Calendar c = Calendar.getInstance();   // this takes current date
+                c.add(Calendar.MONTH, -1);
+                c.set(Calendar.DATE, 1);
+                newMail.setSubject("Feedback Received");
+                newMail.setBody(emailService.getBody("FeedBack", mailInfo.getName()));
+                return emailService.sendMailTest(newMail);
+            } else
+                return "success";
+        }
+        else
+            return  "failure";
+   }
 
+    @RequestMapping(value = "/sendEmailForContactUs", method = RequestMethod.POST)
+    public @ResponseBody String sendEmailForContactUs(@RequestBody EmailBody mailInfo) throws Exception{
+        LoginUser loginUser = new LoginUser();
+        loginUser.setSaltHex(mailInfo.getSaltHex());
+        loginUser.setCipherTextHex(mailInfo.getCipherTextHex());
+        if(mailInfo.getCaptcha().equals(decrypt(loginUser))) {
+            ContactUs contactUs = new ContactUs(mailInfo.getName(), mailInfo.getPhoneNo(), mailInfo.getEmail(), mailInfo.getBody());
+            contactUsService.saveContactUS(contactUs);
             EmailTest newMail = new EmailTest();
             newMail.setFrom("nsp-reports@beehyv.com");
             newMail.setTo(mailInfo.getEmail());
             Calendar c = Calendar.getInstance();   // this takes current date
             c.add(Calendar.MONTH, -1);
             c.set(Calendar.DATE, 1);
-            newMail.setSubject("Feedback Received");
-            newMail.setBody(emailService.getBody("FeedBack", mailInfo.getName()));
+            newMail.setSubject("Message Received");
+            newMail.setBody(emailService.getBody("ContactUs", mailInfo.getName()));
             return emailService.sendMailTest(newMail);
-         }
-         else
-             return "success";
-   }
-
-    @RequestMapping(value = "/sendEmailForContactUs", method = RequestMethod.POST)
-    public @ResponseBody String sendEmailForContactUs(@RequestBody EmailBody mailInfo){
-        EmailTest newMail = new EmailTest();
-        newMail.setFrom("nsp-reports@beehyv.com");
-        newMail.setTo(mailInfo.getEmail());
-        Calendar c = Calendar.getInstance();   // this takes current date
-        c.add(Calendar.MONTH, -1);
-        c.set(Calendar.DATE, 1);
-        newMail.setSubject("Message Received");
-        newMail.setBody(emailService.getBody("ContactUs",mailInfo.getName() ));
-        return emailService.sendMailTest(newMail);
+        }
+        else
+            return "failure";
     }
 
 //    @RequestMapping(value = "/sendFeedback1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)

@@ -177,10 +177,21 @@
 
 
                 else {
+                    var encrypted = CryptoJS.AES.encrypt($scope.email.captchaCode, 'ABCD123');
+                    var data = {
+                        "name": $scope.email.name,
+                        "captcha" : $scope.email.captchaCode,
+                        "cipherTextHex": encrypted.ciphertext.toString(),
+                        "saltHex": encrypted.salt.toString(),
+                        "email" : $scope.email.email,
+                        "body" : $scope.email.body,
+                        "subject" : $scope.email.subject,
+                        "phoneNo" : $scope.email.phoneNo
+                    };
                     $http({
                         method  : 'POST',
                         url     : backend_root + 'nms/mail/sendEmailForContactUs',
-                        data    : $scope.email, //forms user object
+                        data    : JSON.stringify(data), //forms user object
                         headers : {'Content-Type': 'application/json'}
                     }).then(function(){
                         if(UserFormFactory.isInternetExplorer()){

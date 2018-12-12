@@ -46,13 +46,13 @@
                         <div class=" col-sm-4 col-xs-4 col-lg-4 cf-txtAlign">
                             <label for="phoneNo">Phone No.</label>
                         </div>
-                        <div data-ng-class="{'has-error':ContactUsForm.phoneNo.$invalid && !ContactUsForm.phoneNo.$pristine}">
+                        <div data-ng-class="{'has-error':FeedbackForm.phoneNo.$invalid && !FeedbackForm.phoneNo.$pristine}">
 
                             <div class="col-sm-8 col-xs-8 col-lg-8 fake-input">
                                 <input name="phoneNo" autocomplete="off"  id="phoneNo" type="text" class="form-control input input-sm" data-ng-model="email.phoneNo" placeholder="Contact no."
                                        style="width: 220px;" data-ng-pattern="/^[0-9]*$/" data-ng-minlength="10" data-ng-maxlength="10">
                                 <p class="fake-input"><b>+91</b></p>
-                                <div class="errorMessage" data-ng-messages="ContactUsForm.phoneNo.$error" role="alert" data-ng-show="!ContactUsForm.phoneNo.$pristine">
+                                <div class="errorMessage" data-ng-messages="FeedbackForm.phoneNo.$error" role="alert" data-ng-show="!FeedbackForm.phoneNo.$pristine">
                                     <div data-ng-message="pattern">Input contains non-numeric characters</div>
                                     <div data-ng-message="minlength">Number is too short</div>
                                     <div data-ng-message="maxlength">Number is too long</div>

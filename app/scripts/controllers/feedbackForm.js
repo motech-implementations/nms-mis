@@ -10,6 +10,7 @@ UserFormFactory.downloadCurrentUser()
 					.then(function(result){
 					                        $scope.email.name=result.data.fullName;
 					                        $scope.email.email=result.data.emailId;
+
 					})
 					}
             			})
@@ -168,10 +169,20 @@ $scope.Captcha = function(){
                 }
 
                 else {
+                    var encrypted = CryptoJS.AES.encrypt($scope.email.captchaCode, 'ABCD123');
+                    var data = {
+                        "name": $scope.email.name,
+                        "captcha" : $scope.email.captchaCode,
+                        "cipherTextHex": encrypted.ciphertext.toString(),
+                        "saltHex": encrypted.salt.toString(),
+                        "email" : $scope.email.email,
+                        "body" : $scope.email.body,
+                        "phoneNo" : $scope.email.phoneNo
+                    };
                     $http({
                         method  : 'POST',
                         url     : backend_root + 'nms/mail/sendFeedback',
-                        data    : $scope.email, //forms user object
+                        data    : JSON.stringify(data), //forms user object
                         headers : {'Content-Type': 'application/json'}
                     }).then(function(){
                         if(UserFormFactory.isInternetExplorer()){

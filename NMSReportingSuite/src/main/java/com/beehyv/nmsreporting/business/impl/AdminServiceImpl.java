@@ -27,7 +27,7 @@ import static com.beehyv.nmsreporting.utils.Global.retrieveDocuments;
 import static com.beehyv.nmsreporting.utils.ServiceFunctions.StReplace;
 import static com.beehyv.nmsreporting.utils.Constants.header_base64;
 import static java.lang.Integer.parseInt;
-import static java.util.Objects.isNull;
+//import static java.util.Objects.isNull;
 
 /**
  * Created by beehyv on 19/4/17.

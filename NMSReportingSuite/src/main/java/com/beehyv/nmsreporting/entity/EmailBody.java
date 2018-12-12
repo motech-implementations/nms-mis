@@ -15,6 +15,38 @@ public class EmailBody {
 
     private String subject;
 
+    private String cipherTextHex;
+
+    private String saltHex;
+
+    private String captcha;
+
+    public String getCipherTextHex() {
+        return cipherTextHex;
+    }
+
+    public void setCipherTextHex(String cipherTextHex) {
+        this.cipherTextHex = cipherTextHex;
+    }
+
+    public String getSaltHex() {
+        return saltHex;
+    }
+
+    public void setSaltHex(String saltHex) {
+        this.saltHex = saltHex;
+    }
+
+    public String getCaptcha() {
+        return captcha;
+    }
+
+    public void setCaptcha(String captcha) {
+        this.captcha = captcha;
+    }
+
+
+
 
     public String getBody() {
         return body;
