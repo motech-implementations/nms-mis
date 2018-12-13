@@ -351,6 +351,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
 
 
         XSSFSheet spreadsheet = workbook.getSheetAt(0);
+        spreadsheet.protectSheet("123");
 
         XSSFCellStyle backgroundStyle = workbook.createCellStyle();
         XSSFCellStyle backgroundStyle1 = workbook.createCellStyle();
@@ -370,6 +371,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         backgroundStyle1.setBorderTop(CellStyle.BORDER_THIN);
         backgroundStyle1.setTopBorderColor(IndexedColors.WHITE.getIndex());
         backgroundStyle1.setWrapText(true);
+        backgroundStyle1.setLocked(false);
 
         backgroundStyle2.setAlignment(CellStyle.ALIGN_CENTER);
         backgroundStyle2.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
@@ -384,6 +386,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         backgroundStyle2.setBorderTop(CellStyle.BORDER_THIN);
         backgroundStyle2.setTopBorderColor(IndexedColors.WHITE.getIndex());
         backgroundStyle2.setWrapText(true);
+        backgroundStyle2.setLocked(false);
 
         backgroundStyle3.setAlignment(CellStyle.ALIGN_CENTER);
         backgroundStyle3.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
@@ -398,6 +401,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         backgroundStyle3.setBorderTop(CellStyle.BORDER_THIN);
         backgroundStyle3.setTopBorderColor(new XSSFColor(new java.awt.Color(212, 212, 212)));
         backgroundStyle3.setWrapText(true);
+        backgroundStyle3.setLocked(false);
 
         backgroundStyle.setAlignment(CellStyle.ALIGN_CENTER);
         backgroundStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
