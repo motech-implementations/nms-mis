@@ -1049,6 +1049,7 @@ public class AdminServiceImpl implements AdminService {
         //Create a blank sheet
         XSSFSheet spreadsheet = workbook.createSheet(
                 " Child Import Rejected Details ");
+        spreadsheet.protectSheet("123");
         //Create row object
         XSSFRow row;
         //This data needs to be written (Object[])
@@ -1083,6 +1084,7 @@ public class AdminServiceImpl implements AdminService {
         borderStyle.setBorderTop(CellStyle.BORDER_THIN);
         borderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
         borderStyle.setWrapText(true);
+        borderStyle.setLocked(false);
 
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
@@ -1183,6 +1185,7 @@ public class AdminServiceImpl implements AdminService {
         //Create a blank sheet
         XSSFSheet spreadsheet = workbook.createSheet(
                 " Mother Import Rejected Details ");
+        spreadsheet.protectSheet("123");
         //Create row object
         XSSFRow row;
         //This data needs to be written (Object[])
@@ -1218,6 +1221,7 @@ public class AdminServiceImpl implements AdminService {
         borderStyle.setBorderTop(CellStyle.BORDER_THIN);
         borderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
         borderStyle.setWrapText(true);
+        borderStyle.setLocked(false);
 
         Map<String, Object[]> empinfo = new TreeMap<String, Object[]>();
         empinfo.put("1", new Object[]{
@@ -1316,6 +1320,7 @@ public class AdminServiceImpl implements AdminService {
         //Create a blank sheet
         XSSFSheet spreadsheet = workbook.createSheet(
                 "Asha Import Rejected Details");
+        spreadsheet.protectSheet("123");
         //Create row object
         XSSFRow row;
         //This data needs to be written (Object[])
@@ -1351,6 +1356,7 @@ public class AdminServiceImpl implements AdminService {
         borderStyle.setBorderTop(CellStyle.BORDER_THIN);
         borderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
         borderStyle.setWrapText(true);
+        borderStyle.setLocked(false);
 
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
@@ -1450,6 +1456,7 @@ public class AdminServiceImpl implements AdminService {
         //Create a blank sheet
         XSSFSheet spreadsheet = workbook.createSheet(
                 " MA Course Completion Report ");
+        spreadsheet.protectSheet("123");
         //Create row object
         XSSFRow row;
         //This data needs to be written (Object[])
@@ -1485,6 +1492,7 @@ public class AdminServiceImpl implements AdminService {
         borderStyle.setBorderTop(CellStyle.BORDER_THIN);
         borderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
         borderStyle.setWrapText(true);
+        borderStyle.setLocked(false);
 
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
@@ -1659,6 +1667,7 @@ public class AdminServiceImpl implements AdminService {
         //Create a blank sheet
         XSSFSheet spreadsheet = workbook.createSheet(
                 " Circle-wise Anonymous Users Report");
+        spreadsheet.protectSheet("123");
         //Create row object
         XSSFRow row;
         //This data needs to be written (Object[])
@@ -1694,6 +1703,7 @@ public class AdminServiceImpl implements AdminService {
         borderStyle.setBorderTop(CellStyle.BORDER_THIN);
         borderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
         borderStyle.setWrapText(true);
+        borderStyle.setLocked(false);
 
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
@@ -1808,6 +1818,7 @@ public class AdminServiceImpl implements AdminService {
         //Create a blank sheet
         XSSFSheet spreadsheet = workbook.createSheet(
                 "Cumulative Inactive Users Report "+place+"_"+getMonthYear(toDate));
+        spreadsheet.protectSheet("123");
         //Create row object
         XSSFRow row;
         //This data needs to be written (Object[])
@@ -1843,6 +1854,7 @@ public class AdminServiceImpl implements AdminService {
         borderStyle.setBorderTop(CellStyle.BORDER_THIN);
         borderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
         borderStyle.setWrapText(true);
+        borderStyle.setLocked(false);
 
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
@@ -2258,6 +2270,7 @@ public class AdminServiceImpl implements AdminService {
         //Create a blank sheet
         XSSFSheet spreadsheet = workbook.createSheet(
                 " Kilkari Non-answering beneficiaries Report");
+        spreadsheet.protectSheet("123");
         //Create row object
         XSSFRow row;
         //This data needs to be written (Object[])
@@ -2293,6 +2306,7 @@ public class AdminServiceImpl implements AdminService {
         borderStyle.setBorderTop(CellStyle.BORDER_THIN);
         borderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
         borderStyle.setWrapText(true);
+        borderStyle.setLocked(false);
 
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
@@ -2391,6 +2405,7 @@ public class AdminServiceImpl implements AdminService {
         //Create a blank sheet
         XSSFSheet spreadsheet = workbook.createSheet(
                 " Kilkari Low Listenership deactivated beneficiaries Report");
+        spreadsheet.protectSheet("123");
         //Create row object
         XSSFRow row;
         //This data needs to be written (Object[])
@@ -2426,6 +2441,7 @@ public class AdminServiceImpl implements AdminService {
         borderStyle.setBorderTop(CellStyle.BORDER_THIN);
         borderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
         borderStyle.setWrapText(true);
+        borderStyle.setLocked(false);
 
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
@@ -2529,6 +2545,7 @@ public class AdminServiceImpl implements AdminService {
         //Create a blank sheet
         XSSFSheet spreadsheet = workbook.createSheet(
                 " Kilkari self-deactivators Report");
+        spreadsheet.protectSheet("123");
         //Create row object
         XSSFRow row;
         //This data needs to be written (Object[])
@@ -2564,6 +2581,7 @@ public class AdminServiceImpl implements AdminService {
         borderStyle.setBorderTop(CellStyle.BORDER_THIN);
         borderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
         borderStyle.setWrapText(true);
+        borderStyle.setLocked(false);
 
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
@@ -2668,6 +2686,7 @@ public class AdminServiceImpl implements AdminService {
         //Create a blank sheet
         XSSFSheet spreadsheet = workbook.createSheet(
                 " Kilkari Low Usage beneficiaries Report");
+        spreadsheet.protectSheet("123");
         //Create row object
         XSSFRow row;
         //This data needs to be written (Object[])
@@ -2703,6 +2722,7 @@ public class AdminServiceImpl implements AdminService {
         borderStyle.setBorderTop(CellStyle.BORDER_THIN);
         borderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
         borderStyle.setWrapText(true);
+        borderStyle.setLocked(false);
 
         Map<String, Object[]> empinfo =
                 new TreeMap<String, Object[]>();
