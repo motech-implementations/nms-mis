@@ -380,7 +380,10 @@
 			$scope.setReportHeaderName = function(name){
 			if(name == "Kilkari Repeat Listener"){
 			    $scope.reportHeaderName = "Kilkari Repeat Listener Month Wise";
-			}else{
+			}else if(name == "Kilkari Message Matrix"){
+                $scope.reportHeaderName = "kilkari message matrix for only successful calls";
+            }
+			else{
 			    $scope.reportHeaderName = name;
 			    }
 			}
@@ -1363,7 +1366,7 @@
                             $scope.reportBreadCrumbData = result.data.breadCrumbData;
                             if(result.data.motherData.length >0){
                                 $scope.gridOptions1.data = result.data.motherData;
-                                $scope.gridOptions1.showColumnFooter = false;
+                                $scope.gridOptions1.showColumnFooter = true;
                                 $scope.hideGrid = false;
                                 $scope.matrixContent1 ='Kilkari Pregnancy Content Data';
 
@@ -1374,7 +1377,7 @@
                             }
                             if(result.data.childData.length >0){
                                 $scope.gridOptions2.data = result.data.childData;
-                                $scope.gridOptions1.showColumnFooter = false;
+                                $scope.gridOptions2.showColumnFooter = true;
                                 $scope.hideMessageMatrix = false;
                                 $scope.matrixContent2 ='Kilkari Child Content Data';
                             }
@@ -1695,10 +1698,10 @@
 
                         var footerData=[];
                         var v;
-                                if(excelHeaderName.reportName != "Kilkari Message Matrix" && excelHeaderName.reportName != "Kilkari Listening Matrix" && excelHeaderName.reportName != "Kilkari Repeat Listener Month Wise"&& excelHeaderName.reportName != "Kilkari Thematic Content"){
+                                if(excelHeaderName.reportName != "Kilkari Listening Matrix" && excelHeaderName.reportName != "Kilkari Repeat Listener Month Wise"&& excelHeaderName.reportName != "Kilkari Thematic Content"){
                                     $scope.gridApi.grid.columns.forEach(function (ft) {
 
-                                       if(ft.displayName == "State" || ft.displayName == "District" || ft.displayName == "Block" || ft.displayName == "Subcenter" || ft.displayName == "Message Number (Week)" )
+                                       if(ft.displayName == "Message Week" || ft.displayName == "State" || ft.displayName == "District" || ft.displayName == "Block" || ft.displayName == "Subcenter" || ft.displayName == "Message Number (Week)" )
                                            v = "Total";
 
                                        else if(ft.displayName == "Average Duration Of Call" && excelHeaderName.reportName == "Kilkari Cumulative Summary"){
@@ -1750,7 +1753,7 @@
                                    }, this);
 
                                 }
-                if(excelHeaderName.reportName == "Kilkari Message Matrix" ||  excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise"){
+                if(excelHeaderName.reportName == "kilkari message matrix for only successful calls" ||  excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise"){
                 columns1 = $scope.gridApi1.grid.options.showHeader ? uiGridExporterService.getColumnHeaders($scope.gridApi1.grid, 'visible') : [];
 
                 var headers1=[]
@@ -1776,7 +1779,29 @@
                        }
                        data1.push(temprow1);
                     }
-            ExcelData.reportData1 = data1;}else{
+            ExcelData.reportData1 = data1;
+                    var footerData1=[];
+                    var v1;
+                    if(excelHeaderName.reportName == "kilkari message matrix for only successful calls"){
+                        $scope.gridApi1.grid.columns.forEach(function (ft1) {
+
+                            if(ft1.displayName == "Message Week" )
+                                v1 = "Total";
+                            else{
+                                v1 = ft1.getAggregationValue();
+                            }
+
+                            if(ft1.displayName != "S No."){
+                                if (ft1.displayName == "Location Name") {
+                                    v1 = "Total";
+                                }
+                                footerData1.push(v1);
+                            }
+
+                        }, this);
+
+                    }
+                }else{
             ExcelData.columnHeaders1 = [];
             ExcelData.reportData1 = [];
             }
@@ -1793,6 +1818,7 @@
                   }
 
                   ExcelData.colunmFooters = footerData;
+                  ExcelData.colunmFooters1 = footerData1;
                   ExcelData.stateName = excelHeaderName.stateName;
                   ExcelData.districtName = excelHeaderName.districtName;
                   ExcelData.blockName = excelHeaderName.blockName;
@@ -1847,173 +1873,198 @@
             exportUiGridService.exportToPdf1($scope.gridApi,$scope.gridApi1,excelHeaderName,$scope.reportCategory,$scope.matrixContent1,$scope.matrixContent2,uiGridExporterConstants,'visible', 'visible',fileName1,rejectionStart);
             };
 
-        $scope.exportToPdf1 = function(){
+            $scope.exportToPdf1 = function(){
 
- columns = $scope.gridApi.grid.options.showHeader ? uiGridExporterService.getColumnHeaders($scope.gridApi.grid, 'visible') : [];
+                columns = $scope.gridApi.grid.options.showHeader ? uiGridExporterService.getColumnHeaders($scope.gridApi.grid, 'visible') : [];
 
                 var headers=[]
                 columns.forEach(function (c) {
-                                        headers.push( c.displayName || c.value || columns[i].name);
-                                    }, this);
+                    headers.push( c.displayName || c.value || columns[i].name);
+                }, this);
                 ExcelData.columnHeaders = headers;
 
                 var exportData = uiGridExporterService.getData($scope.gridApi.grid, "visible", "visible");
                 var data = [];
 
                 for (i = 0; i < exportData.length; i++) {
-                       var temprow=[];
-                       for (j = 0; j < exportData[i].length; j++) {
-                              var temp = exportData[i][j].value;
-                                    if((excelHeaderName.reportName == "Kilkari Call" && (j == "7"||j == "8") )||
-                                        (excelHeaderName.reportName == "MA Cumulative Summary" && (j == "6"||j == "7"||j == "8"))||
-                                        (excelHeaderName.reportName == "Kilkari Cumulative Summary" && (j == "4"||j == "3") )||
-                                        (excelHeaderName.reportName == "Kilkari Thematic Content" && (j == "4") )||
-                                        (excelHeaderName.reportName == "Kilkari Beneficiary Completion" && (j == "2") )){
-                                         temp = Number(temp);
-                                        // temp = indianDecimal(temp);
-                                    }else if((j!="0")&&!(excelHeaderName.reportName == "Kilkari Thematic Content"&&j=="1")){
-                                                             //temp=indianInteger(temp);
-                                                             }
-                           temprow.push(temp);
-                       }
-                       data.push(temprow);
+                    var temprow=[];
+                    for (j = 0; j < exportData[i].length; j++) {
+                        var temp = exportData[i][j].value;
+                        if((excelHeaderName.reportName == "Kilkari Call" && (j == "7"||j == "8") )||
+                            (excelHeaderName.reportName == "MA Cumulative Summary" && (j == "6"||j == "7"||j == "8"))||
+                            (excelHeaderName.reportName == "Kilkari Cumulative Summary" && (j == "4"||j == "3") )||
+                            (excelHeaderName.reportName == "Kilkari Thematic Content" && (j == "4") )||
+                            (excelHeaderName.reportName == "Kilkari Beneficiary Completion" && (j == "2") )){
+                            temp = Number(temp);
+                            // temp = indianDecimal(temp);
+                        }else if((j!="0")&&!(excelHeaderName.reportName == "Kilkari Thematic Content"&&j=="1")){
+                            //temp=indianInteger(temp);
+                        }
+                        temprow.push(temp);
                     }
+                    data.push(temprow);
+                }
 
-                        var footerData=[];
+                var footerData=[];
 
-                        var v;
-                                if(excelHeaderName.reportName != "Kilkari Message Matrix" && excelHeaderName.reportName != "Kilkari Listening Matrix" && excelHeaderName.reportName != "Kilkari Repeat Listener Month Wise"&& excelHeaderName.reportName != "Kilkari Thematic Content"){
-                                    $scope.gridApi.grid.columns.forEach(function (ft) {
+                var v;
+                if(excelHeaderName.reportName != "Kilkari Listening Matrix" && excelHeaderName.reportName != "Kilkari Repeat Listener Month Wise"&& excelHeaderName.reportName != "Kilkari Thematic Content"){
+                    $scope.gridApi.grid.columns.forEach(function (ft) {
 
-                                       if(ft.displayName == "State" || ft.displayName == "District" || ft.displayName == "Block" || ft.displayName == "Subcenter" || ft.displayName == "Message Number (Week)" )
-                                           v = "Total";
+                        if(ft.displayName == "Message Week" || ft.displayName == "State" || ft.displayName == "District" || ft.displayName == "Block" || ft.displayName == "Subcenter" || ft.displayName == "Message Number (Week)" )
+                            v = "Total";
 
-                                       else if(ft.displayName == "Average Duration Of Call" && excelHeaderName.reportName == "Kilkari Cumulative Summary"){
-                                           var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[4].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue());
-                                           v = indianDecimal(temp);;
-                                       }
-                                       else if(ft.displayName == "Average Number Of Weeks In Service" && excelHeaderName.reportName == "Kilkari Beneficiary Completion"){
-                                           var temp = $scope.gridApi.grid.columns.length==0?0.00: ($scope.gridApi.grid.columns[3].getAggregationValue());
-                                           v = indianDecimal(temp);;
-                                       }
-                                       else if(ft.displayName == "Average Duration Of Calls" && excelHeaderName.reportName == "Kilkari Call"){
-                                           var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[8].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue());
-                                           v = indianDecimal(temp);;
-                                       }
-                                       else if(ft.displayName == "Total Billable Minutes" && excelHeaderName.reportName == "Kilkari Call"){
-                                           var temp = ft.getAggregationValue();
-                                           v = indianDecimal(temp);
-                                       }
-                                       else if(ft.displayName == "Total Billable Minutes Played" && excelHeaderName.reportName == "Kilkari Cumulative Summary"){
-                                           var temp = ft.getAggregationValue();
-                                           v = indianDecimal(temp);;
-                                       }
-                                       else if(ft.displayName == "Total Beneficiary Records Rejected" && excelHeaderName.reportName == "Kilkari Subscriber"&&!rejectionStart){
-                                           v = "N/A";
-                                       }
-                                       else if(ft.displayName == "% Not Started Course" && excelHeaderName.reportName == "MA Cumulative Summary"){
-                                          var temp = $scope.gridApi.grid.columns[2].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[4].getAggregationValue()/$scope.gridApi.grid.columns[2].getAggregationValue())*100;
-                                          v = indianDecimal(temp);;
-                                       }
-                                       else if(ft.displayName == "% Successfully Completed" && excelHeaderName.reportName == "MA Cumulative Summary"){
-                                          var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00:($scope.gridApi.grid.columns[5].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue())*100;
-                                          v = indianDecimal(temp);;
-                                       }
-                                       else if(ft.displayName == "% Failed the course" && excelHeaderName.reportName == "MA Cumulative Summary"){
-                                          var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00:($scope.gridApi.grid.columns[6].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue())*100;
-                                          v = indianDecimal(temp);;
-                                       }
-                                       else{
-                                           if (ft.displayName != "S No.") {
-                                                                   v = indianInteger(ft.getAggregationValue());}
-                                                                   else{
-                                                                   v = ft.getAggregationValue();
-                                                                   }
-                                       }
+                        else if(ft.displayName == "Average Duration Of Call" && excelHeaderName.reportName == "Kilkari Cumulative Summary"){
+                            var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[4].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue());
+                            v = indianDecimal(temp);;
+                        }
+                        else if(ft.displayName == "Average Number Of Weeks In Service" && excelHeaderName.reportName == "Kilkari Beneficiary Completion"){
+                            var temp = $scope.gridApi.grid.columns.length==0?0.00: ($scope.gridApi.grid.columns[3].getAggregationValue());
+                            v = indianDecimal(temp);;
+                        }
+                        else if(ft.displayName == "Average Duration Of Calls" && excelHeaderName.reportName == "Kilkari Call"){
+                            var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[8].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue());
+                            v = indianDecimal(temp);;
+                        }
+                        else if(ft.displayName == "Total Billable Minutes" && excelHeaderName.reportName == "Kilkari Call"){
+                            var temp = ft.getAggregationValue();
+                            v = indianDecimal(temp);
+                        }
+                        else if(ft.displayName == "Total Billable Minutes Played" && excelHeaderName.reportName == "Kilkari Cumulative Summary"){
+                            var temp = ft.getAggregationValue();
+                            v = indianDecimal(temp);;
+                        }
+                        else if(ft.displayName == "Total Beneficiary Records Rejected" && excelHeaderName.reportName == "Kilkari Subscriber"&&!rejectionStart){
+                            v = "N/A";
+                        }
+                        else if(ft.displayName == "% Not Started Course" && excelHeaderName.reportName == "MA Cumulative Summary"){
+                            var temp = $scope.gridApi.grid.columns[2].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[4].getAggregationValue()/$scope.gridApi.grid.columns[2].getAggregationValue())*100;
+                            v = indianDecimal(temp);;
+                        }
+                        else if(ft.displayName == "% Successfully Completed" && excelHeaderName.reportName == "MA Cumulative Summary"){
+                            var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00:($scope.gridApi.grid.columns[5].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue())*100;
+                            v = indianDecimal(temp);;
+                        }
+                        else if(ft.displayName == "% Failed the course" && excelHeaderName.reportName == "MA Cumulative Summary"){
+                            var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00:($scope.gridApi.grid.columns[6].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue())*100;
+                            v = indianDecimal(temp);;
+                        }
+                        else{
+                            if (ft.displayName != "S No.") {
+                                v = indianInteger(ft.getAggregationValue());}
+                            else{
+                                v = ft.getAggregationValue();
+                            }
+                        }
 
-                                       if(ft.displayName != "S No."){
-                                            footerData.push(v);
-                                       }
+                        if(ft.displayName != "S No."){
+                            footerData.push(v);
+                        }
 
-                                   }, this);
+                    }, this);
 
+                }
+                if(excelHeaderName.reportName != "Kilkari Listening Matrix" && excelHeaderName.reportName != "Kilkari Repeat Listener Month Wise"&& excelHeaderName.reportName != "Kilkari Thematic Content"){
+                    data.push(footerData);
+                }
+                ExcelData.reportData = data;
+                if(excelHeaderName.reportName == "kilkari message matrix for only successful calls" ||  excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise"){
+                    columns1 = $scope.gridApi1.grid.options.showHeader ? uiGridExporterService.getColumnHeaders($scope.gridApi1.grid, 'visible') : [];
+
+                    var headers1=[]
+                    columns1.forEach(function (c) {
+                        headers1.push( c.displayName || c.value || columns1[i].name);
+                    }, this);
+                    ExcelData.columnHeaders1 = headers1;
+
+                    var exportData1 = uiGridExporterService.getData($scope.gridApi1.grid, "visible", "visible");
+                    var data1 = [];
+
+                    for (i = 0; i < exportData1.length; i++) {
+                        var temprow1=[];
+                        for (j = 0; j < exportData1[i].length; j++) {
+                            var temp1 = exportData1[i][j].value;
+                            if((excelHeaderName.reportName == "Kilkari Call" && (j == "7"||j == "8") )||
+                                (excelHeaderName.reportName == "MA Cumulative Summary" && (j == "6"||j == "7"||j == "8"))||
+                                (excelHeaderName.reportName == "Kilkari Cumulative Summary" && (j == "4"||j=="3") )||
+                                (excelHeaderName.reportName == "Kilkari Thematic Content" && (j == "4") )||
+                                (excelHeaderName.reportName == "Kilkari Beneficiary Completion" && (j == "2") )){
+                            }
+                            temprow1.push(temp1);
+                        }
+                        data1.push(temprow1);
+                    }
+                        ExcelData.reportData1 = data1;
+                    var footerData1=[];
+                    var v1;
+                    if(excelHeaderName.reportName == "kilkari message matrix for only successful calls"){
+                        $scope.gridApi1.grid.columns.forEach(function (ft1) {
+
+                            if(ft1.displayName == "Message Week" )
+                                v1 = "Total";
+                            else{
+                                v1 = ft1.getAggregationValue();
+                            }
+
+                            if(ft1.displayName != "S No."){
+                                if (ft1.displayName == "Location Name") {
+                                    v1 = "Total";
                                 }
-       if(excelHeaderName.reportName != "Kilkari Message Matrix" && excelHeaderName.reportName != "Kilkari Listening Matrix" && excelHeaderName.reportName != "Kilkari Repeat Listener Month Wise"&& excelHeaderName.reportName != "Kilkari Thematic Content"){
-                              data.push(footerData);
-                 }
-           ExcelData.reportData = data;
-                if(excelHeaderName.reportName == "Kilkari Message Matrix" ||  excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise"){
-                columns1 = $scope.gridApi1.grid.options.showHeader ? uiGridExporterService.getColumnHeaders($scope.gridApi1.grid, 'visible') : [];
+                                footerData1.push(v1);
+                            }
 
-                var headers1=[]
-                columns1.forEach(function (c) {
-                                        headers1.push( c.displayName || c.value || columns1[i].name);
-                                    }, this);
-                ExcelData.columnHeaders1 = headers1;
+                        }, this);
 
-                var exportData1 = uiGridExporterService.getData($scope.gridApi1.grid, "visible", "visible");
-                var data1 = [];
+                    data1.push(footerData1);}
+                }
 
-                for (i = 0; i < exportData1.length; i++) {
-                       var temprow1=[];
-                       for (j = 0; j < exportData1[i].length; j++) {
-                              var temp1 = exportData1[i][j].value;
-                                    if(!j=="0") {
-                                    if(excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise"){
-                                    //temp1 = indianDecimal(temp1);
-                                    }else{
-                                    //temp1 = indianInteger(temp1);}
-                                    }
-                           temprow1.push(temp1);
-                       }
-                       data1.push(temprow1);
-                    }
-            ExcelData.reportData1 = data1;}
-            ExcelData.columnHeaders1 = [];
-            ExcelData.reportData1 = [];
-            }
+                else{
+                    ExcelData.columnHeaders1 = [];
+                    ExcelData.reportData1 = [];
+                }
 
-                  var months    = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-                  var toDateString = $scope.headerToDate.getDate()<10?"0"+$scope.headerToDate.getDate():$scope.headerToDate.getDate();
+                var months    = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                var toDateString = $scope.headerToDate.getDate()<10?"0"+$scope.headerToDate.getDate():$scope.headerToDate.getDate();
 
-                  if($scope.report.reportEnum == 'Kilkari_Cumulative_Summary'||$scope.report.reportEnum == 'MA_Cumulative_Summary'){
-                   excelHeaderName.timePeriod = "till "+toDateString+" "+months[$scope.headerToDate.getMonth()]+" "+$scope.headerToDate.getFullYear();}
-                  else{
-                  var fromDateString = $scope.headerFromDate.getDate()<10?"0"+$scope.headerFromDate.getDate():$scope.headerFromDate.getDate();
-                  excelHeaderName.timePeriod = fromDateString+" "+months[$scope.headerFromDate.getMonth()]+" "+$scope.headerFromDate.getFullYear()+
-                  " to "+toDateString+" "+months[$scope.headerToDate.getMonth()]+" "+$scope.headerToDate.getFullYear();
-                  }
+                if($scope.report.reportEnum == 'Kilkari_Cumulative_Summary'||$scope.report.reportEnum == 'MA_Cumulative_Summary'){
+                    excelHeaderName.timePeriod = "till "+toDateString+" "+months[$scope.headerToDate.getMonth()]+" "+$scope.headerToDate.getFullYear();}
+                else{
+                    var fromDateString = $scope.headerFromDate.getDate()<10?"0"+$scope.headerFromDate.getDate():$scope.headerFromDate.getDate();
+                    excelHeaderName.timePeriod = fromDateString+" "+months[$scope.headerFromDate.getMonth()]+" "+$scope.headerFromDate.getFullYear()+
+                        " to "+toDateString+" "+months[$scope.headerToDate.getMonth()]+" "+$scope.headerToDate.getFullYear();
+                }
 
-                  ExcelData.colunmFooters = footerData;
-                  ExcelData.stateName = excelHeaderName.stateName;
-                  ExcelData.districtName = excelHeaderName.districtName;
-                  ExcelData.blockName = excelHeaderName.blockName;
-                  ExcelData.reportName = excelHeaderName.reportName;
-                  ExcelData.timePeriod = excelHeaderName.timePeriod;
-                  ExcelData.fileName = $scope.gridApi.grid.options.exporterExcelFilename ? $scope.gridApi.grid.options.exporterExcelFilename : 'dokuman';
+                ExcelData.colunmFooters = footerData;
+                ExcelData.stateName = excelHeaderName.stateName;
+                ExcelData.districtName = excelHeaderName.districtName;
+                ExcelData.blockName = excelHeaderName.blockName;
+                ExcelData.reportName = excelHeaderName.reportName;
+                ExcelData.timePeriod = excelHeaderName.timePeriod;
+                ExcelData.fileName = $scope.gridApi.grid.options.exporterExcelFilename ? $scope.gridApi.grid.options.exporterExcelFilename : 'dokuman';
 
 
 
                 $http({
-                                    method  : 'POST',
-                                    url     : backend_root + 'nms/user/downloadAggPdf',
-                                    data    : ExcelData, //forms user object
+                    method  : 'POST',
+                    url     : backend_root + 'nms/user/downloadAggPdf',
+                    data    : ExcelData, //forms user object
 //                                    responseType: 'arraybuffer',
-                                    headers : {'Content-Type': 'application/json '}
-                                }).then(function(response){
+                    headers : {'Content-Type': 'application/json '}
+                }).then(function(response){
 
-                                     if(response.data=="success"){
-             var fileName = $scope.gridApi.grid.options.exporterExcelFilename ? $scope.gridApi.grid.options.exporterExcelFilename : 'dokuman';
-                                                   fileName += '.pdf';
-                                                   window.location.href = backend_root + 'nms/user/downloadpdf?fileName='+fileName;
-                                                                         }
-                                     }
+                        if(response.data=="success"){
+                            var fileName = $scope.gridApi.grid.options.exporterExcelFilename ? $scope.gridApi.grid.options.exporterExcelFilename : 'dokuman';
+                            fileName += '.pdf';
+                            window.location.href = backend_root + 'nms/user/downloadpdf?fileName='+fileName;
+                        }
+                    }
 
-                                );
+                );
 
-                  // exportUiGridService.exportToExcel('sheet 1', $scope.gridApi,$scope.gridApi1, 'visible', 'visible', excelHeaderName);
+                // exportUiGridService.exportToExcel('sheet 1', $scope.gridApi,$scope.gridApi1, 'visible', 'visible', excelHeaderName);
 
             }
+
 
             function indianDecimal( value){
                             x=value.toString();
@@ -2171,10 +2222,10 @@
                                                      },
                                                      { field: 'completedBeneficiaries', name: 'Total beneficiaries Completed Program',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                      { field: 'avgWeeks', name: 'Average Number of Weeks in Service',cellFilter: 'indianDecimalFilter', footerCellFilter: 'number:2', aggregationType: uiGridConstants.aggregationTypes.avg, aggregationHideLabel: true,  aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'calls_75_100', name: 'Beneficiaries who have listened greater than or equal to 75% content (consolidated)',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'calls_50_75', name: 'Beneficiaries who have listened greater than or equal to 50% and less than 75% content (consolidated)',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
-                                                     { field: 'calls_25_50', name: 'Beneficiaries who have listened greater than or equal to 25% and less than 50% content (consolidated)',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'calls_1_25', name: 'Beneficiaries who have listened less than 25% content (consolidated)',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
+                                                     { field: 'calls_75_100', name: 'Beneficiaries who have listened greater than or equal to 75% content (Consolidated avg)',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'calls_50_75', name: 'Beneficiaries who have listened greater than or equal to 50% and less than 75% content (Consolidated avg)',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                     { field: 'calls_25_50', name: 'Beneficiaries who have listened greater than or equal to 25% and less than 50% content (Consolidated avg)',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'calls_1_25', name: 'Beneficiaries who have listened less than 25% content (Consolidated avg)',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
 
             ]
 
@@ -2206,22 +2257,22 @@
             ]
 
             $scope.Kilkari_Message_Matrix_Motherpack_Definitions =[
-                                                     { field: 'messageWeek', name: 'Message Week',enableSorting: false,width:"*", enableHiding: false },
-                                                     { field: 'content_75_100', name: 'Beneficiaries listened greater than or equal to 75% content',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', enableSorting: false,width:"*", enableHiding: false},
-                                                     { field: 'content_50_75', name: 'Beneficiaries listened greater than or equal to 50% to less than 75% content',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', enableSorting: false,width:"*", enableHiding: false},
-                                                     { field: 'content_25_50', name: 'Beneficiaries listened greater than or equal to 25% to less than 50% content',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',enableSorting: false,width:"*", enableHiding: false },
-                                                     { field: 'content_1_25', name: 'Beneficiaries listened less than 25 % content',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',enableSorting: false,width:"*", enableHiding: false },
-                                                     //{ field: 'total', name: 'Total', enableSorting: false,width:"*",cellFilter: 'indianFilter,footerCellFilter: 'indianFilter, enableHiding: false },
+                                                     { field: 'messageWeek',name: 'Message Week',footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',enableSorting: false,width:"*", enableHiding: false},
+                                                     { field: 'content_75_100', name: 'Beneficiaries listened greater than or equal to 75% content',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, enableSorting: false,width:"*", enableHiding: false},
+                                                     { field: 'content_50_75', name: 'Beneficiaries listened greater than or equal to 50% to less than 75% content',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, enableSorting: false,width:"*", enableHiding: false},
+                                                     { field: 'content_25_50', name: 'Beneficiaries listened greater than or equal to 25% to less than 50% content',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,enableSorting: false,width:"*", enableHiding: false },
+                                                     { field: 'content_1_25', name: 'Beneficiaries listened less than 25 % content',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,enableSorting: false,width:"*", enableHiding: false },
+                                                     { field: 'total', name: 'Total', enableSorting: false,width:"*",cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, enableHiding: false },
 
             ]
 
             $scope.Kilkari_Message_Matrix_Childpack_Definitions =[
-                                                     { field: 'messageWeek', name: 'Message Week',enableSorting: false,width:"*", enableHiding: false },
-                                                     { field: 'content_75_100', name: 'Beneficiaries listened greater than or equal to 75% content',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', enableSorting: false,width:"*", enableHiding: false},
-                                                     { field: 'content_50_75', name: 'Beneficiaries listened greater than or equal to 50% to less than 75% content',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',enableSorting: false, width:"*", enableHiding: false},
-                                                     { field: 'content_25_50', name: 'Beneficiaries listened greater than or equal to 25% to less than 50% content',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',enableSorting: false,width:"*", enableHiding: false },
-                                                     { field: 'content_1_25', name: 'Beneficiaries listened less than 25% content',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',enableSorting: false,width:"*", enableHiding: false },
-                                                     //{ field: 'total', name: 'Total', enableSorting: false,width:"*",cellFilter: 'indianFilter,footerCellFilter: 'indianFilter, enableHiding: false },
+                                                     { field: 'messageWeek',name: 'Message Week',footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',enableSorting: false,width:"*", enableHiding: false },
+                                                     { field: 'content_75_100', name: 'Beneficiaries listened greater than or equal to 75% content',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, enableSorting: false,width:"*", enableHiding: false},
+                                                     { field: 'content_50_75', name: 'Beneficiaries listened greater than or equal to 50% to less than 75% content',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,enableSorting: false, width:"*", enableHiding: false},
+                                                     { field: 'content_25_50', name: 'Beneficiaries listened greater than or equal to 25% to less than 50% content',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,enableSorting: false,width:"*", enableHiding: false },
+                                                     { field: 'content_1_25', name: 'Beneficiaries listened less than 25% content',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,enableSorting: false,width:"*", enableHiding: false },
+                                                     { field: 'total', name: 'Total', enableSorting: false,width:"*",cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, enableHiding: false },
 
             ]
 

@@ -25,7 +25,7 @@
 
             var columns = gridApi.grid.options.showHeader ? uiGridExporterService.getColumnHeaders(gridApi.grid, colTypes) : [];
             var data = uiGridExporterService.getData(gridApi.grid, rowTypes, colTypes);
-            if (excelHeaderName.reportName == "Kilkari Message Matrix" || excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise") {
+            if (excelHeaderName.reportName == "kilkari message matrix for only successful calls" || excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise") {
                 var columns1 = gridApi1.grid.options.showHeader ? uiGridExporterService.getColumnHeaders(gridApi1.grid, colTypes) : [];
                 var data1 = uiGridExporterService.getData(gridApi1.grid, rowTypes, colTypes);
             }
@@ -33,7 +33,7 @@
 
             var CSV = '';
             //Set Report title in first row or line
-            if (excelHeaderName.reportName == "Kilkari Message Matrix") {
+            if (excelHeaderName.reportName == "kilkari message matrix for only successful calls") {
                 CSV += 'Kilkari Pregnancy Content Data\r\n\n';
             }
             if (excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise") {
@@ -82,10 +82,10 @@
 
             var v;
             var row = "";
-            if (excelHeaderName.reportName != "Kilkari Message Matrix" && excelHeaderName.reportName != "Kilkari Listening Matrix" && excelHeaderName.reportName != "Kilkari Repeat Listener Month Wise"&& excelHeaderName.reportName != "Kilkari Thematic Content") {
+            if (excelHeaderName.reportName != "Kilkari Listening Matrix" && excelHeaderName.reportName != "Kilkari Repeat Listener Month Wise"&& excelHeaderName.reportName != "Kilkari Thematic Content") {
                 gridApi.grid.columns.forEach(function(ft) {
 
-                    if (ft.displayName == "State" || ft.displayName == "District" || ft.displayName == "Block" || ft.displayName == "Subcenter" || ft.displayName == "Message Number (Week)")
+                    if (ft.displayName == "Message Week" || ft.displayName == "State" || ft.displayName == "District" || ft.displayName == "Block" || ft.displayName == "Subcenter" || ft.displayName == "Message Number (Week)")
                         v = "Total";
 
                     else if (ft.displayName == "Average Duration Of Call" && excelHeaderName.reportName == "Kilkari Cumulative Summary") {
@@ -132,13 +132,13 @@
                 row = row.slice(0, -1);
                 CSV += row;
             }
-            if (excelHeaderName.reportName == "Kilkari Message Matrix") {
+            if (excelHeaderName.reportName == "kilkari message matrix for only successful calls") {
                 CSV += '\n\nKilkari Child Content Data\r\n\n';
             }
             if (excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise") {
                 CSV += '\n\nBeneficiary Percentage\r\n\n';
             }
-            if (excelHeaderName.reportName == "Kilkari Message Matrix" || excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise") {
+            if (excelHeaderName.reportName == "kilkari message matrix for only successful calls" || excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise") {
                 var row = "";
                 columns1.forEach(function(c) {
                     var v = c.displayName || c.value || columns[i].name;
@@ -155,6 +155,28 @@
                     row = row.slice(0, -1);
                     CSV += row + '\r\n';
                 }, this);
+
+                var v1;
+                var row1 = "";
+                if(excelHeaderName.reportName == "kilkari message matrix for only successful calls"){
+                    gridApi1.grid.columns.forEach(function (ft1) {
+
+                        if(ft1.displayName == "Message Week" )
+                            v1 = "Total";
+                        else{
+                            v1 = ft1.getAggregationValue();
+                        }
+
+                        if(ft1.displayName != "S No."){
+                            if (ft1.displayName == "Location Name") {
+                                v1 = "Total";
+                            }
+                            row1 += v1 + ',';
+                        }
+
+                    }, this);
+                    row1 = row1.slice(0, -1);
+                    CSV += row1;}
 
 
             }
@@ -236,7 +258,7 @@
             case 'Kilkari Beneficiary Completion': pageHeading='Kilkari Beneficiary Completion Report'; break;
             case 'Kilkari Usage': pageHeading='Kilkari Usage Report'; break;
             case 'Kilkari Call': pageHeading='Kilkari Call Report'; break;
-            case 'Kilkari Message Matrix': pageHeading='Kilkari Message Matrix Report'; break;
+            case 'kilkari message matrix for only successful calls': pageHeading='kilkari message matrix for only successful calls'; break;
             case 'Kilkari Listening Matrix': pageHeading='Kilkari Listenign Matrix Report'; break;
             case 'Kilkari Thematic Content': pageHeading='Kilkari Thematic Content Report'; break;
             case 'Kilkari Repeat Listener Month Wise': pageHeading='Kilkari Repeat Listener Month Wise Report'; break;
@@ -260,7 +282,7 @@
 //            }
 
 
-            if (excelHeaderName.reportName == "Kilkari Message Matrix" || excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise") {
+            if (excelHeaderName.reportName == "kilkari message matrix for only successful calls" || excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise") {
                 //First Table
                 var grid = gridApi.grid;
                 var exportColumnHeaders = uiGridExporterService.getColumnHeaders(grid, uiGridExporterConstants.ALL);
@@ -282,6 +304,35 @@
                     datapdf.push(tempcol);
                     index++;
                 }
+                var tempfoot = [" "];
+
+                //Calculating the total for respective
+                //Columns
+                gridApi.grid.columns.forEach(function(ft) {
+
+                    if (ft.displayName == "Message Week")
+                        v = "Total";
+                    else {
+                        if (ft.displayName != "S No.") {
+                            if (ft.displayName == "Location Name") {
+                                v = "Total";
+                            } else {
+                                v = indianInteger(ft.getAggregationValue());
+                            }
+                        }
+                        else{
+                            v = ft.getAggregationValue();
+                        }
+                    }
+
+                    if (ft.displayName != "S No.") {
+                        tempfoot.push(v);
+                    }
+
+                }, this);
+                   datapdf.push(tempfoot);
+
+
                 //Second Table
                 var grid1 = gridApi1.grid;
                 var exportColumnHeaders1 = uiGridExporterService.getColumnHeaders(grid1, uiGridExporterConstants.ALL);
@@ -301,17 +352,44 @@
                     datapdf1.push(tempcol);
                     index1++;
                 }
+                var tempfoot1 = [" "];
+
+                //Calculating the total for respective
+                //Columns
+                gridApi1.grid.columns.forEach(function(ft) {
+
+                    if (ft.displayName == "Message Week")
+                        v1= "Total";
+                    else {
+                        if (ft.displayName != "S No.") {
+                            if (ft.displayName == "Location Name") {
+                                v1 = "Total";
+                            } else {
+                                v1 = indianInteger(ft.getAggregationValue());
+                            }
+                        }
+                        else{
+                            v1 = ft.getAggregationValue();
+                        }
+                    }
+
+                    if (ft.displayName != "S No.") {
+                        tempfoot1.push(v1);
+                    }
+
+                }, this);
+                datapdf1.push(tempfoot1);
                 var colWidth = [25];
                 var colWidth1 = [25];
                 //Dynamically getting the number of columns for each kind of table
-               if(excelHeaderName.reportName == "Kilkari Message Matrix"){
+               if(excelHeaderName.reportName == "kilkari message matrix for only successful calls"){
                 for (i = 0; i < exportColumnHeaders.length; i++) {
-                    colWidth[i+1] = 130;
+                    colWidth[i+1] = 80;
                 }
                 //For 2nd Table
 
                 for (i = 0; i < exportColumnHeaders1.length; i++) {
-                    colWidth1[i+1] = 130;
+                    colWidth1[i+1] = 80;
                 }
 
                }else{
@@ -1173,7 +1251,7 @@
         function exportToExcel(sheetName, gridApi, gridApi1, rowTypes, colTypes, excelHeaderName) {
             var columns = gridApi.grid.options.showHeader ? uiGridExporterService.getColumnHeaders(gridApi.grid, colTypes) : [];
             var data = uiGridExporterService.getData(gridApi.grid, rowTypes, colTypes);
-            if (excelHeaderName.reportName == "Kilkari Message Matrix" || excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise") {
+            if (excelHeaderName.reportName == "kilkari message matrix for only successful calls" || excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise") {
                 var columns1 = gridApi1.grid.options.showHeader ? uiGridExporterService.getColumnHeaders(gridApi1.grid, colTypes) : [];
                 var data1 = uiGridExporterService.getData(gridApi1.grid, rowTypes, colTypes);
             }
@@ -1299,7 +1377,7 @@
 
             };
 
-            if (excelHeaderName.reportName == "Kilkari Message Matrix") {
+            if (excelHeaderName.reportName == "kilkari message matrix for only successful calls") {
 
                 var ws = {
                     B1: {
@@ -1735,7 +1813,7 @@
             addCell(range, "Report :", 0, 0, ws);
             addCell(range, excelHeaderName.timePeriod, 0, 8, ws);
             addCell(range, excelHeaderName.blockName, 2, 9, ws);
-            if (excelHeaderName.reportName == "Kilkari Message Matrix" || excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise") {
+            if (excelHeaderName.reportName == "kilkari message matrix for only successful calls" || excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise") {
                 addCell(range, excelHeaderName.timePeriod, 14, 8, ws);
                 addCell(range, excelHeaderName.blockName, 16, 9, ws);
             }
@@ -1759,7 +1837,7 @@
             }, this);
             C = 0;
             var v;
-            if (excelHeaderName.reportName != "Kilkari Message Matrix" && excelHeaderName.reportName != "Kilkari Listening Matrix" && excelHeaderName.reportName != "Kilkari Repeat Listener Month Wise"&& excelHeaderName.reportName != "Kilkari Thematic Content") {
+            if (excelHeaderName.reportName != "kilkari message matrix for only successful calls" && excelHeaderName.reportName != "Kilkari Listening Matrix" && excelHeaderName.reportName != "Kilkari Repeat Listener Month Wise"&& excelHeaderName.reportName != "Kilkari Thematic Content") {
                 gridApi.grid.columns.forEach(function(ft) {
 
                     if (ft.displayName == "State" || ft.displayName == "District" || ft.displayName == "Block" || ft.displayName == "Subcenter" || ft.displayName == "Message Number (Week)")
@@ -1796,7 +1874,7 @@
 
             }
             C = 0;
-            if (excelHeaderName.reportName == "Kilkari Message Matrix" || excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise") {
+            if (excelHeaderName.reportName == "kilkari message matrix for only successful calls" || excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise") {
                 columns1.forEach(function(c) {
                     var v = c.displayName || c.value || columns[i].name;
                     addCell(range, v, 18, C, ws);

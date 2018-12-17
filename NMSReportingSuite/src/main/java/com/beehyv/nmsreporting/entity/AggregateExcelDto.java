@@ -9,12 +9,22 @@ public class AggregateExcelDto {
     private ArrayList<String> colunmFooters;
     private ArrayList<ArrayList<String>> reportData1;
     private ArrayList<String> columnHeaders1;
+    private ArrayList<String> colunmFooters1;
     private String stateName;
     private String districtName;
     private String blockName;
     private String reportName;
     private String timePeriod;
     private String fileName;
+
+
+    public ArrayList<String> getColunmFooters1() {
+        return colunmFooters1;
+    }
+
+    public void setColunmFooters1(ArrayList<String> colunmFooters1) {
+        this.colunmFooters1 = colunmFooters1;
+    }
 
     public ArrayList<ArrayList<String>> getReportData() {
         return reportData;

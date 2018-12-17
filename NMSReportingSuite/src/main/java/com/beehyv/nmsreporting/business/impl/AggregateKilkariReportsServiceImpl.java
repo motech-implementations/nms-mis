@@ -2086,7 +2086,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             switch (messagelist.get(count).getMessageWeek()){
                 case "mother_week_1_6":
                 {
-                    matrixDto1.setMessageWeek("Message Week 1-6");
+                    matrixDto1.setMessageWeek("Message Week 2-6");
                     Mother_1_25 += messagelist.get(count).getListened_lessthan25();
                     Mother_25_50 += messagelist.get(count).getListened_25_50();
                     Mother_50_75 += messagelist.get(count).getListened_50_75();
@@ -2129,7 +2129,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
 
 
                 case "child_week_1_6": {
-                    matrixDto1.setMessageWeek("Message Week 1-6");
+                    matrixDto1.setMessageWeek("Message Week 2-6");
                     Child_1_25 += messagelist.get(count).getListened_lessthan25();
                     Child_25_50 += messagelist.get(count).getListened_25_50();
                     Child_50_75 += messagelist.get(count).getListened_50_75();

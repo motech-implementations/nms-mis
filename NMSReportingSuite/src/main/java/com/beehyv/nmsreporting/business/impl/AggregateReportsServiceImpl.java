@@ -447,7 +447,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         XSSFRow row;
         int rowid = 8;
 
-        if (gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix")) {
+        if (gridData.getReportName().equalsIgnoreCase("kilkari message matrix for only successful calls")) {
             row = spreadsheet.createRow(rowid++);
             Cell cell = row.createCell(0);
             cell.setCellValue("Kilkari Pregnancy Content Data");
@@ -528,7 +528,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
 
         row = spreadsheet.createRow(rowid++);
         colid = 0;
-        if (!(gridData.getReportName().equalsIgnoreCase("Kilkari Thematic Content") || gridData.getReportName().equalsIgnoreCase("Kilkari Listening Matrix") || gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix") || gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener Month Wise"))) {
+        if (!(gridData.getReportName().equalsIgnoreCase("Kilkari Thematic Content") || gridData.getReportName().equalsIgnoreCase("Kilkari Listening Matrix") || gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener Month Wise"))) {
             Cell SNofooot = row.createCell(colid++);
             SNofooot.setCellValue("");
             SNofooot.setCellStyle(backgroundStyle3);
@@ -547,7 +547,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
             cell1.setCellStyle(backgroundStyle3);
         }
 
-        if (gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix")) {
+        if (gridData.getReportName().equalsIgnoreCase("kilkari message matrix for only successful calls")) {
             row = spreadsheet.createRow(rowid++);
             Cell cell = row.createCell(0);
             cell.setCellStyle(style);
@@ -566,7 +566,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         }
 
         row = spreadsheet.createRow(rowid++);
-        if (gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix") || gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener Month Wise")) {
+        if (gridData.getReportName().equalsIgnoreCase("kilkari message matrix for only successful calls") || gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener Month Wise")) {
             row.setHeight((short) 1100);
             colid = 0;
             int tabrow1 = 0;
@@ -609,6 +609,24 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                 }
                 tabrow1++;
             }
+            row = spreadsheet.createRow(rowid++);
+            colid = 0;
+            Cell SNofooot = row.createCell(colid++);
+            SNofooot.setCellValue("");
+            SNofooot.setCellStyle(backgroundStyle3);
+            for (String footer : gridData.getColunmFooters1()) {
+                Cell cell1 = row.createCell(colid++);
+                if (colid == 2 || footer.equalsIgnoreCase("N/A")) {
+                    cell1.setCellValue(footer);
+                } else {
+                    com.ibm.icu.text.NumberFormat format = com.ibm.icu.text.NumberFormat.getNumberInstance(new Locale("en", "in"));
+                    format.setMaximumFractionDigits(2);
+                    double value = parseDouble(footer);
+                    cell1.setCellValue(format.format(value));
+                }
+                cell1.setCellStyle(backgroundStyle3);
+            }
+
         }
         createHeadersForAggreagateExcels(workbook, gridData);
     }
@@ -745,7 +763,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         } else if (gridData.getReportName().equalsIgnoreCase("MA Performance") || gridData.getReportName().equalsIgnoreCase("Kilkari Listening Matrix")) {
             cellWidth = 18f;
             tableMargin = 60;
-        } else if (gridData.getReportName().equalsIgnoreCase("Kilkari Thematic Content") || gridData.getReportName().equalsIgnoreCase("Kilkari Cumulative Summary") || gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix")) {
+        } else if (gridData.getReportName().equalsIgnoreCase("Kilkari Thematic Content") || gridData.getReportName().equalsIgnoreCase("Kilkari Cumulative Summary") || gridData.getReportName().equalsIgnoreCase("kilkari message matrix for only successful calls")) {
             cellWidth = 16f;
             tableMargin = 80;
         } else if (gridData.getReportName().equalsIgnoreCase("Kilkari Usage") || gridData.getReportName().equalsIgnoreCase("Kilkari Subscriber") || gridData.getReportName().equalsIgnoreCase("Kilkari Message Listenership")) {
@@ -792,7 +810,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
 
         // Initialize table
 
-        if (gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix")) {
+        if (gridData.getReportName().equalsIgnoreCase("kilkari message matrix for only successful calls")) {
             title = "Kilkari Pregnancy Content Data";
             titleWidth = font1.getStringWidth(title) / 1000 * fontSize1;
             x = (page.getMediaBox().getWidth() - titleWidth) / 2;
@@ -839,7 +857,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
             for (int j = 0; j < gridData.getReportData().get(i).size(); j++) {
                 cell = row.createCell((cellWidth), gridData.getReportData().get(i).get(j), be.quodlibet.boxable.HorizontalAlignment.get("center"), be.quodlibet.boxable.VerticalAlignment.get("middle"));
                 cell.setFontSize(tableFont);
-                if(!gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener Month Wise")&&!gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix"))
+                if(!gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener Month Wise")&&!gridData.getReportName().equalsIgnoreCase("kilkari message matrix for only successful calls"))
                 if(i ==gridData.getReportData().size()-1){
                     cell.setFont(PDType1Font.TIMES_BOLD);
                 }
@@ -897,7 +915,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
 
         }
 
-        if (gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix")) {
+        if (gridData.getReportName().equalsIgnoreCase("kilkari message matrix for only successful calls")) {
             page = new PDPage();
             cellWidth = 15f;
             tableMargin = 90;
