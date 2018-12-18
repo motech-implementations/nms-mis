@@ -5,7 +5,7 @@
 			var users = [];
 			return {
 				getUsers: function() {
-					return $http.get(backend_root + 'nms/user/tableList');
+					return $http.post(backend_root + 'nms/user/tableList');
 				},
 				setUsers: function(values) {
 					users = values;

@@ -28,7 +28,7 @@
         }
 
         $scope.func_FAQ = function(){
-            $state.go('faq.faqWebsiteInformation')
+            $state.go('faq.faqGeneralInfo')
         }
 
         $scope.func_Feedback = function(){

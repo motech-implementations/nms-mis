@@ -7,6 +7,5 @@
                 $state.go('contactUs')
             }
 
-
 		}])
 })();

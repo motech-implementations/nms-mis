@@ -120,7 +120,8 @@
 
 			<ul class="nav-menu-left" data-ng-hide = 'menuChecker()'>
 				<li data-ng-class="{active: activeTab('AboutUs')}">
-					<a  data-ng-class="{dis1: disableCursor()}" data-ng-click="goToAboutus()" class="pointer">About us</a>
+					<a  data-ng-class="{dis1: disableCursor()}" href="https://mohfw.gov.in/" target="_blank" class="pointer">About us</a>
+					<!--<a  data-ng-class="{dis1: disableCursor()}" data-ng-click="goToAboutus()" class="pointer">About us</a>-->
 				</li>
 				<li data-ng-if='!checkLogin()' data-ng-class="{active: activeTab('AboutKilkari')}">
 					<a data-ng-class="{dis1: disableCursor()}" data-ng-click="goToKilkari()" class="pointer">Kilkari</a>
@@ -196,23 +197,23 @@
 	<div class='footer' data-ng-hide='menuChecker()' >
 		<div class="col-md-4 col-sm-4 col-xs-4">
 			<div>
-				<a  data-ng-click="goToTandC()" class="pointer" data-ng-class="{dis: disableCursor()}">terms and conditions </a>
+				<a class="pointer" data-ng-class="{dis: disableCursor()}" href="http://nhm.gov.in/terms-conditions.html" target="_blank">terms and conditions </a>
 
 				<span> |</span>
-				<a data-ng-click="goToPrivacyPolicy()" class="pointer" data-ng-class="{dis: disableCursor()}">privacy policy</a>
+				<a class="pointer" data-ng-class="{dis: disableCursor()}" href="http://nhm.gov.in/privacy-policy.html" target="_blank">privacy policy</a>
 
 				<span> |</span>
-				<a data-ng-click="goToCopyrightPolicy()" class="pointer" data-ng-class="{dis: disableCursor()}">copyright policy</a>
+				<a href="http://nhm.gov.in/copyright-policy.html" target="_blank" class="pointer" data-ng-class="{dis: disableCursor()}">copyright policy</a>
 
 			</div>
 			<div>
-				<a data-ng-click="goToHLPolicy()" class="pointer" data-ng-class="{dis: disableCursor()}">hyperlinking policy </a>
+				<a class="pointer" data-ng-class="{dis: disableCursor()}" href="http://nhm.gov.in/hyperlinking-policy.html" target="_blank">hyperlinking policy </a>
 
 				<span> |</span>
-				<a data-ng-click="goToDisclaimer()" class="pointer" data-ng-class="{dis: disableCursor()}">disclaimer</a>
+				<a class="pointer" data-ng-class="{dis: disableCursor()}" href="http://nhm.gov.in/disclaimer.html" target="_blank">disclaimer</a>
 
 				<span> |</span>
-				<a  data-ng-if='!checkLogin()' data-ng-click="goToHelp()" class="pointer" data-ng-class="{dis: disableCursor()}">help</a>
+				<a data-ng-if='!checkLogin()' data-ng-click="goToContactUs()" class="pointer" data-ng-class="{dis: disableCursor()}">help</a>
 
 				<span data-ng-if='!checkLogin()'> |</span>
 				<a data-ng-click="goToSitemap()" class="pointer" data-ng-class="{dis: disableCursor()}">Sitemap</a>

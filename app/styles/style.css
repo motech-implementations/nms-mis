@@ -152,6 +152,15 @@ div.infoPages5 th:nth-child(2){width:88%;}
 div.infoPages6 th:nth-child(2){width:90%;}
 div.infoPages7 th:nth-child(2){width:73%;}
 div.infoPages8 th:nth-child(2){width:80%;}
+.table-faq table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    background-color: white;
+    text-align:center;
+}
+.table-faq tr>:nth-child(2){width:30% !important;}
+.table-faq tr>:nth-child(1){width:20% !important;}
+.table-faq tr>:nth-child(3){width:20% !important;}
 hr.infoHR{border-bottom:1px solid #000000;line-height:3px;}
 .aboutImg1{float:left;width:300px;margin-right:25px;}
 .aboutImg2{float:right;width:300px;margin-left:25px;}
@@ -202,6 +211,7 @@ md-dialog{min-width:340px !important;}
 .login-submit{margin-bottom:20px;text-align:center;}
 .lb{width:26%;}
 .login-button{width:60%;height:10%;background-color:#2b669a;}
+.password-input{text-security:disc !important;-webkit-text-security:disc !important;-mox-text-security:disc !important;}
 .forgotPassword{margin-bottom:5%;text-align:center;}
 .forgotPasswordLink{color:#c1272d;}
 .forgotPasswordLink:hover{color:#c1272d;}
@@ -263,7 +273,7 @@ div.faqTitle > div > h4{padding-left:35px;}
 .captcha1{}
 #AncientMosaic_CaptchaImageDiv a{visibility:hidden !important;}
 .login-tb{height:35px;background-color:#0071bc;width:100%;padding-top:5px;font-size:20px;color:#FFFFFF;}
-.login-form{background-color:#e7e7e7;margin-left:15px;}
+.login-form{background-color:#e7e7e7;margin-left:15px; height: 405px}
 .login-inputs{width:55%;float:right;margin-right:10%;height:8%;}
 #refresh{margin-left:12%;width:10%;height:40px;}
 .login-texts{padding-left:4%;vertical-align:middle;margin-left:4%;}

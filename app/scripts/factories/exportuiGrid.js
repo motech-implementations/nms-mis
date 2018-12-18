@@ -222,6 +222,11 @@
 
         function indianDecimal( value){
                 x=value.toString();
+                var isNegative = false;
+                if (x.substring(0,1) === '-'){
+                    x = x.substring(1);
+                    isNegative = true;
+                }
                 var afterPoint = '';
                 if(x.indexOf('.') > 0)
                    afterPoint = x.substring(x.indexOf('.'),x.length);
@@ -234,17 +239,30 @@
                 if(otherNumbers != '')
                     lastThree = ',' + lastThree;
                 var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree + afterPoint;
-                return res;
+               if (isNegative) {
+                       return '-' + res;
+                   } else {
+                       return res;
+                   }
         }
 
         function indianInteger(value){
                             x=value.toString();
+                            var isNegative = false;
+                            if (x.substring(0,1) === '-'){
+                                x = x.substring(1);
+                                isNegative = true;
+                            }
                         var lastThree = x.substring(x.length-3);
                         var otherNumbers = x.substring(0,x.length-3);
                         if(otherNumbers != '')
                             lastThree = ',' + lastThree;
                         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree ;
-                        return res;
+                        if (isNegative) {
+                            return '-' + res;
+                        } else {
+                            return res;
+                        }
 
         }
 

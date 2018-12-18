@@ -94,9 +94,13 @@ public class UserController {
     private final String documents = retrieveDocuments();
     private final String reports = documents+"Reports/";
     private Calendar c =Calendar.getInstance();
-    @RequestMapping(value = {"/", "/list"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/", "/list"}, method = RequestMethod.POST)
     public @ResponseBody List<User> getAllUsers() {
-        return userService.findAllActiveUsers();
+        User currentUser = userService.getCurrentUser();
+        if(currentUser.getUserId() != null) {
+            return userService.findAllActiveUsers();
+        } else
+            return null;
     }
 
 //    @RequestMapping(value={"/list/{locationId}"})
@@ -104,26 +108,26 @@ public class UserController {
 //        return userService.findAllActiveUsersByLocation(locationId);
 //    }
 
-    @RequestMapping(value={"/myUserList"})
+    @RequestMapping(value={"/myUserList"} , method = RequestMethod.POST)
     public @ResponseBody List<User> getMyUsers() {
         User currentUser = userService.getCurrentUser();
-        if(currentUser != null){
+        if(currentUser.getUserId() != null){
             return userService.findMyUsers(userService.getCurrentUser());
         } else
             return null;
 
     }
 
-    @RequestMapping(value={"/roles"})
+    @RequestMapping(value={"/roles"} , method = RequestMethod.POST)
     public @ResponseBody List<Role> getRoles() {
         User currentUser = userService.getCurrentUser();
-        if(currentUser != null){
+        if(currentUser.getUserId() != null){
             return roleService.getRoles();
         } else
             return null;
     }
 
-    @RequestMapping(value={"/currentUser"})
+    @RequestMapping(value={"/currentUser"} , method = RequestMethod.POST)
     public @ResponseBody User getCurrentUser() {
 
         return userService.getCurrentUser();
@@ -133,7 +137,7 @@ public class UserController {
     @RequestMapping(value={"/profile"})
     public @ResponseBody UserDto profile() {
         User currentUser = userService.getCurrentUser();
-        if(currentUser != null){
+        if(currentUser.getUserId() != null){
             UserDto user1 = new UserDto();
             user1.setId(currentUser.getUserId());
             user1.setName(currentUser.getFullName());
@@ -166,7 +170,7 @@ public class UserController {
         return null;
     }
 
-    @RequestMapping(value={"/isLoggedIn"})
+    @RequestMapping(value={"/isLoggedIn"} , method = RequestMethod.POST)
     public @ResponseBody Boolean isLoggedIn() {
 //        if (userService.getCurrentUser() == null) {
 //            isAdminLoggedIn();
@@ -174,7 +178,7 @@ public class UserController {
         return userService.getCurrentUser() != null;
     }
 
-    @RequestMapping(value={"/isAdminLoggedIn"})
+    @RequestMapping(value={"/isAdminLoggedIn"} , method = RequestMethod.POST)
     public @ResponseBody Boolean isAdminLoggedIn() {
         User currentUser = userService.getCurrentUser();
         if(currentUser == null || currentUser.getRoleName().equals(AccessType.USER.getAccessType())){
@@ -184,11 +188,11 @@ public class UserController {
     }
 
     //To be changed
-    @RequestMapping(value={"/tableList"})
+    @RequestMapping(value={"/tableList"} , method = RequestMethod.POST)
     public @ResponseBody List<UserDto> getTableList() {
 
         User currentUser = userService.getCurrentUser();
-        if(currentUser != null){
+        if(currentUser.getUserId() != null){
             List<UserDto> tabDto = new ArrayList<>();
             List<User> tabUsers = userService.findMyUsers(userService.getCurrentUser());
             String[] levels = {"National", "State", "District", "Block"};
@@ -238,7 +242,7 @@ public class UserController {
     @RequestMapping(value={"/user/{userId}"})
     public @ResponseBody User getUserById(@PathVariable("userId") Integer userId) {
         User currentUser = userService.getCurrentUser();
-        if(currentUser != null){
+        if(currentUser.getUserId() != null){
             return userService.findUserByUserId(userId);
         } else
             return null;
@@ -1052,7 +1056,7 @@ public class UserController {
     }
 
 
-    @RequestMapping(value={"/reportsMenu"})
+    @RequestMapping(value={"/reportsMenu"} , method = RequestMethod.POST)
     public @ResponseBody List<Map<String, Object>> getReportsMenu() {
         User currentUser = userService.getCurrentUser();
         Map<String, Object> maMenu = new HashMap<>();

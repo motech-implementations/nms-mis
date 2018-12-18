@@ -6,12 +6,12 @@
 <div class="container-fluid" data-ng-controller="kilkariController" style="padding-left: 30px">
 
     <div data-ng-hide="flag">
-        <h2 class="user-manual-header">Kilkari Reports</h2>
+        <h2 class="user-manual-header">Kilkari Line Listing Reports</h2>
         <div class="user-manual-right-text">
             <!--<p><div data-ng-click="func('abr')"><u>Aggrgate Beneficiary Report</u></div></p>-->
             <p data-ng-click="func('dfna')"><u>Deactivated for not answering</u></p>
             <p data-ng-click="func('dfll')"><u>Deactivated for Low Listenership</u></p>
-            <p data-ng-click="func('bl')"><u>Listen to &lt; 25% this month</u></p>
+            <p data-ng-click="func('bl')"><u>Listened to &lt; 25% this month</u></p>
             <p data-ng-click="func('bwd')"><u>Self Deactivation</u></p>
             <!--<p><div data-ng-click="func('blr')"><u>Beneficiary listenership report</u></div></p>
             <p><div data-ng-click="func('kcsr')"><u>Kilkari Cumulative Summary report</u></div></p>-->
@@ -33,12 +33,14 @@
 
     <div data-ng-hide="!flag" class="user-manual-reports">
         <div><img alt="user manual" src="./images/back1.png" data-ng-click="flag=!flag" class="user-manual-back">
-            <div style="display: inline-block" class="imageModify"><b>Kilkari Report</b><br>
+            <div style="display: inline-block" class="imageModify"><b>Kilkari Line Listing Report</b><br>
 
                 <div data-ng-hide="selectRole != 1 && selectRole != 5">
                     <div data-ng-hide="param!=='bl'" style="display: inline-block; ">
-                        <p style="font-size: 30px"><b>Listen to &lt; 25% this month</b></p><br>
-                        <p>The report lists out the beneficiaries who have listened to < 25% content on average, in the calls answered, during the selected month.</p>
+                        <p style="font-size: 30px"><b>Listened to &lt; 25% this month</b></p><br>
+                        <p>This report gives the line-listing of all the beneficiaries who have been listening to an average of less than 25% of the content in the last calendar month in the Kilkari system as observed in the selected month. This report tracks beneficiaries who have either zero successful calls or not listened complete message (i.e., on an average of <25%). This report should not include ‘completed’ or ‘deactivated’ beneficiaries.</p>
+                        <p>This line listing report would be available for download for the respective state, district and block users. These reports would be e-mailed to the respective block and district users periodically once it is generated. A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day.</p>
+                        <p>The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries to listen to the Kilkari content to the full duration of 90 secs. If the mobile number registered against that beneficiary does not belong to the beneficiary or that number is not accessible to them during normal calling hours, then the beneficiary should be advised to provide the correct mobile number or provide an alternative number that would be accessible to the beneficiary more frequently.</p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
@@ -63,7 +65,7 @@
                     </div>
                     <div data-ng-hide="param!=='bwd'">
                         <p style="font-size: 30px"><b>Self Deactivation</b></p><br>
-                        <p>This report lists out all the beneficiaries who have deactivated by themselves in the selected month.</p>
+                        <p>This report gives the line-listing of all the beneficiaries who have deactivated themselves in the selected month for their own reasons. This line listing report would be available for download for the respective state, district and block users. These reports would be e-mailed to the respective block and district users periodically once it is generated. A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day. The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries personally and understand why they have deactivated them from the system. If the mobile number registered against that beneficiary does not belong to the beneficiary or that number is not accessible to them during normal calling hours, then the beneficiary should be advised to provide the correct mobile number or provide an alternative number that would be accessible to the beneficiary more frequently. </p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
@@ -87,7 +89,8 @@
                     </div>
                     <div data-ng-hide="param!=='dfna'">
                         <p style="font-size: 30px"><b>Deactivated for not answering</b></p>
-                        <p>This report lists out all the Kilkari beneficiaries who were deactivated in the selected month, for not answering a call for 6 weeks continuously.</p>
+                        <p>This report gives the line-listing of all the beneficiaries who have been deactivated in the selected month by the Kilkari system for not answering a single call for six consecutive weeks.</p>
+                        <p>This report gives the information related to deactivation of the user from Kilkari services. This includes the user who deactivate due to low listening of Kilkari messages.</p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) select "Kilkari Reports" under "Reports Category" </p>
@@ -112,7 +115,21 @@
 
                     <div data-ng-hide="param!=='dfll'">
                         <p style="font-size: 30px"><b>Deactivated for Low Listenership</b></p>
-                        <p>This report lists out the beneficiaries who have been deactivated due to low listenership (Not answered a single call for last six weeks)</p>
+                        <p>This report gives the line-listing of all the beneficiaries who have been deactivated in the selected
+                            month by the Kilkari system for listening less than 25% of the content for each successful call spread over six consecutive weeks.</p>
+                        <p>Both the line listing report would be available for download for the respective state, district
+                            and block users. These reports would be e-mailed to the respective block and district users periodically
+                            once it is generated. A summary mail giving the district wise break-up of the count of beneficiaries would
+                            be sent to the State / UT users on the same day.</p>
+                        <p>The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said
+                            beneficiaries and understand why they are not listening to the Kilkari calls. If the mobile number
+                            belongs to the correct beneficiary then they should be motivated to reactivate their Kilkari
+                            Subscription and listen to the Kilkari content for the complete duration of 90 secs. If the
+                            mobile number registered against that beneficiary does not belong to the beneficiary or that number
+                            is not accessible to them under normal calling hours, then the beneficiary should be advised to provide
+                            the correct mobile number or provide an alternative number that would be accessible to the beneficiary more frequently.</p>
+                        <p>This report will provide the information about the beneficiaries who have been deactivated in the
+                            selected month for listening to less the 25% of Kilkari messages for a consecutive period of 6 weeks.</p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
@@ -136,7 +153,17 @@
                     </div>
                     <div data-ng-hide="param!=='mrr'">
                         <p style="font-size: 30px"><b>Mother Rejected Records</b></p>
-                        <p>This report lists out the Mother beneficiaries who have been rejected by MOTECH due to any validation in data during registration.</p>
+                        <p>This report gives the line-listing of all Mother beneficiaries whose registered mobile numbers are
+                            either incorrect or are duplicate. These mobile numbers had flown in to the IVRS system but were rejected by
+                            the acceptance logic run by the IVRS system. The report contains the MCTS or RCH IDs. This report would be
+                            generated once every week preferably on Sunday. This line listing report would be available for download for
+                            the respective district and block users. These reports would be e-mailed to the respective block and district
+                            users on the day after it was generated –on Tuesday. A summary mail giving the district wise break-up of the count of
+                            beneficiaries would be sent to the State / UT users on the same day. The State / UT can act upon this report and
+                            contact the ASHAs in the field and ask them to contact the said beneficiaries and register their correct mobile
+                            numbers in the RCH Application. In this way we can correct the mobile numbers of beneficiaries and bring a higher
+                            percentage of beneficiaries under the ambit of Kilkari program. This report is a very useful actionable report for
+                            the State / UT to correct the beneficiary contact mobile number.</p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
@@ -162,7 +189,16 @@
                     </div>
                     <div  data-ng-hide="param!=='crr'" >
                         <p style="font-size: 30px"><b>Child Rejected Records</b></p>
-                        <p>This report lists out all the Child beneficiaries who have been rejected by MOTECH due to any validation in data during registration.</p>
+                        <p>This report gives the line-listing of all Child beneficiaries whose registered mobile numbers are either incorrect or are duplicate.
+                            These mobile numbers had flown in to the IVRS system but were rejected by the acceptance logic run by the IVRS system.
+                            The report contains the MCTS or RCH IDs. This report would be generated once every week preferably on Sunday.
+                            This line listing report would be available for download for the respective district and block users.
+                            These reports would be e-mailed to the respective block and district users on the day after it was generated –on Tuesday.
+                            A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day.
+                            The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries
+                            and register their correct mobile numbers in the RCH Application. In this way we can correct the mobile numbers of
+                            beneficiaries and bring a higher percentage of beneficiaries under the ambit of Kilkari program. This report is
+                            a very useful actionable report for the State / UT to correct the beneficiary contact mobile number.</p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
@@ -190,8 +226,18 @@
 
                 <div data-ng-hide="selectRole != 2 && selectRole != 6">
                     <div data-ng-hide="param!=='bl'" style="display: inline-block; ">
-                        <p style="font-size: 30px"><b>Listen to &lt; 25% this month</b></p><br>
-                        <p>The report lists out the beneficiaries who have listened to < 25% content on average, in the calls answered, during the selected month.</p>
+                        <p style="font-size: 30px"><b>Listened to &lt; 25% this month</b></p><br>
+                        <p>This report gives the line-listing of all the beneficiaries who have been listening to an average of less than 25%
+                            of the content in the last calendar month in the Kilkari system as observed in the selected month. This report
+                            tracks beneficiaries who have either zero successful calls or not listened complete message (i.e., on an average of <25%).
+                            This report should not include ‘completed’ or ‘deactivated’ beneficiaries.</p>
+                        <p>This line listing report would be available for download for the respective state, district and block users.
+                            These reports would be e-mailed to the respective block and district users periodically once it is generated.
+                            A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day.</p>
+                        <p>The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries
+                            to listen to the Kilkari content to the full duration of 90 secs. If the mobile number registered against that beneficiary
+                            does not belong to the beneficiary or that number is not accessible to them during normal calling hours, then the beneficiary
+                            should be advised to provide the correct mobile number or provide an alternative number that would be accessible to the beneficiary more frequently.</p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
@@ -214,7 +260,15 @@
                     </div>
                     <div data-ng-hide="param!=='bwd'">
                         <p style="font-size: 30px"><b>Self Deactivation</b></p><br>
-                        <p>This report lists out all the beneficiaries who have deactivated by themselves in the selected month.</p>
+                        <p>This report gives the line-listing of all the beneficiaries who have deactivated themselves in the selected month
+                            for their own reasons. This line listing report would be available for download for the respective state, district and block users.
+                            These reports would be e-mailed to the respective block and district users periodically once it is generated.
+                            A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day.
+                            The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries personally
+                            and understand why they have deactivated them from the system. If the mobile number registered against that beneficiary
+                            does not belong to the beneficiary or that number is not accessible to them during normal calling hours,
+                            then the beneficiary should be advised to provide the correct mobile number or provide an alternative number that would be
+                            accessible to the beneficiary more frequently. </p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
@@ -237,7 +291,8 @@
                     </div>
                     <div data-ng-hide="param!=='dfna'">
                         <p style="font-size: 30px"><b>Deactivated for not answering</b></p>
-                        <p>This report lists out all the Kilkari beneficiaries who were deactivated in the selected month, for not answering a call for 6 weeks continuously.</p>
+                        <p>This report gives the line-listing of all the beneficiaries who have been deactivated in the selected month by the Kilkari system for not answering a single call for six consecutive weeks.</p>
+                        <p>This report gives the information related to deactivation of the user from Kilkari services. This includes the user who deactivate due to low listening of Kilkari messages.</p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) select "Kilkari Reports" under "Reports Category" </p>
@@ -261,7 +316,10 @@
 
                     <div data-ng-hide="param!=='dfll'">
                         <p style="font-size: 30px"><b>Deactivated for Low Listenership</b></p>
-                        <p>This report lists out the beneficiaries who have been deactivated due to low listenership (Not answered a single call for last six weeks)</p>
+                        <p>This report gives the line-listing of all the beneficiaries who have been deactivated in the selected month by the Kilkari system for listening to an average of less than 25% of the content spread over six consecutive weeks.</p>
+                        <p>Both the line listing report would be available for download for the respective state, district and block users. These reports would be e-mailed to the respective block and district users periodically once it is generated. A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day.</p>
+                        <p>The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries and understand why they are not listening to the Kilkari calls. If the mobile number belongs to the correct beneficiary then they should be motivated to reactivate their Kilkari Subscription and listen to the Kilkari content for the complete duration of 90 secs. If the mobile number registered against that beneficiary does not belong to the beneficiary or that number is not accessible to them under normal calling hours, then the beneficiary should be advised to provide the correct mobile number or provide an alternative number that would be accessible to the beneficiary more frequently.</p>
+                        <p>This report will provide the information about the beneficiaries who have been deactivated in the selected month for listening to less the 25% of Kilkari messages for a consecutive period of 6 weeks.</p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
@@ -284,7 +342,7 @@
                     </div>
                     <div data-ng-hide="param!=='mrr'">
                         <p style="font-size: 30px"><b>Mother Rejected Records</b></p>
-                        <p>This report lists out the Mother beneficiaries who have been rejected by MOTECH due to any validation in data during registration.</p>
+                        <p>This report gives the line-listing of all Mother beneficiaries whose registered mobile numbers are either incorrect or are duplicate. These mobile numbers had flown in to the IVRS system but were rejected by the acceptance logic run by the IVRS system. The report contains the MCTS or RCH IDs. This report would be generated once every week preferably on Sunday. This line listing report would be available for download for the respective district and block users. These reports would be e-mailed to the respective block and district users on the day after it was generated –on Tuesday. A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day. The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries and register their correct mobile numbers in the RCH Application. In this way we can correct the mobile numbers of beneficiaries and bring a higher percentage of beneficiaries under the ambit of Kilkari program. This report is a very useful actionable report for the State / UT to correct the beneficiary contact mobile number.</p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
@@ -309,7 +367,8 @@
                     </div>
                     <div  data-ng-hide="param!=='crr'" >
                         <p style="font-size: 30px"><b>Child Rejected Records</b></p>
-                        <p>This report lists out all the Child beneficiaries who have been rejected by MOTECH due to any validation in data during registration.</p>
+                        <p>This report gives the line-listing of all Child beneficiaries whose registered mobile numbers are either incorrect or are duplicate. These mobile numbers had flown in to the IVRS system but were rejected by the acceptance logic run by the IVRS system. The report contains the MCTS or RCH IDs. This report would be generated once every week preferably on Sunday. This line listing report would be available for download for the respective district and block users. These reports would be e-mailed to the respective block and district users on the day after it was generated –on Tuesday. A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day. The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries and register their correct mobile numbers in the RCH Application. In this way we can correct the mobile numbers of beneficiaries and bring a higher percentage of beneficiaries under the ambit of Kilkari program.
+                            This report is a very useful actionable report for the State / UT to correct the beneficiary contact mobile number.</p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
@@ -336,8 +395,10 @@
 
                 <div data-ng-hide="selectRole != 3 && selectRole != 7"><!--Disrict User-->
                     <div data-ng-hide="param!=='bl'" style="display: inline-block; ">
-                        <p style="font-size: 30px"><b>Listen to <25% this month</b></p><br>
-                        <p>The report lists out the beneficiaries who have listened to < 25% content on average, in the calls answered, during the selected month.</p>
+                        <p style="font-size: 30px"><b>Listened to <25% this month</b></p><br>
+                        <p>This report gives the line-listing of all the beneficiaries who have been listening to an average of less than 25% of the content in the last calendar month in the Kilkari system as observed in the selected month. This report tracks beneficiaries who have either zero successful calls or not listened complete message (i.e., on an average of <25%). This report should not include ‘completed’ or ‘deactivated’ beneficiaries.</p>
+                        <p>This line listing report would be available for download for the respective state, district and block users. These reports would be e-mailed to the respective block and district users periodically once it is generated. A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day.</p>
+                        <p>The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries to listen to the Kilkari content to the full duration of 90 secs. If the mobile number registered against that beneficiary does not belong to the beneficiary or that number is not accessible to them during normal calling hours, then the beneficiary should be advised to provide the correct mobile number or provide an alternative number that would be accessible to the beneficiary more frequently.</p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
@@ -358,7 +419,7 @@
                     </div>
                     <div data-ng-hide="param!=='bwd'">
                         <p style="font-size: 30px"><b>Self Deactivation</b></p><br>
-                        <p>This report lists out all the beneficiaries who have deactivated by themselves in the selected month.</p>
+                        <p>This report gives the line-listing of all the beneficiaries who have deactivated themselves in the selected month for their own reasons. This line listing report would be available for download for the respective state, district and block users. These reports would be e-mailed to the respective block and district users periodically once it is generated. A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day. The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries personally and understand why they have deactivated them from the system. If the mobile number registered against that beneficiary does not belong to the beneficiary or that number is not accessible to them during normal calling hours, then the beneficiary should be advised to provide the correct mobile number or provide an alternative number that would be accessible to the beneficiary more frequently. </p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
@@ -378,7 +439,8 @@
                     </div>
                     <div data-ng-hide="param!=='dfna'">
                         <p style="font-size: 30px"><b>Deactivated for not answering</b></p>
-                        <p>This report lists out all the Kilkari beneficiaries who were deactivated in the selected month, for not answering a call for 6 weeks continuously.</p>
+                        <p>This report gives the line-listing of all the beneficiaries who have been deactivated in the selected month by the Kilkari system for not answering a single call for six consecutive weeks.</p>
+                        <p>This report gives the information related to deactivation of the user from Kilkari services. This includes the user who deactivate due to low listening of Kilkari messages.</p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) select "Kilkari Reports" under "Reports Category" </p>
@@ -399,7 +461,10 @@
 
                     <div data-ng-hide="param!=='dfll'">
                         <p style="font-size: 30px"><b>Deactivated for Low Listenership</b></p>
-                        <p>This report lists out the beneficiaries who have been deactivated due to low listenership (Not answered a single call for last six weeks)</p>
+                        <p>This report gives the line-listing of all the beneficiaries who have been deactivated in the selected month by the Kilkari system for listening to an average of less than 25% of the content spread over six consecutive weeks.</p>
+                        <p>Both the line listing report would be available for download for the respective state, district and block users. These reports would be e-mailed to the respective block and district users periodically once it is generated. A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day.</p>
+                        <p>The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries and understand why they are not listening to the Kilkari calls. If the mobile number belongs to the correct beneficiary then they should be motivated to reactivate their Kilkari Subscription and listen to the Kilkari content for the complete duration of 90 secs. If the mobile number registered against that beneficiary does not belong to the beneficiary or that number is not accessible to them under normal calling hours, then the beneficiary should be advised to provide the correct mobile number or provide an alternative number that would be accessible to the beneficiary more frequently.</p>
+                        <p>This report will provide the information about the beneficiaries who have been deactivated in the selected month for listening to less the 25% of Kilkari messages for a consecutive period of 6 weeks.</p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
@@ -419,7 +484,7 @@
                     </div>
                     <div data-ng-hide="param!=='mrr'">
                         <p style="font-size: 30px"><b>Mother Rejected Records</b></p>
-                        <p>This report lists out the Mother beneficiaries who have been rejected by MOTECH due to any validation in data during registration.</p>
+                        <p>This report gives the line-listing of all Mother beneficiaries whose registered mobile numbers are either incorrect or are duplicate. These mobile numbers had flown in to the IVRS system but were rejected by the acceptance logic run by the IVRS system. The report contains the MCTS or RCH IDs. This report would be generated once every week preferably on Sunday. This line listing report would be available for download for the respective district and block users. These reports would be e-mailed to the respective block and district users on the day after it was generated –on Tuesday. A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day. The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries and register their correct mobile numbers in the RCH Application. In this way we can correct the mobile numbers of beneficiaries and bring a higher percentage of beneficiaries under the ambit of Kilkari program. This report is a very useful actionable report for the State / UT to correct the beneficiary contact mobile number.</p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
@@ -441,7 +506,9 @@
                     </div>
                     <div  data-ng-hide="param!=='crr'" >
                         <p style="font-size: 30px"><b>Child Rejected Records</b></p>
-                        <p>This report lists out all the Child beneficiaries who have been rejected by MOTECH due to any validation in data during registration.</p>
+                        <p>This report gives the line-listing of all Child beneficiaries whose registered mobile numbers are either incorrect or are duplicate. These mobile numbers had flown in to the IVRS system but were rejected by the acceptance logic run by the IVRS system. The report contains the MCTS or RCH IDs. This report would be generated once every week preferably on Sunday. This line listing report would be available for download for the respective district and block users. These reports would be e-mailed to the respective block and district users on the day after it was generated –on Tuesday. A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day.
+                            The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries and register their correct mobile numbers in the RCH Application. In this way we can correct the mobile numbers of beneficiaries and bring a higher percentage of beneficiaries under the ambit of Kilkari program.
+                            This report is a very useful actionable report for the State / UT to correct the beneficiary contact mobile number.</p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
@@ -466,8 +533,10 @@
 
                 <div data-ng-hide="selectRole !=4">
                     <div data-ng-hide="param!=='bl'" style="display: inline-block; ">
-                        <p style="font-size: 30px"><b>Listen to &lt; 25% this month</b></p><br>
-                        <p>The report lists out the beneficiaries who have listened to < 25% content on average, in the calls answered, during the selected month.</p>
+                        <p style="font-size: 30px"><b>Listened to &lt; 25% this month</b></p><br>
+                        <p>This report gives the line-listing of all the beneficiaries who have been listening to an average of less than 25% of the content in the last calendar month in the Kilkari system as observed in the selected month. This report tracks beneficiaries who have either zero successful calls or not listened complete message (i.e., on an average of <25%). This report should not include ‘completed’ or ‘deactivated’ beneficiaries.</p>
+                        <p>This line listing report would be available for download for the respective state, district and block users. These reports would be e-mailed to the respective block and district users periodically once it is generated. A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day.</p>
+                        <p>The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries to listen to the Kilkari content to the full duration of 90 secs. If the mobile number registered against that beneficiary does not belong to the beneficiary or that number is not accessible to them during normal calling hours, then the beneficiary should be advised to provide the correct mobile number or provide an alternative number that would be accessible to the beneficiary more frequently.</p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
@@ -488,7 +557,7 @@
                     </div>
                     <div data-ng-hide="param!=='bwd'">
                         <p style="font-size: 30px"><b>Self Deactivation</b></p><br>
-                        <p>This report lists out all the beneficiaries who have deactivated by themselves in the selected month.</p>
+                        <p>This report gives the line-listing of all the beneficiaries who have deactivated themselves in the selected month for their own reasons. This line listing report would be available for download for the respective state, district and block users. These reports would be e-mailed to the respective block and district users periodically once it is generated. A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day. The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries personally and understand why they have deactivated them from the system. If the mobile number registered against that beneficiary does not belong to the beneficiary or that number is not accessible to them during normal calling hours, then the beneficiary should be advised to provide the correct mobile number or provide an alternative number that would be accessible to the beneficiary more frequently. </p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
@@ -508,7 +577,8 @@
                     </div>
                     <div data-ng-hide="param!=='dfna'">
                         <p style="font-size: 30px"><b>Deactivated for not answering</b></p>
-                        <p>This report lists out all the Kilkari beneficiaries who were deactivated in the selected month, for not answering a call for 6 weeks continuously.</p>
+                        <p>This report gives the line-listing of all the beneficiaries who have been deactivated in the selected month by the Kilkari system for not answering a single call for six consecutive weeks.</p>
+                        <p>This report gives the information related to deactivation of the user from Kilkari services. This includes the user who deactivate due to low listening of Kilkari messages.</p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) select "Kilkari Reports" under "Reports Category" </p>
@@ -529,7 +599,10 @@
 
                     <div data-ng-hide="param!=='dfll'">
                         <p style="font-size: 30px"><b>Deactivated for Low Listenership</b></p>
-                        <p>This report lists out the beneficiaries who have been deactivated due to low listenership (Not answered a single call for last six weeks)</p>
+                        <p>This report gives the line-listing of all the beneficiaries who have been deactivated in the selected month by the Kilkari system for listening to an average of less than 25% of the content spread over six consecutive weeks.</p>
+                        <p>Both the line listing report would be available for download for the respective state, district and block users. These reports would be e-mailed to the respective block and district users periodically once it is generated. A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day.</p>
+                        <p>The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries and understand why they are not listening to the Kilkari calls. If the mobile number belongs to the correct beneficiary then they should be motivated to reactivate their Kilkari Subscription and listen to the Kilkari content for the complete duration of 90 secs. If the mobile number registered against that beneficiary does not belong to the beneficiary or that number is not accessible to them under normal calling hours, then the beneficiary should be advised to provide the correct mobile number or provide an alternative number that would be accessible to the beneficiary more frequently.</p>
+                        <p>This report will provide the information about the beneficiaries who have been deactivated in the selected month for listening to less the 25% of Kilkari messages for a consecutive period of 6 weeks.</p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
@@ -549,7 +622,12 @@
                     </div>
                     <div data-ng-hide="param!=='mrr'">
                         <p style="font-size: 30px"><b>Mother Rejected Records</b></p>
-                        <p>This report lists out the Mother beneficiaries who have been rejected by MOTECH due to any validation in data during registration.</p>
+                        <p>This report gives the line-listing of all Mother beneficiaries whose registered mobile numbers are either incorrect or are duplicate.
+                            These mobile numbers had flown in to the IVRS system but were rejected by the acceptance logic run by the IVRS system.
+                            The report contains the MCTS or RCH IDs. This report would be generated once every week preferably on Sunday.
+                            This line listing report would be available for download for the respective district and block users.
+                            These reports would be e-mailed to the respective block and district users on the day after it was generated –on Tuesday.
+                            A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day. The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries and register their correct mobile numbers in the RCH Application. In this way we can correct the mobile numbers of beneficiaries and bring a higher percentage of beneficiaries under the ambit of Kilkari program. This report is a very useful actionable report for the State / UT to correct the beneficiary contact mobile number.</p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
@@ -571,7 +649,8 @@
                     </div>
                     <div  data-ng-hide="param!=='crr'" >
                         <p style="font-size: 30px"><b>Child Rejected Records</b></p>
-                        <p>This report lists out all the Child beneficiaries who have been rejected by MOTECH due to any validation in data during registration.</p>
+                        <p>This report gives the line-listing of all Child beneficiaries whose registered mobile numbers are either incorrect or are duplicate. These mobile numbers had flown in to the IVRS system but were rejected by the acceptance logic run by the IVRS system. The report contains the MCTS or RCH IDs. This report would be generated once every week preferably on Sunday. This line listing report would be available for download for the respective district and block users. These reports would be e-mailed to the respective block and district users on the day after it was generated –on Tuesday. A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day. The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries and register their correct mobile numbers in the RCH Application. In this way we can correct the mobile numbers of beneficiaries and bring a higher percentage of beneficiaries under the ambit of Kilkari program.
+                            This report is a very useful actionable report for the State / UT to correct the beneficiary contact mobile number.</p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
@@ -592,7 +671,7 @@
                         <img alt="user manual" src="./images/Block/KA6/BU_KA_CRR_Reset.png"><br>
                     </div>
                 </div>
-            </span></div>
+                </span></div>
         </div>
 
     </div>

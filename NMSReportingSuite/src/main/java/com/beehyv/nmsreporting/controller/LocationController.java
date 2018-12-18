@@ -36,7 +36,7 @@ public class LocationController {
 
     /*--------------------------State-----------------------------*/
 
-    @RequestMapping(value = {"/states"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/states"}, method = RequestMethod.POST)
     public @ResponseBody List<State> getAllStates() {
         User user = userService.getCurrentUser();
         List<State> states;
@@ -117,7 +117,7 @@ public class LocationController {
     @RequestMapping(value = {"/SoD/{districtId}"}, method = RequestMethod.GET)
     public @ResponseBody State getStateOfDistrict(@PathVariable("districtId") Integer districtId) {
         User user = userService.getCurrentUser();
-        if(user != null){
+        if(user.getUserId() != null){
             return locationService.getStateOfDistrict(districtId);
         } else
             return null;
@@ -155,7 +155,7 @@ public class LocationController {
     @RequestMapping(value = {"/DoB/{blockId}"}, method = RequestMethod.GET)
     public @ResponseBody District getDistrictOfBlock(@PathVariable("blockId") Integer blockId) {
         User user = userService.getCurrentUser();
-        if(user != null){
+        if(user.getUserId() != null){
             return locationService.getDistrictOfBlock(blockId);
         } else
             return null;
@@ -188,10 +188,10 @@ public class LocationController {
 
     /*--------------------------Circle-----------------------------*/
 
-    @RequestMapping(value = {"/circles"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/circles"}, method = RequestMethod.POST)
     @ResponseBody List<Circle> getCircles() {
         User currentUser = userService.getCurrentUser();
-        if(currentUser != null) {
+        if(currentUser.getUserId() != null) {
             return reportService.getUserCircles(currentUser);
         } else
             return null;

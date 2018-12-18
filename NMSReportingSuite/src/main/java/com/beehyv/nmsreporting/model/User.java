@@ -4,6 +4,7 @@ import com.beehyv.nmsreporting.enums.AccountStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.util.Date;
 
 @Entity
@@ -15,12 +16,15 @@ public class User {
 	private Integer userId;
 
 	@Column(name="username")
+	@Pattern(regexp="[A-Za-z0-9]+")
 	private String username;
 
+	@JsonIgnore
 	@Column(name="password")
 	private String password;
 
 	@Column(name="full_name")
+	@Pattern(regexp="[A-Za-z ]+")
 	private String fullName;
 
 	@Column(name="phone_no")

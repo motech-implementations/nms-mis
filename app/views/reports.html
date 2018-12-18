@@ -92,7 +92,7 @@
 								</span>
 							</button>
 							<ul class="dropdown-menu non-aggregate" data-uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
-								<li role="menuitem" data-ng-repeat="item in states | orderBy : 'stateName' | filter:serviceStarted"><a data-ng-click='selectState(item)'>{{item.stateName}}</a></li>
+								<li role="menuitem" data-ng-repeat="item in states | orderBy : 'stateName' | filter:serviceStarted"><a data-ng-click='selectState(item)'>{{cropState(item.stateName)}}</a></li>
 							</ul>
 						</div>
 					</div>
@@ -189,7 +189,7 @@
 			<div class="row" data-ng-hide= "!isAggregateReport() ">
 				<div class="col-xs-12 left">
 
-					<div class="form-group col-xs-2" data-ng-hide = "report.name == 'MA Cumulative Summary' || report.reportEnum == 'Kilkari_Cumulative_Summary' ">
+					<div class="form-group col-xs-2" data-ng-hide = "report.name == 'MA Cumulative Summary' || report.reportEnum == 'Kilkari_Cumulative_Summary'">
 						<label> Period Type</label><br>
 						<div class="btn-group " data-uib-dropdown data-dropdown-append-to-body >
 							<button id="btn-append-to-body9" type="button"  class="btn btn-sm btn-default"  data-uib-dropdown-toggle >
@@ -208,7 +208,6 @@
 							</ul>
 						</div>
 					</div>
-
 
                     <div class="form-group col-xs-2" data-ng-hide = " periodDisplayType == '' || (report.name == 'MA Cumulative Summary' ||  report.reportEnum == 'Kilkari_Cumulative_Summary' || periodDisplayType == 'Current Period' ) ">
                         <label>{{periodTypeContent}}</label><br>
@@ -256,7 +255,7 @@
 						</div>
 					</div>
 
-					<div class="form-group col-xs-2">
+					<!--<div class="form-group col-xs-2">
 						<label> Report Type</label><br>
 						<div class="btn-group disabled" data-uib-dropdown data-dropdown-append-to-body>
 							<button data-ng-disabled = "true"  id="btn-append-to-body1" type="button" class="btn btn-sm btn-default"  data-uib-dropdown-toggle >
@@ -274,7 +273,7 @@
 								</li>
 							</ul>
 						</div>
-					</div>
+					</div>-->
 
 					<div class="form-group col-xs-2 aggregate-submit">
 						<button class="btn btn-sm btn-primary" data-ng-click="getReport()">Submit</button>

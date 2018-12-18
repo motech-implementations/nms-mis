@@ -6,7 +6,9 @@
 
             switch($state.current.name){
                 case "userManual.kilkari":$scope.active1 = 'kr';break;
+                case "userManual.kilkariAggregate":$scope.active1 = 'kr-agg';break;
                 case "userManual.mobileAcademy":$scope.active1 = 'ma';break;
+                case "userManual.mobileAcademyAggregate":$scope.active1 = 'ma-agg';break;
                 case "userManual.userManual_Profile":$scope.active1 = 'pr';break;
                 case "userManual.userManual_Management":$scope.active1 = 'um';break;
                 default :$scope.active1 = 'wi';break;
@@ -40,7 +42,11 @@
             )();
 
             (function () {
-                    if(($scope.selectRole < 5 && $state.current.name ==="userManual.userManual_Management") || ($scope.selectRole < 1 && $state.current.name ==="userManual.kilkari") || ($scope.selectRole < 1 && $state.current.name ==="userManual.mobileAcademy")) {
+                    if(($scope.selectRole < 5 && $state.current.name ==="userManual.userManual_Management") ||
+                    ($scope.selectRole < 1 && $state.current.name ==="userManual.kilkari") ||
+                    ($scope.selectRole < 1 && $state.current.name ==="userManual.mobileAcademy") ||
+                    ($scope.selectRole < 1 && $state.current.name ==="userManual.kilkariAggregate") ||
+                    ($scope.selectRole < 1 && $state.current.name ==="userManual.mobileAcademyAggregate")) {
                         $state.go('userManual.websiteInformation');
                         $scope.active1 = 'wi';
                     }
@@ -55,8 +61,14 @@
 				else if(val=== 'kr'){
                 	$state.go('userManual.kilkari')
 				}
+				else if(val=== 'kr-agg'){
+                	$state.go('userManual.kilkariAggregate')
+				}
                 else if(val=== 'ma'){
                     $state.go('userManual.mobileAcademy')
+                }
+                else if(val=== 'ma-agg'){
+                    $state.go('userManual.mobileAcademyAggregate')
                 }
                 else if(val=== 'um'){
                         $state.go('userManual.userManual_Management');
@@ -70,7 +82,11 @@
                 $scope.selectRole = x.id;
                 $scope.selectRoleValue = x.role;
                 localStorage.setItem('role', $scope.selectRole);
-                if(($scope.selectRole < 5 && $state.current.name ==="userManual.userManual_Management") || ($scope.selectRole < 1 && $state.current.name ==="userManual.kilkari") || ($scope.selectRole < 1 && $state.current.name ==="userManual.mobileAcademy")) {
+                if(($scope.selectRole < 5 && $state.current.name ==="userManual.userManual_Management") ||
+                ($scope.selectRole < 1 && $state.current.name ==="userManual.kilkari") ||
+                ($scope.selectRole < 1 && $state.current.name ==="userManual.mobileAcademy") ||
+                ($scope.selectRole < 1 && $state.current.name ==="userManual.kilkariAggregate") ||
+                ($scope.selectRole < 1 && $state.current.name ==="userManual.mobileAcademyAggregate")) {
                     $scope.active1 = 'wi';
                     $state.go('userManual.websiteInformation');
                 }
@@ -78,6 +94,22 @@
             }
 		}]);
     nmsReportsApp.controller("kilkariController", ['$scope', '$state', 'UserFormFactory', function($scope, $state, UserFormFactory){
+
+            /*			UserFormFactory.isLoggedIn()
+                        .then(function(result){
+                            if(!result.data){
+                                $state.go('login', {});
+                            }
+                        });*/
+
+            $scope.param = '';
+            $scope.flag = false;
+            $scope.func = function (val) {
+                $scope.flag = true;
+                $scope.param = val;
+            }
+        }]);
+    nmsReportsApp.controller("kilkariAggregateController", ['$scope', '$state', 'UserFormFactory', function($scope, $state, UserFormFactory){
 
             /*			UserFormFactory.isLoggedIn()
                         .then(function(result){
@@ -124,6 +156,17 @@
                     })
 
         */
+
+        $scope.param = '';
+        $scope.flag = false;
+        $scope.func = function (val) {
+            $scope.flag = true;
+            $scope.param = val;
+        }
+
+    }]);
+    nmsReportsApp.controller("mobileAcademyAggregateController", ['$scope', '$state', 'UserFormFactory', function($scope, $state, UserFormFactory){
+
 
         $scope.param = '';
         $scope.flag = false;

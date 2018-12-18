@@ -34,10 +34,16 @@
             <div data-ng-click="active1='wi'; func('wi')" data-ng-class="{'sideNavbar': active1 =='wi'}">Website Information
                 <span class="glyphicon glyphicon-plus plusSign"></span>
             </div>
-            <div data-ng-click="active1='kr';func('kr')" data-ng-class="{'sideNavbar': active1 =='kr'}" data-ng-hide="selectRole < 1">Kilkari Reports
+            <div data-ng-click="active1='kr';func('kr')" data-ng-class="{'sideNavbar': active1 =='kr'}" data-ng-hide="selectRole < 1">Kilkari Line Listing Reports
                 <span class="glyphicon glyphicon-plus plusSign" ></span>
             </div>
-            <div data-ng-click="active1='ma';func('ma')" data-ng-class="{'sideNavbar': active1 =='ma'}" data-ng-hide="selectRole < 1">Mobile Academy Reports
+            <div data-ng-click="active1='kr-agg';func('kr-agg')" data-ng-class="{'sideNavbar': active1 =='kr-agg'}" data-ng-hide="selectRole < 1">Kilkari Aggregate Reports
+                <span class="glyphicon glyphicon-plus plusSign" ></span>
+            </div>
+            <div data-ng-click="active1='ma';func('ma')" data-ng-class="{'sideNavbar': active1 =='ma'}" data-ng-hide="selectRole < 1">Mobile Academy Line Listing Reports
+                <span class="glyphicon glyphicon-plus plusSign"></span>
+            </div>
+            <div data-ng-click="active1='ma-agg';func('ma-agg')" data-ng-class="{'sideNavbar': active1 =='ma-agg'}" data-ng-hide="selectRole < 1">Mobile Academy Aggregate Reports
                 <span class="glyphicon glyphicon-plus plusSign"></span>
             </div>
             <div data-ng-click="active1='um';func('um')" data-ng-class="{'sideNavbar': active1 =='um'}" data-ng-hide="selectRole < 5">User Management
