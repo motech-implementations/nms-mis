@@ -2234,7 +2234,7 @@
                                                      { field: 'content_75_100', name: 'Listening greater than or equal to 75% content',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', enableSorting: false,width:"*", enableHiding: false},
                                                      { field: 'content_50_75', name: 'Listening greater than or equal to 50% to less than 75% content',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',enableSorting: false,width:"*", enableHiding: false },
                                                      { field: 'content_25_50', name: 'Listening greater than or equal to 25% to less than 50% content', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',enableSorting: false,width:"*", enableHiding: false },
-                                                     { field: 'content_1_25', name: 'Listening less than 25 % content',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',enableSorting: false,width:"*", enableHiding: false },
+                                                     { field: 'content_1_25', name: 'Listening less than 25% content',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',enableSorting: false,width:"*", enableHiding: false },
                                                      { field: 'total', name: 'Total',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', enableSorting: false,width:"10%", enableHiding: false },
 
             ]
