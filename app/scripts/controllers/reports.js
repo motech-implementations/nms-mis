@@ -1,8 +1,15 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("ReportsController", ['$scope', '$state', '$http', 'UserFormFactory','$window','$q','uiGridConstants','exportUiGridService','uiGridExporterService','uiGridExporterConstants','$location', function($scope, $state, $http, UserFormFactory,$window,$q,uiGridConstants,exportUiGridService,uiGridExporterService,uiGridExporterConstants,$location){
+		.controller("ReportsController", ['$scope', '$state', '$http', 'UserFormFactory','$window','$q','uiGridConstants','exportUiGridService','uiGridExporterService','uiGridExporterConstants','$location', function($scope, $state, $http, UserFormFactory,$window,$q,uiGridConstants,exportUiGridService,uiGridExporterService,uiGridExporterConstants,$location, user){
 
+            UserFormFactory.isLoggedIn()
+            			.then(function(result){
+            				if(!result.data && user){
+            					$state.go('login', {});
+            				}
+
+            			})
 			UserFormFactory.isLoggedIn()
 			.then(function(result){
 				if(!result.data){
@@ -338,7 +345,7 @@
 				if($scope.userHasOneCircle()){
                 	$scope.selectCircle($scope.circles[0]);
                 }
-                if($scope.report.reportEnum == 'Kilkari_Message_Matrix' || $scope.report.reportEnum == 'Kilkari_Listening_Matrix' || $scope.report.reportEnum == 'Kilkari_Usage' || $scope.report.reportEnum == 'Kilkari_Message_Listenership' || $scope.report.reportEnum == 'Kilkari_Thematic_Content' || $scope.report.reportEnum == 'Kilkari_Aggregate_Beneficiaries' || $scope.report.reportEnum == 'Kilkari_Beneficiary_Completion'){
+                if($scope.report.reportEnum == 'Kilkari_Message_Matrix' || $scope.report.reportEnum == 'Kilkari_Subscriber' || $scope.report.reportEnum == 'Kilkari_Listening_Matrix' || $scope.report.reportEnum == 'Kilkari_Usage' || $scope.report.reportEnum == 'Kilkari_Message_Listenership' || $scope.report.reportEnum == 'Kilkari_Thematic_Content' || $scope.report.reportEnum == 'Kilkari_Aggregate_Beneficiaries' || $scope.report.reportEnum == 'Kilkari_Beneficiary_Completion'){
                     $scope.periodType = ['Year','Financial Year','Quarter','Month','Week'];
                 }
                 else if($scope.report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise'){
@@ -354,18 +361,18 @@
                     $scope.datePickerContent = "Monthly";
 
 
-                if($scope.report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise'){
-                    $scope.periodDisplayType = "Month";
-                }
-                else{
-                     $scope.periodDisplayType = '';
-                }
+                $scope.periodDisplayType = '';
                 $scope.dt1 = null;
                 $scope.dt2 = null;
                 $scope.hideGrid = true;
                 $scope.hideMessageMatrix = true;
                 $scope.showEmptyData = false;
-                if($scope.report.name == 'MA Cumulative Summary' || $scope.report.reportEnum == 'Kilkari_Cumulative_Summary'){
+                if($scope.report.name == 'MA Cumulative Summary') {
+                $scope.dateFormat = 'yyyy-MM-dd';
+                                    $scope.endDatePickerOptions.minDate = new Date(2015,12,01)
+                                    $scope.endDatePickerOptions.maxDate = new Date();
+                }
+                if($scope.report.reportEnum == 'Kilkari_Cumulative_Summary'){
                     $scope.dateFormat = 'yyyy-MM-dd';
                     $scope.endDatePickerOptions.minDate = new Date(2016,11,01)
                     $scope.endDatePickerOptions.maxDate = new Date();
@@ -514,40 +521,44 @@
 			        return false;
 			     }
 			    else {
-			         true
+			         return true;
 			    }
 			}
 
 
 			$scope.setDateOptions =function(){
-			    if($scope.isAggregateReport()&&($scope.periodDisplayType == 'Month'||$scope.periodDisplayType == 'Week'||$scope.periodDisplayType == 'Custom Range')){
-			        var minDate = new Date(2016, 11, 01);
-			    }
-			    else if($scope.isAggregateReport()&&($scope.periodDisplayType == 'Year'||$scope.periodDisplayType == 'Quarter'||$scope.periodDisplayType == 'Financial Year')){
-			        var minDate = new Date(2017, 00, 01);
-			    }
+                if($scope.isAggregateReport()&&($scope.periodDisplayType == 'Month'||$scope.periodDisplayType == 'Week'||$scope.periodDisplayType == 'Custom Range')){
+                    var minDate = new Date(2016, 11, 01);
+                }
+                else if($scope.isAggregateReport()&&($scope.periodDisplayType == 'Year'||$scope.periodDisplayType == 'Quarter'||$scope.periodDisplayType == 'Financial Year')){
+                    var minDate = new Date(2017, 00, 01);
+                }
                 else{
                     var minDate = new Date(2016, 11, 30);
                 }
+
 				if($scope.report != null && $scope.report.service == 'M'){
 					minDate = new Date(2015, 10, 01);
 				}
 				if($scope.report != null && $scope.report.reportEnum == 'MA_Cumulative_Inactive_Users'){
-                	minDate = new Date(2017, 04, 30);
+                	minDate = new Date(2015, 12, 01);
+                }
+                if($scope.report != null && $scope.report.reportEnum == 'MA_Cumulative_Course_Completion'){
+                	minDate = new Date(2015, 12, 01);
                 }
                 if($scope.report != null && $scope.report.reportEnum == 'MA_Anonymous_Users'){
-                    minDate = new Date(2017, 04, 30);
+                    minDate = new Date(2017, 01, 01);
                 }
                 if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Low_Usage'){
                     minDate = new Date(2016, 11, 30);
                 }
-//                if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Low_Listenership_Deactivation'){
-//                    minDate = new Date(2017, 08, 30);
-//                }
 
                 //In case of change in minDate for rejection reports, please change startMonth and startDate variable accordingly
                 if($scope.report != null && $scope.report.reportEnum == 'MA_Asha_Import_Rejects'){
-                    minDate = new Date(2017, 10, 01);
+                    minDate = new Date(2017, 08, 01);
+                 }
+                 if($scope.report != null && ($scope.report.reportEnum == 'MA_Performance' || $scope.report.reportEnum == 'MA_Subscriber')) {
+                    minDate = new Date(2015,12,01);
                  }
                  if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Mother_Import_Rejects'){
                     minDate = new Date(2017, 08, 01);
@@ -562,6 +573,7 @@
 				if($scope.isCircleReport() && $scope.circle != null && Date.parse($scope.circle.serviceStartDate) > minDate){
 					minDate = $scope.circle.serviceStartDate;
 				}
+
 
 
                 $scope.datePickerOptions = {
@@ -2017,6 +2029,11 @@
 
             function indianDecimal( value){
                             x=value.toString();
+                            var isNegative = false;
+                                            if (x.substring(0,1) === '-'){
+                                                x = x.substring(1);
+                                                isNegative = true;
+                                            }
                             var afterPoint = '';
                             if(x.indexOf('.') > 0)
                                afterPoint = x.substring(x.indexOf('.'),x.length);
@@ -2033,17 +2050,30 @@
                              } else {
                                 res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
                             }
-                            return res;
+                            if (isNegative) {
+                                                   return '-' + res;
+                                               } else {
+                                                   return res;
+                                               }
                     }
 
                     function indianInteger(value){
                                         x=value.toString();
+                                        var isNegative = false;
+                                                                                    if (x.substring(0,1) === '-'){
+                                                                                        x = x.substring(1);
+                                                                                        isNegative = true;
+                                                                                    }
                                     var lastThree = x.substring(x.length-3);
                                     var otherNumbers = x.substring(0,x.length-3);
                                     if(otherNumbers != '')
                                         lastThree = ',' + lastThree;
                                     var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree ;
-                                    return res;
+                                    if (isNegative) {
+                                                           return '-' + res;
+                                                       } else {
+                                                           return res;
+                                                       }
 
                     }
 
@@ -2418,7 +2448,7 @@
                                      fileName = $scope.report.reportEnum + "_" + $scope.reportBreadCrumbData[$scope.reportBreadCrumbData.length -1].locationName ;
                                      $scope.gridOptions1.exporterExcelFilename = fileName + "_" + dateString;
                                          if($scope.report.reportEnum == 'Kilkari_Subscriber'){
-                                             if(!rejectionStart){
+                                          if(!rejectionStart){
                                              var i;
                                                 for(i=0; i<$scope.gridOptions1.data.length ;i++){
                                                  $scope.gridOptions1.data[i].totalRecordsRejected = "N/A";
@@ -2485,6 +2515,11 @@
 		.filter('indianDecimalFilter', function () {
           return function (value) {
             x=value.toString();
+            var isNegative = false;
+                                                        if (x.substring(0,1) === '-'){
+                                                            x = x.substring(1);
+                                                            isNegative = true;
+                                                        }
         var afterPoint = '';
         if(x.indexOf('.') > 0)
            afterPoint = x.substring(x.indexOf('.'),x.length);
@@ -2497,19 +2532,32 @@
         if(otherNumbers != '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree + afterPoint;
-        return res;
+        if (isNegative) {
+                                                           return '-' + res;
+                                                       } else {
+                                                           return res;
+                                                       }
 
           };
         })
         		.filter('indianFilter', function () {
                   return function (value) {
                     x=value.toString();
+                    var isNegative = false;
+                                                                if (x.substring(0,1) === '-'){
+                                                                    x = x.substring(1);
+                                                                    isNegative = true;
+                                                                }
                 var lastThree = x.substring(x.length-3);
                 var otherNumbers = x.substring(0,x.length-3);
                 if(otherNumbers != '')
                     lastThree = ',' + lastThree;
                 var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree ;
-                return res;
+                if (isNegative) {
+                                                                   return '-' + res;
+                                                               } else {
+                                                                   return res;
+                                                               }
 
                   };
                 })

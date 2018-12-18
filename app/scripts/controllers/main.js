@@ -207,7 +207,7 @@
                     $scope.currentUser = UserFormFactory.getCurrentUser();
                 });
                 if (!($scope.disableCursor())){
-                    $state.go('faq.faqWebsiteInformation', {pageNum: 1});
+                    $state.go('faq.faqGeneralInfo', {pageNum: 1});
                 }
                 $scope.removed();
             }
@@ -436,6 +436,12 @@
             $scope.date = new Date();
 
 			$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+
+			    UserFormFactory.downloadCurrentUser().then(function(result){
+                                UserFormFactory.setCurrentUser(result.data);
+                                $scope.currentUser = UserFormFactory.getCurrentUser();
+                                window.localStorage.setItem('prev_userId', $scope.currentUser.userId);
+                });
 			    if (toState.name === 'login') {
 			        UserFormFactory.isLoggedIn().then(function(res) {
                         if (res.data) {
@@ -465,15 +471,20 @@
                 }}
 
             });
+
+
+
             $scope.$watch('online', function(newStatus) {
             if($rootScope.online){
             }
             else{
                     if (UserFormFactory.isInternetExplorer()) {
                             alert("You are offline");
+                            $scope.goToLogout();
                              return;
                         } else {
                             UserFormFactory.showAlert("You are offline");
+                            $scope.goToLogout();
                             return;
                         }
             }
@@ -491,9 +502,7 @@
     .config(function ($idleProvider, $keepaliveProvider) {
         $idleProvider.setIdleTime(1800);
         $idleProvider.setTimeoutTime(10);
-    }).run(function ($idle) {
-              $idle.watch();
-          });
+    })
 	 }
 
 )();

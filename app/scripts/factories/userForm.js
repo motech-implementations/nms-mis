@@ -7,7 +7,7 @@
 
 			return {
 				downloadCurrentUser: function(){
-					return $http.get(backend_root + 'nms/user/currentUser');
+					return $http.post(backend_root + 'nms/user/currentUser');
 				},
 				setCurrentUser: function(user){
 					currentUser = user;
@@ -21,30 +21,30 @@
 				},
 
 				isLoggedIn: function(){
-					return $http.get(backend_root + 'nms/user/isLoggedIn');
+					return $http.post(backend_root + 'nms/user/isLoggedIn');
 				},
 
 				logoutUser: function(){
-                    return $http.get(backend_root + 'nms/logout');
+                    return $http.post(backend_root + 'nms/logout');
                 },
 
 				isAdminLoggedIn: function(){
-					return $http.get(backend_root + 'nms/user/isAdminLoggedIn');
+					return $http.post(backend_root + 'nms/user/isAdminLoggedIn');
 				},
 
 				getRoles: function() {
-					return $http.get(backend_root + 'nms/user/roles');
+					return $http.post(backend_root + 'nms/user/roles');
 				},
 
 				downloadUsers: function(id){
-					return $http.get(backend_root + 'nms/user/list');
+					return $http.post(backend_root + 'nms/user/list');
 				},
 				setUsers: function(value){
 					users = value;
 				},
 
 				getStates: function(){
-					return $http.get(backend_root + 'nms/location/states');
+					return $http.post(backend_root + 'nms/location/states');
 				},
 				getStatesByService: function(service){
 					return $http.get(backend_root + 'nms/location/state/' + service);
@@ -59,14 +59,14 @@
 				},
 
 				getCircles: function(){
-					return $http.get(backend_root + 'nms/location/circles');
+					return $http.post(backend_root + 'nms/location/circles');
 				},
 				getCirclesByService: function(service){
 					return $http.get(backend_root + 'nms/location/circle/' + service);
 				},
 
 				getReportsMenu: function(){
-				   return $http.get(backend_root + 'nms/user/reportsMenu/');
+				   return $http.post(backend_root + 'nms/user/reportsMenu/');
 //                   return $http.get("scripts/json/reportDetails.json");
 				},
 

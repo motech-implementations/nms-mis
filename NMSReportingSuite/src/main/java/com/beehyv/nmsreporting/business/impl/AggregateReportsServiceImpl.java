@@ -5,7 +5,9 @@ import be.quodlibet.boxable.image.Image;
 import com.beehyv.nmsreporting.business.AggregateReportsService;
 import com.beehyv.nmsreporting.dao.*;
 import com.beehyv.nmsreporting.entity.AggregateExcelDto;
+import com.beehyv.nmsreporting.entity.MASubscriberDto;
 import com.beehyv.nmsreporting.model.*;
+import com.ibm.icu.text.NumberFormat;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -82,6 +84,9 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
 
     @Autowired
     private HealthSubFacilityDao healthSubFacilityDao;
+
+    @Autowired
+    private MASubscriberDao maSubscriberDao;
 
 
     @Override
@@ -238,11 +243,11 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         anchor.setCol1(0);
         anchor.setRow1(0);
         anchor.setRow2(4);
-        anchor.setCol2(9);
+        anchor.setCol2(8);
         drawing.createPicture(anchor, pictureIndex);
 
 
-        spreadsheet.addMergedRegion(new CellRangeAddress(0, 3, 0, 8));
+        spreadsheet.addMergedRegion(new CellRangeAddress(0, 3, 0, 7));
 
         rowid = rowid + 3;
         XSSFRow row = spreadsheet.createRow(rowid++);
@@ -274,7 +279,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         CellRangeAddress range3 = new CellRangeAddress(4, 5, 5, 5);
         cleanBeforeMergeOnValidCells(spreadsheet, range3, style);
         spreadsheet.addMergedRegion(range3);
-        CellRangeAddress range4 = new CellRangeAddress(4, 5, 6, 8);
+        CellRangeAddress range4 = new CellRangeAddress(4, 5, 6, 7);
         cleanBeforeMergeOnValidCells(spreadsheet, range4, style);
         spreadsheet.addMergedRegion(range4);
         XSSFRow row1 = spreadsheet.createRow(++rowid);
@@ -316,7 +321,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         CellRangeAddress range6 = new CellRangeAddress(6, 6, 4, 5);
         cleanBeforeMergeOnValidCells(spreadsheet, range6, style);
         spreadsheet.addMergedRegion(range6);
-        CellRangeAddress range7 = new CellRangeAddress(6, 6, 7, 8);
+        CellRangeAddress range7 = new CellRangeAddress(6, 6, 7, 7);
         cleanBeforeMergeOnValidCells(spreadsheet, range7, style);
         spreadsheet.addMergedRegion(range7);
 
@@ -434,14 +439,21 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         style.setWrapText(true);
         backgroundStyle3.setFont(font2);
 
+        spreadsheet.setColumnWidth(0, 4000);
 
-        for (int i = 0; i < 15; i++) {
-            spreadsheet.setColumnWidth(i, 4000);
+        for (int i = 1; i < 15; i++) {
+            spreadsheet.setColumnWidth(i, 6000);
         }
-
 
         XSSFRow row;
         int rowid = 8;
+
+        if (gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix") || gridData.getReportName().equalsIgnoreCase("Kilkari Beneficiary Completion")
+        || gridData.getReportName().equalsIgnoreCase("Kilkari Usage") || gridData.getReportName().equalsIgnoreCase("Kilkari Call")) {
+            for (int i = 1; i < 15; i++) {
+                spreadsheet.setColumnWidth(i, 10000);
+            }
+        }
 
         if (gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix")) {
             row = spreadsheet.createRow(rowid++);
@@ -535,7 +547,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
             if (colid == 2 || footer.equalsIgnoreCase("N/A")) {
                 cell1.setCellValue(footer);
             } else {
-                com.ibm.icu.text.NumberFormat format = com.ibm.icu.text.NumberFormat.getNumberInstance(new Locale("en", "in"));
+                NumberFormat format = NumberFormat.getNumberInstance(new Locale("en", "in"));
                 format.setMaximumFractionDigits(2);
                 double value = parseDouble(footer);
                 cell1.setCellValue(format.format(value));
@@ -606,7 +618,128 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                 tabrow1++;
             }
         }
+//        if (gridData.getReportName().equalsIgnoreCase("MA Subscriber")) {
+//           List rejectedAshas = maSubscriberDao.getRejectedAshas();
+//        }
+
+
+
+//            if(gridData.getReportName().equalsIgnoreCase("MA Subscriber") ||
+//                    gridData.getReportName().equalsIgnoreCase("MA Performance")||
+//                    gridData.getReportName().equalsIgnoreCase("Kilkari Call")||
+//                    gridData.getReportName().equalsIgnoreCase("Kilkari Usage")||
+//                    gridData.getReportName().equalsIgnoreCase("Kilkari Aggregate Beneficiaries")||
+//                    gridData.getReportName().equalsIgnoreCase("Kilkari Beneficiary Completion")||
+//                    gridData.getReportName().equalsIgnoreCase("Kilkari Thematic Content")||
+//                    gridData.getReportName().equalsIgnoreCase("Kilkari Message Listenership")||
+//                    gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix")||
+//                    gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener Month Wise")||
+//                    gridData.getReportName().equalsIgnoreCase("Kilkari Cumulative Summary")||
+//                    gridData.getReportName().equalsIgnoreCase("MA Cumulative Summary")){
+                spreadsheet.autoSizeColumn(1);
+//            }
+
         createHeadersForAggreagateExcels(workbook, gridData);
+    }
+
+    public HashMap<Long, MASubscriberDto> getMASubscriberCounts (Integer locationId, String locationType, Date fromDate, Date toDate){
+
+        Date fromDateTemp = fromDate;
+        HashMap<Long,MASubscriberDto> countMap = new HashMap<>();
+
+        if(locationType.equalsIgnoreCase("State")){
+            List<State> states=stateDao.getStatesByServiceType("MOBILE_ACADEMY");
+            for(State s:states){
+                Integer failedCount = 0;
+                if(fromDate.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"MOBILE_ACADEMY"))){
+                    fromDateTemp = stateServiceDao.getServiceStartDateForState(s.getStateId(),"MOBILE_ACADEMY");
+                }
+                MASubscriberDto statePerformance = new MASubscriberDto();
+                if(!toDate.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"MOBILE_ACADEMY"))) {
+                    failedCount = maSubscriberDao.getRejectedAshas(s.getStateId(), locationType, fromDateTemp, toDate);
+                }
+                statePerformance.setAshasFailed(failedCount);
+                countMap.put((long)s.getStateId(),statePerformance);
+
+                fromDateTemp = fromDate;
+            }
+
+        }
+        else{
+            if(locationType.equalsIgnoreCase("District")){
+                if(fromDateTemp.before(stateServiceDao.getServiceStartDateForState(locationId,"MOBILE_ACADEMY"))){
+                    fromDateTemp = stateServiceDao.getServiceStartDateForState(locationId,"MOBILE_ACADEMY");
+                }
+                List<District> districts = districtDao.getDistrictsOfState(locationId);
+                Integer stateCounts3 = maSubscriberDao.getRejectedAshas(locationId,"State",fromDateTemp,toDate);
+                Integer failedCount = 0;
+                for(District d:districts){
+                    MASubscriberDto districtPerformance = new MASubscriberDto();
+                    Integer districtCount3 = maSubscriberDao.getRejectedAshas(d.getDistrictId(),locationType,fromDateTemp,toDate);
+                    districtPerformance.setAshasFailed(districtCount3);
+                    countMap.put((long)d.getDistrictId(),districtPerformance);
+                    failedCount+=districtCount3;
+
+                }
+                Integer noDistrictCount3 = 0;
+                MASubscriberDto noDistrictPerformance = new MASubscriberDto();
+                noDistrictCount3= stateCounts3 - failedCount;
+
+                noDistrictPerformance.setAshasFailed(noDistrictCount3);
+                countMap.put((long)-locationId,noDistrictPerformance);
+            }
+            else{
+                if(locationType.equalsIgnoreCase("Block")) {
+                    if(fromDateTemp.before(stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(),"MOBILE_ACADEMY"))){
+                        fromDateTemp = stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(),"MOBILE_ACADEMY");
+                    }
+                    List<Block> blocks = blockDao.getBlocksOfDistrict(locationId);
+                    Integer districtCounts3 = maSubscriberDao.getRejectedAshas(locationId,"District",fromDateTemp,toDate);
+                    Integer failedCount = 0;
+                    for (Block d : blocks) {
+                        MASubscriberDto blockPerformance = new MASubscriberDto();
+                        Integer blockCount3 = maSubscriberDao.getRejectedAshas(d.getBlockId(),locationType,fromDateTemp,toDate);
+
+                        blockPerformance.setAshasFailed(blockCount3);
+                        countMap.put((long)d.getBlockId(),blockPerformance);
+                        failedCount+=blockCount3;
+                    }
+                    Integer noBlockCount3 = 0;
+                    MASubscriberDto noBlockPerformance = new MASubscriberDto();
+                    noBlockCount3= districtCounts3 - failedCount;
+
+                    noBlockPerformance.setAshasFailed(noBlockCount3);
+                    countMap.put((long)-locationId,noBlockPerformance);
+                }
+                else {
+                    if(fromDateTemp.before(stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(),"MOBILE_ACADEMY"))){
+                        fromDateTemp = stateServiceDao.getServiceStartDateForState(blockDao.findByblockId(locationId).getStateOfBlock(),"MOBILE_ACADEMY");
+                    }
+                    List<HealthFacility> healthFacilities = healthFacilitydao.findByHealthBlockId(locationId);
+                    List<HealthSubFacility> subcenters = new ArrayList<>();
+                    for(HealthFacility hf :healthFacilities){
+                        subcenters.addAll(healthSubFacilityDao.findByHealthFacilityId(hf.getHealthFacilityId()));
+                    }
+                    Integer blockCounts3 = maSubscriberDao.getRejectedAshas(locationId,"block",fromDateTemp,toDate);
+                    Integer failedCount = 0;
+                    for(HealthSubFacility s: subcenters){
+                        MASubscriberDto subcentrePerformance = new MASubscriberDto();
+                        Integer subcentreCount3 = maSubscriberDao.getRejectedAshas(s.getHealthSubFacilityId(),locationType,fromDateTemp,toDate);
+
+                        subcentrePerformance.setAshasFailed(subcentreCount3);
+                        countMap.put((long)s.getHealthSubFacilityId(),subcentrePerformance);
+                        failedCount+=subcentreCount3;
+                    }
+                    Integer noSubcentreCount3 = 0;
+                    MASubscriberDto noSubcentrePerformance = new MASubscriberDto();
+                    noSubcentreCount3= blockCounts3 - failedCount;
+
+                    noSubcentrePerformance.setAshasFailed(noSubcentreCount3);
+                    countMap.put((long)-locationId,noSubcentrePerformance);
+                }
+            }
+        }
+        return countMap;
     }
 
     @Override
@@ -735,17 +868,26 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
             cellWidth = 10f;
             tableMargin = 60;
             tableFont = 7;
-        } else if (gridData.getReportName().equalsIgnoreCase("MA Subscriber") || gridData.getReportName().equalsIgnoreCase("Kilkari Beneficiary Completion")) {
-            cellWidth = 12f;
+        } else if (gridData.getReportName().equalsIgnoreCase("MA Subscriber")) {
+            cellWidth = 15f;
+            tableMargin = 75;
+        }  else if (gridData.getReportName().equalsIgnoreCase("Kilkari Beneficiary Completion")) {
+            cellWidth = 20f;
             tableMargin = 75;
         } else if (gridData.getReportName().equalsIgnoreCase("MA Performance") || gridData.getReportName().equalsIgnoreCase("Kilkari Listening Matrix")) {
             cellWidth = 18f;
             tableMargin = 60;
-        } else if (gridData.getReportName().equalsIgnoreCase("Kilkari Thematic Content") || gridData.getReportName().equalsIgnoreCase("Kilkari Cumulative Summary") || gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix")) {
+        } else if (gridData.getReportName().equalsIgnoreCase("Kilkari Thematic Content") || gridData.getReportName().equalsIgnoreCase("Kilkari Cumulative Summary")) {
             cellWidth = 16f;
             tableMargin = 80;
-        } else if (gridData.getReportName().equalsIgnoreCase("Kilkari Usage") || gridData.getReportName().equalsIgnoreCase("Kilkari Subscriber") || gridData.getReportName().equalsIgnoreCase("Kilkari Message Listenership")) {
+        } else if (gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix")) {
+            cellWidth = 22f;
+            tableMargin = 80;
+        } else if (gridData.getReportName().equalsIgnoreCase("Kilkari Subscriber") || gridData.getReportName().equalsIgnoreCase("Kilkari Message Listenership")) {
             cellWidth = 12f;
+            tableMargin = 40;
+        } else if (gridData.getReportName().equalsIgnoreCase("Kilkari Usage")) {
+            cellWidth = 20f;
             tableMargin = 40;
         } else if (gridData.getReportName().equalsIgnoreCase("Kilkari Call")) {
             cellWidth = 10f;

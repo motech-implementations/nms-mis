@@ -15,7 +15,6 @@
 			$scope.user.rememberMe = false;
 
 
-
 			$scope.loginUrl = backend_root + 'nms/login';
 
 			var url = $location.absUrl();
@@ -31,7 +30,21 @@
 			    $scope.errorMessage = "Invalid Username/Password";
             }
 
-			$scope.Captcha = function(){
+
+            var myEl = angular.element( document.querySelector( '#divID' ) );
+            $scope.removereadAttribute = function(){
+            console.log('readonly');
+                myEl.removeAttr('readonly');
+            }
+
+            $scope.setWriteAccess = function(){
+                $scope.read = false;
+            }
+            $scope.setReadOnly = function(){
+                $scope.read = true;
+            }
+
+		$scope.Captcha = function(){
                  var alpha = new Array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','P','Q','R','S','T','U','V','W','X','Y','Z',
              	    	'1','2','3','4','5','6','7','8','9');
                  var i;
@@ -178,6 +191,8 @@
                 "saltHex": encrypted.salt.toString(),
                 "rememberMe": $scope.user.rememberMe
                 };
+
+                $scope.user.password = "NewPassword@231";
                 $http({
                     method: 'POST',
                     url: $scope.loginUrl,

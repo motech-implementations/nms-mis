@@ -14,6 +14,9 @@ public interface MASubscriberDao {
 
     List<AggregateCumulativeMA> getMASubscriberCountSummary(String locationType, Integer locationId, Date fromDate,Date toDate);
 
+    Integer getRejectedAshas(Integer locationId, String locationType, Date fromDate, Date toDate);
+
+
 //    List<AggregateCumulativeMA> getMASubscriberCountSummaryEnd(String locationType, Integer locationId, Date fromDate, Date toDate);
 
 }

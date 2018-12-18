@@ -2,17 +2,17 @@
 	var nmsReportsApp = angular
 		.module('nmsReports');
 		nmsReportsApp.controller("ContactUsController", ['$scope', '$state', 'UserFormFactory','$http', '$location', function($scope,$state,UserFormFactory, $http, $location ){
-                        UserFormFactory.isLoggedIn()
-                        			.then(function(result){
-                                    if(result.data){
+            UserFormFactory.isLoggedIn()
+                        .then(function(result){
+                        if(result.data){
             UserFormFactory.downloadCurrentUser()
-            					.then(function(result){
-            					                        $scope.email.name=result.data.fullName;
-            					                        $scope.email.email=result.data.emailId;
-            					                        $scope.email.phoneNo=result.data.phoneNumber;
-            					})
-            					}
-                        			})
+                    .then(function(result){
+                                $scope.email.name=result.data.fullName;
+                                $scope.email.email=result.data.emailId;
+                                $scope.email.phoneNo=result.data.phoneNumber;
+                    })
+            }
+           })
             $scope.contactUsUrl = backend_root + 'nms/mail/sendEmailForContactUs';
 
             $scope.contactUs = {};
@@ -202,5 +202,8 @@
                    $(':input[type="submit"]').prop('disabled', false);
                    $(':input[type="submit"]').css('background-color', '#2164b2');
                     }
-		}])
+		}]);
+
+
+
 })();

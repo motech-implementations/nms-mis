@@ -361,7 +361,7 @@ public class AdminController {
 
         User currentUser = userService.getCurrentUser();
 
-        if(currentUser != null) {
+        if(currentUser.getUserId() != null) {
             return locationService.getStatesByServiceType(serviceType);
         } else
             return null;
@@ -374,7 +374,7 @@ public class AdminController {
 
 
         User currentUser = userService.getCurrentUser();
-        if(currentUser != null) {
+        if(currentUser.getUserId() != null) {
             return locationService.getServiceStartdateForState(stateId, serviceType);
         } else
             return null;

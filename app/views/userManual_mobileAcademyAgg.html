@@ -1,0 +1,177 @@
+<div class="container-fluid" data-ng-controller="mobileAcademyAggregateController" style="padding-left: 30px">
+
+    <div data-ng-hide="flag">
+        <h2 class="user-manual-header">Mobile Academy Aggregate Reports</h2>
+        <div style="color: #0071bc; font-size: 16px">
+            <p><div data-ng-click="func('csr')"><u>MA Cumulative Summary Report</u></div></p>
+            <p><div data-ng-click="func('sr')" ><u>MA Subscriber Report</u></div></p>
+            <p><div data-ng-click="func('pr')"><u>MA Performance Report</u></div></p>
+        </div>
+    </div>
+
+    <div data-ng-hide="!flag" class="user-manual-reports">
+        <div><img alt="user manual" src="./images/back1.png" data-ng-click="flag=!flag" class="user-manual-back">
+        <div style="display: inline-block"  class="imageModify"><b>Mobile Academy Aggregate Report</b><br>
+            <div data-ng-hide="selectRole != 1 && selectRole !=5"><!--National User-->
+                <div data-ng-hide="param!=='csr'" style="display: inline-block">
+                    <p style="font-size: 30px"><b>MA Cumulative Summary Report</b></p><br>
+                    <p>This report gives a glance of the performance of the Mobile Academy project from start date of the project to till date. It gives information about the number of ASHAs registered with the program, the number of ASHAs that have started the course, the number of ASHAs who have not yet started the course, the number of ASHAs who have passed the course and the number of ASHAs who have failed the course. All the above counts are for ASHAs with job status ‘ACTIVE’. This report will give a snapshot of how far each State / UT / district is on the aspect of training all the ASHAs. This report will primarily show the data for the first-time training and completion of the course of the ASHAs.</p>
+                    <p>This report will help to represent the overall performance of course completion by ASHA in selected state.</p>
+                    <p>The report displays the data in the following sequence of columns.</p>
+                       <ol>
+                           <li>Serial Number</li>
+                           <li>State</li>
+                           <li>No of Registered ASHA</li>
+                           <li>No of ASHA Started Course</li>
+                           <li>No of ASHA Not Started Course</li>
+                           <li>No of ASHA Successfully Completed the Course</li>
+                           <li>No of ASHA who failed the course</li>
+                           <li>% Not Started Course</li>
+                           <li>% Successfully Completed</li>
+                           <li>% Failed the course</li>
+                       </ol>
+                    <p>The rules governing the display components of the report is given below</p>
+                    <ol>
+                        <li>Columns 6 & 9 should take into consideration only the first successful completion and not repeat attempts.</li>
+                        <li>The percentage displayed in the report should follow the below rules based on data in its respective rows only
+                            <ol>
+                                <li>% Not Started Course: (Column 5/Column 3) * 100</li>
+                                <li>% Successfully Completed: (Column 6/Column 4) * 100</li>
+                                <li>% Failed the course: (Column 7/Column 4) * 100</li>
+                            </ol>
+                        </li>
+                    </ol>
+                    <p>The report should display data based on the As-On date selected with Registration, Started, Not Started, Completed and Failed data based on cumulative since the program was started.</p>
+                    <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
+                    <p>2) Under "Reports Category" select "Mobile Academy Reports".</p>
+                    <img alt="user manual" src="./images/aggregates/MA/MA_Cumul_Summary_1.PNG" ><br><br><br>
+                    <p>3) Under "Reports" select "Cummulative Summary"</p>
+                    <img alt="user manual" src="./images/aggregates/MA/MA_Cumul_Summary_2.PNG" ><br><br><br>
+                    <p>4) Select an ‘End Date’ for which the cumulative summary report is required. </p>
+                    <img alt="user manual" src="./images/aggregates/MA/MA_Cumul_Summary_3.PNG"><br><br><br>
+                    <p>5) Click on ‘Submit’</p>
+                    <img alt="user manual" src="./images/aggregates/MA/MA_Cumul_Summary_4.PNG"><br><br><br>
+                    <p>6) The report will be generated</p>
+                    <img alt="user manual" src="./images/aggregates/MA/MA_Cumul_Summary_5.PNG"><br><br><br>
+                    <p>7) Once the report is generated, it can be downloaded in PDF, CSV and XLSX formats.</p>
+                    <img alt="user manual" src="./images/aggregates/MA/MA_Cumul_Summary_6.PNG"><br><br><br>
+                </div>
+                <div data-ng-hide="param!=='sr'" style="display: inline-block">
+                    <p style="font-size: 30px"><b>MA Subscriber Report</b></p><br>
+                    <p>This report gives the glance of the subscriber load on the Mobile Academy project. It shows how many ASHAs who have registered but not completed the course at the start of the period, the number of ASHAs who have joined the course and number of who have completed the course.  All the above counts are for ASHAs with job status ‘ACTIVE’.</p>
+                    <p>The report displays the data in the following sequence of columns </p>
+                    <ol>
+                        <li>Serial Number</li>
+                        <li>State</li>
+                        <li>No of ASHA Registered But Not Completed (Period Start)</li>
+                        <li>No of ASHA Records Received Through Web Service</li>
+                        <li>No of ASHA Records Rejected</li>
+                        <li>No of ASHA Records Added</li>
+                        <li>No of ASHA Successfully Completed the Course</li>
+                        <li>No of ASHA Registered But Not Completed (Period End)</li>
+                    </ol>
+                    <p>The rules governing the display components of the report is given below</p>
+                    <ol>
+                        <li>The data pertaining to column 3, 4, 5, 6, 7, 8 should be for the selected period only.</li>
+                        <ol>
+                            <li>Column 3 will display the number of ASHAs who have registered in the MA course prior to the start of the period but have not completed the course.</li>
+                            <li>Column 4 will display the number of ASHA Records that have been received from web service from MCTS/RCH during the period.</li>
+                            <li>Column 5 will display the number of the records  that have been rejected due to wrong mobile number and other reasons – a subset of (b).</li>
+                            <li>Column 6 will display the number of ASHAs who have been added/subscribed in MA course for the first time in the selected period. Column 6 = Column 4 – Column 5.</li>
+                            <li>Column 7 will display the number of ASHAs who have successfully completed the course for the first time, during the selected period and secured pass marks.</li>
+                            <li>Column 8 will display calculation of Column 3 + Column 6 – Column 7. This number will reflect the number of ASHAs presently Subscribed in the Mobile Academy program but are yet to start or complete the course.</li>
+                        </ol>
+                    </ol>
+                    <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
+                    <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p>
+                    <img alt="user manual" src="./images/aggregates/MA/MA_Sub_1.PNG" ><br><br><br>
+                    <p>3) Under "Reports" select "Subscriber Report"</p>
+                    <img alt="user manual" src="./images/aggregates/MA/MA_Sub_2.PNG" ><br><br><br>
+                    <p>4) Select ‘Year’ under ‘Period Type’. </p>
+                    <img alt="user manual" src="./images/aggregates/MA/MA_Sub_3.PNG"><br><br><br>
+                    <p>5) Select the year for which report is needed.</p>
+                    <img alt="user manual" src="./images/aggregates/MA/MA_Sub_4.PNG"><br><br><br>
+                    <p>6) Click on ‘Submit’.</p>
+                    <img alt="user manual" src="./images/aggregates/MA/MA_Sub_5.PNG"><br><br><br>
+                    <p>7) The report will be generated.</p>
+                    <img alt="user manual" src="./images/aggregates/MA/MA_Sub_6.PNG"><br><br><br>
+                    <p>8) Once report is generated, it can be downloaded in PDF, CSV or XLSX formats.</p>
+                    <img alt="user manual" src="./images/aggregates/MA/MA_Sub_7.PNG"><br><br><br>
+                    <p>9) Select ‘Financial Year’ under ‘Period Type’ and choose the start year for which report is needed.</p>
+                    <img alt="user manual" src="./images/aggregates/MA/MA_Sub_8.PNG"><br><br><br>
+                    <p>10) Click on ‘Submit’ to generate the report</p>
+                    <img alt="user manual" src="./images/aggregates/MA/MA_Sub_9.PNG"><br><br><br>
+                    <p>11) The report will be generated which can be downloaded in PDF, CSV or XLSX formats.</p>
+                    <p>12) Select ‘Quarter’ in the ‘Period Type’ and select the year and quarter for which the report is needed. Then click ‘Submit’.</p>
+                    <img alt="user manual" src="./images/aggregates/MA/MA_Sub_10.PNG"><br><br><br>
+                    <p>13) The generated report can be downloaded in PDF, CSV and XLSX formats.</p>
+                    <p>14) Select ‘Month’ under ‘Period type’ and choose a month and click ‘Submit’.</p>
+                    <img alt="user manual" src="./images/aggregates/MA/MA_Sub_11.PNG"><br><br><br>
+                    <p>15) The report will be generated for the chosen month and can be downloaded in PDF, CSV and XLSX formats.</p>
+                    <p>16) ‘Custom Range’ under ‘Period Type’ can also be selected. After that, you need to select a start date and an end date for which report is needed, then click on ‘Submit’</p>
+                    <img alt="user manual" src="./images/aggregates/MA/MA_Sub_12.PNG"><br><br><br>
+                    <p>17) The report will be generated for the specified date range, which can be downloaded in PDF, CSV and XLSX formats.</p>
+                </div>
+                <div data-ng-hide="param!=='pr'" style="display: inline-block">
+                    <p style="font-size: 30px"><b>MA Performance Report</b></p><br>
+                    <p>This report gives at a glance the performance of the Mobile Academy Project for the selected period. It gives information about how many ASHAs have started the course in the period, number of ASHAs who have accessed the course during the period, number of ASHAs who had started the course previously but have not listened to any content during the period, number of ASHAs who have completed the course successfully in the selected period and those who have completed the course in the selected period but could not secure pass marks. All the above counts are for ASHAs with job status ‘ACTIVE’. </p>
+                    <p>The report displays the data in the following sequence of columns </p>
+                    <ol>
+                        <li>Serial Number</li>
+                        <li>State</li>
+                        <li>No of ASHA Started Course</li>
+                        <li>No of ASHA Pursuing Course</li>
+                        <li>No of ASHA Not Pursuing Course</li>
+                        <li>No of ASHA Successfully Completed the Course</li>
+                        <li>No of ASHA who failed the course </li>
+                    </ol>
+                    <p>The rules governing the display components of the report is given below</p>
+                    <ol>
+                        <li>The data pertaining to column 3, 4, 5, 6 and 7 should be for the selected period only.</li>
+                        <ol>
+                            <li>Column 3 will display the number of ASHAs who have started the course for the first time in the selected period.</li>
+                            <li>Column 4 will display the number of ASHAs who had started the course before the selected period, had accessed the course at least once with one bookmark during the selected period and not completed the course till the end of the selected period (Please refer to the NOTE).</li>
+                            <li>Column 5 will display the number of ASHAs who had started the course before the selected period and had not accessed the course once during the selected period. The count does NOT include ASHAs who have any successful completion till the end of the selected period (Please refer to the NOTE).</li>
+                            <li>Column 6 will display the number of ASHAs who have successfully completed the course for first time, during the selected period and secured pass marks.</li>
+                            <li>Column 7 will display the number of ASHAs who have completed the course during the selected period and did not secure passing marks even once till the end of selected period.</li>
+                        </ol>
+                    </ol>
+                    <p><b>NOTE Related to Columns 4 and 5 (Persuing and Not-Persuing):</b></p>
+                    <p>These two metrics are not pregenerated. So they are based on live data while runtime, i.e., at the time when user is requesting for the report via MIS Portal.</p>
+                    <p><b>Reason:</b>  For any report metric, the cumulative data upto any given date is available. For a selected date range, we pick the required metric as on these two dates and their difference will provide the required value. For example, number of first successful completion records.</p>
+                    <p>But in case of pursuing and not pursuing, the calculation is based two dates. We can’t have a cumulative figure “count of pursuing as of a particular date”. So we cannot pregenerate this for every startDate - endDate combination.</p>
+                    <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
+                    <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p>
+                    <img alt="user manual" src="./images/aggregates/MA/MA_Perf_1.PNG" ><br><br><br>
+                    <p>3) Under "Reports" select "Performance Report"</p>
+                    <img alt="user manual" src="./images/aggregates/MA/MA_Perf_2.PNG" ><br><br><br>
+                    <p>4) Select ‘Year’ under ‘Period Type’. </p>
+                    <img alt="user manual" src="./images/aggregates/MA/MA_Perf_3.PNG"><br><br><br>
+                    <p>5) Select the year for which report is needed.</p>
+                    <img alt="user manual" src="./images/aggregates/MA/MA_Perf_4.PNG"><br><br><br>
+                    <p>6) Click on ‘Submit’.</p>
+                    <img alt="user manual" src="./images/aggregates/MA/MA_Perf_5.PNG"><br><br><br>
+                    <p>7) The report will be generated.</p>
+                    <img alt="user manual" src="./images/aggregates/MA/MA_Perf_6.PNG"><br><br><br>
+                    <p>8) Once report is generated, it can be downloaded in PDF, CSV or XLSX formats.</p>
+                    <img alt="user manual" src="./images/aggregates/MA/MA_Perf_7.PNG"><br><br><br>
+                    <p>9) Select ‘Financial Year’ under ‘Period Type’ and choose the start year for which report is needed.</p>
+                    <img alt="user manual" src="./images/aggregates/MA/MA_Perf_8.PNG"><br><br><br>
+                    <p>10) Click on ‘Submit’ to generate the report</p>
+                    <img alt="user manual" src="./images/aggregates/MA/MA_Perf_9.PNG"><br><br><br>
+                    <p>11) The report will be generated which can be downloaded in PDF, CSV or XLSX formats.</p>
+                    <p>12) Select ‘Quarter’ in the ‘Period Type’ and select the year and quarter for which the report is needed. Then click ‘Submit’.</p>
+                    <img alt="user manual" src="./images/aggregates/MA/MA_Perf_10.PNG"><br><br><br>
+                    <p>13) The generated report can be downloaded in PDF, CSV and XLSX formats.</p>
+                    <p>14) Select ‘Month’ under ‘Period type’ and choose a month and click ‘Submit’.</p>
+                    <img alt="user manual" src="./images/aggregates/MA/MA_Perf_11.PNG"><br><br><br>
+                    <p>15) The report will be generated for the chosen month and can be downloaded in PDF, CSV and XLSX formats.</p>
+                    <p>16) ‘Custom Range’ under ‘Period Type’ can also be selected. After that, you need to select a start date and an end date for which report is needed, then click on ‘Submit’</p>
+                    <img alt="user manual" src="./images/aggregates/MA/MA_Perf_12.PNG"><br><br><br>
+                    <p>17) The report will be generated for the specified date range, which can be downloaded in PDF, CSV and XLSX formats.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>

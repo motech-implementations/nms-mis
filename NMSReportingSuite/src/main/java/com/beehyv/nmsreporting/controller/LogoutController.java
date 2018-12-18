@@ -21,7 +21,7 @@ import static com.beehyv.nmsreporting.utils.Global.retrieveUiAddress;
 @RequestMapping("/nms/logout")
 public class LogoutController extends AbstractController{
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.POST)
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
         SecurityUtils.getSubject().logout();
         return new ModelAndView("redirect:"+ retrieveUiAddress() +"login");

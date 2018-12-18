@@ -1,7 +1,7 @@
 <div class="container-fluid" data-ng-controller="mobileAcademyController" style="padding-left: 30px">
 
     <div data-ng-hide="flag">
-        <h2 class="user-manual-header">Mobile Academy Reports</h2>
+        <h2 class="user-manual-header">Mobile Academy Line Listing Reports</h2>
         <div style="color: #0071bc; font-size: 16px">
             <p><div data-ng-click="func('ccc')"><u>Course Completion</u></div></p>
             <p><div data-ng-click="func('cwau')" ><u>Circle wise Anonymous Users</u></div></p>
@@ -12,11 +12,13 @@
 
     <div data-ng-hide="!flag" class="user-manual-reports">
         <div><img alt="user manual" src="./images/back1.png" data-ng-click="flag=!flag" class="user-manual-back">
-            <div style="display: inline-block"  class="imageModify"><b>Mobile Academy Reports</b><br>
+            <div style="display: inline-block"  class="imageModify"><b>Mobile Academy Line Listing Report</b><br>
                 <div data-ng-hide="selectRole != 1 && selectRole !=5"><!--National User-->
                     <div data-ng-hide="param!=='ccc'" style="display: inline-block">
                         <p style="font-size: 30px"><b>Course Completion</b></p><br>
                         <p>This report is generated from the launch of service in the state till the end of selected month </p>
+                        <p>This report gives the line-listing of all the ASHAs who have successfully completed the course for the very first time in the selected month, with details like when a particular ASHA has started the course and when she has completed the course. </p>
+                        <p>This line listing report would be available for download for the respective state, district and block users. These reports would be e-mailed to the respective block and district users on the day after it was generated. A summary mail giving the district wise break-up of the count of ASHA would be sent to the State / UT users on the same day.</p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p>
@@ -41,7 +43,7 @@
 
                     <div data-ng-hide="param!=='cwau'" style="display: inline-block">
                         <p style="font-size: 30px"><b>Circle wise Anonymous Users</b></p><br>
-                        <p>This is a monthly report which lists out all the Anonymous user Mobile numbers that called from a specific circle in the selected month.</p>
+                        <p>This report gives a line-listing of all such users with their mobile numbers who had attempted the Mobile Academy toll-free number but these calls got rejected by the systems as the users were not registered in the Application. It is presumed that these anonymous numbers are the numbers that are used by ASHA but are not registered with RCH. The States / UTs can act upon this report and call up these numbers and after verifying that these numbers indeed belong to the working ASHAs should advice ASHA to get their numbers registered in the RCH application. In this way, the application can assist States / UTs to register correct mobile numbers of ASHA and bring all the ASHAs under the ambit of Mobile Academy program.</p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p>
@@ -62,7 +64,8 @@
 
                     <div data-ng-hide="param!=='ciu'">
                         <p style="font-size: 30px"><b>Cumulative Inactive Users</b></p><br>
-                        <p>The report lists out the Ashas who have not started the course even once until the end of selected month from their date of registration</p>
+                        <p>This report gives the line-listing of all such ASHAs who have not yet started the course as on date. The State / UT can act on this report and contact the ASHAs and motivate them to access the Mobile Academy course and complete the course. In this way we can bring a higher percentage of ASHAs accessing and completing the Mobile Academy program. This report is a very useful actionable report for the State / UT to monitor the ASHAs accessing the Mobile Academy course.</p>
+                        <p>This line listing report would be available for download for the respective district and block users. These reports would be e-mailed to the respective block and district users on the day after it was generated. A summary mail giving the district wise break-up of the count of ASHA would be sent to the State / UT users on the same day.</p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p>
@@ -87,7 +90,7 @@
 
                     <div data-ng-hide="param!=='arr'">
                         <p style="font-size: 30px"><b>Asha Rejected Records</b></p><br>
-                        <p>This report lists out all the Ashas who have been rejected by MOTECH due to any validation in data during registration</p>
+                        <p>This report gives the line-listing of all beneficiaries whose registered mobile numbers are either incorrect or are duplicate. These mobile numbers had flown in to the IVRS system but were rejected by the acceptance logic run by the IVRS system. The report contains the MCTS or RCH IDs. This report would be generated once every week preferably on Sunday. This line listing report would be available for download for the respective district and block users. These reports would be e-mailed to the respective block and district users on the day after it was generated –on Tuesday. A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day. The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries and register their correct mobile numbers in the RCH Application. In this way we can correct the mobile numbers of beneficiaries and bring a higher percentage of beneficiaries under the ambit of Kilkari program. This report is a very useful actionable report for the State / UT to correct the beneficiary contact mobile number. </p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p>
@@ -116,8 +119,9 @@
                     <div data-ng-hide="param!=='ccc'" style="display: inline-block" >
                         <p style="font-size: 30px"><b>Course Completion</b></p><br>
                         <p>This report is generated from the launch of service in the state till the end of selected month </p>
-                        <p>Steps to download the reports</p>
-                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
+                        <p>This report gives the line-listing of all the ASHAs who have successfully completed the course for the very first time in the selected month, with details like when a particular ASHA has started the course and when she has completed the course. </p>
+                        <p>This line listing report would be available for download for the respective state, district and block users. These reports would be e-mailed to the respective block and district users on the day after it was generated. A summary mail giving the district wise break-up of the count of ASHA would be sent to the State / UT users on the same day.</p>
+                        <p>Steps to download the reports</p><p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p>
                         <img alt="user manual" src="./images/State/MA1/SA_MA_RC.png" alt="user Manual Mobile Academy Reports"><br><br><br>
                         <p>3) Under "Reports" select "Course Completion"</p>
@@ -139,7 +143,7 @@
 
                     <div data-ng-hide="param!=='cwau'" style="display: inline-block">
                         <p style="font-size: 30px"><b>Circle wise Anonymous Users</b></p><br>
-                        <p>This is a monthly report which lists out all the Anonymous user Mobile numbers that called from a specific circle in the selected month.</p>
+                        <p>This report gives a line-listing of all such users with their mobile numbers who had attempted the Mobile Academy toll-free number but these calls got rejected by the systems as the users were not registered in the Application. It is presumed that these anonymous numbers are the numbers that are used by ASHA but are not registered with RCH. The States / UTs can act upon this report and call up these numbers and after verifying that these numbers indeed belong to the working ASHAs should advice ASHA to get their numbers registered in the RCH application. In this way, the application can assist States / UTs to register correct mobile numbers of ASHA and bring all the ASHAs under the ambit of Mobile Academy program.</p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p>
@@ -160,7 +164,8 @@
 
                     <div data-ng-hide="param!=='ciu'">
                         <p style="font-size: 30px"><b>Cumulative Inactive Users</b></p><br>
-                        <p>The report lists out the Ashas who have not started the course even once until the end of selected month from their date of registration</p>
+                        <p>This report gives the line-listing of all such ASHAs who have not yet started the course as on date. The State / UT can act on this report and contact the ASHAs and motivate them to access the Mobile Academy course and complete the course. In this way we can bring a higher percentage of ASHAs accessing and completing the Mobile Academy program. This report is a very useful actionable report for the State / UT to monitor the ASHAs accessing the Mobile Academy course.</p>
+                        <p>This line listing report would be available for download for the respective district and block users. These reports would be e-mailed to the respective block and district users on the day after it was generated. A summary mail giving the district wise break-up of the count of ASHA would be sent to the State / UT users on the same day.</p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p>
@@ -184,7 +189,7 @@
 
                     <div data-ng-hide="param!=='arr'">
                         <p style="font-size: 30px"><b>Asha Rejected Records</b></p><br>
-                        <p>This report lists out all the Ashas who have been rejected by MOTECH due to any validation in data during registration</p>
+                        <p>This report gives the line-listing of all beneficiaries whose registered mobile numbers are either incorrect or are duplicate. These mobile numbers had flown in to the IVRS system but were rejected by the acceptance logic run by the IVRS system. The report contains the MCTS or RCH IDs. This report would be generated once every week preferably on Sunday. This line listing report would be available for download for the respective district and block users. These reports would be e-mailed to the respective block and district users on the day after it was generated –on Tuesday. A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day. The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries and register their correct mobile numbers in the RCH Application. In this way we can correct the mobile numbers of beneficiaries and bring a higher percentage of beneficiaries under the ambit of Kilkari program. This report is a very useful actionable report for the State / UT to correct the beneficiary contact mobile number. </p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p>
@@ -214,8 +219,9 @@
                     <div data-ng-hide="param!=='ccc'" style="display: inline-block" >
                         <p style="font-size: 30px"><b>Course Completion</b></p><br>
                         <p>This report is generated from the launch of service in the state till the end of selected month </p>
-                        <p>Steps to download the reports</p>
-                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
+                        <p>This report gives the line-listing of all the ASHAs who have successfully completed the course for the very first time in the selected month, with details like when a particular ASHA has started the course and when she has completed the course. </p>
+                        <p>This line listing report would be available for download for the respective state, district and block users. These reports would be e-mailed to the respective block and district users on the day after it was generated. A summary mail giving the district wise break-up of the count of ASHA would be sent to the State / UT users on the same day.</p>
+                        <p>Steps to download the reports</p><p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p>
                         <img alt="user manual" src="./images/District/MA/DA_RC.png" alt="user Manual Mobile Academy Reports"><br><br><br>
                         <p>3) Under "Reports" select "Course Completion"</p>
@@ -234,7 +240,7 @@
 
                     <div data-ng-hide="param!=='cwau'" style="display: inline-block">
                         <p style="font-size: 30px"><b>Circle wise Anonymous Users</b></p><br>
-                        <p>This is a monthly report which lists out all the Anonymous user Mobile numbers that called from a specific circle in the selected month.</p>
+                        <p>This report gives a line-listing of all such users with their mobile numbers who had attempted the Mobile Academy toll-free number but these calls got rejected by the systems as the users were not registered in the Application. It is presumed that these anonymous numbers are the numbers that are used by ASHA but are not registered with RCH. The States / UTs can act upon this report and call up these numbers and after verifying that these numbers indeed belong to the working ASHAs should advice ASHA to get their numbers registered in the RCH application. In this way, the application can assist States / UTs to register correct mobile numbers of ASHA and bring all the ASHAs under the ambit of Mobile Academy program.</p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p>
@@ -255,7 +261,8 @@
 
                     <div data-ng-hide="param!=='ciu'">
                         <p style="font-size: 30px"><b>Cumulative Inactive Users</b></p><br>
-                        <p>The report lists out the Ashas who have not started the course even once until the end of selected month from their date of registration</p>
+                        <p>This report gives the line-listing of all such ASHAs who have not yet started the course as on date. The State / UT can act on this report and contact the ASHAs and motivate them to access the Mobile Academy course and complete the course. In this way we can bring a higher percentage of ASHAs accessing and completing the Mobile Academy program. This report is a very useful actionable report for the State / UT to monitor the ASHAs accessing the Mobile Academy course.</p>
+                        <p>This line listing report would be available for download for the respective district and block users. These reports would be e-mailed to the respective block and district users on the day after it was generated. A summary mail giving the district wise break-up of the count of ASHA would be sent to the State / UT users on the same day.</p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p>
@@ -276,7 +283,7 @@
 
                     <div data-ng-hide="param!=='arr'">
                         <p style="font-size: 30px"><b>Asha Rejected Records</b></p><br>
-                        <p>This report lists out all the Ashas who have been rejected by MOTECH due to any validation in data during registration</p>
+                        <p>This report gives the line-listing of all beneficiaries whose registered mobile numbers are either incorrect or are duplicate. These mobile numbers had flown in to the IVRS system but were rejected by the acceptance logic run by the IVRS system. The report contains the MCTS or RCH IDs. This report would be generated once every week preferably on Sunday. This line listing report would be available for download for the respective district and block users. These reports would be e-mailed to the respective block and district users on the day after it was generated –on Tuesday. A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day. The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries and register their correct mobile numbers in the RCH Application. In this way we can correct the mobile numbers of beneficiaries and bring a higher percentage of beneficiaries under the ambit of Kilkari program. This report is a very useful actionable report for the State / UT to correct the beneficiary contact mobile number. </p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p>
@@ -301,8 +308,9 @@
                     <div data-ng-hide="param!=='ccc'" style="display: inline-block" >
                         <p style="font-size: 30px"><b>Course Completion</b></p><br>
                         <p>This report is generated from the launch of service in the state till the end of selected month </p>
-                        <p>Steps to download the reports</p>
-                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
+                        <p>This report gives the line-listing of all the ASHAs who have successfully completed the course for the very first time in the selected month, with details like when a particular ASHA has started the course and when she has completed the course. </p>
+                        <p>This line listing report would be available for download for the respective state, district and block users. These reports would be e-mailed to the respective block and district users on the day after it was generated. A summary mail giving the district wise break-up of the count of ASHA would be sent to the State / UT users on the same day.</p>
+                        <p>Steps to download the reports</p><p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p>
                         <img alt="user manual" src="./images/Block/MA0/BU_MA_RC.png" alt="user Manual Mobile Academy Reports"><br><br><br>
                         <p>3) Under "Reports" select "Course Completion"</p>
@@ -321,7 +329,7 @@
 
                     <div data-ng-hide="param!=='cwau'" style="display: inline-block">
                         <p style="font-size: 30px"><b>Circle wise Anonymous Users</b></p><br>
-                        <p>This is a monthly report which lists out all the Anonymous user Mobile numbers that called from a specific circle in the selected month.</p>
+                        <p>This report gives a line-listing of all such users with their mobile numbers who had attempted the Mobile Academy toll-free number but these calls got rejected by the systems as the users were not registered in the Application. It is presumed that these anonymous numbers are the numbers that are used by ASHA but are not registered with RCH. The States / UTs can act upon this report and call up these numbers and after verifying that these numbers indeed belong to the working ASHAs should advice ASHA to get their numbers registered in the RCH application. In this way, the application can assist States / UTs to register correct mobile numbers of ASHA and bring all the ASHAs under the ambit of Mobile Academy program.</p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p>
@@ -341,7 +349,8 @@
 
                     <div data-ng-hide="param!=='ciu'">
                         <p style="font-size: 30px"><b>Cumulative Inactive Users</b></p><br>
-                        <p>The report lists out the Ashas who have not started the course even once until the end of selected month from their date of registration</p>
+                        <p>This report gives the line-listing of all such ASHAs who have not yet started the course as on date. The State / UT can act on this report and contact the ASHAs and motivate them to access the Mobile Academy course and complete the course. In this way we can bring a higher percentage of ASHAs accessing and completing the Mobile Academy program. This report is a very useful actionable report for the State / UT to monitor the ASHAs accessing the Mobile Academy course.</p>
+                        <p>This line listing report would be available for download for the respective district and block users. These reports would be e-mailed to the respective block and district users on the day after it was generated. A summary mail giving the district wise break-up of the count of ASHA would be sent to the State / UT users on the same day.</p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p>
@@ -362,7 +371,7 @@
 
                     <div data-ng-hide="param!=='arr'">
                         <p style="font-size: 30px"><b>Asha Rejected Records</b></p><br>
-                        <p>This report lists out all the Ashas who have been rejected by MOTECH due to any validation in data during registration</p>
+                        <p>This report gives the line-listing of all beneficiaries whose registered mobile numbers are either incorrect or are duplicate. These mobile numbers had flown in to the IVRS system but were rejected by the acceptance logic run by the IVRS system. The report contains the MCTS or RCH IDs. This report would be generated once every week preferably on Sunday. This line listing report would be available for download for the respective district and block users. These reports would be e-mailed to the respective block and district users on the day after it was generated –on Tuesday. A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day. The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries and register their correct mobile numbers in the RCH Application. In this way we can correct the mobile numbers of beneficiaries and bring a higher percentage of beneficiaries under the ambit of Kilkari program. This report is a very useful actionable report for the State / UT to correct the beneficiary contact mobile number. </p>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
                         <p>2) Under "Reports Category" select "Mobile Academy Reports", then</p>
@@ -387,4 +396,3 @@
         </div>
     </div>
 </div>
-
