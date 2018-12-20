@@ -14,7 +14,11 @@
 
 
 	 <!--Global site tag (gtag.js) - Google Analytics-->
-
+	<script type="text/javascript">
+		if(typeof nmsReportsApp === 'undefined'){
+			window.location.assign('https://rchivrreports.in/#!/login');
+		}
+	</script>
 
 	<script src="bower_components/angular/angular.min.js" ></script>
 	<script src="bower_components/angular-animate/angular-animate.min.js"></script>
