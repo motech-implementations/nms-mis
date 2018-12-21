@@ -184,11 +184,13 @@
                 else{
                 var encrypted = CryptoJS.AES.encrypt($scope.user.password, 'ABCD123');
                 var decrypted = $crypto.decrypt(encrypted);
+                var password = encrypted.toString()
+                var cipherTextHex = encrypted.ciphertext.toString();
+                var  saltHex = encrypted.salt.toString();
+                var mistoken = password + "||" + cipherTextHex + "||" + saltHex;
                 var data = {
                 "username": $scope.user.username,
-                "password": encrypted.toString(),
-                "cipherTextHex": encrypted.ciphertext.toString(),
-                "saltHex": encrypted.salt.toString(),
+                "password" : mistoken,
                 "rememberMe": $scope.user.rememberMe
                 };
 

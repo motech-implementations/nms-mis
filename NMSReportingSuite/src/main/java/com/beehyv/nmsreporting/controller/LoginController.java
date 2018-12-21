@@ -77,9 +77,6 @@ public class LoginController extends HttpServlet{
 
         if (user!= null && (user.getUnSuccessfulAttempts() < 3 || user.getUnSuccessfulAttempts() == null)) {
             validator.validate(loginUser, errors);
-            System.out.println("username = " + loginUser.getUsername());
-            System.out.println("password = " + loginUser.getPassword());
-            System.out.println("rememberme " + loginUser.isRememberMe());
             if (errors.hasErrors()) {
                 ensureUserIsLoggedOut();
                 return "redirect:" + retrieveUiAddress() + "login?error";

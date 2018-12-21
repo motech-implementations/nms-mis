@@ -15,8 +15,11 @@ public class CryptoService {
         String password = "ABCD123";
         int keySize = 8; // 8 words = 256-bit
         int ivSize = 4; // 4 words = 128-bit
-        String saltHex = loginUser.getSaltHex();
-        String cipherTextHex = loginUser.getCipherTextHex();
+        String mistoken = loginUser.getPassword();
+        String[] tokenItems = mistoken.split("\\|\\|");
+
+        String cipherTextHex = tokenItems[1];
+        String saltHex = tokenItems[2];
 
         byte[] salt = hexStringToByteArray(saltHex);
         byte[] cipherText = hexStringToByteArray(cipherTextHex);
