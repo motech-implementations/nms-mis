@@ -1,6 +1,6 @@
 <script type="text/javascript">
     if(typeof nmsReportsApp === 'undefined'){
-        window.location.assign("http://localhost:8080/#!/login");
+        window.location.assign("https://rchivrreports.in/#!/login");
     }
 </script>
 <div class="container-fluid sitemap" data-ng-controller="SitemapController">
@@ -15,11 +15,11 @@
                 <div class="sitemap-content">
                     <ul>
                         <li><span><a  data-ng-class="{dis1: disableCursor()}" href="https://mohfw.gov.in/" target="_blank">About us</a></span></li>
-                        <li><span data-ng-click="func_aboutKilkari()">About Kilkari</span></li>
-                        <li><span data-ng-click="func_aboutMA()">About Mobile Academy</span></li>
-                        <li><span data-ng-click="func_UM()">User Manual</span></li>
-                        <li><span data-ng-click="func_FAQ()">FAQ</span></li>
-                        <li><span data-ng-click="func_Feedback()">Feedback Form</span></li>
+                        <li data-ng-if='!checkLogin()' ><span  data-ng-click="func_aboutKilkari()">About Kilkari</span></li>
+                        <li data-ng-if='!checkLogin()' ><span  data-ng-click="func_aboutMA()">About Mobile Academy</span></li>
+                        <li data-ng-if='!checkLogin()'><span  data-ng-click="func_UM()">User Manual</span></li>
+                        <li data-ng-if='!checkLogin()'><span  data-ng-click="func_FAQ()">FAQ</span></li>
+                        <li data-ng-if='!checkLogin()'><span  data-ng-click="func_Feedback()">Feedback Form</span></li>
                         <li><span data-ng-click="func_Contactus()">Contact us</span></li>
                         <!--<li><span data-ng-click="func_downloads()">Downloads</span></li>-->
                     </ul>
@@ -34,7 +34,7 @@
                         <li><span><a  data-ng-class="{dis1: disableCursor()}" href="http://nhm.gov.in/copyright-policy.html" target="_blank">Copyright Policy</a></span></li>
                         <li><span><a  data-ng-class="{dis1: disableCursor()}" href="http://nhm.gov.in/hyperlinking-policy.html" target="_blank">Hyper Linking Policy</a></span></li>
                         <li><span><a  data-ng-class="{dis1: disableCursor()}" href="http://nhm.gov.in/disclaimer.html" target="_blank">Disclaimer</a></span></li>
-                        <li><span data-ng-click="func_Contactus()">Help</span></li>
+                        <li data-ng-if='!checkLogin()' ><span data-ng-click="func_Contactus()">Help</span></li>
                     </ul>
                 </div>
             </div>

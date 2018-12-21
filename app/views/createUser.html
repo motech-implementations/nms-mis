@@ -1,9 +1,9 @@
 <script type="text/javascript">
 	if(typeof nmsReportsApp === 'undefined'){
-		window.location.assign("http://localhost:8080/#!/login");
+		window.location.assign("https://rchivrreports.in/#!/login");
 	}
 </script>
-<div data-ng-controller="CreateUserController" class="createUser">
+<div data-ng-controller="CreateUserController" class="createUser" data-ng-if="currentUser.roleId!= null && currentUser.roleName != 'USER'" >
 	<div class="block">
 		<div class="block">
 			<h1>Create new User</h1>
