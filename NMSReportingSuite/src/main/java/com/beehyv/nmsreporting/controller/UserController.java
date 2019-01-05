@@ -56,9 +56,6 @@ public class UserController {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private CaptchaService captchaService;
-
-    @Autowired
     private AggregateReportsService aggregateReportsService;
 
     @Autowired
