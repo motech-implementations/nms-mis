@@ -21,22 +21,23 @@
     <!-- Scan sample packages for Spring annotations -->
     <context:component-scan base-package="com.beehyv.nmsreporting"/>
     <context:component-scan base-package="com.beehyv.nmsreporting.dao"/>
-    <context:component-scan base-package="com.beehyv.nmsreporting.security"/>
+    <!--<context:component-scan base-package="com.beehyv.nmsreporting.security"/>-->
+    <context:component-scan base-package="com.beehyv.nmsreporting.controller"/>
     <context:component-scan base-package="com.beehyv.nmsreporting.business"/>
     <mvc:annotation-driven/>
-    <mvc:resources mapping="/static/**" location="/static/" cache-period="3600000"/>
+    <!--<mvc:resources mapping="/static/**" location="/static/" cache-period="3600000"/>-->
     <!-- Spring AOP auto-proxy creation (required to support Shiro annotations) -->
     <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>
 
 
     <!-- Sample RDBMS data source that would exist in any application.  Sample is just using an in-memory HSQLDB
          instance.  Change to your application's settings for a real app. -->
-    <context:property-placeholder location="classpath:app.properties"/>
+    <!--<context:property-placeholder location="classpath:app.properties"/>-->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="${mysql.url}"/>
-        <property name="username" value="${mysql.username}"/>
-        <property name="password" value="${mysql.password}"/>
+        <property name="url" value="jdbc:mysql://192.168.200.68:3306/Reporting"/>
+        <property name="username" value="etluser"/>
+        <property name="password" value="etl@2015!"/>
     </bean>
 
     <!-- Hibernate SessionFactory -->
@@ -76,10 +77,10 @@
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <!-- Single realm app (realm configured next, below).  If you have multiple realms, use the 'realms'
       property instead. -->
-        <property name="realm" ref="nmsRepRealm"/>
+        <!--<property name="realm" ref="nmsRepRealm"/>-->
     </bean>
 
-    <bean id="nmsRepRealm" class="com.beehyv.nmsreporting.security.NMSRepRealm"/>
+    <!--<bean id="nmsRepRealm" class="com.beehyv.nmsreporting.security.NMSRepRealm"/>-->
 
     <bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 
@@ -117,8 +118,8 @@
 
     <!-- Spring Mail Sender -->
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-        <property name="username" value="${mail.username}"/>
-        <property name="password" value="${mail.password}"/>
+        <property name="username" value="nsp-reports@beehyv.com"/>
+        <property name="password" value="Beehyv@123"/>
         <property name="javaMailProperties">
             <props>
                 <prop key="mail.smtp.host">smtp.bizmail.yahoo.com</prop>
@@ -135,17 +136,17 @@
         </property>
     </bean>
 
-    <bean id="autoReportMail" class="com.beehyv.nmsreporting.job.AutoReportEmailGeneration"/>
-    <task:scheduled-tasks>
-        <!--<task:scheduled ref="autoReportMail" method="executeInternal" cron="0 0 9 1 * ?"/>-->
-        <task:scheduled ref="autoReportMail" method="sendFirstMail" cron="0 0 16 2 * ?"/>
-        <task:scheduled ref="autoReportMail" method="sendSecondMail" cron="0 0 16 3 * ?"/>
-        <task:scheduled ref="autoReportMail" method="sendThirdMail" cron="0 0 16 4 * ?"/>
-        <task:scheduled ref="autoReportMail" method="sendFourthMail" cron="0 0 16 5 * ?"/>
-        <task:scheduled ref="autoReportMail" method="sendFifthMail" cron="0 0 16 6 * ?"/>
-        <task:scheduled ref="autoReportMail" method="sendSixthMail" cron="0 0 16 7 * ?"/>
-        <task:scheduled ref="autoReportMail" method="sendWeeklyFirstMail" cron="0 0 9 ? * TUE"/>
-        <!--<task:scheduled ref="autoReportMail" method="sendWeeklyThirdMail" cron="0 0 9 ? * WED *"/>-->
-        <!--<task:scheduled ref="autoReportMail" method="test" cron="0 0 16 3 * ?"/>-->
-    </task:scheduled-tasks>
+    <!--<bean id="autoReportMail" class="com.beehyv.nmsreporting.job.AutoReportEmailGeneration"/>-->
+    <!--<task:scheduled-tasks>-->
+        <!--&lt;!&ndash;<task:scheduled ref="autoReportMail" method="executeInternal" cron="0 0 9 1 * ?"/>&ndash;&gt;-->
+        <!--<task:scheduled ref="autoReportMail" method="sendFirstMail" cron="0 0 16 2 * ?"/>-->
+        <!--<task:scheduled ref="autoReportMail" method="sendSecondMail" cron="0 0 16 3 * ?"/>-->
+        <!--<task:scheduled ref="autoReportMail" method="sendThirdMail" cron="0 0 16 4 * ?"/>-->
+        <!--<task:scheduled ref="autoReportMail" method="sendFourthMail" cron="0 0 16 5 * ?"/>-->
+        <!--<task:scheduled ref="autoReportMail" method="sendFifthMail" cron="0 0 16 6 * ?"/>-->
+        <!--<task:scheduled ref="autoReportMail" method="sendSixthMail" cron="0 0 16 7 * ?"/>-->
+        <!--<task:scheduled ref="autoReportMail" method="sendWeeklyFirstMail" cron="0 0 9 ? * TUE"/>-->
+        <!--&lt;!&ndash;<task:scheduled ref="autoReportMail" method="sendWeeklyThirdMail" cron="0 0 9 ? * WED *"/>&ndash;&gt;-->
+        <!--&lt;!&ndash;<task:scheduled ref="autoReportMail" method="test" cron="0 0 16 3 * ?"/>&ndash;&gt;-->
+    <!--</task:scheduled-tasks>-->
 </beans>

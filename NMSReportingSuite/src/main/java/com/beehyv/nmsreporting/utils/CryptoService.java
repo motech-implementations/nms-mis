@@ -1,6 +1,7 @@
 package com.beehyv.nmsreporting.utils;
 
 import com.beehyv.nmsreporting.entity.PasswordDto;
+import org.apache.commons.codec.binary.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -15,11 +16,23 @@ public class CryptoService {
         String password = "ABCD123";
         int keySize = 8; // 8 words = 256-bit
         int ivSize = 4; // 4 words = 128-bit
-        String mistoken = loginUser.getPassword();
-        String[] tokenItems = mistoken.split("\\|\\|");
+        String cipherTextHex="";
+        String saltHex="";
+              if(loginUser.getCipherTextHex()==null){
+                String mistoken = loginUser.getPassword();
+                mistoken = mistoken + "=";
+                byte[] decoded = Base64.decodeBase64(mistoken);
+                mistoken = new String(decoded, "UTF-8");
+                String[] tokenItems = mistoken.split("\\|\\|");
 
-        String cipherTextHex = tokenItems[1];
-        String saltHex = tokenItems[2];
+                cipherTextHex = tokenItems[0];
+                saltHex = tokenItems[1];
+              }
+              else{
+                  cipherTextHex = loginUser.getCipherTextHex();
+                  saltHex = loginUser.getSaltHex();
+              }
+
 
         byte[] salt = hexStringToByteArray(saltHex);
         byte[] cipherText = hexStringToByteArray(cipherTextHex);

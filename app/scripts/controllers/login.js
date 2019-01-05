@@ -18,7 +18,10 @@
 			$scope.loginUrl = backend_root + 'nms/login';
 
 			var url = $location.absUrl();
+             // var url = window.location.href;
+			console.log(url);
 			var error = url.split('?')[1];
+             console.log(error);
             $scope.preUrl = localStorage.preUrl;
 			$scope.errorMessage = "";
 			if(error == null){
@@ -182,15 +185,18 @@
 
                 }
                 else{
+
                 var encrypted = CryptoJS.AES.encrypt($scope.user.password, 'ABCD123');
-                var decrypted = $crypto.decrypt(encrypted);
+                // var decrypted = $crypto.decrypt(encrypted);
                 var password = encrypted.toString()
                 var cipherTextHex = encrypted.ciphertext.toString();
                 var  saltHex = encrypted.salt.toString();
-                var mistoken = password + "||" + cipherTextHex + "||" + saltHex;
-                var data = {
+                var mistoken = cipherTextHex + "||" +saltHex;
+                var mistoken1 = (window.btoa(mistoken)).slice(0,-1);
+
+                 var data = {
                 "username": $scope.user.username,
-                "password" : mistoken,
+                "password" : mistoken1,
                 "rememberMe": $scope.user.rememberMe
                 };
 
@@ -203,9 +209,39 @@
                 })
                 .then(function(success) {
                   $window.location.replace(success.data);
-                  $window.location.reload();
+                    // var url = $location.absUrl();
+                    var url = window.location.href;
+                    console.log(url);
+                    var error = url.split('?')[1];
+                    console.log(error);
+                    $scope.preUrl = localStorage.preUrl;
+                    $scope.errorMessage = "";
+                    if(error == null){
+                        $scope.errorMessage = "";
+                    }
+                    else if (error == 'blocked'){
+                        $scope.errorMessage = "3 unsuccessful attempts.Please try again in 24 hrs.";
+                    } else {
+                        $scope.errorMessage = "Invalid Username/Password";
+                    }
+                  // $window.location.reload();
                 }, function (error) {
-                   $window.location.href = error.data;
+                    $window.location.href = error.data;
+                    // var url = $location.absUrl();
+                    var url = window.location.href;
+                    console.log(url);
+                    var error = url.split('?')[1];
+                    console.log(error);
+                    $scope.preUrl = localStorage.preUrl;
+                    $scope.errorMessage = "";
+                    if(error == null){
+                        $scope.errorMessage = "";
+                    }
+                    else if (error == 'blocked'){
+                        $scope.errorMessage = "3 unsuccessful attempts.Please try again in 24 hrs.";
+                    } else {
+                        $scope.errorMessage = "Invalid Username/Password";
+                    }
                 });
 
                 }});

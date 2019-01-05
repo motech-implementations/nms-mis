@@ -23,7 +23,7 @@
     <!-- Enable annotation-based controllers using @Controller annotations -->
     <bean id="annotationUrlMapping"
           class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
-        <property name="interceptors" ref="currentUserInterceptor"/>
+        <!--<property name="interceptors" ref="currentUserInterceptor"/>-->
     </bean>
 
     <bean id="annotationMethodHandlerAdapter"

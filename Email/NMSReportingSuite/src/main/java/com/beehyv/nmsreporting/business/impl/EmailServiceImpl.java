@@ -102,6 +102,34 @@ public class EmailServiceImpl implements EmailService{
         }
     }
 
+    @Override
+    public String sendMailPassword(EmailInfo mailInfo) {
+        try {
+            final JavaMailSenderImpl ms = (JavaMailSenderImpl) mailSender;
+            Properties props = ms.getJavaMailProperties();
+            final String username = ms.getUsername();
+            final String password = ms.getPassword();
+            //need authenticate to server
+            Session session = Session.getInstance(props,
+                    new javax.mail.Authenticator() {
+                        protected PasswordAuthentication getPasswordAuthentication() {
+                            return new PasswordAuthentication(username, password);
+                        }
+                    });
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(mailInfo.getFrom()));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mailInfo.getTo()));
+            message.setSubject(mailInfo.getSubject());
+
+            message.setContent(mailInfo.getBody(), "text/html; charset=utf-8");
+            Transport.send(message);
+            return "success";
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            return "failure";
+        }
+    }
+
     private String sendMailWithStatistics(EmailInfo emailInfo) {
         try {
             final JavaMailSenderImpl ms = (JavaMailSenderImpl) mailSender;

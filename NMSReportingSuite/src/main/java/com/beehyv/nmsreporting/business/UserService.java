@@ -21,6 +21,7 @@ public interface UserService {
     User getCurrentUser();
 
     void saveUser(User user);
+    void updateUser(User user);
 
     void setLoggedIn();
 

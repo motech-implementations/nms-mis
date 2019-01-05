@@ -71,10 +71,6 @@ public class EmailController {
 
     @RequestMapping(value = "/sendFeedback", method = RequestMethod.POST)
         public @ResponseBody String sendFeedback(@RequestBody EmailBody mailInfo) throws Exception {
-        LoginUser loginUser = new LoginUser();
-        loginUser.setSaltHex(mailInfo.getSaltHex());
-        loginUser.setCipherTextHex(mailInfo.getCipherTextHex());
-        if(mailInfo.getCaptcha().equals(decrypt(loginUser))) {
             Feedback feedback = new Feedback(mailInfo.getName(), mailInfo.getSubject(), mailInfo.getPhoneNo(), mailInfo.getEmail(), mailInfo.getBody());
             feedbackService.saveFeedback(feedback);
             if (mailInfo.getEmail() != null) {
@@ -89,17 +85,10 @@ public class EmailController {
                 return emailService.sendMailTest(newMail);
             } else
                 return "success";
-        }
-        else
-            return  "failure";
    }
 
     @RequestMapping(value = "/sendEmailForContactUs", method = RequestMethod.POST)
     public @ResponseBody String sendEmailForContactUs(@RequestBody EmailBody mailInfo) throws Exception{
-        LoginUser loginUser = new LoginUser();
-        loginUser.setSaltHex(mailInfo.getSaltHex());
-        loginUser.setCipherTextHex(mailInfo.getCipherTextHex());
-        if(mailInfo.getCaptcha().equals(decrypt(loginUser))) {
             ContactUs contactUs = new ContactUs(mailInfo.getName(), mailInfo.getPhoneNo(), mailInfo.getEmail(), mailInfo.getBody());
             contactUsService.saveContactUS(contactUs);
             EmailTest newMail = new EmailTest();
@@ -111,9 +100,6 @@ public class EmailController {
             newMail.setSubject("Message Received");
             newMail.setBody(emailService.getBody("ContactUs", mailInfo.getName()));
             return emailService.sendMailTest(newMail);
-        }
-        else
-            return "failure";
     }
 
 //    @RequestMapping(value = "/sendFeedback1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)

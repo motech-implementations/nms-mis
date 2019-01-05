@@ -6,6 +6,9 @@
 			var currentUser = {};
 
 			return {
+				getCaptcha: function(){
+					return $http.get(backend_root + 'nms/user/getCaptcha');
+				},
 				downloadCurrentUser: function(){
 					return $http.post(backend_root + 'nms/user/currentUser');
 				},

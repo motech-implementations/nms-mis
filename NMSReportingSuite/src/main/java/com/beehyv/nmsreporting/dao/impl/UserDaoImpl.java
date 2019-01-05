@@ -139,6 +139,10 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
     public void saveUser(User user) {
         persist(user);
     }
+    @Override
+    public void updateUser(User user){
+        update(user);
+    }
 
     @Override
     public boolean isAdminCreated(District district) {

@@ -8,8 +8,10 @@ import com.beehyv.nmsreporting.enums.AccessType;
 import com.beehyv.nmsreporting.enums.ModificationType;
 import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.*;
+import com.beehyv.nmsreporting.utils.ServiceFunctions;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -17,20 +19,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.ParseException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.QueryParam;
 import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static com.beehyv.nmsreporting.utils.CryptoService.decrypt;
 import static com.beehyv.nmsreporting.utils.Global.retrieveDocuments;
 import static com.beehyv.nmsreporting.utils.ServiceFunctions.StReplace;
 import static com.beehyv.nmsreporting.utils.ServiceFunctions.dateAdder;
@@ -43,6 +51,12 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private CaptchaService captchaService;
 
     @Autowired
     private AggregateReportsService aggregateReportsService;
@@ -90,6 +104,8 @@ public class UserController {
     @Autowired
     private HealthSubFacilityDao healthSubFacilityDao;
 
+    private ServiceFunctions serviceFunctions = new ServiceFunctions();
+    private final String USER_AGENT = "Mozilla/5.0";
     private final Date bigBang = new Date(0);
     private final String documents = retrieveDocuments();
     private final String reports = documents+"Reports/";
@@ -171,7 +187,10 @@ public class UserController {
     }
 
     @RequestMapping(value={"/isLoggedIn"} , method = RequestMethod.POST)
-    public @ResponseBody Boolean isLoggedIn() {
+    public @ResponseBody Boolean isLoggedIn(
+            HttpServletRequest request) {
+         request.getSession(false);
+//        request.getSession().getId();
 //        if (userService.getCurrentUser() == null) {
 //            isAdminLoggedIn();
 //        }
@@ -382,25 +401,112 @@ public class UserController {
             return null;
     }
 
+    @RequestMapping(value={"/getCaptcha"} , method = RequestMethod.GET)
+    public @ResponseBody String getCaptcha(
+            HttpServletRequest request) {
+
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        HttpSession sess = request.getSession();
+
+        // logic to generate captcha
+       String captchaCode = serviceFunctions.generateCaptcha();
+        sess.setAttribute("captcha",captchaCode);
+
+        return captchaCode;
+    }
+//    @RequestMapping(value = {"/forgotPassword"}, method = RequestMethod.POST)
+//    @ResponseBody
+//    public Map forgotPassword(@RequestBody ForgotPasswordDto forgotPasswordDto, HttpServletRequest request) throws Exception{
+//
+//        HttpSession session = request.getSession();
+//        if(session.getAttribute("captcha").equals(forgotPasswordDto.getCaptcha())){
+//            session.removeAttribute("captcha");
+//            User user=userService.findUserByUsername(forgotPasswordDto.getUsername());
+//            Map<Integer, String >map=  userService.forgotPasswordCredentialChecker(forgotPasswordDto);
+//            if(map.get(0).equals("Password changed successfully")){
+//                ModificationTracker modification = new ModificationTracker();
+//                modification.setModificationDate(new Date(System.currentTimeMillis()));
+//                modification.setModificationType(ModificationType.UPDATE.getModificationType());
+//                modification.setModifiedUserId(user.getUserId());
+//                modification.setModifiedField("password");
+//                modification.setModifiedByUserId(user.getUserId());
+//                modificationTrackerService.saveModification(modification);
+//            }
+//            return map;
+//        }
+//
+//
+//        return null;}
 
     @RequestMapping(value = {"/forgotPassword"}, method = RequestMethod.POST)
     @ResponseBody
-    public Map forgotPassword(@RequestBody ForgotPasswordDto forgotPasswordDto) throws Exception{
+    public String forgotPassword(@RequestBody ForgotPasswordDto forgotPasswordDto, HttpServletRequest request) throws Exception{
 
-            User user=userService.findUserByUsername(forgotPasswordDto.getUsername());
-            Map<Integer, String >map=  userService.forgotPasswordCredentialChecker(forgotPasswordDto);
-            if(map.get(0).equals("Password changed successfully")){
-                ModificationTracker modification = new ModificationTracker();
+        HttpSession session = request.getSession();
+        if (session.getAttribute("captcha").equals(forgotPasswordDto.getCaptcha())) {
+            String userName = forgotPasswordDto.getUsername();
+            User user;
+            if (userName.contains("@")) {
+                user = userService.findUserByEmailId(userName);
+            } else {
+                user = userService.findUserByUsername(userName);
+            }
+
+            if (user!=null) {
+                String email = user.getEmailId();
+                String password = serviceFunctions.generatePassword();
+                byte[] encoded = Base64.encodeBase64((email+"||"+password).getBytes());
+                String encrypted = new String(encoded);
+                String url = "http://192.168.200.4:8080/NMSReportingSuite/nms/mail/sendPassword/"+encrypted;
+                URL obj = new URL(url);
+                HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+                // optional default is GET
+                con.setRequestMethod("GET");
+
+                //add request header
+                con.setRequestProperty("User-Agent", USER_AGENT);
+
+                int responseCode = con.getResponseCode();
+                System.out.println("\nSending 'GET' request to URL : " + url);
+                System.out.println("Response Code : " + responseCode);
+
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(con.getInputStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+
+                //print result
+                System.out.println(response.toString());
+                if((response.toString()).equals("success")){
+                    user.setPassword(passwordEncoder.encode(password));
+                    user.setDefault(true);
+                    user.setUnSuccessfulAttempts(0);
+                    userService.updateUser(user);
+                    ModificationTracker modification = new ModificationTracker();
                 modification.setModificationDate(new Date(System.currentTimeMillis()));
                 modification.setModificationType(ModificationType.UPDATE.getModificationType());
                 modification.setModifiedUserId(user.getUserId());
                 modification.setModifiedField("password");
                 modification.setModifiedByUserId(user.getUserId());
                 modificationTrackerService.saveModification(modification);
-            }
-            return map;
+                    session.removeAttribute("captcha");
+                    session.invalidate();
+                }
 
-    }
+            return "success" ;
+        }
+           return "invalid user";
+        }
+    return "invalid captcha";}
 
 
 

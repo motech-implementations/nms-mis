@@ -11,6 +11,7 @@ import java.util.HashMap;
 public interface EmailService {
 
     public String sendMail(EmailInfo emailInfo);
+    public String sendMailPassword(EmailInfo mailInfo);
 
     public String getBody(String reportName, String place, String monthAndYear, String name);
 

@@ -59,6 +59,9 @@ public class LoginController extends HttpServlet{
     @RequestMapping(value={"/nms/login"}, method= RequestMethod.POST)
     public String login(@RequestBody LoginUser loginUser, BindingResult errors, HttpServletResponse response) throws Exception {
         User user = userService.findUserByUsername(loginUser.getUsername());
+        if(user ==  null){
+            return   retrieveUiAddress() + "login?error";
+        }
         if (user!= null && user.getUnSuccessfulAttempts() == null) {
             user.setUnSuccessfulAttempts(0);
             userService.setUnSuccessfulAttemptsCount(user.getUserId(), 0);

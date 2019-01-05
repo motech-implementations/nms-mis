@@ -96,10 +96,10 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
-    <error-page>
-        <error-code>401</error-code>
-        <location>/unauthorized.jsp</location>
-    </error-page>
+    <!--<error-page>-->
+        <!--<error-code>401</error-code>-->
+        <!--&lt;!&ndash;<location>/unauthorized.jsp</location>&ndash;&gt;-->
+    <!--</error-page>-->
 
     <session-config>
         <tracking-mode>COOKIE</tracking-mode>
