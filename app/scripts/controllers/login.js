@@ -190,7 +190,7 @@
                 // var decrypted = $crypto.decrypt(encrypted);
                 var password = encrypted.toString()
                 var cipherTextHex = encrypted.ciphertext.toString();
-                var  saltHex = encrypted.salt.toString();
+                var saltHex = encrypted.salt.toString();
                 var mistoken = cipherTextHex + "||" +saltHex;
                 var mistoken1 = (window.btoa(mistoken)).slice(0,-1);
 

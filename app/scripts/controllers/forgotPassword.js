@@ -5,8 +5,11 @@
 
             UserFormFactory.getCaptcha()
                 .then(function(result){
+                    var encryptedCaptcha = result.data;
                     if(result.data){
-                        $scope.forgotPassword.mainCaptchaCode = result.data;
+                        encryptedCaptcha = encryptedCaptcha + '=';
+                        var decryptedCaptcha = window.atob(encryptedCaptcha);
+                        $scope.forgotPassword.mainCaptchaCode = decryptedCaptcha;
                     }
                 })
             $scope.forgotPassword = {};
@@ -34,9 +37,13 @@
             $scope.refreshCaptcha = function(){
                 UserFormFactory.getCaptcha()
                     .then(function(result){
+                        var encryptedCaptcha = result.data;
                         if(result.data){
-                            $scope.forgotPassword.mainCaptchaCode = result.data;
+                            encryptedCaptcha = encryptedCaptcha + '=';
+                            var decryptedCaptcha = window.atob(encryptedCaptcha);
+                            $scope.forgotPassword.mainCaptchaCode = decryptedCaptcha;
                         }
+
                     })
 
             }
@@ -48,7 +55,9 @@
                  if (string1 == string2.toUpperCase()){
                         return true;
                  }else{
+                     $scope.refreshCaptcha();
                       return false;
+
                  }
             }
 
@@ -92,12 +101,15 @@
                }
             }
 
+                var encryptedCaptcha = CryptoJS.AES.encrypt($scope.forgotPassword.mainCaptchaCode, 'ABCD123');
+                var cipherTextHex = encryptedCaptcha.ciphertext.toString();
+                var saltHex = encryptedCaptcha.salt.toString();
+                var captchaToken = cipherTextHex + "||" +saltHex;
+                captchaToken = (window.btoa(captchaToken)).slice(0,-1);
+
 			var data = {
                     "username": $scope.forgotPassword.username,
-                    // "phoneNumber": $scope.forgotPassword.phoneNumber,
-                    // "cipherTextHexNew": encryptedNew.ciphertext.toString(),
-                    // "saltHexNew": encryptedNew.salt.toString(),
-                    "captcha" : $scope.forgotPassword.mainCaptchaCode,
+                    "captcha" : captchaToken,
                     };
 
 				if ($scope.forgotPasswordForm.$valid) {
@@ -112,13 +124,13 @@
                                     alert("Password changed successfully. Please check your e-mail for further instructions.");
                                     $state.go('login', {});                                }
                                 else if(result.data=="invalid user"){
-                                    alert("No user with provided username/email.");
-                                    location.reload();
+                                    alert("No user with provided username");
+                                    $scope.refreshCaptcha();
 
                                 }
                                 else if(result.data=="invalid captcha"){
                                     alert("Invalid captcha. Please refresh or try again");
-                                    location.reload();
+                                    $scope.refreshCaptcha();
                                 }
                             }
                             else{
@@ -126,13 +138,13 @@
                                     UserFormFactory.showAlert("Password changed successfully. Please check your e-mail for further instructions.");
                                     $state.go('login', {});                                }
                                 else if(result.data=="invalid user"){
-                                    UserFormFactory.showAlert("No user with provided username/email.");
-                                    location.reload();
+                                    UserFormFactory.showAlert("No user with provided username");
+                                    $scope.refreshCaptcha();
 
                                 }
                                 else if(result.data=="invalid captcha"){
                                     UserFormFactory.showAlert("Invalid captcha. Please refresh or try again");
-                                    location.reload();
+                                    $scope.refreshCaptcha();
                                 }
 
                             }

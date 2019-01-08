@@ -8,9 +8,11 @@ import com.beehyv.nmsreporting.enums.AccessType;
 import com.beehyv.nmsreporting.enums.ModificationType;
 import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.*;
+import com.beehyv.nmsreporting.utils.LoginUser;
 import com.beehyv.nmsreporting.utils.ServiceFunctions;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
+import javassist.bytecode.ByteArray;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -412,7 +414,8 @@ public class UserController {
        String captchaCode = serviceFunctions.generateCaptcha();
         sess.setAttribute("captcha",captchaCode);
 
-        return captchaCode;
+        String encoded = new String(Base64.encodeBase64((captchaCode).getBytes()));
+        return encoded.substring(0, encoded.length() - 1);
     }
 //    @RequestMapping(value = {"/forgotPassword"}, method = RequestMethod.POST)
 //    @ResponseBody
@@ -443,14 +446,12 @@ public class UserController {
     public String forgotPassword(@RequestBody ForgotPasswordDto forgotPasswordDto, HttpServletRequest request) throws Exception{
 
         HttpSession session = request.getSession();
-        if (session.getAttribute("captcha").equals(forgotPasswordDto.getCaptcha())) {
+
+        String captcha = decrypt(new LoginUser(forgotPasswordDto.getCaptcha()));
+
+        if (captcha.equals(session.getAttribute("captcha"))) {
             String userName = forgotPasswordDto.getUsername();
-            User user;
-            if (userName.contains("@")) {
-                user = userService.findUserByEmailId(userName);
-            } else {
-                user = userService.findUserByUsername(userName);
-            }
+            User user = userService.findUserByUsername(userName);
 
             if (user!=null) {
                 String email = user.getEmailId();

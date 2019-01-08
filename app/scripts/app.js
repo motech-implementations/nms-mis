@@ -24,7 +24,7 @@ var nmsReportsApp = angular.module('nmsReports', ['ui.bootstrap', 'ui.validate',
                         .then(function(result){
                             console.log("You are here")
                             if(!result.data){
-                               $state.go('login', {});
+                                $state.go('login', {});
                             }
                         });
                 }
@@ -32,30 +32,30 @@ var nmsReportsApp = angular.module('nmsReports', ['ui.bootstrap', 'ui.validate',
         }
     ])
 
-//    .factory('authorizationRole', ['$http', '$state',
-//            function($http, $state) {
-//                return {
-//                    authorize: function() {
-//                        return $http.post(backend_root + 'nms/user/isLoggedIn')
-//                            .then(function(result){
-//                                console.log("You are here")
-//                                if(!result.data){
-//                                   $state.go('login', {});
-//                                }
-//                                else {
-//                                 return $http.post(backend_root + 'nms/user/currentUser')
-//                                    .then(function(result1){
-//                                        if(result1.roleName == 'USER'){
-//                                           $state.go('reports', {});
-//                                        }
-//                                    });
-//
-//                                }
-//                            });
-//                    }
-//                };
-//            }
-//        ])
+    .factory('authorizationRole', ['$http', '$state',
+        function($http, $state) {
+            return {
+                authorize: function() {
+                    return $http.post(backend_root + 'nms/user/isLoggedIn')
+                        .then(function(result){
+                            console.log("You are here")
+                            if(!result.data){
+                                $state.go('login', {});
+                            }
+                            else {
+                                return $http.post(backend_root + 'nms/user/currentUser')
+                                    .then(function(result1){
+                                        if(result1.data.roleName == 'USER'){
+                                            $state.go('reports', {});
+                                        }
+                                    });
+
+                            }
+                        });
+                }
+            };
+        }
+    ])
 
 
     .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$idleProvider', function($stateProvider, $urlRouterProvider, $httpProvider, $idleProvider) {
@@ -64,24 +64,24 @@ var nmsReportsApp = angular.module('nmsReports', ['ui.bootstrap', 'ui.validate',
             abstract: true,
             templateUrl: 'views/userManagement.html',
             resolve : {
-                user : function ( authorization) {
-                    return authorization.authorize();
+                user : function (authorizationRole) {
+                    return authorizationRole.authorize();
                 }
             }
         }).state('userManagement.bulkUpload', {
             url: '/bulkUpload',
             templateUrl: 'views/bulkUser.html',
             resolve : {
-                user : function ( authorization) {
-                    return authorization.authorize();
+                user : function (authorizationRole) {
+                    return authorizationRole.authorize();
                 }
             }
         }).state('userManagement.createUser', {
             url: '/create',
             templateUrl: 'views/createUser.html',
             resolve : {
-                user : function ( authorization) {
-                    return authorization.authorize();
+                user : function ( authorizationRole) {
+                    return authorizationRole.authorize();
                 }
             }
         }).state('userManagement.userTable', {
@@ -89,8 +89,8 @@ var nmsReportsApp = angular.module('nmsReports', ['ui.bootstrap', 'ui.validate',
             templateUrl: 'views/userTable.html',
             reloadOnSearch: false,
             resolve : {
-                user : function ( authorization) {
-                    return authorization.authorize();
+                user : function ( authorizationRole) {
+                    return authorizationRole.authorize();
                 }
             },
             controller: function($scope, $stateParams) {
@@ -100,8 +100,8 @@ var nmsReportsApp = angular.module('nmsReports', ['ui.bootstrap', 'ui.validate',
             url: '/:pageNum/edit/:id',
             templateUrl: 'views/editUser.html',
             resolve : {
-                user : function ( authorization) {
-                    return authorization.authorize();
+                user : function ( authorizationRole) {
+                    return authorizationRole.authorize();
                 }
             }
         }).state('login', {
@@ -133,18 +133,18 @@ var nmsReportsApp = angular.module('nmsReports', ['ui.bootstrap', 'ui.validate',
             url: '/feedbackForm',
             templateUrl: 'views/feedbackForm.html',
             resolve : {
-                            user : function ( authorization) {
-                                return authorization.authorize();
-                            }
-                        }
+                user : function ( authorization) {
+                    return authorization.authorize();
+                }
+            }
         }).state('feedbackResponse', {
             url: '/feedbackResponse',
             templateUrl: 'views/feedbackResponse.html',
             resolve : {
-                            user : function ( authorization) {
-                                return authorization.authorize();
-                            }
-                        }
+                user : function ( authorization) {
+                    return authorization.authorize();
+                }
+            }
         }).state('contactUs', {
             url: '/contactUs',
             templateUrl: 'views/contactUs.html'
@@ -153,10 +153,10 @@ var nmsReportsApp = angular.module('nmsReports', ['ui.bootstrap', 'ui.validate',
             url: '/contactUsResponse',
             templateUrl: 'views/contactUsResponse.html',
             resolve : {
-                            user : function ( authorization) {
-                                return authorization.authorize();
-                            }
-                        }
+                user : function ( authorization) {
+                    return authorization.authorize();
+                }
+            }
         }).state('sitemap', {
             url: '/sitemap',
             templateUrl: 'views/sitemap.html'
@@ -165,18 +165,18 @@ var nmsReportsApp = angular.module('nmsReports', ['ui.bootstrap', 'ui.validate',
             url: '/kilkari',
             templateUrl: 'views/aboutKilkari.html',
             resolve : {
-                            user : function ( authorization) {
-                                return authorization.authorize();
-                            }
-                        }
+                user : function ( authorization) {
+                    return authorization.authorize();
+                }
+            }
         }).state('AboutMA', {
             url: '/aboutMA',
             templateUrl: 'views/aboutMA.html',
             resolve : {
-                            user : function ( authorization) {
-                                return authorization.authorize();
-                            }
-                        }
+                user : function ( authorization) {
+                    return authorization.authorize();
+                }
+            }
         }).state('PrivacyPolicy', {
             url: '/privacyPolicy',
             templateUrl: 'views/privacyPolicy.html'
@@ -201,130 +201,130 @@ var nmsReportsApp = angular.module('nmsReports', ['ui.bootstrap', 'ui.validate',
             url: '/help',
             templateUrl: 'views/helpPage.html',
             resolve : {
-                            user : function ( authorization) {
-                                return authorization.authorize();
-                            }
-                        }
+                user : function ( authorization) {
+                    return authorization.authorize();
+                }
+            }
         }).state('changePassword', {
             url: '/changePassword',
             templateUrl: 'views/changePassword.html',
             resolve : {
-                            user : function ( authorization) {
-                                return authorization.authorize();
-                            }
-                        }
+                user : function ( authorization) {
+                    return authorization.authorize();
+                }
+            }
         }).state('userManual', {
             url: '/userManual',
             templateUrl: 'views/userManual.html',
             resolve : {
-                            user : function ( authorization) {
-                                return authorization.authorize();
-                            }
-                        }
+                user : function ( authorization) {
+                    return authorization.authorize();
+                }
+            }
         }).state('userManual.kilkari', {
             url: '/kilkari',
             templateUrl: 'views/userManual_kilkari.html',
             resolve : {
-                            user : function ( authorization) {
-                                return authorization.authorize();
-                            }
-                        }
+                user : function ( authorization) {
+                    return authorization.authorize();
+                }
+            }
         }).state('userManual.kilkariAggregate', {
             url: '/kilkariAggregate',
             templateUrl: 'views/userManual_kilkariAgg.html',
-                                                                       resolve : {
-                                                                                       user : function ( authorization) {
-                                                                                           return authorization.authorize();
-                                                                                       }
-                                                                                   }
+            resolve : {
+                user : function ( authorization) {
+                    return authorization.authorize();
+                }
+            }
         }).state('userManual.websiteInformation', {
             url: '/WebsiteInformation',
             templateUrl: 'views/userManual_websiteInformation.html',
-                                                                               resolve : {
-                                                                                               user : function ( authorization) {
-                                                                                                   return authorization.authorize();
-                                                                                               }
-                                                                                           }
+            resolve : {
+                user : function ( authorization) {
+                    return authorization.authorize();
+                }
+            }
         }).state('userManual.mobileAcademy', {
             url: '/mobileAcademy',
             templateUrl: 'views/userManual_mobileAcademy.html',
-                                                                          resolve : {
-                                                                                          user : function ( authorization) {
-                                                                                              return authorization.authorize();
-                                                                                          }
-                                                                                      }
+            resolve : {
+                user : function ( authorization) {
+                    return authorization.authorize();
+                }
+            }
         }).state('userManual.mobileAcademyAggregate', {
             url: '/mobileAcademyAggregate',
             templateUrl: 'views/userManual_mobileAcademyAgg.html',
-                                                                             resolve : {
-                                                                                             user : function ( authorization) {
-                                                                                                 return authorization.authorize();
-                                                                                             }
-                                                                                         }
+            resolve : {
+                user : function ( authorization) {
+                    return authorization.authorize();
+                }
+            }
         }).state('userManual.userManual_Management', {
             url: '/userManual_Management',
             templateUrl: 'views/userManual_Management.html',
-                                                                       resolve : {
-                                                                                       user : function ( authorization) {
-                                                                                           return authorization.authorize();
-                                                                                       }
-                                                                                   }
+            resolve : {
+                user : function ( authorization) {
+                    return authorization.authorize();
+                }
+            }
         }).state('userManual.userManual_Profile', {
             url: '/userManual_Profile',
             templateUrl: 'views/userManual_Profile.html',
-                                                                    resolve : {
-                                                                                    user : function ( authorization) {
-                                                                                        return authorization.authorize();
-                                                                                    }
-                                                                                }
+            resolve : {
+                user : function ( authorization) {
+                    return authorization.authorize();
+                }
+            }
         }).state('faq', {
             url: '/faq',
             templateUrl: 'views/faq.html',
-                                                     resolve : {
-                                                                     user : function ( authorization) {
-                                                                         return authorization.authorize();
-                                                                     }
-                                                                 }
+            resolve : {
+                user : function ( authorization) {
+                    return authorization.authorize();
+                }
+            }
         }).state('faq.faqGeneralInfo', {
             url: '/general-info',
             templateUrl: 'views/faqGeneralInfo.html',
-                                                                resolve : {
-                                                                                user : function ( authorization) {
-                                                                                    return authorization.authorize();
-                                                                                }
-                                                                            }
+            resolve : {
+                user : function ( authorization) {
+                    return authorization.authorize();
+                }
+            }
         }).state('faq.faqLoginInfo', {
             url: '/login-info',
             templateUrl: 'views/faqLoginInfo.html',
-                                                              resolve : {
-                                                                              user : function ( authorization) {
-                                                                                  return authorization.authorize();
-                                                                              }
-                                                                          }
+            resolve : {
+                user : function ( authorization) {
+                    return authorization.authorize();
+                }
+            }
         }).state('faq.faqReportsInfo', {
             url: '/reports-info',
             templateUrl: 'views/faqReportsInfo.html',
-                                                                resolve : {
-                                                                                user : function ( authorization) {
-                                                                                    return authorization.authorize();
-                                                                                }
-                                                                            }
+            resolve : {
+                user : function ( authorization) {
+                    return authorization.authorize();
+                }
+            }
         }).state('faq.faqLineListingInfo', {
             url: '/line-listing-info',
             templateUrl: 'views/faqLineListingInfo.html',
-                                                                    resolve : {
-                                                                                    user : function ( authorization) {
-                                                                                        return authorization.authorize();
-                                                                                    }
-                                                                                }
+            resolve : {
+                user : function ( authorization) {
+                    return authorization.authorize();
+                }
+            }
         }).state('faq.faqAggregateInfo', {
             url: '/aggregate-info',
             templateUrl: 'views/faqAggregateInfo.html',
-                                                                  resolve : {
-                                                                                  user : function ( authorization) {
-                                                                                      return authorization.authorize();
-                                                                                  }
-                                                                              }
+            resolve : {
+                user : function ( authorization) {
+                    return authorization.authorize();
+                }
+            }
         }).state('Downloads', {
             url: '/Downloads',
             templateUrl: 'views/downloads.html'

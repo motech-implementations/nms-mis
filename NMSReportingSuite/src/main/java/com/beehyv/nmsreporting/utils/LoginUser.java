@@ -19,6 +19,10 @@ public class LoginUser {
     public LoginUser() {
     }
 
+    public LoginUser(String password) {
+        this.password = password;
+    }
+
     public LoginUser(String cipherTextHex, String saltHex) {
         this.cipherTextHex = cipherTextHex;
         this.saltHex = saltHex;
