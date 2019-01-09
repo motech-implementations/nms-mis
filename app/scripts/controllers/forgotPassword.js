@@ -14,6 +14,7 @@
                 })
             $scope.forgotPassword = {};
             $scope.forgotPassword.captchaCode = '';
+            $scope.waiting = false;
 
 
 
@@ -113,12 +114,14 @@
                     };
 
 				if ($scope.forgotPasswordForm.$valid) {
+				    $scope.waiting = true;
 					$http({
 						method  : 'POST',
 						url     : backend_root + 'nms/user/forgotPassword',
 						data: JSON.stringify(data),
 						headers : {'Content-Type': 'application/json'}
 					}).then(function (result){
+                        $scope.waiting = false;
                             if(UserFormFactory.isInternetExplorer()){
                                 if(result.data=="success") {
                                     alert("Password changed successfully. Please check your e-mail for further instructions.");
@@ -155,11 +158,11 @@
 
                      },function (result){
                         if(UserFormFactory.isInternetExplorer()){
-                            alert(result.data['0'])
+                            alert("something went wrong please try again");
                              return;
                         }
                         else{
-                            UserFormFactory.showAlert(result.data['0'])
+                            UserFormFactory.showAlert("something went wrong please try again");
                             return;
                         }
 
