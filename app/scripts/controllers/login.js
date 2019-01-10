@@ -121,6 +121,10 @@
                 $state.go('Downloads', {pageNum: 1});
             }
 			$scope.login = function(e){
+               if(grecaptcha.getResponse() === ""){
+                   alert("please tick the check box");
+                   return;
+               }
 			    if($scope.user.username == null || $scope.user.username == ""){
 			        if(UserFormFactory.isInternetExplorer()){
                         alert("Please specify a username")
@@ -155,6 +159,7 @@
 
                 }
                 if($scope.ValidCaptcha()==false){
+
                            if(UserFormFactory.isInternetExplorer()){
                                alert("Incorrect Captcha")
                                return;
@@ -193,11 +198,13 @@
                 var saltHex = encrypted.salt.toString();
                 var mistoken = cipherTextHex + "||" +saltHex;
                 var mistoken1 = (window.btoa(mistoken)).slice(0,-1);
+                var captchaResponse =  grecaptcha.getResponse();
 
                  var data = {
                 "username": $scope.user.username,
                 "password" : mistoken1,
-                "rememberMe": $scope.user.rememberMe
+                "rememberMe": $scope.user.rememberMe,
+                 "captchaResponse" : captchaResponse
                 };
 
                 $scope.user.password = "NewPassword@231";

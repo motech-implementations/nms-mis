@@ -1,4 +1,4 @@
-var nmsReportsApp = angular.module('nmsReports', ['ui.bootstrap', 'ui.validate', 'ngMessages', 'ui.router', 'ui.grid', 'ngMaterial', 'ngFileUpload', 'ng.deviceDetector', 'ui.grid.exporter', 'ngStorage', 'ngAnimate', '$idle', 'mdo-angular-cryptography'])
+var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 'ui.validate', 'ngMessages', 'ui.router', 'ui.grid', 'ngMaterial', 'ngFileUpload', 'ng.deviceDetector', 'ui.grid.exporter', 'ngStorage', 'ngAnimate', '$idle', 'mdo-angular-cryptography'])
     .run(['$rootScope', '$state', '$stateParams', '$idle', '$http', '$window', function($rootScope, $state, $stateParams, $idle, $http, $window) {
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;

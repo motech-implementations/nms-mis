@@ -1,5 +1,19 @@
 package com.beehyv.nmsreporting.utils;
 
+import com.google.common.net.HttpHeaders;
+import com.google.gson.JsonObject;
+import com.google.gson.stream.JsonReader;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.MediaType;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import javax.net.ssl.HttpsURLConnection;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
@@ -9,30 +23,29 @@ import java.util.Random;
  */
 public class ServiceFunctions {
 
-    public static String StReplace(String abc){
+    public static String StReplace(String abc) {
         abc = abc.replaceAll("[^\\w]", "_");
         return abc;
     }
 
     public static String getMonthYear(Date toDate) {
-        Calendar c=Calendar.getInstance();
+        Calendar c = Calendar.getInstance();
         c.setTime(toDate);
-        c.add(Calendar.MONTH,-1);
-        int month=c.get(Calendar.MONTH)+1;
-        int year=(c.get(Calendar.YEAR))%100;
+        c.add(Calendar.MONTH, -1);
+        int month = c.get(Calendar.MONTH) + 1;
+        int year = (c.get(Calendar.YEAR)) % 100;
         String monthString;
-        if(month<10){
-            monthString="0"+String.valueOf(month);
-        }
-        else monthString=String.valueOf(month);
+        if (month < 10) {
+            monthString = "0" + String.valueOf(month);
+        } else monthString = String.valueOf(month);
 
-        String yearString=String.valueOf(year);
+        String yearString = String.valueOf(year);
 
-        return monthString+"_"+yearString;
+        return monthString + "_" + yearString;
     }
 
 
-    public static Date dateAdder(Date testDate, int value){
+    public static Date dateAdder(Date testDate, int value) {
         Calendar aCalendar = Calendar.getInstance();
         aCalendar.setTime(testDate);
         aCalendar.set(Calendar.MILLISECOND, 0);
@@ -45,7 +58,8 @@ public class ServiceFunctions {
         testDate = aCalendar.getTime();
         return testDate;
     }
-    public String generatePassword(){
+
+    public String generatePassword() {
         String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         StringBuilder salt = new StringBuilder();
         Random rnd = new Random();
@@ -72,7 +86,8 @@ public class ServiceFunctions {
         String password = salt.toString();
         return password;
     }
-    public String generateCaptcha(){
+
+    public String generateCaptcha() {
         String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
         StringBuilder salt = new StringBuilder();
         Random rnd = new Random();
@@ -82,6 +97,62 @@ public class ServiceFunctions {
         }
         String captchaCode = salt.toString();
         return captchaCode;
+    }
+
+    public String validateCaptcha(String captchaResponse) {
+
+        String secret = "6LcJgYgUAAAAABlcI1YI15cqYqkywAYWImevFena";
+        String url = "https://www.google.com/recaptcha/api/siteverify";
+        String USER_AGENT = "Mozilla/5.0";
+        try {
+
+
+            URL obj = new URL(url);
+            HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
+
+            // add reuqest header
+            con.setRequestMethod("POST");
+            con.setRequestProperty("User-Agent", USER_AGENT);
+            con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+
+            String postParams = "secret=" + secret + "&response="
+                    + captchaResponse;
+
+            // Send post request
+            con.setDoOutput(true);
+            DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+            wr.writeBytes(postParams);
+            wr.flush();
+            wr.close();
+
+            int responseCode = con.getResponseCode();
+            System.out.println("\nSending 'POST' request to URL : " + url);
+            System.out.println("Post parameters : " + postParams);
+            System.out.println("Response Code : " + responseCode);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    con.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            // print result
+            System.out.println(response.toString());
+            String result = response.substring(14, 18);
+            if(result.equals("true")){
+                return "success";
+            }
+           else{
+               return "failure";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "failure";
+        }
     }
 
 }
