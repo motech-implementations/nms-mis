@@ -194,6 +194,9 @@
                 UserFormFactory.downloadCurrentUser().then(function(result){
                     UserFormFactory.setCurrentUser(result.data);
                     $scope.currentUser = UserFormFactory.getCurrentUser();
+                    localStorage.setItem("accessLevel",$scope.currentUser.accessLevel);
+                    localStorage.setItem("roleName",$scope.currentUser.roleName);
+
                 });
                if (!($scope.disableCursor())){
                    $state.go('userManual.websiteInformation', {pageNum: 1});

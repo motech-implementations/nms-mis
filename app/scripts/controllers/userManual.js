@@ -14,14 +14,16 @@
                 default :$scope.active1 = 'wi';break;
             }
             // localStorage.getItem('role') = 'Anonymous';
-            if(localStorage.getItem('role') == null ||localStorage.getItem('role') == ''||localStorage.getItem('role') === undefined){
-                $scope.selectRole = 0;
-                $scope.selectRoleValue = 'Anonymous';
-                localStorage.setItem('role', $scope.selectRole);
-            }
+      var acc =  localStorage.getItem("accessLevel");
+      var rn = localStorage.getItem("roleName");
+            //
+            // if(localStorage.getItem('role') == null ||localStorage.getItem('role') == ''||localStorage.getItem('role') === undefined){
+            //     $scope.selectRole = 0;
+            //     $scope.selectRoleValue = 'Anonymous';
+            //     localStorage.setItem('role', $scope.selectRole);
+            // }
             (function () {
             $scope.roles = [
-                            {"id": 0, "role" : "Anonymous"},
                             {"id": 1, "role" : "National User"},
                             {"id": 2, "role" : "State User"},
                             {"id": 3, "role" : "District User"},
@@ -31,13 +33,59 @@
                             {"id": 7, "role" : "District Admin"}
 
                         ];
-                if(localStorage.getItem('role') === undefined) {
-                    $scope.selectRole = 0;
-                    $scope.selectRoleValue = 'Anonymous';
-                } else {
-                    $scope.selectRole = localStorage.getItem('role');
-                    $scope.selectRoleValue = $scope.roles[$scope.selectRole].role;
-                }
+                // if(localStorage.getItem('role') === undefined) {
+                //     $scope.selectRole = 0;
+                //     $scope.selectRoleValue = 'Anonymous';
+                // } else {
+                //     $scope.selectRole = localStorage.getItem('role');
+                //     $scope.selectRoleValue = $scope.roles[$scope.selectRole].role;
+                // }
+
+                    if(acc==="NATIONAL" && rn ==="ADMIN"){
+                        $scope.selectRole = 5;
+                        $scope.selectRoleValue = "National Admin";
+
+                    }
+                    if(acc==="NATIONAL" && rn ==="USER"){
+                        $scope.selectRole = 1;
+                        $scope.selectRoleValue = "National User";
+                        $scope.roles.splice(4,3);
+                    }
+                    if(acc==="STATE" && rn ==="ADMIN"){
+                        $scope.selectRole = 6;
+                        $scope.selectRoleValue = "State Admin";
+                        $scope.roles.splice(0,1);
+                        $scope.roles.splice(3,1);
+
+                    }
+                    if(acc==="STATE" && rn ==="USER"){
+                        $scope.selectRole = 2;
+                        $scope.selectRoleValue = "State User";
+                        $scope.roles.splice(0,1);
+                        $scope.roles.splice(3,3);
+
+                    }
+                    if(acc==="DISTRICT" && rn ==="ADMIN"){
+                        $scope.selectRole = 7;
+                        $scope.selectRoleValue = "District Admin";
+                        $scope.roles.splice(0,2);
+                        $scope.roles.splice(2,2);
+
+                    }
+                    if(acc==="DISTRICT" && rn ==="USER"){
+                        $scope.selectRole = 3;
+                        $scope.selectRoleValue = "District User";
+                        $scope.roles.splice(0,2);
+                        $scope.roles.splice(2,3);
+
+                    }
+                    if(acc==="BLOCK" && rn ==="USER"){
+                        $scope.selectRole = 7;
+                        $scope.selectRoleValue = "Block User";
+                        $scope.roles.splice(0,3);
+                        $scope.roles.splice(1,3);
+
+                    }
             }
             )();
 
