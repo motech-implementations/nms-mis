@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    if(typeof nmsReportsApp === 'undefined'){
+    if (typeof nmsReportsApp === 'undefined') {
         window.location.assign('http://localhost:8080/#!/login');
     }
 </script>
@@ -38,26 +38,47 @@
                 <div data-ng-hide="selectRole != 1 && selectRole != 5">
                     <div data-ng-hide="param!=='bl'" style="display: inline-block; ">
                         <p style="font-size: 30px"><b>Listened to &lt; 25% this month</b></p><br>
-                        <p>This report gives the line-listing of all the beneficiaries who have been listening to an average of less than 25% of the content in the last calendar month in the Kilkari system as observed in the selected month. This report tracks beneficiaries who have either zero successful calls or not listened complete message (i.e., on an average of <25%). This report should not include ‘completed’ or ‘deactivated’ beneficiaries.</p>
-                        <p>This line listing report would be available for download for the respective state, district and block users. These reports would be e-mailed to the respective block and district users periodically once it is generated. A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day.</p>
-                        <p>The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries to listen to the Kilkari content to the full duration of 90 secs. If the mobile number registered against that beneficiary does not belong to the beneficiary or that number is not accessible to them during normal calling hours, then the beneficiary should be advised to provide the correct mobile number or provide an alternative number that would be accessible to the beneficiary more frequently.</p>
-                        <p>Steps to download the reports</p>
-                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
+                        <p>This report provides a line-listing of all the beneficiaries who listened to an average of
+                            less than 25% of the content across all calls answered by the beneficiary, in the selected
+                            month. This report tracks beneficiaries who have either not answered any calls during the
+                            concerned month or answered call(s) but not listened to the complete message (i.e., the
+                            average content heard on the calls answered during the reported month is <25%). </p>
+                        <p>This line listing report would be available for download for the respective state, district
+                            and block users. These reports would be e-mailed to the respective block and district users
+                            periodically once it is generated. A summary mail giving the district wise break-up of the
+                            count of beneficiaries would be sent to the State / UT users on the same day.</p>
+                        <p>The concerned State / UT / district / block officials can act upon this report and encourage
+                            ASHAs of the concerned geography to contact the said beneficiaries and understand why they
+                            are not listening to the Kilkari calls for the full duration. If the mobile number
+                            registered against the concerned beneficiary is correct, then they should be motivated to
+                            listen to the Kilkari content for the complete duration of 90 secs on each call. If the
+                            mobile number registered against that beneficiary does not belong to the beneficiary or that
+                            number is not accessible to them under normal calling hours, then the beneficiary should be
+                            advised to provide the correct mobile number or provide an alternative number (to their
+                            respective ANMs) that would be accessible to the beneficiary more frequently. ASHAs should
+                            be encouraged to update status of the listed non-answering numbers to the concerned
+                            officials so that the necessary data corrections in the system can be made.</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
+                        </p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
                         <img alt="user manual" src="./images/National/MA/NA_MA_RC.png"><br><br><br>
                         <p>3) Then select "Listen to &lt; 25% this month" under "Reports" </p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_All.png"><br><br><br>
                         <p>4) Then select the Month for which the reports are needed</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_L25_Cal.png"><br><br><br>
-                        <p>5) Then select an option in the 'State' dropdown for a specific state or to get all states data, select 'All':</p>
+                        <p>5) Then select an option in the 'State' dropdown for a specific state or to get all states
+                            data, select 'All':</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_L25_State.png"><br><br><br>
-                        <p>6) Next, select an option from the 'District' dropdown in the same manner: (does not work if State is set to all)</p>
+                        <p>6) Next, select an option from the 'District' dropdown in the same manner: (does not work if
+                            State is set to all)</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_L25_Dist.png"><br><br><br>
-                        <p>7) Next, select an option from the 'Block' dropdown in the same manner: (does not work if District is set to all)</p>
+                        <p>7) Next, select an option from the 'Block' dropdown in the same manner: (does not work if
+                            District is set to all)</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_L25_Block.png"><br><br><br>
                         <p>8) To view the result, click the "Submit" button</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_L25_Sub-Copy.png"><br><br><br>
-                        <p>9) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <p>9) Click on the download link to download the report. The selected report will be downloaded
+                            in Excel files.</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_L25_DownLoad.png"><br><br><br>
                         <p>10) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_L25_Sub.png"><br><br><br>
@@ -65,49 +86,87 @@
                     </div>
                     <div data-ng-hide="param!=='bwd'">
                         <p style="font-size: 30px"><b>Self Deactivation</b></p><br>
-                        <p>This report gives the line-listing of all the beneficiaries who have deactivated themselves in the selected month for their own reasons. This line listing report would be available for download for the respective state, district and block users. These reports would be e-mailed to the respective block and district users periodically once it is generated. A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day. The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries personally and understand why they have deactivated them from the system. If the mobile number registered against that beneficiary does not belong to the beneficiary or that number is not accessible to them during normal calling hours, then the beneficiary should be advised to provide the correct mobile number or provide an alternative number that would be accessible to the beneficiary more frequently. </p>
+                        <p>This report provides a line-listing of all the beneficiaries who have used the option
+                            available on the Kilkari call (IVR menu option), to deactivate themselves, during the the
+                            selected month, for the selected geography . This line listing report is available for
+                            download for the respective state, district and block users. The State / UT / district /
+                            block can act upon this report and encourage ASHAs of the concerned geography to contact the
+                            said beneficiaries and understand why they have deactivated from the Kilkari service. If the
+                            mobile number belongs to the correct beneficiary, then they should be motivated to
+                            reactivate their Kilkari Subscription by visiting their ANM and updating their MCTS/RCH
+                            record and listen to the Kilkari content for the complete duration of 90 secs on each call.
+                            If the mobile number registered against that beneficiary does not belong to the beneficiary
+                            or that number is not accessible to them under normal calling hours, then the beneficiary
+                            should be advised to provide the correct mobile number or provide an alternative number that
+                            would be accessible to the beneficiary more frequently. ASHAs should be encouraged to update
+                            status of the listed non-answering numbers to the concerned officials so that the necessary
+                            data corrections in the system can be made. </p>
                         <p>Steps to download the reports</p>
-                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
+                        </p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
                         <img alt="user manual" src="./images/National/MA/NA_MA_RC.png"><br><br><br>
                         <p>3) Then select "Self Deactivation" under "Reports" </p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_All.png"><br><br><br>
                         <p>4) Then select the Month for which the reports are needed</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_SD_Cal.png"><br><br><br>
-                        <p>5) Then select an option in the 'State' dropdown for a specific state or to get all states data, select 'All':</p>
+                        <p>5) Then select an option in the 'State' dropdown for a specific state or to get all states
+                            data, select 'All':</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_SD_State.png"><br><br><br>
-                        <p>6) Next, select an option from the 'District' dropdown in the same manner: (does not work if State is set to all)</p>
+                        <p>6) Next, select an option from the 'District' dropdown in the same manner: (does not work if
+                            State is set to all)</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_SD_Dist.png"><br><br><br>
-                        <p>7) Next, select an option from the 'Block' dropdown in the same manner: (does not work if District is set to all)</p>
+                        <p>7) Next, select an option from the 'Block' dropdown in the same manner: (does not work if
+                            District is set to all)</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_SD_Block.png"><br><br><br>
                         <p>8) To view the result, click the "Submit" button</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_SD_sub-Copy.png"><br><br><br>
-                        <p>9) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <p>9) Click on the download link to download the report. The selected report will be downloaded
+                            in Excel files.</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_SD_DownLoad.png"><br><br><br>
                         <p>10) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_SD_sub.png"><br><br><br>
                     </div>
                     <div data-ng-hide="param!=='dfna'">
                         <p style="font-size: 30px"><b>Deactivated for not answering</b></p>
-                        <p>This report gives the line-listing of all the beneficiaries who have been deactivated in the selected month by the Kilkari system for not answering a single call for six consecutive weeks.</p>
-                        <p>This report gives the information related to deactivation of the user from Kilkari services. This includes the user who deactivate due to low listening of Kilkari messages.</p>
+                        <p>This report provides a line-listing of all the beneficiaries who have been deactivated by the
+                            Kilkari system for not answering a single call for six consecutive weeks, for the selected
+                            month, for the selected geography (state/district/block).</p>
+                        <p>List of system-deactivated users for not listening, is available at State/UT, district, block
+                            level -as per user selection. The concerned State / UT officials can act upon this report
+                            and encourage ASHAs of the concerned geography to contact the said beneficiaries and
+                            understand why they are not listening to the Kilkari calls. If the mobile number registered
+                            against the concerned beneficiary is correct, then they should be motivated to reactivate
+                            their Kilkari Subscription by visiting their ANM and updating their MCTS/RCH record and
+                            listen to the Kilkari content for the complete duration of 90 secs on each call. If the
+                            mobile number registered against that beneficiary does not belong to the beneficiary or that
+                            number is not accessible to them under normal calling hours, then the beneficiary should be
+                            advised to provide the correct mobile number or provide an alternative number that would be
+                            accessible to the beneficiary more frequently. ASHAs should be encouraged to update status
+                            of the listed non-answering numbers to the concerned officials so that the necessary data
+                            corrections in the system can be made.</p>
                         <p>Steps to download the reports</p>
-                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
+                        </p>
                         <p>2) select "Kilkari Reports" under "Reports Category" </p>
                         <img alt="user manual" src="./images/National/MA/NA_MA_RC.png"><br><br><br>
                         <p>3) Then select "Deactivated for not answering" under "Reports" </p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_All.png"><br><br><br>
                         <p>4) Then select the Month for which the reports are needed</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_DNA_Cal.png"><br><br><br>
-                        <p>5) Then select an option in the 'State' dropdown for a specific state or to get all states data, select 'All':</p>
+                        <p>5) Then select an option in the 'State' dropdown for a specific state or to get all states
+                            data, select 'All':</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_DNA_State.png"><br><br><br>
-                        <p>6) Next, select an option from the 'District' dropdown in the same manner: (does not work if State is set to all)</p>
+                        <p>6) Next, select an option from the 'District' dropdown in the same manner: (does not work if
+                            State is set to all)</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_DNA_Dist.png"><br><br><br>
-                        <p>7) Next, select an option from the 'Block' dropdown in the same manner: (does not work if District is set to all)</p>
+                        <p>7) Next, select an option from the 'Block' dropdown in the same manner: (does not work if
+                            District is set to all)</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_DNA_Block.png"><br><br><br>
                         <p>8) To download the result, click the "Submit" button</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_DNA_sub-Copy.png"><br><br><br>
-                        <p>9) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <p>9) Click on the download link to download the report. The selected report will be downloaded
+                            in Excel files.</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_DNA_DownLoad.png"><br><br><br>
                         <p>10) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_DNA_sub.png"><br>
@@ -115,109 +174,128 @@
 
                     <div data-ng-hide="param!=='dfll'">
                         <p style="font-size: 30px"><b>Deactivated for Low Listenership</b></p>
-                        <p>This report gives the line-listing of all the beneficiaries who have been deactivated in the selected
-                            month by the Kilkari system for listening less than 25% of the content for each successful call spread over six consecutive weeks.</p>
-                        <p>Both the line listing report would be available for download for the respective state, district
-                            and block users. These reports would be e-mailed to the respective block and district users periodically
-                            once it is generated. A summary mail giving the district wise break-up of the count of beneficiaries would
-                            be sent to the State / UT users on the same day.</p>
-                        <p>The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said
-                            beneficiaries and understand why they are not listening to the Kilkari calls. If the mobile number
-                            belongs to the correct beneficiary then they should be motivated to reactivate their Kilkari
-                            Subscription and listen to the Kilkari content for the complete duration of 90 secs. If the
-                            mobile number registered against that beneficiary does not belong to the beneficiary or that number
-                            is not accessible to them under normal calling hours, then the beneficiary should be advised to provide
-                            the correct mobile number or provide an alternative number that would be accessible to the beneficiary more frequently.</p>
-                        <p>This report will provide the information about the beneficiaries who have been deactivated in the
-                            selected month for listening to less the 25% of Kilkari messages for a consecutive period of 6 weeks.</p>
+                        <p>This report gives the line-listing of all the beneficiaries who have been deactivated in the
+                            selected
+                            month by the Kilkari system for listening less than 25% of the content for each successful
+                            call spread over six consecutive weeks.</p>
+                        <p>The State / UT / district / block can act upon this report and encourage ASHAs of the
+                            concerned geography to contact the said beneficiaries and understand why they were not
+                            listening to the Kilkari calls for the full duration. If the mobile number belongs to the
+                            correct beneficiary, then they should be motivated to reactivate their Kilkari Subscription
+                            by visiting their ANM and updating their MCTS/RCH record and listen to the Kilkari content
+                            for the complete duration of 90 secs on each call. If the mobile number registered against
+                            that beneficiary does not belong to the beneficiary or that number is not accessible to them
+                            under normal calling hours, then the beneficiary should be advised to provide the correct
+                            mobile number or provide an alternative number that would be accessible to the beneficiary
+                            more frequently. ASHAs should be encouraged to update status of the listed non-answering
+                            numbers to the concerned officials so that the necessary data corrections in the system can
+                            be made.</p>
                         <p>Steps to download the reports</p>
-                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
+                        </p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
                         <img alt="user manual" src="./images/National/MA/NA_MA_RC.png"><br><br><br>
-                        <p>3) Then  select "Deactivated for Low Listenership" under "Reports"</p>
+                        <p>3) Then select "Deactivated for Low Listenership" under "Reports"</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_All.png"><br><br><br>
                         <p>4) Then select the Month for which the reports are needed</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_DLL_Cal.png"><br><br><br>
-                        <p>5) Then select an option in the 'State' dropdown for a specific state or to get all states data, select 'All':</p>
+                        <p>5) Then select an option in the 'State' dropdown for a specific state or to get all states
+                            data, select 'All':</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_DLL_State.png"><br><br><br>
-                        <p>6) Next, select an option from the 'District' dropdown in the same manner: (does not work if State is set to all)</p>
+                        <p>6) Next, select an option from the 'District' dropdown in the same manner: (does not work if
+                            State is set to all)</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_DLL_Dist.png"><br><br><br>
-                        <p>7) Next, select an option from the 'Block' dropdown in the same manner: (does not work if District is set to all)</p>
+                        <p>7) Next, select an option from the 'Block' dropdown in the same manner: (does not work if
+                            District is set to all)</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_DLL_Block.png"><br><br><br>
                         <p>8) To download the result, click the "Submit" button</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_DLL_sub-Copy.png"><br><br><br>
-                        <p>9) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <p>9) Click on the download link to download the report. The selected report will be downloaded
+                            in Excel files.</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_DLL_DownLoad.png"><br><br><br>
                         <p>10) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_DLL_sub.png"><br>
                     </div>
                     <div data-ng-hide="param!=='mrr'">
                         <p style="font-size: 30px"><b>Mother Rejected Records</b></p>
-                        <p>This report gives the line-listing of all Mother beneficiaries whose registered mobile numbers are
-                            either incorrect or are duplicate. These mobile numbers had flown in to the IVRS system but were rejected by
-                            the acceptance logic run by the IVRS system. The report contains the MCTS or RCH IDs. This report would be
-                            generated once every week preferably on Sunday. This line listing report would be available for download for
-                            the respective district and block users. These reports would be e-mailed to the respective block and district
-                            users on the day after it was generated –on Tuesday. A summary mail giving the district wise break-up of the count of
-                            beneficiaries would be sent to the State / UT users on the same day. The State / UT can act upon this report and
-                            contact the ASHAs in the field and ask them to contact the said beneficiaries and register their correct mobile
-                            numbers in the RCH Application. In this way we can correct the mobile numbers of beneficiaries and bring a higher
-                            percentage of beneficiaries under the ambit of Kilkari program. This report is a very useful actionable report for
-                            the State / UT to correct the beneficiary contact mobile number.</p>
+                        <p>This report provides a line-listing of all Mother beneficiaries records that are received
+                            from MCTS/RCH but were rejected by the acceptance logic run by the Kilkari system because
+                            the registered mobile numbers are either incorrect or are duplicate. The report contains the
+                            MCTS or RCH IDs of the concerned beneficiary records. This report would be generated weekly.
+                            This line listing report is available for download for the respective district and block
+                            users. The State / UT / district / block official(s) can act upon this report and encourage
+                            ASHAs in the concerned geography to contact the said beneficiaries and get their correct
+                            mobile numbers registered in the RCH/MCTS Application. In this way the mobile numbers of
+                            beneficiaries can be corrected and a higher percentage of genuine beneficiaries can benefit
+                            from the Kilkari program rolled out by the MoHFW. This report is a very useful actionable
+                            report for the State / UT to correct the beneficiary contact mobile number.</p>
                         <p>Steps to download the reports</p>
-                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
+                        </p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
                         <img alt="user manual" src="./images/National/MA/NA_MA_RC.png"><br><br><br>
                         <p>3) Then select "Mother Rejected Records" under "Reports" </p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_All.png"><br><br><br>
                         <p>4) Then select the Month under "Select Week" </p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_MRR_Cal.png"><br><br><br>
-                        <p>5) Then select the 1st day of week(Sunday) for which the report is needed under "Select Week" </p>
+                        <p>5) Then select the 1st day of week(Sunday) for which the report is needed under "Select
+                            Week" </p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_MRR_CalDate.png"><br><br><br>
-                        <p>6) Then select an option in the 'State' dropdown for a specific state or to get all states data, select 'All':</p>
+                        <p>6) Then select an option in the 'State' dropdown for a specific state or to get all states
+                            data, select 'All':</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_MRR_State.png"><br><br><br>
-                        <p>7) Next, select an option from the 'District' dropdown in the same manner: (does not work if State is set to all)</p>
+                        <p>7) Next, select an option from the 'District' dropdown in the same manner: (does not work if
+                            State is set to all)</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_MRR_Dist.png"><br><br><br>
-                        <p>8) Next, select an option from the 'Block' dropdown in the same manner: (does not work if District is set to all)</p>
+                        <p>8) Next, select an option from the 'Block' dropdown in the same manner: (does not work if
+                            District is set to all)</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_MRR_Block.png"><br><br><br>
                         <p>9) To view the result, click the "Submit" button</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_MRR_Sub-Copy.png"><br><br><br>
-                        <p>10) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <p>10) Click on the download link to download the report. The selected report will be downloaded
+                            in Excel files.</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_MRR_download.png"><br><br><br>
                         <p>11) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_MRR_Sub.png"><br>
                     </div>
-                    <div  data-ng-hide="param!=='crr'" >
+                    <div data-ng-hide="param!=='crr'">
                         <p style="font-size: 30px"><b>Child Rejected Records</b></p>
-                        <p>This report gives the line-listing of all Child beneficiaries whose registered mobile numbers are either incorrect or are duplicate.
-                            These mobile numbers had flown in to the IVRS system but were rejected by the acceptance logic run by the IVRS system.
-                            The report contains the MCTS or RCH IDs. This report would be generated once every week preferably on Sunday.
-                            This line listing report would be available for download for the respective district and block users.
-                            These reports would be e-mailed to the respective block and district users on the day after it was generated –on Tuesday.
-                            A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day.
-                            The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries
-                            and register their correct mobile numbers in the RCH Application. In this way we can correct the mobile numbers of
-                            beneficiaries and bring a higher percentage of beneficiaries under the ambit of Kilkari program. This report is
-                            a very useful actionable report for the State / UT to correct the beneficiary contact mobile number.</p>
+                        <p>This report provides a line-listing of all child beneficiaries records that are received from
+                            MCTS/RCH but were rejected by the acceptance logic run by the Kilkari system because the
+                            registered mobile numbers are either incorrect or are duplicate. The report contains the
+                            MCTS or RCH IDs of the concerned beneficiary records. This report would be generated weekly.
+                            This line listing report is available for download for the respective district and block
+                            users. The State / UT / district / block official(s) can act upon this report and encourage
+                            ASHAs in the concerned geography to contact the said beneficiaries and get their correct
+                            mobile numbers registered in the RCH/MCTS Application. In this way the mobile numbers of
+                            beneficiaries can be corrected and a higher percentage of genuine beneficiaries can benefit
+                            from the Kilkari program rolled out by the MoHFW. This report is a very useful actionable
+                            report for the State / UT to correct the beneficiary contact mobile number.</p>
                         <p>Steps to download the reports</p>
-                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
+                        </p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
                         <img alt="user manual" src="./images/National/MA/NA_MA_RC.png"><br><br><br>
                         <p>3) Then select "Child Rejected Records" under "Reports" </p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_All.png"><br><br><br>
                         <p>4) Then select the Month under "Select Week" </p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_CRR_Cal.png"><br><br><br>
-                        <p>5) Then select the 1st day of week(Sunday) for which the report is needed under "Select Week" </p>
+                        <p>5) Then select the 1st day of week(Sunday) for which the report is needed under "Select
+                            Week" </p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_CRR_CalDate.png"><br><br><br>
-                        <p>6) Then select an option in the 'State' dropdown for a specific state or to get all states data, select 'All':</p>
+                        <p>6) Then select an option in the 'State' dropdown for a specific state or to get all states
+                            data, select 'All':</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_CRR_State.png"><br><br><br>
-                        <p>7) Next, select an option from the 'District' dropdown in the same manner: (does not work if State is set to all)</p>
+                        <p>7) Next, select an option from the 'District' dropdown in the same manner: (does not work if
+                            State is set to all)</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_CRR_Dist.png"><br><br><br>
-                        <p>8) Next, select an option from the 'Block' dropdown in the same manner: (does not work if District is set to all)</p>
+                        <p>8) Next, select an option from the 'Block' dropdown in the same manner: (does not work if
+                            District is set to all)</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_CRR_Block.png"><br><br><br>
                         <p>9) To view the result, click the "Submit" button</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_CRR_sub-Copy.png"><br><br><br>
-                        <p>10) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <p>10) Click on the download link to download the report. The selected report will be downloaded
+                            in Excel files.</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_CRR_Download.png"><br><br><br>
                         <p>11) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                         <img alt="user manual" src="./images/National/kilkari/NA_KR_CRR_sub.png"><br>
@@ -227,50 +305,74 @@
                 <div data-ng-hide="selectRole != 2 && selectRole != 6">
                     <div data-ng-hide="param!=='bl'" style="display: inline-block; ">
                         <p style="font-size: 30px"><b>Listened to &lt; 25% this month</b></p><br>
-                        <p>This report gives the line-listing of all the beneficiaries who have been listening to an average of less than 25%
-                            of the content in the last calendar month in the Kilkari system as observed in the selected month. This report
-                            tracks beneficiaries who have either zero successful calls or not listened complete message (i.e., on an average of <25%).
-                            This report should not include ‘completed’ or ‘deactivated’ beneficiaries.</p>
-                        <p>This line listing report would be available for download for the respective state, district and block users.
-                            These reports would be e-mailed to the respective block and district users periodically once it is generated.
-                            A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day.</p>
-                        <p>The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries
-                            to listen to the Kilkari content to the full duration of 90 secs. If the mobile number registered against that beneficiary
-                            does not belong to the beneficiary or that number is not accessible to them during normal calling hours, then the beneficiary
-                            should be advised to provide the correct mobile number or provide an alternative number that would be accessible to the beneficiary more frequently.</p>
+                        <p>This report provides a line-listing of all the beneficiaries who listened to an average of
+                            less than 25% of the content across all calls answered by the beneficiary, in the selected
+                            month. This report tracks beneficiaries who have either not answered any calls during the
+                            concerned month or answered call(s) but not listened to the complete message (i.e., the
+                            average content heard on the calls answered during the reported month is <25%). </p>
+                        <p>This line listing report would be available for download for the respective state, district
+                            and block users.
+                            These reports would be e-mailed to the respective block and district users periodically once
+                            it is generated.
+                            A summary mail giving the district wise break-up of the count of beneficiaries would be sent
+                            to the State / UT users on the same day.</p>
+                        <p>The concerned State / UT / district / block officials can act upon this report and encourage
+                            ASHAs of the concerned geography to contact the said beneficiaries and understand why they
+                            are not listening to the Kilkari calls for the full duration. If the mobile number
+                            registered against the concerned beneficiary is correct, then they should be motivated to
+                            listen to the Kilkari content for the complete duration of 90 secs on each call. If the
+                            mobile number registered against that beneficiary does not belong to the beneficiary or that
+                            number is not accessible to them under normal calling hours, then the beneficiary should be
+                            advised to provide the correct mobile number or provide an alternative number (to their
+                            respective ANMs) that would be accessible to the beneficiary more frequently. ASHAs should
+                            be encouraged to update status of the listed non-answering numbers to the concerned
+                            officials so that the necessary data corrections in the system can be made.</p>
                         <p>Steps to download the reports</p>
-                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
+                        </p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
-                        <img alt="user manual" src="./images/State/KA1/SA_KA_RC.png" style="max-width: 828px;"><br><br><br>
+                        <img alt="user manual" src="./images/State/KA1/SA_KA_RC.png"
+                             style="max-width: 828px;"><br><br><br>
                         <p>3) Then select "Listen to &lt; 25% this month" under "Reports" </p>
                         <img alt="user manual" src="./images/State/KA1/SA_KA_Rep.png" style="max-width: 828px;"><br><br><br>
                         <p>4) Then select the Month for which the reports are needed</p>
-                        <img alt="user manual" src="./images/State/KA3/SA_KA_LT25_Cal.png" style="max-width: 828px;"><br><br><br>
+                        <img alt="user manual" src="./images/State/KA3/SA_KA_LT25_Cal.png"
+                             style="max-width: 828px;"><br><br><br>
                         <p>5) For State users, their 'State' option is already selected.</p>
-                        <p>6) Select an option in the 'District' dropdown for a specific state or to get all districts data, select 'All':</p>
+                        <p>6) Select an option in the 'District' dropdown for a specific state or to get all districts
+                            data, select 'All':</p>
                         <img alt="user manual" src="./images/State/KA3/SA_KA_LT25_Dist.png"><br><br><br>
-                        <p>7) Next, select an option from the 'Block' dropdown in the same manner: (does not work if District is set to all)</p>
+                        <p>7) Next, select an option from the 'Block' dropdown in the same manner: (does not work if
+                            District is set to all)</p>
                         <img alt="user manual" src="./images/State/KA3/SA_KA_LT25_Block.png"><br><br><br>
                         <p>8) To view the result, click the "Submit" button</p>
                         <img alt="user manual" src="./images/State/KA3/SA_KA_LT25_Submit.png"><br><br><br>
-                        <p>9) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <p>9) Click on the download link to download the report. The selected report will be downloaded
+                            in Excel files.</p>
                         <img alt="user manual" src="./images/State/KA3/SA_KA_LT25_Download.png"><br><br><br>
                         <p>10) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                         <img alt="user manual" src="./images/State/KA3/SA_KA_LT25_Reset.png"><br>
                     </div>
                     <div data-ng-hide="param!=='bwd'">
                         <p style="font-size: 30px"><b>Self Deactivation</b></p><br>
-                        <p>This report gives the line-listing of all the beneficiaries who have deactivated themselves in the selected month
-                            for their own reasons. This line listing report would be available for download for the respective state, district and block users.
-                            These reports would be e-mailed to the respective block and district users periodically once it is generated.
-                            A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day.
-                            The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries personally
-                            and understand why they have deactivated them from the system. If the mobile number registered against that beneficiary
-                            does not belong to the beneficiary or that number is not accessible to them during normal calling hours,
-                            then the beneficiary should be advised to provide the correct mobile number or provide an alternative number that would be
-                            accessible to the beneficiary more frequently. </p>
+                        <p>This report provides a line-listing of all the beneficiaries who have used the option
+                            available on the Kilkari call (IVR menu option), to deactivate themselves, during the the
+                            selected month, for the selected geography . This line listing report is available for
+                            download for the respective state, district and block users. The State / UT / district /
+                            block can act upon this report and encourage ASHAs of the concerned geography to contact the
+                            said beneficiaries and understand why they have deactivated from the Kilkari service. If the
+                            mobile number belongs to the correct beneficiary, then they should be motivated to
+                            reactivate their Kilkari Subscription by visiting their ANM and updating their MCTS/RCH
+                            record and listen to the Kilkari content for the complete duration of 90 secs on each call.
+                            If the mobile number registered against that beneficiary does not belong to the beneficiary
+                            or that number is not accessible to them under normal calling hours, then the beneficiary
+                            should be advised to provide the correct mobile number or provide an alternative number that
+                            would be accessible to the beneficiary more frequently. ASHAs should be encouraged to update
+                            status of the listed non-answering numbers to the concerned officials so that the necessary
+                            data corrections in the system can be made. </p>
                         <p>Steps to download the reports</p>
-                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
+                        </p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
                         <img alt="user manual" src="./images/State/KA1/SA_KA_RC.png"><br><br><br>
                         <p>3) Then select "Self Deactivation" under "Reports" </p>
@@ -278,23 +380,41 @@
                         <p>4) Then select the Month for which the reports are needed</p>
                         <img alt="user manual" src="./images/State/KA3/SA_KA_SD_Cal.png"><br><br><br>
                         <p>5) For State users, their 'State' option is already selected.</p>
-                        <p>6) Select an option in the 'District' dropdown for a specific state or to get all districts data, select 'All':</p>
+                        <p>6) Select an option in the 'District' dropdown for a specific state or to get all districts
+                            data, select 'All':</p>
                         <img alt="user manual" src="./images/State/KA3/SA_KA_SD_Dist.png"><br><br>
-                        <p>7) Next, select an option from the 'Block' dropdown in the same manner: (does not work if District is set to all)</p>
+                        <p>7) Next, select an option from the 'Block' dropdown in the same manner: (does not work if
+                            District is set to all)</p>
                         <img alt="user manual" src="./images/State/KA3/SA_KA_SD_Block.png"><br><br><br>
                         <p>8) To view the result, click the "Submit" button</p>
                         <img alt="user manual" src="./images/State/KA3/SA_KA_SD_Submit.png"><br><br><br>
-                        <p>9) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <p>9) Click on the download link to download the report. The selected report will be downloaded
+                            in Excel files.</p>
                         <img alt="user manual" src="./images/State/KA3/SA_KA_SD_Download.png"><br><br><br>
                         <p>10) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                         <img alt="user manual" src="./images/State/KA3/SA_KA_SD_Reset.png"><br><br><br>
                     </div>
                     <div data-ng-hide="param!=='dfna'">
                         <p style="font-size: 30px"><b>Deactivated for not answering</b></p>
-                        <p>This report gives the line-listing of all the beneficiaries who have been deactivated in the selected month by the Kilkari system for not answering a single call for six consecutive weeks.</p>
-                        <p>This report gives the information related to deactivation of the user from Kilkari services. This includes the user who deactivate due to low listening of Kilkari messages.</p>
+                        <p>This report provides a line-listing of all the beneficiaries who have been deactivated by the
+                            Kilkari system for not answering a single call for six consecutive weeks, for the selected
+                            month, for the selected geography (state/district/block).</p>
+                        <p>List of system-deactivated users for not listening, is available at State/UT, district, block
+                            level -as per user selection. The concerned State / UT officials can act upon this report
+                            and encourage ASHAs of the concerned geography to contact the said beneficiaries and
+                            understand why they are not listening to the Kilkari calls. If the mobile number registered
+                            against the concerned beneficiary is correct, then they should be motivated to reactivate
+                            their Kilkari Subscription by visiting their ANM and updating their MCTS/RCH record and
+                            listen to the Kilkari content for the complete duration of 90 secs on each call. If the
+                            mobile number registered against that beneficiary does not belong to the beneficiary or that
+                            number is not accessible to them under normal calling hours, then the beneficiary should be
+                            advised to provide the correct mobile number or provide an alternative number that would be
+                            accessible to the beneficiary more frequently. ASHAs should be encouraged to update status
+                            of the listed non-answering numbers to the concerned officials so that the necessary data
+                            corrections in the system can be made.</p>
                         <p>Steps to download the reports</p>
-                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
+                        </p>
                         <p>2) select "Kilkari Reports" under "Reports Category" </p>
                         <img alt="user manual" src="./images/State/KA1/SA_KA_RC.png"><br><br><br>
                         <p>3) Then select "Deactivated for not answering" under "Reports" </p>
@@ -302,13 +422,16 @@
                         <p>4) Then select the Month for which the reports are needed</p>
                         <img alt="user manual" src="./images/State/KA1/SA_KA_DFNA_Cal.png"><br><br><br>
                         <p>5) For State users, their 'State' option is already selected.</p>
-                        <p>6) Select an option in the 'District' dropdown for a specific state or to get all districts data, select 'All':</p>
+                        <p>6) Select an option in the 'District' dropdown for a specific state or to get all districts
+                            data, select 'All':</p>
                         <img alt="user manual" src="./images/State/KA1/SA_KA_DFNA_Dist.png"><br><br><br>
-                        <p>7) Next, select an option from the 'Block' dropdown in the same manner: (does not work if District is set to all)</p>
+                        <p>7) Next, select an option from the 'Block' dropdown in the same manner: (does not work if
+                            District is set to all)</p>
                         <img alt="user manual" src="./images/State/KA1/SA_KA_DFNA_Block.png"><br><br><br>
                         <p>8) To download the result, click the "Submit" button</p>
                         <img alt="user manual" src="./images/State/KA1/SA_KA_DFNA_Submit.png"><br><br><br>
-                        <p>9) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <p>9) Click on the download link to download the report. The selected report will be downloaded
+                            in Excel files.</p>
                         <img alt="user manual" src="./images/State/KA1/SA_KA_DFNA_Download.png"><br><br><br>
                         <p>10) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                         <img alt="user manual" src="./images/State/KA1/SA_KA_DFNA_Reset.png"><br>
@@ -316,77 +439,122 @@
 
                     <div data-ng-hide="param!=='dfll'">
                         <p style="font-size: 30px"><b>Deactivated for Low Listenership</b></p>
-                        <p>This report gives the line-listing of all the beneficiaries who have been deactivated in the selected month by the Kilkari system for listening to an average of less than 25% of the content spread over six consecutive weeks.</p>
-                        <p>Both the line listing report would be available for download for the respective state, district and block users. These reports would be e-mailed to the respective block and district users periodically once it is generated. A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day.</p>
-                        <p>The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries and understand why they are not listening to the Kilkari calls. If the mobile number belongs to the correct beneficiary then they should be motivated to reactivate their Kilkari Subscription and listen to the Kilkari content for the complete duration of 90 secs. If the mobile number registered against that beneficiary does not belong to the beneficiary or that number is not accessible to them under normal calling hours, then the beneficiary should be advised to provide the correct mobile number or provide an alternative number that would be accessible to the beneficiary more frequently.</p>
-                        <p>This report will provide the information about the beneficiaries who have been deactivated in the selected month for listening to less the 25% of Kilkari messages for a consecutive period of 6 weeks.</p>
+                        <p>This report provides a line-listing of all the beneficiaries who have been deactivated by the
+                            Kilkari system for listening less than 25% of the content for each call answered by the
+                            beneficiary over a period of six consecutive weeks, for the selected month, for the selected
+                            geography (state/district/block).</p>
+                        <p>The State / UT / district / block can act upon this report and encourage ASHAs of the
+                            concerned geography to contact the said beneficiaries and understand why they were not
+                            listening to the Kilkari calls for the full duration. If the mobile number belongs to the
+                            correct beneficiary, then they should be motivated to reactivate their Kilkari Subscription
+                            by visiting their ANM and updating their MCTS/RCH record and listen to the Kilkari content
+                            for the complete duration of 90 secs on each call. If the mobile number registered against
+                            that beneficiary does not belong to the beneficiary or that number is not accessible to them
+                            under normal calling hours, then the beneficiary should be advised to provide the correct
+                            mobile number or provide an alternative number that would be accessible to the beneficiary
+                            more frequently. ASHAs should be encouraged to update status of the listed non-answering
+                            numbers to the concerned officials so that the necessary data corrections in the system can
+                            be made.</p>
                         <p>Steps to download the reports</p>
-                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
+                        </p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
                         <img alt="user manual" src="./images/State/KA1/SA_KA_RC.png"><br><br><br>
-                        <p>3) Then  select "Deactivated for Low Listenership" under "Reports"</p>
+                        <p>3) Then select "Deactivated for Low Listenership" under "Reports"</p>
                         <img alt="user manual" src="./images/State/KA1/SA_KA_Rep.png"><br><br><br>
                         <p>4) Then select the Month for which the reports are needed</p>
                         <img alt="user manual" src="./images/State/KA2/SA_KA_DFLL_Cal.png"><br><br><br>
                         <p>5) For State users, their 'State' option is already selected.</p>
-                        <p>6) Select an option in the 'District' dropdown for a specific state or to get all districts data, select 'All':</p>
+                        <p>6) Select an option in the 'District' dropdown for a specific state or to get all districts
+                            data, select 'All':</p>
                         <img alt="user manual" src="./images/State/KA2/SA_KA_DFLL_Dist.png"><br><br><br>
-                        <p>7) Next, select an option from the 'Block' dropdown in the same manner: (does not work if District is set to all)</p>
+                        <p>7) Next, select an option from the 'Block' dropdown in the same manner: (does not work if
+                            District is set to all)</p>
                         <img alt="user manual" src="./images/State/KA2/SA_KA_DFLL_Block.png"><br><br><br>
                         <p>8) To download the result, click the "Submit" button</p>
                         <img alt="user manual" src="./images/State/KA2/SA_KA_DFLL_Submit.png"><br><br><br>
-                        <p>9) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <p>9) Click on the download link to download the report. The selected report will be downloaded
+                            in Excel files.</p>
                         <img alt="user manual" src="./images/State/KA2/SA_KA_DFLL_Download.png"><br><br><br>
                         <p>10) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                         <img alt="user manual" src="./images/State/KA2/SA_KA_DFLL_Reset.png"><br>
                     </div>
                     <div data-ng-hide="param!=='mrr'">
                         <p style="font-size: 30px"><b>Mother Rejected Records</b></p>
-                        <p>This report gives the line-listing of all Mother beneficiaries whose registered mobile numbers are either incorrect or are duplicate. These mobile numbers had flown in to the IVRS system but were rejected by the acceptance logic run by the IVRS system. The report contains the MCTS or RCH IDs. This report would be generated once every week preferably on Sunday. This line listing report would be available for download for the respective district and block users. These reports would be e-mailed to the respective block and district users on the day after it was generated –on Tuesday. A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day. The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries and register their correct mobile numbers in the RCH Application. In this way we can correct the mobile numbers of beneficiaries and bring a higher percentage of beneficiaries under the ambit of Kilkari program. This report is a very useful actionable report for the State / UT to correct the beneficiary contact mobile number.</p>
+                        <p>This report provides a line-listing of all Mother beneficiaries records that are received
+                            from MCTS/RCH but were rejected by the acceptance logic run by the Kilkari system because
+                            the registered mobile numbers are either incorrect or are duplicate. The report contains the
+                            MCTS or RCH IDs of the concerned beneficiary records. This report would be generated weekly.
+                            This line listing report is available for download for the respective district and block
+                            users. The State / UT / district / block official(s) can act upon this report and encourage
+                            ASHAs in the concerned geography to contact the said beneficiaries and get their correct
+                            mobile numbers registered in the RCH/MCTS Application. In this way the mobile numbers of
+                            beneficiaries can be corrected and a higher percentage of genuine beneficiaries can benefit
+                            from the Kilkari program rolled out by the MoHFW. This report is a very useful actionable
+                            report for the State / UT to correct the beneficiary contact mobile number.</p>
                         <p>Steps to download the reports</p>
-                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
+                        </p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
                         <img alt="user manual" src="./images/State/KA1/SA_KA_RC.png"><br><br><br>
                         <p>3) Then select "Mother Rejected Records" under "Reports" </p>
                         <img alt="user manual" src="./images/State/KA1/SA_KA_Rep.png"><br><br><br>
                         <p>4) Then select the Month under "Select Week" </p>
                         <img alt="user manual" src="./images/State/KA5/SA_KA_MRR_Cal.png"><br><br><br>
-                        <p>5) Then select the 1st day of week(Sunday) for which the report is needed under "Select Week" </p>
+                        <p>5) Then select the 1st day of week(Sunday) for which the report is needed under "Select
+                            Week" </p>
                         <img alt="user manual" src="./images/State/KA5/SA_KA_MRR_CalDate.png"><br><br><br>
                         <p>6) For State users, their 'State' option is already selected.</p>
-                        <p>7) Select an option in the 'District' dropdown for a specific state or to get all districts data, select 'All':</p>
+                        <p>7) Select an option in the 'District' dropdown for a specific state or to get all districts
+                            data, select 'All':</p>
                         <img alt="user manual" src="./images/State/KA5/SA_KA_MRR_Dist.png"><br><br><br>
-                        <p>8) Next, select an option from the 'Block' dropdown in the same manner: (does not work if District is set to all)</p>
+                        <p>8) Next, select an option from the 'Block' dropdown in the same manner: (does not work if
+                            District is set to all)</p>
                         <img alt="user manual" src="./images/State/KA5/SA_KA_MRR_Block.png"><br><br><br>
                         <p>9) To view the result, click the "Submit" button</p>
                         <img alt="user manual" src="./images/State/KA5/SA_KA_MRR_Submit.png"><br><br><br>
-                        <p>10) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <p>10) Click on the download link to download the report. The selected report will be downloaded
+                            in Excel files.</p>
                         <img alt="user manual" src="./images/State/KA5/SA_KA_MRR_Download.png"><br><br><br>
                         <p>11) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                         <img alt="user manual" src="./images/State/KA5/SA_KA_MRR_Reset.png"><br>
                     </div>
-                    <div  data-ng-hide="param!=='crr'" >
+                    <div data-ng-hide="param!=='crr'">
                         <p style="font-size: 30px"><b>Child Rejected Records</b></p>
-                        <p>This report gives the line-listing of all Child beneficiaries whose registered mobile numbers are either incorrect or are duplicate. These mobile numbers had flown in to the IVRS system but were rejected by the acceptance logic run by the IVRS system. The report contains the MCTS or RCH IDs. This report would be generated once every week preferably on Sunday. This line listing report would be available for download for the respective district and block users. These reports would be e-mailed to the respective block and district users on the day after it was generated –on Tuesday. A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day. The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries and register their correct mobile numbers in the RCH Application. In this way we can correct the mobile numbers of beneficiaries and bring a higher percentage of beneficiaries under the ambit of Kilkari program.
-                            This report is a very useful actionable report for the State / UT to correct the beneficiary contact mobile number.</p>
+                        <p>This report provides a line-listing of all child beneficiaries records that are received from
+                            MCTS/RCH but were rejected by the acceptance logic run by the Kilkari system because the
+                            registered mobile numbers are either incorrect or are duplicate. The report contains the
+                            MCTS or RCH IDs of the concerned beneficiary records. This report would be generated weekly.
+                            This line listing report is available for download for the respective district and block
+                            users. The State / UT / district / block official(s) can act upon this report and encourage
+                            ASHAs in the concerned geography to contact the said beneficiaries and get their correct
+                            mobile numbers registered in the RCH/MCTS Application. In this way the mobile numbers of
+                            beneficiaries can be corrected and a higher percentage of genuine beneficiaries can benefit
+                            from the Kilkari program rolled out by the MoHFW. This report is a very useful actionable
+                            report for the State / UT to correct the beneficiary contact mobile number.</p>
                         <p>Steps to download the reports</p>
-                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
+                        </p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
                         <img alt="user manual" src="./images/State/KA1/SA_KA_RC.png"><br><br><br>
                         <p>3) Then select "Child Rejected Records" under "Reports" </p>
                         <img alt="user manual" src="./images/State/KA1/SA_KA_Rep.png"><br><br><br>
                         <p>4) Then select the Month under "Select Week" </p>
                         <img alt="user manual" src="./images/State/KA6/SA_KA_CRR_Cal.png"><br><br><br>
-                        <p>5) Then select the 1st day of week(Sunday) for which the report is needed under "Select Week" </p>
+                        <p>5) Then select the 1st day of week(Sunday) for which the report is needed under "Select
+                            Week" </p>
                         <img alt="user manual" src="./images/State/KA6/SA_KA_CRR_CalDate.png"><br><br><br>
                         <p>6) For State users, their 'State' option is already selected.</p>
-                        <p>7) Select an option in the 'District' dropdown for a specific state or to get all districts data, select 'All':</p>
+                        <p>7) Select an option in the 'District' dropdown for a specific state or to get all districts
+                            data, select 'All':</p>
                         <img alt="user manual" src="./images/State/KA6/SA_KA_CRR_Dist.png"><br><br><br>
-                        <p>8) Next, select an option from the 'Block' dropdown in the same manner: (does not work if District is set to all)</p>
+                        <p>8) Next, select an option from the 'Block' dropdown in the same manner: (does not work if
+                            District is set to all)</p>
                         <img alt="user manual" src="./images/State/KA6/SA_KA_CRR_Block.png"><br><br><br>
                         <p>9) To view the result, click the "Submit" button</p>
                         <img alt="user manual" src="./images/State/KA6/SA_KA_CRR_Submit.png"><br><br><br>
-                        <p>10) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <p>10) Click on the download link to download the report. The selected report will be downloaded
+                            in Excel files.</p>
                         <img alt="user manual" src="./images/State/KA6/SA_KA_CRR_Download.png"><br><br><br>
                         <p>11) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                         <img alt="user manual" src="./images/State/KA6/SA_KA_CRR_Reset.png"><br><br><br>
@@ -396,22 +564,45 @@
                 <div data-ng-hide="selectRole != 3 && selectRole != 7"><!--Disrict User-->
                     <div data-ng-hide="param!=='bl'" style="display: inline-block; ">
                         <p style="font-size: 30px"><b>Listened to <25% this month</b></p><br>
-                        <p>This report gives the line-listing of all the beneficiaries who have been listening to an average of less than 25% of the content in the last calendar month in the Kilkari system as observed in the selected month. This report tracks beneficiaries who have either zero successful calls or not listened complete message (i.e., on an average of <25%). This report should not include ‘completed’ or ‘deactivated’ beneficiaries.</p>
-                        <p>This line listing report would be available for download for the respective state, district and block users. These reports would be e-mailed to the respective block and district users periodically once it is generated. A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day.</p>
-                        <p>The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries to listen to the Kilkari content to the full duration of 90 secs. If the mobile number registered against that beneficiary does not belong to the beneficiary or that number is not accessible to them during normal calling hours, then the beneficiary should be advised to provide the correct mobile number or provide an alternative number that would be accessible to the beneficiary more frequently.</p>
+                        <p>This report provides a line-listing of all the beneficiaries who listened to an average of
+                            less than 25% of the content across all calls answered by the beneficiary, in the selected
+                            month. This report tracks beneficiaries who have either not answered any calls during the
+                            concerned month or answered call(s) but not listened to the complete message (i.e., the
+                            average content heard on the calls answered during the reported month is <25%). </p>
+                        <p>This line listing report would be available for download for the respective state, district
+                            and block users. These reports would be e-mailed to the respective block and district users
+                            periodically once it is generated. A summary mail giving the district wise break-up of the
+                            count of beneficiaries would be sent to the State / UT users on the same day.</p>
+                        <p>The concerned State / UT / district / block officials can act upon this report and encourage
+                            ASHAs of the concerned geography to contact the said beneficiaries and understand why they
+                            are not listening to the Kilkari calls for the full duration. If the mobile number
+                            registered against the concerned beneficiary is correct, then they should be motivated to
+                            listen to the Kilkari content for the complete duration of 90 secs on each call. If the
+                            mobile number registered against that beneficiary does not belong to the beneficiary or that
+                            number is not accessible to them under normal calling hours, then the beneficiary should be
+                            advised to provide the correct mobile number or provide an alternative number (to their
+                            respective ANMs) that would be accessible to the beneficiary more frequently. ASHAs should
+                            be encouraged to update status of the listed non-answering numbers to the concerned
+                            officials so that the necessary data corrections in the system can be made.</p>
                         <p>Steps to download the reports</p>
-                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
+                        </p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
-                        <img alt="user manual" src="./images/District/MA/DA_RC.png" style="max-width: 828px;"><br><br><br>
+                        <img alt="user manual" src="./images/District/MA/DA_RC.png"
+                             style="max-width: 828px;"><br><br><br>
                         <p>3) Then select "Listen to &lt; 25% this month" under "Reports" </p>
-                        <img alt="user manual" src="./images/District/kilkari/DA_KR_All.png" style="max-width: 828px;"><br><br><br>
+                        <img alt="user manual" src="./images/District/kilkari/DA_KR_All.png"
+                             style="max-width: 828px;"><br><br><br>
                         <p>4) Then select the Month for which the reports are needed</p>
-                        <img alt="user manual" src="./images/District/kilkari/DA_KR_L25_Cal.png" style="max-width: 828px;"><br><br><br>
-                        <p>5) Since this is for District user/admin, Select any/all block from “Block" dropdown, under specified "District" and "State".</p>
+                        <img alt="user manual" src="./images/District/kilkari/DA_KR_L25_Cal.png"
+                             style="max-width: 828px;"><br><br><br>
+                        <p>5) Since this is for District user/admin, Select any/all block from “Block" dropdown, under
+                            specified "District" and "State".</p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_L25_Block.png"><br><br><br>
                         <p>6) To view the result, click the "Submit" button</p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_L25_sub-Copy.png"><br><br><br>
-                        <p>7) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <p>7) Click on the download link to download the report. The selected report will be downloaded
+                            in Excel files.</p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_L25_DownLoad.png"><br><br><br>
                         <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_L25_sub.png"><br>
@@ -419,41 +610,75 @@
                     </div>
                     <div data-ng-hide="param!=='bwd'">
                         <p style="font-size: 30px"><b>Self Deactivation</b></p><br>
-                        <p>This report gives the line-listing of all the beneficiaries who have deactivated themselves in the selected month for their own reasons. This line listing report would be available for download for the respective state, district and block users. These reports would be e-mailed to the respective block and district users periodically once it is generated. A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day. The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries personally and understand why they have deactivated them from the system. If the mobile number registered against that beneficiary does not belong to the beneficiary or that number is not accessible to them during normal calling hours, then the beneficiary should be advised to provide the correct mobile number or provide an alternative number that would be accessible to the beneficiary more frequently. </p>
+                        <p>This report provides a line-listing of all the beneficiaries who have used the option
+                            available on the Kilkari call (IVR menu option), to deactivate themselves, during the the
+                            selected month, for the selected geography . This line listing report is available for
+                            download for the respective state, district and block users. The State / UT / district /
+                            block can act upon this report and encourage ASHAs of the concerned geography to contact the
+                            said beneficiaries and understand why they have deactivated from the Kilkari service. If the
+                            mobile number belongs to the correct beneficiary, then they should be motivated to
+                            reactivate their Kilkari Subscription by visiting their ANM and updating their MCTS/RCH
+                            record and listen to the Kilkari content for the complete duration of 90 secs on each call.
+                            If the mobile number registered against that beneficiary does not belong to the beneficiary
+                            or that number is not accessible to them under normal calling hours, then the beneficiary
+                            should be advised to provide the correct mobile number or provide an alternative number that
+                            would be accessible to the beneficiary more frequently. ASHAs should be encouraged to update
+                            status of the listed non-answering numbers to the concerned officials so that the necessary
+                            data corrections in the system can be made. </p>
                         <p>Steps to download the reports</p>
-                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
+                        </p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
                         <img alt="user manual" src="./images/District/MA/DA_RC.png"><br><br><br>
                         <p>3) Then select "Self Deactivation" under "Reports" </p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_All.png"><br><br><br>
                         <p>4) Then select the Month for which the reports are needed</p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_SD_Cal.png"><br><br><br>
-                        <p>5) Since this is for District user/admin, Select any/all block from 'Block', under specified "District" and "State".</p>
+                        <p>5) Since this is for District user/admin, Select any/all block from 'Block', under specified
+                            "District" and "State".</p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_SD_Block.png"><br><br><br>
                         <p>6) To view the result, click the "Submit" button</p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_SD_sub-Copy.png"><br><br><br>
-                        <p>7) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <p>7) Click on the download link to download the report. The selected report will be downloaded
+                            in Excel files.</p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_SD_Download.png"><br><br><br>
                         <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_SD_sub.png"><br>
                     </div>
                     <div data-ng-hide="param!=='dfna'">
                         <p style="font-size: 30px"><b>Deactivated for not answering</b></p>
-                        <p>This report gives the line-listing of all the beneficiaries who have been deactivated in the selected month by the Kilkari system for not answering a single call for six consecutive weeks.</p>
-                        <p>This report gives the information related to deactivation of the user from Kilkari services. This includes the user who deactivate due to low listening of Kilkari messages.</p>
+                        <p>This report provides a line-listing of all the beneficiaries who have been deactivated by the
+                            Kilkari system for not answering a single call for six consecutive weeks, for the selected
+                            month, for the selected geography (state/district/block).</p>
+                        <p>List of system-deactivated users for not listening, is available at State/UT, district, block
+                            level -as per user selection. The concerned State / UT officials can act upon this report
+                            and encourage ASHAs of the concerned geography to contact the said beneficiaries and
+                            understand why they are not listening to the Kilkari calls. If the mobile number registered
+                            against the concerned beneficiary is correct, then they should be motivated to reactivate
+                            their Kilkari Subscription by visiting their ANM and updating their MCTS/RCH record and
+                            listen to the Kilkari content for the complete duration of 90 secs on each call. If the
+                            mobile number registered against that beneficiary does not belong to the beneficiary or that
+                            number is not accessible to them under normal calling hours, then the beneficiary should be
+                            advised to provide the correct mobile number or provide an alternative number that would be
+                            accessible to the beneficiary more frequently. ASHAs should be encouraged to update status
+                            of the listed non-answering numbers to the concerned officials so that the necessary data
+                            corrections in the system can be made.</p>
                         <p>Steps to download the reports</p>
-                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
+                        </p>
                         <p>2) select "Kilkari Reports" under "Reports Category" </p>
                         <img alt="user manual" src="./images/District/MA/DA_RC.png"><br><br><br>
                         <p>3) Then select "Deactivated for not answering" under "Reports" </p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_All.png"><br><br><br>
                         <p>4) Then select the Month for which the reports are needed</p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_DNA_Cal.png"><br><br><br>
-                        <p>5) Since this is for District user/admin, Select any/all block from 'Block', under specified "District" and "State".</p>
+                        <p>5) Since this is for District user/admin, Select any/all block from 'Block', under specified
+                            "District" and "State".</p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_DNA_Block.png"><br><br><br>
                         <p>6) To download the result, click the "Submit" button</p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_DNA_sub-Copy.png"><br><br><br>
-                        <p>7) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <p>7) Click on the download link to download the report. The selected report will be downloaded
+                            in Excel files.</p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_DNA_DownLoad.png"><br><br><br>
                         <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_DNA_sub.png"><br>
@@ -461,69 +686,110 @@
 
                     <div data-ng-hide="param!=='dfll'">
                         <p style="font-size: 30px"><b>Deactivated for Low Listenership</b></p>
-                        <p>This report gives the line-listing of all the beneficiaries who have been deactivated in the selected month by the Kilkari system for listening to an average of less than 25% of the content spread over six consecutive weeks.</p>
-                        <p>Both the line listing report would be available for download for the respective state, district and block users. These reports would be e-mailed to the respective block and district users periodically once it is generated. A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day.</p>
-                        <p>The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries and understand why they are not listening to the Kilkari calls. If the mobile number belongs to the correct beneficiary then they should be motivated to reactivate their Kilkari Subscription and listen to the Kilkari content for the complete duration of 90 secs. If the mobile number registered against that beneficiary does not belong to the beneficiary or that number is not accessible to them under normal calling hours, then the beneficiary should be advised to provide the correct mobile number or provide an alternative number that would be accessible to the beneficiary more frequently.</p>
-                        <p>This report will provide the information about the beneficiaries who have been deactivated in the selected month for listening to less the 25% of Kilkari messages for a consecutive period of 6 weeks.</p>
+                        <p>This report provides a line-listing of all the beneficiaries who have been deactivated by the
+                            Kilkari system for listening less than 25% of the content for each call answered by the
+                            beneficiary over a period of six consecutive weeks, for the selected month, for the selected
+                            geography (state/district/block).</p>
+                        <p>The State / UT / district / block can act upon this report and encourage ASHAs of the
+                            concerned geography to contact the said beneficiaries and understand why they were not
+                            listening to the Kilkari calls for the full duration. If the mobile number belongs to the
+                            correct beneficiary, then they should be motivated to reactivate their Kilkari Subscription
+                            by visiting their ANM and updating their MCTS/RCH record and listen to the Kilkari content
+                            for the complete duration of 90 secs on each call. If the mobile number registered against
+                            that beneficiary does not belong to the beneficiary or that number is not accessible to them
+                            under normal calling hours, then the beneficiary should be advised to provide the correct
+                            mobile number or provide an alternative number that would be accessible to the beneficiary
+                            more frequently. ASHAs should be encouraged to update status of the listed non-answering
+                            numbers to the concerned officials so that the necessary data corrections in the system can
+                            be made.</p>
                         <p>Steps to download the reports</p>
-                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
+                        </p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
                         <img alt="user manual" src="./images/District/MA/DA_RC.png"><br><br><br>
-                        <p>3) Then  select "Deactivated for Low Listenership" under "Reports"</p>
+                        <p>3) Then select "Deactivated for Low Listenership" under "Reports"</p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_All.png"><br><br><br>
                         <p>4) Then select the Month for which the reports are needed</p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_DLL_Cal.png"><br><br><br>
-                        <p>5) Since this is for District user/admin, Select any/all block from 'Block', under specified "District" and "State".</p>
+                        <p>5) Since this is for District user/admin, Select any/all block from 'Block', under specified
+                            "District" and "State".</p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_DLL_Block.png"><br><br><br>
                         <p>6) To download the result, click the "Submit" button</p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_DLL_sub-Copy.png"><br><br><br>
-                        <p>7) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <p>7) Click on the download link to download the report. The selected report will be downloaded
+                            in Excel files.</p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_DLL_DownLoad.png"><br><br><br>
                         <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_DLL_sub.png"><br><br><br>
                     </div>
                     <div data-ng-hide="param!=='mrr'">
                         <p style="font-size: 30px"><b>Mother Rejected Records</b></p>
-                        <p>This report gives the line-listing of all Mother beneficiaries whose registered mobile numbers are either incorrect or are duplicate. These mobile numbers had flown in to the IVRS system but were rejected by the acceptance logic run by the IVRS system. The report contains the MCTS or RCH IDs. This report would be generated once every week preferably on Sunday. This line listing report would be available for download for the respective district and block users. These reports would be e-mailed to the respective block and district users on the day after it was generated –on Tuesday. A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day. The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries and register their correct mobile numbers in the RCH Application. In this way we can correct the mobile numbers of beneficiaries and bring a higher percentage of beneficiaries under the ambit of Kilkari program. This report is a very useful actionable report for the State / UT to correct the beneficiary contact mobile number.</p>
+                        <p>This report provides a line-listing of all Mother beneficiaries records that are received
+                            from MCTS/RCH but were rejected by the acceptance logic run by the Kilkari system because
+                            the registered mobile numbers are either incorrect or are duplicate. The report contains the
+                            MCTS or RCH IDs of the concerned beneficiary records. This report would be generated weekly.
+                            This line listing report is available for download for the respective district and block
+                            users. The State / UT / district / block official(s) can act upon this report and encourage
+                            ASHAs in the concerned geography to contact the said beneficiaries and get their correct
+                            mobile numbers registered in the RCH/MCTS Application. In this way the mobile numbers of
+                            beneficiaries can be corrected and a higher percentage of genuine beneficiaries can benefit
+                            from the Kilkari program rolled out by the MoHFW. This report is a very useful actionable
+                            report for the State / UT to correct the beneficiary contact mobile number.</p>
                         <p>Steps to download the reports</p>
-                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
+                        </p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
                         <img alt="user manual" src="./images/District/MA/DA_RC.png"><br><br><br>
                         <p>3) Then select "Mother Rejected Records" under "Reports" </p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_All.png"><br><br><br>
                         <p>4) Then select the Month under "Select Week" </p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_MRR_Cal.png"><br><br><br>
-                        <p>5) Then select the 1st day of week(Sunday) for which the report is needed under "Select Week" </p>
+                        <p>5) Then select the 1st day of week(Sunday) for which the report is needed under "Select
+                            Week" </p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_MRR_CalDate.png"><br><br><br>
-                        <p>6) Since this is for District user/admin, Select any/all block from 'Block', under specified "District" and "State".</p>
+                        <p>6) Since this is for District user/admin, Select any/all block from 'Block', under specified
+                            "District" and "State".</p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_MRR_Block.png"><br><br><br>
                         <p>7) To view the result, click the "Submit" button</p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_MRR_sub-Copy.png"><br><br><br>
-                        <p>8) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <p>8) Click on the download link to download the report. The selected report will be downloaded
+                            in Excel files.</p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_MRR_download.png"><br><br><br>
                         <p>9) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_MRR_sub.png"><br>
                     </div>
-                    <div  data-ng-hide="param!=='crr'" >
+                    <div data-ng-hide="param!=='crr'">
                         <p style="font-size: 30px"><b>Child Rejected Records</b></p>
-                        <p>This report gives the line-listing of all Child beneficiaries whose registered mobile numbers are either incorrect or are duplicate. These mobile numbers had flown in to the IVRS system but were rejected by the acceptance logic run by the IVRS system. The report contains the MCTS or RCH IDs. This report would be generated once every week preferably on Sunday. This line listing report would be available for download for the respective district and block users. These reports would be e-mailed to the respective block and district users on the day after it was generated –on Tuesday. A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day.
-                            The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries and register their correct mobile numbers in the RCH Application. In this way we can correct the mobile numbers of beneficiaries and bring a higher percentage of beneficiaries under the ambit of Kilkari program.
-                            This report is a very useful actionable report for the State / UT to correct the beneficiary contact mobile number.</p>
+                        <p>This report provides a line-listing of all child beneficiaries records that are received from
+                            MCTS/RCH but were rejected by the acceptance logic run by the Kilkari system because the
+                            registered mobile numbers are either incorrect or are duplicate. The report contains the
+                            MCTS or RCH IDs of the concerned beneficiary records. This report would be generated weekly.
+                            This line listing report is available for download for the respective district and block
+                            users. The State / UT / district / block official(s) can act upon this report and encourage
+                            ASHAs in the concerned geography to contact the said beneficiaries and get their correct
+                            mobile numbers registered in the RCH/MCTS Application. In this way the mobile numbers of
+                            beneficiaries can be corrected and a higher percentage of genuine beneficiaries can benefit
+                            from the Kilkari program rolled out by the MoHFW. This report is a very useful actionable
+                            report for the State / UT to correct the beneficiary contact mobile number.</p>
                         <p>Steps to download the reports</p>
-                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
+                        </p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
                         <img alt="user manual" src="./images/District/MA/DA_RC.png"><br><br><br>
                         <p>3) Then select "Child Rejected Records" under "Reports" </p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_All.png"><br><br><br>
                         <p>4) Then select the Month under "Select Week" </p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_CRR_Cal.png"><br><br><br>
-                        <p>5) Then select the 1st day of week(Sunday) for which the report is needed under "Select Week" </p>
+                        <p>5) Then select the 1st day of week(Sunday) for which the report is needed under "Select
+                            Week" </p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_CRR_CalDate.png"><br><br><br>
-                        <p>6) Since this is for District user/admin, Select any/all block from 'Block', under specified "District" and "State".</p>
+                        <p>6) Since this is for District user/admin, Select any/all block from 'Block', under specified
+                            "District" and "State".</p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_CRR_Block.png"><br><br><br>
                         <p>7) To view the result, click the "Submit" button</p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_CRR_Sub-Copy.png"><br><br><br>
-                        <p>8) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <p>8) Click on the download link to download the report. The selected report will be downloaded
+                            in Excel files.</p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_CRR_Download.png"><br><br><br>
                         <p>9) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                         <img alt="user manual" src="./images/District/kilkari/DA_KR_CRR_Sub.png"><br>
@@ -534,22 +800,43 @@
                 <div data-ng-hide="selectRole !=4">
                     <div data-ng-hide="param!=='bl'" style="display: inline-block; ">
                         <p style="font-size: 30px"><b>Listened to &lt; 25% this month</b></p><br>
-                        <p>This report gives the line-listing of all the beneficiaries who have been listening to an average of less than 25% of the content in the last calendar month in the Kilkari system as observed in the selected month. This report tracks beneficiaries who have either zero successful calls or not listened complete message (i.e., on an average of <25%). This report should not include ‘completed’ or ‘deactivated’ beneficiaries.</p>
-                        <p>This line listing report would be available for download for the respective state, district and block users. These reports would be e-mailed to the respective block and district users periodically once it is generated. A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day.</p>
-                        <p>The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries to listen to the Kilkari content to the full duration of 90 secs. If the mobile number registered against that beneficiary does not belong to the beneficiary or that number is not accessible to them during normal calling hours, then the beneficiary should be advised to provide the correct mobile number or provide an alternative number that would be accessible to the beneficiary more frequently.</p>
+                        <p>This report provides a line-listing of all the beneficiaries who listened to an average of
+                            less than 25% of the content across all calls answered by the beneficiary, in the selected
+                            month. This report tracks beneficiaries who have either not answered any calls during the
+                            concerned month or answered call(s) but not listened to the complete message (i.e., the
+                            average content heard on the calls answered during the reported month is <25%). </p>
+                        <p>This line listing report would be available for download for the respective state, district
+                            and block users. These reports would be e-mailed to the respective block and district users
+                            periodically once it is generated. A summary mail giving the district wise break-up of the
+                            count of beneficiaries would be sent to the State / UT users on the same day.</p>
+                        <p>The concerned State / UT / district / block officials can act upon this report and encourage
+                            ASHAs of the concerned geography to contact the said beneficiaries and understand why they
+                            are not listening to the Kilkari calls for the full duration. If the mobile number
+                            registered against the concerned beneficiary is correct, then they should be motivated to
+                            listen to the Kilkari content for the complete duration of 90 secs on each call. If the
+                            mobile number registered against that beneficiary does not belong to the beneficiary or that
+                            number is not accessible to them under normal calling hours, then the beneficiary should be
+                            advised to provide the correct mobile number or provide an alternative number (to their
+                            respective ANMs) that would be accessible to the beneficiary more frequently. ASHAs should
+                            be encouraged to update status of the listed non-answering numbers to the concerned
+                            officials so that the necessary data corrections in the system can be made.</p>
                         <p>Steps to download the reports</p>
-                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
+                        </p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
-                        <img alt="user manual" src="./images/Block/MA0/BU_MA_RC.png" style="max-width: 828px;"><br><br><br>
+                        <img alt="user manual" src="./images/Block/MA0/BU_MA_RC.png"
+                             style="max-width: 828px;"><br><br><br>
                         <p>3) Then select "Listen to &lt; 25% this month" under "Reports" </p>
                         <img alt="user manual" src="./images/Block/KA1/BU_KA_Reports.png" style="max-width: 828px;"><br><br><br>
                         <p>4) Then select the Month for which the reports are needed</p>
-                        <img alt="user manual" src="./images/Block/KA3/BU_KA_LT25_Cal.png" style="max-width: 828px;"><br><br><br>
+                        <img alt="user manual" src="./images/Block/KA3/BU_KA_LT25_Cal.png"
+                             style="max-width: 828px;"><br><br><br>
                         <p>5) Since this is for block user, location details upto “Block” are already selected.</p>
                         <img alt="user manual" src="./images/usermanual-blocklevel1.jpg"><br><br><br>
                         <p>6) To view the result, click the "Submit" button</p>
                         <img alt="user manual" src="./images/Block/KA3/BU_KA_LT25_Submit.png"><br><br><br>
-                        <p>7) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <p>7) Click on the download link to download the report. The selected report will be downloaded
+                            in Excel files.</p>
                         <img alt="user manual" src="./images/Block/KA3/BU_KA_LT25_Download.png"><br><br><br>
                         <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                         <img alt="user manual" src="./images/Block/KA3/BU_KA_LT25_Reset.png"><br>
@@ -557,9 +844,24 @@
                     </div>
                     <div data-ng-hide="param!=='bwd'">
                         <p style="font-size: 30px"><b>Self Deactivation</b></p><br>
-                        <p>This report gives the line-listing of all the beneficiaries who have deactivated themselves in the selected month for their own reasons. This line listing report would be available for download for the respective state, district and block users. These reports would be e-mailed to the respective block and district users periodically once it is generated. A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day. The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries personally and understand why they have deactivated them from the system. If the mobile number registered against that beneficiary does not belong to the beneficiary or that number is not accessible to them during normal calling hours, then the beneficiary should be advised to provide the correct mobile number or provide an alternative number that would be accessible to the beneficiary more frequently. </p>
+                        <p>This report provides a line-listing of all the beneficiaries who have used the option
+                            available on the Kilkari call (IVR menu option), to deactivate themselves, during the the
+                            selected month, for the selected geography . This line listing report is available for
+                            download for the respective state, district and block users. The State / UT / district /
+                            block can act upon this report and encourage ASHAs of the concerned geography to contact the
+                            said beneficiaries and understand why they have deactivated from the Kilkari service. If the
+                            mobile number belongs to the correct beneficiary, then they should be motivated to
+                            reactivate their Kilkari Subscription by visiting their ANM and updating their MCTS/RCH
+                            record and listen to the Kilkari content for the complete duration of 90 secs on each call.
+                            If the mobile number registered against that beneficiary does not belong to the beneficiary
+                            or that number is not accessible to them under normal calling hours, then the beneficiary
+                            should be advised to provide the correct mobile number or provide an alternative number that
+                            would be accessible to the beneficiary more frequently. ASHAs should be encouraged to update
+                            status of the listed non-answering numbers to the concerned officials so that the necessary
+                            data corrections in the system can be made. </p>
                         <p>Steps to download the reports</p>
-                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
+                        </p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
                         <img alt="user manual" src="./images/Block/MA0/BU_MA_RC.png"><br><br><br>
                         <p>3) Then select "Self Deactivation" under "Reports" </p>
@@ -570,17 +872,33 @@
                         <img alt="user manual" src="./images/usermanual-blocklevel1.jpg"><br><br><br>
                         <p>6) To view the result, click the "Submit" button</p>
                         <img alt="user manual" src="./images/Block/KA4/BU_KA_SD_Submit.png"><br><br><br>
-                        <p>7) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <p>7) Click on the download link to download the report. The selected report will be downloaded
+                            in Excel files.</p>
                         <img alt="user manual" src="./images/Block/KA4/BU_KA_SD_Download.png"><br><br><br>
                         <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                         <img alt="user manual" src="./images/Block/KA4/BU_KA_SD_Reset.png"><br>
                     </div>
                     <div data-ng-hide="param!=='dfna'">
                         <p style="font-size: 30px"><b>Deactivated for not answering</b></p>
-                        <p>This report gives the line-listing of all the beneficiaries who have been deactivated in the selected month by the Kilkari system for not answering a single call for six consecutive weeks.</p>
-                        <p>This report gives the information related to deactivation of the user from Kilkari services. This includes the user who deactivate due to low listening of Kilkari messages.</p>
+                        <p>This report provides a line-listing of all the beneficiaries who have been deactivated by the
+                            Kilkari system for not answering a single call for six consecutive weeks, for the selected
+                            month, for the selected geography (state/district/block).</p>
+                        <p>List of system-deactivated users for not listening, is available at State/UT, district, block
+                            level -as per user selection. The concerned State / UT officials can act upon this report
+                            and encourage ASHAs of the concerned geography to contact the said beneficiaries and
+                            understand why they are not listening to the Kilkari calls. If the mobile number registered
+                            against the concerned beneficiary is correct, then they should be motivated to reactivate
+                            their Kilkari Subscription by visiting their ANM and updating their MCTS/RCH record and
+                            listen to the Kilkari content for the complete duration of 90 secs on each call. If the
+                            mobile number registered against that beneficiary does not belong to the beneficiary or that
+                            number is not accessible to them under normal calling hours, then the beneficiary should be
+                            advised to provide the correct mobile number or provide an alternative number that would be
+                            accessible to the beneficiary more frequently. ASHAs should be encouraged to update status
+                            of the listed non-answering numbers to the concerned officials so that the necessary data
+                            corrections in the system can be made.</p>
                         <p>Steps to download the reports</p>
-                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
+                        </p>
                         <p>2) select "Kilkari Reports" under "Reports Category" </p>
                         <img alt="user manual" src="./images/Block/MA0/BU_MA_RC.png"><br><br><br>
                         <p>3) Then select "Deactivated for not answering" under "Reports" </p>
@@ -591,7 +909,8 @@
                         <img alt="user manual" src="./images/usermanual-blocklevel1.jpg"><br><br><br>
                         <p>6) To download the result, click the "Submit" button</p>
                         <img alt="user manual" src="./images/Block/KA1/BU_KA_DFNA_Submit.png"><br><br><br>
-                        <p>7) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <p>7) Click on the download link to download the report. The selected report will be downloaded
+                            in Excel files.</p>
                         <img alt="user manual" src="./images/Block/KA1/BU_KA_DFNA_Download.png"><br><br><br>
                         <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                         <img alt="user manual" src="./images/Block/KA1/BU_KA_DFNA_Reset.png"><br>
@@ -599,15 +918,28 @@
 
                     <div data-ng-hide="param!=='dfll'">
                         <p style="font-size: 30px"><b>Deactivated for Low Listenership</b></p>
-                        <p>This report gives the line-listing of all the beneficiaries who have been deactivated in the selected month by the Kilkari system for listening to an average of less than 25% of the content spread over six consecutive weeks.</p>
-                        <p>Both the line listing report would be available for download for the respective state, district and block users. These reports would be e-mailed to the respective block and district users periodically once it is generated. A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day.</p>
-                        <p>The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries and understand why they are not listening to the Kilkari calls. If the mobile number belongs to the correct beneficiary then they should be motivated to reactivate their Kilkari Subscription and listen to the Kilkari content for the complete duration of 90 secs. If the mobile number registered against that beneficiary does not belong to the beneficiary or that number is not accessible to them under normal calling hours, then the beneficiary should be advised to provide the correct mobile number or provide an alternative number that would be accessible to the beneficiary more frequently.</p>
-                        <p>This report will provide the information about the beneficiaries who have been deactivated in the selected month for listening to less the 25% of Kilkari messages for a consecutive period of 6 weeks.</p>
+                        <p>This report provides a line-listing of all the beneficiaries who have been deactivated by the
+                            Kilkari system for listening less than 25% of the content for each call answered by the
+                            beneficiary over a period of six consecutive weeks, for the selected month, for the selected
+                            geography (state/district/block).</p>
+                        <p>The State / UT / district / block can act upon this report and encourage ASHAs of the
+                            concerned geography to contact the said beneficiaries and understand why they were not
+                            listening to the Kilkari calls for the full duration. If the mobile number belongs to the
+                            correct beneficiary, then they should be motivated to reactivate their Kilkari Subscription
+                            by visiting their ANM and updating their MCTS/RCH record and listen to the Kilkari content
+                            for the complete duration of 90 secs on each call. If the mobile number registered against
+                            that beneficiary does not belong to the beneficiary or that number is not accessible to them
+                            under normal calling hours, then the beneficiary should be advised to provide the correct
+                            mobile number or provide an alternative number that would be accessible to the beneficiary
+                            more frequently. ASHAs should be encouraged to update status of the listed non-answering
+                            numbers to the concerned officials so that the necessary data corrections in the system can
+                            be made.</p>
                         <p>Steps to download the reports</p>
-                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
+                        </p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
                         <img alt="user manual" src="./images/Block/MA0/BU_MA_RC.png"><br><br><br>
-                        <p>3) Then  select "Deactivated for Low Listenership" under "Reports"</p>
+                        <p>3) Then select "Deactivated for Low Listenership" under "Reports"</p>
                         <img alt="user manual" src="./images/Block/KA1/BU_KA_Reports.png"><br><br><br>
                         <p>4) Then select the Month for which the reports are needed</p>
                         <img alt="user manual" src="./images/Block/KA2/BU_KA_DFLL_Month.png"><br><br><br>
@@ -615,57 +947,78 @@
                         <img alt="user manual" src="./images/usermanual-blocklevel1.jpg"><br><br><br>
                         <p>6) To download the result, click the "Submit" button</p>
                         <img alt="user manual" src="./images/Block/KA2/BU_KA_DFLL_Submit.png"><br><br><br>
-                        <p>7) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <p>7) Click on the download link to download the report. The selected report will be downloaded
+                            in Excel files.</p>
                         <img alt="user manual" src="./images/Block/KA2/BU_KA_DFLL_Download.png"><br><br><br>
                         <p>8) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                         <img alt="user manual" src="./images/Block/KA2/BU_KA_DFLL_Reset.png"><br><br><br>
                     </div>
                     <div data-ng-hide="param!=='mrr'">
                         <p style="font-size: 30px"><b>Mother Rejected Records</b></p>
-                        <p>This report gives the line-listing of all Mother beneficiaries whose registered mobile numbers are either incorrect or are duplicate.
-                            These mobile numbers had flown in to the IVRS system but were rejected by the acceptance logic run by the IVRS system.
-                            The report contains the MCTS or RCH IDs. This report would be generated once every week preferably on Sunday.
-                            This line listing report would be available for download for the respective district and block users.
-                            These reports would be e-mailed to the respective block and district users on the day after it was generated –on Tuesday.
-                            A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day. The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries and register their correct mobile numbers in the RCH Application. In this way we can correct the mobile numbers of beneficiaries and bring a higher percentage of beneficiaries under the ambit of Kilkari program. This report is a very useful actionable report for the State / UT to correct the beneficiary contact mobile number.</p>
+                        <p>This report provides a line-listing of all Mother beneficiaries records that are received
+                            from MCTS/RCH but were rejected by the acceptance logic run by the Kilkari system because
+                            the registered mobile numbers are either incorrect or are duplicate. The report contains the
+                            MCTS or RCH IDs of the concerned beneficiary records. This report would be generated weekly.
+                            This line listing report is available for download for the respective district and block
+                            users. The State / UT / district / block official(s) can act upon this report and encourage
+                            ASHAs in the concerned geography to contact the said beneficiaries and get their correct
+                            mobile numbers registered in the RCH/MCTS Application. In this way the mobile numbers of
+                            beneficiaries can be corrected and a higher percentage of genuine beneficiaries can benefit
+                            from the Kilkari program rolled out by the MoHFW. This report is a very useful actionable
+                            report for the State / UT to correct the beneficiary contact mobile number.</p>
                         <p>Steps to download the reports</p>
-                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
+                        </p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
                         <img alt="user manual" src="./images/Block/MA0/BU_MA_RC.png"><br><br><br>
                         <p>3) Then select "Mother Rejected Records" under "Reports" </p>
                         <img alt="user manual" src="./images/Block/KA1/BU_KA_Reports.png"><br><br><br>
                         <p>4) Then select the Month under "Select Week" </p>
                         <img alt="user manual" src="./images/Block/KA5/BU_KA_MRR_Month.png"><br><br><br>
-                        <p>5) Then select the 1st day of week(Sunday) for which the report is needed under "Select Week" </p>
+                        <p>5) Then select the 1st day of week(Sunday) for which the report is needed under "Select
+                            Week" </p>
                         <img alt="user manual" src="./images/Block/KA5/BU_KA_MRR_CalDate.png"><br><br><br>
                         <p>6) Since this is for block user, location details upto “Block” are already selected.</p>
                         <img alt="user manual" src="./images/usermanual-blocklevel1.jpg"><br><br><br>
                         <p>7) To view the result, click the "Submit" button</p>
                         <img alt="user manual" src="./images/Block/KA5/BU_KA_MRR_Submit.png"><br><br><br>
-                        <p>8) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <p>8) Click on the download link to download the report. The selected report will be downloaded
+                            in Excel files.</p>
                         <img alt="user manual" src="./images/Block/KA5/BU_KA_MRR_Download.png"><br><br><br>
                         <p>9) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                         <img alt="user manual" src="./images/Block/KA5/BU_KA_MRR_Reset.png"><br>
                     </div>
-                    <div  data-ng-hide="param!=='crr'" >
+                    <div data-ng-hide="param!=='crr'">
                         <p style="font-size: 30px"><b>Child Rejected Records</b></p>
-                        <p>This report gives the line-listing of all Child beneficiaries whose registered mobile numbers are either incorrect or are duplicate. These mobile numbers had flown in to the IVRS system but were rejected by the acceptance logic run by the IVRS system. The report contains the MCTS or RCH IDs. This report would be generated once every week preferably on Sunday. This line listing report would be available for download for the respective district and block users. These reports would be e-mailed to the respective block and district users on the day after it was generated –on Tuesday. A summary mail giving the district wise break-up of the count of beneficiaries would be sent to the State / UT users on the same day. The State / UT can act upon this report and contact the ASHAs in the field and ask them to contact the said beneficiaries and register their correct mobile numbers in the RCH Application. In this way we can correct the mobile numbers of beneficiaries and bring a higher percentage of beneficiaries under the ambit of Kilkari program.
-                            This report is a very useful actionable report for the State / UT to correct the beneficiary contact mobile number.</p>
+                        <p>This report provides a line-listing of all child beneficiaries records that are received from
+                            MCTS/RCH but were rejected by the acceptance logic run by the Kilkari system because the
+                            registered mobile numbers are either incorrect or are duplicate. The report contains the
+                            MCTS or RCH IDs of the concerned beneficiary records. This report would be generated weekly.
+                            This line listing report is available for download for the respective district and block
+                            users. The State / UT / district / block official(s) can act upon this report and encourage
+                            ASHAs in the concerned geography to contact the said beneficiaries and get their correct
+                            mobile numbers registered in the RCH/MCTS Application. In this way the mobile numbers of
+                            beneficiaries can be corrected and a higher percentage of genuine beneficiaries can benefit
+                            from the Kilkari program rolled out by the MoHFW. This report is a very useful actionable
+                            report for the State / UT to correct the beneficiary contact mobile number.</p>
                         <p>Steps to download the reports</p>
-                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.</p>
+                        <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
+                        </p>
                         <p>2) Select "Kilkari Reports" under "Reports Category"</p>
                         <img alt="user manual" src="./images/Block/MA0/BU_MA_RC.png"><br><br><br>
                         <p>3) Then select "Child Rejected Records" under "Reports" </p>
                         <img alt="user manual" src="./images/Block/KA1/BU_KA_Reports.png"><br><br><br>
                         <p>4) Then select the Month under "Select Week" </p>
                         <img alt="user manual" src="./images/Block/KA6/BU_KA_CRR_Cal.png"><br><br><br>
-                        <p>5) Then select the 1st day of week(Sunday) for which the report is needed under "Select Week" </p>
+                        <p>5) Then select the 1st day of week(Sunday) for which the report is needed under "Select
+                            Week" </p>
                         <img alt="user manual" src="./images/Block/KA6/BU_KA_CRR_CalDate.png"><br><br><br>
                         <p>6) Since this is for block user, location details upto “Block” are already selected.</p>
                         <img alt="user manual" src="./images/usermanual-blocklevel1.jpg"><br><br><br>
                         <p>7) To view the result, click the "Submit" button</p>
                         <img alt="user manual" src="./images/Block/KA6/BU_KA_CRR_Submit.png"><br><br><br>
-                        <p>8) Click on the download link to download the report. The selected report will be downloaded in Excel files.</p>
+                        <p>8) Click on the download link to download the report. The selected report will be downloaded
+                            in Excel files.</p>
                         <img alt="user manual" src="./images/Block/KA6/BU_KA_CRR_Download.png"><br><br><br>
                         <p>9) Clicking on ‘Reset’ button will reset all the fields to their default values.</p>
                         <img alt="user manual" src="./images/Block/KA6/BU_KA_CRR_Reset.png"><br>

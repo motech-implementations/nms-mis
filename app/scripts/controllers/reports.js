@@ -19,6 +19,8 @@
 					UserFormFactory.downloadCurrentUser()
 					.then(function(result){
 						UserFormFactory.setCurrentUser(result.data);
+                        localStorage.setItem("accessLevel",$scope.currentUser.accessLevel);
+                        localStorage.setItem("roleName",$scope.currentUser.roleName);
 						if($scope.currentUser.accessLevel == "STATE"){
 						    excelHeaderName.stateName = result.data.stateName;
 						}
