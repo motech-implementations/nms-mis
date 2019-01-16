@@ -73,12 +73,12 @@
 			// $scope.forgotPassword.saltHexNew = encryptedNew.salt.toString();
                 if(grecaptcha.getResponse() === ""){
                     if(UserFormFactory.isInternetExplorer()){
-                                alert("Please tick the checkbox");
+                                alert("Please tick the checkbox showing 'I'm not a robot'");
                                 $scope.reverse();
                                 return;
                             }
                             else{
-                                UserFormFactory.showAlert("Please tick the check box");
+                                UserFormFactory.showAlert("Please tick the checkbox showing 'I'm not a robot'");
                                 $scope.reverse();
                                 return;
                             }

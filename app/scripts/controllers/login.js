@@ -92,7 +92,7 @@
                        localStorage.preUrl == base_url + "/#!/reports/kilkari/usage-report" ||
                        localStorage.preUrl == base_url + "/#!/reports/kilkari/cumulative-summary-report" ||
                        localStorage.preUrl == base_url + "/#!/reports/kilkari/subscriber-report" ||
-                       localStorage.preUrl == base_url + "/#!/reports/kilkari/beneficiary-completion-report" 
+                       localStorage.preUrl == base_url + "/#!/reports/kilkari/beneficiary-completion-report"
                     ){
                        $scope.preUrl = localStorage.preUrl;
                        console.log($scope.preUrl);
@@ -122,8 +122,14 @@
             }
 			$scope.login = function(e){
                if(grecaptcha.getResponse() === ""){
-                   alert("please tick the check box");
-                   return;
+                   if(UserFormFactory.isInternetExplorer()){
+                       alert("Please tick the checkbox showing 'I'm not a robot'")
+                       return;
+                   }
+                   else{
+                       UserFormFactory.showAlert("Please tick the checkbox showing 'I'm not a robot'")
+                       return;
+                   }
                }
 			    if($scope.user.username == null || $scope.user.username == ""){
 			        if(UserFormFactory.isInternetExplorer()){
