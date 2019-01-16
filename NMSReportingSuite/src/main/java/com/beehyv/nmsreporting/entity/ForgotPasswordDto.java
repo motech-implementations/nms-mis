@@ -12,6 +12,15 @@ public class ForgotPasswordDto {
     private String cipherTextHexNew;
     private String saltHexNew;
     private String captcha;
+    private String captchaResponse;
+
+    public String getCaptchaResponse() {
+        return captchaResponse;
+    }
+
+    public void setCaptchaResponse(String captchaResponse) {
+        this.captchaResponse = captchaResponse;
+    }
 
     public String getCaptcha() {
         return captcha;

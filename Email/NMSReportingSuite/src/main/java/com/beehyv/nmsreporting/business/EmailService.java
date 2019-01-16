@@ -17,4 +17,6 @@ public interface EmailService {
 
     public HashMap sendAllMails(ReportType reportType);
 
+    public String sendCaptcha(String captchaResponse);
+
 }

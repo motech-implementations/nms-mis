@@ -8,12 +8,14 @@ import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.ContactUs;
 import com.beehyv.nmsreporting.model.Feedback;
 import com.beehyv.nmsreporting.utils.LoginUser;
+import com.beehyv.nmsreporting.utils.ServiceFunctions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
 import static com.beehyv.nmsreporting.utils.CryptoService.decrypt;
 
 import java.io.File;
@@ -47,13 +49,15 @@ public class EmailController {
     private static final String feedbackSubject = "Feedback Received";
 
     @RequestMapping(value = "/sendAll/{reportEnum}", method = RequestMethod.GET)
-    public @ResponseBody HashMap sendAllMails(@PathVariable String reportEnum){
+    public @ResponseBody
+    HashMap sendAllMails(@PathVariable String reportEnum) {
         ReportType reportType = reportService.getReportTypeByName(reportEnum);
         return emailService.sendAllMails(reportType);
     }
 
     @RequestMapping(value = "/send", method = RequestMethod.POST)
-    public @ResponseBody String send(@RequestBody EmailInfo mailInfo){
+    public @ResponseBody
+    String send(@RequestBody EmailInfo mailInfo) {
         EmailInfo newMail = new EmailInfo();
         newMail.setFrom(mailInfo.getFrom());
         newMail.setTo(mailInfo.getTo());
@@ -65,12 +69,16 @@ public class EmailController {
         newMail.setSubject(mailInfo.getSubject());
         newMail.setFileName(fileName);
         newMail.setBody(mailInfo.getBody());
-        newMail.setRootPath(pathName+fileName);
+        newMail.setRootPath(pathName + fileName);
         return emailService.sendMail(newMail);
     }
 
     @RequestMapping(value = "/sendFeedback", method = RequestMethod.POST)
-        public @ResponseBody String sendFeedback(@RequestBody EmailBody mailInfo) throws Exception {
+    public @ResponseBody
+    String sendFeedback(@RequestBody EmailBody mailInfo) throws Exception {
+
+        ServiceFunctions serviceFunctions = new ServiceFunctions();
+        if (serviceFunctions.validateCaptcha(mailInfo.getCaptchaResponse()).equals("success")) {
             Feedback feedback = new Feedback(mailInfo.getName(), mailInfo.getSubject(), mailInfo.getPhoneNo(), mailInfo.getEmail(), mailInfo.getBody());
             feedbackService.saveFeedback(feedback);
             if (mailInfo.getEmail() != null) {
@@ -85,10 +93,16 @@ public class EmailController {
                 return emailService.sendMailTest(newMail);
             } else
                 return "success";
-   }
+        } else {
+            return "invalid captcha";
+        }
+    }
 
     @RequestMapping(value = "/sendEmailForContactUs", method = RequestMethod.POST)
-    public @ResponseBody String sendEmailForContactUs(@RequestBody EmailBody mailInfo) throws Exception{
+    public @ResponseBody
+    String sendEmailForContactUs(@RequestBody EmailBody mailInfo) throws Exception {
+        ServiceFunctions serviceFunctions = new ServiceFunctions();
+        if (serviceFunctions.validateCaptcha(mailInfo.getCaptchaResponse()).equals("success")) {
             ContactUs contactUs = new ContactUs(mailInfo.getName(), mailInfo.getPhoneNo(), mailInfo.getEmail(), mailInfo.getBody());
             contactUsService.saveContactUS(contactUs);
             EmailTest newMail = new EmailTest();
@@ -100,6 +114,10 @@ public class EmailController {
             newMail.setSubject("Message Received");
             newMail.setBody(emailService.getBody("ContactUs", mailInfo.getName()));
             return emailService.sendMailTest(newMail);
+        } else {
+            return "invalid captcha";
+        }
+
     }
 
 //    @RequestMapping(value = "/sendFeedback1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)

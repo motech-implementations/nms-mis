@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
@@ -87,51 +88,39 @@ public class ServiceFunctions {
         return password;
     }
 
-    public String generateCaptcha() {
-        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-        StringBuilder salt = new StringBuilder();
-        Random rnd = new Random();
-        while (salt.length() < 5) { // length of the random string.
-            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
-            salt.append(SALTCHARS.charAt(index));
-        }
-        String captchaCode = salt.toString();
-        return captchaCode;
-    }
+//    public String generateCaptcha() {
+//        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+//        StringBuilder salt = new StringBuilder();
+//        Random rnd = new Random();
+//        while (salt.length() < 5) { // length of the random string.
+//            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+//            salt.append(SALTCHARS.charAt(index));
+//        }
+//        String captchaCode = salt.toString();
+//        return captchaCode;
+//    }
 
     public String validateCaptcha(String captchaResponse) {
-
-        String secret = "6LcJgYgUAAAAABlcI1YI15cqYqkywAYWImevFena";
-        String url = "https://www.google.com/recaptcha/api/siteverify";
         String USER_AGENT = "Mozilla/5.0";
         try {
 
 
+            String url = "http://192.168.200.4:8080/NMSReportingSuite/nms/mail/sendCaptcha/" + captchaResponse;
             URL obj = new URL(url);
-            HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
-            // add reuqest header
-            con.setRequestMethod("POST");
+            // optional default is GET
+            con.setRequestMethod("GET");
+
+            //add request header
             con.setRequestProperty("User-Agent", USER_AGENT);
-            con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-
-            String postParams = "secret=" + secret + "&response="
-                    + captchaResponse;
-
-            // Send post request
-            con.setDoOutput(true);
-            DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-            wr.writeBytes(postParams);
-            wr.flush();
-            wr.close();
 
             int responseCode = con.getResponseCode();
-            System.out.println("\nSending 'POST' request to URL : " + url);
-            System.out.println("Post parameters : " + postParams);
+            System.out.println("\nSending 'GET' request to URL : " + url);
             System.out.println("Response Code : " + responseCode);
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(
-                    con.getInputStream()));
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()));
             String inputLine;
             StringBuffer response = new StringBuffer();
 
@@ -140,19 +129,15 @@ public class ServiceFunctions {
             }
             in.close();
 
-            // print result
+            //print result
             System.out.println(response.toString());
-            String result = response.substring(14, 18);
-            if(result.equals("true")){
-                return "success";
-            }
-           else{
-               return "failure";
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+            return response.toString();
+        }
+        catch(Exception e){
             return "failure";
+
         }
     }
+
 
 }
