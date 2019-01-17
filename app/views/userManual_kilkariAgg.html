@@ -675,76 +675,69 @@
                     </div>
                     <div data-ng-hide="param!=='ur'" style="display: inline-block">
                         <p style="font-size: 30px"><b>Kilkari Usage Report</b></p><br>
-                        <p>This report gives the glance the listening pattern of the subscriber in the Kilkari project
-                            for a selected period. It gives us the number of beneficiaries called during the period, the
-                            number of beneficiaries who are listening more than 75% of content, between 50-75% of
-                            content, 25-50% of the content and less than the 25% of the content. The average is
-                            calculated based on the call duration of the successful calls only. </p>
-                        <p>This report will support selection of calendar year, financial year, quarter, month and week
-                            and cannot support custom date range selection. This is because, beneficiaries who have
-                            answered at least one call and the related values, cannot be calculated real-time for every
-                            possible date combination and needs to be pre-calculated.</p>
-                        <p>This report would give the details of the count for the selected period.</p>
-                        <p>The report displays the data in the following sequence of columns when logged in.</p>
+                        <p>This report provides the listening pattern of Kilkari subscribers for a selected period. It
+                            gives the number of beneficiaries called during the period, the number of beneficiaries who
+                            listened to more than 75% of content, between 50-75% of content, 25-50% of the content and
+                            less than the 25% of the content. The average content listened to, is calculated based on
+                            the call duration of the successful calls only. </p>
+                        <p>This report supports selection of calendar year, financial year, quarter, month and week and
+                            cannot support custom date range selection. </p>
+                        <p>The report displays the data in the following sequence of columns.</p>
                         <ol>
                             <li>Serial Number</li>
                             <li>State</li>
-                            <li>Total beneficiaries Called</li>
+                            <li>Total beneficiaries called</li>
                             <li>Beneficiaries who have answered at least one call</li>
-                            <li>Beneficiaries who have listened more than 75% content (avg)</li>
-                            <li>Beneficiaries who have listened 50 to 75% content (avg)</li>
-                            <li>Beneficiaries who have listened 25 to 49.9% content (avg)</li>
-                            <li>Beneficiaries who have listened less than 25% content (avg)</li>
+                            <li>Beneficiaries who have listened to more than 75% content (avg)</li>
+                            <li>Beneficiaries who have listened to 50 to 75% content (avg)</li>
+                            <li>Beneficiaries who have listened to 25 to 49.9% content (avg)</li>
+                            <li>Beneficiaries who have listened to less than 25% content (avg)</li>
                             <li>Beneficiaries who have called the Kilkari Inbox</li>
                         </ol>
                         <p>The rules governing the display components of the report is given below</p>
                         <ol>
-                            <li>The rule used to bracket beneficiaries should be based on content duration and not on
-                                call duration, as total expected call duration cannot be fixed. The following is the
-                                equation used for calculating the percentage listened to for each beneficiary
-                                % Content listened to = Content listened to in all calls * 100
-                                -----------------------------------------
-                                Sum of total content duration of
-                                answered calls
-                                In the selected period.
+                            <li>The rule used to bracket beneficiaries is based on content duration and not on call
+                                duration, as total expected call duration cannot be fixed. The following is the equation
+                                used for calculating the percentage listened to for each beneficiary % Content listened
+                                to = Actual content listened to in all answered calls * 100 divided by Sum of total
+                                content duration of answered calls in the selected period.
                             </li>
-                            <li>Total Number of unique beneficiaries (Column 3) is calculated as Total Number of Unique
-                                beneficiaries called in the specified date range
+                            <li>Total number of unique beneficiaries (Column 3) is calculated as Total number of unique
+                                beneficiaries called in the selected period.
                             </li>
-                            <li>Column 4 should reflect the number of unique beneficiaries that have answered one call
-                                in the specified date range.
+                            <li>Column 4 reflects the number of unique beneficiaries that have answered one call in the
+                                selected period.
                             </li>
-                            <li>Column 5 should reflect the number of unique beneficiaries who have answered at least
-                                one call in the specified date range and listened to average of more than or equal 75%
-                                content on all the answered calls within the specified date range.
+                            <li>Column 5 reflects the number of unique beneficiaries who have answered at least one call
+                                in the selected period and listened to average of more than or equal 75% content on all
+                                the answered calls within the selected period.
                             </li>
-                            <li>Column 6 should reflect total number of unique beneficiaries who have answered at least
-                                one call in the specified date range and listened to average of 50 % to < 75% content on
-                                all the answered calls within the specified date range.
+                            <li>Column 6 reflects total number of unique beneficiaries who have answered at least one
+                                call in the selected date range and listened to average of 50 % to < 75% content on all
+                                the answered calls within the selected period.
                             </li>
-                            <li>Column 7 should reflect Total number of unique beneficiaries who have answered at least
-                                one call in the specified date range and listened to average of 25 % to <50% content on
-                                all the answered calls within the specified date range.
+                            <li>Column 7 reflects Total number of unique beneficiaries who have answered at least one
+                                call in the selected period and listened to average of 25 % to <50% content on all the
+                                answered calls within the selected period.
                             </li>
-                            <li>Column 8 should reflect Total unique beneficiaries who have answered at least one call
-                                in the specified date range and listened to average of less than 25% content on all the
-                                answered calls within the specified date range. This would take into consideration the
-                                calls which were answered, but was dropped before message content started playing.
+                            <li>Column 8 reflects total unique beneficiaries who have answered at least one call in the
+                                selected period and listened to average of less than 25% content on all the answered
+                                calls within the selected period. This would take into consideration the calls which
+                                were answered, but were disconnected / got dropped before message content started
+                                playing.
                             </li>
-                            <li>Column 9 should reflect Total number of unique beneficiaries who have called the Kilkari
-                                Inbox in the specified date range and listened to the message content.
+                            <li>Column 9 reflects Total number of unique beneficiaries who have called the Kilkari Inbox
+                                in the selected period and listened to the message content.
                             </li>
-                            <li>The State data should have drill down feature. A user may click on a valid State / UT
-                                name and the report would display district wise data for the selected state. Similarly a
-                                user may click on a valid district name and the report would display block wise data for
-                                the selected district. Clicking on “Grand Total” will have no effect. Further there
-                                should be a BACK button below the report to enable the user go up the hierarchy and
-                                enable the report to display data in the form just prior to the current display based on
-                                user clicking on a valid state/district name.
+                            <li>When a user clicks on a valid State / UT name - the report displays district wise data
+                                for the selected state. Similarly, when a user clicks on a valid district name - the
+                                report displays block wise data for the selected district. Clicking on “Grand Total”
+                                will have no effect. To go back up (roll up) the levels a user can click on the state /
+                                district / block name.
                             </li>
-                            <li>All columns except Serial Number should have sort feature – a toggle switch through
-                                which the user can sort the data of the entire table on the selected column in
-                                alternatively ascending or descending order.
+                            <li>All columns except Serial Number have sort feature – a toggle switch through which the
+                                user can sort the data of the entire table by clicking on the column heading in
+                                ascending or descending order.
                             </li>
                         </ol>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
@@ -782,13 +775,12 @@
                     </div>
                     <div data-ng-hide="param!=='kcsr'" style="display: inline-block">
                         <p style="font-size: 30px"><b>Kilkari Cumulative Summary Report</b></p><br>
-                        <p>This report gives a glance of the performance of the Kilkari Project from start date of the
-                            project to till date. It gives information about the number of beneficiaries who were
-                            registered with the program, the total number of calls made to such subscribed
-                            beneficiaries, the total number of successful calls (calls responded to) made to such
-                            subscribed beneficiaries, the billable minutes of the successful calls from the start of the
-                            project and the average duration of calls. This report will gives an estimated coverage of
-                            the program.</p>
+                        <p>This report gives the performance of the Kilkari service from the launch date of the service
+                            in the state or from December 2016 whichever is later until current date. It gives
+                            information about the number of beneficiaries who were registered on the service , the total
+                            number of successful calls i.e. calls answered by these subscribed beneficiaries, the
+                            billable minutes of the successful calls from the start of the project and the average
+                            duration of calls. </p>
                         <p>The report displays the report in the following sequence of columns:</p>
                         <ol>
                             <li>Serial Number</li>
@@ -798,13 +790,8 @@
                             <li>Total billable minutes played</li>
                             <li>Average duration of call: (5)/(4)</li>
                         </ol>
-                        <p>The rules governing the display components of the report is given below</p>
-                        <ol>
-                            <li>The information displayed in the report should follow the below rules based on data in
-                                its respective rows only
-                                Average Duration Of Call: (Column 5/Column 4)
-                            </li>
-                        </ol>
+                        <p>Drill-down from State to District to Block and Sub-center is available for this report.</p>
+
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
                         </p>
                         <p>2) Under "Reports Category" select "Kilkari Reports", then</p>
@@ -822,14 +809,15 @@
                     </div>
                     <div data-ng-hide="param!=='ksr'" style="display: inline-block">
                         <p style="font-size: 30px"><b>Kilkari Subscriber Report</b></p><br>
-                        <p>This report gives a glance of the subscriber load on the Kilkari System for a selected
-                            period. It gives information about the number of kilkari subscriptions at the start of the
-                            period and the number of Kilkari records that were received from RCH/MCTS via the web
-                            services and what accounts for the beneficiary found suitable for subscribers and number of
-                            beneficiary records that were rejected due to wrong or duplicate numbers, how many
-                            subscriptions were actually added to the system. The report thus displays the number of
-                            Kilkari subscription at the end of the period. This report could give an indicative idea of
-                            whether the subscriber base is increasing or decreasing and if so the relevant rate.</p>
+                        <p>This report provides the data volume of the Kilkari System for a selected period, in terms of
+                            number of records across various stages of the Kilkari system lifecycle (records received
+                            from source systems, records accepted and rejected by the Kilkari system, records that
+                            completed subscription etc.). It gives information about the number of Kilkari subscriptions
+                            at the start of the period and the number of Kilkari records that were received from
+                            RCH/MCTS via the web services and how many of them were found eligible to be subscribed to
+                            Kilkari and number of beneficiary records that were rejected due to wrong or duplicate
+                            numbers, how many subscriptions were actually added to the system. The report then displays
+                            the number of currently-active Kilkari subscriptions at the end of the period. </p>
                         <p>The report displays the report in the following sequence of columns when logged in as
                             National User:</p>
                         <ol>
@@ -843,28 +831,30 @@
                             <li>Total number of subscriptions who have completed their packs</li>
                             <li>Total Subscription at the end of the period.</li>
                         </ol>
-                        <p>The rules governing the display components of the report is given below</p>
+                        <p>The rules governing the report are given below</p>
                         <ol>
-                            <li>Column 3 should reflect Total Number of subscriptions at the start of the period to whom
-                                calls were made prior to the period and would be called on the 1st day of the selected
-                                period.
+                            <li>Column 3 reflects total Number of subscriptions at the start of the period to whom calls
+                                were made prior to the selected period and would also be called on the 1st day of the
+                                selected period.
                             </li>
-                            <li>Column 4 should reflect the number of beneficiary records received from MCTS/RCH during
-                                the period.
+                            <li>Column 4 reflects the number of beneficiary records received from MCTS/RCH during the
+                                selected period.
                             </li>
-                            <li>Column 5 should reflect, of the number of beneficiary records received how many have
-                                been found eligible for subscriptions.
+                            <li>Column 5 reflects, of the number of beneficiary records received, how many have been
+                                found eligible for subscriptions.
                             </li>
-                            <li>Column 6 should reflect the number of beneficiary records which have been rejected due
-                                to wrong or duplicate mobile numbers or missing information.
+                            <li>Column 6 reflects the number of beneficiary records which have been rejected due to
+                                wrong or duplicate mobile numbers or missing information.
                             </li>
-                            <li>Column 7 should reflect the number of beneficiary records who have been accepted as
+                            <li>Column 7 reflects the number of beneficiary records who have been accepted as
                                 subscriptions by the system.
                             </li>
-                            <li>Column 8 should reflect Total subscription records who completed their pack in selected
+                            <li>Column 8 reflects total subscription records who completed their pack in selected
                                 period.
                             </li>
-                            <li>Column 9 should reflect Total number of subscriptions at the end of the period.</li>
+                            <li>Column 9 reflects total number of subscriptions that continue to remain active at the
+                                end of the period.
+                            </li>
                         </ol>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
                         </p>
@@ -1645,76 +1635,69 @@
                 </div>
                 <div data-ng-hide="param!=='ur'" style="display: inline-block">
                     <p style="font-size: 30px"><b>Kilkari Usage Report</b></p><br>
-                    <p>This report gives the glance the listening pattern of the subscriber in the Kilkari project
-                        for a selected period. It gives us the number of beneficiaries called during the period, the
-                        number of beneficiaries who are listening more than 75% of content, between 50-75% of
-                        content, 25-50% of the content and less than the 25% of the content. The average is
-                        calculated based on the call duration of the successful calls only. </p>
-                    <p>This report will support selection of calendar year, financial year, quarter, month and week
-                        and cannot support custom date range selection. This is because, beneficiaries who have
-                        answered at least one call and the related values, cannot be calculated real-time for every
-                        possible date combination and needs to be pre-calculated.</p>
-                    <p>This report would give the details of the count for the selected period.</p>
-                    <p>The report displays the data in the following sequence of columns when logged in.</p>
+                    <p>This report provides the listening pattern of Kilkari subscribers for a selected period. It
+                        gives the number of beneficiaries called during the period, the number of beneficiaries who
+                        listened to more than 75% of content, between 50-75% of content, 25-50% of the content and
+                        less than the 25% of the content. The average content listened to, is calculated based on
+                        the call duration of the successful calls only. </p>
+                    <p>This report supports selection of calendar year, financial year, quarter, month and week and
+                        cannot support custom date range selection. </p>
+                    <p>The report displays the data in the following sequence of columns.</p>
                     <ol>
                         <li>Serial Number</li>
                         <li>State</li>
-                        <li>Total beneficiaries Called</li>
+                        <li>Total beneficiaries called</li>
                         <li>Beneficiaries who have answered at least one call</li>
-                        <li>Beneficiaries who have listened more than 75% content (avg)</li>
-                        <li>Beneficiaries who have listened 50 to 75% content (avg)</li>
-                        <li>Beneficiaries who have listened 25 to 49.9% content (avg)</li>
-                        <li>Beneficiaries who have listened less than 25% content (avg)</li>
+                        <li>Beneficiaries who have listened to more than 75% content (avg)</li>
+                        <li>Beneficiaries who have listened to 50 to 75% content (avg)</li>
+                        <li>Beneficiaries who have listened to 25 to 49.9% content (avg)</li>
+                        <li>Beneficiaries who have listened to less than 25% content (avg)</li>
                         <li>Beneficiaries who have called the Kilkari Inbox</li>
                     </ol>
                     <p>The rules governing the display components of the report is given below</p>
                     <ol>
-                        <li>The rule used to bracket beneficiaries should be based on content duration and not on
-                            call duration, as total expected call duration cannot be fixed. The following is the
-                            equation used for calculating the percentage listened to for each beneficiary
-                            % Content listened to = Content listened to in all calls * 100
-                            -----------------------------------------
-                            Sum of total content duration of
-                            answered calls
-                            In the selected period.
+                        <li>The rule used to bracket beneficiaries is based on content duration and not on call
+                            duration, as total expected call duration cannot be fixed. The following is the equation
+                            used for calculating the percentage listened to for each beneficiary % Content listened
+                            to = Actual content listened to in all answered calls * 100 divided by Sum of total
+                            content duration of answered calls in the selected period.
                         </li>
-                        <li>Total Number of unique beneficiaries (Column 3) is calculated as Total Number of Unique
-                            beneficiaries called in the specified date range
+                        <li>Total number of unique beneficiaries (Column 3) is calculated as Total number of unique
+                            beneficiaries called in the selected period.
                         </li>
-                        <li>Column 4 should reflect the number of unique beneficiaries that have answered one call
-                            in the specified date range.
+                        <li>Column 4 reflects the number of unique beneficiaries that have answered one call in the
+                            selected period.
                         </li>
-                        <li>Column 5 should reflect the number of unique beneficiaries who have answered at least
-                            one call in the specified date range and listened to average of more than or equal 75%
-                            content on all the answered calls within the specified date range.
+                        <li>Column 5 reflects the number of unique beneficiaries who have answered at least one call
+                            in the selected period and listened to average of more than or equal 75% content on all
+                            the answered calls within the selected period.
                         </li>
-                        <li>Column 6 should reflect total number of unique beneficiaries who have answered at least
-                            one call in the specified date range and listened to average of 50 % to < 75% content on
-                            all the answered calls within the specified date range.
+                        <li>Column 6 reflects total number of unique beneficiaries who have answered at least one
+                            call in the selected date range and listened to average of 50 % to < 75% content on all
+                            the answered calls within the selected period.
                         </li>
-                        <li>Column 7 should reflect Total number of unique beneficiaries who have answered at least
-                            one call in the specified date range and listened to average of 25 % to <50% content on
-                            all the answered calls within the specified date range.
+                        <li>Column 7 reflects Total number of unique beneficiaries who have answered at least one
+                            call in the selected period and listened to average of 25 % to <50% content on all the
+                            answered calls within the selected period.
                         </li>
-                        <li>Column 8 should reflect Total unique beneficiaries who have answered at least one call
-                            in the specified date range and listened to average of less than 25% content on all the
-                            answered calls within the specified date range. This would take into consideration the
-                            calls which were answered, but was dropped before message content started playing.
+                        <li>Column 8 reflects total unique beneficiaries who have answered at least one call in the
+                            selected period and listened to average of less than 25% content on all the answered
+                            calls within the selected period. This would take into consideration the calls which
+                            were answered, but were disconnected / got dropped before message content started
+                            playing.
                         </li>
-                        <li>Column 9 should reflect Total number of unique beneficiaries who have called the Kilkari
-                            Inbox in the specified date range and listened to the message content.
+                        <li>Column 9 reflects Total number of unique beneficiaries who have called the Kilkari Inbox
+                            in the selected period and listened to the message content.
                         </li>
-                        <li>The State data should have drill down feature. A user may click on a valid State / UT
-                            name and the report would display district wise data for the selected state. Similarly a
-                            user may click on a valid district name and the report would display block wise data for
-                            the selected district. Clicking on “Grand Total” will have no effect. Further there
-                            should be a BACK button below the report to enable the user go up the hierarchy and
-                            enable the report to display data in the form just prior to the current display based on
-                            user clicking on a valid state/district name.
+                        <li>When a user clicks on a valid State / UT name - the report displays district wise data
+                            for the selected state. Similarly, when a user clicks on a valid district name - the
+                            report displays block wise data for the selected district. Clicking on “Grand Total”
+                            will have no effect. To go back up (roll up) the levels a user can click on the state /
+                            district / block name.
                         </li>
-                        <li>All columns except Serial Number should have sort feature – a toggle switch through
-                            which the user can sort the data of the entire table on the selected column in
-                            alternatively ascending or descending order.
+                        <li>All columns except Serial Number have sort feature – a toggle switch through which the
+                            user can sort the data of the entire table by clicking on the column heading in
+                            ascending or descending order.
                         </li>
                     </ol>
                     <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
@@ -1752,13 +1735,12 @@
                 </div>
                 <div data-ng-hide="param!=='kcsr'" style="display: inline-block">
                     <p style="font-size: 30px"><b>Kilkari Cumulative Summary Report</b></p><br>
-                    <p>This report gives a glance of the performance of the Kilkari Project from start date of the
-                        project to till date. It gives information about the number of beneficiaries who were
-                        registered with the program, the total number of calls made to such subscribed
-                        beneficiaries, the total number of successful calls (calls responded to) made to such
-                        subscribed beneficiaries, the billable minutes of the successful calls from the start of the
-                        project and the average duration of calls. This report will gives an estimated coverage of
-                        the program.</p>
+                    <p>This report gives the performance of the Kilkari service from the launch date of the service
+                        in the state or from December 2016 whichever is later until current date. It gives
+                        information about the number of beneficiaries who were registered on the service , the total
+                        number of successful calls i.e. calls answered by these subscribed beneficiaries, the
+                        billable minutes of the successful calls from the start of the project and the average
+                        duration of calls. </p>
                     <p>The report displays the report in the following sequence of columns:</p>
                     <ol>
                         <li>Serial Number</li>
@@ -1768,13 +1750,7 @@
                         <li>Total billable minutes played</li>
                         <li>Average duration of call: (5)/(4)</li>
                     </ol>
-                    <p>The rules governing the display components of the report is given below</p>
-                    <ol>
-                        <li>The information displayed in the report should follow the below rules based on data in
-                            its respective rows only
-                            Average Duration Of Call: (Column 5/Column 4)
-                        </li>
-                    </ol>
+                    <p>Drill-down from State to District to Block and Sub-center is available for this report.</p>
                     <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
                     </p>
                     <p>2) Under "Reports Category" select "Kilkari Reports", then</p>
@@ -1792,14 +1768,15 @@
                 </div>
                 <div data-ng-hide="param!=='ksr'" style="display: inline-block">
                     <p style="font-size: 30px"><b>Kilkari Subscriber Report</b></p><br>
-                    <p>This report gives a glance of the subscriber load on the Kilkari System for a selected
-                        period. It gives information about the number of kilkari subscriptions at the start of the
-                        period and the number of Kilkari records that were received from RCH/MCTS via the web
-                        services and what accounts for the beneficiary found suitable for subscribers and number of
-                        beneficiary records that were rejected due to wrong or duplicate numbers, how many
-                        subscriptions were actually added to the system. The report thus displays the number of
-                        Kilkari subscription at the end of the period. This report could give an indicative idea of
-                        whether the subscriber base is increasing or decreasing and if so the relevant rate.</p>
+                    <p>This report provides the data volume of the Kilkari System for a selected period, in terms of
+                        number of records across various stages of the Kilkari system lifecycle (records received
+                        from source systems, records accepted and rejected by the Kilkari system, records that
+                        completed subscription etc.). It gives information about the number of Kilkari subscriptions
+                        at the start of the period and the number of Kilkari records that were received from
+                        RCH/MCTS via the web services and how many of them were found eligible to be subscribed to
+                        Kilkari and number of beneficiary records that were rejected due to wrong or duplicate
+                        numbers, how many subscriptions were actually added to the system. The report then displays
+                        the number of currently-active Kilkari subscriptions at the end of the period. </p>
                     <p>The report displays the report in the following sequence of columns when logged in as
                         National User:</p>
                     <ol>
@@ -1813,28 +1790,30 @@
                         <li>Total number of subscriptions who have completed their packs</li>
                         <li>Total Subscription at the end of the period.</li>
                     </ol>
-                    <p>The rules governing the display components of the report is given below</p>
+                    <p>The rules governing the report are given below</p>
                     <ol>
-                        <li>Column 3 should reflect Total Number of subscriptions at the start of the period to whom
-                            calls were made prior to the period and would be called on the 1st day of the selected
-                            period.
+                        <li>Column 3 reflects total Number of subscriptions at the start of the period to whom calls
+                            were made prior to the selected period and would also be called on the 1st day of the
+                            selected period.
                         </li>
-                        <li>Column 4 should reflect the number of beneficiary records received from MCTS/RCH during
-                            the period.
+                        <li>Column 4 reflects the number of beneficiary records received from MCTS/RCH during the
+                            selected period.
                         </li>
-                        <li>Column 5 should reflect, of the number of beneficiary records received how many have
-                            been found eligible for subscriptions.
+                        <li>Column 5 reflects, of the number of beneficiary records received, how many have been
+                            found eligible for subscriptions.
                         </li>
-                        <li>Column 6 should reflect the number of beneficiary records which have been rejected due
-                            to wrong or duplicate mobile numbers or missing information.
+                        <li>Column 6 reflects the number of beneficiary records which have been rejected due to
+                            wrong or duplicate mobile numbers or missing information.
                         </li>
-                        <li>Column 7 should reflect the number of beneficiary records who have been accepted as
+                        <li>Column 7 reflects the number of beneficiary records who have been accepted as
                             subscriptions by the system.
                         </li>
-                        <li>Column 8 should reflect Total subscription records who completed their pack in selected
+                        <li>Column 8 reflects total subscription records who completed their pack in selected
                             period.
                         </li>
-                        <li>Column 9 should reflect Total number of subscriptions at the end of the period.</li>
+                        <li>Column 9 reflects total number of subscriptions that continue to remain active at the
+                            end of the period.
+                        </li>
                     </ol>
                     <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
                     </p>
@@ -2608,76 +2587,69 @@
             </div>
             <div data-ng-hide="param!=='ur'" style="display: inline-block">
                 <p style="font-size: 30px"><b>Kilkari Usage Report</b></p><br>
-                <p>This report gives the glance the listening pattern of the subscriber in the Kilkari project
-                    for a selected period. It gives us the number of beneficiaries called during the period, the
-                    number of beneficiaries who are listening more than 75% of content, between 50-75% of
-                    content, 25-50% of the content and less than the 25% of the content. The average is
-                    calculated based on the call duration of the successful calls only. </p>
-                <p>This report will support selection of calendar year, financial year, quarter, month and week
-                    and cannot support custom date range selection. This is because, beneficiaries who have
-                    answered at least one call and the related values, cannot be calculated real-time for every
-                    possible date combination and needs to be pre-calculated.</p>
-                <p>This report would give the details of the count for the selected period.</p>
-                <p>The report displays the data in the following sequence of columns when logged in.</p>
+                <p>This report provides the listening pattern of Kilkari subscribers for a selected period. It
+                    gives the number of beneficiaries called during the period, the number of beneficiaries who
+                    listened to more than 75% of content, between 50-75% of content, 25-50% of the content and
+                    less than the 25% of the content. The average content listened to, is calculated based on
+                    the call duration of the successful calls only. </p>
+                <p>This report supports selection of calendar year, financial year, quarter, month and week and
+                    cannot support custom date range selection. </p>
+                <p>The report displays the data in the following sequence of columns.</p>
                 <ol>
                     <li>Serial Number</li>
                     <li>State</li>
-                    <li>Total beneficiaries Called</li>
+                    <li>Total beneficiaries called</li>
                     <li>Beneficiaries who have answered at least one call</li>
-                    <li>Beneficiaries who have listened more than 75% content (avg)</li>
-                    <li>Beneficiaries who have listened 50 to 75% content (avg)</li>
-                    <li>Beneficiaries who have listened 25 to 49.9% content (avg)</li>
-                    <li>Beneficiaries who have listened less than 25% content (avg)</li>
+                    <li>Beneficiaries who have listened to more than 75% content (avg)</li>
+                    <li>Beneficiaries who have listened to 50 to 75% content (avg)</li>
+                    <li>Beneficiaries who have listened to 25 to 49.9% content (avg)</li>
+                    <li>Beneficiaries who have listened to less than 25% content (avg)</li>
                     <li>Beneficiaries who have called the Kilkari Inbox</li>
                 </ol>
                 <p>The rules governing the display components of the report is given below</p>
                 <ol>
-                    <li>The rule used to bracket beneficiaries should be based on content duration and not on
-                        call duration, as total expected call duration cannot be fixed. The following is the
-                        equation used for calculating the percentage listened to for each beneficiary
-                        % Content listened to = Content listened to in all calls * 100
-                        -----------------------------------------
-                        Sum of total content duration of
-                        answered calls
-                        In the selected period.
+                    <li>The rule used to bracket beneficiaries is based on content duration and not on call
+                        duration, as total expected call duration cannot be fixed. The following is the equation
+                        used for calculating the percentage listened to for each beneficiary % Content listened
+                        to = Actual content listened to in all answered calls * 100 divided by Sum of total
+                        content duration of answered calls in the selected period.
                     </li>
-                    <li>Total Number of unique beneficiaries (Column 3) is calculated as Total Number of Unique
-                        beneficiaries called in the specified date range
+                    <li>Total number of unique beneficiaries (Column 3) is calculated as Total number of unique
+                        beneficiaries called in the selected period.
                     </li>
-                    <li>Column 4 should reflect the number of unique beneficiaries that have answered one call
-                        in the specified date range.
+                    <li>Column 4 reflects the number of unique beneficiaries that have answered one call in the
+                        selected period.
                     </li>
-                    <li>Column 5 should reflect the number of unique beneficiaries who have answered at least
-                        one call in the specified date range and listened to average of more than or equal 75%
-                        content on all the answered calls within the specified date range.
+                    <li>Column 5 reflects the number of unique beneficiaries who have answered at least one call
+                        in the selected period and listened to average of more than or equal 75% content on all
+                        the answered calls within the selected period.
                     </li>
-                    <li>Column 6 should reflect total number of unique beneficiaries who have answered at least
-                        one call in the specified date range and listened to average of 50 % to < 75% content on
-                        all the answered calls within the specified date range.
+                    <li>Column 6 reflects total number of unique beneficiaries who have answered at least one
+                        call in the selected date range and listened to average of 50 % to < 75% content on all
+                        the answered calls within the selected period.
                     </li>
-                    <li>Column 7 should reflect Total number of unique beneficiaries who have answered at least
-                        one call in the specified date range and listened to average of 25 % to <50% content on
-                        all the answered calls within the specified date range.
+                    <li>Column 7 reflects Total number of unique beneficiaries who have answered at least one
+                        call in the selected period and listened to average of 25 % to <50% content on all the
+                        answered calls within the selected period.
                     </li>
-                    <li>Column 8 should reflect Total unique beneficiaries who have answered at least one call
-                        in the specified date range and listened to average of less than 25% content on all the
-                        answered calls within the specified date range. This would take into consideration the
-                        calls which were answered, but was dropped before message content started playing.
+                    <li>Column 8 reflects total unique beneficiaries who have answered at least one call in the
+                        selected period and listened to average of less than 25% content on all the answered
+                        calls within the selected period. This would take into consideration the calls which
+                        were answered, but were disconnected / got dropped before message content started
+                        playing.
                     </li>
-                    <li>Column 9 should reflect Total number of unique beneficiaries who have called the Kilkari
-                        Inbox in the specified date range and listened to the message content.
+                    <li>Column 9 reflects Total number of unique beneficiaries who have called the Kilkari Inbox
+                        in the selected period and listened to the message content.
                     </li>
-                    <li>The State data should have drill down feature. A user may click on a valid State / UT
-                        name and the report would display district wise data for the selected state. Similarly a
-                        user may click on a valid district name and the report would display block wise data for
-                        the selected district. Clicking on “Grand Total” will have no effect. Further there
-                        should be a BACK button below the report to enable the user go up the hierarchy and
-                        enable the report to display data in the form just prior to the current display based on
-                        user clicking on a valid state/district name.
+                    <li>When a user clicks on a valid State / UT name - the report displays district wise data
+                        for the selected state. Similarly, when a user clicks on a valid district name - the
+                        report displays block wise data for the selected district. Clicking on “Grand Total”
+                        will have no effect. To go back up (roll up) the levels a user can click on the state /
+                        district / block name.
                     </li>
-                    <li>All columns except Serial Number should have sort feature – a toggle switch through
-                        which the user can sort the data of the entire table on the selected column in
-                        alternatively ascending or descending order.
+                    <li>All columns except Serial Number have sort feature – a toggle switch through which the
+                        user can sort the data of the entire table by clicking on the column heading in
+                        ascending or descending order.
                     </li>
                 </ol>
                 <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
@@ -2715,13 +2687,12 @@
             </div>
             <div data-ng-hide="param!=='kcsr'" style="display: inline-block">
                 <p style="font-size: 30px"><b>Kilkari Cumulative Summary Report</b></p><br>
-                <p>This report gives a glance of the performance of the Kilkari Project from start date of the
-                    project to till date. It gives information about the number of beneficiaries who were
-                    registered with the program, the total number of calls made to such subscribed
-                    beneficiaries, the total number of successful calls (calls responded to) made to such
-                    subscribed beneficiaries, the billable minutes of the successful calls from the start of the
-                    project and the average duration of calls. This report will gives an estimated coverage of
-                    the program.</p>
+                <p>This report gives the performance of the Kilkari service from the launch date of the service
+                    in the state or from December 2016 whichever is later until current date. It gives
+                    information about the number of beneficiaries who were registered on the service , the total
+                    number of successful calls i.e. calls answered by these subscribed beneficiaries, the
+                    billable minutes of the successful calls from the start of the project and the average
+                    duration of calls. </p>
                 <p>The report displays the report in the following sequence of columns:</p>
                 <ol>
                     <li>Serial Number</li>
@@ -2731,13 +2702,7 @@
                     <li>Total billable minutes played</li>
                     <li>Average duration of call: (5)/(4)</li>
                 </ol>
-                <p>The rules governing the display components of the report is given below</p>
-                <ol>
-                    <li>The information displayed in the report should follow the below rules based on data in
-                        its respective rows only
-                        Average Duration Of Call: (Column 5/Column 4)
-                    </li>
-                </ol>
+                <p>Drill-down from State to District to Block and Sub-center is available for this report.</p>
                 <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
                 </p>
                 <p>2) Under "Reports Category" select "Kilkari Reports", then</p>
@@ -2755,14 +2720,15 @@
             </div>
             <div data-ng-hide="param!=='ksr'" style="display: inline-block">
                 <p style="font-size: 30px"><b>Kilkari Subscriber Report</b></p><br>
-                <p>This report gives a glance of the subscriber load on the Kilkari System for a selected
-                    period. It gives information about the number of kilkari subscriptions at the start of the
-                    period and the number of Kilkari records that were received from RCH/MCTS via the web
-                    services and what accounts for the beneficiary found suitable for subscribers and number of
-                    beneficiary records that were rejected due to wrong or duplicate numbers, how many
-                    subscriptions were actually added to the system. The report thus displays the number of
-                    Kilkari subscription at the end of the period. This report could give an indicative idea of
-                    whether the subscriber base is increasing or decreasing and if so the relevant rate.</p>
+                <p>This report provides the data volume of the Kilkari System for a selected period, in terms of
+                    number of records across various stages of the Kilkari system lifecycle (records received
+                    from source systems, records accepted and rejected by the Kilkari system, records that
+                    completed subscription etc.). It gives information about the number of Kilkari subscriptions
+                    at the start of the period and the number of Kilkari records that were received from
+                    RCH/MCTS via the web services and how many of them were found eligible to be subscribed to
+                    Kilkari and number of beneficiary records that were rejected due to wrong or duplicate
+                    numbers, how many subscriptions were actually added to the system. The report then displays
+                    the number of currently-active Kilkari subscriptions at the end of the period. </p>
                 <p>The report displays the report in the following sequence of columns when logged in as
                     National User:</p>
                 <ol>
@@ -2776,28 +2742,30 @@
                     <li>Total number of subscriptions who have completed their packs</li>
                     <li>Total Subscription at the end of the period.</li>
                 </ol>
-                <p>The rules governing the display components of the report is given below</p>
+                <p>The rules governing the report are given below</p>
                 <ol>
-                    <li>Column 3 should reflect Total Number of subscriptions at the start of the period to whom
-                        calls were made prior to the period and would be called on the 1st day of the selected
-                        period.
+                    <li>Column 3 reflects total Number of subscriptions at the start of the period to whom calls
+                        were made prior to the selected period and would also be called on the 1st day of the
+                        selected period.
                     </li>
-                    <li>Column 4 should reflect the number of beneficiary records received from MCTS/RCH during
-                        the period.
+                    <li>Column 4 reflects the number of beneficiary records received from MCTS/RCH during the
+                        selected period.
                     </li>
-                    <li>Column 5 should reflect, of the number of beneficiary records received how many have
-                        been found eligible for subscriptions.
+                    <li>Column 5 reflects, of the number of beneficiary records received, how many have been
+                        found eligible for subscriptions.
                     </li>
-                    <li>Column 6 should reflect the number of beneficiary records which have been rejected due
-                        to wrong or duplicate mobile numbers or missing information.
+                    <li>Column 6 reflects the number of beneficiary records which have been rejected due to
+                        wrong or duplicate mobile numbers or missing information.
                     </li>
-                    <li>Column 7 should reflect the number of beneficiary records who have been accepted as
+                    <li>Column 7 reflects the number of beneficiary records who have been accepted as
                         subscriptions by the system.
                     </li>
-                    <li>Column 8 should reflect Total subscription records who completed their pack in selected
+                    <li>Column 8 reflects total subscription records who completed their pack in selected
                         period.
                     </li>
-                    <li>Column 9 should reflect Total number of subscriptions at the end of the period.</li>
+                    <li>Column 9 reflects total number of subscriptions that continue to remain active at the
+                        end of the period.
+                    </li>
                 </ol>
                 <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
                 </p>
@@ -3571,76 +3539,69 @@
         </div>
         <div data-ng-hide="param!=='ur'" style="display: inline-block">
             <p style="font-size: 30px"><b>Kilkari Usage Report</b></p><br>
-            <p>This report gives the glance the listening pattern of the subscriber in the Kilkari project
-                for a selected period. It gives us the number of beneficiaries called during the period, the
-                number of beneficiaries who are listening more than 75% of content, between 50-75% of
-                content, 25-50% of the content and less than the 25% of the content. The average is
-                calculated based on the call duration of the successful calls only. </p>
-            <p>This report will support selection of calendar year, financial year, quarter, month and week
-                and cannot support custom date range selection. This is because, beneficiaries who have
-                answered at least one call and the related values, cannot be calculated real-time for every
-                possible date combination and needs to be pre-calculated.</p>
-            <p>This report would give the details of the count for the selected period.</p>
-            <p>The report displays the data in the following sequence of columns when logged in.</p>
+            <p>This report provides the listening pattern of Kilkari subscribers for a selected period. It
+                gives the number of beneficiaries called during the period, the number of beneficiaries who
+                listened to more than 75% of content, between 50-75% of content, 25-50% of the content and
+                less than the 25% of the content. The average content listened to, is calculated based on
+                the call duration of the successful calls only. </p>
+            <p>This report supports selection of calendar year, financial year, quarter, month and week and
+                cannot support custom date range selection. </p>
+            <p>The report displays the data in the following sequence of columns.</p>
             <ol>
                 <li>Serial Number</li>
                 <li>State</li>
-                <li>Total beneficiaries Called</li>
+                <li>Total beneficiaries called</li>
                 <li>Beneficiaries who have answered at least one call</li>
-                <li>Beneficiaries who have listened more than 75% content (avg)</li>
-                <li>Beneficiaries who have listened 50 to 75% content (avg)</li>
-                <li>Beneficiaries who have listened 25 to 49.9% content (avg)</li>
-                <li>Beneficiaries who have listened less than 25% content (avg)</li>
+                <li>Beneficiaries who have listened to more than 75% content (avg)</li>
+                <li>Beneficiaries who have listened to 50 to 75% content (avg)</li>
+                <li>Beneficiaries who have listened to 25 to 49.9% content (avg)</li>
+                <li>Beneficiaries who have listened to less than 25% content (avg)</li>
                 <li>Beneficiaries who have called the Kilkari Inbox</li>
             </ol>
             <p>The rules governing the display components of the report is given below</p>
             <ol>
-                <li>The rule used to bracket beneficiaries should be based on content duration and not on
-                    call duration, as total expected call duration cannot be fixed. The following is the
-                    equation used for calculating the percentage listened to for each beneficiary
-                    % Content listened to = Content listened to in all calls * 100
-                    -----------------------------------------
-                    Sum of total content duration of
-                    answered calls
-                    In the selected period.
+                <li>The rule used to bracket beneficiaries is based on content duration and not on call
+                    duration, as total expected call duration cannot be fixed. The following is the equation
+                    used for calculating the percentage listened to for each beneficiary % Content listened
+                    to = Actual content listened to in all answered calls * 100 divided by Sum of total
+                    content duration of answered calls in the selected period.
                 </li>
-                <li>Total Number of unique beneficiaries (Column 3) is calculated as Total Number of Unique
-                    beneficiaries called in the specified date range
+                <li>Total number of unique beneficiaries (Column 3) is calculated as Total number of unique
+                    beneficiaries called in the selected period.
                 </li>
-                <li>Column 4 should reflect the number of unique beneficiaries that have answered one call
-                    in the specified date range.
+                <li>Column 4 reflects the number of unique beneficiaries that have answered one call in the
+                    selected period.
                 </li>
-                <li>Column 5 should reflect the number of unique beneficiaries who have answered at least
-                    one call in the specified date range and listened to average of more than or equal 75%
-                    content on all the answered calls within the specified date range.
+                <li>Column 5 reflects the number of unique beneficiaries who have answered at least one call
+                    in the selected period and listened to average of more than or equal 75% content on all
+                    the answered calls within the selected period.
                 </li>
-                <li>Column 6 should reflect total number of unique beneficiaries who have answered at least
-                    one call in the specified date range and listened to average of 50 % to < 75% content on
-                    all the answered calls within the specified date range.
+                <li>Column 6 reflects total number of unique beneficiaries who have answered at least one
+                    call in the selected date range and listened to average of 50 % to < 75% content on all
+                    the answered calls within the selected period.
                 </li>
-                <li>Column 7 should reflect Total number of unique beneficiaries who have answered at least
-                    one call in the specified date range and listened to average of 25 % to <50% content on
-                    all the answered calls within the specified date range.
+                <li>Column 7 reflects Total number of unique beneficiaries who have answered at least one
+                    call in the selected period and listened to average of 25 % to <50% content on all the
+                    answered calls within the selected period.
                 </li>
-                <li>Column 8 should reflect Total unique beneficiaries who have answered at least one call
-                    in the specified date range and listened to average of less than 25% content on all the
-                    answered calls within the specified date range. This would take into consideration the
-                    calls which were answered, but was dropped before message content started playing.
+                <li>Column 8 reflects total unique beneficiaries who have answered at least one call in the
+                    selected period and listened to average of less than 25% content on all the answered
+                    calls within the selected period. This would take into consideration the calls which
+                    were answered, but were disconnected / got dropped before message content started
+                    playing.
                 </li>
-                <li>Column 9 should reflect Total number of unique beneficiaries who have called the Kilkari
-                    Inbox in the specified date range and listened to the message content.
+                <li>Column 9 reflects Total number of unique beneficiaries who have called the Kilkari Inbox
+                    in the selected period and listened to the message content.
                 </li>
-                <li>The State data should have drill down feature. A user may click on a valid State / UT
-                    name and the report would display district wise data for the selected state. Similarly a
-                    user may click on a valid district name and the report would display block wise data for
-                    the selected district. Clicking on “Grand Total” will have no effect. Further there
-                    should be a BACK button below the report to enable the user go up the hierarchy and
-                    enable the report to display data in the form just prior to the current display based on
-                    user clicking on a valid state/district name.
+                <li>When a user clicks on a valid State / UT name - the report displays district wise data
+                    for the selected state. Similarly, when a user clicks on a valid district name - the
+                    report displays block wise data for the selected district. Clicking on “Grand Total”
+                    will have no effect. To go back up (roll up) the levels a user can click on the state /
+                    district / block name.
                 </li>
-                <li>All columns except Serial Number should have sort feature – a toggle switch through
-                    which the user can sort the data of the entire table on the selected column in
-                    alternatively ascending or descending order.
+                <li>All columns except Serial Number have sort feature – a toggle switch through which the
+                    user can sort the data of the entire table by clicking on the column heading in
+                    ascending or descending order.
                 </li>
             </ol>
             <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
@@ -3678,13 +3639,12 @@
         </div>
         <div data-ng-hide="param!=='kcsr'" style="display: inline-block">
             <p style="font-size: 30px"><b>Kilkari Cumulative Summary Report</b></p><br>
-            <p>This report gives a glance of the performance of the Kilkari Project from start date of the
-                project to till date. It gives information about the number of beneficiaries who were
-                registered with the program, the total number of calls made to such subscribed
-                beneficiaries, the total number of successful calls (calls responded to) made to such
-                subscribed beneficiaries, the billable minutes of the successful calls from the start of the
-                project and the average duration of calls. This report will gives an estimated coverage of
-                the program.</p>
+            <p>This report gives the performance of the Kilkari service from the launch date of the service
+                in the state or from December 2016 whichever is later until current date. It gives
+                information about the number of beneficiaries who were registered on the service , the total
+                number of successful calls i.e. calls answered by these subscribed beneficiaries, the
+                billable minutes of the successful calls from the start of the project and the average
+                duration of calls. </p>
             <p>The report displays the report in the following sequence of columns:</p>
             <ol>
                 <li>Serial Number</li>
@@ -3694,13 +3654,7 @@
                 <li>Total billable minutes played</li>
                 <li>Average duration of call: (5)/(4)</li>
             </ol>
-            <p>The rules governing the display components of the report is given below</p>
-            <ol>
-                <li>The information displayed in the report should follow the below rules based on data in
-                    its respective rows only
-                    Average Duration Of Call: (Column 5/Column 4)
-                </li>
-            </ol>
+            <p>Drill-down from State to District to Block and Sub-center is available for this report.</p>
             <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
             </p>
             <p>2) Under "Reports Category" select "Kilkari Reports", then</p>
@@ -3718,14 +3672,15 @@
         </div>
         <div data-ng-hide="param!=='ksr'" style="display: inline-block">
             <p style="font-size: 30px"><b>Kilkari Subscriber Report</b></p><br>
-            <p>This report gives a glance of the subscriber load on the Kilkari System for a selected
-                period. It gives information about the number of kilkari subscriptions at the start of the
-                period and the number of Kilkari records that were received from RCH/MCTS via the web
-                services and what accounts for the beneficiary found suitable for subscribers and number of
-                beneficiary records that were rejected due to wrong or duplicate numbers, how many
-                subscriptions were actually added to the system. The report thus displays the number of
-                Kilkari subscription at the end of the period. This report could give an indicative idea of
-                whether the subscriber base is increasing or decreasing and if so the relevant rate.</p>
+            <p>This report provides the data volume of the Kilkari System for a selected period, in terms of
+                number of records across various stages of the Kilkari system lifecycle (records received
+                from source systems, records accepted and rejected by the Kilkari system, records that
+                completed subscription etc.). It gives information about the number of Kilkari subscriptions
+                at the start of the period and the number of Kilkari records that were received from
+                RCH/MCTS via the web services and how many of them were found eligible to be subscribed to
+                Kilkari and number of beneficiary records that were rejected due to wrong or duplicate
+                numbers, how many subscriptions were actually added to the system. The report then displays
+                the number of currently-active Kilkari subscriptions at the end of the period. </p>
             <p>The report displays the report in the following sequence of columns when logged in as
                 National User:</p>
             <ol>
@@ -3739,28 +3694,30 @@
                 <li>Total number of subscriptions who have completed their packs</li>
                 <li>Total Subscription at the end of the period.</li>
             </ol>
-            <p>The rules governing the display components of the report is given below</p>
+            <p>The rules governing the report are given below</p>
             <ol>
-                <li>Column 3 should reflect Total Number of subscriptions at the start of the period to whom
-                    calls were made prior to the period and would be called on the 1st day of the selected
-                    period.
+                <li>Column 3 reflects total Number of subscriptions at the start of the period to whom calls
+                    were made prior to the selected period and would also be called on the 1st day of the
+                    selected period.
                 </li>
-                <li>Column 4 should reflect the number of beneficiary records received from MCTS/RCH during
-                    the period.
+                <li>Column 4 reflects the number of beneficiary records received from MCTS/RCH during the
+                    selected period.
                 </li>
-                <li>Column 5 should reflect, of the number of beneficiary records received how many have
-                    been found eligible for subscriptions.
+                <li>Column 5 reflects, of the number of beneficiary records received, how many have been
+                    found eligible for subscriptions.
                 </li>
-                <li>Column 6 should reflect the number of beneficiary records which have been rejected due
-                    to wrong or duplicate mobile numbers or missing information.
+                <li>Column 6 reflects the number of beneficiary records which have been rejected due to
+                    wrong or duplicate mobile numbers or missing information.
                 </li>
-                <li>Column 7 should reflect the number of beneficiary records who have been accepted as
+                <li>Column 7 reflects the number of beneficiary records who have been accepted as
                     subscriptions by the system.
                 </li>
-                <li>Column 8 should reflect Total subscription records who completed their pack in selected
+                <li>Column 8 reflects total subscription records who completed their pack in selected
                     period.
                 </li>
-                <li>Column 9 should reflect Total number of subscriptions at the end of the period.</li>
+                <li>Column 9 reflects total number of subscriptions that continue to remain active at the
+                    end of the period.
+                </li>
             </ol>
             <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
             </p>
