@@ -1098,8 +1098,8 @@
                             reportRequest.periodType = 'CURRENT FINANCIAL YEAR';
 
                          }
-                         else if($scope.dt1.getFullYear() == new Date().getFullYear() && $scope.currentDate.getMonth() < 3) {
-                            reportRequest.fromDate = new Date($scope.dt1.getFullYear()-1,3,1);
+                         else if($scope.dt1.getFullYear() == new Date().getFullYear()-1 && $scope.currentDate.getMonth() < 3) {
+                            reportRequest.fromDate = new Date($scope.dt1.getFullYear(),3,1);
                             reportRequest.toDate = new Date($scope.dt1.getFullYear()+1,$scope.currentDate.getMonth() -1,$scope.currentPeriodDate);
                             reportRequest.periodType = 'CURRENT FINANCIAL YEAR';
 
