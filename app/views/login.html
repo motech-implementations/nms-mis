@@ -87,19 +87,21 @@
 					<!--<div id="tapa" style="background-color: #ffffff; height: 10px;width: 250px;position: relative;top: -10px;"></div>-->
                     <!--<p >Please enter the captcha code</p>-->
 					<!--<input type="text" id="captchaCode"  class ="captchaCode login-inputs" name="captchaCode" data-ng-model="user.captchaCode" correct-captcha>-->
-				<div class="form-group d-flex flex-row justify-content-between" data-ng-init="Captcha()">
-					<span class="login-texts">Captcha</span>
-					<button type="button" id="refresh" data-ng-click="Captcha()" class="m-2"><span class="glyphicon glyphicon-refresh"></span></button>
-					<input type="text" data-ng-cut="$event.preventDefault()"  data-ng-copy="$event.preventDefault()"  class="form-control input input-sm login-inputs" data-ng-disabled="true" autocomplete="off"  name="mainCaptchaCode" style="background-color:black;font-weight:bold;font-style:italic;height:40px;width:42%;padding-left:40px;color:white;" data-ng-model="user.mainCaptchaCode"/>
-				</div>
-				<div class="form-group"><input type="text" data-ng-paste="$event.preventDefault()" class="form-control input input-sm login-inputs" name="captchaCode" style="text-transform:uppercase" autocomplete="off" data-ng-model="user.captchaCode" />
-				</div>
+				<!--<div class="form-group d-flex flex-row justify-content-between" data-ng-init="Captcha()">-->
+					<!--<span class="login-texts">Captcha</span>-->
+					<!--<button type="button" id="refresh" data-ng-click="Captcha()" class="m-2"><span class="glyphicon glyphicon-refresh"></span></button>-->
+					<!--<input type="text" data-ng-cut="$event.preventDefault()"  data-ng-copy="$event.preventDefault()"  class="form-control input input-sm login-inputs" data-ng-disabled="true" autocomplete="off"  name="mainCaptchaCode" style="background-color:black;font-weight:bold;font-style:italic;height:40px;width:42%;padding-left:40px;color:white;" data-ng-model="user.mainCaptchaCode"/>-->
+				<!--</div>-->
+				<!--<div class="form-group"><input type="text" data-ng-paste="$event.preventDefault()" class="form-control input input-sm login-inputs" name="captchaCode" style="text-transform:uppercase" autocomplete="off" data-ng-model="user.captchaCode" />-->
+				<!--</div>-->
 
 				<!--<div class="form-group">-->
 					<!--<a data-ui-sref="forgotPassword">Forgot Password?</a>-->
 				<!--</div>-->
 
 				<input type="hidden" name="fromUrl" data-ng-model="user.fromUrl" value={{preUrl}}>
+
+					<div style="margin-bottom: 15px;padding-left: 10px" vc-recaptcha key="'6LcJgYgUAAAAANaRqYM6UFUaY8H3pPUTK6Tt1qsL'"></div>
 
                 <div class="row">
 
@@ -113,7 +115,14 @@
 					<a data-ui-sref="forgotPassword" class="forgotPasswordLink" >Forgot Password?</a>
 				</div>
                 </div>
+				<!--<div tabindex="3" theme="clean" vc-recaptcha-->
+					 <!--key="'6LePCiYTDDDDDKyEwj6RIrqGkDJHJHJtg_G'"></div>-->
+				<!--<div class="g-recaptcha" data-sitekey="6LcJgYgUAAAAANaRqYM6UFUaY8H3pPUTK6Tt1qsL"></div>-->
 			</form>
+				<!--<script src='https://www.google.com/recaptcha/api.js'></script>-->
+				<!--<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"-->
+						<!--async defer>-->
+				<!--</script>-->
 			</div>
 
 			</div>

@@ -16,6 +16,16 @@ public class LoginUser {
 
     private String fromUrl;
 
+    private String captchaResponse;
+
+    public String getCaptchaResponse() {
+        return captchaResponse;
+    }
+
+    public void setCaptchaResponse(String captchaResponse) {
+        this.captchaResponse = captchaResponse;
+    }
+
     public LoginUser() {
     }
 

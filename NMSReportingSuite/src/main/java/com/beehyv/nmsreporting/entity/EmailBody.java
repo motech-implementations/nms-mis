@@ -20,6 +20,15 @@ public class EmailBody {
     private String saltHex;
 
     private String captcha;
+    private String captchaResponse;
+
+    public String getCaptchaResponse() {
+        return captchaResponse;
+    }
+
+    public void setCaptchaResponse(String captchaResponse) {
+        this.captchaResponse = captchaResponse;
+    }
 
     public String getCipherTextHex() {
         return cipherTextHex;

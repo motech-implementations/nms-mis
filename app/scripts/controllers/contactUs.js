@@ -35,32 +35,32 @@
             }
 
 
-            $scope.Captcha = function(){
-                             var alpha = new Array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','P','Q','R','S','T','U','V','W','X','Y','Z',
-                         	    	'1','2','3','4','5','6','7','8','9');
-                             var i;
-                             for (i=0;i<6;i++){
-                                 var a = alpha[Math.floor(Math.random() * alpha.length)];
-                                 var b = alpha[Math.floor(Math.random() * alpha.length)];
-                                 var c = alpha[Math.floor(Math.random() * alpha.length)];
-                                 var d = alpha[Math.floor(Math.random() * alpha.length)];
-                                 var e = alpha[Math.floor(Math.random() * alpha.length)];
-                                              }
-                                 var code = a + ' ' + b + ' '  + c + ' ' + d + ' ' + e;
-                                 $scope.email.mainCaptchaCode = code;
-
-
-                               }
-                        $scope.ValidCaptcha = function(){
-                        console.log($scope.user);
-                             var string1 = $scope.email.mainCaptchaCode.split(' ').join('');;
-                             var string2 = $scope.email.captchaCode.split(' ').join('');;
-                             if (string1 == string2.toUpperCase()){
-                                    return true;
-                             }else{
-                                  return false;
-                                  }
-                        }
+            // $scope.Captcha = function(){
+            //                  var alpha = new Array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','P','Q','R','S','T','U','V','W','X','Y','Z',
+            //              	    	'1','2','3','4','5','6','7','8','9');
+            //                  var i;
+            //                  for (i=0;i<6;i++){
+            //                      var a = alpha[Math.floor(Math.random() * alpha.length)];
+            //                      var b = alpha[Math.floor(Math.random() * alpha.length)];
+            //                      var c = alpha[Math.floor(Math.random() * alpha.length)];
+            //                      var d = alpha[Math.floor(Math.random() * alpha.length)];
+            //                      var e = alpha[Math.floor(Math.random() * alpha.length)];
+            //                                   }
+            //                      var code = a + ' ' + b + ' '  + c + ' ' + d + ' ' + e;
+            //                      $scope.email.mainCaptchaCode = code;
+            //
+            //
+            //                    }
+            //             $scope.ValidCaptcha = function(){
+            //             console.log($scope.user);
+            //                  var string1 = $scope.email.mainCaptchaCode.split(' ').join('');;
+            //                  var string2 = $scope.email.captchaCode.split(' ').join('');;
+            //                  if (string1 == string2.toUpperCase()){
+            //                         return true;
+            //                  }else{
+            //                       return false;
+            //                       }
+            //             }
 
 
 
@@ -146,45 +146,59 @@
                         return;
                     }
                 }
-
-                if($scope.email.captchaCode ==''){
-
-                        if(UserFormFactory.isInternetExplorer()){
-                            alert("Please fill the captcha");
-                            $scope.reverse();
-                            return;
-                        }
-                        else{
-                            UserFormFactory.showAlert("Please fill the captcha");
-                            $scope.reverse();
-                            return;
-                        }
-
-                 }
-
-                if($scope.ValidCaptcha()==false){
-                   if(UserFormFactory.isInternetExplorer()){
-                       alert("Incorrect Captcha");
-                       $scope.reverse();
-                       return;
-                   }
-                   else{
-                       UserFormFactory.showAlert("Incorrect Captcha");
-                       $scope.reverse();
-                       return;
-                   }
+                if(grecaptcha.getResponse() === ""){
+                    if(UserFormFactory.isInternetExplorer()){
+                        alert("Please tick the checkbox showing 'I'm not a robot'");
+                        $scope.reverse();
+                        return;
+                    }
+                    else{
+                        UserFormFactory.showAlert("Please tick the checkbox showing 'I'm not a robot'");
+                        $scope.reverse();
+                        return;
+                    }
                 }
+
+                // if($scope.email.captchaCode ==''){
+                //
+                //         if(UserFormFactory.isInternetExplorer()){
+                //             alert("Please fill the captcha");
+                //             $scope.reverse();
+                //             return;
+                //         }
+                //         else{
+                //             UserFormFactory.showAlert("Please fill the captcha");
+                //             $scope.reverse();
+                //             return;
+                //         }
+                //
+                //  }
+
+                // if($scope.ValidCaptcha()==false){
+                //    if(UserFormFactory.isInternetExplorer()){
+                //        alert("Incorrect Captcha");
+                //        $scope.reverse();
+                //        return;
+                //    }
+                //    else{
+                //        UserFormFactory.showAlert("Incorrect Captcha");
+                //        $scope.reverse();
+                //        return;
+                //    }
+                // }
 
 
                 else {
-                    var encrypted = CryptoJS.AES.encrypt($scope.email.captchaCode, 'ABCD123');
+                    var captchaResponse =  grecaptcha.getResponse();
+                    // var encrypted = CryptoJS.AES.encrypt($scope.email.captchaCode, 'ABCD123');
                     var data = {
                         "name": $scope.email.name,
-                        "captcha" : $scope.email.captchaCode,
-                        "cipherTextHex": encrypted.ciphertext.toString(),
-                        "saltHex": encrypted.salt.toString(),
+                        // "captcha" : $scope.email.captchaCode,
+                        // "cipherTextHex": encrypted.ciphertext.toString(),
+                        // "saltHex": encrypted.salt.toString(),
                         "email" : $scope.email.email,
                         "body" : $scope.email.body,
+                        "captchaResponse" : captchaResponse,
                         "subject" : $scope.email.subject,
                         "phoneNo" : $scope.email.phoneNo
                     };

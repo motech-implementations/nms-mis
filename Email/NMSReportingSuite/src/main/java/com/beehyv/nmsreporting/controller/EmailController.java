@@ -9,7 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.net.ssl.HttpsURLConnection;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.Calendar;
 import java.util.HashMap;
 
@@ -49,7 +54,8 @@ public class EmailController {
 //    }
 
     @RequestMapping(value = "/sendPassword/{encoded}", method = RequestMethod.GET)
-    public @ResponseBody String sendPassword(@PathVariable String encoded) throws Exception{
+    public @ResponseBody
+    String sendPassword(@PathVariable String encoded) throws Exception {
         byte[] decoded = Base64.decodeBase64(encoded);
         String token = new String(decoded, "UTF-8");
         String[] tokenItems = token.split("\\|\\|");
@@ -64,10 +70,16 @@ public class EmailController {
         c.set(Calendar.DATE, 1);
         newMail.setSubject("Reset Password for MIS Portal");
         newMail.setBody("Dear user,<br/><br/><p>As per your request, your password has been reset to: <b>" +
-                        password +
-                        "</b></p><br/><p>Once you login to the MIS portal with the above password, the system will direct you to change the default password as it is mandatory.</p><br/>" +
-                        "<p>Thanks,</p>" +
-                        "<p>NSP Support</p>");
-       return emailService.sendMailPassword(newMail);
+                password +
+                "</b></p><br/><p>Once you login to the MIS portal with the above password, the system will direct you to change the default password as it is mandatory.</p><br/>" +
+                "<p>Thanks,</p>" +
+                "<p>NSP Support</p>");
+        return emailService.sendMailPassword(newMail);
+    }
+
+    @RequestMapping(value = "/sendCaptcha/{captchaResponse}", method = RequestMethod.GET)
+    public @ResponseBody
+    String sendCaptcha(@PathVariable String captchaResponse) throws Exception {
+        return emailService.sendCaptcha(captchaResponse);
     }
 }

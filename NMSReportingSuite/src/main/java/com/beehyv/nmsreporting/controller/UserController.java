@@ -399,24 +399,24 @@ public class UserController {
         } else
             return null;
     }
-
-    @RequestMapping(value={"/getCaptcha"} , method = RequestMethod.GET)
-    public @ResponseBody String getCaptcha(
-            HttpServletRequest request) {
-
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            session.invalidate();
-        }
-        HttpSession sess = request.getSession();
-
-        // logic to generate captcha
-       String captchaCode = serviceFunctions.generateCaptcha();
-        sess.setAttribute("captcha",captchaCode);
-
-        String encoded = new String(Base64.encodeBase64((captchaCode).getBytes()));
-        return encoded.substring(0, encoded.length() - 1);
-    }
+//
+//    @RequestMapping(value={"/getCaptcha"} , method = RequestMethod.GET)
+//    public @ResponseBody String getCaptcha(
+//            HttpServletRequest request) {
+//
+//        HttpSession session = request.getSession(false);
+//        if (session != null) {
+//            session.invalidate();
+//        }
+//        HttpSession sess = request.getSession();
+//
+//        // logic to generate captcha
+//       String captchaCode = serviceFunctions.generateCaptcha();
+//        sess.setAttribute("captcha",captchaCode);
+//
+//        String encoded = new String(Base64.encodeBase64((captchaCode).getBytes()));
+//        return encoded.substring(0, encoded.length() - 1);
+//    }
 //    @RequestMapping(value = {"/forgotPassword"}, method = RequestMethod.POST)
 //    @ResponseBody
 //    public Map forgotPassword(@RequestBody ForgotPasswordDto forgotPasswordDto, HttpServletRequest request) throws Exception{
@@ -443,68 +443,71 @@ public class UserController {
 
     @RequestMapping(value = {"/forgotPassword"}, method = RequestMethod.POST)
     @ResponseBody
-    public String forgotPassword(@RequestBody ForgotPasswordDto forgotPasswordDto, HttpServletRequest request) throws Exception{
+    public String forgotPassword(@RequestBody ForgotPasswordDto forgotPasswordDto, HttpServletRequest request) throws Exception {
 
         HttpSession session = request.getSession();
 
-        String captcha = decrypt(new LoginUser(forgotPasswordDto.getCaptcha()));
+//        String captcha = decrypt(new LoginUser(forgotPasswordDto.getCaptcha()));
+        if (serviceFunctions.validateCaptcha(forgotPasswordDto.getCaptchaResponse()).equals("success")) {
+//            if (captcha.equals(session.getAttribute("captcha"))) {
+                String userName = forgotPasswordDto.getUsername();
+                User user = userService.findUserByUsername(userName);
 
-        if (captcha.equals(session.getAttribute("captcha"))) {
-            String userName = forgotPasswordDto.getUsername();
-            User user = userService.findUserByUsername(userName);
+                if (user != null) {
+                    String email = user.getEmailId();
+                    String password = serviceFunctions.generatePassword();
+                    byte[] encoded = Base64.encodeBase64((email + "||" + password).getBytes());
+                    String encrypted = new String(encoded);
+                    String url = "http://192.168.200.4:8080/NMSReportingSuite/nms/mail/sendPassword/" + encrypted;
+                    URL obj = new URL(url);
+                    HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
-            if (user!=null) {
-                String email = user.getEmailId();
-                String password = serviceFunctions.generatePassword();
-                byte[] encoded = Base64.encodeBase64((email+"||"+password).getBytes());
-                String encrypted = new String(encoded);
-                String url = "http://192.168.200.4:8080/NMSReportingSuite/nms/mail/sendPassword/"+encrypted;
-                URL obj = new URL(url);
-                HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+                    // optional default is GET
+                    con.setRequestMethod("GET");
 
-                // optional default is GET
-                con.setRequestMethod("GET");
+                    //add request header
+                    con.setRequestProperty("User-Agent", USER_AGENT);
 
-                //add request header
-                con.setRequestProperty("User-Agent", USER_AGENT);
+                    int responseCode = con.getResponseCode();
+                    System.out.println("\nSending 'GET' request to URL : " + url);
+                    System.out.println("Response Code : " + responseCode);
 
-                int responseCode = con.getResponseCode();
-                System.out.println("\nSending 'GET' request to URL : " + url);
-                System.out.println("Response Code : " + responseCode);
+                    BufferedReader in = new BufferedReader(
+                            new InputStreamReader(con.getInputStream()));
+                    String inputLine;
+                    StringBuffer response = new StringBuffer();
 
-                BufferedReader in = new BufferedReader(
-                        new InputStreamReader(con.getInputStream()));
-                String inputLine;
-                StringBuffer response = new StringBuffer();
+                    while ((inputLine = in.readLine()) != null) {
+                        response.append(inputLine);
+                    }
+                    in.close();
 
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
+                    //print result
+                    System.out.println(response.toString());
+                    if ((response.toString()).equals("success")) {
+                        user.setPassword(passwordEncoder.encode(password));
+                        user.setDefault(true);
+                        user.setUnSuccessfulAttempts(0);
+                        userService.updateUser(user);
+                        ModificationTracker modification = new ModificationTracker();
+                        modification.setModificationDate(new Date(System.currentTimeMillis()));
+                        modification.setModificationType(ModificationType.UPDATE.getModificationType());
+                        modification.setModifiedUserId(user.getUserId());
+                        modification.setModifiedField("password");
+                        modification.setModifiedByUserId(user.getUserId());
+                        modificationTrackerService.saveModification(modification);
+                        session.removeAttribute("captcha");
+                        session.invalidate();
+                    }
+
+                    return "success";
                 }
-                in.close();
-
-                //print result
-                System.out.println(response.toString());
-                if((response.toString()).equals("success")){
-                    user.setPassword(passwordEncoder.encode(password));
-                    user.setDefault(true);
-                    user.setUnSuccessfulAttempts(0);
-                    userService.updateUser(user);
-                    ModificationTracker modification = new ModificationTracker();
-                modification.setModificationDate(new Date(System.currentTimeMillis()));
-                modification.setModificationType(ModificationType.UPDATE.getModificationType());
-                modification.setModifiedUserId(user.getUserId());
-                modification.setModifiedField("password");
-                modification.setModifiedByUserId(user.getUserId());
-                modificationTrackerService.saveModification(modification);
-                    session.removeAttribute("captcha");
-                    session.invalidate();
-                }
-
-            return "success" ;
+                return "invalid user";
         }
-           return "invalid user";
-        }
-    return "invalid captcha";}
+        return "invalid captcha";
+    }
+
+
 
 
 

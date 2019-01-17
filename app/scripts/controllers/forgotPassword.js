@@ -3,15 +3,15 @@
 		.module('nmsReports')
 		.controller("ForgotPasswordController", ['$scope', '$state', 'UserFormFactory', '$http', function($scope, $state, UserFormFactory, $http){
 
-            UserFormFactory.getCaptcha()
-                .then(function(result){
-                    var encryptedCaptcha = result.data;
-                    if(result.data){
-                        encryptedCaptcha = encryptedCaptcha + '=';
-                        var decryptedCaptcha = window.atob(encryptedCaptcha);
-                        $scope.forgotPassword.mainCaptchaCode = decryptedCaptcha;
-                    }
-                })
+            // UserFormFactory.getCaptcha()
+            //     .then(function(result){
+            //         var encryptedCaptcha = result.data;
+            //         if(result.data){
+            //             encryptedCaptcha = encryptedCaptcha + '=';
+            //             var decryptedCaptcha = window.atob(encryptedCaptcha);
+            //             $scope.forgotPassword.mainCaptchaCode = decryptedCaptcha;
+            //         }
+            //     })
             $scope.forgotPassword = {};
             $scope.forgotPassword.captchaCode = '';
             $scope.waiting = false;
@@ -35,32 +35,32 @@
             //
             //
             //  }
-            $scope.refreshCaptcha = function(){
-                UserFormFactory.getCaptcha()
-                    .then(function(result){
-                        var encryptedCaptcha = result.data;
-                        if(result.data){
-                            encryptedCaptcha = encryptedCaptcha + '=';
-                            var decryptedCaptcha = window.atob(encryptedCaptcha);
-                            $scope.forgotPassword.mainCaptchaCode = decryptedCaptcha;
-                        }
+            // $scope.refreshCaptcha = function(){
+            //     UserFormFactory.getCaptcha()
+            //         .then(function(result){
+            //             var encryptedCaptcha = result.data;
+            //             if(result.data){
+            //                 encryptedCaptcha = encryptedCaptcha + '=';
+            //                 var decryptedCaptcha = window.atob(encryptedCaptcha);
+            //                 $scope.forgotPassword.mainCaptchaCode = decryptedCaptcha;
+            //             }
+            //
+            //         })
+            //
+            // }
 
-                    })
-
-            }
-
-            $scope.ValidCaptcha = function(){
-            console.log($scope.user);
-                 var string1 = $scope.forgotPassword.mainCaptchaCode.split(' ').join('');;
-                 var string2 = $scope.forgotPassword.captchaCode.split(' ').join('');;
-                 if (string1 == string2.toUpperCase()){
-                        return true;
-                 }else{
-                     $scope.refreshCaptcha();
-                      return false;
-
-                 }
-            }
+            // $scope.ValidCaptcha = function(){
+            // console.log($scope.user);
+            //      var string1 = $scope.forgotPassword.mainCaptchaCode.split(' ').join('');;
+            //      var string2 = $scope.forgotPassword.captchaCode.split(' ').join('');;
+            //      if (string1 == string2.toUpperCase()){
+            //             return true;
+            //      }else{
+            //          $scope.refreshCaptcha();
+            //           return false;
+            //
+            //      }
+            // }
 
 
 
@@ -71,46 +71,60 @@
 			// var encryptedNew = CryptoJS.AES.encrypt($scope.forgotPassword.newPassword, 'ABCD123');
 			// $scope.forgotPassword.cipherTextHexNew = encryptedNew.ciphertext.toString();
 			// $scope.forgotPassword.saltHexNew = encryptedNew.salt.toString();
-
-
-
-			if($scope.forgotPassword.captchaCode ==''){
-
-                if(UserFormFactory.isInternetExplorer()){
-                    alert("Please fill the captcha");
-                    $scope.reverse();
-                    return;
-                }
-                else{
-                    UserFormFactory.showAlert("Please fill the captcha");
-                    $scope.reverse();
-                    return;
+                if(grecaptcha.getResponse() === ""){
+                    if(UserFormFactory.isInternetExplorer()){
+                                alert("Please tick the checkbox showing 'I'm not a robot'");
+                                $scope.reverse();
+                                return;
+                            }
+                            else{
+                                UserFormFactory.showAlert("Please tick the checkbox showing 'I'm not a robot'");
+                                $scope.reverse();
+                                return;
+                            }
                 }
 
-             }
 
-            if($scope.ValidCaptcha()==false){
-               if(UserFormFactory.isInternetExplorer()){
-                   alert("Incorrect Captcha");
-                   $scope.reverse();
-                   return;
-               }
-               else{
-                   UserFormFactory.showAlert("Incorrect Captcha");
-                   $scope.reverse();
-                   return;
-               }
-            }
+			// if($scope.forgotPassword.captchaCode ==''){
+            //
+            //
+            //     if(UserFormFactory.isInternetExplorer()){
+            //         alert("Please fill the captcha");
+            //         $scope.reverse();
+            //         return;
+            //     }
+            //     else{
+            //         UserFormFactory.showAlert("Please fill the captcha");
+            //         $scope.reverse();
+            //         return;
+            //     }
+            //
+            //  }
 
-                var encryptedCaptcha = CryptoJS.AES.encrypt($scope.forgotPassword.mainCaptchaCode, 'ABCD123');
-                var cipherTextHex = encryptedCaptcha.ciphertext.toString();
-                var saltHex = encryptedCaptcha.salt.toString();
-                var captchaToken = cipherTextHex + "||" +saltHex;
-                captchaToken = (window.btoa(captchaToken)).slice(0,-1);
+            // if($scope.ValidCaptcha()==false){
+            //    if(UserFormFactory.isInternetExplorer()){
+            //        alert("Incorrect Captcha");
+            //        $scope.reverse();
+            //        return;
+            //    }
+            //    else{
+            //        UserFormFactory.showAlert("Incorrect Captcha");
+            //        $scope.reverse();
+            //        return;
+            //    }
+            // }
+
+                // var encryptedCaptcha = CryptoJS.AES.encrypt($scope.forgotPassword.mainCaptchaCode, 'ABCD123');
+                // var cipherTextHex = encryptedCaptcha.ciphertext.toString();
+                // var saltHex = encryptedCaptcha.salt.toString();
+                // var captchaToken = cipherTextHex + "||" +saltHex;
+                // captchaToken = (window.btoa(captchaToken)).slice(0,-1);
+                var captchaResponse =  grecaptcha.getResponse();
 
 			var data = {
                     "username": $scope.forgotPassword.username,
-                    "captcha" : captchaToken,
+                    // "captcha" : captchaToken,
+                    "captchaResponse" : captchaResponse,
                     };
 
 				if ($scope.forgotPasswordForm.$valid) {
@@ -121,6 +135,7 @@
 						data: JSON.stringify(data),
 						headers : {'Content-Type': 'application/json'}
 					}).then(function (result){
+                        // grecaptcha.reset();
                         $scope.waiting = false;
                             if(UserFormFactory.isInternetExplorer()){
                                 if(result.data=="success") {
@@ -128,12 +143,12 @@
                                     $state.go('login', {});                                }
                                 else if(result.data=="invalid user"){
                                     alert("No user with provided username");
-                                    $scope.refreshCaptcha();
+                                    // $scope.refreshCaptcha();
 
                                 }
                                 else if(result.data=="invalid captcha"){
                                     alert("Invalid captcha. Please refresh or try again");
-                                    $scope.refreshCaptcha();
+                                    // $scope.refreshCaptcha();
                                 }
                             }
                             else{
@@ -142,12 +157,12 @@
                                     $state.go('login', {});                                }
                                 else if(result.data=="invalid user"){
                                     UserFormFactory.showAlert("No user with provided username");
-                                    $scope.refreshCaptcha();
+                                    // $scope.refreshCaptcha();
 
                                 }
                                 else if(result.data=="invalid captcha"){
                                     UserFormFactory.showAlert("Invalid captcha. Please refresh or try again");
-                                    $scope.refreshCaptcha();
+                                    // $scope.refreshCaptcha();
                                 }
 
                             }
