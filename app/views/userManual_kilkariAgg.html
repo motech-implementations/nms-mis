@@ -891,83 +891,76 @@
                     </div>
                     <div data-ng-hide="param!=='bcr'" style="display: inline-block">
                         <p style="font-size: 30px"><b>Kilkari Beneficiary Completion Report</b></p><br>
-                        <p>This report gives the glance of the amount of content listened to by subscribers who have
-                            completed Kilkari project for a selected period. It gives us the average number of weeks the
-                            beneficiaries were in service, the number of beneficiaries who have listening more than 75%
-                            of content, between 50-75% of content, 25-50% of the content and less than the 25% of the
-                            content. For the bucket ‘less than 25%’ of the content listened, we are considering only
-                            those who have at least ONE successful call. The average for all these four buckets is
-                            calculated based on the content duration of the successful calls only for the period of
-                            service the beneficiary was active. </p>
-                        <p>This report will support selection of calendar year, financial year, quarter, month and week
-                            and cannot support custom date range selection. This is because, beneficiaries who have
-                            answered at least one call and the related values, cannot be calculated real-time for every
-                            possible date combination and needs to be pre-calculated.</p>
-                        <p>This report would give the details of the count for the selected period. This report will not
-                            have a graphical display.</p>
-                        <p>The report displays the data in the following sequence of columns when logged in:</p>
+                        <p>This report provides of the amount of content listened to by subscribers who have completed
+                            Kilkari subscription over a selected period. It gives us the average number of weeks the
+                            beneficiaries were active in service, the number of beneficiaries who have listened to
+                            average content in categories of: more than 75% of content, between 50-75% of content,
+                            25-50% of the content and less than the 25% of content. For the bucket ‘less than 25%’ of
+                            the content listened to, only those subscribers who have at least ONE successful call
+                            (answered call) are considered. The average for all these four buckets is calculated based
+                            on the content duration of the successful calls only for the period of service the
+                            subscriber remained active. </p>
+                        <p>This report supports selection of calendar year, financial year, quarter, month and week and
+                            cannot support custom date range selection. </p>
+                        <p>The report displays the data in the following sequence of columns:</p>
                         <ol>
                             <li>Serial Number</li>
                             <li>State</li>
-                            <li>Total beneficiaries Completed Program</li>
-                            <li>Average Number of Weeks in Service</li>
-                            <li>Beneficiaries who have listened more than 75% content (consolidated)</li>
-                            <li>Beneficiaries who have listened 50 to 75% content (consolidated)</li>
-                            <li>Beneficiaries who have listened 25 to 49.9% content (consolidated)</li>
-                            <li>Beneficiaries who have listened less than 25% content (consolidated)</li>
+                            <li>Total beneficiaries completed program</li>
+                            <li>Average number of weeks in service</li>
+                            <li>Count of beneficiaries who have listened to more than 75% content (consolidated – means
+                                average for the subscription period for each beneficiary)
+                            </li>
+                            <li>Count of beneficiaries who have listened to 50 to 75% content (consolidated)</li>
+                            <li>Count of beneficiaries who have listened to 25 to 49.9% content (consolidated)</li>
+                            <li>Count of beneficiaries who have listened to less than 25% content (consolidated)</li>
                         </ol>
                         <p>The rules governing the display components of the report is given below</p>
                         <ol>
                             <li>Total Number of unique beneficiaries (Column 3) is calculated as Total Number of Unique
-                                beneficiaries who have called for the last message of the respective pack during the
-                                specified date range and will not be called again after the completion of the specified
-                                date range.
+                                beneficiaries for whom call was attempted to deliver the last message of the respective
+                                Kilkari pack during the specified date range and will not be called again after the
+                                completion of the specified period.
                             </li>
-                            <li>Column 4 should reflect the average number of weeks for those beneficiaries that were
-                                called for the last time in the specified date range. In case a beneficiary covers both
-                                mother pack and then child pack subscription because of live birth update, the number of
-                                weeks should be as follows:
-                                (End date of child pack – Activation date of mother pack)/7
-
-                                The calculation should be particular for that pregnancy for the beneficiary and not for
-                                all the pregnancies over time.
-                                Similarly, the success calls in both the packs should be taken into consideration for
-                                the percentage content listened to calculations for the columns below.
+                            <li>Column 4 reflects the average age in terms of number of weeks the beneficiaries were
+                                active in the service, for those beneficiaries that were called for the last time in the
+                                specified date range. In case a beneficiary covers both mother pack and then child pack
+                                subscription because of live birth update, the number of weeks should be as follows:
+                                (End date of child pack – Activation date of mother pack)/7. Similarly, the success
+                                calls in both the packs will be taken into consideration for the percentage content
+                                listened to calculations for the columns below.
                             </li>
-                            <li>Column 5 should reflect total number of unique beneficiaries who have listened to more
-                                than 75% content on all the calls made to them including calls they have not answered
-                                during their entire service period, only for those beneficiaries that are were called
-                                for the last time in the specified date range.
+                            <li>Column 5 reflects total number of unique beneficiaries who have listened to more than
+                                75% content on all the calls made to them including calls they have not answered during
+                                their entire service period, only for those beneficiaries that were called for the last
+                                time in the specified period.
                             </li>
-                            <li>Column 6 should reflect total number of unique beneficiaries who have listened to 50 %
-                                to 75% content on all the calls made to them including calls they have not answered
-                                during their entire service period, only for those beneficiaries that are were called
-                                for the last time in the specified date range.
+                            <li>Column 6 reflects total number of unique beneficiaries who have listened to 50 % to 75%
+                                content on all the calls made to them including calls they have not answered during
+                                their entire service period, only for those beneficiaries that were called for the last
+                                time in the specified period.
                             </li>
-                            <li>Column 7 should reflect total number of unique beneficiaries who have listened to 25 %
-                                to 49.9% content on all the calls made to them including calls they have not answered
-                                during their entire service period, only for those beneficiaries that are were called
-                                for the last time in the specified date range.
+                            <li>Column 7 reflects total number of unique beneficiaries who have listened to 25 % to
+                                49.9% content on all the calls made to them including calls they have not answered
+                                during their entire service period, only for those beneficiaries that were called for
+                                the last time in the specified period.
                             </li>
-                            <li>Column 8 should reflect the number of unique beneficiaries who have listened to less
-                                than 25% content on all the calls made to them including calls they have not answered
-                                during their entire service period, only for those beneficiaries that are were called
-                                for the last time in the specified date range.
+                            <li>Column 8 reflects the number of unique beneficiaries who have listened to less than 25%
+                                content on all the calls made to them including calls they have not answered during
+                                their entire service period, only for those beneficiaries that were called for the last
+                                time in the specified period.
                             </li>
-                            <li>The State data should have drill down feature. A user may click on a valid State / UT
-                                name and the report would display district wise data for the selected state. Similarly a
-                                user may click on a valid district name and the report would display block wise data for
-                                the selected district. Clicking on “Grand Total” will have no effect. Further there
-                                should be a BACK button below the report to enable the user go up the hierarchy and
-                                enable the report to display data in the form just prior to the current display based on
-                                user clicking on a valid state/district name.
+                            <li>A user may click on a valid State / UT name and the report displays district wise data
+                                for the selected state. Similarly, when a user clicks on a valid district name the
+                                report displays block wise data for the selected district. Clicking on “Grand Total”
+                                will have no effect. To go back up the levels a user can click on the state / district /
+                                block name.
                             </li>
-                            <li>All columns except Serial Number should have sort feature – a toggle switch through
-                                which the user can sort the data of the entire table on the selected column in
-                                alternatively ascending or descending order.
+                            <li>All columns except Serial Number have sort feature – a toggle switch through which the
+                                user can sort the data of the entire table by clicking on the column heading in
+                                ascending or descending order.
                             </li>
                         </ol>
-                        <!--<p>In this report there could be one checkbox – “Include those deactivated after completing 75% of their respective packs”. When this checkbox is checked the value in column no 3 should include those beneficiaries who have deactivated themselves after completing the number of weeks that correspond to 75% of the duration of their respective packs and also those who have deactivated themselves in the last two weeks of their respective pack. The latter is included as they are most unlikely to re-register themselves again for listening to the remaining packs.</p>-->
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
                         </p>
                         <p>2) Under "Reports Category" select "Kilkari Reports", then</p>
@@ -1850,83 +1843,76 @@
                 </div>
                 <div data-ng-hide="param!=='bcr'" style="display: inline-block">
                     <p style="font-size: 30px"><b>Kilkari Beneficiary Completion Report</b></p><br>
-                    <p>This report gives the glance of the amount of content listened to by subscribers who have
-                        completed Kilkari project for a selected period. It gives us the average number of weeks the
-                        beneficiaries were in service, the number of beneficiaries who have listening more than 75%
-                        of content, between 50-75% of content, 25-50% of the content and less than the 25% of the
-                        content. For the bucket ‘less than 25%’ of the content listened, we are considering only
-                        those who have at least ONE successful call. The average for all these four buckets is
-                        calculated based on the content duration of the successful calls only for the period of
-                        service the beneficiary was active. </p>
-                    <p>This report will support selection of calendar year, financial year, quarter, month and week
-                        and cannot support custom date range selection. This is because, beneficiaries who have
-                        answered at least one call and the related values, cannot be calculated real-time for every
-                        possible date combination and needs to be pre-calculated.</p>
-                    <p>This report would give the details of the count for the selected period. This report will not
-                        have a graphical display.</p>
-                    <p>The report displays the data in the following sequence of columns when logged in:</p>
+                    <p>This report provides of the amount of content listened to by subscribers who have completed
+                        Kilkari subscription over a selected period. It gives us the average number of weeks the
+                        beneficiaries were active in service, the number of beneficiaries who have listened to
+                        average content in categories of: more than 75% of content, between 50-75% of content,
+                        25-50% of the content and less than the 25% of content. For the bucket ‘less than 25%’ of
+                        the content listened to, only those subscribers who have at least ONE successful call
+                        (answered call) are considered. The average for all these four buckets is calculated based
+                        on the content duration of the successful calls only for the period of service the
+                        subscriber remained active. </p>
+                    <p>This report supports selection of calendar year, financial year, quarter, month and week and
+                        cannot support custom date range selection. </p>
+                    <p>The report displays the data in the following sequence of columns:</p>
                     <ol>
                         <li>Serial Number</li>
                         <li>State</li>
-                        <li>Total beneficiaries Completed Program</li>
-                        <li>Average Number of Weeks in Service</li>
-                        <li>Beneficiaries who have listened more than 75% content (consolidated)</li>
-                        <li>Beneficiaries who have listened 50 to 75% content (consolidated)</li>
-                        <li>Beneficiaries who have listened 25 to 49.9% content (consolidated)</li>
-                        <li>Beneficiaries who have listened less than 25% content (consolidated)</li>
+                        <li>Total beneficiaries completed program</li>
+                        <li>Average number of weeks in service</li>
+                        <li>Count of beneficiaries who have listened to more than 75% content (consolidated – means
+                            average for the subscription period for each beneficiary)
+                        </li>
+                        <li>Count of beneficiaries who have listened to 50 to 75% content (consolidated)</li>
+                        <li>Count of beneficiaries who have listened to 25 to 49.9% content (consolidated)</li>
+                        <li>Count of beneficiaries who have listened to less than 25% content (consolidated)</li>
                     </ol>
                     <p>The rules governing the display components of the report is given below</p>
                     <ol>
                         <li>Total Number of unique beneficiaries (Column 3) is calculated as Total Number of Unique
-                            beneficiaries who have called for the last message of the respective pack during the
-                            specified date range and will not be called again after the completion of the specified
-                            date range.
+                            beneficiaries for whom call was attempted to deliver the last message of the respective
+                            Kilkari pack during the specified date range and will not be called again after the
+                            completion of the specified period.
                         </li>
-                        <li>Column 4 should reflect the average number of weeks for those beneficiaries that were
-                            called for the last time in the specified date range. In case a beneficiary covers both
-                            mother pack and then child pack subscription because of live birth update, the number of
-                            weeks should be as follows:
-                            (End date of child pack – Activation date of mother pack)/7
-
-                            The calculation should be particular for that pregnancy for the beneficiary and not for
-                            all the pregnancies over time.
-                            Similarly, the success calls in both the packs should be taken into consideration for
-                            the percentage content listened to calculations for the columns below.
+                        <li>Column 4 reflects the average age in terms of number of weeks the beneficiaries were
+                            active in the service, for those beneficiaries that were called for the last time in the
+                            specified date range. In case a beneficiary covers both mother pack and then child pack
+                            subscription because of live birth update, the number of weeks should be as follows:
+                            (End date of child pack – Activation date of mother pack)/7. Similarly, the success
+                            calls in both the packs will be taken into consideration for the percentage content
+                            listened to calculations for the columns below.
                         </li>
-                        <li>Column 5 should reflect total number of unique beneficiaries who have listened to more
-                            than 75% content on all the calls made to them including calls they have not answered
-                            during their entire service period, only for those beneficiaries that are were called
-                            for the last time in the specified date range.
+                        <li>Column 5 reflects total number of unique beneficiaries who have listened to more than
+                            75% content on all the calls made to them including calls they have not answered during
+                            their entire service period, only for those beneficiaries that were called for the last
+                            time in the specified period.
                         </li>
-                        <li>Column 6 should reflect total number of unique beneficiaries who have listened to 50 %
-                            to 75% content on all the calls made to them including calls they have not answered
-                            during their entire service period, only for those beneficiaries that are were called
-                            for the last time in the specified date range.
+                        <li>Column 6 reflects total number of unique beneficiaries who have listened to 50 % to 75%
+                            content on all the calls made to them including calls they have not answered during
+                            their entire service period, only for those beneficiaries that were called for the last
+                            time in the specified period.
                         </li>
-                        <li>Column 7 should reflect total number of unique beneficiaries who have listened to 25 %
-                            to 49.9% content on all the calls made to them including calls they have not answered
-                            during their entire service period, only for those beneficiaries that are were called
-                            for the last time in the specified date range.
+                        <li>Column 7 reflects total number of unique beneficiaries who have listened to 25 % to
+                            49.9% content on all the calls made to them including calls they have not answered
+                            during their entire service period, only for those beneficiaries that were called for
+                            the last time in the specified period.
                         </li>
-                        <li>Column 8 should reflect the number of unique beneficiaries who have listened to less
-                            than 25% content on all the calls made to them including calls they have not answered
-                            during their entire service period, only for those beneficiaries that are were called
-                            for the last time in the specified date range.
+                        <li>Column 8 reflects the number of unique beneficiaries who have listened to less than 25%
+                            content on all the calls made to them including calls they have not answered during
+                            their entire service period, only for those beneficiaries that were called for the last
+                            time in the specified period.
                         </li>
-                        <li>The State data should have drill down feature. A user may click on a valid State / UT
-                            name and the report would display district wise data for the selected state. Similarly a
-                            user may click on a valid district name and the report would display block wise data for
-                            the selected district. Clicking on “Grand Total” will have no effect. Further there
-                            should be a BACK button below the report to enable the user go up the hierarchy and
-                            enable the report to display data in the form just prior to the current display based on
-                            user clicking on a valid state/district name.
+                        <li>A user may click on a valid State / UT name and the report displays district wise data
+                            for the selected state. Similarly, when a user clicks on a valid district name the
+                            report displays block wise data for the selected district. Clicking on “Grand Total”
+                            will have no effect. To go back up the levels a user can click on the state / district /
+                            block name.
                         </li>
-                        <li>All columns except Serial Number should have sort feature – a toggle switch through
-                            which the user can sort the data of the entire table on the selected column in
-                            alternatively ascending or descending order.
+                        <li>All columns except Serial Number have sort feature – a toggle switch through which the
+                            user can sort the data of the entire table by clicking on the column heading in
+                            ascending or descending order.
                         </li>
                     </ol>
-                    <!--<p>In this report there could be one checkbox – “Include those deactivated after completing 75% of their respective packs”. When this checkbox is checked the value in column no 3 should include those beneficiaries who have deactivated themselves after completing the number of weeks that correspond to 75% of the duration of their respective packs and also those who have deactivated themselves in the last two weeks of their respective pack. The latter is included as they are most unlikely to re-register themselves again for listening to the remaining packs.</p>-->
                     <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
                     </p>
                     <p>2) Under "Reports Category" select "Kilkari Reports", then</p>
@@ -2802,84 +2788,76 @@
             </div>
             <div data-ng-hide="param!=='bcr'" style="display: inline-block">
                 <p style="font-size: 30px"><b>Kilkari Beneficiary Completion Report</b></p><br>
-                <p>This report gives the glance of the amount of content listened to by subscribers who have
-                    completed Kilkari project for a selected period. It gives us the average number of weeks the
-                    beneficiaries were in service, the number of beneficiaries who have listening more than 75%
-                    of content, between 50-75% of content, 25-50% of the content and less than the 25% of the
-                    content. For the bucket ‘less than 25%’ of the content listened, we are considering only
-                    those who have at least ONE successful call. The average for all these four buckets is
-                    calculated based on the content duration of the successful calls only for the period of
-                    service the beneficiary was active. </p>
-                <p>This report will support selection of calendar year, financial year, quarter, month and week
-                    and cannot support custom date range selection. This is because, beneficiaries who have
-                    answered at least one call and the related values, cannot be calculated real-time for every
-                    possible date combination and needs to be pre-calculated.</p>
-                <p>This report would give the details of the count for the selected period. This report will not
-                    have a graphical display.</p>
-                <p>The report displays the data in the following sequence of columns when logged in:</p>
+                <p>This report provides of the amount of content listened to by subscribers who have completed
+                    Kilkari subscription over a selected period. It gives us the average number of weeks the
+                    beneficiaries were active in service, the number of beneficiaries who have listened to
+                    average content in categories of: more than 75% of content, between 50-75% of content,
+                    25-50% of the content and less than the 25% of content. For the bucket ‘less than 25%’ of
+                    the content listened to, only those subscribers who have at least ONE successful call
+                    (answered call) are considered. The average for all these four buckets is calculated based
+                    on the content duration of the successful calls only for the period of service the
+                    subscriber remained active. </p>
+                <p>This report supports selection of calendar year, financial year, quarter, month and week and
+                    cannot support custom date range selection. </p>
+                <p>The report displays the data in the following sequence of columns:</p>
                 <ol>
                     <li>Serial Number</li>
                     <li>State</li>
-                    <li>Total beneficiaries Completed Program</li>
-                    <li>Average Number of Weeks in Service</li>
-                    <li>Beneficiaries who have listened more than 75% content (consolidated)</li>
-                    <li>Beneficiaries who have listened 50 to 75% content (consolidated)</li>
-                    <li>Beneficiaries who have listened 25 to 49.9% content (consolidated)</li>
-                    <li>Beneficiaries who have listened less than 25% content (consolidated)</li>
+                    <li>Total beneficiaries completed program</li>
+                    <li>Average number of weeks in service</li>
+                    <li>Count of beneficiaries who have listened to more than 75% content (consolidated – means
+                        average for the subscription period for each beneficiary)
+                    </li>
+                    <li>Count of beneficiaries who have listened to 50 to 75% content (consolidated)</li>
+                    <li>Count of beneficiaries who have listened to 25 to 49.9% content (consolidated)</li>
+                    <li>Count of beneficiaries who have listened to less than 25% content (consolidated)</li>
                 </ol>
                 <p>The rules governing the display components of the report is given below</p>
                 <ol>
                     <li>Total Number of unique beneficiaries (Column 3) is calculated as Total Number of Unique
-                        beneficiaries who have called for the last message of the respective pack during the
-                        specified date range and will not be called again after the completion of the specified
-                        date range.
+                        beneficiaries for whom call was attempted to deliver the last message of the respective
+                        Kilkari pack during the specified date range and will not be called again after the
+                        completion of the specified period.
                     </li>
-                    <li>Column 4 should reflect the average number of weeks for those beneficiaries that were
-                        called for the last time in the specified date range. In case a beneficiary covers both
-                        mother pack and then child pack subscription because of live birth update, the number of
-                        weeks should be as follows:
-                        (End date of child pack – Activation date of mother pack)/7
-
-                        The calculation should be particular for that pregnancy for the beneficiary and not for
-                        all the pregnancies over time.
-                        Similarly, the success calls in both the packs should be taken into consideration for
-                        the percentage content listened to calculations for the columns below.
+                    <li>Column 4 reflects the average age in terms of number of weeks the beneficiaries were
+                        active in the service, for those beneficiaries that were called for the last time in the
+                        specified date range. In case a beneficiary covers both mother pack and then child pack
+                        subscription because of live birth update, the number of weeks should be as follows:
+                        (End date of child pack – Activation date of mother pack)/7. Similarly, the success
+                        calls in both the packs will be taken into consideration for the percentage content
+                        listened to calculations for the columns below.
                     </li>
-                    <li>Column 5 should reflect total number of unique beneficiaries who have listened to more
-                        than 75% content on all the calls made to them including calls they have not answered
-                        during their entire service period, only for those beneficiaries that are were called
-                        for the last time in the specified date range.
+                    <li>Column 5 reflects total number of unique beneficiaries who have listened to more than
+                        75% content on all the calls made to them including calls they have not answered during
+                        their entire service period, only for those beneficiaries that were called for the last
+                        time in the specified period.
                     </li>
-                    <li>Column 6 should reflect total number of unique beneficiaries who have listened to 50 %
-                        to 75% content on all the calls made to them including calls they have not answered
-                        during their entire service period, only for those beneficiaries that are were called
-                        for the last time in the specified date range.
+                    <li>Column 6 reflects total number of unique beneficiaries who have listened to 50 % to 75%
+                        content on all the calls made to them including calls they have not answered during
+                        their entire service period, only for those beneficiaries that were called for the last
+                        time in the specified period.
                     </li>
-                    <li>Column 7 should reflect total number of unique beneficiaries who have listened to 25 %
-                        to 49.9% content on all the calls made to them including calls they have not answered
-                        during their entire service period, only for those beneficiaries that are were called
-                        for the last time in the specified date range.
+                    <li>Column 7 reflects total number of unique beneficiaries who have listened to 25 % to
+                        49.9% content on all the calls made to them including calls they have not answered
+                        during their entire service period, only for those beneficiaries that were called for
+                        the last time in the specified period.
                     </li>
-                    <li>Column 8 should reflect the number of unique beneficiaries who have listened to less
-                        than 25% content on all the calls made to them including calls they have not answered
-                        during their entire service period, only for those beneficiaries that are were called
-                        for the last time in the specified date range.
+                    <li>Column 8 reflects the number of unique beneficiaries who have listened to less than 25%
+                        content on all the calls made to them including calls they have not answered during
+                        their entire service period, only for those beneficiaries that were called for the last
+                        time in the specified period.
                     </li>
-                    <li>The State data should have drill down feature. A user may click on a valid State / UT
-                        name and the report would display district wise data for the selected state. Similarly a
-                        user may click on a valid district name and the report would display block wise data for
-                        the selected district. Clicking on “Grand Total” will have no effect. Further there
-                        should be a BACK button below the report to enable the user go up the hierarchy and
-                        enable the report to display data in the form just prior to the current display based on
-                        user clicking on a valid state/district name.
+                    <li>A user may click on a valid State / UT name and the report displays district wise data
+                        for the selected state. Similarly, when a user clicks on a valid district name the
+                        report displays block wise data for the selected district. Clicking on “Grand Total”
+                        will have no effect. To go back up the levels a user can click on the state / district /
+                        block name.
                     </li>
-                    <li>All columns except Serial Number should have sort feature – a toggle switch through
-                        which the user can sort the data of the entire table on the selected column in
-                        alternatively ascending or descending order.
+                    <li>All columns except Serial Number have sort feature – a toggle switch through which the
+                        user can sort the data of the entire table by clicking on the column heading in
+                        ascending or descending order.
                     </li>
-                </ol>
-                <!--<p>In this report there could be one checkbox – “Include those deactivated after completing 75% of their respective packs”. When this checkbox is checked the value in column no 3 should include those beneficiaries who have deactivated themselves after completing the number of weeks that correspond to 75% of the duration of their respective packs and also those who have deactivated themselves in the last two weeks of their respective pack. The latter is included as they are most unlikely to re-register themselves again for listening to the remaining packs.</p>-->
-                <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
+                </ol> <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
                 </p>
                 <p>2) Under "Reports Category" select "Kilkari Reports", then</p>
                 <img alt="user manual" src="./images/aggregates/Kilkari/KK_Ben_Comp_1.png"><br><br><br>
@@ -3754,84 +3732,76 @@
         </div>
         <div data-ng-hide="param!=='bcr'" style="display: inline-block">
             <p style="font-size: 30px"><b>Kilkari Beneficiary Completion Report</b></p><br>
-            <p>This report gives the glance of the amount of content listened to by subscribers who have
-                completed Kilkari project for a selected period. It gives us the average number of weeks the
-                beneficiaries were in service, the number of beneficiaries who have listening more than 75%
-                of content, between 50-75% of content, 25-50% of the content and less than the 25% of the
-                content. For the bucket ‘less than 25%’ of the content listened, we are considering only
-                those who have at least ONE successful call. The average for all these four buckets is
-                calculated based on the content duration of the successful calls only for the period of
-                service the beneficiary was active. </p>
-            <p>This report will support selection of calendar year, financial year, quarter, month and week
-                and cannot support custom date range selection. This is because, beneficiaries who have
-                answered at least one call and the related values, cannot be calculated real-time for every
-                possible date combination and needs to be pre-calculated.</p>
-            <p>This report would give the details of the count for the selected period. This report will not
-                have a graphical display.</p>
-            <p>The report displays the data in the following sequence of columns when logged in:</p>
+            <p>This report provides of the amount of content listened to by subscribers who have completed
+                Kilkari subscription over a selected period. It gives us the average number of weeks the
+                beneficiaries were active in service, the number of beneficiaries who have listened to
+                average content in categories of: more than 75% of content, between 50-75% of content,
+                25-50% of the content and less than the 25% of content. For the bucket ‘less than 25%’ of
+                the content listened to, only those subscribers who have at least ONE successful call
+                (answered call) are considered. The average for all these four buckets is calculated based
+                on the content duration of the successful calls only for the period of service the
+                subscriber remained active. </p>
+            <p>This report supports selection of calendar year, financial year, quarter, month and week and
+                cannot support custom date range selection. </p>
+            <p>The report displays the data in the following sequence of columns:</p>
             <ol>
                 <li>Serial Number</li>
                 <li>State</li>
-                <li>Total beneficiaries Completed Program</li>
-                <li>Average Number of Weeks in Service</li>
-                <li>Beneficiaries who have listened more than 75% content (consolidated)</li>
-                <li>Beneficiaries who have listened 50 to 75% content (consolidated)</li>
-                <li>Beneficiaries who have listened 25 to 49.9% content (consolidated)</li>
-                <li>Beneficiaries who have listened less than 25% content (consolidated)</li>
+                <li>Total beneficiaries completed program</li>
+                <li>Average number of weeks in service</li>
+                <li>Count of beneficiaries who have listened to more than 75% content (consolidated – means
+                    average for the subscription period for each beneficiary)
+                </li>
+                <li>Count of beneficiaries who have listened to 50 to 75% content (consolidated)</li>
+                <li>Count of beneficiaries who have listened to 25 to 49.9% content (consolidated)</li>
+                <li>Count of beneficiaries who have listened to less than 25% content (consolidated)</li>
             </ol>
             <p>The rules governing the display components of the report is given below</p>
             <ol>
                 <li>Total Number of unique beneficiaries (Column 3) is calculated as Total Number of Unique
-                    beneficiaries who have called for the last message of the respective pack during the
-                    specified date range and will not be called again after the completion of the specified
-                    date range.
+                    beneficiaries for whom call was attempted to deliver the last message of the respective
+                    Kilkari pack during the specified date range and will not be called again after the
+                    completion of the specified period.
                 </li>
-                <li>Column 4 should reflect the average number of weeks for those beneficiaries that were
-                    called for the last time in the specified date range. In case a beneficiary covers both
-                    mother pack and then child pack subscription because of live birth update, the number of
-                    weeks should be as follows:
-                    (End date of child pack – Activation date of mother pack)/7
-
-                    The calculation should be particular for that pregnancy for the beneficiary and not for
-                    all the pregnancies over time.
-                    Similarly, the success calls in both the packs should be taken into consideration for
-                    the percentage content listened to calculations for the columns below.
+                <li>Column 4 reflects the average age in terms of number of weeks the beneficiaries were
+                    active in the service, for those beneficiaries that were called for the last time in the
+                    specified date range. In case a beneficiary covers both mother pack and then child pack
+                    subscription because of live birth update, the number of weeks should be as follows:
+                    (End date of child pack – Activation date of mother pack)/7. Similarly, the success
+                    calls in both the packs will be taken into consideration for the percentage content
+                    listened to calculations for the columns below.
                 </li>
-                <li>Column 5 should reflect total number of unique beneficiaries who have listened to more
-                    than 75% content on all the calls made to them including calls they have not answered
-                    during their entire service period, only for those beneficiaries that are were called
-                    for the last time in the specified date range.
+                <li>Column 5 reflects total number of unique beneficiaries who have listened to more than
+                    75% content on all the calls made to them including calls they have not answered during
+                    their entire service period, only for those beneficiaries that were called for the last
+                    time in the specified period.
                 </li>
-                <li>Column 6 should reflect total number of unique beneficiaries who have listened to 50 %
-                    to 75% content on all the calls made to them including calls they have not answered
-                    during their entire service period, only for those beneficiaries that are were called
-                    for the last time in the specified date range.
+                <li>Column 6 reflects total number of unique beneficiaries who have listened to 50 % to 75%
+                    content on all the calls made to them including calls they have not answered during
+                    their entire service period, only for those beneficiaries that were called for the last
+                    time in the specified period.
                 </li>
-                <li>Column 7 should reflect total number of unique beneficiaries who have listened to 25 %
-                    to 49.9% content on all the calls made to them including calls they have not answered
-                    during their entire service period, only for those beneficiaries that are were called
-                    for the last time in the specified date range.
+                <li>Column 7 reflects total number of unique beneficiaries who have listened to 25 % to
+                    49.9% content on all the calls made to them including calls they have not answered
+                    during their entire service period, only for those beneficiaries that were called for
+                    the last time in the specified period.
                 </li>
-                <li>Column 8 should reflect the number of unique beneficiaries who have listened to less
-                    than 25% content on all the calls made to them including calls they have not answered
-                    during their entire service period, only for those beneficiaries that are were called
-                    for the last time in the specified date range.
+                <li>Column 8 reflects the number of unique beneficiaries who have listened to less than 25%
+                    content on all the calls made to them including calls they have not answered during
+                    their entire service period, only for those beneficiaries that were called for the last
+                    time in the specified period.
                 </li>
-                <li>The State data should have drill down feature. A user may click on a valid State / UT
-                    name and the report would display district wise data for the selected state. Similarly a
-                    user may click on a valid district name and the report would display block wise data for
-                    the selected district. Clicking on “Grand Total” will have no effect. Further there
-                    should be a BACK button below the report to enable the user go up the hierarchy and
-                    enable the report to display data in the form just prior to the current display based on
-                    user clicking on a valid state/district name.
+                <li>A user may click on a valid State / UT name and the report displays district wise data
+                    for the selected state. Similarly, when a user clicks on a valid district name the
+                    report displays block wise data for the selected district. Clicking on “Grand Total”
+                    will have no effect. To go back up the levels a user can click on the state / district /
+                    block name.
                 </li>
-                <li>All columns except Serial Number should have sort feature – a toggle switch through
-                    which the user can sort the data of the entire table on the selected column in
-                    alternatively ascending or descending order.
+                <li>All columns except Serial Number have sort feature – a toggle switch through which the
+                    user can sort the data of the entire table by clicking on the column heading in
+                    ascending or descending order.
                 </li>
-            </ol>
-            <!--<p>In this report there could be one checkbox – “Include those deactivated after completing 75% of their respective packs”. When this checkbox is checked the value in column no 3 should include those beneficiaries who have deactivated themselves after completing the number of weeks that correspond to 75% of the duration of their respective packs and also those who have deactivated themselves in the last two weeks of their respective pack. The latter is included as they are most unlikely to re-register themselves again for listening to the remaining packs.</p>-->
-            <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
+            </ol><p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
             </p>
             <p>2) Under "Reports Category" select "Kilkari Reports", then</p>
             <img alt="user manual" src="./images/aggregates/Kilkari/KK_Ben_Comp_1.png"><br><br><br>
