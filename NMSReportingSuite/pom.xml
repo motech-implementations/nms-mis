@@ -329,7 +329,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
                     <artifactId>maven-war-plugin</artifactId>
                     <version>2.4</version>
                     <configuration>
-                        <webappDirectory>/home/beehyv/apache-tomcat-7.0.73/webapps/NMSReportingSuite</webappDirectory>
+                        <!--<webappDirectory>/home/beehyv/apache-tomcat-7.0.73/webapps/NMSReportingSuite</webappDirectory>-->
                         <warSourceDirectory>src/main/webapp</warSourceDirectory>
                         <warName>NMSReportingSuite</warName>
                         <failOnMissingWebXml>false</failOnMissingWebXml>

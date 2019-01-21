@@ -1,7 +1,5 @@
 package com.beehyv.nmsreporting.model;
 
-import javassist.bytecode.annotation.LongMemberValue;
-
 import javax.persistence.*;
 import java.util.Date;
 
@@ -50,7 +48,10 @@ public class AggregateCumulativeBeneficiary {
     @Column(name="period_type", columnDefinition = "VARCHAR(45)")
     private String periodType;
 
-    public AggregateCumulativeBeneficiary(Integer id, String locationType, Long locationId, Date date, Long selfDeactivated, Long notAnswering, Long lowListenership, Long systemDeactivation, Long motherCompletion, Long childCompletion, Long joinedSubscription, String periodType) {
+    @Column(name="subscriptions_rejected",columnDefinition = "BIGINT(20)")
+    private Long subscriptionsRejected;
+
+    public AggregateCumulativeBeneficiary(Integer id, String locationType, Long locationId, Date date, Long selfDeactivated, Long notAnswering, Long lowListenership, Long systemDeactivation, Long motherCompletion, Long childCompletion, Long joinedSubscription, String periodType, Long subscriptionsRejected) {
         this.id = id;
         this.locationType = locationType;
         this.locationId = locationId;
@@ -62,7 +63,7 @@ public class AggregateCumulativeBeneficiary {
         this.motherCompletion = motherCompletion;
         this.childCompletion = childCompletion;
         this.joinedSubscription = joinedSubscription;
-        this.periodType = periodType;
+        this.subscriptionsRejected = subscriptionsRejected;
     }
 
     public AggregateCumulativeBeneficiary(){
@@ -163,5 +164,13 @@ public class AggregateCumulativeBeneficiary {
 
     public void setPeriodType(String periodType) {
         this.periodType = periodType;
+    }
+
+    public Long getSubscriptionsRejected() {
+        return subscriptionsRejected;
+    }
+
+    public void setSubscriptionsRejected(Long subscriptionsRejected) {
+        this.subscriptionsRejected = subscriptionsRejected;
     }
 }
