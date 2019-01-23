@@ -656,7 +656,6 @@ public class UserController {
 
             Date toDate = dateAdder(reportRequest.getToDate(),1);
 
-
                 List<MAPerformanceDto> summaryDto = new ArrayList<>();
                 List<AggregateCumulativeMA> cumulativesummaryReportStart = new ArrayList<>();
                 List<AggregateCumulativeMA> cumulativesummaryReportEnd = new ArrayList<>();
@@ -796,11 +795,14 @@ public class UserController {
                         summaryDto1.setAshasRegistered(a.getAshasRegistered() - b.getAshasRegistered());
                         summaryDto1.setAshasNotStarted(a.getAshasNotStarted() - b.getAshasNotStarted());
                         summaryDto1.setAshasStarted(a.getAshasStarted() - b.getAshasStarted());
+
                         summaryDto1.setAshasRejected(a.getAshasRejected() - b.getAshasRejected());
+
                         summaryDto1.setLocationType(a.getLocationType());
                         summaryDto1.setRegisteredNotCompletedStart(b.getAshasRegistered() - b.getAshasCompleted());
                         summaryDto1.setRegisteredNotCompletedend(a.getAshasRegistered() - a.getAshasCompleted());
                         summaryDto1.setRecordsReceived((a.getAshasRegistered() + a.getAshasRejected()) - (b.getAshasRejected() + b.getAshasRegistered()));
+
                         String locationType = a.getLocationType();
                         if (locationType.equalsIgnoreCase("State")) {
                             summaryDto1.setLocationName(stateDao.findByStateId(a.getLocationId().intValue()).getStateName());

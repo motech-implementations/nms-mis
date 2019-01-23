@@ -288,17 +288,17 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         List<KilkariSubscriber> kilkariSubscriberReportEnd = new ArrayList<>();
 
         if (reportRequest.getStateId() == 0) {
-            kilkariSubscriberReportStart.addAll(getKilkariSubscriberCount(0,"State",fromDate));
-            kilkariSubscriberReportEnd.addAll(getKilkariSubscriberCount(0,"State",toDate));
+            kilkariSubscriberReportStart.addAll(getKilkariSubscriberCount(0,"State",fromDate, reportRequest.getPeriodType()));
+            kilkariSubscriberReportEnd.addAll(getKilkariSubscriberCount(0,"State",toDate, reportRequest.getPeriodType()));
         } else if (reportRequest.getDistrictId() == 0) {
-            kilkariSubscriberReportStart.addAll(getKilkariSubscriberCount(reportRequest.getStateId(),"District",fromDate));
-            kilkariSubscriberReportEnd.addAll(getKilkariSubscriberCount(reportRequest.getStateId(),"District",toDate));
+            kilkariSubscriberReportStart.addAll(getKilkariSubscriberCount(reportRequest.getStateId(),"District",fromDate, reportRequest.getPeriodType()));
+            kilkariSubscriberReportEnd.addAll(getKilkariSubscriberCount(reportRequest.getStateId(),"District",toDate, reportRequest.getPeriodType()));
         } else if(reportRequest.getBlockId() == 0){
-            kilkariSubscriberReportStart.addAll(getKilkariSubscriberCount(reportRequest.getDistrictId(),"Block",fromDate));
-            kilkariSubscriberReportEnd.addAll(getKilkariSubscriberCount(reportRequest.getDistrictId(),"Block",toDate));
+            kilkariSubscriberReportStart.addAll(getKilkariSubscriberCount(reportRequest.getDistrictId(),"Block",fromDate, reportRequest.getPeriodType()));
+            kilkariSubscriberReportEnd.addAll(getKilkariSubscriberCount(reportRequest.getDistrictId(),"Block",toDate, reportRequest.getPeriodType()));
         } else {
-            kilkariSubscriberReportStart.addAll(getKilkariSubscriberCount(reportRequest.getBlockId(),"Subcentre",fromDate));
-            kilkariSubscriberReportEnd.addAll(getKilkariSubscriberCount(reportRequest.getBlockId(),"Subcentre",toDate));
+            kilkariSubscriberReportStart.addAll(getKilkariSubscriberCount(reportRequest.getBlockId(),"Subcentre",fromDate, reportRequest.getPeriodType()));
+            kilkariSubscriberReportEnd.addAll(getKilkariSubscriberCount(reportRequest.getBlockId(),"Subcentre",toDate, reportRequest.getPeriodType()));
         }
 
         if(!(kilkariSubscriberReportEnd.isEmpty()) && !(kilkariSubscriberReportStart.isEmpty())){
@@ -312,7 +312,10 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                         kilkariSubscriberDto.setLocationId(end.getLocationId());
                         kilkariSubscriberDto.setTotalSubscriptionsStart(start.getTotalSubscriptions());
                         kilkariSubscriberDto.setTotalSubscriptionsEnd(end.getTotalSubscriptions());
-                        kilkariSubscriberDto.setTotalRecordsRejected(end.getTotalSubscriptionsRejected()- start.getTotalSubscriptionsRejected());
+
+//                        kilkariSubscriberDto.setTotalRecordsRejected(end.getTotalSubscriptionsRejected()- start.getTotalSubscriptionsRejected());
+                        kilkariSubscriberDto.setTotalRecordsRejected(start.getTotalSubscriptionsRejected());
+
                         kilkariSubscriberDto.setTotalSubscriptionsCompleted(end.getTotalSubscriptionsCompleted()- start.getTotalSubscriptionsCompleted());
                         kilkariSubscriberDto.setTotalBeneficiaryRecordsAccepted(end.getTotalSubscriptionsAccepted()-start.getTotalSubscriptionsAccepted());
                         kilkariSubscriberDto.setTotalBeneficiaryRecordsEligible(end.getEligibleForSubscriptions()+end.getTotalSubscriptionsAccepted()  - start.getEligibleForSubscriptions()- start.getTotalSubscriptionsAccepted());
@@ -364,7 +367,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         return aggregateKilkariReportsDto;
     }
 
-    private List<KilkariSubscriber> getKilkariSubscriberCount(Integer locationId, String locationType, Date toDate){
+    private List<KilkariSubscriber> getKilkariSubscriberCount(Integer locationId, String locationType, Date toDate, String periodType){
         Date date = toDate;
         List<KilkariSubscriber> kilkariSubscribersCountList = new ArrayList<>();
 
@@ -374,7 +377,12 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 if(date.before(stateServiceDao.getServiceStartDateForState(state.getStateId(),"KILKARI"))){
                     date = stateServiceDao.getServiceStartDateForState(state.getStateId(),"KILKARI");
                 }
-                kilkariSubscribersCountList.add(kilkariSubscriberReportDao.getKilkariSubscriberCounts(state.getStateId(),locationType, date));
+
+                KilkariSubscriber kilkariSubscriber = kilkariSubscriberReportDao.getKilkariSubscriberCounts(state.getStateId(),locationType, date);
+                AggregateCumulativeBeneficiary subscriptionsStateRejected = aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary(Long.valueOf(state.getStateId()),"State", date, periodType);
+                kilkariSubscriber.setTotalSubscriptionsRejected(subscriptionsStateRejected.getSubscriptionsRejected().intValue());
+                kilkariSubscribersCountList.add(kilkariSubscriber);
+
                 date = toDate;
             }
         } else if(locationType.equalsIgnoreCase("District")){
@@ -382,7 +390,12 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 date = stateServiceDao.getServiceStartDateForState(locationId,"KILKARI");
             }
             List<District> districts = districtDao.getDistrictsOfState(locationId);
+
             KilkariSubscriber kilkariStateCounts = kilkariSubscriberReportDao.getKilkariSubscriberCounts(locationId,"State", date);
+
+            AggregateCumulativeBeneficiary subscriptionsStateRejected = aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary(Long.valueOf(locationId),"State", date, periodType);
+            kilkariStateCounts.setTotalSubscriptionsRejected(subscriptionsStateRejected.getSubscriptionsRejected().intValue());
+
             Integer totalRecordsReceived_MCTS_RCH = 0;
             Integer eligibleForSubscriptions = 0;
             Integer totalSubscriptionsCompleted = 0;
@@ -390,7 +403,13 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             Integer totalSubscriptionsRejected = 0;
             Integer totalSubscriptions = 0;
             for(District district:districts){
+
                 KilkariSubscriber kilkariDistrictCount = kilkariSubscriberReportDao.getKilkariSubscriberCounts(district.getDistrictId(),locationType, date);
+
+                AggregateCumulativeBeneficiary subscriptionsDistrictRejected = aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary(Long.valueOf(district.getDistrictId()),"District", date, periodType);
+                kilkariDistrictCount.setTotalSubscriptionsRejected(subscriptionsDistrictRejected.getSubscriptionsRejected().intValue());
+
+
                 kilkariSubscribersCountList.add(kilkariDistrictCount);
                 totalSubscriptions += kilkariDistrictCount.getTotalSubscriptions();
                 totalRecordsReceived_MCTS_RCH += kilkariDistrictCount.getTotalRecordsReceived_MCTS_RCH();
@@ -406,6 +425,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             kilkariNoDistrictCount.setTotalSubscriptionsCompleted(kilkariStateCounts.getTotalSubscriptionsCompleted()- totalSubscriptionsCompleted);
             kilkariNoDistrictCount.setTotalSubscriptionsAccepted(kilkariStateCounts.getTotalSubscriptionsAccepted()- totalSubscriptionsAccepted);
             kilkariNoDistrictCount.setTotalSubscriptionsRejected(kilkariStateCounts.getTotalSubscriptionsRejected()- totalSubscriptionsRejected);
+
             kilkariNoDistrictCount.setLocationType("DifferenceState");
             kilkariNoDistrictCount.setLocationId((long)-locationId);
             kilkariSubscribersCountList.add(kilkariNoDistrictCount);
@@ -414,7 +434,12 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 date = stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(),"KILKARI");
             }
             List<Block> blocks = blockDao.getBlocksOfDistrict(locationId);
+
             KilkariSubscriber kilkariDistrictCounts = kilkariSubscriberReportDao.getKilkariSubscriberCounts(locationId,"District", date);
+
+            AggregateCumulativeBeneficiary subscriptionsDistrictRejected = aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary(Long.valueOf(locationId),"District", date, periodType);
+            kilkariDistrictCounts.setTotalSubscriptionsRejected(subscriptionsDistrictRejected.getSubscriptionsRejected().intValue());
+
             Integer totalRecordsReceived_MCTS_RCH = 0;
             Integer eligibleForSubscriptions = 0;
             Integer totalSubscriptionsCompleted = 0;
@@ -423,6 +448,10 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             Integer totalSubscriptions = 0;
             for (Block block : blocks) {
                 KilkariSubscriber kilkariBlockCount = kilkariSubscriberReportDao.getKilkariSubscriberCounts(block.getBlockId(),locationType, date);
+
+                AggregateCumulativeBeneficiary subscriptionsBlockRejected = aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary(Long.valueOf(block.getBlockId()),"Block", date, periodType);
+                kilkariBlockCount.setTotalSubscriptionsRejected(subscriptionsBlockRejected.getSubscriptionsRejected().intValue());
+
                 kilkariSubscribersCountList.add(kilkariBlockCount);
                 totalSubscriptions += kilkariBlockCount.getTotalSubscriptions();
                 totalRecordsReceived_MCTS_RCH += kilkariBlockCount.getTotalRecordsReceived_MCTS_RCH();
@@ -438,6 +467,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             kilkariNoBlockCount.setTotalSubscriptionsCompleted(kilkariDistrictCounts.getTotalSubscriptionsCompleted()- totalSubscriptionsCompleted);
             kilkariNoBlockCount.setTotalSubscriptionsAccepted(kilkariDistrictCounts.getTotalSubscriptionsAccepted()- totalSubscriptionsAccepted);
             kilkariNoBlockCount.setTotalSubscriptionsRejected(kilkariDistrictCounts.getTotalSubscriptionsRejected()- totalSubscriptionsRejected);
+
             kilkariNoBlockCount.setLocationType("DifferenceDistrict");
             kilkariNoBlockCount.setLocationId((long)-locationId);
             kilkariSubscribersCountList.add(kilkariNoBlockCount);
@@ -451,6 +481,10 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 subcenters.addAll(healthSubFacilityDao.findByHealthFacilityId(hf.getHealthFacilityId()));
             }
             KilkariSubscriber blockCounts = kilkariSubscriberReportDao.getKilkariSubscriberCounts(locationId, "block", date);
+
+            AggregateCumulativeBeneficiary subscriptionsBlockRejected = aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary(Long.valueOf(locationId),"Block", date, periodType);
+            blockCounts.setTotalSubscriptionsRejected(subscriptionsBlockRejected.getSubscriptionsRejected().intValue());
+
             Integer totalRecordsReceived_MCTS_RCH = 0;
             Integer eligibleForSubscriptions = 0;
             Integer totalSubscriptionsCompleted = 0;
@@ -459,6 +493,10 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             Integer totalSubscriptions = 0;
             for(HealthSubFacility Subcenter : subcenters){
                 KilkariSubscriber kilkariSubcenterCount = kilkariSubscriberReportDao.getKilkariSubscriberCounts(Subcenter.getHealthSubFacilityId(),locationType, date);
+
+                AggregateCumulativeBeneficiary subscriptionsSubcentreRejected = aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary(Long.valueOf(Subcenter.getHealthSubFacilityId()),"Subcentre", date, periodType);
+                kilkariSubcenterCount.setTotalSubscriptionsRejected(subscriptionsSubcentreRejected.getSubscriptionsRejected().intValue());
+
                 kilkariSubscribersCountList.add(kilkariSubcenterCount);
                 totalSubscriptions += kilkariSubcenterCount.getTotalSubscriptions();
                 totalRecordsReceived_MCTS_RCH += kilkariSubcenterCount.getTotalRecordsReceived_MCTS_RCH();

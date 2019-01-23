@@ -5,10 +5,12 @@ import com.beehyv.nmsreporting.dao.AggregateCumulativeMADao;
 import com.beehyv.nmsreporting.model.AggregateCumulativeMA;
 import com.beehyv.nmsreporting.model.Block;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
@@ -31,7 +33,7 @@ public class  AggregateCumulativeMADaoImpl extends AbstractDao<Integer,Aggregate
                 }
                 
                 AggregateCumulativeMA aggregateCumulativeMA1 = (AggregateCumulativeMA)criteria.list().get(0);
-                aggregateCumulativeMA1.setAshasRejected(aggregateCumulativeMA1.getAshasRejected() == null?0:aggregateCumulativeMA1.getAshasRejected());
+//                aggregateCumulativeMA1.setAshasRejected(aggregateCumulativeMA1.getAshasRejected() == null?0:aggregateCumulativeMA1.getAshasRejected());
                 aggregateCumulativeMA1.setAshasStarted(aggregateCumulativeMA1.getAshasStarted() == null?0:aggregateCumulativeMA1.getAshasStarted());
                 aggregateCumulativeMA1.setAshasRegistered(aggregateCumulativeMA1.getAshasRegistered() == null?0:aggregateCumulativeMA1.getAshasRegistered());
                 aggregateCumulativeMA1.setAshasCompleted(aggregateCumulativeMA1.getAshasCompleted() == null?0:aggregateCumulativeMA1.getAshasCompleted());
@@ -39,8 +41,15 @@ public class  AggregateCumulativeMADaoImpl extends AbstractDao<Integer,Aggregate
                 aggregateCumulativeMA1.setAshasNotStarted(aggregateCumulativeMA1.getAshasNotStarted() == null?0:aggregateCumulativeMA1.getAshasNotStarted());
 
 
+                Query query = getSession().createSQLQuery("select count(*) from flw_import_rejection f  " +
+                        "where f.type = 'ASHA' and f.accepted = 0 and f.creation_date < :toDate and f.state_id = :locationId");
+
+                query.setParameter("toDate",toDate);
+                query.setParameter("locationId",locationId);
+
+
+                aggregateCumulativeMA1.setAshasRejected(((BigInteger) query.uniqueResult()).intValue());
+
                    return aggregateCumulativeMA1;
-
-
             };
         }

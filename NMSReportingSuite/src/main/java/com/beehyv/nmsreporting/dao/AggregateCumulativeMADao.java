@@ -10,4 +10,5 @@ public interface AggregateCumulativeMADao {
 
 
     AggregateCumulativeMA getMACumulativeSummery(Integer locationId, String locationType, Date toDate);
-        }
+
+}
