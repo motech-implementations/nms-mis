@@ -1,6 +1,6 @@
 <script type="text/javascript">
     if (typeof nmsReportsApp === 'undefined') {
-        window.location.assign('https://rchivrreports.in/#!/login');
+        window.location.assign('http://192.168.200.112:8080/#!/login');
     }
 </script>
 <div class="container-fluid" data-ng-controller="mobileAcademyController" style="padding-left: 30px">
@@ -133,7 +133,8 @@
                             <li>
                                 Circle name – this is the telecom circle name as defined by TRAI (Telecom Regulatory
                                 Authority of India), because this user is not registered with the backend system, no
-                                profile information is available, therefore the system cannot provide the state name.<br>
+                                profile information is available, therefore the system cannot provide the state
+                                name.<br>
                                 Please note the telecom circles that cover the following state
                                 <ol>
                                     <li>
@@ -205,14 +206,52 @@
                         <p style="font-size: 30px"><b>Cumulative Inactive Users</b></p><br>
                         <p>This report gives the line-listing of all such ASHAs who have not yet started the course as
                             on date. The State / UT can act on this report and contact the ASHAs and motivate them to
-                            access the Mobile Academy course and complete the course. In this way we can bring a higher
-                            percentage of ASHAs accessing and completing the Mobile Academy program. This report is a
+                            access the Mobile Academy course and complete the course. In this way a higher percentage of
+                            ASHAs accessing and completing the Mobile Academy program can be achieved. This report is a
                             very useful actionable report for the State / UT to monitor the ASHAs accessing the Mobile
-                            Academy course.</p>
-                        <p>This line listing report would be available for download for the respective district and
-                            block users. These reports would be e-mailed to the respective block and district users on
-                            the day after it was generated. A summary mail giving the district wise break-up of the
-                            count of ASHA would be sent to the State / UT users on the same day.</p>
+                            Academy course. It has following columns:</p>
+                        <ol>
+                            <li>
+                                S. No.
+                            </li>
+                            <li>
+                                ASHA Name – name of the ASHA
+                            </li>
+                            <li>
+                                ASHA MCTS/RCH ID – ASHA ID as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Mobile Number – ASHA’s mobile number as received from MCTS/RCH
+                            </li>
+                            <li>
+                                State – ASHA’s state as received from MCTS/RCH
+                            </li>
+                            <li>
+                                District – ASHA’s district as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Taluka – ASHA’s taluka as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Health Block – ASHA’s health block as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Health Facility – ASHA’s health facility as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Health Sub Facility – ASHA’s health sub facility as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Village – AHSA’s Village as received from MCTS/RCH
+                            </li>
+                            <li>
+                                ASHA Creation Date – this is the date when ASHA records came in to the Mobile Academy
+                                system for the first time
+                            </li>
+                            <li>
+                                ASHA Job Status – ASHA’s GF Status as received from MCTS/RCH
+                            </li>
+                        </ol>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
                         </p>
@@ -242,19 +281,58 @@
 
                     <div data-ng-hide="param!=='arr'">
                         <p style="font-size: 30px"><b>Asha Rejected Records</b></p><br>
-                        <p>This report gives the line-listing of all beneficiaries whose registered mobile numbers are
-                            either incorrect or are duplicate. These mobile numbers had flown in to the IVRS system but
-                            were rejected by the acceptance logic run by the IVRS system. The report contains the MCTS
-                            or RCH IDs. This report would be generated once every week preferably on Sunday. This line
-                            listing report would be available for download for the respective district and block users.
-                            These reports would be e-mailed to the respective block and district users on the day after
-                            it was generated –on Tuesday. A summary mail giving the district wise break-up of the count
-                            of beneficiaries would be sent to the State / UT users on the same day. The State / UT can
-                            act upon this report and contact the ASHAs in the field and ask them to contact the said
-                            beneficiaries and register their correct mobile numbers in the RCH Application. In this way
-                            we can correct the mobile numbers of beneficiaries and bring a higher percentage of
-                            beneficiaries under the ambit of Kilkari program. This report is a very useful actionable
-                            report for the State / UT to correct the beneficiary contact mobile number. </p>
+                        <p>This report gives the line-listing of all ASHAs whose records are received from MCTS / RCH
+                            but got rejected by the acceptance logic run by the Mobile Academy system, because the
+                            registered mobile numbers in the records are either incorrect or are duplicate. . The report
+                            contains the MCTS or RCH IDs. This report is generated once every week. This line listing
+                            report is available for download for the respective district and block users. The State / UT
+                            / district / block can act upon this report and contact the ASHAs in the field and ask them
+                            to update / correct their mobile numbers in the MCTS/RCH Application. This report is a very
+                            useful actionable report for the State / UT / district / block to correct the ASHA contact
+                            mobile number. It has following columns:</p>
+                        <ol>
+                            <li>
+                                S. No.
+                            </li>
+                            <li>
+                                ASHA Name – name of the ASHA
+                            </li>
+                            <li>
+                                ASHA MCTS/RCH ID – ASHA ID as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Mobile Number – ASHA’s mobile number as received from MCTS/RCH
+                            </li>
+                            <li>
+                                State – ASHA’s state as received from MCTS/RCH
+                            </li>
+                            <li>
+                                District – ASHA’s district as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Taluka – ASHA’s taluka as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Health Block – ASHA’s health block as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Health Facility – ASHA’s health facility as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Health Sub Facility – ASHA’s health sub facility as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Village – AHSA’s Village as received from MCTS/RCH
+                            </li>
+                            <li>
+                                ASHA Job Status – ASHA’s GF Status as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Reason for rejection – this gives why the ASHA record was rejected, it could be because
+                                the mobile number was incorrect, or duplicate in the database – i.e. is already assigned
+                                to another ASHA who is active on Mobile Academy.
+                            </li>
+                        </ol>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
                         </p>
@@ -390,7 +468,8 @@
                             <li>
                                 Circle name – this is the telecom circle name as defined by TRAI (Telecom Regulatory
                                 Authority of India), because this user is not registered with the backend system, no
-                                profile information is available, therefore the system cannot provide the state name.<br>
+                                profile information is available, therefore the system cannot provide the state
+                                name.<br>
                                 Please note the telecom circles that cover the following state
                                 <ol>
                                     <li>
@@ -458,18 +537,56 @@
                         <img alt="user manual" src="./images/State/MA2/SA_MA_CWAU_Reset.png"><br>
                     </div>
 
-                    <div data-ng-hide="param!=='ciu'">
+                    <div data-ng-hide="param!=='ciu'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ">
                         <p style="font-size: 30px"><b>Cumulative Inactive Users</b></p><br>
                         <p>This report gives the line-listing of all such ASHAs who have not yet started the course as
                             on date. The State / UT can act on this report and contact the ASHAs and motivate them to
-                            access the Mobile Academy course and complete the course. In this way we can bring a higher
-                            percentage of ASHAs accessing and completing the Mobile Academy program. This report is a
+                            access the Mobile Academy course and complete the course. In this way a higher percentage of
+                            ASHAs accessing and completing the Mobile Academy program can be achieved. This report is a
                             very useful actionable report for the State / UT to monitor the ASHAs accessing the Mobile
-                            Academy course.</p>
-                        <p>This line listing report would be available for download for the respective district and
-                            block users. These reports would be e-mailed to the respective block and district users on
-                            the day after it was generated. A summary mail giving the district wise break-up of the
-                            count of ASHA would be sent to the State / UT users on the same day.</p>
+                            Academy course. It has following columns:</p>
+                        <ol>
+                            <li>
+                                S. No.
+                            </li>
+                            <li>
+                                ASHA Name – name of the ASHA
+                            </li>
+                            <li>
+                                ASHA MCTS/RCH ID – ASHA ID as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Mobile Number – ASHA’s mobile number as received from MCTS/RCH
+                            </li>
+                            <li>
+                                State – ASHA’s state as received from MCTS/RCH
+                            </li>
+                            <li>
+                                District – ASHA’s district as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Taluka – ASHA’s taluka as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Health Block – ASHA’s health block as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Health Facility – ASHA’s health facility as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Health Sub Facility – ASHA’s health sub facility as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Village – AHSA’s Village as received from MCTS/RCH
+                            </li>
+                            <li>
+                                ASHA Creation Date – this is the date when ASHA records came in to the Mobile Academy
+                                system for the first time
+                            </li>
+                            <li>
+                                ASHA Job Status – ASHA’s GF Status as received from MCTS/RCH
+                            </li>
+                        </ol>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
                         </p>
@@ -497,19 +614,58 @@
 
                     <div data-ng-hide="param!=='arr'">
                         <p style="font-size: 30px"><b>Asha Rejected Records</b></p><br>
-                        <p>This report gives the line-listing of all beneficiaries whose registered mobile numbers are
-                            either incorrect or are duplicate. These mobile numbers had flown in to the IVRS system but
-                            were rejected by the acceptance logic run by the IVRS system. The report contains the MCTS
-                            or RCH IDs. This report would be generated once every week preferably on Sunday. This line
-                            listing report would be available for download for the respective district and block users.
-                            These reports would be e-mailed to the respective block and district users on the day after
-                            it was generated –on Tuesday. A summary mail giving the district wise break-up of the count
-                            of beneficiaries would be sent to the State / UT users on the same day. The State / UT can
-                            act upon this report and contact the ASHAs in the field and ask them to contact the said
-                            beneficiaries and register their correct mobile numbers in the RCH Application. In this way
-                            we can correct the mobile numbers of beneficiaries and bring a higher percentage of
-                            beneficiaries under the ambit of Kilkari program. This report is a very useful actionable
-                            report for the State / UT to correct the beneficiary contact mobile number. </p>
+                        <p>This report gives the line-listing of all ASHAs whose records are received from MCTS / RCH
+                            but got rejected by the acceptance logic run by the Mobile Academy system, because the
+                            registered mobile numbers in the records are either incorrect or are duplicate. . The report
+                            contains the MCTS or RCH IDs. This report is generated once every week. This line listing
+                            report is available for download for the respective district and block users. The State / UT
+                            / district / block can act upon this report and contact the ASHAs in the field and ask them
+                            to update / correct their mobile numbers in the MCTS/RCH Application. This report is a very
+                            useful actionable report for the State / UT / district / block to correct the ASHA contact
+                            mobile number. It has following columns:</p>
+                        <ol>
+                            <li>
+                                S. No.
+                            </li>
+                            <li>
+                                ASHA Name – name of the ASHA
+                            </li>
+                            <li>
+                                ASHA MCTS/RCH ID – ASHA ID as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Mobile Number – ASHA’s mobile number as received from MCTS/RCH
+                            </li>
+                            <li>
+                                State – ASHA’s state as received from MCTS/RCH
+                            </li>
+                            <li>
+                                District – ASHA’s district as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Taluka – ASHA’s taluka as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Health Block – ASHA’s health block as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Health Facility – ASHA’s health facility as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Health Sub Facility – ASHA’s health sub facility as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Village – AHSA’s Village as received from MCTS/RCH
+                            </li>
+                            <li>
+                                ASHA Job Status – ASHA’s GF Status as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Reason for rejection – this gives why the ASHA record was rejected, it could be because
+                                the mobile number was incorrect, or duplicate in the database – i.e. is already assigned
+                                to another ASHA who is active on Mobile Academy.
+                            </li>
+                        </ol>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
                         </p>
@@ -641,7 +797,8 @@
                             <li>
                                 Circle name – this is the telecom circle name as defined by TRAI (Telecom Regulatory
                                 Authority of India), because this user is not registered with the backend system, no
-                                profile information is available, therefore the system cannot provide the state name.<br>
+                                profile information is available, therefore the system cannot provide the state
+                                name.<br>
                                 Please note the telecom circles that cover the following state
                                 <ol>
                                     <li>
@@ -709,18 +866,56 @@
                         <img alt="user manual" src="./images/District/MA/DA_MA_CWAU_sub.png"><br>
                     </div>
 
-                    <div data-ng-hide="param!=='ciu'">
+                    <div data-ng-hide="param!=='ciu'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ">
                         <p style="font-size: 30px"><b>Cumulative Inactive Users</b></p><br>
                         <p>This report gives the line-listing of all such ASHAs who have not yet started the course as
                             on date. The State / UT can act on this report and contact the ASHAs and motivate them to
-                            access the Mobile Academy course and complete the course. In this way we can bring a higher
-                            percentage of ASHAs accessing and completing the Mobile Academy program. This report is a
+                            access the Mobile Academy course and complete the course. In this way a higher percentage of
+                            ASHAs accessing and completing the Mobile Academy program can be achieved. This report is a
                             very useful actionable report for the State / UT to monitor the ASHAs accessing the Mobile
-                            Academy course.</p>
-                        <p>This line listing report would be available for download for the respective district and
-                            block users. These reports would be e-mailed to the respective block and district users on
-                            the day after it was generated. A summary mail giving the district wise break-up of the
-                            count of ASHA would be sent to the State / UT users on the same day.</p>
+                            Academy course. It has following columns:</p>
+                        <ol>
+                            <li>
+                                S. No.
+                            </li>
+                            <li>
+                                ASHA Name – name of the ASHA
+                            </li>
+                            <li>
+                                ASHA MCTS/RCH ID – ASHA ID as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Mobile Number – ASHA’s mobile number as received from MCTS/RCH
+                            </li>
+                            <li>
+                                State – ASHA’s state as received from MCTS/RCH
+                            </li>
+                            <li>
+                                District – ASHA’s district as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Taluka – ASHA’s taluka as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Health Block – ASHA’s health block as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Health Facility – ASHA’s health facility as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Health Sub Facility – ASHA’s health sub facility as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Village – AHSA’s Village as received from MCTS/RCH
+                            </li>
+                            <li>
+                                ASHA Creation Date – this is the date when ASHA records came in to the Mobile Academy
+                                system for the first time
+                            </li>
+                            <li>
+                                ASHA Job Status – ASHA’s GF Status as received from MCTS/RCH
+                            </li>
+                        </ol>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
                         </p>
@@ -744,19 +939,58 @@
 
                     <div data-ng-hide="param!=='arr'">
                         <p style="font-size: 30px"><b>Asha Rejected Records</b></p><br>
-                        <p>This report gives the line-listing of all beneficiaries whose registered mobile numbers are
-                            either incorrect or are duplicate. These mobile numbers had flown in to the IVRS system but
-                            were rejected by the acceptance logic run by the IVRS system. The report contains the MCTS
-                            or RCH IDs. This report would be generated once every week preferably on Sunday. This line
-                            listing report would be available for download for the respective district and block users.
-                            These reports would be e-mailed to the respective block and district users on the day after
-                            it was generated –on Tuesday. A summary mail giving the district wise break-up of the count
-                            of beneficiaries would be sent to the State / UT users on the same day. The State / UT can
-                            act upon this report and contact the ASHAs in the field and ask them to contact the said
-                            beneficiaries and register their correct mobile numbers in the RCH Application. In this way
-                            we can correct the mobile numbers of beneficiaries and bring a higher percentage of
-                            beneficiaries under the ambit of Kilkari program. This report is a very useful actionable
-                            report for the State / UT to correct the beneficiary contact mobile number. </p>
+                        <p>This report gives the line-listing of all ASHAs whose records are received from MCTS / RCH
+                            but got rejected by the acceptance logic run by the Mobile Academy system, because the
+                            registered mobile numbers in the records are either incorrect or are duplicate. . The report
+                            contains the MCTS or RCH IDs. This report is generated once every week. This line listing
+                            report is available for download for the respective district and block users. The State / UT
+                            / district / block can act upon this report and contact the ASHAs in the field and ask them
+                            to update / correct their mobile numbers in the MCTS/RCH Application. This report is a very
+                            useful actionable report for the State / UT / district / block to correct the ASHA contact
+                            mobile number. It has following columns:</p>
+                        <ol>
+                            <li>
+                                S. No.
+                            </li>
+                            <li>
+                                ASHA Name – name of the ASHA
+                            </li>
+                            <li>
+                                ASHA MCTS/RCH ID – ASHA ID as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Mobile Number – ASHA’s mobile number as received from MCTS/RCH
+                            </li>
+                            <li>
+                                State – ASHA’s state as received from MCTS/RCH
+                            </li>
+                            <li>
+                                District – ASHA’s district as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Taluka – ASHA’s taluka as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Health Block – ASHA’s health block as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Health Facility – ASHA’s health facility as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Health Sub Facility – ASHA’s health sub facility as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Village – AHSA’s Village as received from MCTS/RCH
+                            </li>
+                            <li>
+                                ASHA Job Status – ASHA’s GF Status as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Reason for rejection – this gives why the ASHA record was rejected, it could be because
+                                the mobile number was incorrect, or duplicate in the database – i.e. is already assigned
+                                to another ASHA who is active on Mobile Academy.
+                            </li>
+                        </ol>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
                         </p>
@@ -881,7 +1115,8 @@
                             <li>
                                 Circle name – this is the telecom circle name as defined by TRAI (Telecom Regulatory
                                 Authority of India), because this user is not registered with the backend system, no
-                                profile information is available, therefore the system cannot provide the state name.<br>
+                                profile information is available, therefore the system cannot provide the state
+                                name.<br>
                                 Please note the telecom circles that cover the following state
                                 <ol>
                                     <li>
@@ -948,18 +1183,56 @@
                         <img alt="user manual" src="./images/Block/MA1/BU_MA_CWAU_Reset.png"><br>
                     </div>
 
-                    <div data-ng-hide="param!=='ciu'">
+                    <div data-ng-hide="param!=='ciu'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ">
                         <p style="font-size: 30px"><b>Cumulative Inactive Users</b></p><br>
                         <p>This report gives the line-listing of all such ASHAs who have not yet started the course as
                             on date. The State / UT can act on this report and contact the ASHAs and motivate them to
-                            access the Mobile Academy course and complete the course. In this way we can bring a higher
-                            percentage of ASHAs accessing and completing the Mobile Academy program. This report is a
+                            access the Mobile Academy course and complete the course. In this way a higher percentage of
+                            ASHAs accessing and completing the Mobile Academy program can be achieved. This report is a
                             very useful actionable report for the State / UT to monitor the ASHAs accessing the Mobile
-                            Academy course.</p>
-                        <p>This line listing report would be available for download for the respective district and
-                            block users. These reports would be e-mailed to the respective block and district users on
-                            the day after it was generated. A summary mail giving the district wise break-up of the
-                            count of ASHA would be sent to the State / UT users on the same day.</p>
+                            Academy course. It has following columns:</p>
+                        <ol>
+                            <li>
+                                S. No.
+                            </li>
+                            <li>
+                                ASHA Name – name of the ASHA
+                            </li>
+                            <li>
+                                ASHA MCTS/RCH ID – ASHA ID as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Mobile Number – ASHA’s mobile number as received from MCTS/RCH
+                            </li>
+                            <li>
+                                State – ASHA’s state as received from MCTS/RCH
+                            </li>
+                            <li>
+                                District – ASHA’s district as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Taluka – ASHA’s taluka as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Health Block – ASHA’s health block as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Health Facility – ASHA’s health facility as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Health Sub Facility – ASHA’s health sub facility as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Village – AHSA’s Village as received from MCTS/RCH
+                            </li>
+                            <li>
+                                ASHA Creation Date – this is the date when ASHA records came in to the Mobile Academy
+                                system for the first time
+                            </li>
+                            <li>
+                                ASHA Job Status – ASHA’s GF Status as received from MCTS/RCH
+                            </li>
+                        </ol>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
                         </p>
@@ -982,19 +1255,58 @@
 
                     <div data-ng-hide="param!=='arr'">
                         <p style="font-size: 30px"><b>Asha Rejected Records</b></p><br>
-                        <p>This report gives the line-listing of all beneficiaries whose registered mobile numbers are
-                            either incorrect or are duplicate. These mobile numbers had flown in to the IVRS system but
-                            were rejected by the acceptance logic run by the IVRS system. The report contains the MCTS
-                            or RCH IDs. This report would be generated once every week preferably on Sunday. This line
-                            listing report would be available for download for the respective district and block users.
-                            These reports would be e-mailed to the respective block and district users on the day after
-                            it was generated –on Tuesday. A summary mail giving the district wise break-up of the count
-                            of beneficiaries would be sent to the State / UT users on the same day. The State / UT can
-                            act upon this report and contact the ASHAs in the field and ask them to contact the said
-                            beneficiaries and register their correct mobile numbers in the RCH Application. In this way
-                            we can correct the mobile numbers of beneficiaries and bring a higher percentage of
-                            beneficiaries under the ambit of Kilkari program. This report is a very useful actionable
-                            report for the State / UT to correct the beneficiary contact mobile number. </p>
+                        <p>This report gives the line-listing of all ASHAs whose records are received from MCTS / RCH
+                            but got rejected by the acceptance logic run by the Mobile Academy system, because the
+                            registered mobile numbers in the records are either incorrect or are duplicate. . The report
+                            contains the MCTS or RCH IDs. This report is generated once every week. This line listing
+                            report is available for download for the respective district and block users. The State / UT
+                            / district / block can act upon this report and contact the ASHAs in the field and ask them
+                            to update / correct their mobile numbers in the MCTS/RCH Application. This report is a very
+                            useful actionable report for the State / UT / district / block to correct the ASHA contact
+                            mobile number. It has following columns:</p>
+                        <ol>
+                            <li>
+                                S. No.
+                            </li>
+                            <li>
+                                ASHA Name – name of the ASHA
+                            </li>
+                            <li>
+                                ASHA MCTS/RCH ID – ASHA ID as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Mobile Number – ASHA’s mobile number as received from MCTS/RCH
+                            </li>
+                            <li>
+                                State – ASHA’s state as received from MCTS/RCH
+                            </li>
+                            <li>
+                                District – ASHA’s district as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Taluka – ASHA’s taluka as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Health Block – ASHA’s health block as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Health Facility – ASHA’s health facility as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Health Sub Facility – ASHA’s health sub facility as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Village – AHSA’s Village as received from MCTS/RCH
+                            </li>
+                            <li>
+                                ASHA Job Status – ASHA’s GF Status as received from MCTS/RCH
+                            </li>
+                            <li>
+                                Reason for rejection – this gives why the ASHA record was rejected, it could be because
+                                the mobile number was incorrect, or duplicate in the database – i.e. is already assigned
+                                to another ASHA who is active on Mobile Academy.
+                            </li>
+                        </ol>
                         <p>Steps to download the reports</p>
                         <p>1) The users can login into the system using the URL: <a href="https://rchivrreports.in/">https://rchivrreports.in/</a>.
                         </p>
