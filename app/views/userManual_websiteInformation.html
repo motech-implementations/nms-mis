@@ -1,6 +1,6 @@
 <script type="text/javascript">
     if (typeof nmsReportsApp === 'undefined') {
-        window.location.assign('http://localhost:8080/#!/login');
+        window.location.assign('http://192.168.200.112:8080/#!/login');
     }
 </script>
 <div class="container-fluid" data-ng-controller="websiteInformationController" style="padding-left: 30px">
@@ -116,15 +116,14 @@
         <div>2) This section allows a user to provide any feedback a user might want to convey on the experience on the
             MIS portal, as well as suggest any improvements.
             A user needs to fill in all mandatory details, marked with an asterisk(<span style="color: red;"> * </span>),
-            Enter the correct captcha value and submit
+            click the check box and submit
         </div>
         <img src="images/UMfeedback.png" alt="feedbackPage">
         <br>
-        <img src="images/feedbacksuccess.png" alt="feedbackPage">
         <br/><br/>
-        <p>3) If user enters wrong enters wrong captcha,a notification as shown in the screenshot below will be
+        <p>3) If user did not click the captcha check box,a notification as shown in the screenshot below will be
             shown.</p>
-        <img src="images/invalidcaptcha.png" alt="invalid captcha">
+        <img src="images/invalidcaptchaf.png" alt="invalid captcha">
         <br/><br/>
         <p>4) A notification confirming successful submission of feedback will be shown</p>
         <img src="images/feedbacksuccess.png" alt="invalid captcha">
@@ -140,10 +139,10 @@
         <img src="images/UMcontactUs1.png" alt="contactUs">
         <p>8) Fill the Contact us form with all mandatory details marked with an asterisk(<span
                 style="color: red;"> * </span>),
-            Enter the correct captcha value and submit</p>
+            click the captcha check box and submit</p>
         <img src="images/contactussuccess.png" alt="feedbackPage">
         <br><br>
-        <p>9) If user enters wrong enters wrong captcha,a notification as shown in the screenshot below will be
+        <p>9) If user did not click the check box,a notification as shown in the screenshot below will be
             shown.</p>
         <img src="images/invalidcaptcha.png" alt="invalid captcha">
         <br/><br/>
@@ -157,7 +156,7 @@
         <p>2) Incase of forgot password user will click on the forgot password link to open forgot password page.</p>
         <img src="images/forgotPassword-2.png" alt="forgotpassword Page">
         <br/><br/>
-        <p>3) Enter username in the form and enter the correct captcha and click submit.Once username or email ID is
+        <p>3) Enter username in the form and click the captcha check box and click submit.Once username or email ID is
             identified the system will send a new system generated password to user’s email id.A notification as shown
             in the screenshot below will be shown.</p>
         <img src="images/forgotPassword-3.png" alt="forgotpassword page">

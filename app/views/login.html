@@ -1,6 +1,6 @@
 <script type="text/javascript">
 	if(typeof nmsReportsApp === 'undefined'){
-        window.location.assign('http://localhost:8080/#!/login');
+        window.location.assign('http://192.168.200.112:8080/#!/login');
 	}
 </script>
 <div data-ng-app="nmsReports" class="block login"  data-ng-controller="LoginController">
@@ -101,7 +101,7 @@
 
 				<input type="hidden" name="fromUrl" data-ng-model="user.fromUrl" value={{preUrl}}>
 
-					<div style="margin-bottom: 15px;padding-left: 10px" vc-recaptcha key="'6LcJgYgUAAAAANaRqYM6UFUaY8H3pPUTK6Tt1qsL'"></div>
+					<div style="margin-bottom: 15px;padding-left: 6px;" vc-recaptcha key="'6LcJgYgUAAAAANaRqYM6UFUaY8H3pPUTK6Tt1qsL'"></div>
 
                 <div class="row">
 
