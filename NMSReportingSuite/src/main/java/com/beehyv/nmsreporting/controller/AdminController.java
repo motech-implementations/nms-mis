@@ -6,16 +6,11 @@ import com.beehyv.nmsreporting.business.ModificationTrackerService;
 import com.beehyv.nmsreporting.business.UserService;
 import com.beehyv.nmsreporting.dao.StateServiceDao;
 import com.beehyv.nmsreporting.entity.PasswordDto;
-import com.beehyv.nmsreporting.enums.AccessLevel;
-import com.beehyv.nmsreporting.enums.AccessType;
 import com.beehyv.nmsreporting.enums.ModificationType;
 import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.ModificationTracker;
 import com.beehyv.nmsreporting.model.State;
 import com.beehyv.nmsreporting.model.User;
-import com.beehyv.nmsreporting.utils.Global;
-//import com.sun.corba.se.impl.orbutil.closure.Constant;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.ParseException;
 import org.springframework.stereotype.Controller;
@@ -26,9 +21,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.*;
 
-import static com.beehyv.nmsreporting.enums.AccessType.MASTER_ADMIN;
 import static com.beehyv.nmsreporting.enums.ReportType.maCourse;
 import static com.beehyv.nmsreporting.utils.Global.retrieveDocuments;
+
+//import com.sun.corba.se.impl.orbutil.closure.Constant;
 
 
 /**
