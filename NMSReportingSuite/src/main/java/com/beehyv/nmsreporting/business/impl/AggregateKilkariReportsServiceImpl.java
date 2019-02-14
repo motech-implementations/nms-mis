@@ -369,6 +369,8 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
 
     private List<KilkariSubscriber> getKilkariSubscriberCount(Integer locationId, String locationType, Date toDate, String periodType){
         Date date = toDate;
+        Date date1 = toDate;
+
         List<KilkariSubscriber> kilkariSubscribersCountList = new ArrayList<>();
 
         if(locationType.equalsIgnoreCase("State")) {
@@ -379,7 +381,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 }
 
                 KilkariSubscriber kilkariSubscriber = kilkariSubscriberReportDao.getKilkariSubscriberCounts(state.getStateId(),locationType, date);
-                AggregateCumulativeBeneficiary subscriptionsStateRejected = aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary(Long.valueOf(state.getStateId()),"State", date, periodType);
+                AggregateCumulativeBeneficiary subscriptionsStateRejected = aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary(Long.valueOf(state.getStateId()),"State", date1, periodType);
                 kilkariSubscriber.setTotalSubscriptionsRejected(subscriptionsStateRejected.getSubscriptionsRejected().intValue());
                 kilkariSubscribersCountList.add(kilkariSubscriber);
 
