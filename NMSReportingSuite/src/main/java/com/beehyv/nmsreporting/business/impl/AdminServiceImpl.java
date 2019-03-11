@@ -482,7 +482,6 @@ public class AdminServiceImpl implements AdminService {
 
                     }
                     if(userRecordNumber == 1){
-                        errorCreatingUsers.put(0,"fail");
                         errorCreatingUsers.put(1,"No records present in the uploaded file");
                     }
                 } catch (FileNotFoundException e) {
