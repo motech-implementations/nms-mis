@@ -131,147 +131,191 @@ public class AdminServiceImpl implements AdminService {
                 String line = "";
                 String cvsSplitBy = ",";
                 try {
-                    int lineNumber = 1;
+                    int userRecordNumber = 1;
                     if ((line = fis.readLine()) != null) {
                     }
                     while ((line = fis.readLine()) != null) {
-                        lineNumber++;
+                        userRecordNumber++;
                         // use comma as separator
                         String[] Line = line.split(cvsSplitBy);
+                        if (Line.length != 9) {
+                            String userNameError = "Please fill in the required fields";
+                            errorCreatingUsers.put(userRecordNumber, userNameError);
+                            continue;
+                        }
                         User user = new User();
-                        Role role;
-                        State state;
-                        String userName = Line[6];
-                        if (userName.equals("")) {
-                            Integer rowNum = lineNumber;
-                            String userNameError = "Please specify the username for user";
-                            errorCreatingUsers.put(rowNum, userNameError);
+                        String fullNameInput = Line[0];//
+                        String stateInput = Line[1];
+                        String districtInput = Line[2];
+                        String blockInput = Line[3];
+                        String contactNoInput = Line[4];//
+                        String emailIdInput = Line[5];//
+                        String userNameInput = Line[6];//
+                        String accessLevelInput = Line[7];
+                        String roleInput = Line[8];
+
+                        // fullname validation
+                        if (Strings.isNullOrEmpty(fullNameInput)) {
+                            errorCreatingUsers.put(userRecordNumber, "Full Name cannot be empty");
+                            continue;
+                        } else if (fullNameInput.length() < 3) {
+                            errorCreatingUsers.put(userRecordNumber, "Full name is too short");
                             continue;
                         }
-                        User UsernameExist = null;
-                        UsernameExist = userDao.findByUserName(Line[6]);
-                        if (UsernameExist == null) {
-                            user.setUsername(Line[6]);
-                        } else {
-                            Integer rowNum = lineNumber;
-                            String userNameError = "Username already exists.";
-                            errorCreatingUsers.put(rowNum, userNameError);
+                        user.setFullName(fullNameInput);
+
+                        // email id validation
+                        if (Strings.isNullOrEmpty(emailIdInput)) {
+                            errorCreatingUsers.put(userRecordNumber, "Email Id cannot be empty");
                             continue;
                         }
-                        int loggedUserRole = loggedInUser.getRoleId();
-                        String loggedUserAccess = loggedInUser.getAccessLevel();
-                        AccessLevel loggedUserAccessLevel = AccessLevel.getLevel(loggedUserAccess);
-                        String userPhone = Line[4];
-                        if (userPhone.equals("")) {
-                            Integer rowNum = lineNumber;
-                            String userNameError = "Please specify the phone number for user";
-                            errorCreatingUsers.put(rowNum, userNameError);
+
+                        String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+                        pattern = Pattern.compile(EMAIL_PATTERN);
+                        matcher = pattern.matcher(emailIdInput);
+                        boolean validate = matcher.matches();
+                        if (!validate) {
+                            errorCreatingUsers.put(userRecordNumber, "Email Id is not valid");
+                            continue;
+                        }
+                        user.setEmailId(emailIdInput);
+
+                        // contact no. validation
+                        if (Strings.isNullOrEmpty(contactNoInput)) {
+                            errorCreatingUsers.put(userRecordNumber, "Contact no. cannot be empty");
                             continue;
                         }
                         String regexStr1 = "^[0-9]*$";
                         String regexStr2 = "^[0-9]{10}$";
-                        if (!(userPhone.matches(regexStr1)) || !(userPhone.matches(regexStr2))) {
-                            Integer rowNum = lineNumber;
-                            String userNameError = "Please check the format of phone number for user";
-                            errorCreatingUsers.put(rowNum, userNameError);
+                        if (!(contactNoInput.matches(regexStr1)) || !(contactNoInput.matches(regexStr2))) {
+                            errorCreatingUsers.put(userRecordNumber, "Contact no. is not valid");
                             continue;
                         }
-                        user.setPassword(passwordEncoder.encode(Line[4]));
-                        user.setFullName(Line[0]);
-                        user.setPhoneNumber(Line[4]);
-                        user.setAccountStatus(AccountStatus.ACTIVE.getAccountStatus());
-                        String userEmail = Line[5];
-                        if (userEmail.equals("")) {
-                            Integer rowNum = lineNumber;
-                            String userNameError = "Please specify the Email for user";
-                            errorCreatingUsers.put(rowNum, userNameError);
+                        user.setPhoneNumber(contactNoInput);
+
+                        // access level validation
+                        if (Strings.isNullOrEmpty(accessLevelInput)) {
+                            errorCreatingUsers.put(userRecordNumber, "Access level cannot be empty");
                             continue;
                         }
-                        String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-                        pattern = Pattern.compile(EMAIL_PATTERN);
-                        matcher = pattern.matcher(userEmail);
-                        boolean validate = matcher.matches();
-                        if (validate) {
-                            user.setEmailId(Line[5]);
-                        } else {
-                            Integer rowNum = lineNumber;
-                            String userNameError = "Please enter the valid Email for user";
-                            errorCreatingUsers.put(rowNum, userNameError);
+                        if (!AccessLevel.isLevel(accessLevelInput)) {
+                            errorCreatingUsers.put(userRecordNumber, "Access level is invalid");
                             continue;
                         }
-                        user.setCreatedByUser(loggedInUser);
-                        user.setCreationDate(new Date());
-                        List<Role> userRole = roleDao.findByRoleDescription(Line[8]);
-                        String State = Line[1];
-                        String District = Line[2];
-                        String Block = Line[3];
-                        boolean isLevel = AccessLevel.isLevel(Line[7]);
-                        if (!(isLevel)) {
-                            Integer rowNum = lineNumber;
-                            String userNameError = "Please specify the access level for user";
-                            errorCreatingUsers.put(rowNum, userNameError);
+
+                        // access type (role) validation
+                        if (Strings.isNullOrEmpty(roleInput)) {
+                            errorCreatingUsers.put(userRecordNumber, "Role cannot be empty");
                             continue;
                         }
-                        boolean isType = AccessType.isType(Line[8]);
-                        if (!(isType)) {
-                            Integer rowNum = lineNumber;
-                            String userNameError = "Please specify the role for user";
-                            errorCreatingUsers.put(rowNum, userNameError);
+                        if (!(AccessType.isType(roleInput))) {
+                            errorCreatingUsers.put(userRecordNumber, "Role is invalid");
                             continue;
                         }
-                        if (userRole == null || userRole.size() == 0) {
-                            Integer rowNum = lineNumber;
-                            String userNameError = "Please specify the role of user";
-                            errorCreatingUsers.put(rowNum, userNameError);
+
+                        List<Role> userRoles = roleDao.findByRoleDescription(roleInput);
+
+                        if (userRoles == null || userRoles.size() == 0) {
+                            errorCreatingUsers.put(userRecordNumber, "Role is invalid");
                             continue;
                         }
-                        int userRoleId = userRole.get(0).getRoleId();
-                        String UserRole = AccessType.getType(Line[8]);
-                        AccessLevel accessLevel = AccessLevel.getLevel(Line[7]);
-                        if (UserRole.equalsIgnoreCase("ADMIN")) {
-                            if ((accessLevel == AccessLevel.NATIONAL) ) {
-                                Integer rowNum = lineNumber;
-                                String authorityError = "You don't have authority to create this user.";
-                                errorCreatingUsers.put(rowNum, authorityError);
-                                continue;
-                            } else if (loggedUserAccessLevel == AccessLevel.DISTRICT) {
-                                Integer rowNum = lineNumber;
-                                String authorityError = "You don't have authority to create this user.";
-                                errorCreatingUsers.put(rowNum, authorityError);
-                                continue;
-                            }  else if (accessLevel == AccessLevel.STATE && loggedUserAccessLevel != AccessLevel.NATIONAL) {
-                                Integer rowNum = lineNumber;
-                                String authorityError = "You don't have authority to create this user.";
-                                errorCreatingUsers.put(rowNum, authorityError);
-                                continue;
-                            }else if (accessLevel == AccessLevel.STATE && loggedUserAccessLevel == AccessLevel.NATIONAL) {
-                                List<State> userStateList = stateDao.findByName(State);
-                                if(userStateList==null || userStateList.size()==0){
-                                    Integer rowNum = lineNumber;
-                                    String authorityError = "Please enter the valid state for this admin";
-                                    errorCreatingUsers.put(rowNum, authorityError);
+                        int userRoleId = userRoles.get(0).getRoleId();
+
+                        user.setRoleId(userRoleId);
+                        user.setRoleName(roleDao.findByRoleId(userRoleId).getRoleDescription());
+
+
+                        // username validation
+                        if (Strings.isNullOrEmpty(userNameInput)) {
+                            errorCreatingUsers.put(userRecordNumber, "Username cannot be empty");
+                            continue;
+                        } else if (userNameInput.length() < 5) {
+                            errorCreatingUsers.put(userRecordNumber, "Username is too short");
+                            continue;
+                        }
+                        user.setUsername(userNameInput);
+                        User existingUser = userDao.findByUserName(userNameInput);
+                        
+                        if (existingUser != null) {
+                            errorCreatingUsers.put(userRecordNumber, "Username already exists.");
+                            continue;
+                        }
+                        user.setUsername(userNameInput);
+                        
+                        AccessLevel loggedUserAccessLevel = AccessLevel.getLevel(loggedInUser.getAccessLevel());
+
+
+                        String userRoleInput = AccessType.getType(roleInput);
+                        AccessLevel accessLevel = AccessLevel.getLevel(accessLevelInput);
+
+                        switch(accessLevel) {
+                            case BLOCK:
+                                if (Strings.isNullOrEmpty(stateInput)
+                                        || Strings.isNullOrEmpty(districtInput)
+                                        || Strings.isNullOrEmpty(blockInput)) {
+                                    errorCreatingUsers.put(userRecordNumber, "State, district and block cannot be empty for BLOCK level users");
+                                }
+                                break;
+                            case DISTRICT:
+                                if (Strings.isNullOrEmpty(stateInput)
+                                        || Strings.isNullOrEmpty(districtInput)) {
+                                    errorCreatingUsers.put(userRecordNumber, "State and district cannot be empty for DISTRICT level users");
                                     continue;
                                 }
-                                State userState=userStateList.get(0);
+                                break;
+                            case STATE:
+                                if (Strings.isNullOrEmpty(stateInput)) {
+                                    errorCreatingUsers.put(userRecordNumber, "State cannot be empty for STATE level users");
+                                    continue;
+                                }
+                        }
+
+                        List<State> userStateList = null;
+                        List<District> userDistrictList = null;
+                        List<Block> userBlockList = null;
+
+                        if (accessLevel.equals(AccessLevel.STATE)) {
+                            userStateList = stateDao.findByName(stateInput);
+                        } else if (accessLevel.equals(AccessLevel.DISTRICT)) {
+                            userStateList = stateDao.findByName(stateInput);
+                            userDistrictList = districtDao.findByName(districtInput);
+
+                        } else if (accessLevel.equals(AccessLevel.BLOCK)) {
+                            userStateList = stateDao.findByName(stateInput);
+                            userDistrictList = districtDao.findByName(districtInput);
+                            userBlockList = blockDao.findByName(blockInput);
+                        }
+
+                        if (userRoleInput.equalsIgnoreCase("ADMIN")) {
+                            if ((accessLevel == AccessLevel.NATIONAL) ) {
+                                errorCreatingUsers.put(userRecordNumber, "You don't have authority to create this user");
+                                continue;
+                            } else if (loggedUserAccessLevel == AccessLevel.DISTRICT) {
+                                errorCreatingUsers.put(userRecordNumber, "You don't have authority to create this user");
+                                continue;
+                            }  else if (accessLevel == AccessLevel.STATE && loggedUserAccessLevel != AccessLevel.NATIONAL) {
+                                errorCreatingUsers.put(userRecordNumber, "You don't have authority to create this user");
+                                continue;
+                            } else if (accessLevel == AccessLevel.STATE && loggedUserAccessLevel == AccessLevel.NATIONAL) {
+                                if(userStateList == null || userStateList.size() == 0){
+                                    errorCreatingUsers.put(userRecordNumber, "Provided state is invalid");
+                                    continue;
+                                }
+                                State userState = userStateList.get(0);
                                 boolean isAdminAvailable = userDao.isAdminCreated(userState);
                                 if (!(isAdminAvailable)) {
                                     user.setAccessLevel(AccessLevel.STATE.getAccessLevel());
                                     user.setStateId(userState.getStateId());
                                 } else {
-                                    Integer rowNum = lineNumber;
-                                    String authorityError = "Admin is available for this state.";
-                                    errorCreatingUsers.put(rowNum, authorityError);
+                                    errorCreatingUsers.put(userRecordNumber, "Admin already exists for the provided state");
                                     continue;
                                 }
                             }
                             else {
-                                List<State> userStateList = stateDao.findByName(State);
-                                List<District> userDistrictList = districtDao.findByName(District);
                                 District userDistrict = null;
                                 State userState = null;
                                 if (userDistrictList.size() == 1) {
-
                                     userDistrict = userDistrictList.get(0);
                                     userState = stateDao.findByStateId(userDistrict.getStateOfDistrict());
                                 } else {
@@ -287,15 +331,11 @@ public class AdminServiceImpl implements AdminService {
                                     }
                                 }
                                 if (userDistrict == null) {
-                                    Integer rowNum = lineNumber;
-                                    String authorityError = "Please enter the valid district for this user.";
-                                    errorCreatingUsers.put(rowNum, authorityError);
+                                    errorCreatingUsers.put(userRecordNumber, "Provided district is invalid");
                                     continue;
                                 } else {
                                     if ((loggedInUser.getStateId()!=null && !loggedInUser.getStateId().equals(userState.getStateId()))) {
-                                        Integer rowNum = lineNumber;
-                                        String authorityError = "You don't have authority to create this user.";
-                                        errorCreatingUsers.put(rowNum, authorityError);
+                                        errorCreatingUsers.put(userRecordNumber, "You don't have authority to create this user");
                                         continue;
                                     } else {
                                         boolean isAdminAvailable = userDao.isAdminCreated(userDistrict);
@@ -304,45 +344,35 @@ public class AdminServiceImpl implements AdminService {
                                             user.setDistrictId(userDistrict.getDistrictId());
                                             user.setStateId(userState.getStateId());
                                         } else {
-                                            Integer rowNum = lineNumber;
-                                            String authorityError = "Admin is available for this district.";
-                                            errorCreatingUsers.put(rowNum, authorityError);
+                                            errorCreatingUsers.put(userRecordNumber, "Admin already exists for the provided district");
                                             continue;
                                         }
                                     }
                                 }
                             }
                         }
-                        if (UserRole.equalsIgnoreCase("USER")) {
+
+                        if (userRoleInput.equalsIgnoreCase("USER")) {
                             if (loggedUserAccessLevel.ordinal() > accessLevel.ordinal()) {
-                                Integer rowNum = lineNumber;
-                                String authorityError = "You don't have authority to create this user.";
-                                errorCreatingUsers.put(rowNum, authorityError);
+                                errorCreatingUsers.put(userRecordNumber, "You don't have authority to create this user");
                                 continue;
                             } else {
                                 if (accessLevel == AccessLevel.NATIONAL) {
                                     user.setAccessLevel(AccessLevel.NATIONAL.getAccessLevel());
                                 } else if (accessLevel == AccessLevel.STATE) {
                                     user.setAccessLevel(accessLevel.getAccessLevel());
-                                    List<State> userStateList = stateDao.findByName(State);
                                     if ((userStateList == null) || (userStateList.size() == 0)) {
-                                        Integer rowNum = lineNumber;
-                                        String authorityError = "Please enter the valid State for this user.";
-                                        errorCreatingUsers.put(rowNum, authorityError);
+                                        errorCreatingUsers.put(userRecordNumber, "Provided state is invalid");
                                         continue;
                                     } else {
                                         if (loggedUserAccessLevel == AccessLevel.STATE) {
                                             if (!loggedInUser.getStateId().equals(userStateList.get(0).getStateId())) {
-                                                Integer rowNum = lineNumber;
-                                                String authorityError = "You don't have authority to create this user.";
-                                                errorCreatingUsers.put(rowNum, authorityError);
+                                                errorCreatingUsers.put(userRecordNumber, "You don't have authority to create this user");
                                                 continue;
                                             } else user.setStateId(userStateList.get(0).getStateId());
                                         } else user.setStateId(userStateList.get(0).getStateId());
                                     }
                                 } else if (accessLevel == AccessLevel.DISTRICT) {
-                                    List<State> userStateList = stateDao.findByName(State);
-                                    List<District> userDistrictList = districtDao.findByName(District);
                                     District userDistrict = null;
                                     State userState = null;
                                     if (userDistrictList.size() == 1) {
@@ -361,18 +391,14 @@ public class AdminServiceImpl implements AdminService {
                                         }
                                     }
                                     if (userDistrict == null) {
-                                        Integer rowNum = lineNumber;
-                                        String authorityError = "Please enter the valid district for this user.";
-                                        errorCreatingUsers.put(rowNum, authorityError);
+                                        errorCreatingUsers.put(userRecordNumber, "Provided district is invalid");
                                         continue;
                                     } else {
                                         if (((loggedUserAccessLevel == AccessLevel.STATE) &&
                                                 (!loggedInUser.getStateId().equals(userState.getStateId()))) ||
                                                 ((loggedUserAccessLevel == AccessLevel.DISTRICT) &&
                                                         (!loggedInUser.getDistrictId().equals(userDistrict.getDistrictId())))) {
-                                            Integer rowNum = lineNumber;
-                                            String authorityError = "You don't have authority to create this user.";
-                                            errorCreatingUsers.put(rowNum, authorityError);
+                                            errorCreatingUsers.put(userRecordNumber, "You don't have authority to create this user");
                                             continue;
                                         } else {
                                             user.setAccessLevel(AccessLevel.DISTRICT.getAccessLevel());
@@ -382,9 +408,6 @@ public class AdminServiceImpl implements AdminService {
                                     }
                                 } else {
                                     user.setAccessLevel(AccessLevel.BLOCK.getAccessLevel());
-                                    List<State> userStateList = stateDao.findByName(State);
-                                    List<District> userDistrictList = districtDao.findByName(District);
-                                    List<Block> userBlockList = blockDao.findByName(Block);
                                     State userState = null;
                                     District userDistrict = null;
                                     Block userBlock = null;
@@ -396,9 +419,8 @@ public class AdminServiceImpl implements AdminService {
                                         user.setStateId(userState.getStateId());
                                         user.setDistrictId(userDistrict.getDistrictId());
                                     } else if ((userBlockList.size() == 0) || userBlockList == null) {
-                                        Integer rowNum = lineNumber;
-                                        String authorityError = "Please enter the valid Block for this user.";
-                                        errorCreatingUsers.put(rowNum, authorityError);
+                                        errorCreatingUsers.put(userRecordNumber, "Provided block is invalid");
+                                        continue;
                                     } else {
                                         List<Block> commonDistrict = null;
                                         for (Block block : userBlockList) {
@@ -423,18 +445,14 @@ public class AdminServiceImpl implements AdminService {
                                             }
                                         }
                                         if (userBlock == null) {
-                                            Integer rowNum = lineNumber;
-                                            String authorityError = "Please enter the valid location for this user.";
-                                            errorCreatingUsers.put(rowNum, authorityError);
+                                            errorCreatingUsers.put(userRecordNumber, "Provided block is invalid");
                                             continue;
                                         } else {
                                             if (((loggedUserAccessLevel == AccessLevel.STATE) &&
                                                     (!loggedInUser.getStateId().equals(userState.getStateId()))) ||
                                                     ((loggedUserAccessLevel == AccessLevel.DISTRICT) &&
                                                             (!loggedInUser.getDistrictId().equals(userDistrict.getDistrictId())))) {
-                                                Integer rowNum = lineNumber;
-                                                String authorityError = "You don't have authority to create this user.";
-                                                errorCreatingUsers.put(rowNum, authorityError);
+                                                errorCreatingUsers.put(userRecordNumber, "You don't have authority to create this user");
                                                 continue;
                                             } else {
                                                 user.setBlockId(userBlock.getBlockId());
@@ -449,8 +467,11 @@ public class AdminServiceImpl implements AdminService {
                         user.setStateName(user.getStateId()==null ? "" : stateDao.findByStateId(user.getStateId()).getStateName());
                         user.setDistrictName(user.getDistrictId()==null? "" : districtDao.findByDistrictId(user.getDistrictId()).getDistrictName());
                         user.setBlockName(user.getBlockId()==null ? "" :  blockDao.findByblockId(user.getBlockId()).getBlockName());
-                        user.setRoleId(userRoleId);
-                        user.setRoleName(roleDao.findByRoleId(userRoleId).getRoleDescription());
+
+                        user.setPassword(passwordEncoder.encode(contactNoInput));
+                        user.setAccountStatus(AccountStatus.ACTIVE.getAccountStatus());
+                        user.setCreatedByUser(loggedInUser);
+                        user.setCreationDate(new Date());
                         userDao.saveUser(user);
                         ModificationTracker modification = new ModificationTracker();
                         modification.setModificationDate(new Date(System.currentTimeMillis()));
@@ -460,8 +481,7 @@ public class AdminServiceImpl implements AdminService {
                         modificationTrackerDao.saveModification(modification);
 
                     }
-                    if(lineNumber == 1){
-                        errorCreatingUsers.put(0,"fail");
+                    if(userRecordNumber == 1){
                         errorCreatingUsers.put(1,"No records present in the uploaded file");
                     }
                 } catch (FileNotFoundException e) {

@@ -166,7 +166,7 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
         criteria.add(Restrictions.and(
                 Restrictions.eq("stateId", state.getStateId()),
                 Restrictions.eq("accountStatus", AccountStatus.ACTIVE.getAccountStatus()),
-                Restrictions.eq("accessLevel", AccessLevel.DISTRICT.getAccessLevel()),
+                Restrictions.eq("accessLevel", AccessLevel.STATE.getAccessLevel()),
                 Restrictions.eq("roleName", AccessType.ADMIN.getAccessType())
         ));
         List<User> Admins=(List<User>) criteria.list();
