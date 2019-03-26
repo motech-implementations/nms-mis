@@ -18,7 +18,7 @@
 					<h4><b>Full Name (Required)</b></p></h4>
 					<div class="margin-left-40px">
 						<li>Must be provided for the user being created.</li>
-						<li>Must have only alphabets and spaces.</li>
+						<li>Must have only alphabets and spaces without any special characters.</li>
 						<li>Must be at least 3 characters long.</li>
 					</div>
 
@@ -53,7 +53,7 @@
 					<h4><b>Username</b></p></h4>
 					<div class="margin-left-40px">
 						<li>Must be a unique username.</li>
-						<li>Must be alphanumeric without any special characters or spaces.</li>
+						<li>Must have only alphabets and numbers without any special characters or spaces.</li>
 						<li>Must be at least 5 characters long.</li>
 					</div>
 
@@ -79,7 +79,7 @@
 					<h4><b>Full Name (Required)</b></p></h4>
 					<div class="margin-left-40px">
 						<li>Must be provided for the user being created.</li>
-						<li>Must have only alphabets and spaces.</li>
+						<li>Must have only alphabets and spaces without any special characters.</li>
 						<li>Must be at least 3 characters long.</li>
 					</div>
 
@@ -113,7 +113,7 @@
 					<h4><b>Username</b></p></h4>
 					<div class="margin-left-40px">
 						<li>Must be a unique username.</li>
-						<li>Must be alphanumeric without any special characters or spaces.</li>
+						<li>Must have only alphabets and numbers without any special characters or spaces.</li>
 						<li>Must be at least 5 characters long.</li>
 					</div>
 
@@ -139,7 +139,7 @@
 					<h4><b>Full Name (Required)</b></p></h4>
 					<div class="margin-left-40px">
 						<li>Must be provided for the user being created.</li>
-						<li>Must have only alphabets and spaces.</li>
+						<li>Must have only alphabets and spaces without any special characters.</li>
 						<li>Must be at least 3 characters long.</li>
 					</div>
 
@@ -172,7 +172,7 @@
 					<h4><b>Username</b></p></h4>
 					<div class="margin-left-40px">
 						<li>Must be a unique username.</li>
-						<li>Must be alphanumeric without any special characters or spaces.</li>
+						<li>Must have only alphabets and numbers without any special characters or spaces.</li>
 						<li>Must be at least 5 characters long.</li>
 					</div>
 
@@ -214,8 +214,9 @@
 			</label>
 			<input id="file-upload" class="input input-sm" type="file" name="bulkCsv" file-model="myFile" style="display: none;" />
 			<br><br>
-			<button class="btn btn-sm btn-primary" data-ng-click="uploadFile()">Upload Users</button>
+				<button class="btn btn-sm btn-primary" data-ng-click="uploadFile()">Upload Users</button>
 			<br><br>
+
 			<a class="btn btn-sm btn-primary" href="{{downloadTemplateUrl}}">
 				<span class="glyphicon glyphicon-disk-save"></span>
 				Download Sample Template

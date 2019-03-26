@@ -158,7 +158,11 @@ public class AdminServiceImpl implements AdminService {
                         if (Strings.isNullOrEmpty(fullNameInput)) {
                             errorCreatingUsers.put(userRecordNumber, "Full Name cannot be empty");
                             continue;
-                        } else if (fullNameInput.length() < 3) {
+                        } else if(Pattern.compile("[^a-z ]", Pattern.CASE_INSENSITIVE).matcher(fullNameInput).find() == true) {
+                            errorCreatingUsers.put(userRecordNumber, "Only alphabets and spaces are allowed in Full Name");
+                            continue;
+                        }
+                        else if (fullNameInput.length() < 3) {
                             errorCreatingUsers.put(userRecordNumber, "Full name is too short");
                             continue;
                         }
@@ -230,11 +234,15 @@ public class AdminServiceImpl implements AdminService {
                         if (Strings.isNullOrEmpty(userNameInput)) {
                             errorCreatingUsers.put(userRecordNumber, "Username cannot be empty");
                             continue;
+                        } else if (Pattern.compile("[^a-z0-9]", Pattern.CASE_INSENSITIVE).matcher(userNameInput).find() == true) {
+                            errorCreatingUsers.put(userRecordNumber, "Only alphabets and numbers (no spaces) are allowed in UserName");
+                            continue;
                         } else if (userNameInput.length() < 5) {
                             errorCreatingUsers.put(userRecordNumber, "Username is too short");
                             continue;
                         }
                         user.setUsername(userNameInput);
+
                         User existingUser = userDao.findByUserName(userNameInput);
                         
                         if (existingUser != null) {

@@ -119,7 +119,8 @@
     <!-- Spring Mail Sender -->
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
         <property name="username" value="nsp-reports@beehyv.com"/>
-        <property name="password" value="Beehyv@123"/>
+        <!--<property name="password" value="Beehyv@123"/>-->
+        <property name="password" value="vthlrywospgktcsr"/>
         <property name="javaMailProperties">
             <props>
                 <prop key="mail.smtp.host">smtp.bizmail.yahoo.com</prop>
