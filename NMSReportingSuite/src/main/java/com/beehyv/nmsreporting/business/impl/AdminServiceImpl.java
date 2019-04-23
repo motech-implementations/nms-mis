@@ -749,7 +749,7 @@ public class AdminServiceImpl implements AdminService {
                 String circleName=StReplace(circleDao.getByCircleId(circleId).getCircleName());
                 String circleFullName = StReplace(circleDao.getByCircleId(circleId).getCircleFullName());
                 String rootPathCircle=rootPath+circleFullName+"/";
-                List<AnonymousUsers> anonymousUsersListCircle = anonymousUsersDao.getAnonymousUsersCircle(getMonthYear(toDate), StReplace(circleDao.getByCircleId(circleId).getCircleFullName()));
+                List<AnonymousUsers> anonymousUsersListCircle = anonymousUsersDao.getAnonymousUsersCircle(getMonthYear(toDate), circleDao.getByCircleId(circleId).getCircleFullName());
                 getCircleWiseAnonymousUsers(anonymousUsersListCircle, rootPathCircle, circleFullName, toDate, reportRequest);
             }
         }
@@ -3403,10 +3403,11 @@ public class AdminServiceImpl implements AdminService {
         for (Circle circle : circleList) {
             String circleName = StReplace(circle.getCircleName());
             String circleFullName = StReplace(circle.getCircleFullName());
+            String circleFullNamewithSpace = circle.getCircleFullName();
             String rootPathCircle=rootPath+circleFullName+"/";
             List<AnonymousUsers> anonymousUsersListCircle = new ArrayList<>();
             for(AnonymousUsers anonymousUser : anonymousUsersList){
-                if(anonymousUser.getCircleName().equalsIgnoreCase(circleFullName)){
+                if(anonymousUser.getCircleName().equalsIgnoreCase(circleFullNamewithSpace)){
                     anonymousUsersListCircle.add(anonymousUser);
                 }
             }
