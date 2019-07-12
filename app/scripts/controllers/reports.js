@@ -1038,6 +1038,9 @@
 		    	else{
 		    		if($scope.circle != null){
 				    	reportRequest.circleId = $scope.circle.circleId;
+				    	if($scope.state != null) {
+				    	reportRequest.stateId = $scope.state.stateId;
+				    	}
 				    }
                     else{
                            if(UserFormFactory.isInternetExplorer()){
