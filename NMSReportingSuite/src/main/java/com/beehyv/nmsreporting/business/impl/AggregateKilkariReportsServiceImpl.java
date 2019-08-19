@@ -2499,6 +2499,122 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         }
         return callReportDtos;
     }
+    @Override
+    public List<KilkariCallReportWithBeneficiariesDto> getKilkariCallReportWithBeneficiaries(ReportRequest reportRequest, User currentUser) {
+
+        DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        Calendar calendar = Calendar.getInstance();
+        Date toDate = new Date();
+        Date startDate = new Date(0);
+        Calendar aCalendar = Calendar.getInstance();
+        aCalendar.setTime(reportRequest.getFromDate());
+        aCalendar.set(Calendar.MILLISECOND, 0);
+        aCalendar.set(Calendar.SECOND, 0);
+        aCalendar.set(Calendar.MINUTE, 0);
+        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+
+
+        //aCalendar.add(Calendar.DATE, -1);
+        Date fromDate = aCalendar.getTime();
+        aCalendar.setTime(reportRequest.getToDate());
+        aCalendar.set(Calendar.MILLISECOND, 0);
+        aCalendar.set(Calendar.SECOND, 0);
+        aCalendar.set(Calendar.MINUTE, 0);
+        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        aCalendar.add(Calendar.DATE, 1);
+        toDate = aCalendar.getTime();
+
+        List<KilkariCallReportWithBeneficiariesDto> callReportWithBeneficiariesDtos = new ArrayList<>();
+        List<KilkariCalls> kilkariCallStart = new ArrayList<>();
+        List<KilkariCalls> kilkariCallEnd = new ArrayList<>();
+        List<KilkariMessageListenership> kilkariMessageListenerships = new ArrayList<>();
+
+        if (reportRequest.getStateId() == 0) {
+            kilkariCallStart.addAll(this.getKilkariCallReport(0, "State", fromDate));
+            kilkariCallEnd.addAll(this.getKilkariCallReport(0, "State", toDate));
+            kilkariMessageListenerships.addAll(this.getKilkariMessageListenershipData(0, "State", fromDate, toDate, reportRequest.getPeriodType()));
+        } else if (reportRequest.getDistrictId() == 0) {
+            kilkariCallStart.addAll(this.getKilkariCallReport(reportRequest.getStateId(), "District", fromDate));
+            kilkariCallEnd.addAll(this.getKilkariCallReport(reportRequest.getStateId(), "District", toDate));
+            kilkariMessageListenerships.addAll(this.getKilkariMessageListenershipData(reportRequest.getStateId(), "District", fromDate, toDate, reportRequest.getPeriodType()));
+        } else if (reportRequest.getBlockId() == 0) {
+            kilkariCallStart.addAll(this.getKilkariCallReport(reportRequest.getDistrictId(), "Block", fromDate));
+            kilkariCallEnd.addAll(this.getKilkariCallReport(reportRequest.getDistrictId(), "Block", toDate));
+            kilkariMessageListenerships.addAll(this.getKilkariMessageListenershipData(reportRequest.getDistrictId(), "Block", fromDate, toDate, reportRequest.getPeriodType()));
+        } else {
+            kilkariCallStart.addAll(this.getKilkariCallReport(reportRequest.getBlockId(), "Subcentre", fromDate));
+            kilkariCallEnd.addAll(this.getKilkariCallReport(reportRequest.getBlockId(), "Subcentre", toDate));
+            kilkariMessageListenerships.addAll(this.getKilkariMessageListenershipData(reportRequest.getBlockId(), "Subcentre", fromDate, toDate, reportRequest.getPeriodType()));
+        }
+
+        if (!(kilkariCallEnd.isEmpty()) && !(kilkariCallStart.isEmpty()) && !(kilkariMessageListenerships.isEmpty())) {
+            for(int k = 0; k < kilkariMessageListenerships.size(); k++) {
+                for (int i = 0; i < kilkariCallEnd.size(); i++) {
+                    for (int j = 0; j < kilkariCallStart.size(); j++) {
+                        if (kilkariCallEnd.get(i).getLocationId().equals(kilkariCallStart.get(j).getLocationId()) &&
+                                kilkariCallStart.get(j).getLocationId().equals(kilkariMessageListenerships.get(k).getLocationId())) {
+                            KilkariCalls end = kilkariCallEnd.get(i);
+                            KilkariCalls start = kilkariCallStart.get(j);
+                            KilkariMessageListenership kml = kilkariMessageListenerships.get(k);
+                            KilkariCallReportWithBeneficiariesDto kilkariCallReportWithBeneficiariesDto = new KilkariCallReportWithBeneficiariesDto();
+                            kilkariCallReportWithBeneficiariesDto.setLocationId(end.getLocationId());
+                            kilkariCallReportWithBeneficiariesDto.setContent_1_25(end.getContent_1_25() - start.getContent_1_25());
+                            kilkariCallReportWithBeneficiariesDto.setContent_75_100(end.getContent_75_100() - start.getContent_75_100());
+                            kilkariCallReportWithBeneficiariesDto.setBillableMinutes(end.getBillableMinutes() - start.getBillableMinutes());
+                            kilkariCallReportWithBeneficiariesDto.setCallsAttempted(end.getCallsAttempted() - start.getCallsAttempted());
+                            kilkariCallReportWithBeneficiariesDto.setCallsToInbox(end.getCallsToInbox() - start.getCallsToInbox());
+                            kilkariCallReportWithBeneficiariesDto.setSuccessfulCalls(end.getSuccessfulCalls() - start.getSuccessfulCalls());
+                            kilkariCallReportWithBeneficiariesDto.setAvgDuration((float)((kilkariCallReportWithBeneficiariesDto.getSuccessfulCalls()==0)?0.00 : (float) Math.round( kilkariCallReportWithBeneficiariesDto.getBillableMinutes() / (float) kilkariCallReportWithBeneficiariesDto.getSuccessfulCalls() * 100) / 100));
+                            kilkariCallReportWithBeneficiariesDto.setLocationType(end.getLocationType());
+                            kilkariCallReportWithBeneficiariesDto.setBeneficiariesCalled(kml.getTotalBeneficiariesCalled());
+                            kilkariCallReportWithBeneficiariesDto.setPercentageCalls_1_25((float) (kilkariCallReportWithBeneficiariesDto.getSuccessfulCalls() == 0 ? 0 : (Math.round((kilkariCallReportWithBeneficiariesDto.getContent_1_25() * 10000.0f/ kilkariCallReportWithBeneficiariesDto.getSuccessfulCalls())))) / 100f);
+                            kilkariCallReportWithBeneficiariesDto.setPercentageCalls_75_100((float) (kilkariCallReportWithBeneficiariesDto.getSuccessfulCalls() == 0 ? 0 : (Math.round((kilkariCallReportWithBeneficiariesDto.getContent_75_100() * 10000.0f/ kilkariCallReportWithBeneficiariesDto.getSuccessfulCalls())))) / 100f);
+                            kilkariCallReportWithBeneficiariesDto.setPercentageCallsResponded((float) (kilkariCallReportWithBeneficiariesDto.getCallsAttempted() == 0 ? 0 : (Math.round((kilkariCallReportWithBeneficiariesDto.getSuccessfulCalls() * 10000.0f/ kilkariCallReportWithBeneficiariesDto.getCallsAttempted())))) / 100f);
+                            String locationType = end.getLocationType();
+                            if (locationType.equalsIgnoreCase("State")) {
+                                kilkariCallReportWithBeneficiariesDto.setLocationName(stateDao.findByStateId(end.getLocationId().intValue()).getStateName());
+                            }
+                            if (locationType.equalsIgnoreCase("District")) {
+                                kilkariCallReportWithBeneficiariesDto.setLocationName(districtDao.findByDistrictId(end.getLocationId().intValue()).getDistrictName());
+                            }
+                            if (locationType.equalsIgnoreCase("Block")) {
+                                kilkariCallReportWithBeneficiariesDto.setLocationName(blockDao.findByblockId(end.getLocationId().intValue()).getBlockName());
+                            }
+                            if (locationType.equalsIgnoreCase("Subcentre")) {
+                                kilkariCallReportWithBeneficiariesDto.setLocationName(healthSubFacilityDao.findByHealthSubFacilityId(end.getLocationId().intValue()).getHealthSubFacilityName());
+                                kilkariCallReportWithBeneficiariesDto.setLink(true);
+                            }
+                            if (locationType.equalsIgnoreCase("DifferenceState")) {
+                                kilkariCallReportWithBeneficiariesDto.setLocationName("No District Count");
+                                kilkariCallReportWithBeneficiariesDto.setLink(true);
+                                kilkariCallReportWithBeneficiariesDto.setLocationId((long) -1);
+                            }
+                            if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
+                                kilkariCallReportWithBeneficiariesDto.setLocationName("No Block Count");
+                                kilkariCallReportWithBeneficiariesDto.setLink(true);
+                                kilkariCallReportWithBeneficiariesDto.setLocationId((long) -1);
+
+                            }
+                            if (locationType.equalsIgnoreCase("DifferenceBlock")) {
+                                kilkariCallReportWithBeneficiariesDto.setLocationName("No Subcentre Count");
+                                kilkariCallReportWithBeneficiariesDto.setLink(true);
+                                kilkariCallReportWithBeneficiariesDto.setLocationId((long) -1);
+
+                            }
+
+                            if ((kilkariCallReportWithBeneficiariesDto.getSuccessfulCalls() + Math.round(kilkariCallReportWithBeneficiariesDto.getBillableMinutes()*100) + kilkariCallReportWithBeneficiariesDto.getCallsAttempted()
+                                    + kilkariCallReportWithBeneficiariesDto.getCallsToInbox() + kilkariCallReportWithBeneficiariesDto.getContent_1_25()
+                                    + kilkariCallReportWithBeneficiariesDto.getContent_75_100()) != 0 && !locationType.equalsIgnoreCase("DifferenceState")) {
+                                callReportWithBeneficiariesDtos.add(kilkariCallReportWithBeneficiariesDto);
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+        return callReportWithBeneficiariesDtos;
+    }
 
 
 

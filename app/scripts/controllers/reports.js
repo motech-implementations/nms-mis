@@ -347,7 +347,7 @@
 				if($scope.userHasOneCircle()){
                 	$scope.selectCircle($scope.circles[0]);
                 }
-                if($scope.report.reportEnum == 'Kilkari_Message_Matrix' || $scope.report.reportEnum == 'Kilkari_Subscriber' || $scope.report.reportEnum == 'Kilkari_Listening_Matrix' || $scope.report.reportEnum == 'Kilkari_Usage' || $scope.report.reportEnum == 'Kilkari_Message_Listenership' || $scope.report.reportEnum == 'Kilkari_Thematic_Content' || $scope.report.reportEnum == 'Kilkari_Aggregate_Beneficiaries' || $scope.report.reportEnum == 'Kilkari_Beneficiary_Completion'){
+                if($scope.report.reportEnum == 'Kilkari_Message_Matrix' || $scope.report.reportEnum == 'Kilkari_Subscriber' || $scope.report.reportEnum == 'Kilkari_Listening_Matrix' || $scope.report.reportEnum == 'Kilkari_Usage' || $scope.report.reportEnum == 'Kilkari_Message_Listenership' || $scope.report.reportEnum == 'Kilkari_Thematic_Content' || $scope.report.reportEnum == 'Kilkari_Aggregate_Beneficiaries' || $scope.report.reportEnum == 'Kilkari_Beneficiary_Completion' || $scope.report.reportEnum == 'Kilkari_Call_With_Beneficiaries'){
                     $scope.periodType = ['Year','Financial Year','Quarter','Month','Week'];
                 }
                 else if($scope.report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise'){
@@ -1295,6 +1295,9 @@
 					    else if($scope.report.reportEnum == 'Kilkari_Call'){
 					        $scope.gridOptions1.columnDefs = $scope.Kilkari_Call_Report_Definitions;
 					    }
+                        else if($scope.report.reportEnum == 'Kilkari_Call_With_Beneficiaries'){
+                            $scope.gridOptions1.columnDefs = $scope.Kilkari_Call_Report_With_Beneficiaries_Definitions;
+                        }
 					    else if($scope.report.reportEnum == 'Kilkari_Listening_Matrix'){
 					         $scope.gridOptions1.columnDefs = $scope.Kilkari_Listening_Matrix_Definitions;
 					    }
@@ -1701,7 +1704,8 @@
                        for (j = 0; j < exportData[i].length; j++) {
                               var temp = exportData[i][j].value;
                                     if((excelHeaderName.reportName == "Kilkari Call" && (j == "7"||j == "8") )||
-                                        (excelHeaderName.reportName == "MA Cumulative Summary" && (j == "6"||j == "7"||j == "8"))||
+                                        (excelHeaderName.reportName == "Kilkari Call With Beneficiaries" && (j == "4"||j == "6"||j == "8"||j == "9"||j == "10"))||
+                                        (excelHeaderName.reportName == "MA Cumulative Summary" && (j == "3"||j == "5"||j == "7"||j=="9"))||
                                         (excelHeaderName.reportName == "Kilkari Cumulative Summary" && (j == "4"||j == "3") )||
                                         (excelHeaderName.reportName == "Kilkari Thematic Content" && (j == "4") )||
                                         (excelHeaderName.reportName == "Kilkari Beneficiary Completion" && (j == "2") )){
@@ -1737,6 +1741,26 @@
                                            var temp = ft.getAggregationValue();
                                            v = (parseFloat(temp));
                                        }
+                                       else if(ft.displayName == "Average Duration of Calls" && excelHeaderName.reportName == "Kilkari Call With Beneficiaries"){
+                                           var temp = $scope.gridApi.grid.columns[4].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[10].getAggregationValue()/$scope.gridApi.grid.columns[4].getAggregationValue());
+                                           v = (parseFloat(temp));
+                                       }
+                                       else if(ft.displayName == "Total Billable Minutes" && excelHeaderName.reportName == "Kilkari Call With Beneficiaries"){
+                                           var temp = ft.getAggregationValue();
+                                           v = (parseFloat(temp));
+                                       }
+                                       else if(ft.displayName == "% attempted calls that were successful" && excelHeaderName.reportName == "Kilkari Call With Beneficiaries"){
+                                           var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00: (($scope.gridApi.grid.columns[4].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue()) * 100);
+                                           v = (parseFloat(temp));
+                                       }
+                                       else if(ft.displayName == "% successful calls where >= 75% content listened to" && excelHeaderName.reportName == "Kilkari Call With Beneficiaries"){
+                                           var temp = $scope.gridApi.grid.columns[4].getAggregationValue()==0?0.00: (($scope.gridApi.grid.columns[6].getAggregationValue()/$scope.gridApi.grid.columns[4].getAggregationValue()) * 100);
+                                           v = (parseFloat(temp));
+                                       }
+                                       else if(ft.displayName == "% successful calls where <25% content listened to" && excelHeaderName.reportName == "Kilkari Call With Beneficiaries"){
+                                           var temp = $scope.gridApi.grid.columns[4].getAggregationValue()==0?0.00: (($scope.gridApi.grid.columns[8].getAggregationValue()/$scope.gridApi.grid.columns[4].getAggregationValue()) * 100);
+                                           v = (parseFloat(temp));
+                                       }
                                        else if(ft.displayName == "Total Billable Minutes Played" && excelHeaderName.reportName == "Kilkari Cumulative Summary"){
                                            var temp = ft.getAggregationValue();
                                            v = (parseFloat(temp));
@@ -1744,16 +1768,20 @@
                                        else if(ft.displayName == "Total Beneficiary Records Rejected" && excelHeaderName.reportName == "Kilkari Subscriber"&&!rejectionStart){
                                            v = "N/A";
                                        }
-                                       else if(ft.displayName == "% Not Started Course" && excelHeaderName.reportName == "MA Cumulative Summary"){
-                                          var temp = $scope.gridApi.grid.columns[2].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[4].getAggregationValue()/$scope.gridApi.grid.columns[2].getAggregationValue())*100;
+                                       else if(ft.displayName == "% Not Started (of total registered)" && excelHeaderName.reportName == "MA Cumulative Summary"){
+                                          var temp = $scope.gridApi.grid.columns[2].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[7].getAggregationValue()/$scope.gridApi.grid.columns[2].getAggregationValue())*100;
                                           v = (parseFloat(temp));
                                        }
-                                       else if(ft.displayName == "% Successfully Completed" && excelHeaderName.reportName == "MA Cumulative Summary"){
-                                          var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00:($scope.gridApi.grid.columns[5].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue())*100;
+                                       else if(ft.displayName == "% Started (of total registered)" && excelHeaderName.reportName == "MA Cumulative Summary"){
+                                           var temp = $scope.gridApi.grid.columns[2].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[3].getAggregationValue()/$scope.gridApi.grid.columns[2].getAggregationValue())*100;
+                                           v = (parseFloat(temp));
+                                       }
+                                       else if(ft.displayName == "% Completed (of total registered)" && excelHeaderName.reportName == "MA Cumulative Summary"){
+                                          var temp = $scope.gridApi.grid.columns[2].getAggregationValue()==0?0.00:($scope.gridApi.grid.columns[5].getAggregationValue()/$scope.gridApi.grid.columns[2].getAggregationValue())*100;
                                           v = (parseFloat(temp));
                                        }
-                                       else if(ft.displayName == "% Failed the course" && excelHeaderName.reportName == "MA Cumulative Summary"){
-                                          var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00:($scope.gridApi.grid.columns[6].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue())*100;
+                                       else if(ft.displayName == "% Failed (of total registered)" && excelHeaderName.reportName == "MA Cumulative Summary"){
+                                          var temp = $scope.gridApi.grid.columns[2].getAggregationValue()==0?0.00:($scope.gridApi.grid.columns[9].getAggregationValue()/$scope.gridApi.grid.columns[2].getAggregationValue())*100;
                                           v = (parseFloat(temp));
                                        }
                                        else{
@@ -1787,7 +1815,8 @@
                        for (j = 0; j < exportData1[i].length; j++) {
                               var temp1 = exportData1[i][j].value;
                                     if((excelHeaderName.reportName == "Kilkari Call" && (j == "7"||j == "8") )||
-                                        (excelHeaderName.reportName == "MA Cumulative Summary" && (j == "6"||j == "7"||j == "8"))||
+                                        (excelHeaderName.reportName == "Kilkari Call With Beneficiaries" && (j == "4"||j == "6"||j == "8"||j == "9"||j == "10"))||
+                                        (excelHeaderName.reportName == "MA Cumulative Summary" && (j == "3"||j == "5"||j == "7"||j=="9"))||
                                         (excelHeaderName.reportName == "Kilkari Cumulative Summary" && (j == "4"||j=="3") )||
                                         (excelHeaderName.reportName == "Kilkari Thematic Content" && (j == "4") )||
                                         (excelHeaderName.reportName == "Kilkari Beneficiary Completion" && (j == "2") )){
@@ -1907,8 +1936,9 @@
                     var temprow=[];
                     for (j = 0; j < exportData[i].length; j++) {
                         var temp = exportData[i][j].value;
-                        if((excelHeaderName.reportName == "Kilkari Call" && (j == "7"||j == "8") )||
-                            (excelHeaderName.reportName == "MA Cumulative Summary" && (j == "6"||j == "7"||j == "8"))||
+                        if((excelHeaderName.reportName == "Kilkari Call" && (j == "7"||j == "8"))||
+                            (excelHeaderName.reportName == "Kilkari Call With Beneficiaries" && (j == "4"||j == "6"||j == "8"||j == "10"))||
+                            (excelHeaderName.reportName == "MA Cumulative Summary" && (j == "3"||j == "5"||j == "7"||j=="9"))||
                             (excelHeaderName.reportName == "Kilkari Cumulative Summary" && (j == "4"||j == "3") )||
                             (excelHeaderName.reportName == "Kilkari Thematic Content" && (j == "4") )||
                             (excelHeaderName.reportName == "Kilkari Beneficiary Completion" && (j == "2") )){
@@ -1933,38 +1963,62 @@
 
                         else if(ft.displayName == "Average Duration Of Call" && excelHeaderName.reportName == "Kilkari Cumulative Summary"){
                             var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[4].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue());
-                            v = indianDecimal(temp);;
+                            v = indianDecimal(temp);
                         }
                         else if(ft.displayName == "Average Number Of Weeks In Service" && excelHeaderName.reportName == "Kilkari Beneficiary Completion"){
                             var temp = $scope.gridApi.grid.columns.length==0?0.00: ($scope.gridApi.grid.columns[3].getAggregationValue());
-                            v = indianDecimal(temp);;
+                            v = indianDecimal(temp);
                         }
                         else if(ft.displayName == "Average Duration Of Calls" && excelHeaderName.reportName == "Kilkari Call"){
                             var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[8].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue());
-                            v = indianDecimal(temp);;
+                            v = indianDecimal(temp);
                         }
                         else if(ft.displayName == "Total Billable Minutes" && excelHeaderName.reportName == "Kilkari Call"){
                             var temp = ft.getAggregationValue();
                             v = indianDecimal(temp);
                         }
+                        else if(ft.displayName == "Average Duration Of Calls" && excelHeaderName.reportName == "Kilkari Call With Beneficiaries"){
+                            var temp = $scope.gridApi.grid.columns[4].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[10].getAggregationValue()/$scope.gridApi.grid.columns[4].getAggregationValue());
+                            v = indianDecimal(temp);
+                        }
+                        else if(ft.displayName == "Total Billable Minutes" && excelHeaderName.reportName == "Kilkari Call With Beneficiaries"){
+                            var temp = ft.getAggregationValue();
+                            v = indianDecimal(temp);
+                        }
+                        else if(ft.displayName == "% attempted calls that were successful" && excelHeaderName.reportName == "Kilkari Call With Beneficiaries"){
+                            var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00: (($scope.gridApi.grid.columns[4].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue()) * 100);
+                            v = indianDecimal(temp);
+                        }
+                        else if(ft.displayName == "% successful calls where >= 75% content listened to" && excelHeaderName.reportName == "Kilkari Call With Beneficiaries"){
+                            var temp = $scope.gridApi.grid.columns[4].getAggregationValue()==0?0.00: (($scope.gridApi.grid.columns[6].getAggregationValue()/$scope.gridApi.grid.columns[4].getAggregationValue()) * 100);
+                            v = indianDecimal(temp);
+                        }
+                        else if(ft.displayName == "% successful calls where <25% content listened to" && excelHeaderName.reportName == "Kilkari Call With Beneficiaries"){
+                            var temp = $scope.gridApi.grid.columns[4].getAggregationValue()==0?0.00: (($scope.gridApi.grid.columns[8].getAggregationValue()/$scope.gridApi.grid.columns[4].getAggregationValue()) * 100);
+                            v = indianDecimal(temp);
+                        }
                         else if(ft.displayName == "Total Billable Minutes Played" && excelHeaderName.reportName == "Kilkari Cumulative Summary"){
                             var temp = ft.getAggregationValue();
-                            v = indianDecimal(temp);;
+                            v = indianDecimal(temp);
                         }
                         else if(ft.displayName == "Total Beneficiary Records Rejected" && excelHeaderName.reportName == "Kilkari Subscriber"&&!rejectionStart){
                             v = "N/A";
                         }
-                        else if(ft.displayName == "% Not Started Course" && excelHeaderName.reportName == "MA Cumulative Summary"){
-                            var temp = $scope.gridApi.grid.columns[2].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[4].getAggregationValue()/$scope.gridApi.grid.columns[2].getAggregationValue())*100;
-                            v = indianDecimal(temp);;
+                        else if(ft.displayName == "% Not Started (of total registered)" && excelHeaderName.reportName == "MA Cumulative Summary"){
+                            var temp = $scope.gridApi.grid.columns[2].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[7].getAggregationValue()/$scope.gridApi.grid.columns[2].getAggregationValue())*100;
+                            v = indianDecimal(temp);
                         }
-                        else if(ft.displayName == "% Successfully Completed" && excelHeaderName.reportName == "MA Cumulative Summary"){
-                            var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00:($scope.gridApi.grid.columns[5].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue())*100;
-                            v = indianDecimal(temp);;
+                        else if(ft.displayName == "% Completed (of total registered)" && excelHeaderName.reportName == "MA Cumulative Summary"){
+                            var temp = $scope.gridApi.grid.columns[2].getAggregationValue()==0?0.00:($scope.gridApi.grid.columns[5].getAggregationValue()/$scope.gridApi.grid.columns[2].getAggregationValue())*100;
+                            v = indianDecimal(temp);
                         }
-                        else if(ft.displayName == "% Failed the course" && excelHeaderName.reportName == "MA Cumulative Summary"){
-                            var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00:($scope.gridApi.grid.columns[6].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue())*100;
-                            v = indianDecimal(temp);;
+                        else if(ft.displayName == "% Started (of total registered)" && excelHeaderName.reportName == "MA Cumulative Summary"){
+                            var temp = $scope.gridApi.grid.columns[2].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[3].getAggregationValue()/$scope.gridApi.grid.columns[2].getAggregationValue())*100;
+                            v = indianDecimal(temp);
+                        }
+                        else if(ft.displayName == "% Failed (of total registered)" && excelHeaderName.reportName == "MA Cumulative Summary"){
+                            var temp = $scope.gridApi.grid.columns[2].getAggregationValue()==0?0.00:($scope.gridApi.grid.columns[9].getAggregationValue()/$scope.gridApi.grid.columns[2].getAggregationValue())*100;
+                            v = indianDecimal(temp);
                         }
                         else{
                             if (ft.displayName != "S No.") {
@@ -2002,7 +2056,8 @@
                         for (j = 0; j < exportData1[i].length; j++) {
                             var temp1 = exportData1[i][j].value;
                             if((excelHeaderName.reportName == "Kilkari Call" && (j == "7"||j == "8") )||
-                                (excelHeaderName.reportName == "MA Cumulative Summary" && (j == "6"||j == "7"||j == "8"))||
+                                (excelHeaderName.reportName == "Kilkari Call With Beneficiaries" && (j == "4"||j == "6"||j == "8"||j == "10"))||
+                                (excelHeaderName.reportName == "MA Cumulative Summary" && (j == "3"||j == "5"||j == "7"||j=="9"))||
                                 (excelHeaderName.reportName == "Kilkari Cumulative Summary" && (j == "4"||j=="3") )||
                                 (excelHeaderName.reportName == "Kilkari Thematic Content" && (j == "4") )||
                                 (excelHeaderName.reportName == "Kilkari Beneficiary Completion" && (j == "2") )){
@@ -2159,17 +2214,84 @@
                                                        {name: 'S No.', displayName: 'S No.',width:"6%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no" >{{rowRenderIndex+1}}</p>'},
                                                        { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>', defaultSort: { direction: uiGridConstants.ASC },
                                                          cellTemplate:'<a   ng-if= !row.entity.link class="btn aggregate-location" title="{{COL_FIELD}}"  ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a><p ng-if= row.entity.link class="ui-grid-cell-contents" title="{{COL_FIELD}}" >{{ COL_FIELD }}</p>',
-                                                         width: '12%', enableHiding: false,
+                                                         width: '16%', enableHiding: false,
                                                        },
                                                        { field: 'ashasRegistered', displayName : 'No of Registered ASHA',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',culture:'en-IN', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
-                                                       { field: 'ashasStarted', displayName : ' No of ASHA Started Course',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
-                                                       { field: 'ashasNotStarted', displayName : ' No of ASHA Not Started Course',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
-                                                       { field: 'ashasCompleted' , displayName : 'No of ASHA Successfully Completed the Course',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"13%", enableHiding: false},
-                                                       { field: 'ashasFailed' , displayName : 'No of ASHA who failed the course',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
-                                                       { field: 'notStartedpercentage' , displayName : '% Not Started Course',cellFilter: 'indianDecimalFilter', culture:'en-IN',footerCellTemplate: '<div class="ui-grid-cell-contents" >{{grid.columns[2].getAggregationValue()==0 ? 0.00:(grid.columns[4].getAggregationValue()/grid.columns[2].getAggregationValue()) *100 | number:2}}</div>', width:"*", enableHiding: false},
-                                                       { field: 'completedPercentage' , displayName : '% Successfully Completed',cellFilter: 'indianDecimalFilter', footerCellTemplate: '<div class="ui-grid-cell-contents" >{{grid.columns[3].getAggregationValue()==0 ? 0.00:(grid.columns[5].getAggregationValue()/grid.columns[3].getAggregationValue())*100 | number:2}}</div>', width:"*", enableHiding: false},
-                                                       { field: 'failedpercentage' , displayName : '% Failed the course',cellFilter: 'indianDecimalFilter', footerCellTemplate: '<div class="ui-grid-cell-contents" >{{grid.columns[3].getAggregationValue()==0 ? 0.00:(grid.columns[6].getAggregationValue()/grid.columns[3].getAggregationValue()) *100 | number:2}}</div>', width:"*", enableHiding: false},
-                                                     ],
+
+                    {
+                        field: 'ashasStarted',
+                        displayName: 'No of ASHA Started Course',
+                        cellFilter: 'indianFilter',
+                        footerCellFilter: 'indianFilter',
+                        aggregationType: uiGridConstants.aggregationTypes.sum,
+                        aggregationHideLabel: true,
+                        width: "*",
+                        enableHiding: false
+                    },
+                    {
+                        field: 'startedPercentage',
+                        displayName: '% Started (of total registered)',
+                        cellFilter: 'indianDecimalFilter',
+                        footerCellTemplate: '<div class="ui-grid-cell-contents" >{{grid.columns[2].getAggregationValue()==0 ? 0.00:(grid.columns[3].getAggregationValue()/grid.columns[2].getAggregationValue())*100 | number:2}}</div>',
+                        width: "*",
+                        enableHiding: false
+                    },
+                {
+                    field: 'ashasCompleted',
+                    displayName: 'No of ASHA Completed Course',
+                    cellFilter: 'indianFilter',
+                    footerCellFilter: 'indianFilter',
+                    aggregationType: uiGridConstants.aggregationTypes.sum,
+                    aggregationHideLabel: true,
+                    width: "*",
+                    enableHiding: false
+                },
+                {
+                    field: 'completedPercentage',
+                    displayName: '% Completed (of total registered)',
+                    cellFilter: 'indianDecimalFilter',
+                    footerCellTemplate: '<div class="ui-grid-cell-contents" >{{grid.columns[2].getAggregationValue()==0 ? 0.00:(grid.columns[5].getAggregationValue()/grid.columns[2].getAggregationValue())*100 | number:2}}</div>',
+                    width: "*",
+                    enableHiding: false
+                },
+                {
+                    field: 'ashasNotStarted',
+                    displayName: 'No of ASHA Not Started Course',
+                    cellFilter: 'indianFilter',
+                    footerCellFilter: 'indianFilter',
+                    aggregationType: uiGridConstants.aggregationTypes.sum,
+                    aggregationHideLabel: true,
+                    width: "*",
+                    enableHiding: false
+                },
+                {
+                    field: 'notStartedpercentage',
+                    displayName: '% Not Started (of total registered)',
+                    cellFilter: 'indianDecimalFilter',
+                    culture: 'en-IN',
+                    footerCellTemplate: '<div class="ui-grid-cell-contents" >{{grid.columns[2].getAggregationValue()==0 ? 0.00:(grid.columns[7].getAggregationValue()/grid.columns[2].getAggregationValue()) *100 | number:2}}</div>',
+                    width: "*",
+                    enableHiding: false
+                },
+                {
+                    field: 'ashasFailed',
+                    displayName: 'No of ASHA Failed Course',
+                    cellFilter: 'indianFilter',
+                    footerCellFilter: 'indianFilter',
+                    aggregationType: uiGridConstants.aggregationTypes.sum,
+                    aggregationHideLabel: true,
+                    width: "*",
+                    enableHiding: false
+                },
+                {
+                    field: 'failedpercentage',
+                    displayName: '% Failed (of total registered)',
+                    cellFilter: 'indianDecimalFilter',
+                    footerCellTemplate: '<div class="ui-grid-cell-contents" >{{grid.columns[2].getAggregationValue()==0 ? 0.00:(grid.columns[9].getAggregationValue()/grid.columns[2].getAggregationValue()) *100 | number:2}}</div>',
+                    width: "*",
+                    enableHiding: false
+                }
+                ],
 
 
             $scope.MA_Performance_Column_Definitions =[
@@ -2275,20 +2397,40 @@
             ]
 
             $scope.Kilkari_Call_Report_Definitions = [
-                                                     {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
-                                                     { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',defaultSort: { direction: uiGridConstants.ASC },
+                                                    {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
+                                                    { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',defaultSort: { direction: uiGridConstants.ASC },
                                                         cellTemplate:'<a   ng-if= !row.entity.link class="btn aggregate-location" title="{{COL_FIELD}}"  ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a><p ng-if= row.entity.link class="ui-grid-cell-contents" title="{{COL_FIELD}}" >{{ COL_FIELD }}</p>',
                                                         enableHiding: false, width:"12%"
-                                                     },
-                                                     { field: 'callsAttempted', name: 'Total Calls Attempted',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'successfulCalls', name: 'Total Number of Successful Calls',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
-                                                     { field: 'content_75_100', name: 'Total calls where greater than or equal to 75% content listened to',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
-                                                     { field: 'content_50_75', name: 'Total calls where  greater than or equal to 50% to less than 75% content listened to',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
-                                                     { field: 'content_25_50', name: 'Total calls where greater than or equal to 25% to less than 50% content listened to',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'content_1_25', name: 'Total calls where less than 25%  content listened to',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'billableMinutes', name: 'Total Billable minutes',cellFilter: 'indianDecimalFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, footerCellFilter: 'indianDecimalFilter', width:"*", enableHiding: false },
-                                                     { field: 'avgDuration', name: 'Average Duration of Calls',cellFilter: 'indianDecimalFilter', footerCellFilter: 'indianDecimalFilter', footerCellTemplate: '<div class="ui-grid-cell-contents" >{{(grid.columns[3].getAggregationValue()==0)?0.00: grid.columns[8].getAggregationValue()/grid.columns[3].getAggregationValue() | number:2}}</div>', width:"*", enableHiding: false},
-                                                     { field: 'callsToInbox', name: 'Total number of calls to inbox where content is played',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
+                                                    },
+                                                    { field: 'callsAttempted', name: 'Total Calls Attempted',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                    { field: 'successfulCalls', name: 'Total Number of Successful Calls',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
+                                                    { field: 'content_75_100', name: 'Total calls where greater than or equal to 75% content listened to',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
+                                                    { field: 'content_50_75', name: 'Total calls where  greater than or equal to 50% to less than 75% content listened to',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
+                                                    { field: 'content_25_50', name: 'Total calls where greater than or equal to 25% to less than 50% content listened to',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                    { field: 'content_1_25', name: 'Total calls where less than 25%  content listened to',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                    { field: 'billableMinutes', name: 'Total Billable Minutes',cellFilter: 'indianDecimalFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, footerCellFilter: 'indianDecimalFilter', width:"*", enableHiding: false },
+                                                    { field: 'avgDuration', name: 'Average Duration of Calls',cellFilter: 'indianDecimalFilter', footerCellFilter: 'indianDecimalFilter', footerCellTemplate: '<div class="ui-grid-cell-contents" >{{(grid.columns[3].getAggregationValue()==0)?0.00: grid.columns[8].getAggregationValue()/grid.columns[3].getAggregationValue() | number:2}}</div>', width:"*", enableHiding: false},
+                                                    { field: 'callsToInbox', name: 'Total number of calls to inbox where content is played',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
+
+            ]
+
+            $scope.Kilkari_Call_Report_With_Beneficiaries_Definitions = [
+                {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
+                { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',defaultSort: { direction: uiGridConstants.ASC },
+                    cellTemplate:'<a   ng-if= !row.entity.link class="btn aggregate-location" title="{{COL_FIELD}}"  ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a><p ng-if= row.entity.link class="ui-grid-cell-contents" title="{{COL_FIELD}}" >{{ COL_FIELD }}</p>',
+                    enableHiding: false, width:"12%"
+                },
+                { field: 'beneficiariesCalled', displayName: 'Total Beneficiaries Called',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                { field: 'callsAttempted', displayName: 'Total Calls Attempted',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                { field: 'successfulCalls', displayName: 'Total Number of Successful Calls',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
+                { field: 'percentageCallsResponded', displayName: '% attempted calls that were successful',cellFilter: 'indianDecimalFilter',footerCellFilter: 'indianDecimalFilter', footerCellTemplate: '<div class="ui-grid-cell-contents" >{{(grid.columns[3].getAggregationValue()==0)?0.00: (grid.columns[4].getAggregationValue()/grid.columns[3].getAggregationValue()) * 100 | number:2}}</div>',  width:"*", enableHiding: false},
+                { field: 'content_75_100', displayName: 'Total calls where >=75% content listened to',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
+                { field: 'percentageCalls_75_100', displayName: '% successful calls where >= 75% content listened to',cellFilter: 'indianDecimalFilter',footerCellFilter: 'indianDecimalFilter', footerCellTemplate: '<div class="ui-grid-cell-contents" >{{(grid.columns[4].getAggregationValue()==0)?0.00: (grid.columns[6].getAggregationValue()/grid.columns[4].getAggregationValue()) * 100 | number:2}}</div>',  width:"*", enableHiding: false},
+                { field: 'content_1_25', displayName: 'Total calls where <25%  content listened to',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                { field: 'percentageCalls_1_25', displayName: '% successful calls where <25% content listened to',cellFilter: 'indianDecimalFilter',footerCellFilter: 'indianDecimalFilter', footerCellTemplate: '<div class="ui-grid-cell-contents" >{{(grid.columns[4].getAggregationValue()==0)?0.00: (grid.columns[8].getAggregationValue()/grid.columns[4].getAggregationValue()) * 100 | number:2}}</div>',  width:"*", enableHiding: false},
+                { field: 'billableMinutes', displayName: 'Total Billable Minutes',cellFilter: 'indianDecimalFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, footerCellFilter: 'indianDecimalFilter', width:"*", enableHiding: false },
+                { field: 'avgDuration', displayName: 'Average Duration of Calls',cellFilter: 'indianDecimalFilter', footerCellFilter: 'indianDecimalFilter', footerCellTemplate: '<div class="ui-grid-cell-contents" >{{(grid.columns[4].getAggregationValue()==0)?0.00: grid.columns[10].getAggregationValue()/grid.columns[4].getAggregationValue() | number:2}}</div>', width:"*", enableHiding: false},
+
             ]
 
             $scope.Kilkari_Message_Matrix_Motherpack_Definitions =[

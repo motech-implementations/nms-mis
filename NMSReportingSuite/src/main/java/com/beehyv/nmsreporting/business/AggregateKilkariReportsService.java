@@ -32,5 +32,7 @@ public interface AggregateKilkariReportsService {
     AggregateKilkariRepeatListenerMonthWiseDto getKilkariRepeatListenerMonthWiseReport(ReportRequest reportRequest);
 
     List<KilkariCallReportDto> getKilkariCallReport(ReportRequest reportRequest, User currentUser);
+
+    List<KilkariCallReportWithBeneficiariesDto> getKilkariCallReportWithBeneficiaries(ReportRequest reportRequest, User currentUser);
 }
 

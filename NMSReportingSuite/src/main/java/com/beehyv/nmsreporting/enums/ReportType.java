@@ -13,6 +13,7 @@ public enum ReportType {
 //    sixWeeks("sixWeeks");
     messageMatrix("Kilkari_Message_Matrix","Kilkari Message Matrix","KILKARI","Kilkari Message Matrix Report", "Message Matrix"),
     kilkariCalls("Kilkari_Call","Kilkari Call","KILKARI","Kilkari Call Report", "Call Report"),
+    kilkariCallsWithBeneficiaries("Kilkari_Call_With_Beneficiaries","Kilkari Call With Beneficiaries","KILKARI","Kilkari Call Report With Beneficiaries", "Call Report With Beneficiaries"),
     listeningMatrix("Kilkari_Listening_Matrix","Kilkari Listening Matrix","KILKARI","Kilkari Listening Matrix Report", "Listening Matrix"),
     beneficiary("Kilkari_Aggregate_Beneficiaries","Kilkari Aggregate Beneficiaries","KILKARI","Kilkari Aggregate Beneficiaries Report", "Aggregate Beneficiaries"),
     usage("Kilkari_Usage","Kilkari Usage","KILKARI","Kilkari Usage Report", "Usage Report"),
