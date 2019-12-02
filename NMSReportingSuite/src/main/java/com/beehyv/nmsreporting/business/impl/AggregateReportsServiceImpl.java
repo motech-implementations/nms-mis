@@ -657,7 +657,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
 //                    gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix")||
 //                    gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener Month Wise")||
 //                    gridData.getReportName().equalsIgnoreCase("Kilkari Cumulative Summary")||
-//                    gridData.getReportName().equalsIgnoreCase("MA Cumulative Summary")){
+//                    gridData.getReportName().equalsIgnoreCase("District-wise Performance of the State for Mobile Academy")){
                 spreadsheet.autoSizeColumn(1);
 //            }
 
@@ -886,7 +886,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         float tableFont = 7;
         //contents.close();
 
-        if (gridData.getReportName().equalsIgnoreCase("MA Cumulative Summary") || gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener Month Wise")) {
+        if (gridData.getReportName().equalsIgnoreCase("District-wise Performance of the State for Mobile Academy") || gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener Month Wise")) {
             cellWidth = 10f;
             tableMargin = 60;
             tableFont = 7;

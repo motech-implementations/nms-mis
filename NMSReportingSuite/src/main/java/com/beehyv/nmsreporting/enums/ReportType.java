@@ -13,7 +13,7 @@ public enum ReportType {
 //    sixWeeks("sixWeeks");
     messageMatrix("Kilkari_Message_Matrix","Kilkari Message Matrix","KILKARI","Kilkari Message Matrix Report", "Message Matrix"),
     kilkariCalls("Kilkari_Call","Kilkari Call","KILKARI","Kilkari Call Report", "Call Report"),
-    kilkariCallsWithBeneficiaries("Kilkari_Call_With_Beneficiaries","Kilkari Call With Beneficiaries","KILKARI","Kilkari Call Report With Beneficiaries", "Call Report With Beneficiaries"),
+    kilkariCallsWithBeneficiaries("District-wise Performance of the State for Kilkari","District-wise Performance of the State for Kilkari","KILKARI","District-wise Performance of the State for Kilkari", "District-wise Performance of the State for Kilkari"),
     listeningMatrix("Kilkari_Listening_Matrix","Kilkari Listening Matrix","KILKARI","Kilkari Listening Matrix Report", "Listening Matrix"),
     beneficiary("Kilkari_Aggregate_Beneficiaries","Kilkari Aggregate Beneficiaries","KILKARI","Kilkari Aggregate Beneficiaries Report", "Aggregate Beneficiaries"),
     usage("Kilkari_Usage","Kilkari Usage","KILKARI","Kilkari Usage Report", "Usage Report"),
@@ -21,7 +21,7 @@ public enum ReportType {
     kilkariCumulative("Kilkari_Cumulative_Summary","Kilkari Cumulative Summary","KILKARI","Kilkari Cumulative Summary Aggregate Report", "Cumulative Summary"),
     maPerformance("MA_Performance","MA Performance","MOBILE_ACADEMY","MA Performance Aggregate Report", "Performance Report"),
     maSubscriber("MA_Subscriber","MA Subscriber","MOBILE_ACADEMY","MA Subscriber Aggregate Report", "Subscriber Report"),
-    maCumulative("MA_Cumulative_Summary","MA Cumulative Summary","MOBILE_ACADEMY","MA Cumulative Summery Aggregate Report", "Cumulative Summary"),
+    maCumulative("District-wise Performance of the State for Mobile Academy","District-wise Performance of the State for Mobile Academy","MOBILE_ACADEMY","District-wise Performance of the State for Mobile Academy", "District-wise Performance of the State for Mobile Academy"),
     maCourse("MA_Cumulative_Course_Completion", "Course Completion", "MOBILE_ACADEMY","MA Completion Line-Listing Report", "Course Completion"),
     maAnonymous("MA_Anonymous_Users", "Circle wise Anonymous Users", "MOBILE_ACADEMY", "MA Circle Wise Anonymous Line-Listing Report", "Circle wise Anonymous Users"),
     maInactive("MA_Cumulative_Inactive_Users", "Cumulative Inactive Users", "MOBILE_ACADEMY", "MA Inactive Users Line-Listing Report", "Cumulative Inactive Users"),
