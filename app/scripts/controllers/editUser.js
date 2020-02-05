@@ -12,7 +12,12 @@
 			UserFormFactory.downloadCurrentUser().then(function(result){
 				UserFormFactory.setCurrentUser(result.data);
 				UserFormFactory.getUser($stateParams.id).then(function(result) {
+					if(result.data)
 					$scope.editUser = result.data;
+					else {
+						alert("Not authorized");
+						$state.go('userManagement.userTable', {});
+					}
 				});
 			});
 
