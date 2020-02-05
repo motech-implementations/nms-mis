@@ -261,7 +261,11 @@ public class UserController {
     public @ResponseBody User getUserById(@PathVariable("userId") Integer userId) {
         User currentUser = userService.getCurrentUser();
         if(currentUser.getUserId() != null){
-            return userService.findUserByUserId(userId);
+            User user = userService.findUserByUserId(userId);
+            if(AccessLevel.getLevel(currentUser.getAccessLevel()).ordinal() > AccessLevel.getLevel(user.getAccessLevel()).ordinal()||!user.getCreatedByUser().getUserId().equals(currentUser.getUserId())) {
+                return null;
+            }
+            return user;
         } else
             return null;
     }
