@@ -259,14 +259,13 @@ public class UserController {
 
     @RequestMapping(value={"/user/{userId}"})
     public @ResponseBody User getUserById(@PathVariable("userId") Integer userId) {
-        User currentUser = userService.getCurrentUser();
-        if(currentUser.getUserId() != null){
+        if(getCurrentUser() != null){
             User user = userService.findUserByUserId(userId);
-            if(AccessLevel.getLevel(currentUser.getAccessLevel()).ordinal() > AccessLevel.getLevel(user.getAccessLevel()).ordinal()||!user.getCreatedByUser().getUserId().equals(currentUser.getUserId())) {
-                return null;
+            if(getCurrentUser().equals(user.getCreatedByUser())) {
+                return user;
             }
-            return user;
-        } else
+            return null;
+        }
             return null;
     }
 
@@ -515,11 +514,12 @@ public class UserController {
 
 
 
-    @RequestMapping(value = {"/deleteUser/{id}"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/deleteUser"}, method = RequestMethod.POST)
     @ResponseBody
-    public Map deleteExistingUser(@PathVariable("id") Integer id) {
+    public Map deleteExistingUser(HttpServletRequest request, @RequestBody Integer id) {
         User currentUser = userService.getCurrentUser();
-        if(currentUser != null){
+        String token = 'dhty' + currentUser.getUserId().toString() + 'alkihkf';
+        if(currentUser != null && request.getHeader("csrfToken").equals(token)){
             Map<Integer, String> map=userService.deleteExistingUser(id);
             if(map.get(0).equals("User deleted")) {
                 ModificationTracker modification = new ModificationTracker();

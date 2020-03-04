@@ -194,7 +194,13 @@
             };
 
             $scope.deactivateUserSubmit = function() {
-                UserFormFactory.deactivateUser($scope.editUser.userId)
+            	var token = 'dhty'+$stateParams.id+'alkihkf';
+				$http({
+					method  : 'POST',
+					url     : backend_root + 'nms/user/deleteUser',
+					data    : $scope.editUser.userId,
+					headers : {'Content-Type': 'application/json', 'csrfToken': token}
+				})
                 .then(function(result){
                     if (UserFormFactory.isInternetExplorer()) {
                         alert(result.data['0']);
