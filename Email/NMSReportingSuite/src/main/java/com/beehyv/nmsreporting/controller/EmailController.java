@@ -59,22 +59,41 @@ public class EmailController {
         byte[] decoded = Base64.decodeBase64(encoded);
         String token = new String(decoded, "UTF-8");
         String[] tokenItems = token.split("\\|\\|");
-
+    //changed the 'from' emailId from beehyv domain address to govt domain address
         String email = tokenItems[0];
         String password = tokenItems[1];
-        EmailInfo newMail = new EmailInfo();
-        newMail.setFrom("nsp-reports@beehyv.com");
-        newMail.setTo(email);
-        Calendar c = Calendar.getInstance();   // this takes current date
-        c.add(Calendar.MONTH, -1);
-        c.set(Calendar.DATE, 1);
-        newMail.setSubject("Reset Password for MIS Portal");
-        newMail.setBody("Dear user,<br/><br/><p>As per your request, your password has been reset to: <b>" +
-                password +
-                "</b></p><br/><p>Once you login to the MIS portal with the above password, the system will direct you to change the default password as it is mandatory.</p><br/>" +
-                "<p>Thanks,</p>" +
-                "<p>NSP Support</p>");
-        return emailService.sendMailPassword(newMail);
+        String subject = "Reset Password for MIS Portal";
+        String message = "\"Dear user,<br/><br/><p>As per your request, your password has been reset to: <b>" +
+               password +
+              "</b></p><br/><p>Once you login to the MIS portal with the above password, the system will direct you to change the default password as it is mandatory.</p><br/>" +
+             "<p>Thanks,</p>" +"<p>NSP Support</p>\"";
+        String command = "/opt/sendEmail/sendEmail -f motechnagios@ggn.rcil.gov.in -s email.ggn.rcil.gov.in -t "+
+                email+" -o \"message-content-type=html\" -m "+message+" -u "+subject;
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        processBuilder.command("bash","-c",command);
+        processBuilder.inheritIO();
+        try {
+            Process process = processBuilder.start();
+            int exitVal = process.waitFor();
+            if(exitVal==0){
+                return "success";
+            }else{
+                return "failure";
+            }
+        }catch (InterruptedException e){return "failure";}
+//        EmailInfo newMail = new EmailInfo();
+//        newMail.setFrom("nsp-reports@beehyv.com");
+//        newMail.setTo(email);
+//        Calendar c = Calendar.getInstance();   // this takes current date
+//        c.add(Calendar.MONTH, -1);
+//        c.set(Calendar.DATE, 1);
+//        newMail.setSubject("Reset Password for MIS Portal");
+//        newMail.setBody("Dear user,<br/><br/><p>As per your request, your password has been reset to: <b>" +
+//                password +
+//                "</b></p><br/><p>Once you login to the MIS portal with the above password, the system will direct you to change the default password as it is mandatory.</p><br/>" +
+//                "<p>Thanks,</p>" +
+//                "<p>NSP Support</p>");
+//        return emailService.sendMailPassword(newMail);
     }
 
     @RequestMapping(value = "/sendCaptcha/{captchaResponse}", method = RequestMethod.GET)
