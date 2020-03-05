@@ -424,10 +424,10 @@
 
 			$scope.disableCursor = function(){
 
-            				return (($state.current.name)===("MA Cumulative Summary"))||(($state.current.name)===("MA Subscriber"))||
+            				return (($state.current.name)===("District-wise Performance of the State for Mobile Academy"))||(($state.current.name)===("MA Subscriber"))||
                                                                       (($state.current.name)===("MA Performance"))||(($state.current.name)===("Kilkari Cumulative Summary"))||
                                                                       (($state.current.name)===("Kilkari Beneficiary Completion"))||(($state.current.name)===("Kilkari Usage"))||
-                                                                      (($state.current.name)===("Kilkari Call"))||(($state.current.name)===("Kilkari Message Matrix"))||
+                                                                      (($state.current.name)===("Kilkari Call"))||(($state.current.name)===("District-wise Performance of the State for Kilkari"))||(($state.current.name)===("Kilkari Message Matrix"))||
                                                                       (($state.current.name)===("Kilkari Listening Matrix"))||(($state.current.name)===("Kilkari Thematic Content"))||
                                                                       (($state.current.name)===("Kilkari Repeat Listener"))||(($state.current.name)===("Kilkari Subscriber"))||
                                                                       (($state.current.name)===("Kilkari Message Listenership"))||(($state.current.name)===("Kilkari Aggregate Beneficiaries"));

@@ -650,6 +650,13 @@ public class UserController {
             return aggregateResponseDto;
         }
 
+        if (reportRequest.getReportType().equals(ReportType.kilkariCallsWithBeneficiaries.getReportType())) {
+            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
+            List<KilkariCallReportWithBeneficiariesDto> kilkariCallReportWithBeneficiariesDtos = aggregateKilkariReportsService.getKilkariCallReportWithBeneficiaries(reportRequest, currentUser);
+            aggregateResponseDto.setTableData(kilkariCallReportWithBeneficiariesDtos);
+            return aggregateResponseDto;
+        }
+
         if (reportRequest.getReportType().equals(ReportType.maPerformance.getReportType())) {
 
             Date fromDate = dateAdder(reportRequest.getFromDate(),0);
@@ -889,9 +896,10 @@ public class UserController {
                 summaryDto1.setAshasNotStarted(a.getAshasNotStarted());
                 summaryDto1.setAshasStarted(a.getAshasStarted());
                 summaryDto1.setLocationType(a.getLocationType());
-                summaryDto1.setCompletedPercentage((float) (a.getAshasStarted() == 0 ? 0 : (Math.round((a.getAshasCompleted() * 10000.0f/ a.getAshasStarted())))) / 100f);
-                summaryDto1.setFailedpercentage((float) (a.getAshasStarted() == 0 ? 0 : (Math.round((a.getAshasFailed() * 10000.0f / a.getAshasStarted())))) / 100f);
+                summaryDto1.setCompletedPercentage((float) (a.getAshasRegistered() == 0 ? 0 : (Math.round((a.getAshasCompleted() * 10000.0f/ a.getAshasRegistered())))) / 100f);
+                summaryDto1.setFailedpercentage((float) (a.getAshasRegistered() == 0 ? 0 : (Math.round((a.getAshasFailed() * 10000.0f / a.getAshasRegistered())))) / 100f);
                 summaryDto1.setNotStartedpercentage((float) (a.getAshasRegistered() == 0 ? 0 : (Math.round((a.getAshasNotStarted() * 10000.0f / a.getAshasRegistered())))) / 100f);
+                summaryDto1.setStartedPercentage((float) (a.getAshasRegistered() == 0 ? 0 : (Math.round((a.getAshasStarted() * 10000.0f / a.getAshasRegistered())))) / 100f);
                 String locationType = a.getLocationType();
                 if (locationType.equalsIgnoreCase("State")) {
                     summaryDto1.setLocationName(stateDao.findByStateId(a.getLocationId().intValue()).getStateName());
@@ -1304,7 +1312,13 @@ public class UserController {
                 "images/drop-down-2.png",
                 ReportType.kilkariCalls.getServiceType(),showAggregateReports)
         );
-
+        kList.add(new Report(
+                ReportType.kilkariCallsWithBeneficiaries.getReportName(),
+                ReportType.kilkariCallsWithBeneficiaries.getReportType(),
+                ReportType.kilkariCallsWithBeneficiaries.getSimpleName(),
+                "images/drop-down-2.png",
+                ReportType.kilkariCallsWithBeneficiaries.getServiceType(),showAggregateReports)
+        );
         kList.add(new Report(
                 ReportType.messageMatrix.getReportName(),
                 ReportType.messageMatrix.getReportType(),
