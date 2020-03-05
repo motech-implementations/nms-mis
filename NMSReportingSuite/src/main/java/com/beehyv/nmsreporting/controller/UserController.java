@@ -518,7 +518,7 @@ public class UserController {
     @ResponseBody
     public Map deleteExistingUser(HttpServletRequest request, @RequestBody Integer id) {
         User currentUser = userService.getCurrentUser();
-        String token = 'dhty' + currentUser.getUserId().toString() + 'alkihkf';
+        String token = "dhty" + currentUser.getUserId().toString() + "alkihkf";
         if(currentUser != null && request.getHeader("csrfToken").equals(token)){
             Map<Integer, String> map=userService.deleteExistingUser(id);
             if(map.get(0).equals("User deleted")) {
