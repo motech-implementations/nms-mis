@@ -189,7 +189,7 @@
 			<div class="row" data-ng-hide= "!isAggregateReport() ">
 				<div class="col-xs-12 left">
 
-					<div class="form-group col-xs-2" data-ng-hide = "report.name == 'MA Cumulative Summary' || report.reportEnum == 'Kilkari_Cumulative_Summary'">
+					<div class="form-group col-xs-2" data-ng-hide = "report.name == 'District-wise Performance of the State for Mobile Academy' || report.reportEnum == 'Kilkari_Cumulative_Summary'">
 						<label> Period Type</label><br>
 						<div class="btn-group " data-uib-dropdown data-dropdown-append-to-body >
 							<button id="btn-append-to-body9" type="button"  class="btn btn-sm btn-default"  data-uib-dropdown-toggle >
@@ -209,7 +209,7 @@
 						</div>
 					</div>
 
-                    <div class="form-group col-xs-2" data-ng-hide = " periodDisplayType == '' || (report.name == 'MA Cumulative Summary' ||  report.reportEnum == 'Kilkari_Cumulative_Summary' || periodDisplayType == 'Current Period' ) ">
+                    <div class="form-group col-xs-2" data-ng-hide = " periodDisplayType == '' || (report.name == 'District-wise Performance of the State for Mobile Academy' ||  report.reportEnum == 'Kilkari_Cumulative_Summary' || periodDisplayType == 'Current Period' ) ">
                         <label>{{periodTypeContent}}</label><br>
                         <p class="input-group" data-ng-class="{disabled :disableDate() }" data-ng-disabled="disableDate()">
                             <input type="text" class="form-control input input-sm" data-uib-datepicker-popup="{{dateFormat}}" data-ng-model="dt1" is-open="popup2.opened" datepicker-options="datePickerOptions"  data-ng-required = "true" close-text="Close" alt-input-formats="altInputFormats" data-ng-disabled='disableDate()' readonly />
@@ -225,7 +225,7 @@
 						</ul>
                     </div>
 
-                    <div class="form-group col-xs-2" data-ng-hide = " (report.name != 'MA Cumulative Summary' &&  report.reportEnum != 'Kilkari_Cumulative_Summary' && periodDisplayType != 'Custom Range')">
+                    <div class="form-group col-xs-2" data-ng-hide = " (report.name != 'District-wise Performance of the State for Mobile Academy' &&  report.reportEnum != 'Kilkari_Cumulative_Summary' && periodDisplayType != 'Custom Range')">
                         <label>End Date</label><br>
                         <p class="input-group" data-ng-class="{disabled :disableDate() }" data-ng-disabled="disableDate()">
                             <input type="text" class="form-control input input-sm" data-uib-datepicker-popup="{{dateFormat}}" data-ng-model="dt2" is-open="popup3.opened" datepicker-options="endDatePickerOptions"  data-ng-required= "true" close-text="Close" alt-input-formats="altInputFormats" data-ng-disabled='disableDate()' readonly />
@@ -321,7 +321,7 @@
     <div class="reportheader" data-ng-hide="hideGrid">
         <p class="ng-binding" style="display: inline-block;"> {{reportHeaderName}} Report</p>
 		<div style="display: inline-block;float: right">
-			<i class="glyphicon glyphicon-calendar aggregate-calender"> <span data-ng-if=" report.name != 'MA Cumulative Summary' && report.reportEnum != 'Kilkari_Cumulative_Summary' " class="calender-date">{{ headerFromDate | date:'dd/MM/y'}}</span> <span class="calender-date" style="font-size: 13px" data-ng-if=" report.name == 'MA Cumulative Summary' || report.reportEnum == 'Kilkari_Cumulative_Summary' ">Up</span><span class="calender-date">to</span> <span class="calender-date">{{headerToDate | date:'dd/MM/y'}}</span></i>
+			<i class="glyphicon glyphicon-calendar aggregate-calender"> <span data-ng-if=" report.name != 'District-wise Performance of the State for Mobile Academy' && report.reportEnum != 'Kilkari_Cumulative_Summary' " class="calender-date">{{ headerFromDate | date:'dd/MM/y'}}</span> <span class="calender-date" style="font-size: 13px" data-ng-if=" report.name == 'District-wise Performance of the State for Mobile Academy' || report.reportEnum == 'Kilkari_Cumulative_Summary' ">Up</span><span class="calender-date">to</span> <span class="calender-date">{{headerToDate | date:'dd/MM/y'}}</span></i>
 			<img alt="export to excel" data-ng-click = "exportToExcel()" style="float: right;margin-right: 7px; cursor : pointer" src="images/export3.png">
 			<img alt="export to csv" data-ng-click = "exportCsv()" style="float: right;margin-right: 7px; cursor : pointer" src="images/export1.png">
 			<img alt="export to pdf" data-ng-hide="isIE9()"data-ng-click = "exportPdf()" style="float: right;margin-right: 7px; cursor : pointer" src="images/export2.png">
