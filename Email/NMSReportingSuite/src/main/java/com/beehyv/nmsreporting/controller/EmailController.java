@@ -96,6 +96,28 @@ public class EmailController {
 //        return emailService.sendMailPassword(newMail);
     }
 
+    @RequestMapping(value = "/emailAlert", method = RequestMethod.GET)
+    public @ResponseBody
+    String sendPassword(@RequestParam String api, @RequestParam int capacity, String email) throws Exception {
+        String subject = "API rate limit being reached";
+        String message = "\"Dear user,<br/><br/><p>You have used up half the number of requests available to you for this minute for the api " +
+                api + ". You have " + capacity/2 + " requests left."
+                "<p>Thanks,</p>" +"<p>NSP Support</p>\"";
+        String command = "/opt/sendEmail/sendEmail -f motechnagios@ggn.rcil.gov.in -s email.ggn.rcil.gov.in -t "+
+                email+" -o \"message-content-type=html\" -m "+message+" -u "+subject;
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        processBuilder.command("bash","-c",command);
+        processBuilder.inheritIO();
+        try {
+            Process process = processBuilder.start();
+            int exitVal = process.waitFor();
+            if(exitVal==0){
+                return "success";
+            }else{
+                return "failure";
+            }
+        }catch (InterruptedException e){return "failure";}
+
     @RequestMapping(value = "/sendCaptcha/{captchaResponse}", method = RequestMethod.GET)
     public @ResponseBody
     String sendCaptcha(@PathVariable String captchaResponse) throws Exception {
