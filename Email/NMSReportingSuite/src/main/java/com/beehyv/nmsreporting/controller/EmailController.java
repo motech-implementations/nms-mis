@@ -100,23 +100,26 @@ public class EmailController {
     public @ResponseBody
     String sendPassword(@RequestParam String api, @RequestParam Long capacity, String email) throws Exception {
         String subject = "API rate limit being reached";
-        String message = "\"Dear user,<br/><br/><p>You have used up half the number of requests available to you for this minute for the api " +
-                api + ". You have " + capacity + " requests left."
-                "<p>Thanks,</p>" +"<p>NSP Support</p>\"";
-        String command = "/opt/sendEmail/sendEmail -f motechnagios@ggn.rcil.gov.in -s email.ggn.rcil.gov.in -t "+
-                email+" -o \"message-content-type=html\" -m "+message+" -u "+subject;
+        String message = "\"Dear user,<br/><br/><p>You have used up 60% of the number of requests available to you for this minute for the api " +
+                api + ". You have " + capacity + " requests left." +
+                "<p>Thanks,</p>" + "<p>NSP Support</p>\"";
+        String command = "/opt/sendEmail/sendEmail -f motechnagios@ggn.rcil.gov.in -s email.ggn.rcil.gov.in -t " +
+                email + " -o \"message-content-type=html\" -m " + message + " -u " + subject;
         ProcessBuilder processBuilder = new ProcessBuilder();
-        processBuilder.command("bash","-c",command);
+        processBuilder.command("bash", "-c", command);
         processBuilder.inheritIO();
         try {
             Process process = processBuilder.start();
             int exitVal = process.waitFor();
-            if(exitVal==0){
+            if (exitVal == 0) {
                 return "success";
-            }else{
+            } else {
                 return "failure";
             }
-        }catch (InterruptedException e){return "failure";}
+        } catch (InterruptedException e) {
+            return "failure";
+        }
+    }
 
     @RequestMapping(value = "/sendCaptcha/{captchaResponse}", method = RequestMethod.GET)
     public @ResponseBody
