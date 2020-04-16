@@ -95,7 +95,8 @@ public class EmailController {
 //                "<p>NSP Support</p>");
 //        return emailService.sendMailPassword(newMail);
     }
-
+    //this api was added for the motech project, not reporting. This will be used to send email alerts when motech
+    //apisare about to reach their configured rate limits
     @RequestMapping(value = "/emailAlert", method = RequestMethod.GET)
     public @ResponseBody
     String sendEmailAlert(@RequestParam String api, @RequestParam long capacity, @RequestParam String email,
