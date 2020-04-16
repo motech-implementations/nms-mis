@@ -98,9 +98,12 @@ public class EmailController {
 
     @RequestMapping(value = "/emailAlert", method = RequestMethod.GET)
     public @ResponseBody
-    String sendPassword(@RequestParam String api, @RequestParam Long capacity, String email) throws Exception {
-        String subject = "API rate limit being reached";
-        String message = "\"Dear user,<br/><br/><p>You have used up 60% of the number of requests available to you for this minute for the api " +
+    String sendEmailAlert(@RequestParam String api, @RequestParam long capacity, @RequestParam String email,
+                           @RequestParam String status, @RequestParam long perc) throws Exception {
+        System.out.println(api+capacity+email);
+
+        String subject = status.toUpperCase()+ " API rate limit being reached";
+        String message = "\"Dear user,<br/><br/><p>You have used up "+perc+"% of the number of requests available to you for this minute for the api " +
                 api + ". You have " + capacity + " requests left." +
                 "<p>Thanks,</p>" + "<p>NSP Support</p>\"";
         String command = "/opt/sendEmail/sendEmail -f motechnagios@ggn.rcil.gov.in -s email.ggn.rcil.gov.in -t " +
