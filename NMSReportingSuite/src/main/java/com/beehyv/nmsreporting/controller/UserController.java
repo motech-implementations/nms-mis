@@ -256,12 +256,12 @@ public class UserController {
 
 
     }
-
+//returning a user only if current user is the creator, this api is used only during edit user
     @RequestMapping(value={"/user/{userId}"})
     public @ResponseBody User getUserById(@PathVariable("userId") Integer userId) {
         if(getCurrentUser() != null){
             User user = userService.findUserByUserId(userId);
-            if(getCurrentUser().equals(user.getCreatedByUser())) {
+            if(getCurrentUser().getUserId().equals(user.getCreatedByUser().getUserId())) {
                 return user;
             }
             return null;
@@ -513,7 +513,7 @@ public class UserController {
 
 
 
-
+//changed delete user to post, added a token verification
     @RequestMapping(value = {"/deleteUser"}, method = RequestMethod.POST)
     @ResponseBody
     public Map deleteExistingUser(HttpServletRequest request, @RequestBody Integer id) {

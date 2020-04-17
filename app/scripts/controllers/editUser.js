@@ -12,6 +12,7 @@
 			UserFormFactory.downloadCurrentUser().then(function(result){
 				UserFormFactory.setCurrentUser(result.data);
 				UserFormFactory.getUser($stateParams.id).then(function(result) {
+					//added null check, redirecting to usermangement table if null
 					if(result.data)
 					$scope.editUser = result.data;
 					else {
@@ -192,9 +193,9 @@
                 })
 
             };
-
+	//changed delete user to post, added a token for verification
             $scope.deactivateUserSubmit = function() {
-            	var token = 'dhty'+$stateParams.id+'alkihkf';
+            	var token = 'dhty'+UserFormFactory.getCurrentUser().userId+'alkihkf';
 				$http({
 					method  : 'POST',
 					url     : backend_root + 'nms/user/deleteUser',
