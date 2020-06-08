@@ -11,6 +11,7 @@ import com.beehyv.nmsreporting.enums.AccountStatus;
 import com.beehyv.nmsreporting.enums.ModificationType;
 import com.beehyv.nmsreporting.model.*;
 import com.beehyv.nmsreporting.utils.LoginUser;
+import com.beehyv.nmsreporting.utils.ServiceFunctions;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -54,6 +55,8 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private AggregateCumulativeMADao aggregateCumulativeMADao;
+
+    private ServiceFunctions serviceFunctions = new ServiceFunctions();
 
     private Role getAdminRole(){
         return roleDao.findByRoleDescription(AccessType.ADMIN.getAccessType()).get(0);
@@ -311,8 +314,8 @@ public class UserServiceImpl implements UserService{
 //                return responseMap;
 //            }
         }
-
-        user.setPassword(passwordEncoder.encode(user.getPhoneNumber()));
+        String password = serviceFunctions.generatePassword();
+        user.setPassword(passwordEncoder.encode(password));
         user.setCreationDate(new Date());
         user.setCreatedByUser(currentUser);
         user.setAccountStatus(AccountStatus.ACTIVE.getAccountStatus());
@@ -321,6 +324,7 @@ public class UserServiceImpl implements UserService{
         userDao.saveUser(user);
         String authorityError = "User Created";
         responseMap.put(rowNum, authorityError);
+        responseMap.put(1,password);
         return responseMap;
     }
 
@@ -609,10 +613,13 @@ public class UserServiceImpl implements UserService{
             responseMap.put(rowNum, authorityError);
             return responseMap;
         }
-        entity.setPassword(passwordEncoder.encode(entity.getPhoneNumber()));
+        String password = serviceFunctions.generatePassword();
+        entity.setPassword(passwordEncoder.encode(password));
         entity.setDefault(true);
 
         responseMap.put(rowNum, "Password changed successfully");
+        responseMap.put(1,password);
+        responseMap.put(2, entity.getEmailId());
         return responseMap;
     }
 
