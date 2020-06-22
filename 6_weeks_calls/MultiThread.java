@@ -27,7 +27,7 @@ public class MultiThread extends Thread
         try
         {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection e = DriverManager.getConnection("jdbc:mysql://192.168.200.67:3306/Reporting", "etluser", "etl@2015!");
+            Connection e = DriverManager.getConnection("jdbc:mysql://192.168.200.67:3306/Reporting", "", "");
             Statement stmt2 = e.createStatement();
             String ids;
             for(String s: subIds) {

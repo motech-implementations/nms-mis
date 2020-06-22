@@ -18,7 +18,7 @@ public class Main {
         writer.write("\n");
         writer.close();
         Class.forName("com.mysql.jdbc.Driver");
-        Connection e = DriverManager.getConnection("jdbc:mysql://192.168.200.68:3306/Reporting", "etluser", "etl@2015!");
+        Connection e = DriverManager.getConnection("jdbc:mysql://192.168.200.68:3306/Reporting", "", "");
         Statement stmt1 = e.createStatement();
         ResultSet rs1 = stmt1.executeQuery("select * from Reporting.continuous_6_calls_answered");
         List<String> subscriptionIds = new ArrayList<>();
