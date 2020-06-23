@@ -37,7 +37,7 @@ public class MultiThread extends Thread
                 targetDuration =0;
                 terminate = false;
                 w2=0;
-                ResultSet rs2 = stmt2.executeQuery("select * from Reporting.continuous_6_calls_answered_call_details where subscription_id = " +s);
+                ResultSet rs2 = stmt2.executeQuery("select * from Reporting.continuous_6_calls_answered_call_details where subscription_id = '" +s+"' order by call_date asc");
 
                 while(rs2.next()) {
                     if(!terminate) {
