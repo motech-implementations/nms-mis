@@ -135,6 +135,13 @@
         </property>
     </bean>
 
+<mvc:interceptors>
+    <mvc:interceptor>
+        <mvc:mapping path="/nms/**"/>
+        <bean class="com.beehyv.nmsreporting.business.impl.CookiesInterceptor">
+        </bean>
+    </mvc:interceptor>
+</mvc:interceptors>
     <bean id="autoReportMail" class="com.beehyv.nmsreporting.job.AutoReportEmailGeneration"/>
     <task:scheduled-tasks>
         <task:scheduled ref="autoReportMail" method="executeInternal" cron="0 0 9 1 * ?"/>
