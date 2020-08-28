@@ -136,7 +136,7 @@ public class UserController {
     @RequestMapping(value={"/roles"} , method = RequestMethod.POST)
     public @ResponseBody List<Role> getRoles() {
         User currentUser = userService.getCurrentUser();
-        if(currentUser.getUserId() != null){
+        if(currentUser.getUserId() != null&&((currentUser.getRoleName().equals("MASTER ADMIN"))||(currentUser.getRoleName().equals("ADMIN")))){
             return roleService.getRoles();
         } else
             return null;

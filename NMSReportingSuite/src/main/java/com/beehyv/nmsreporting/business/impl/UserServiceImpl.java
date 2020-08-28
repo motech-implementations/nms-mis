@@ -143,11 +143,6 @@ public class UserServiceImpl implements UserService{
             responseMap.put(rowNum, userNameError);
             return responseMap;
         }
-        if (userDao.findByUserName(user.getUsername()) != null) {
-            String userNameError = "Username already exists.";
-            responseMap.put(rowNum, userNameError);
-            return responseMap;
-        }
 
         String userPhone = user.getPhoneNumber();
         String regexStr1 = "^[0-9]*$";
@@ -313,6 +308,11 @@ public class UserServiceImpl implements UserService{
 //                responseMap.put(rowNum, authorityError);
 //                return responseMap;
 //            }
+        }
+        if (userDao.findByUserName(user.getUsername()) != null) {
+            String userNameError = "Username already exists.";
+            responseMap.put(rowNum, userNameError);
+            return responseMap;
         }
         String password = serviceFunctions.generatePassword();
         user.setPassword(passwordEncoder.encode(password));

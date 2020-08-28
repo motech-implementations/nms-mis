@@ -107,7 +107,12 @@ public class AdminController {
     @ResponseBody
     public String getBulkDataImportCSV(HttpServletResponse response) throws ParseException, java.text.ParseException{
 
-       response.setContentType("APPLICATION/OCTECT-STREAM");
+        User user = userService.getCurrentUser();
+        if(user==null||!(user.getRoleName().equals("MASTER ADMIN"))&&!(user.getRoleName().equals("ADMIN"))){
+            return "Not Authorized";
+        }
+
+        response.setContentType("APPLICATION/OCTECT-STREAM");
         try {
             PrintWriter out=response.getWriter();
             String filename="BulkImportData.csv";
@@ -192,7 +197,9 @@ public class AdminController {
             modification.setModifiedByUserId(userService.getCurrentUser().getUserId());
             modificationTrackerService.saveModification(modification);
         }
-        return map;
+        Map<Integer, String> requiredmap=new HashMap<>();
+        requiredmap.put(0,map.get(0));
+        return requiredmap;
     }
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     @ResponseBody

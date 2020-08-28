@@ -1,3 +1,4 @@
+
 var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 'ui.validate', 'ngMessages', 'ui.router', 'ui.grid', 'ngMaterial', 'ngFileUpload', 'ng.deviceDetector', 'ui.grid.exporter', 'ngStorage', 'ngAnimate', '$idle', 'mdo-angular-cryptography'])
     .run(['$rootScope', '$state', '$stateParams', '$idle', '$http', '$window', function($rootScope, $state, $stateParams, $idle, $http, $window) {
         $rootScope.$state = $state;
@@ -26,11 +27,30 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
                             if(!result.data){
                                 $state.go('login', {});
                             }
+                            else {
+                                $http.post(backend_root + 'nms/user/currentUser')
+                                    .then(function(result){
+                                        if(result.data.default){
+                                            $state.go('changePassword', {});
+                                        }
+                                    });
+                            }
                         });
                 }
             };
         }
     ])
+
+    .factory('httpRequestInterceptor',
+        function () {
+            return {
+                request: function (config) {
+                    config.headers['SameSite'] = 'Lax';
+                    return config;
+                }
+            };
+        }
+    )
 
     .factory('authorizationRole', ['$http', '$state',
         function($http, $state) {
@@ -350,6 +370,11 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
         $idleProvider.interrupt('keydown mousedown touchstart touchmove');
         $idleProvider.setIdleTime(1800);
     }])
+
+    .config(function ($httpProvider) {
+        $httpProvider.interceptors.push('httpRequestInterceptor');
+    })
+
     .config(['$cryptoProvider', function($cryptoProvider) {
         $cryptoProvider.setCryptographyKey('ABCD123');
     }]);

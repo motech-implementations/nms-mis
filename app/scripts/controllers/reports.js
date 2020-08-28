@@ -40,7 +40,7 @@
 					})
 				}
 			})
-
+            var token = 'dhty'+UserFormFactory.getCurrentUser().userId+'alkihkf';
 			var reportRequest = {};
 			var ExcelData = {};
             $scope.sundays = [];
@@ -1245,7 +1245,7 @@
 					method  : 'POST',
 					url     : $scope.getReportUrl,
 					data    : reportRequest, //forms user object
-					headers : {'Content-Type': 'application/json'}
+					headers : {'Content-Type': 'application/json' , 'csrfToken': token}
 				})
 				.then(function(result){
 
@@ -1881,7 +1881,7 @@
                                     url     : backend_root + 'nms/user/generateAgg',
                                     data    : ExcelData, //forms user object
                                     //responseType: 'arraybuffer',
-                                    headers : {'Content-Type': 'application/json '}
+                                    headers : {'Content-Type': 'application/json ' , 'csrfToken': token}
                                 }).then(function(response){
                                     if(response.data =="success"){
                                     var fileName = $scope.gridApi.grid.options.exporterExcelFilename ? $scope.gridApi.grid.options.exporterExcelFilename : 'dokuman';
@@ -2121,7 +2121,7 @@
                     url     : backend_root + 'nms/user/downloadAggPdf',
                     data    : ExcelData, //forms user object
 //                                    responseType: 'arraybuffer',
-                    headers : {'Content-Type': 'application/json '}
+                    headers : {'Content-Type': 'application/json ' , 'csrfToken': token}
                 }).then(function(response){
 
                         if(response.data=="success"){
@@ -2544,7 +2544,7 @@
                             method  : 'POST',
                             url     : $scope.getReportUrl,
                             data    : reportRequest, //forms user object
-                            headers : {'Content-Type': 'application/json'}
+                            headers : {'Content-Type': 'application/json' , 'csrfToken': token}
                         })
                         .then(function(result){
 
@@ -2588,7 +2588,7 @@
                                method  : 'POST',
                                url     : $scope.getReportUrl,
                                data    : reportRequest, //forms user object
-                               headers : {'Content-Type': 'application/json'}
+                               headers : {'Content-Type': 'application/json' , 'csrfToken': token}
                            })
                            .then(function(result){
 
@@ -2631,7 +2631,7 @@
                              method  : 'POST',
                              url     : $scope.getReportUrl,
                              data    : reportRequest, //forms user object
-                             headers : {'Content-Type': 'application/json'}
+                             headers : {'Content-Type': 'application/json', 'csrfToken': token}
                          })
                          .then(function(result){
 
@@ -2672,7 +2672,7 @@
                             method  : 'POST',
                             url     : $scope.getReportUrl,
                             data    : reportRequest, //forms user object
-                            headers : {'Content-Type': 'application/json'}
+                            headers : {'Content-Type': 'application/json', 'csrfToken': token}
                         })
                         .then(function(result){
 

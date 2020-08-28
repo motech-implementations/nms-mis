@@ -106,11 +106,12 @@
 			$scope.createUserSubmit = function() {
 				if ($scope.createUserForm.$valid) {
 					delete $scope.newUser.$$hashKey;
+					var token = 'dhty'+UserFormFactory.getCurrentUser().userId+'alkihkf';
 					$http({
 						method  : 'post',
 						url     : backend_root + 'nms/user/createUser',
 						data    : $scope.newUser, //forms user object
-						headers : {'Content-Type': 'application/json'} 
+						headers : {'Content-Type': 'application/json', 'csrfToken': token}
 					}).then(function(result){
 					    if(UserFormFactory.isInternetExplorer()){
                             alert(result.data['0'])
