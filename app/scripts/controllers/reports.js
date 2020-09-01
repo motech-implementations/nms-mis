@@ -1175,7 +1175,7 @@
                          else{
                              reportRequest.toDate = new Date($scope.dt1.getFullYear(),8,30);
                          }
-                         reportRequest.toDate = new Date($scope.dt1.getFullYear(),8,30);
+                         // reportRequest.toDate = new Date($scope.dt1.getFullYear(),8,30);
                          }
                          if($scope.quarterDisplayType == 'Q4 (Oct to Dec)'){
                          reportRequest.fromDate = new Date($scope.dt1.getFullYear(),9,1);
