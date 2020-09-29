@@ -3,14 +3,8 @@
         window.location.assign('https://rchivrreports.in/#!/login');
     }
 </script>
-<div data-ng-app="nmsReports" class=""  data-ng-controller="DownloadsController">
+<div data-ng-app="nmsReports" class=""  data-ng-controller="DownloadsController" ng-bind-html="downloadsPageContent" compile-template>
 
-    <div>Downloads Page</div>
-    <ul>
-        <li data-ng-repeat=" downloaditem in downloadList">
-           {{downloaditem.id}} : {{downloaditem.name}}
-        </li>
 
-    </ul>
 
 </div>

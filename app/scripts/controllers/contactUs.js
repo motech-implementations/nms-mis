@@ -1,7 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports');
-		nmsReportsApp.controller("ContactUsController", ['$scope', '$state', 'UserFormFactory','$http', '$location', function($scope,$state,UserFormFactory, $http, $location ){
+		nmsReportsApp.controller("ContactUsController", ['$scope', '$state', 'UserFormFactory','$http', '$location','$sce', function($scope,$state,UserFormFactory, $http, $location,$sce ){
             UserFormFactory.isLoggedIn()
                         .then(function(result){
                         if(result.data){
@@ -19,6 +19,19 @@
             $scope.email = {};
             $scope.email.captchaCode = '';
 
+            $http.get(backend_root + 'page/contactUs')
+                .then(function(result){
+                        if(result.status===200){
+                            $scope.ContactUsPage= result.data.pagecontent;
+                            $scope.ContactUsPageContent = $sce.trustAsHtml($scope.ContactUsPage);
+                        }
+                        else {
+                            $state.go('login', {});
+                        }
+                    }, function(error){
+                        $state.go('login', {});
+                    }
+                )
             var emailField = $scope.email.email
             function validateEmail(emailField){
                 var reg = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

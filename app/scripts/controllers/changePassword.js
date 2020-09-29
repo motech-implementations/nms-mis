@@ -1,7 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("ChangePassword", ['$scope', '$state','$http', 'UserFormFactory', '$crypto', function($scope, $state, $http, UserFormFactory, $crypto){
+		.controller("ChangePassword", ['$scope', '$state','$http', 'UserFormFactory', '$crypto', '$sce', function($scope, $state, $http, UserFormFactory, $crypto, $sce){
 
 			UserFormFactory.isLoggedIn()
             .then(function(result){
@@ -14,6 +14,20 @@
             .then(function(result){
                 $scope.user = result.data;
             })
+
+            $http.get(backend_root + 'page/changePassword')
+                .then(function(result){
+                        if(result.status===200){
+                            $scope.changePasswordPage= result.data.pagecontent;
+                            $scope.changePasswordPageContent = $sce.trustAsHtml($scope.changePasswordPage);
+                        }
+                        else {
+                            $state.go('login', {});
+                        }
+                    }, function(error){
+                        $state.go('login', {});
+                    }
+                )
 
 			$scope.changePasswordSubmit = function(){
                 if ($scope.changePasswordForm.$valid) {

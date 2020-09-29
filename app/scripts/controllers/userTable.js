@@ -1,11 +1,26 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("UserTableController", ['$scope', '$state', '$filter', 'UserTableFactory', '$localStorage', function($scope, $state, $filter, UserTableFactory, $localStorage) {
+		.controller("UserTableController", ['$scope', '$state', '$filter', 'UserTableFactory', '$localStorage', '$http', '$sce', function($scope, $state, $filter, UserTableFactory, $localStorage, $http, $sce) {
             var selectedPage = $scope.currentPageNo;
             var lessRecordsFilter = false;
 			$scope.numPerPageList = [10, 20];
             $scope.waiting = UserTableFactory.getAllUsers().length === 0;
+
+			$http.get(backend_root + 'page/userTable')
+				.then(function(result){
+						if(result.status===200){
+							$scope.userTablePage= result.data.pagecontent;
+							$scope.userTablePageContent = $sce.trustAsHtml($scope.userTablePage);
+						}
+						else {
+							$state.go('login', {});
+						}
+					}, function(error){
+						$state.go('login', {});
+					}
+				)
+
 
 			function init() {
 				$scope.numPerPage = $scope.numPerPageList[0];

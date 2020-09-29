@@ -2,8 +2,24 @@
 	var nmsReportsApp = angular
 		.module('nmsReports');
 
-	nmsReportsApp.controller("FeedbackFormController", ['$scope', '$state', 'UserFormFactory','$http', '$location',function($scope, $state, UserFormFactory,$http,$location){
-            UserFormFactory.isLoggedIn()
+	nmsReportsApp.controller("FeedbackFormController", ['$scope', '$state', 'UserFormFactory','$http', '$location', '$sce', function($scope, $state, UserFormFactory,$http,$location, $sce){
+
+        $http.get(backend_root + 'page/feedbackForm')
+            .then(function(result){
+                    if(result.status===200){
+                        $scope.feedbackFormPage= result.data.pagecontent;
+                        $scope.feedbackFormPageContent = $sce.trustAsHtml($scope.feedbackFormPage);
+                    }
+                    else {
+                        $state.go('login', {});
+                    }
+                }, function(error){
+                    $state.go('login', {});
+                }
+            )
+
+
+	    UserFormFactory.isLoggedIn()
             			.then(function(result){
                         if(result.data){
 UserFormFactory.downloadCurrentUser()
@@ -20,6 +36,8 @@ UserFormFactory.downloadCurrentUser()
 			$scope.feedback = {};
 			$scope.email = {};
 			$scope.email.captchaCode = '';
+
+
 
 //
 // $scope.Captcha = function(){
@@ -225,7 +243,21 @@ UserFormFactory.downloadCurrentUser()
 
 		}]);
 
-	nmsReportsApp.controller("FeedbackResponseController", ['$scope', '$state', 'UserFormFactory', function($scope, $state, UserFormFactory){
+	nmsReportsApp.controller("FeedbackResponseController", ['$scope', '$state', 'UserFormFactory', '$http', '$sce', function($scope, $state, UserFormFactory, $http, $sce){
+
+        $http.get(backend_root + 'page/feedbackResponse')
+            .then(function(result){
+                    if(result.status===200){
+                        $scope.feedbackResponsePage= result.data.pagecontent;
+                        $scope.feedbackResponsePageContent = $sce.trustAsHtml($scope.feedbackResponsePage);
+                    }
+                    else {
+                        $state.go('login', {});
+                    }
+                }, function(error){
+                    $state.go('login', {});
+                }
+            )
 
         $scope.goBackToFeedbackForm = function(){
             $state.go('feedbackForm')

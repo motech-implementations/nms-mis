@@ -1,7 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("EditUserController", ['$scope', 'UserFormFactory', '$http', '$state', '$stateParams', function($scope, UserFormFactory, $http, $state, $stateParams){
+		.controller("EditUserController", ['$scope', 'UserFormFactory', '$http', '$state', '$stateParams', '$sce', function($scope, UserFormFactory, $http, $state, $stateParams, $sce){
 
 			UserFormFactory.isLoggedIn().then(function(result) {
 				if (!result.data) {

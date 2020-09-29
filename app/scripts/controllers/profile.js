@@ -1,7 +1,22 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("ProfileController", ['$scope', '$state', 'UserFormFactory', '$http', function($scope, $state, UserFormFactory, $http){
+		.controller("ProfileController", ['$scope', '$state', 'UserFormFactory', '$http', '$sce', function($scope, $state, UserFormFactory, $http, $sce){
+
+			$http.get(backend_root + 'page/profile')
+				.then(function(result){
+						if(result.status===200){
+							$scope.profilePage= result.data.pagecontent;
+							$scope.profilePageContent = $sce.trustAsHtml($scope.profilePage);
+						}
+						else {
+							$state.go('login', {});
+						}
+					}, function(error){
+						$state.go('login', {});
+					}
+				)
+
 			UserFormFactory.isLoggedIn()
 			.then(function(result){
 				if(!result.data){

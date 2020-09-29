@@ -4,57 +4,6 @@
     }
 </script>
 
-<div class="container-fluid" data-ng-controller="faqAggregateInfoController">
-    <div data-ui-view></div>
+<div class="container-fluid" data-ng-controller="faqAggregateInfoController" ng-bind-html="faqAggregateInfoPageContent" compile-template>
 
-    <h1 style="font-size: 24px"><b>FAQ's Aggregate Reports</b></h1>
-    <div>
-        <div class="panel-group">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="panel-title">
-                        <div data-ng-click=fun(8)
-                             data-ng-class="{'expandcollapse-heading-collapsed': current!=8, 'expandcollapse-heading-expanded': !current!=8}"
-                             style="outline:0px"><span
-                                data-ng-class="{'glyphicon glyphicon-chevron-up': !current!=8, 'glyphicon glyphicon-chevron-down': current!=8}"></span>
-                            <div>What are aggregate reports?</div>
-                        </div>
-                    </div>
-                </div>
-                <div data-ng-hide="current!=8" class="panel-collapse slideDown">
-                    <div class="panel-body">
-                        <div>
-                            <p>
-                                Aggregate reports present compiled metrics of various data-points for the selected
-                                period. They are available at National, State,
-                                District, Health-block and Sub-centre level. A user will be able to drill-down till
-                                sub-center from their location.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="panel-title">
-                        <div data-ng-click=fun(9)
-                             data-ng-class="{'expandcollapse-heading-collapsed': current!=9, 'expandcollapse-heading-expanded': !current!=9}"
-                             style="outline:0px"><span
-                                data-ng-class="{'glyphicon glyphicon-chevron-up': !current!=9, 'glyphicon glyphicon-chevron-down': current!=9}"></span>
-                            <div>Can I download aggregate reports?</div>
-                        </div>
-                    </div>
-                </div>
-                <div data-ng-hide="current!=9" class="panel-collapse slideDown">
-                    <div class="panel-body">
-                        <div>
-                            <p>
-                                Yes, aggregate reports can be downloaded in PDF, Excel and CSV formats.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>

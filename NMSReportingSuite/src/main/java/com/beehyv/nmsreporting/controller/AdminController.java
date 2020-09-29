@@ -156,7 +156,7 @@ public class AdminController {
 //        modification.setModifiedField(trackModification);
 //        modificationTrackerService.saveModification(modification);
 
-//        return "redirect:https://rchivrreports.in/app/#!/";
+//        return "redirect:http://192.168.200.112:8080/app/#!/";
         Map<Integer, String> map= userService.updatePassword(passwordDto);
         if(map.get(0).equals("Password changed successfully")){
             String password = map.get(1);
