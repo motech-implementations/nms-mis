@@ -11,6 +11,7 @@ import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.ModificationTracker;
 import com.beehyv.nmsreporting.model.State;
 import com.beehyv.nmsreporting.model.User;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.ParseException;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.*;
 
 import static com.beehyv.nmsreporting.enums.ReportType.maCourse;
@@ -137,7 +140,7 @@ public class AdminController {
     }*/
 
     @RequestMapping(value = {"/changePassword"}, method = RequestMethod.POST)
-    @ResponseBody public Map resetPassword(@RequestBody PasswordDto passwordDto){
+    @ResponseBody public Map resetPassword(@RequestBody PasswordDto passwordDto) throws Exception{
         //        String trackModification = mapper.convertValue(node.get("modification"), String.class);
 //
 //        ModificationTracker modification = new ModificationTracker();
@@ -151,6 +154,36 @@ public class AdminController {
 //        return "redirect:http://localhost:8080/app/#!/";
         Map<Integer, String> map= userService.updatePassword(passwordDto);
         if(map.get(0).equals("Password changed successfully")){
+            String password = map.get(1);
+            String email = map.get(2);
+            byte[] encoded = Base64.encodeBase64((email + "||" + password + "||admin").getBytes());
+            String encrypted = new String(encoded);
+            String url = "http://192.168.200.4:8080/NMSReportingSuite/nms/mail/sendPassword/" + encrypted;
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+            // optional default is GET
+            con.setRequestMethod("GET");
+
+            //add request header
+            con.setRequestProperty("User-Agent", "Mozilla/5.0");
+
+            int responseCode = con.getResponseCode();
+            System.out.println("\nSending 'GET' request to URL : " + url);
+            System.out.println("Response Code : " + responseCode);
+
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            //print result
+            System.out.println(response.toString());
             ModificationTracker modification = new ModificationTracker();
             modification.setModificationDate(new Date(System.currentTimeMillis()));
             modification.setModificationType(ModificationType.UPDATE.getModificationType());
