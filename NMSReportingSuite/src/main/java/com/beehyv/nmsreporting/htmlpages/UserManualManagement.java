@@ -1,7 +1,8 @@
 package com.beehyv.nmsreporting.htmlpages;
 
 public class UserManualManagement {
-    public static String pageContent ="    <div data-ui-view></div>\n" +
+    public static String pageContent ="<div class=\"container-fluid uMManagement\" data-ng-controller=\"userManual_ManagementController\" >" +
+            "    <div data-ui-view></div>\n" +
             "    <h2>User Management</h2>\n" +
             "    <br/>\n" +
             "\n" +
@@ -198,5 +199,6 @@ public class UserManualManagement {
             "            <img src=\"images/UMuploadFailure.png\" alt=\"User Management\"/><br/><br/>\n" +
             "\n" +
             "        </div>\n" +
-            "    </div>";
+            "    </div>" +
+            "</div>";
 }

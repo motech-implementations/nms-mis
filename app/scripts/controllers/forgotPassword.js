@@ -1,7 +1,7 @@
 (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("ForgotPasswordController", ['$scope', '$state', 'UserFormFactory', '$http', '$sce', function($scope, $state, UserFormFactory, $http, $sce){
+		.controller("ForgotPasswordController", ['$scope', '$state', 'UserFormFactory', '$http', function($scope, $state, UserFormFactory, $http){
 
             // UserFormFactory.getCaptcha()
             //     .then(function(result){
@@ -61,20 +61,6 @@
             //
             //      }
             // }
-
-            $http.get(backend_root + 'page/forgotPassword')
-                .then(function(result){
-                        if(result.status===200){
-                            $scope.forgotPasswordPage= result.data.pagecontent;
-                            $scope.forgotPasswordPageContent = $sce.trustAsHtml($scope.forgotPasswordPage);
-                        }
-                        else {
-                            $state.go('login', {});
-                        }
-                    }, function(error){
-                        $state.go('login', {});
-                    }
-                )
 
 
 

@@ -1,7 +1,8 @@
 package com.beehyv.nmsreporting.htmlpages;
 
 public class FeedbackForm {
-    public static String pageContent ="    <div data-ui-view></div>\n" +
+    public static String pageContent ="<div class=\"container-fluid feedback-form\" data-ng-controller=\"FeedbackFormController\">" +
+            "    <div data-ui-view></div>\n" +
             "\n" +
             "    <div class=\"row margin-top-40 margin-bottom-40\">\n" +
             "        <div class=\"col-xs-4\"></div>\n" +
@@ -115,5 +116,6 @@ public class FeedbackForm {
             "            </div>\n" +
             "        </div>\n" +
             "        <div class=\"col-xs-4\"></div>\n" +
-            "    </div>";
+            "    </div>" +
+            "</div>";
 }

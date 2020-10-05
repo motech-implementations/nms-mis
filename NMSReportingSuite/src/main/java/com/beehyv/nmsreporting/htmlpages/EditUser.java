@@ -1,7 +1,8 @@
 package com.beehyv.nmsreporting.htmlpages;
 
 public class EditUser {
-    public static String pageContent ="\t<div class=\"block\">\n" +
+    public static String pageContent ="<div data-ng-controller=\"EditUserController\"  class=\"editUser\">" +
+            "\t<div class=\"block\">\n" +
             "\t\t<div class=\"block\">\n" +
             "\t\t\t<h1>Edit User</h1>\n" +
             "\t\t</div>\n" +
@@ -158,6 +159,7 @@ public class EditUser {
             "\t\t\t<button class=\"btn\" data-ng-click=\"open()\">Open me!</button>\n" +
             "\t\t</div>\n" +
             " -->\n" +
-            "\t</div>";
+            "\t</div>" +
+            "</div>";
 
 }

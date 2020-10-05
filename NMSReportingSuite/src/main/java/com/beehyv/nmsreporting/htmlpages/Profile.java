@@ -1,7 +1,9 @@
 package com.beehyv.nmsreporting.htmlpages;
 
 public class Profile {
-    public static String pageContent ="<div class=\"block\">\n" +
+    public static String pageContent ="<div class=\"container-fluid\">\n" +
+            "\t<div data-ng-controller=\"ProfileController\" class=\"profile\" >" +
+            "<div class=\"block\">\n" +
             "\t\t\t<div class=\"block\">\n" +
             "\t\t\t\t<h1>Profile</h1>\n" +
             "\t\t\t</div>\n" +
@@ -154,5 +156,7 @@ public class Profile {
             "\t\t\t\t\t<!--</div>-->\n" +
             "\t\t\t\t<!--</div>-->\n" +
             "\t\t\t<!--</form>-->\n" +
-            "\t\t</div>";
+            "\t\t</div>" +
+            "\t</div>\n" +
+            "</div>";
 }

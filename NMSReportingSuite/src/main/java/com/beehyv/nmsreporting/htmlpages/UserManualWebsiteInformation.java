@@ -1,7 +1,8 @@
 package com.beehyv.nmsreporting.htmlpages;
 
 public class UserManualWebsiteInformation {
-    public static String pageContent ="    <div data-ui-view></div>\n" +
+    public static String pageContent ="<div class=\"container-fluid\" data-ng-controller=\"websiteInformationController\" style=\"padding-left: 30px\">" +
+            "    <div data-ui-view></div>\n" +
             "    <h2>Website Information</h2>\n" +
             "    <div class=\"userManualPic\">\n" +
             "        <!--<h4><b>MIS Header</b></h4>-->\n" +
@@ -178,5 +179,6 @@ public class UserManualWebsiteInformation {
             "        </ul>\n" +
             "        <img src=\"images/4.png\" alt=\"\">\n" +
             "        <br/>\n" +
-            "    </div>";
+            "    </div>" +
+            "</div>";
 }

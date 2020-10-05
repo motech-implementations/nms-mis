@@ -4,41 +4,11 @@
 
         nmsReportsApp.controller("TandCController", ['$scope', '$state', function($scope, $state){
         }]);
-        nmsReportsApp.controller("HelpController", ['$scope', '$state', '$http', '$sce', function($scope, $state, $http, $sce){
-
-            $http.get(backend_root + 'page/helpPage')
-                .then(function(result){
-                        if(result.status===200){
-                            $scope.helpPage= result.data.pagecontent;
-                            $scope.helpPageContent = $sce.trustAsHtml($scope.helpPage);
-                        }
-                        else {
-                            $state.go('login', {});
-                        }
-                    }, function(error){
-                        $state.go('login', {});
-                    }
-                )
-
+        nmsReportsApp.controller("HelpController", ['$scope', '$state', function($scope, $state){
         }]);
         nmsReportsApp.controller("HLPolicyController", ['$scope', '$state', function($scope, $state){
         }]);
-        nmsReportsApp.controller("SitemapController", ['$scope', '$state','$http','$sce', function($scope, $state,$http,$sce){
-
-            $http.get(backend_root + 'page/sitemap')
-                .then(function(result){
-                        if(result.status===200){
-                            console.log("HU haaa")
-                            $scope.sitemapPage= result.data.pagecontent;
-                            $scope.sitemappageContent = $sce.trustAsHtml($scope.sitemapPage);
-                        }
-                        else {
-                            $state.go('login', {});
-                        }
-                    }, function(error){
-                        $state.go('login', {});
-                    }
-                )
+        nmsReportsApp.controller("SitemapController", ['$scope', '$state', function($scope, $state){
 
         $scope.func_aboutus = function(){
             $state.go('AboutUs')
@@ -103,38 +73,9 @@
         }]);
         nmsReportsApp.controller("PrivacyPController", ['$scope', '$state', function($scope, $state){
         }]);
-        nmsReportsApp.controller("AboutKilkariController", ['$scope', '$state', '$http', '$sce', function($scope, $state, $http, $sce){
-
-            $http.get(backend_root + 'page/aboutKilkari')
-                .then(function(result){
-                        if(result.status===200){
-                            $scope.aboutKilkariPage= result.data.pagecontent;
-                            $scope.aboutKilkariPageContent = $sce.trustAsHtml($scope.aboutKilkariPage);
-                        }
-                        else {
-                            $state.go('login', {});
-                        }
-                    }, function(error){
-                        $state.go('login', {});
-                    }
-                )
-
+        nmsReportsApp.controller("AboutKilkariController", ['$scope', '$state', function($scope, $state){
         }]);
-        nmsReportsApp.controller("AboutMAController", ['$scope', '$state', '$http', '$sce', function($scope, $state, $http, $sce){
-
-            $http.get(backend_root + 'page/aboutMA')
-                .then(function(result){
-                        if(result.status===200){
-                            $scope.aboutMAPage= result.data.pagecontent;
-                            $scope.aboutMAPageContent = $sce.trustAsHtml($scope.aboutMAPage);
-                        }
-                        else {
-                            $state.go('login', {});
-                        }
-                    }, function(error){
-                        $state.go('login', {});
-                    }
-                )
+        nmsReportsApp.controller("AboutMAController", ['$scope', '$state', function($scope, $state){
         }]);
         nmsReportsApp.controller("AboutUsController", ['$scope', '$state', function($scope, $state){
         }]);

@@ -1,7 +1,8 @@
 package com.beehyv.nmsreporting.htmlpages;
 
 public class UserTable {
-    public static String pageContent ="\t<div class=\"block header\">\n" +
+    public static String pageContent ="<div data-ng-controller=\"UserTableController\"  class='userTable'>\n" +
+            "\t<div class=\"block header\">\n" +
             "\t\t<div class='block inputs row'>\n" +
             "\t\t\t<h1 class='col-sm-6'>User Management</h1>\n" +
             "\t\t\t<input type=\"text\" class=\"form-control input input-sm\" data-ng-model=\"filterText\" name=\"tableSearch\" placeholder=\"Search\">\n" +
@@ -144,5 +145,6 @@ public class UserTable {
             "\t\t\t\t\t\t current-page=\"currentPageNo\" class=\"pagination-small\">\n" +
             "\t\t\t</pagination>\n" +
             "\t\t</div>\n" +
-            "\t</div>";
+            "\t</div>" +
+            "</div>";
 }

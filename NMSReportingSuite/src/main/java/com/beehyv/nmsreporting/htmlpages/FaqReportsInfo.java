@@ -1,7 +1,8 @@
 package com.beehyv.nmsreporting.htmlpages;
 
 public class FaqReportsInfo {
-    public static String pageContent ="    <div data-ui-view ></div>\n" +
+    public static String pageContent ="<div class=\"container-fluid\" data-ng-controller=\"faqReportsInfoController\">" +
+            "    <div data-ui-view ></div>\n" +
             "\n" +
             "    <h1 style=\"font-size: 24px\"><b>FAQ's Reports Information</b></h1>\n" +
             "    <div>\n" +
@@ -134,5 +135,6 @@ public class FaqReportsInfo {
             "                </div>\n" +
             "            </div>\n" +
             "        </div>\n" +
-            "    </div>";
+            "    </div>" +
+            "</div>";
 }

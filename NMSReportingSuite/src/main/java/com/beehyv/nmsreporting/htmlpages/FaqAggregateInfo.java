@@ -1,7 +1,8 @@
 package com.beehyv.nmsreporting.htmlpages;
 
 public class FaqAggregateInfo {
-    public static String pageContent ="    <div data-ui-view></div>\n" +
+    public static String pageContent ="<div class=\"container-fluid\" data-ng-controller=\"faqAggregateInfoController\">" +
+            "    <div data-ui-view></div>\n" +
             "\n" +
             "    <h1 style=\"font-size: 24px\"><b>FAQ's Aggregate Reports</b></h1>\n" +
             "    <div>\n" +
@@ -52,5 +53,6 @@ public class FaqAggregateInfo {
             "                </div>\n" +
             "            </div>\n" +
             "        </div>\n" +
-            "    </div>";
+            "    </div>" +
+            "</div>";
 }

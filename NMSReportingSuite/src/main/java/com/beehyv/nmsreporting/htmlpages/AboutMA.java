@@ -1,7 +1,8 @@
 package com.beehyv.nmsreporting.htmlpages;
 
 public class AboutMA {
-    public static String pageContent =" <div class=\"row\">\n" +
+    public static String pageContent ="<div class=\"container-fluid infoPages2\" data-ng-controller=\"AboutMAController\" >" +
+            " <div class=\"row\">\n" +
             "        <div class=\"col-xs-12\">\n" +
             "            <table>\n" +
             "                <tr>\n" +
@@ -34,5 +35,6 @@ public class AboutMA {
             "                </ul>\n" +
             "            </div>\n" +
             "        </div>\n" +
-            "    </div>";
+            "    </div>" +
+            "</div>";
 }

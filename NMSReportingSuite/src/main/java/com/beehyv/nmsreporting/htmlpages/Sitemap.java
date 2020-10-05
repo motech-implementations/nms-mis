@@ -1,7 +1,8 @@
 package com.beehyv.nmsreporting.htmlpages;
 
 public class Sitemap {
-    public static String pageContent ="   <div data-ui-view></div>\n" +
+    public static String pageContent ="<div class=\"container-fluid sitemap\" data-ng-controller=\"SitemapController\">" +
+            "   <div data-ui-view></div>\n" +
             "    <div class=\"container\">\n" +
             "    <div class=\"row\">\n" +
             "        <div class=\"col-md-1\"></div>\n" +
@@ -38,5 +39,6 @@ public class Sitemap {
             "        </div>\n" +
             "        <div class=\"col-md-3\"></div>\n" +
             "    </div>\n" +
-            "    </div>";
+            "    </div>" +
+            "</div>";
 }

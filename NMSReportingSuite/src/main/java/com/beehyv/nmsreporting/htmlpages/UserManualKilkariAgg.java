@@ -1,7 +1,8 @@
 package com.beehyv.nmsreporting.htmlpages;
 
 public class UserManualKilkariAgg {
-    public static String pageContent ="    <div data-ng-hide=\"flag\">\n" +
+    public static String pageContent ="<div class=\"container-fluid\" data-ng-controller=\"kilkariAggregateController\" style=\"padding-left: 30px\">" +
+            "    <div data-ng-hide=\"flag\">\n" +
             "        <h2 class=\"user-manual-header\">Kilkari Aggregate Reports</h2>\n" +
             "        <div style=\"color: #0071bc; font-size: 16px\">\n" +
             "            <p>\n" +
@@ -3840,5 +3841,6 @@ public class UserManualKilkariAgg {
             "                </div>\n" +
             "            </div>\n" +
             "        </div>\n" +
-            "    </div>";
+            "    </div>" +
+                    "</div>";
 }

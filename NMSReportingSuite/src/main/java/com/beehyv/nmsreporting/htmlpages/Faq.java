@@ -1,7 +1,8 @@
 package com.beehyv.nmsreporting.htmlpages;
 
 public class Faq {
-    public static String pageContent ="    <div class=\"col-md-12 \">\n" +
+    public static String pageContent ="<div class=\"container-fluid faqTitle\" data-ng-controller=\"faqController\">" +
+            "    <div class=\"col-md-12 \">\n" +
             "        <table>\n" +
             "            <tr>\n" +
             "            <th><p style = \"font-size: 30px; margin-top: 10px; padding-left: 15px;font-weight: 300\">FAQ's</p></th>\n" +
@@ -32,5 +33,6 @@ public class Faq {
             "            <div data-ui-view></div>\n" +
             "\n" +
             "        </div>\n" +
-            "    </div>";
+            "    </div>" +
+            "</div>";
 }

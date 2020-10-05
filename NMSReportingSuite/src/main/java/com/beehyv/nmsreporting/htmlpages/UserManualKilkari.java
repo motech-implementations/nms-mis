@@ -1,7 +1,8 @@
 package com.beehyv.nmsreporting.htmlpages;
 
 public class UserManualKilkari {
-    public static String pageContent ="    <div data-ng-hide=\"flag\">\n" +
+    public static String pageContent ="<div class=\"container-fluid\" data-ng-controller=\"kilkariController\" style=\"padding-left: 30px\">" +
+            "    <div data-ng-hide=\"flag\">\n" +
             "        <h2 class=\"user-manual-header\">Kilkari Line Listing Reports</h2>\n" +
             "        <div class=\"user-manual-right-text\">\n" +
             "            <!--<p><div data-ng-click=\"func('abr')\"><u>Aggrgate Beneficiary Report</u></div></p>-->\n" +
@@ -1007,5 +1008,6 @@ public class UserManualKilkari {
             "                </span></div>\n" +
             "        </div>\n" +
             "\n" +
-            "    </div>";
+            "    </div>" +
+                    "</div>";
 }

@@ -1,7 +1,8 @@
 package com.beehyv.nmsreporting.htmlpages;
 
 public class UserManual {
-    public static String pageContent ="  <div class=\"userManual-block container-fluid\">\n" +
+    public static String pageContent ="<div class=\"container-fluid usermanual-padding0\" data-ng-controller=\"UserManualController\">" +
+            "  <div class=\"userManual-block container-fluid\">\n" +
             "    <p>This guide will explain the feature-functionality across all sections of the MIS portal and how to use the functionality. Select your user role from the drop down below to start the walk through of the MIS portal. </p>\n" +
             "  <!--  <p>I am a:\n" +
             "        <select data-ng-model=\"selectRole\" data-ng-change=\"fnk();\" class=\"userManualSelectpicker\">\n" +
@@ -54,5 +55,6 @@ public class UserManual {
             "        <div data-ng-app=\"myApp\" class=\"userManual-right\">\n" +
             "            <div data-ui-view ></div>\n" +
             "    </div>\n" +
-            "    </div>";
+            "    </div>" +
+            "</div>";
 }

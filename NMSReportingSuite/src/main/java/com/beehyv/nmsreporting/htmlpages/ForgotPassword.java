@@ -1,7 +1,8 @@
 package com.beehyv.nmsreporting.htmlpages;
 
 public class ForgotPassword {
-    public static String pageContent ="\n" +
+    public static String pageContent ="<div class=\"block login\" data-ng-controller=\"ForgotPasswordController\">" +
+            "\n" +
             "    <div class='login-header'>\n" +
             "        <!-- <img src=\"images/NHM_Logo.png\"> -->\n" +
             "    </div>\n" +
@@ -84,5 +85,6 @@ public class ForgotPassword {
             "            <img src=\"images/pageloader.gif\" alt=\"loading...\">\n" +
             "        </div>\n" +
             "    </div>\n" +
+            "</div>" +
             "</div>";
 }

@@ -1,7 +1,8 @@
 package com.beehyv.nmsreporting.htmlpages;
 
 public class UserManualProfile {
-    public static String pageContent ="    <h2>Profile</h2>\n" +
+    public static String pageContent ="<div class=\"container-fluid\" data-ng-controller=\"userManual_ProfileController\" style=\"padding-left: 30px\">" +
+            "    <h2>Profile</h2>\n" +
             "    <div class = \"userManualPic\">\n" +
             "        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.</p>\n" +
             "        <img src=\"images/ProfileLogin.png\" alt=\"User Manual Login\"><br><br>\n" +
@@ -22,5 +23,6 @@ public class UserManualProfile {
             "        <p>10) To logout, click on logout button in the profile dropdown.</p>\n" +
             "        <img src=\"images/UMwebInfo/UMp2.png\" alt=\"user Manual Logout\"><br><br><br>\n" +
             "\n" +
-            "    </div>";
+            "    </div>" +
+            "</div>";
 }

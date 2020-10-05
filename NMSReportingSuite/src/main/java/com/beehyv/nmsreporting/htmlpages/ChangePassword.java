@@ -1,7 +1,8 @@
 package com.beehyv.nmsreporting.htmlpages;
 
 public class ChangePassword {
-    public static String pageContent ="\n" +
+    public static String pageContent ="<div class=\"block login\" data-ng-controller=\"ChangePassword\">" +
+            "\n" +
             "    <div class='login-header'>\n" +
             "        <!-- <img src=\"images/NHM_Logo.png\"> -->\n" +
             "    </div>\n" +
@@ -58,5 +59,6 @@ public class ChangePassword {
             "            </div>\n" +
             "        </form>\n" +
             "    </div>\n" +
+            "</div>" +
             "</div>";
 }

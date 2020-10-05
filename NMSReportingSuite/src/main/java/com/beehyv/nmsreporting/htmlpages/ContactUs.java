@@ -1,7 +1,8 @@
 package com.beehyv.nmsreporting.htmlpages;
 
 public class ContactUs {
-    public static String pageContent ="    <div data-ui-view></div>\n" +
+    public static String pageContent ="<div class=\"container-fluid contact-us\" data-ng-controller=\"ContactUsController\">" +
+            "    <div data-ui-view></div>\n" +
             "\n" +
             "    <div class=\"contactUs-background\" style=\"margin-top:0px;\">\n" +
             "        <div class=\"row\">\n" +
@@ -178,5 +179,6 @@ public class ContactUs {
             "                </div>\n" +
             "            </div>\n" +
             "        </div>\n" +
-            "    </div>";
+            "    </div>" +
+            "</div>";
 }
