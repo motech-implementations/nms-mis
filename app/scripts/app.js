@@ -84,8 +84,10 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
             abstract: true,
             templateUrl: 'views/userManagement.html',
             resolve : {
-                user : function (authorizationRole) {
-                    return authorizationRole.authorize();
+                user : function (authorizationRole,authorization){
+                    if(authorization.authorize()){
+                        return authorizationRole.authorize();
+                    }
                 }
             }
         }).state('userManagement.bulkUpload', {
