@@ -4,7 +4,7 @@
 		.directive('bulkUser', function() {
 			return {
 				restrict: 'AC',
-				templateUrl: '../views/bulkUser.html',
+				templateUrl: '../htpagesmis/bulkUser.html',
 
 			};
 		})

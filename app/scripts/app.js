@@ -82,7 +82,7 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
         $stateProvider.state('userManagement', {
             url: '/userManagement',
             abstract: true,
-            templateUrl: 'views/userManagement.html',
+            templateUrl: 'htpagesmis/userManagement.html',
             resolve : {
                 user : function (authorizationRole,authorization){
                     if(authorization.authorize()){
@@ -92,7 +92,7 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
             }
         }).state('userManagement.bulkUpload', {
             url: '/bulkUpload',
-            templateUrl: 'views/bulkUser.html',
+            templateUrl: 'htpagesmis/bulkUser.html',
             resolve : {
                 user : function (authorizationRole) {
                     return authorizationRole.authorize();
@@ -100,7 +100,7 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
             }
         }).state('userManagement.createUser', {
             url: '/create',
-            templateUrl: 'views/createUser.html',
+            templateUrl: 'htpagesmis/createUser.html',
             resolve : {
                 user : function ( authorizationRole) {
                     return authorizationRole.authorize();
@@ -108,7 +108,7 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
             }
         }).state('userManagement.userTable', {
             url: '/:pageNum',
-            templateUrl: 'views/userTable.html',
+            templateUrl: 'htpagesmis/userTable.html',
             reloadOnSearch: false,
             resolve : {
                 user : function ( authorizationRole) {
@@ -120,7 +120,7 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
             }
         }).state('userManagement.editUser', {
             url: '/:pageNum/edit/:id',
-            templateUrl: 'views/editUser.html',
+            templateUrl: 'htpagesmis/editUser.html',
             resolve : {
                 user : function ( authorizationRole) {
                     return authorizationRole.authorize();
@@ -128,13 +128,13 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
             }
         }).state('login', {
             url: '/login',
-            templateUrl: 'views/login.html'
+            templateUrl: 'htpagesmis/login.html'
         }).state('logout', {
             url: '/logout',
-            templateUrl: 'views/login.html'
+            templateUrl: 'htpagesmis/login.html'
         }).state('reports', {
             url: '/reports',
-            templateUrl: 'views/reports.html',
+            templateUrl: 'htpagesmis/reports.html',
             resolve : {
                 user : function ( authorization) {
                     return authorization.authorize();
@@ -142,7 +142,7 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
             }
         }).state('profile', {
             url: '/profile',
-            templateUrl: 'views/profile.html',
+            templateUrl: 'htpagesmis/profile.html',
             resolve : {
                 user : function ( authorization) {
                     return authorization.authorize();
@@ -150,10 +150,10 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
             }
         }).state('forgotPassword', {
             url: '/forgotPassword',
-            templateUrl: 'views/forgotPassword.html'
+            templateUrl: 'htpagesmis/forgotPassword.html'
         }).state('feedbackForm', {
             url: '/feedbackForm',
-            templateUrl: 'views/feedbackForm.html',
+            templateUrl: 'htpagesmis/feedbackForm.html',
             resolve : {
                 user : function ( authorization) {
                     return authorization.authorize();
@@ -161,7 +161,7 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
             }
         }).state('feedbackResponse', {
             url: '/feedbackResponse',
-            templateUrl: 'views/feedbackResponse.html',
+            templateUrl: 'htpagesmis/feedbackResponse.html',
             resolve : {
                 user : function ( authorization) {
                     return authorization.authorize();
@@ -169,11 +169,11 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
             }
         }).state('contactUs', {
             url: '/contactUs',
-            templateUrl: 'views/contactUs.html'
+            templateUrl: 'htpagesmis/contactUs.html'
 
         }).state('contactUsResponse', {
             url: '/contactUsResponse',
-            templateUrl: 'views/contactUsResponse.html',
+            templateUrl: 'htpagesmis/contactUsResponse.html',
             resolve : {
                 user : function ( authorization) {
                     return authorization.authorize();
@@ -181,11 +181,11 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
             }
         }).state('sitemap', {
             url: '/sitemap',
-            templateUrl: 'views/sitemap.html'
+            templateUrl: 'htpagesmis/sitemap.html'
 
         }).state('AboutKilkari', {
             url: '/kilkari',
-            templateUrl: 'views/aboutKilkari.html',
+            templateUrl: 'htpagesmis/aboutKilkari.html',
             resolve : {
                 user : function ( authorization) {
                     return authorization.authorize();
@@ -193,7 +193,7 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
             }
         }).state('AboutMA', {
             url: '/aboutMA',
-            templateUrl: 'views/aboutMA.html',
+            templateUrl: 'htpagesmis/aboutMA.html',
             resolve : {
                 user : function ( authorization) {
                     return authorization.authorize();
@@ -201,27 +201,27 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
             }
         }).state('PrivacyPolicy', {
             url: '/privacyPolicy',
-            templateUrl: 'views/privacyPolicy.html'
+            templateUrl: 'htpagesmis/privacyPolicy.html'
 
         }).state('CopyrightPolicy', {
             url: '/copyrightPolicy',
-            templateUrl: 'views/copyrightPolicy.html'
+            templateUrl: 'htpagesmis/copyrightPolicy.html'
 
         }).state('TandC', {
             url: '/termsAndConditions',
-            templateUrl: 'views/tAndC.html'
+            templateUrl: 'htpagesmis/tAndC.html'
 
         }).state('HLPolicy', {
             url: '/hyperLinkingPolicy',
-            templateUrl: 'views/hyperLinkingPolicy.html'
+            templateUrl: 'htpagesmis/hyperLinkingPolicy.html'
 
         }).state('Disclaimer', {
             url: '/disclaimer',
-            templateUrl: 'views/disclaimer.html'
+            templateUrl: 'htpagesmis/disclaimer.html'
 
         }).state('Help', {
             url: '/help',
-            templateUrl: 'views/helpPage.html',
+            templateUrl: 'htpagesmis/helpPage.html',
             resolve : {
                 user : function ( authorization) {
                     return authorization.authorize();
@@ -229,7 +229,7 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
             }
         }).state('changePassword', {
             url: '/changePassword',
-            templateUrl: 'views/changePassword.html',
+            templateUrl: 'htpagesmis/changePassword.html',
             resolve : {
                 user : function ( authorization) {
                     return authorization.authorize();
@@ -237,7 +237,7 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
             }
         }).state('userManual', {
             url: '/userManual',
-            templateUrl: 'views/userManual.html',
+            templateUrl: 'htpagesmis/userManual.html',
             resolve : {
                 user : function ( authorization) {
                     return authorization.authorize();
@@ -245,7 +245,7 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
             }
         }).state('userManual.kilkari', {
             url: '/kilkari',
-            templateUrl: 'views/userManual_kilkari.html',
+            templateUrl: 'htpagesmis/userManual_kilkari.html',
             resolve : {
                 user : function ( authorization) {
                     return authorization.authorize();
@@ -253,7 +253,7 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
             }
         }).state('userManual.kilkariAggregate', {
             url: '/kilkariAggregate',
-            templateUrl: 'views/userManual_kilkariAgg.html',
+            templateUrl: 'htpagesmis/userManual_kilkariAgg.html',
             resolve : {
                 user : function ( authorization) {
                     return authorization.authorize();
@@ -261,7 +261,7 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
             }
         }).state('userManual.websiteInformation', {
             url: '/WebsiteInformation',
-            templateUrl: 'views/userManual_websiteInformation.html',
+            templateUrl: 'htpagesmis/userManual_websiteInformation.html',
             resolve : {
                 user : function ( authorization) {
                     return authorization.authorize();
@@ -269,7 +269,7 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
             }
         }).state('userManual.mobileAcademy', {
             url: '/mobileAcademy',
-            templateUrl: 'views/userManual_mobileAcademy.html',
+            templateUrl: 'htpagesmis/userManual_mobileAcademy.html',
             resolve : {
                 user : function ( authorization) {
                     return authorization.authorize();
@@ -277,7 +277,7 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
             }
         }).state('userManual.mobileAcademyAggregate', {
             url: '/mobileAcademyAggregate',
-            templateUrl: 'views/userManual_mobileAcademyAgg.html',
+            templateUrl: 'htpagesmis/userManual_mobileAcademyAgg.html',
             resolve : {
                 user : function ( authorization) {
                     return authorization.authorize();
@@ -285,7 +285,7 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
             }
         }).state('userManual.userManual_Management', {
             url: '/userManual_Management',
-            templateUrl: 'views/userManual_Management.html',
+            templateUrl: 'htpagesmis/userManual_Management.html',
             resolve : {
                 user : function ( authorization) {
                     return authorization.authorize();
@@ -293,7 +293,7 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
             }
         }).state('userManual.userManual_Profile', {
             url: '/userManual_Profile',
-            templateUrl: 'views/userManual_Profile.html',
+            templateUrl: 'htpagesmis/userManual_Profile.html',
             resolve : {
                 user : function ( authorization) {
                     return authorization.authorize();
@@ -301,7 +301,7 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
             }
         }).state('faq', {
             url: '/faq',
-            templateUrl: 'views/faq.html',
+            templateUrl: 'htpagesmis/faq.html',
             resolve : {
                 user : function ( authorization) {
                     return authorization.authorize();
@@ -309,7 +309,7 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
             }
         }).state('faq.faqGeneralInfo', {
             url: '/general-info',
-            templateUrl: 'views/faqGeneralInfo.html',
+            templateUrl: 'htpagesmis/faqGeneralInfo.html',
             resolve : {
                 user : function ( authorization) {
                     return authorization.authorize();
@@ -317,7 +317,7 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
             }
         }).state('faq.faqLoginInfo', {
             url: '/login-info',
-            templateUrl: 'views/faqLoginInfo.html',
+            templateUrl: 'htpagesmis/faqLoginInfo.html',
             resolve : {
                 user : function ( authorization) {
                     return authorization.authorize();
@@ -325,7 +325,7 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
             }
         }).state('faq.faqReportsInfo', {
             url: '/reports-info',
-            templateUrl: 'views/faqReportsInfo.html',
+            templateUrl: 'htpagesmis/faqReportsInfo.html',
             resolve : {
                 user : function ( authorization) {
                     return authorization.authorize();
@@ -333,7 +333,7 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
             }
         }).state('faq.faqLineListingInfo', {
             url: '/line-listing-info',
-            templateUrl: 'views/faqLineListingInfo.html',
+            templateUrl: 'htpagesmis/faqLineListingInfo.html',
             resolve : {
                 user : function ( authorization) {
                     return authorization.authorize();
@@ -341,7 +341,7 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
             }
         }).state('faq.faqAggregateInfo', {
             url: '/aggregate-info',
-            templateUrl: 'views/faqAggregateInfo.html',
+            templateUrl: 'htpagesmis/faqAggregateInfo.html',
             resolve : {
                 user : function ( authorization) {
                     return authorization.authorize();
@@ -349,7 +349,7 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
             }
         }).state('Downloads', {
             url: '/Downloads',
-            templateUrl: 'views/downloads.html'
+            templateUrl: 'htpagesmis/downloads.html'
         });
         $urlRouterProvider.otherwise('/login');
         $httpProvider.defaults.headers.common = {};

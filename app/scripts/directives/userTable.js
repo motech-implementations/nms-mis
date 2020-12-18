@@ -4,7 +4,7 @@
 		.directive('userTable', function() {
 	        return {
 	            restrict: 'EAC',
-	            templateUrl: '../views/userTable.html',
+	            templateUrl: '../htpagesmis/userTable.html',
 
 	        };
 	    })
