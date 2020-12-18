@@ -202,11 +202,13 @@
                         "subject" : $scope.email.subject,
                         "phoneNo" : $scope.email.phoneNo
                     };
+                    var token = 'dhty'+UserFormFactory.getCurrentUser().userId+'alkihkf';
+
                     $http({
                         method  : 'POST',
                         url     : backend_root + 'nms/mail/sendEmailForContactUs',
                         data    : JSON.stringify(data), //forms user object
-                        headers : {'Content-Type': 'application/json'}
+                        headers : {'Content-Type': 'application/json', 'csrfToken': token}
                     }).then(function(){
                         if(UserFormFactory.isInternetExplorer()){
                             alert('Contact-us form submitted successfully')

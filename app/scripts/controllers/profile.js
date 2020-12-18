@@ -8,7 +8,7 @@
 					$state.go('login', {});
 				}
 			})
-
+			var token = 'dhty'+UserFormFactory.getCurrentUser().userId+'alkihkf';
 			$http.get(backend_root + 'nms/user/profile')
 			.then(function(result){
 				$scope.user = result.data;
@@ -51,7 +51,7 @@
 						method  : 'POST',
 						url     : backend_root + 'nms/user/updateContacts',
 						data    : $scope.contact, //forms user object
-						headers : {'Content-Type': 'application/json'} 
+						headers : {'Content-Type': 'application/json', 'csrfToken': token}
 					}).then(function(result){
                         if(UserFormFactory.isInternetExplorer()){
                             alert(result.data['0'])
@@ -89,7 +89,7 @@
 						method  : 'POST',
 						url     : backend_root + 'nms/user/resetPassword',
 						data    : $scope.password, //forms user object
-						headers : {'Content-Type': 'application/json'} 
+						headers : {'Content-Type': 'application/json', 'csrfToken': token}
 					}).then(function(result){
 						if(UserFormFactory.isInternetExplorer()){
                             alert(result.data['0'])

@@ -5,7 +5,7 @@
 			return {
 			    require: 'ngMessages',
 				restrict: 'AC',
-				templateUrl: '../views/createUser.html',
+				templateUrl: '../htpagesmis/createUser.html',
 				scope:{
 					'newUser':'='
 				}

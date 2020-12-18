@@ -4,7 +4,7 @@
 		.directive('contactUs', function() {
 			return {
 				restrict: 'AC',
-				templateUrl: '../views/contactUs.html',
+				templateUrl: '../htpagesmis/contactUs.html',
 			};
 		})
 

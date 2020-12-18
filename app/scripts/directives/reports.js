@@ -4,7 +4,7 @@
 		.directive('reports', function() {
 			return {
 				restrict: 'AC',
-				templateUrl: '../views/reports.html',
+				templateUrl: '../htpagesmis/reports.html',
 			};
 		})
 		

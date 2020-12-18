@@ -135,6 +135,84 @@
         </property>
     </bean>
 
+<mvc:interceptors>
+
+<!--    Csrf Interceptor Open-->
+    <mvc:interceptor>
+        <mvc:mapping path="/nms/admin/changePassword"/>
+        <bean class="com.beehyv.nmsreporting.business.impl.CsrfInterceptor">
+        </bean>
+    </mvc:interceptor>
+
+    <mvc:interceptor>
+        <mvc:mapping path="/nms/admin/uploadFile"/>
+        <bean class="com.beehyv.nmsreporting.business.impl.CsrfInterceptor">
+        </bean>
+    </mvc:interceptor>
+
+    <mvc:interceptor>
+        <mvc:mapping path="/nms/mail/sendEmailForContactUs"/>
+        <bean class="com.beehyv.nmsreporting.business.impl.CsrfInterceptor">
+        </bean>
+    </mvc:interceptor>
+
+    <mvc:interceptor>
+        <mvc:mapping path="/nms/mail/sendFeedback"/>
+        <bean class="com.beehyv.nmsreporting.business.impl.CsrfInterceptor">
+        </bean>
+    </mvc:interceptor>
+
+    <mvc:interceptor>
+        <mvc:mapping path="/nms/user/createUser"/>
+        <bean class="com.beehyv.nmsreporting.business.impl.CsrfInterceptor">
+        </bean>
+    </mvc:interceptor>
+
+    <mvc:interceptor>
+        <mvc:mapping path="/nms/user/deleteUser"/>
+        <bean class="com.beehyv.nmsreporting.business.impl.CsrfInterceptor">
+        </bean>
+    </mvc:interceptor>
+
+    <mvc:interceptor>
+        <mvc:mapping path="/nms/user/downloadAggPdf"/>
+        <bean class="com.beehyv.nmsreporting.business.impl.CsrfInterceptor">
+        </bean>
+    </mvc:interceptor>
+
+    <mvc:interceptor>
+        <mvc:mapping path="/nms/user/generateAgg"/>
+        <bean class="com.beehyv.nmsreporting.business.impl.CsrfInterceptor">
+        </bean>
+    </mvc:interceptor>
+
+    <mvc:interceptor>
+        <mvc:mapping path="/nms/user/getReport"/>
+        <bean class="com.beehyv.nmsreporting.business.impl.CsrfInterceptor">
+        </bean>
+    </mvc:interceptor>
+
+    <mvc:interceptor>
+        <mvc:mapping path="/nms/user/resetPassword"/>
+        <bean class="com.beehyv.nmsreporting.business.impl.CsrfInterceptor">
+        </bean>
+    </mvc:interceptor>
+
+    <mvc:interceptor>
+        <mvc:mapping path="/nms/user/updateContacts"/>
+        <bean class="com.beehyv.nmsreporting.business.impl.CsrfInterceptor">
+        </bean>
+    </mvc:interceptor>
+
+    <mvc:interceptor>
+        <mvc:mapping path="/nms/user/updateUser"/>
+        <bean class="com.beehyv.nmsreporting.business.impl.CsrfInterceptor">
+        </bean>
+    </mvc:interceptor>
+
+<!--    Csrf Interceptor clode-->
+
+</mvc:interceptors>
     <bean id="autoReportMail" class="com.beehyv.nmsreporting.job.AutoReportEmailGeneration"/>
     <task:scheduled-tasks>
         <task:scheduled ref="autoReportMail" method="executeInternal" cron="0 0 9 1 * ?"/>

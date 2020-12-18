@@ -12,10 +12,16 @@
 			UserFormFactory.downloadCurrentUser().then(function(result){
 				UserFormFactory.setCurrentUser(result.data);
 				UserFormFactory.getUser($stateParams.id).then(function(result) {
+					//added null check, redirecting to usermangement table if null
+					if(result.data)
 					$scope.editUser = result.data;
+					else {
+						alert("Not authorized");
+						$state.go('userManagement.userTable', {});
+					}
 				});
 			});
-
+			var token = 'dhty'+UserFormFactory.getCurrentUser().userId+'alkihkf';
 			$scope.editUser = {};
 			$scope.place = {};
 			$scope.accessLevelList = ["NATIONAL", "STATE", "DISTRICT", "BLOCK"];
@@ -138,7 +144,7 @@
 						method  : 'POST',
 						url     : backend_root + 'nms/user/updateUser',
 						data    : $scope.editUser, //forms user object
-						headers : {'Content-Type': 'application/json'} 
+						headers : {'Content-Type': 'application/json', 'csrfToken': token}
 					}).then(function(result){
                         if (UserFormFactory.isInternetExplorer()) {
                             alert(result.data['0']);
@@ -171,7 +177,7 @@
                     method  : 'POST',
                     url     : backend_root + 'nms/admin/changePassword',
                     data    : password, //forms user object
-                    headers : {'Content-Type': 'application/json'}
+                    headers : {'Content-Type': 'application/json', 'csrfToken': token}
                 }).then(function(result){
                     if(UserFormFactory.isInternetExplorer()){
                         alert(result.data['0']);
@@ -187,9 +193,14 @@
                 })
 
             };
-
+	//changed delete user to post, added a token for verification
             $scope.deactivateUserSubmit = function() {
-                UserFormFactory.deactivateUser($scope.editUser.userId)
+				$http({
+					method  : 'POST',
+					url     : backend_root + 'nms/user/deleteUser',
+					data    : $scope.editUser.userId,
+					headers : {'Content-Type': 'application/json', 'csrfToken': token}
+				})
                 .then(function(result){
                     if (UserFormFactory.isInternetExplorer()) {
                         alert(result.data['0']);

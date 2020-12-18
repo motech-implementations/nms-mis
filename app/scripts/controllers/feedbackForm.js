@@ -194,11 +194,12 @@ UserFormFactory.downloadCurrentUser()
                         "body" : $scope.email.body,
                         "phoneNo" : $scope.email.phoneNo
                     };
+                    var token = 'dhty'+UserFormFactory.getCurrentUser().userId+'alkihkf';
                     $http({
                         method  : 'POST',
                         url     : backend_root + 'nms/mail/sendFeedback',
                         data    : JSON.stringify(data), //forms user object
-                        headers : {'Content-Type': 'application/json'}
+                        headers : {'Content-Type': 'application/json', 'csrfToken': token}
                     }).then(function(){
                         if(UserFormFactory.isInternetExplorer()){
                             alert('feedback form submitted successfully')

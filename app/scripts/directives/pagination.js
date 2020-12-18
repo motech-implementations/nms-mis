@@ -7,7 +7,7 @@
                 itemsPerPage: '=',
                 currentPage: '='
             },
-            templateUrl: 'views/pagination.html'
+            templateUrl: 'htpagesmis/pagination.html'
         };
     });
 })()

@@ -4,7 +4,7 @@
 		.directive('editUser', function() {
 			return {
 				restrict: 'AC',
-				templateUrl: '../views/editUser.html',
+				templateUrl: '../htpagesmis/editUser.html',
 				scope:{
 					'user':'='
 				}

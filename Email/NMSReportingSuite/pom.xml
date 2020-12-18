@@ -143,34 +143,35 @@
         </dependency>
 
         <!-- Apache Shiro -->
+<!--        latest versions no longer work with our project, so changed to a version that works-->
         <dependency>
             <groupId>org.apache.shiro.samples</groupId>
             <artifactId>samples-spring-client</artifactId>
-            <version>LATEST</version>
+            <version>1.4.1</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-core</artifactId>
-            <version>LATEST</version>
+            <version>1.4.1</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-ehcache</artifactId>
-            <version>LATEST</version>
+            <version>1.4.1</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-spring</artifactId>
-            <version>LATEST</version>
+            <version>1.4.1</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-web</artifactId>
-            <version>LATEST</version>
+            <version>1.4.1</version>
         </dependency>
 
         <dependency>

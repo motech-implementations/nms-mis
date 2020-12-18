@@ -4,7 +4,7 @@
 		.directive('userManagement', function() {
 			return {
 				restrict: 'AC',
-				templateUrl: '../views/userManagement.html',
+				templateUrl: '../htpagesmis/userManagement.html',
 			};
 		})
 		

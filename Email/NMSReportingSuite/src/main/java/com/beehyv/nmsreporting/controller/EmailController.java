@@ -62,8 +62,12 @@ public class EmailController {
     //changed the 'from' emailId from beehyv domain address to govt domain address
         String email = tokenItems[0];
         String password = tokenItems[1];
-        String subject = "Reset Password for MIS Portal";
-        String message = "\"Dear user,<br/><br/><p>As per your request, your password has been reset to: <b>" +
+        String type = tokenItems[2];
+        String subject = "Password for MIS Portal";
+        String line = "As per your request, your password has been reset to:";
+        if(type.equals("new")) line = "The password for your newly created MIS account is:";
+        else if(type.equals("admin")) line = "The password for your MIS account has been reset by the admin to:";
+        String message = "\"Dear user,<br/><br/><p>"+line+"<b>" +
                password +
               "</b></p><br/><p>Once you login to the MIS portal with the above password, the system will direct you to change the default password as it is mandatory.</p><br/>" +
              "<p>Thanks,</p>" +"<p>NSP Support</p>\"";
@@ -81,19 +85,6 @@ public class EmailController {
                 return "failure";
             }
         }catch (InterruptedException e){return "failure";}
-//        EmailInfo newMail = new EmailInfo();
-//        newMail.setFrom("nsp-reports@beehyv.com");
-//        newMail.setTo(email);
-//        Calendar c = Calendar.getInstance();   // this takes current date
-//        c.add(Calendar.MONTH, -1);
-//        c.set(Calendar.DATE, 1);
-//        newMail.setSubject("Reset Password for MIS Portal");
-//        newMail.setBody("Dear user,<br/><br/><p>As per your request, your password has been reset to: <b>" +
-//                password +
-//                "</b></p><br/><p>Once you login to the MIS portal with the above password, the system will direct you to change the default password as it is mandatory.</p><br/>" +
-//                "<p>Thanks,</p>" +
-//                "<p>NSP Support</p>");
-//        return emailService.sendMailPassword(newMail);
     }
 
     @RequestMapping(value = "/sendCaptcha/{captchaResponse}", method = RequestMethod.GET)

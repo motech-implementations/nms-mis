@@ -43,11 +43,12 @@
                     //"cipherTextHexOld": encryptedOld.ciphertext.toString(),
                     //"saltHexOld":newPassword encryptedOld.salt.toString()
                     };
+                    var token = 'dhty'+UserFormFactory.getCurrentUser().userId+'alkihkf';
                     $http({
                         method: 'POST',
                         url: backend_root + 'nms/user/resetPassword',
                         data: JSON.stringify(data),
-                        headers: {'Content-Type': 'application/json'}
+                        headers: {'Content-Type': 'application/json', 'csrfToken': token}
                     }).then(function(result){
 //                    $http({
 //                        method  : 'POST',

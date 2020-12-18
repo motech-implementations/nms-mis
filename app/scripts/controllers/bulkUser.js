@@ -37,9 +37,10 @@
 	//We can send anything in name parameter,
 //it is hard coded to abc as it is irrelavant in this case.
 				var uploadUrl = backend_root + "nms/admin/uploadFile";
+				var token = 'dhty'+UserFormFactory.getCurrentUser().userId+'alkihkf';
 				$http.post(uploadUrl, fd, {
 					transformRequest: angular.identity,
-					headers: {'Content-Type': undefined}
+					headers: {'Content-Type': undefined, 'csrfToken': token}
 				})
 				.then(function(result){
 					$scope.listErrors(result.data)

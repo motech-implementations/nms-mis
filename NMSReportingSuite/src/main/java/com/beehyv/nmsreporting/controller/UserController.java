@@ -136,7 +136,7 @@ public class UserController {
     @RequestMapping(value={"/roles"} , method = RequestMethod.POST)
     public @ResponseBody List<Role> getRoles() {
         User currentUser = userService.getCurrentUser();
-        if(currentUser.getUserId() != null){
+        if(currentUser.getUserId() != null&&((currentUser.getRoleName().equals("MASTER ADMIN"))||(currentUser.getRoleName().equals("ADMIN")))){
             return roleService.getRoles();
         } else
             return null;
@@ -256,13 +256,16 @@ public class UserController {
 
 
     }
-
+//returning a user only if current user is the creator, this api is used only during edit user
     @RequestMapping(value={"/user/{userId}"})
     public @ResponseBody User getUserById(@PathVariable("userId") Integer userId) {
-        User currentUser = userService.getCurrentUser();
-        if(currentUser.getUserId() != null){
-            return userService.findUserByUserId(userId);
-        } else
+        if(getCurrentUser() != null){
+            User user = userService.findUserByUserId(userId);
+            if(getCurrentUser().getUserId().equals(user.getCreatedByUser().getUserId())) {
+                return user;
+            }
+            return null;
+        }
             return null;
     }
 
@@ -298,13 +301,43 @@ public class UserController {
 //    }
 
     @RequestMapping(value = {"/createUser"}, method = RequestMethod.POST)
-    @ResponseBody public Map<Integer, String> createNewUser(@RequestBody User user) {
+    @ResponseBody public Map<Integer, String> createNewUser(@RequestBody User user) throws Exception {
 
         User currentUser = userService.getCurrentUser();
         if(currentUser != null){
             user = locationService.SetLocations(user);
             Map<Integer,String> map = userService.createNewUser(user);
             if(map.get(0).equals("User Created")){
+                String password = map.get(1);
+                String email = user.getEmailId();
+                byte[] encoded = Base64.encodeBase64((email + "||" + password + "||new").getBytes());
+                String encrypted = new String(encoded);
+                String url = "http://192.168.200.4:8080/NMSReportingSuite/nms/mail/sendPassword/" + encrypted;
+                URL obj = new URL(url);
+                HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+                // optional default is GET
+                con.setRequestMethod("GET");
+
+                //add request header
+                con.setRequestProperty("User-Agent", USER_AGENT);
+
+                int responseCode = con.getResponseCode();
+                System.out.println("\nSending 'GET' request to URL : " + url);
+                System.out.println("Response Code : " + responseCode);
+
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(con.getInputStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+
+                //print result
+                System.out.println(response.toString());
                 ModificationTracker modification = new ModificationTracker();
                 modification.setModificationDate(new Date(System.currentTimeMillis()));
                 modification.setModificationType(ModificationType.CREATE.getModificationType());
@@ -456,7 +489,7 @@ public class UserController {
                 if (user != null) {
                     String email = user.getEmailId();
                     String password = serviceFunctions.generatePassword();
-                    byte[] encoded = Base64.encodeBase64((email + "||" + password).getBytes());
+                    byte[] encoded = Base64.encodeBase64((email + "||" + password + "||forgot").getBytes());
                     String encrypted = new String(encoded);
                     String url = "http://192.168.200.4:8080/NMSReportingSuite/nms/mail/sendPassword/" + encrypted;
                     URL obj = new URL(url);
@@ -510,12 +543,13 @@ public class UserController {
 
 
 
-
-    @RequestMapping(value = {"/deleteUser/{id}"}, method = RequestMethod.GET)
+//changed delete user to post, added a token verification
+    @RequestMapping(value = {"/deleteUser"}, method = RequestMethod.POST)
     @ResponseBody
-    public Map deleteExistingUser(@PathVariable("id") Integer id) {
+    public Map deleteExistingUser(HttpServletRequest request, @RequestBody Integer id) {
         User currentUser = userService.getCurrentUser();
-        if(currentUser != null){
+        String token = "dhty" + currentUser.getUserId().toString() + "alkihkf";
+        if(currentUser != null && request.getHeader("csrfToken").equals(token)){
             Map<Integer, String> map=userService.deleteExistingUser(id);
             if(map.get(0).equals("User deleted")) {
                 ModificationTracker modification = new ModificationTracker();
