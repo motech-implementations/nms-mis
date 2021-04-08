@@ -234,7 +234,7 @@
                     $scope.datePickerOptions.minMode = '';
                     $scope.datePickerOptions.datepickerMode = 'year';
                     $scope.datePickerOptions.minMode = 'year';
-                    if(new Date().getMonth()>3){
+                    if(new Date().getMonth()>2){
                         $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear());
                     }else{
                         $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear() -1);
@@ -247,7 +247,7 @@
                     $scope.datePickerOptions.minMode = '';
                     $scope.datePickerOptions.datepickerMode = 'year';
                     $scope.datePickerOptions.minMode = 'year';
-                    if(new Date().getMonth()>3){
+                    if(new Date().getMonth()>2){
                         $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear());
                     }else{
                         $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear() -1);
@@ -648,7 +648,7 @@
                                      $scope.datePickerOptions.minMode = '';
                                      $scope.datePickerOptions.datepickerMode = 'year';
                                      $scope.datePickerOptions.minMode = 'year';
-                                     if(new Date().getMonth()>3){
+                                     if(new Date().getMonth()>2){
                                          $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear());
                                      }else{
                                          $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear() -1);
@@ -661,7 +661,7 @@
                                      $scope.datePickerOptions.minMode = '';
                                      $scope.datePickerOptions.datepickerMode = 'year';
                                      $scope.datePickerOptions.minMode = 'year';
-                                     if(new Date().getMonth()>3){
+                                     if(new Date().getMonth()>2){
                                          $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear());
                                      }else{
                                          $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear() -1);
