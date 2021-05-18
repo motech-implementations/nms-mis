@@ -12,4 +12,9 @@ public interface MAPerformanceDao {
 
     Integer getAshasFailed(Integer locationId, String locationType, Date fromDate, Date toDate);
 
+    Long getAshaActivated(Integer locationId, String locationType, Date toDate);
+
+    Long getAshaDeactivated(Integer locationId, String locationType, Date toDate);
+
+    Long getAshaRefresherCourse(Integer locationId, String locationType);
 }

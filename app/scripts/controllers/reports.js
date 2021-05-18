@@ -2216,10 +2216,11 @@
                                                          cellTemplate:'<a   ng-if= !row.entity.link class="btn aggregate-location" title="{{COL_FIELD}}"  ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a><p ng-if= row.entity.link class="ui-grid-cell-contents" title="{{COL_FIELD}}" >{{ COL_FIELD }}</p>',
                                                          width: '16%', enableHiding: false,
                                                        },
-                                                       { field: 'ashasRegistered', displayName : 'No of Registered ASHA',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',culture:'en-IN', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                       { field: 'ashasRegistered',headerTooltip:'Number of ASHAs registered with the program.', displayName : 'No of Registered ASHA',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',culture:'en-IN', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
 
                     {
                         field: 'ashasStarted',
+                        headerTooltip: 'Number of ASHA have started the course',
                         displayName: 'No of ASHA Started Course',
                         cellFilter: 'indianFilter',
                         footerCellFilter: 'indianFilter',
@@ -2230,6 +2231,7 @@
                     },
                     {
                         field: 'startedPercentage',
+                        headerTooltip: '% Started (of total registered)',
                         displayName: '% Started (of total registered)',
                         cellFilter: 'indianDecimalFilter',
                         footerCellTemplate: '<div class="ui-grid-cell-contents" >{{grid.columns[2].getAggregationValue()==0 ? 0.00:(grid.columns[3].getAggregationValue()/grid.columns[2].getAggregationValue())*100 | number:2}}</div>',
@@ -2238,6 +2240,7 @@
                     },
                 {
                     field: 'ashasCompleted',
+                    headerTooltip: 'number of ASHAs who have passed the course (first successful completion only)',
                     displayName: 'No of ASHA Completed Course',
                     cellFilter: 'indianFilter',
                     footerCellFilter: 'indianFilter',
@@ -2248,6 +2251,7 @@
                 },
                 {
                     field: 'completedPercentage',
+                    headerTooltip: '% Completed (of total registered)',
                     displayName: '% Completed (of total registered)',
                     cellFilter: 'indianDecimalFilter',
                     footerCellTemplate: '<div class="ui-grid-cell-contents" >{{grid.columns[2].getAggregationValue()==0 ? 0.00:(grid.columns[5].getAggregationValue()/grid.columns[2].getAggregationValue())*100 | number:2}}</div>',
@@ -2256,6 +2260,7 @@
                 },
                 {
                     field: 'ashasNotStarted',
+                    headerTooltip: 'Number of ASHA have not started the course',
                     displayName: 'No of ASHA Not Started Course',
                     cellFilter: 'indianFilter',
                     footerCellFilter: 'indianFilter',
@@ -2266,6 +2271,7 @@
                 },
                 {
                     field: 'notStartedpercentage',
+                    headerTooltip: '% Not Started (of total registered)',
                     displayName: '% Not Started (of total registered)',
                     cellFilter: 'indianDecimalFilter',
                     culture: 'en-IN',
@@ -2275,6 +2281,7 @@
                 },
                 {
                     field: 'ashasFailed',
+                    headerTooltip: 'No of ASHA Failed Course',
                     displayName: 'No of ASHA Failed Course',
                     cellFilter: 'indianFilter',
                     footerCellFilter: 'indianFilter',
@@ -2285,6 +2292,7 @@
                 },
                 {
                     field: 'failedpercentage',
+                    headerTooltip: '% Failed (of total registered)',
                     displayName: '% Failed (of total registered)',
                     cellFilter: 'indianDecimalFilter',
                     footerCellTemplate: '<div class="ui-grid-cell-contents" >{{grid.columns[2].getAggregationValue()==0 ? 0.00:(grid.columns[9].getAggregationValue()/grid.columns[2].getAggregationValue()) *100 | number:2}}</div>',
@@ -2293,7 +2301,7 @@
                 }
                 ],
 
-
+                // createHeaderTemplate('Number of ASHA Started Course'),
             $scope.MA_Performance_Column_Definitions =[
                                                          {name: 'S No.', displayName: 'S No.',width:"6%", enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
                                                          { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents">Total</div>',defaultSort: { direction: uiGridConstants.ASC },
@@ -2301,12 +2309,17 @@
                                                             enableHiding: false, width:"12%",
 
                                                          },
-                                                         { field: 'ashasStarted', displayName: 'Number of ASHA Started Course',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*",enableHiding: false },
-                                                         { field: 'ashasAccessed', displayName: 'Number of ASHA Pursuing Course',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                         { field: 'ashasNotAccessed', displayName: 'Number of ASHA not Pursuing Course',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
-                                                         { field: 'ashasCompleted', displayName: 'Number of ASHA Successfully Completed Course',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"18%",enableHiding: false},
-                                                         { field: 'ashasFailed',  displayName: 'Number of ASHA who Failed the Course',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
-                                                        ],
+                                                         { field: 'ashasStarted', headerTooltip: 'ASHAs who have started the course for the first time in the selected period.',displayName: 'Number of ASHA Started Course',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*",enableHiding: false },
+                                                         { field: 'ashasAccessed', headerTooltip: 'Number of ASHAs who had started the course before the selected period, had accessed the course at least once with one bookmark during the selected period and not completed the course till the end of the selected period ',displayName: 'Number of ASHA Pursuing Course',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                         { field: 'ashasNotAccessed',headerTooltip: 'Number of ASHAs who had started the course before the selected period and had not accessed the course once during the selected period. The count does NOT include ASHAs who have any successful completion till the end of the selected period.', displayName: 'Number of ASHA not Pursuing Course',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                         { field: 'ashasCompleted',headerTooltip: 'Number of ASHAs who have successfully completed the course for first time, during the selected period and secured pass marks.', displayName: 'Number of ASHA Successfully Completed Course',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"18%",enableHiding: false},
+                                                         { field: 'ashasFailed', headerTooltip: 'Number of ASHAs who have completed the course during the selected period and did not secure passing marks even once till the end of selected period', displayName: 'Number of ASHA who Failed the Course',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                { field: 'ashasRefresherCourse',  headerTooltip: 'Number of asha who had completed the course and taking the course once again', displayName: 'Number of ASHA doing Refresher course',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                { field: 'ashasActivated',  headerTooltip: 'Total Number of active Asha from beginning', displayName: 'Total no of active Asha',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                { field: 'ashasJoined',  headerTooltip: 'Total Number of Asha joined from beginning', displayName: 'No of Asha joined',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                { field: 'ashasDeactivated',  headerTooltip: 'Total Number of asha deactivated or left from beginning', displayName: 'No of Asha left',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+
+            ],
 
             $scope.MA_Subscriber_Column_Definitions =[
                                                          {name: 'S No.', displayName: 'S No.',width:"5%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
@@ -2315,12 +2328,12 @@
                                                             enableHiding: false,width:"14%",
 
                                                          },
-                                                         { field: 'registeredNotCompletedStart', displayName: 'Number of ASHA Registered But Not Completed the Course(Period Start)',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"16%", enableHiding: false },
-                                                         { field: 'recordsReceived', displayName: 'Number of ASHA Records Received Through Web Service',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                         { field: 'ashasRejected', displayName: 'Number of ASHA Records Rejected',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
-                                                         { field: 'ashasRegistered', displayName: 'Number of ASHA Subscriptions Added',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
-                                                         { field: 'ashasCompleted',  displayName: 'Number of ASHA Successfully Completed the Course',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
-                                                         { field: 'registeredNotCompletedend',  displayName: 'Number of ASHA Registered But Not Completed the Course (Period End)',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"16%", enableHiding: false},
+                                                         { field: 'registeredNotCompletedStart',headerTooltip: 'Number of ASHAs who have registered in the MA course prior to the start of the period but have not completed the course.', displayName: 'Number of ASHA Registered But Not Completed the Course(Period Start)',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"16%", enableHiding: false },
+                                                         { field: 'recordsReceived', headerTooltip : 'Number of ASHA Records that have been received from web service from MCTS/RCH during the period', displayName: 'Number of ASHA Records Received Through Web Service',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                         { field: 'ashasRejected', headerTooltip: 'Number of the records that have been rejected',displayName: 'Number of ASHA Records Rejected',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                         { field: 'ashasRegistered',headerTooltip:'Number of ASHAs who have been added/subscribed in MA course for the first time in the selected period ', displayName: 'Number of ASHA Added',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                         { field: 'ashasCompleted', headerTooltip:'Number of ASHAs who have successfully completed the course for the first time', displayName: 'Number of ASHA Successfully Completed the Course',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                         { field: 'registeredNotCompletedend', headerTooltip:'Number of ASHAs presently Subscribed in the Mobile Academy program but are yet to start or complete the course', displayName: 'Number of ASHA Registered But Not Completed the Course (Period End)',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"16%", enableHiding: false},
                                                         ],
 
             $scope.Kilkari_Cumulative_Summary_Definitions =[
