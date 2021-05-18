@@ -159,7 +159,7 @@ public class AdminServiceImpl implements AdminService {
 
                         if (!Strings.isNullOrEmpty(fullNameInput)) {
                             fullNameInput=fullNameInput.trim().replaceAll("\\s+", " ");
-                         }
+                        }
 
                         if (Strings.isNullOrEmpty(fullNameInput)) {
                             errorCreatingUsers.put(userRecordNumber, "Full Name cannot be empty");
@@ -270,13 +270,13 @@ public class AdminServiceImpl implements AdminService {
 //                        user.setUsername(userNameInput);
 
                         User existingUser = userDao.findByUserName(userNameInput);
-                        
+
                         if (existingUser != null) {
                             errorCreatingUsers.put(userRecordNumber, "Username already exists.");
                             continue;
                         }
                         user.setUsername(userNameInput);
-                        
+
                         AccessLevel loggedUserAccessLevel = AccessLevel.getLevel(loggedInUser.getAccessLevel());
 
                         String userRoleInput = AccessType.getType(roleInput);
@@ -1225,7 +1225,7 @@ public class AdminServiceImpl implements AdminService {
                 if(rowid!=8&&((cellid==3&&!obj.toString().equalsIgnoreCase("No MCTS ID"))
                         ||(cellid==4&&!obj.toString().equalsIgnoreCase("No RCH ID"))
                         ||(cellid==5&&!obj.toString().equalsIgnoreCase("No Mobile Number")))){
-                cell.setCellValue(obj.toString());}
+                    cell.setCellValue(obj.toString());}
                 else{
                     cell.setCellValue(obj.toString());
                 }
@@ -1233,7 +1233,7 @@ public class AdminServiceImpl implements AdminService {
                     cell.setCellValue(rowid-8);
                 }
                 if(rowid==8){
-                cell.setCellStyle(style);}
+                    cell.setCellStyle(style);}
                 else if(rowid == 9 && rejectedChildImports.isEmpty()){
                     CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
                     spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:M9"));
@@ -1264,7 +1264,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     private void getCumulativeRejectedMotherImports(List<MotherImportRejection> rejectedMotherImports, String rootPath,
-                                                   String place, Date toDate, ReportRequest reportRequest) {
+                                                    String place, Date toDate, ReportRequest reportRequest) {
         XSSFWorkbook workbook = new XSSFWorkbook();
         //Create a blank sheet
         XSSFSheet spreadsheet = workbook.createSheet(
@@ -1399,7 +1399,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     private void getCumulativeRejectedFlwImports(List<FlwImportRejection> rejectedChildImports, String rootPath,
-                                                    String place, Date toDate, ReportRequest reportRequest) {
+                                                 String place, Date toDate, ReportRequest reportRequest) {
         XSSFWorkbook workbook = new XSSFWorkbook();
         //Create a blank sheet
         XSSFSheet spreadsheet = workbook.createSheet(
@@ -1484,6 +1484,8 @@ public class AdminServiceImpl implements AdminService {
         }
         Set<String> keyid = empinfo.keySet();
         createHeadersForReportFiles(workbook, reportRequest);
+        List<String> comments= getHeaderComment().get("Asha Rejected Records");
+        Integer index=0;
         int rowid=7;
         for (String key : keyid) {
             row = spreadsheet.createRow(rowid++);
@@ -1495,7 +1497,7 @@ public class AdminServiceImpl implements AdminService {
                 Cell cell = row.createCell(cellid++);
                 if(rowid!=8&&((cellid==4&&!obj.toString().equalsIgnoreCase("No ASHA Mobile Number"))
                         ||(cellid==3&&!obj.toString().equalsIgnoreCase("No ASHA ID")))){
-                cell.setCellValue(obj.toString());}
+                    cell.setCellValue(obj.toString());}
                 else{
                     cell.setCellValue(obj.toString());
                 }
@@ -1510,6 +1512,10 @@ public class AdminServiceImpl implements AdminService {
                 }
                 else{
                     cell.setCellStyle(borderStyle);
+                }
+                if(key.equals("1")){
+                    createComment(cell,row,comments,index,workbook,spreadsheet);
+                    index++;
                 }
             }
         }
@@ -1622,6 +1628,8 @@ public class AdminServiceImpl implements AdminService {
             counter++;
 //            System.out.println("Added "+counter);
         }
+        List<String> comments= getHeaderComment().get("Course Completion");
+        Integer index=0;
         Set<String> keyid = empinfo.keySet();
         createHeadersForReportFiles(workbook, reportRequest);
         int rowid=7;
@@ -1635,7 +1643,7 @@ public class AdminServiceImpl implements AdminService {
                 Cell cell = row.createCell(cellid++);
                 if(rowid!=8&&((cellid==4&&!obj.toString().equalsIgnoreCase("No Phone"))
                         ||(cellid==3&&!obj.toString().equalsIgnoreCase("No FLW_ID")))){
-                cell.setCellValue(obj.toString());}
+                    cell.setCellValue(obj.toString());}
                 else{
                     cell.setCellValue(obj.toString());
                 }
@@ -1650,6 +1658,21 @@ public class AdminServiceImpl implements AdminService {
                 }
                 else{
                     cell.setCellStyle(borderStyle);
+                }
+                if(key.equals("1")&&comments.size()!=0 && comments.get(index)!=null) {
+                    CreationHelper creationHelper = workbook.getCreationHelper();
+                    Drawing drawing = spreadsheet.createDrawingPatriarch();
+//            ClientAnchor clientAnchor = drawing.createAnchor(0, 0, 0, 0, 0, 7, 12, 17);
+                    ClientAnchor anchor = creationHelper.createClientAnchor();
+                    anchor.setCol1(cell.getColumnIndex());
+                    anchor.setCol2(cell.getColumnIndex() + 3);
+                    anchor.setRow1(row.getRowNum());
+                    anchor.setRow2(row.getRowNum() + 1);
+                    Comment comment = (Comment) drawing.createCellComment(anchor);
+                    RichTextString richTextString = creationHelper.createRichTextString(comments.get(index));
+                    comment.setString(richTextString);
+                    cell.setCellComment(comment);
+                    index++;
                 }
             }
         }
@@ -1670,6 +1693,23 @@ public class AdminServiceImpl implements AdminService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private Map<String,List<String>> getHeaderComment() {
+        Map<String,List<String>> map = new HashMap<String, List<String>>();
+
+        map.put("Course Completion",Arrays.asList("S.No","ASHA Name","ASHA MCTS/RCH ID","Mobile Number","State","District","Taluka",
+                "Health Block","Health Facility","Health Sub Facility","Village","Date when ASHA records came in to the Mobile Academy system for the first time",
+                "The date when ASHA’s successfully completed the Mobile Academy course for the first time","the date when ASHA’s successfully completed the Mobile Academy course for the first time",
+                "SMS Sent Notification"));
+
+        map.put("Anonymous User",Arrays.asList("S.No","Circle Name","Mobile Number","Last Called Date & Time"));
+        map.put("Cumulative Inactive Users",Arrays.asList("S.No","ASHA Name","ASHA MCTS/RCH ID","Mobile Number",
+                "State","District","Taluka","Health Block","Health Facility","Health Sub Facility","Village","This is the date when ASHA records came in to the Mobile Academy system for the first time",
+                "ASHA’s Status as received from MCTS/RCH"));
+        map.put("Asha Rejected Records",Arrays.asList("S.No","ASHA Name","ASHA Id","ASHA Mobile Number","State Name","District Name","Taluka Name","Health Block","Health Facility",
+                "Health Sub-Facility","Village Name","ASHA’s GF Status as received from MCTS/RCH","This gives why the ASHA record was rejected"));
+        return map;
     }
 
     private void updateCumulativeCourseCompletion(List<MACourseFirstCompletion> successfulCandidates, String rootPath, String place, Date toDate, ReportRequest reportRequest) {
@@ -1736,14 +1776,14 @@ public class AdminServiceImpl implements AdminService {
                     workbook = new XSSFWorkbook(new FileInputStream(rootPath + ReportType.maCourse.getReportType() + "_" + place + "_" + getMonthYear(toDate) + ".xlsx"));
                 }
 
-                } catch(FileNotFoundException e){
-                    e.printStackTrace();
-                } catch(IOException e){
-                    e.printStackTrace();
-                }
-
+            } catch(FileNotFoundException e){
+                e.printStackTrace();
+            } catch(IOException e){
+                e.printStackTrace();
             }
+
         }
+    }
 
 
     private void getCircleWiseAnonymousUsers(List<AnonymousUsers> anonymousUsersList, String rootPath, String place, Date toDate, ReportRequest reportRequest) {
@@ -1812,6 +1852,7 @@ public class AdminServiceImpl implements AdminService {
         }
         Set<String> keyid = empinfo.keySet();
         createHeadersForReportFiles(workbook, reportRequest);
+        List<String> comments= getHeaderComment().get("Anonymous User");
         int rowid=7;
         for (String key : keyid) {
             row = spreadsheet.createRow(rowid++);
@@ -1820,60 +1861,64 @@ public class AdminServiceImpl implements AdminService {
 
             Object[] objectArr = empinfo.get(key);
 
-                Cell cell1=row.createCell(0);
-                Cell cell2=row.createCell(1);
-                Cell cell3=row.createCell(4);
-                Cell cell4=row.createCell(7);
-
-
-                if(rowid == 8){
-                    CellRangeAddress range1 =new CellRangeAddress(rowid-1,rowid-1,0,0);
-                    spreadsheet.addMergedRegion(range1);
-                    CellRangeAddress range2 = new CellRangeAddress(rowid-1,rowid-1,1,3);
-                    spreadsheet.addMergedRegion(range2);
-                    CellRangeAddress range3 = new CellRangeAddress(rowid-1,rowid-1,4,6);
-                    spreadsheet.addMergedRegion(range3);
-                    CellRangeAddress range4 = new CellRangeAddress(rowid-1,rowid-1,7,9);
-                    spreadsheet.addMergedRegion(range4);
+            Cell cell1=row.createCell(0);
+            Cell cell2=row.createCell(1);
+            Cell cell3=row.createCell(4);
+            Cell cell4=row.createCell(7);
+            if(key.equals("1")) {
+                createComment(cell1, row, comments, 0, workbook, spreadsheet);
+                createComment(cell2, row, comments, 1, workbook, spreadsheet);
+                createComment(cell3, row, comments, 2, workbook, spreadsheet);
+                createComment(cell4, row, comments, 3, workbook, spreadsheet);
+            }
+            if(rowid == 8){
+                CellRangeAddress range1 =new CellRangeAddress(rowid-1,rowid-1,0,0);
+                spreadsheet.addMergedRegion(range1);
+                CellRangeAddress range2 = new CellRangeAddress(rowid-1,rowid-1,1,3);
+                spreadsheet.addMergedRegion(range2);
+                CellRangeAddress range3 = new CellRangeAddress(rowid-1,rowid-1,4,6);
+                spreadsheet.addMergedRegion(range3);
+                CellRangeAddress range4 = new CellRangeAddress(rowid-1,rowid-1,7,9);
+                spreadsheet.addMergedRegion(range4);
 //                    cleanBeforeMergeOnValidCells(spreadsheet,range1,style );
 //                    cleanBeforeMergeOnValidCells(spreadsheet,range2,style );
 //                    cleanBeforeMergeOnValidCells(spreadsheet,range3,style );
 //                    cleanBeforeMergeOnValidCells(spreadsheet,range4,style );
-                    cell1.setCellValue(objectArr[0].toString());
-                    cell2.setCellValue(objectArr[1].toString());
-                    cell3.setCellValue(objectArr[2].toString());
-                    cell4.setCellValue(objectArr[3].toString());
-                    cell1.setCellStyle(style);
-                    cell2.setCellStyle(style);
-                    cell3.setCellStyle(style);
-                    cell4.setCellStyle(style);
-                }
+                cell1.setCellValue(objectArr[0].toString());
+                cell2.setCellValue(objectArr[1].toString());
+                cell3.setCellValue(objectArr[2].toString());
+                cell4.setCellValue(objectArr[3].toString());
+                cell1.setCellStyle(style);
+                cell2.setCellStyle(style);
+                cell3.setCellStyle(style);
+                cell4.setCellStyle(style);
+            }
 
-                if(rowid == 9 && anonymousUsersList.isEmpty()){
-                    CellUtil.setAlignment(cell1, workbook, CellStyle.ALIGN_CENTER);
-                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:J9"));
-                    cell1.setCellValue("No Records to display");
-                }
+            if(rowid == 9 && anonymousUsersList.isEmpty()){
+                CellUtil.setAlignment(cell1, workbook, CellStyle.ALIGN_CENTER);
+                spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:J9"));
+                cell1.setCellValue("No Records to display");
+            }
 
-                if(rowid != 8 && !anonymousUsersList.isEmpty()){
+            if(rowid != 8 && !anonymousUsersList.isEmpty()){
 
-                    CellRangeAddress range1 =new CellRangeAddress(rowid-1,rowid-1,0,0);
-                    spreadsheet.addMergedRegion(range1);
-                    CellRangeAddress range2 = new CellRangeAddress(rowid-1,rowid-1,1,3);
-                    spreadsheet.addMergedRegion(range2);
-                    CellRangeAddress range3 = new CellRangeAddress(rowid-1,rowid-1,4,6);
-                    spreadsheet.addMergedRegion(range3);
-                    CellRangeAddress range4 = new CellRangeAddress(rowid-1,rowid-1,7,9);
-                    spreadsheet.addMergedRegion(range4);
-                    cell1.setCellValue(rowid - 8);
-                    cell2.setCellValue(objectArr[1].toString());
-                    cell3.setCellValue(objectArr[2].toString());
-                    cell4.setCellValue(objectArr[3].toString());
-                    cell1.setCellStyle(borderStyle);
-                    cell2.setCellStyle(borderStyle);
-                    cell3.setCellStyle(borderStyle);
-                    cell4.setCellStyle(borderStyle);
-                }
+                CellRangeAddress range1 =new CellRangeAddress(rowid-1,rowid-1,0,0);
+                spreadsheet.addMergedRegion(range1);
+                CellRangeAddress range2 = new CellRangeAddress(rowid-1,rowid-1,1,3);
+                spreadsheet.addMergedRegion(range2);
+                CellRangeAddress range3 = new CellRangeAddress(rowid-1,rowid-1,4,6);
+                spreadsheet.addMergedRegion(range3);
+                CellRangeAddress range4 = new CellRangeAddress(rowid-1,rowid-1,7,9);
+                spreadsheet.addMergedRegion(range4);
+                cell1.setCellValue(rowid - 8);
+                cell2.setCellValue(objectArr[1].toString());
+                cell3.setCellValue(objectArr[2].toString());
+                cell4.setCellValue(objectArr[3].toString());
+                cell1.setCellStyle(borderStyle);
+                cell2.setCellStyle(borderStyle);
+                cell3.setCellStyle(borderStyle);
+                cell4.setCellStyle(borderStyle);
+            }
 
 
         }
@@ -1894,6 +1939,20 @@ public class AdminServiceImpl implements AdminService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void createComment(Cell cell1, XSSFRow row, List<String> comments, int i, XSSFWorkbook workbook, XSSFSheet spreadsheet) {
+        CreationHelper creationHelper = workbook.getCreationHelper();
+        Drawing drawing = spreadsheet.createDrawingPatriarch();
+        ClientAnchor anchor = creationHelper.createClientAnchor();
+        anchor.setCol1(cell1.getColumnIndex());
+        anchor.setCol2(cell1.getColumnIndex() + 3);
+        anchor.setRow1(row.getRowNum());
+        anchor.setRow2(row.getRowNum() + 1);
+        Comment comment = (Comment) drawing.createCellComment(anchor);
+        RichTextString richTextString = creationHelper.createRichTextString(comments.get(i));
+        comment.setString(richTextString);
+        cell1.setCellComment(comment);
     }
 
     private void getCumulativeInactiveUsers(List<FrontLineWorkers> inactiveCandidates, String rootPath, String place, Date toDate, ReportRequest reportRequest) {
@@ -1955,7 +2014,6 @@ public class AdminServiceImpl implements AdminService {
                 "Health Sub Facility",
                 "Village",
                 "ASHA Creation Date",
-                "ASHA Job Status"
         });
         Integer counter = 2;
         if(inactiveCandidates.isEmpty()) {
@@ -1981,6 +2039,8 @@ public class AdminServiceImpl implements AdminService {
         }
         Set<String> keyid = empinfo.keySet();
         createHeadersForReportFiles(workbook, reportRequest);
+        List<String> comments= getHeaderComment().get("Cumulative Inactive Users");
+        Integer index=0;
         int rowid=7;
         for (String key : keyid) {
             row = spreadsheet.createRow(rowid++);
@@ -1994,7 +2054,7 @@ public class AdminServiceImpl implements AdminService {
 
                 if(rowid!=8&&((cellid==4&&!obj.toString().equalsIgnoreCase("No Phone"))
                         ||(cellid==3&&!obj.toString().equalsIgnoreCase("No FLW_ID")))){
-                cell.setCellValue(obj.toString());}
+                    cell.setCellValue(obj.toString());}
                 else{
                     cell.setCellValue(obj.toString());
                 }
@@ -2010,6 +2070,12 @@ public class AdminServiceImpl implements AdminService {
                 else{
                     cell.setCellStyle(borderStyle);
                 }
+
+                if(key.equals("1")){
+                    createComment(cell,row,comments,index,workbook,spreadsheet);
+                    index++;
+                }
+
             }
         }
         //Write the workbook in file system
@@ -2035,71 +2101,71 @@ public class AdminServiceImpl implements AdminService {
 
         if(! inactiveCandidates.isEmpty())
         {
-        try {
-            boolean create =false;
+            try {
+                boolean create =false;
 
-            FileInputStream file = new FileInputStream(rootPath + ReportType.maInactive.getReportType() + "_" + place + "_" + getMonthYear(toDate) + ".xlsx");
+                FileInputStream file = new FileInputStream(rootPath + ReportType.maInactive.getReportType() + "_" + place + "_" + getMonthYear(toDate) + ".xlsx");
 
-            XSSFWorkbook workbook = new XSSFWorkbook(file);
-            XSSFSheet sheet = workbook.getSheetAt(0);
-            Cell cell3,cell4,cell5,cell6,cell7, cell9 = null;
+                XSSFWorkbook workbook = new XSSFWorkbook(file);
+                XSSFSheet sheet = workbook.getSheetAt(0);
+                Cell cell3,cell4,cell5,cell6,cell7, cell9 = null;
 
-            for (Integer rowcount = 5; ; rowcount++) {
+                for (Integer rowcount = 5; ; rowcount++) {
 
 
-                //Retrieve the row and check for null
-                XSSFRow sheetrow = sheet.getRow(rowcount);
-                if (sheetrow == null) {
-                    break;
+                    //Retrieve the row and check for null
+                    XSSFRow sheetrow = sheet.getRow(rowcount);
+                    if (sheetrow == null) {
+                        break;
+                    }
+
+                    cell9 = sheetrow.getCell(9);
+                    if (cell9 == null) {
+                        continue;
+
+                    } else {
+                        String ext_flw_id = cell9.getStringCellValue();
+                        FrontLineWorkers frontLineWorker = frontLineWorkersDao.getINactiveFrontLineWorkerByExternalFlwID(toDate, ext_flw_id);
+                        //Update the value of cell
+                        cell3 = sheetrow.getCell(3);
+                        if (cell3.getStringCellValue().equalsIgnoreCase("No Block") && frontLineWorker.getBlock() != null) {
+                            String temp =blockDao.findByblockId(frontLineWorker.getBlock()).getBlockName();
+                            cell3.setCellValue(temp);
+                        }
+                        cell4 = sheetrow.getCell(4);
+                        if (cell4.getStringCellValue().equalsIgnoreCase("No Taluka") && frontLineWorker.getTaluka() != null) {
+                            cell4.setCellValue(talukaDao.findByTalukaId(frontLineWorker.getTaluka()).getTalukaName());
+                        }
+                        cell5 = sheetrow.getCell(5);
+                        if (cell5.getStringCellValue().equalsIgnoreCase("No Health Facility") && frontLineWorker.getFacility() != null) {
+                            cell5.setCellValue(healthFacilityDao.findByHealthFacilityId(frontLineWorker.getFacility()).getHealthFacilityName());
+                        }
+                        cell6 = sheetrow.getCell(6);
+                        if (cell6.getStringCellValue().equalsIgnoreCase("No Health Subfacility") && frontLineWorker.getSubfacility() != null) {
+                            cell6.setCellValue(healthSubFacilityDao.findByHealthSubFacilityId(frontLineWorker.getSubfacility()).getHealthSubFacilityName());
+                        }
+                        cell7 = sheetrow.getCell(7);
+                        if (cell7.getStringCellValue().equalsIgnoreCase("No Village") && frontLineWorker.getVillage() != null) {
+                            cell7.setCellValue(villageDao.findByVillageId(frontLineWorker.getVillage()).getVillageName());
+                        }
+                    }
+                }
+                if(!create) {
+                    file.close();
+
+                    FileOutputStream outFile = new FileOutputStream(new File(rootPath + ReportType.maInactive.getReportType() + "_" + place + "_" + getMonthYear(toDate) + ".xlsx"));
+                    workbook.write(outFile);
+                    outFile.close();
+                    workbook = new XSSFWorkbook(new FileInputStream(rootPath + ReportType.maInactive.getReportType() + "_" + place + "_" + getMonthYear(toDate) + ".xlsx"));
                 }
 
-                cell9 = sheetrow.getCell(9);
-                if (cell9 == null) {
-                    continue;
 
-                } else {
-                    String ext_flw_id = cell9.getStringCellValue();
-                    FrontLineWorkers frontLineWorker = frontLineWorkersDao.getINactiveFrontLineWorkerByExternalFlwID(toDate, ext_flw_id);
-                    //Update the value of cell
-                    cell3 = sheetrow.getCell(3);
-                    if (cell3.getStringCellValue().equalsIgnoreCase("No Block") && frontLineWorker.getBlock() != null) {
-                        String temp =blockDao.findByblockId(frontLineWorker.getBlock()).getBlockName();
-                        cell3.setCellValue(temp);
-                    }
-                    cell4 = sheetrow.getCell(4);
-                    if (cell4.getStringCellValue().equalsIgnoreCase("No Taluka") && frontLineWorker.getTaluka() != null) {
-                        cell4.setCellValue(talukaDao.findByTalukaId(frontLineWorker.getTaluka()).getTalukaName());
-                    }
-                    cell5 = sheetrow.getCell(5);
-                    if (cell5.getStringCellValue().equalsIgnoreCase("No Health Facility") && frontLineWorker.getFacility() != null) {
-                        cell5.setCellValue(healthFacilityDao.findByHealthFacilityId(frontLineWorker.getFacility()).getHealthFacilityName());
-                    }
-                    cell6 = sheetrow.getCell(6);
-                    if (cell6.getStringCellValue().equalsIgnoreCase("No Health Subfacility") && frontLineWorker.getSubfacility() != null) {
-                        cell6.setCellValue(healthSubFacilityDao.findByHealthSubFacilityId(frontLineWorker.getSubfacility()).getHealthSubFacilityName());
-                    }
-                    cell7 = sheetrow.getCell(7);
-                    if (cell7.getStringCellValue().equalsIgnoreCase("No Village") && frontLineWorker.getVillage() != null) {
-                        cell7.setCellValue(villageDao.findByVillageId(frontLineWorker.getVillage()).getVillageName());
-                    }
-                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            if(!create) {
-                file.close();
-
-                FileOutputStream outFile = new FileOutputStream(new File(rootPath + ReportType.maInactive.getReportType() + "_" + place + "_" + getMonthYear(toDate) + ".xlsx"));
-                workbook.write(outFile);
-                outFile.close();
-                workbook = new XSSFWorkbook(new FileInputStream(rootPath + ReportType.maInactive.getReportType() + "_" + place + "_" + getMonthYear(toDate) + ".xlsx"));
-            }
-
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-       }
     }
 
     private void updateCumulativeInactiveUsersInExcel(HashMap<String, FrontLineWorkers> frontLineWorkersHashMap, Integer stateId, String rootPath, String place, Date toDate) {
@@ -2261,70 +2327,70 @@ public class AdminServiceImpl implements AdminService {
                     }
                 } else {
 
-                        for (Integer rowcount = 8; ; rowcount++) {
+                    for (Integer rowcount = 8; ; rowcount++) {
 
-                            //Retrieve the row and check for null
-                            XSSFRow sheetrow = sheet.getRow(rowcount);
-                            if (sheetrow == null) {
-                                break;
-                            }
+                        //Retrieve the row and check for null
+                        XSSFRow sheetrow = sheet.getRow(rowcount);
+                        if (sheetrow == null) {
+                            break;
+                        }
 
-                            cell4 = sheetrow.getCell(4);
+                        cell4 = sheetrow.getCell(4);
 
-                            cell2 = sheetrow.getCell(2);
+                        cell2 = sheetrow.getCell(2);
 
-                            if(cell2 != null){
-                                cell2.setCellType(Cell.CELL_TYPE_STRING);
-                            }
+                        if(cell2 != null){
+                            cell2.setCellType(Cell.CELL_TYPE_STRING);
+                        }
 
-                            if (cell2 == null || cell2.getStringCellValue() == null) {
+                        if (cell2 == null || cell2.getStringCellValue() == null) {
+                            continue;
+
+                        } else if (cell4.getStringCellValue().equalsIgnoreCase(stateName)) {
+                            String ext_flw_id = cell2.getStringCellValue();
+                            FrontLineWorkers frontLineWorker = frontLineWorkersHashMap.get(ext_flw_id);
+                            //Update the value of cell
+
+                            if (frontLineWorker == null) {
                                 continue;
+                            }
+                            cell7 = sheetrow.getCell(7);
+                            if (frontLineWorker.getBlock() != null) {
+                                String temp = blockDao.findByblockId(frontLineWorker.getBlock()).getBlockName();
+                                cell7.setCellValue(temp);
+                            } else {
+                                cell7.setCellValue("No Block");
+                            }
 
-                            } else if (cell4.getStringCellValue().equalsIgnoreCase(stateName)) {
-                                String ext_flw_id = cell2.getStringCellValue();
-                                FrontLineWorkers frontLineWorker = frontLineWorkersHashMap.get(ext_flw_id);
-                                //Update the value of cell
+                            cell6 = sheetrow.getCell(6);
+                            if (frontLineWorker.getTaluka() != null) {
+                                cell6.setCellValue(talukaDao.findByTalukaId(frontLineWorker.getTaluka()).getTalukaName());
+                            } else {
+                                cell6.setCellValue("No Taluka");
+                            }
 
-                                if (frontLineWorker == null) {
-                                    continue;
-                                }
-                                cell7 = sheetrow.getCell(7);
-                                if (frontLineWorker.getBlock() != null) {
-                                    String temp = blockDao.findByblockId(frontLineWorker.getBlock()).getBlockName();
-                                    cell7.setCellValue(temp);
-                                } else {
-                                    cell7.setCellValue("No Block");
-                                }
+                            cell8 = sheetrow.getCell(8);
+                            if (frontLineWorker.getFacility() != null) {
+                                cell8.setCellValue(healthFacilityDao.findByHealthFacilityId(frontLineWorker.getFacility()).getHealthFacilityName());
+                            } else {
+                                cell8.setCellValue("No Health Facility");
+                            }
 
-                                cell6 = sheetrow.getCell(6);
-                                if (frontLineWorker.getTaluka() != null) {
-                                    cell6.setCellValue(talukaDao.findByTalukaId(frontLineWorker.getTaluka()).getTalukaName());
-                                } else {
-                                    cell6.setCellValue("No Taluka");
-                                }
+                            cell9 = sheetrow.getCell(9);
+                            if (frontLineWorker.getSubfacility() != null) {
+                                cell9.setCellValue(healthSubFacilityDao.findByHealthSubFacilityId(frontLineWorker.getSubfacility()).getHealthSubFacilityName());
+                            } else {
+                                cell9.setCellValue("No Health Subfacility");
+                            }
 
-                                cell8 = sheetrow.getCell(8);
-                                if (frontLineWorker.getFacility() != null) {
-                                    cell8.setCellValue(healthFacilityDao.findByHealthFacilityId(frontLineWorker.getFacility()).getHealthFacilityName());
-                                } else {
-                                    cell8.setCellValue("No Health Facility");
-                                }
-
-                                cell9 = sheetrow.getCell(9);
-                                if (frontLineWorker.getSubfacility() != null) {
-                                    cell9.setCellValue(healthSubFacilityDao.findByHealthSubFacilityId(frontLineWorker.getSubfacility()).getHealthSubFacilityName());
-                                } else {
-                                    cell9.setCellValue("No Health Subfacility");
-                                }
-
-                                cell10 = sheetrow.getCell(10);
-                                if (frontLineWorker.getVillage() != null) {
-                                    cell10.setCellValue(villageDao.findByVillageId(frontLineWorker.getVillage()).getVillageName());
-                                } else {
-                                    cell10.setCellValue("No Village");
-                                }
+                            cell10 = sheetrow.getCell(10);
+                            if (frontLineWorker.getVillage() != null) {
+                                cell10.setCellValue(villageDao.findByVillageId(frontLineWorker.getVillage()).getVillageName());
+                            } else {
+                                cell10.setCellValue("No Village");
                             }
                         }
+                    }
 
                 }
 
@@ -2447,7 +2513,7 @@ public class AdminServiceImpl implements AdminService {
                 if(rowid!=8&&((cellid==3&&!obj.toString().equalsIgnoreCase("No MCTS Id"))
                         ||(cellid==4&&!obj.toString().equalsIgnoreCase("No RCH Id"))
                         ||(cellid==5&&!obj.toString().equalsIgnoreCase("No MSISDN")))){
-                cell.setCellValue(obj.toString());}
+                    cell.setCellValue(obj.toString());}
                 else{
                     cell.setCellValue(obj.toString());
                 }
@@ -2582,7 +2648,7 @@ public class AdminServiceImpl implements AdminService {
                         ||(cellid==4&&!obj.toString().equalsIgnoreCase("No RCH Id"))
                         ||(cellid==5&&!obj.toString().equalsIgnoreCase("No MSISDN"))
                         ||(cellid==13&&!obj.toString().equalsIgnoreCase("No Age_Data")))){
-                cell.setCellValue(obj.toString());}
+                    cell.setCellValue(obj.toString());}
                 else{
                     cell.setCellValue(obj.toString());
                 }
@@ -2727,7 +2793,7 @@ public class AdminServiceImpl implements AdminService {
                 if(rowid!=8&&((cellid==3&&!obj.toString().equalsIgnoreCase("No MCTS Id"))
                         ||(cellid==4&&!obj.toString().equalsIgnoreCase("No RCH Id"))
                         ||(cellid==5&&!obj.toString().equalsIgnoreCase("No MSISDN")))){
-                cell.setCellValue(obj.toString());}
+                    cell.setCellValue(obj.toString());}
                 else{
                     cell.setCellValue(obj.toString());
                 }
@@ -2904,26 +2970,26 @@ public class AdminServiceImpl implements AdminService {
         spreadsheet.createRow(rowid++);
 
 
-            String encodingPrefix = "base64,";
-            String pngImageURL = header_base64;
-            int contentStartIndex = pngImageURL.indexOf(encodingPrefix) + encodingPrefix.length();
-            byte[] imageData = org.apache.commons.codec.binary.Base64.decodeBase64(pngImageURL.substring(contentStartIndex));//workbook.addPicture can use this byte array
+        String encodingPrefix = "base64,";
+        String pngImageURL = header_base64;
+        int contentStartIndex = pngImageURL.indexOf(encodingPrefix) + encodingPrefix.length();
+        byte[] imageData = org.apache.commons.codec.binary.Base64.decodeBase64(pngImageURL.substring(contentStartIndex));//workbook.addPicture can use this byte array
 
-            final int pictureIndex = workbook.addPicture(imageData, Workbook.PICTURE_TYPE_PNG);
-
-
-            final CreationHelper helper = workbook.getCreationHelper();
-            final Drawing drawing = spreadsheet.createDrawingPatriarch();
-
-            final ClientAnchor anchor = helper.createClientAnchor();
-            anchor.setAnchorType( ClientAnchor.MOVE_AND_RESIZE );
+        final int pictureIndex = workbook.addPicture(imageData, Workbook.PICTURE_TYPE_PNG);
 
 
-            anchor.setCol1( 0 );
-            anchor.setRow1( 0 );
-            anchor.setRow2( 3 );
-            anchor.setCol2( 12 );
-            drawing.createPicture( anchor, pictureIndex );
+        final CreationHelper helper = workbook.getCreationHelper();
+        final Drawing drawing = spreadsheet.createDrawingPatriarch();
+
+        final ClientAnchor anchor = helper.createClientAnchor();
+        anchor.setAnchorType( ClientAnchor.MOVE_AND_RESIZE );
+
+
+        anchor.setCol1( 0 );
+        anchor.setRow1( 0 );
+        anchor.setRow2( 3 );
+        anchor.setCol2( 12 );
+        drawing.createPicture( anchor, pictureIndex );
 
 
 
@@ -2954,14 +3020,14 @@ public class AdminServiceImpl implements AdminService {
         Cell cell3=row.createCell(7);
         Cell cell4=row.createCell(8);
         CellRangeAddress range1 =new CellRangeAddress(3,4,0,0);
-            cleanBeforeMergeOnValidCells(spreadsheet,range1,style );
-            spreadsheet.addMergedRegion(range1);
+        cleanBeforeMergeOnValidCells(spreadsheet,range1,style );
+        spreadsheet.addMergedRegion(range1);
         CellRangeAddress range2 = new CellRangeAddress(3,4,1,6);
-            cleanBeforeMergeOnValidCells(spreadsheet,range2,style );
-            spreadsheet.addMergedRegion(range2);
+        cleanBeforeMergeOnValidCells(spreadsheet,range2,style );
+        spreadsheet.addMergedRegion(range2);
         CellRangeAddress range3 = new CellRangeAddress(3,4,7,7);
-            cleanBeforeMergeOnValidCells(spreadsheet,range3,style );
-            spreadsheet.addMergedRegion(range3);
+        cleanBeforeMergeOnValidCells(spreadsheet,range3,style );
+        spreadsheet.addMergedRegion(range3);
         XSSFRow row1=spreadsheet.createRow(++rowid);
         Cell cell5=row1.createCell(0);
         Cell cell6=row1.createCell(1);
@@ -2969,6 +3035,7 @@ public class AdminServiceImpl implements AdminService {
         Cell cell8=row1.createCell(5);
         Cell cell9=row1.createCell(8);
         Cell cell10=row1.createCell(9);
+
         cell1.setCellValue("Report:");
         cell2.setCellValue(ReportType.getType(reportRequest.getReportType()).getReportHeader());
         if(reportRequest.getReportType().equals(ReportType.maAnonymous.getReportType())){
@@ -2992,8 +3059,8 @@ public class AdminServiceImpl implements AdminService {
                 cell3.setCellValue("Week:");
                 cell4.setCellValue(getDateMonthYearName(reportRequest.getFromDate()));
                 CellRangeAddress range4 = new CellRangeAddress(3,4,8,11);
-                    cleanBeforeMergeOnValidCells(spreadsheet,range4,style );
-                    spreadsheet.addMergedRegion(range4);
+                cleanBeforeMergeOnValidCells(spreadsheet,range4,style );
+                spreadsheet.addMergedRegion(range4);
             } else {
                 cell3.setCellValue("Month:");
                 cell4.setCellValue(getMonthYearName(reportRequest.getFromDate()));
@@ -3025,6 +3092,7 @@ public class AdminServiceImpl implements AdminService {
             }
             cell9.setCellValue("Block:");
             cell10.setCellValue(blockName);
+
         }
         cell1.setCellStyle(style);
         cell2.setCellStyle(style);
@@ -3033,14 +3101,27 @@ public class AdminServiceImpl implements AdminService {
         cell5.setCellStyle(style);
         cell6.setCellStyle(style);
         if(!reportRequest.getReportType().equals(ReportType.maAnonymous.getReportType())) {
-        cell7.setCellStyle(style);
-        cell8.setCellStyle(style);
-        cell9.setCellStyle(style);
-        cell10.setCellStyle(style);}
+            cell7.setCellStyle(style);
+            cell8.setCellStyle(style);
+            cell9.setCellStyle(style);
+            cell10.setCellStyle(style);
 
+
+
+        }
+        XSSFRow row2=spreadsheet.createRow(++rowid);
+        Cell cell11=row2.createCell(0);
+        Cell cell12=row2.createCell(3);
+        cell11.setCellValue("Report Generated on : ");
+        cell12.setCellValue(getTodayDateMonthYear());
+        cell11.setCellStyle(style);
+        cell12.setCellStyle(style);
         CellRangeAddress range5 =new CellRangeAddress(5,5,1,3);
-            cleanBeforeMergeOnValidCells(spreadsheet,range5,style );
-            spreadsheet.addMergedRegion(range5);
+        cleanBeforeMergeOnValidCells(spreadsheet,range5,style );
+        spreadsheet.addMergedRegion(range5);
+        CellRangeAddress range8 = new CellRangeAddress(6, 6, 0, 2);
+        cleanBeforeMergeOnValidCells(spreadsheet, range8, style);
+        spreadsheet.addMergedRegion(range8);
         if(!reportRequest.getReportType().equals(ReportType.maAnonymous.getReportType())) {
             CellRangeAddress range6 = new CellRangeAddress(5, 5, 5, 7);
             cleanBeforeMergeOnValidCells(spreadsheet, range6, style);
@@ -3048,6 +3129,7 @@ public class AdminServiceImpl implements AdminService {
             CellRangeAddress range7 = new CellRangeAddress(5, 5, 9, 11);
             cleanBeforeMergeOnValidCells(spreadsheet, range7, style);
             spreadsheet.addMergedRegion(range7);
+
         }
 
     }
@@ -3341,49 +3423,49 @@ public class AdminServiceImpl implements AdminService {
         reportRequest.setReportType(ReportType.maCourse.getReportType());
         updateCumulativeCourseCompletion(successFullcandidates, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate, reportRequest);
         State state = stateDao.findByStateId(stateIdRequest);
-            String stateName = StReplace(state.getStateName());
-            String rootPathState = rootPath+ stateName+ "/";
-            int stateId = state.getStateId();
-            List<MACourseFirstCompletion> candidatesFromThisState = new ArrayList<>();
-            for (MACourseFirstCompletion asha : successFullcandidates) {
-                if (asha.getStateId() == stateId) {
-                    candidatesFromThisState.add(asha);
-                }
+        String stateName = StReplace(state.getStateName());
+        String rootPathState = rootPath+ stateName+ "/";
+        int stateId = state.getStateId();
+        List<MACourseFirstCompletion> candidatesFromThisState = new ArrayList<>();
+        for (MACourseFirstCompletion asha : successFullcandidates) {
+            if (asha.getStateId() == stateId) {
+                candidatesFromThisState.add(asha);
             }
-            reportRequest.setStateId(stateId);
-            reportRequest.setBlockId(0);
-            reportRequest.setDistrictId(0);
-            updateCumulativeCourseCompletion(candidatesFromThisState, rootPathState, stateName, toDate, reportRequest);
+        }
+        reportRequest.setStateId(stateId);
+        reportRequest.setBlockId(0);
+        reportRequest.setDistrictId(0);
+        updateCumulativeCourseCompletion(candidatesFromThisState, rootPathState, stateName, toDate, reportRequest);
 
-            List<District> districts = districtDao.getDistrictsOfState(stateId);
-            for (District district : districts) {
-                String districtName = StReplace(district.getDistrictName());
-                String rootPathDistrict = rootPathState + districtName+ "/";
-                int districtId = district.getDistrictId();
-                List<MACourseFirstCompletion> candidatesFromThisDistrict = new ArrayList<>();
-                for (MACourseFirstCompletion asha : candidatesFromThisState) {
-                    if (asha.getDistrictId() == districtId) {
-                        candidatesFromThisDistrict.add(asha);
-                    }
-                }
-                reportRequest.setDistrictId(districtId);
-                reportRequest.setBlockId(0);
-                updateCumulativeCourseCompletion(candidatesFromThisDistrict, rootPathDistrict, districtName, toDate, reportRequest);
-                List<Block> Blocks = blockDao.getBlocksOfDistrict(districtId);
-                for (Block block : Blocks) {
-                    String blockName = StReplace(block.getBlockName());
-                    String rootPathblock = rootPathDistrict + blockName+ "/";
-                    int blockId = block.getBlockId();
-                    List<MACourseFirstCompletion> candidatesFromThisBlock = new ArrayList<>();
-                    for (MACourseFirstCompletion asha : candidatesFromThisDistrict) {
-                        if ((asha.getBlockId()!=null)&&(asha.getBlockId() == blockId)) {
-                            candidatesFromThisBlock.add(asha);
-                        }
-                    }
-                    reportRequest.setBlockId(blockId);
-                    updateCumulativeCourseCompletion(candidatesFromThisBlock, rootPathblock, blockName, toDate,reportRequest);
+        List<District> districts = districtDao.getDistrictsOfState(stateId);
+        for (District district : districts) {
+            String districtName = StReplace(district.getDistrictName());
+            String rootPathDistrict = rootPathState + districtName+ "/";
+            int districtId = district.getDistrictId();
+            List<MACourseFirstCompletion> candidatesFromThisDistrict = new ArrayList<>();
+            for (MACourseFirstCompletion asha : candidatesFromThisState) {
+                if (asha.getDistrictId() == districtId) {
+                    candidatesFromThisDistrict.add(asha);
                 }
             }
+            reportRequest.setDistrictId(districtId);
+            reportRequest.setBlockId(0);
+            updateCumulativeCourseCompletion(candidatesFromThisDistrict, rootPathDistrict, districtName, toDate, reportRequest);
+            List<Block> Blocks = blockDao.getBlocksOfDistrict(districtId);
+            for (Block block : Blocks) {
+                String blockName = StReplace(block.getBlockName());
+                String rootPathblock = rootPathDistrict + blockName+ "/";
+                int blockId = block.getBlockId();
+                List<MACourseFirstCompletion> candidatesFromThisBlock = new ArrayList<>();
+                for (MACourseFirstCompletion asha : candidatesFromThisDistrict) {
+                    if ((asha.getBlockId()!=null)&&(asha.getBlockId() == blockId)) {
+                        candidatesFromThisBlock.add(asha);
+                    }
+                }
+                reportRequest.setBlockId(blockId);
+                updateCumulativeCourseCompletion(candidatesFromThisBlock, rootPathblock, blockName, toDate,reportRequest);
+            }
+        }
 
     }
 
@@ -3489,34 +3571,34 @@ public class AdminServiceImpl implements AdminService {
         }
         State state = stateDao.findByStateId(stateIdRequest);
 
-            String stateName = StReplace(state.getStateName());
-            String rootPathState = rootPath + stateName+ "/";
+        String stateName = StReplace(state.getStateName());
+        String rootPathState = rootPath + stateName+ "/";
 
         System.out.println(" File name " + rootPath + ReportType.maInactive.getReportType() + "_" + stateName + "_" + getMonthYear(toDate) + ".xlsx");
 
         updateCumulativeInactiveUsersInExcel(frontLineWorkersMap, stateIdRequest, rootPathState, stateName, toDate);
-            List<District> districts = districtDao.getDistrictsOfState(stateIdRequest);
-            for (District district : districts) {
+        List<District> districts = districtDao.getDistrictsOfState(stateIdRequest);
+        for (District district : districts) {
 
 
-                String districtName = StReplace(district.getDistrictName());
-                String rootPathDistrict = rootPathState  + districtName+ "/";
-                int districtId = district.getDistrictId();
+            String districtName = StReplace(district.getDistrictName());
+            String rootPathDistrict = rootPathState  + districtName+ "/";
+            int districtId = district.getDistrictId();
 
-        System.out.println(" File name " + rootPath + ReportType.maInactive.getReportType() + "_" + districtName + "_" + getMonthYear(toDate) + ".xlsx");
+            System.out.println(" File name " + rootPath + ReportType.maInactive.getReportType() + "_" + districtName + "_" + getMonthYear(toDate) + ".xlsx");
 
-                updateCumulativeInactiveUsersInExcel(frontLineWorkersMap, stateIdRequest, rootPathDistrict, districtName, toDate);
-                List<Block> Blocks = blockDao.getBlocksOfDistrict(districtId);
-                for (Block block : Blocks) {
+            updateCumulativeInactiveUsersInExcel(frontLineWorkersMap, stateIdRequest, rootPathDistrict, districtName, toDate);
+            List<Block> Blocks = blockDao.getBlocksOfDistrict(districtId);
+            for (Block block : Blocks) {
 
-                    String blockName = StReplace(block.getBlockName());
-                    String rootPathblock = rootPathDistrict  + blockName+ "/";
+                String blockName = StReplace(block.getBlockName());
+                String rootPathblock = rootPathDistrict  + blockName+ "/";
 
-         System.out.println(" File name " + rootPath + ReportType.maInactive.getReportType() + "_" + blockName + "_" + getMonthYear(toDate) + ".xlsx");
+                System.out.println(" File name " + rootPath + ReportType.maInactive.getReportType() + "_" + blockName + "_" + getMonthYear(toDate) + ".xlsx");
 
-                    updateCumulativeInactiveUsersInExcel(frontLineWorkersMap, stateIdRequest, rootPathblock, blockName, toDate);
-                }
+                updateCumulativeInactiveUsersInExcel(frontLineWorkersMap, stateIdRequest, rootPathblock, blockName, toDate);
             }
+        }
 
     }
 
@@ -3813,7 +3895,7 @@ public class AdminServiceImpl implements AdminService {
         if(month<10){
             monthString="0"+String.valueOf(month);
         }
-       else monthString=String.valueOf(month);
+        else monthString=String.valueOf(month);
 
         String yearString=String.valueOf(year);
 
@@ -3862,7 +3944,28 @@ public class AdminServiceImpl implements AdminService {
 
         return monthString+" "+yearString;
     }
+    private String getTodayDateMonthYear() {
+        Calendar calendar=Calendar.getInstance();
+        calendar.setTime(new Date());
+        int date=calendar.get(Calendar.DATE);
+        int month=calendar.get(Calendar.MONTH)+1;
+        int year=(calendar.get(Calendar.YEAR))%100;
+        String dateString;
+        if(date<10) {
+            dateString="0"+String.valueOf(date);
+        }
+        else dateString=String.valueOf(date);
+        String monthString;
+        if(month<10){
+            monthString="0"+String.valueOf(month);
+        }
+        else monthString=String.valueOf(month);
 
+        String yearString=String.valueOf(year);
+
+        return dateString + "-" + monthString+"-"+yearString;
+
+    }
     /**
      * from date to todate in String format.
      * @param toDate

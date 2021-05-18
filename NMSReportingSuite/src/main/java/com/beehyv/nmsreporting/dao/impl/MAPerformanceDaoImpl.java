@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -188,4 +189,173 @@ public class MAPerformanceDaoImpl extends AbstractDao<Integer, User> implements 
         return 0;
     }
 
+    @Override
+    public Long getAshaActivated(Integer locationId, String locationType, Date toDate) {
+
+        System.out.println("--------------================================----------------------");
+        System.out.println();System.out.println();System.out.println();System.out.println();System.out.println();System.out.println(locationId+"  "+locationType );
+        if(locationType.equalsIgnoreCase("state")) {
+
+
+            Query query2 = getSession().createSQLQuery("select count(distinct f.flw_id) from front_line_worker f where f.flw_designation = 'ASHA' and f.state_id = :locationId AND "+"f.job_status = 'ACTIVE' and f.modificationdate < :toDate ");
+//            query2.setParameter("fromDate",fromDate);
+            query2.setParameter("toDate",toDate);
+            query2.setParameter("locationId",locationId);
+            return ((BigInteger) query2.uniqueResult()).longValue();
+
+        }
+        if(locationType.equalsIgnoreCase("district")){
+            Query query2 = getSession().createSQLQuery("select count(distinct f.flw_id) from front_line_worker f where f.flw_designation = 'ASHA' and f.district_id = :locationId AND "+"f.job_status = 'ACTIVE' and f.modificationdate < :toDate ");
+//            query2.setParameter("fromDate",fromDate);
+            query2.setParameter("toDate",toDate);
+            query2.setParameter("locationId",locationId);
+            return ((BigInteger) query2.uniqueResult()).longValue();
+        }
+        if(locationType.equalsIgnoreCase("block")){
+
+            Query query2 = getSession().createSQLQuery("select count(distinct f.flw_id) from front_line_worker f where f.flw_designation = 'ASHA' and f.block_id = :locationId AND "+"f.job_status = 'ACTIVE' and f.modificationdate < :toDate ");
+//            query2.setParameter("fromDate",fromDate);
+            query2.setParameter("toDate",toDate);
+            query2.setParameter("locationId",locationId);
+            return ((BigInteger) query2.uniqueResult()).longValue();
+        }
+        if(locationType.equalsIgnoreCase("subcenter")) {
+
+            Query query2 = getSession().createSQLQuery("select count(distinct f.flw_id) from front_line_worker f where f.flw_designation = 'ASHA' and f.healthsubfacility_id = :locationId AND "+"f.job_status = 'ACTIVE' and f.modificationdate < :toDate ");
+//            query2.setParameter("fromDate",fromDate);
+            query2.setParameter("toDate",toDate);
+            query2.setParameter("locationId",locationId);
+            return ((BigInteger) query2.uniqueResult()).longValue();
+
+        }
+
+        return 0l;
+    }
+
+    @Override
+    public Long getAshaDeactivated(Integer locationId, String locationType, Date toDate) {
+        if(locationType.equalsIgnoreCase("state")) {
+            Query query2 = getSession().createSQLQuery("select count(distinct f.flw_id) from front_line_worker f where f.flw_designation = 'ASHA' and f.state_id = :locationId AND "+"f.job_status = 'INACTIVE' and f.modificationdate < :toDate ");
+//            query2.setParameter("fromDate",fromDate);
+            query2.setParameter("toDate",toDate);
+            query2.setParameter("locationId",locationId);
+            return ((BigInteger) query2.uniqueResult()).longValue();
+
+        }
+        if(locationType.equalsIgnoreCase("district")){
+            Query query2 = getSession().createSQLQuery("select count(distinct f.flw_id) from front_line_worker f where f.flw_designation = 'ASHA' and f.district_id = :locationId AND "+"f.job_status = 'INACTIVE' and f.modificationdate < :toDate ");
+//            query2.setParameter("fromDate",fromDate);
+            query2.setParameter("toDate",toDate);
+            query2.setParameter("locationId",locationId);
+            return ((BigInteger) query2.uniqueResult()).longValue();
+
+        }
+        if(locationType.equalsIgnoreCase("block")){
+
+            Query query2 = getSession().createSQLQuery("select count(distinct f.flw_id) from front_line_worker f where f.flw_designation = 'ASHA' and f.block_id = :locationId AND "+"f.job_status = 'INACTIVE' and f.modificationdate < :toDate ");
+//            query2.setParameter("fromDate",fromDate);
+            query2.setParameter("toDate",toDate);
+            query2.setParameter("locationId",locationId);
+            return ((BigInteger) query2.uniqueResult()).longValue();
+
+        }
+        if(locationType.equalsIgnoreCase("subcenter")) {
+            Query query2 = getSession().createSQLQuery("select count(distinct f.flw_id) from front_line_worker f where f.flw_designation = 'ASHA' and f.healthsubfacility_id = :locationId AND "+"f.job_status = 'INACTIVE' and f.modificationdate < :toDate ");
+//            query2.setParameter("fromDate",fromDate);
+            query2.setParameter("toDate",toDate);
+            query2.setParameter("locationId",locationId);
+            return ((BigInteger) query2.uniqueResult()).longValue();
+        }
+        return 0l;
+    }
+
+    @Override
+    public Long getAshaRefresherCourse(Integer locationId, String locationType) {
+        // number of asha doing refresher course
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.DATE, -7);
+        Date fromDate = cal.getTime();
+        Date toDate = new Date();
+        if(locationType.equalsIgnoreCase("state")) {
+//            Query query1 =  getSession().createSQLQuery("select r.flw_id from (select distinct f.flw_id from front_line_worker f  join ma_course_completion ma on f.flw_id = ma.flw_id  where f.flw_status= 'ACTIVE' and f.state_id=:locationId ) as r group by r.flw_id having count(*)>0");
+            Query query1 =  getSession().createSQLQuery("select distinct f.flw_id from front_line_worker as f join ma_call_detail_measure as ma on ma.flw_id=f.flw_id and  f.flw_status= 'ACTIVE' and f.state_id= :locationId and ma.end_time between :fromDate and :toDate");
+            query1.setParameter("locationId",locationId);
+            query1.setParameter("fromDate",fromDate);
+            query1.setParameter("toDate",toDate);
+            List<Integer> flwList= query1.list();
+
+            System.out.println(flwList.size());
+            for(int i=0;i<flwList.size();i++){
+                System.out.println("element: "+flwList.get(i));
+            }
+            if(flwList.size()!=0) {
+                Query query2 = getSession().createSQLQuery("\n" +
+                        "select count(distinct t.ma_flw) from (select m.flw_id as ma_flw,min(m.modificationdate) as ma_modificationDate from ma_course_completion as m where m.flw_id in :flw group by m.flw_id ) t" +
+                        "  join   (select flw_id,max(end_time) as call_end_time from ma_call_detail_measure where flw_id in :flw  group by flw_id )t2 on t2.flw_id=t.ma_flw where t.ma_modificationdate<t2.call_end_time");
+//                query2.setParameter("fromDate", fromDate);
+//                query2.setParameter("toDate", toDate);
+//            query2.setParameter("locationId",locationId);
+                query2.setParameterList("flw", flwList);
+                return ((BigInteger) query2.uniqueResult()).longValue();
+            }
+        }
+        if(locationType.equalsIgnoreCase("district")){
+            Query query1 =  getSession().createSQLQuery("select distinct f.flw_id from front_line_worker as f join ma_call_detail_measure as ma on ma.flw_id=f.flw_id and  f.flw_status= 'ACTIVE' and f.district_id= :locationId and ma.end_time between :fromDate and :toDate");
+            query1.setParameter("locationId",locationId);
+            query1.setParameter("fromDate",fromDate);
+            query1.setParameter("toDate",toDate);
+            List<Integer> flwList= query1.list();
+            if(flwList.size()!=0) {
+                Query query2 = getSession().createSQLQuery("\n" +
+                        "select count(distinct t.ma_flw) from (select m.flw_id as ma_flw,min(m.modificationdate) as ma_modificationDate from ma_course_completion as m where m.flw_id in :flw group by m.flw_id ) t" +
+                        "  join   (select flw_id,max(end_time) as call_end_time from ma_call_detail_measure where flw_id in :flw  group by flw_id )t2 on t2.flw_id=t.ma_flw where t.ma_modificationdate<t2.call_end_time");
+                // query2.setParameter("fromDate", fromDate);
+                //query2.setParameter("toDate", toDate);
+//            query2.setParameter("locationId",locationId);
+                query2.setParameterList("flw", flwList);
+                return ((BigInteger) query2.uniqueResult()).longValue();
+            }
+
+        }
+        if(locationType.equalsIgnoreCase("block")){
+
+//            Query query1 =  getSession().createSQLQuery("select r.flw_id from (select distinct f.flw_id from front_line_worker f join ma_course_completion ma on f.flw_id = ma.flw_id  where f.flw_status= 'ACTIVE' and f.block_id=:locationId ) as r group by r.flw_id having count(*)>0");
+            Query query1 =  getSession().createSQLQuery("select distinct f.flw_id from front_line_worker as f join ma_call_detail_measure as ma on ma.flw_id=f.flw_id and  f.flw_status= 'ACTIVE' and f.state_id= :locationId and ma.end_time between :fromDate and :toDate");
+            query1.setParameter("locationId",locationId);
+            query1.setParameter("fromDate",fromDate);
+            query1.setParameter("toDate",toDate);
+            List<Integer> flwList= query1.list();
+
+            if(flwList.size()!=0) {
+                Query query2 = getSession().createSQLQuery("\n" +
+                        "select count(distinct t.ma_flw) from (select m.flw_id as ma_flw,min(m.modificationdate) as ma_modificationDate from ma_course_completion as m where m.flw_id in :flw group by m.flw_id ) t" +
+                        "  join   (select flw_id,max(end_time) as call_end_time from ma_call_detail_measure where flw_id in :flw  group by flw_id )t2 on t2.flw_id=t.ma_flw where t.ma_modificationdate<t2.call_end_time");
+                // query2.setParameter("fromDate", fromDate);
+                // query2.setParameter("toDate", toDate);
+//            query2.setParameter("locationId",locationId);
+                query2.setParameterList("flw", flwList);
+                return ((BigInteger) query2.uniqueResult()).longValue();
+            }
+        }
+        if(locationType.equalsIgnoreCase("subcenter")) {
+//            Query query1 =  getSession().createSQLQuery("select r.flw_id from (select distinct f.flw_id from front_line_worker f  join ma_course_completion ma on f.flw_id = ma.flw_id  where f.flw_status= 'ACTIVE' and f.healthsubfacility_id=:locationId ) as r group by r.flw_id having count(*)>0");
+            Query query1 =  getSession().createSQLQuery("select distinct f.flw_id from front_line_worker as f join ma_call_detail_measure as ma on ma.flw_id=f.flw_id and  f.flw_status= 'ACTIVE' and f.state_id= :locationId and ma.end_time between :fromDate and :toDate");
+            query1.setParameter("locationId",locationId);
+            query1.setParameter("fromDate",fromDate);
+            query1.setParameter("toDate",toDate);
+            List<Integer> flwList= query1.list();
+            if(flwList.size()!=0) {
+                Query query2 = getSession().createSQLQuery("\n" +
+                        "select count(distinct t.ma_flw) from (select m.flw_id as ma_flw,min(m.modificationdate) as ma_modificationDate from ma_course_completion as m where m.flw_id in :flw group by m.flw_id ) t" +
+                        "  join   (select flw_id,max(end_time) as call_end_time from ma_call_detail_measure where flw_id in :flw  group by flw_id )t2 on t2.flw_id=t.ma_flw where t.ma_modificationdate<t2.call_end_time");
+                //query2.setParameter("fromDate", fromDate);
+                // query2.setParameter("toDate", toDate);
+//            query2.setParameter("locationId",locationId);
+                query2.setParameterList("flw", flwList);
+                return ((BigInteger) query2.uniqueResult()).longValue();
+            }
+        }
+        return 0l;
+    }
 }

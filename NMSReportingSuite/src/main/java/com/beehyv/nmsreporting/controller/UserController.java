@@ -2,6 +2,7 @@ package com.beehyv.nmsreporting.controller;
 
 import com.beehyv.nmsreporting.business.*;
 import com.beehyv.nmsreporting.dao.*;
+import com.beehyv.nmsreporting.dao.impl.MAPerformanceDaoImpl;
 import com.beehyv.nmsreporting.entity.*;
 import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.AccessType;
@@ -188,7 +189,7 @@ public class UserController {
     @RequestMapping(value={"/isLoggedIn"} , method = RequestMethod.POST)
     public @ResponseBody Boolean isLoggedIn(
             HttpServletRequest request) {
-         request.getSession(false);
+        request.getSession(false);
 //        request.getSession().getId();
 //        if (userService.getCurrentUser() == null) {
 //            isAdminLoggedIn();
@@ -256,7 +257,7 @@ public class UserController {
 
 
     }
-//returning a user only if current user is the creator, this api is used only during edit user
+    //returning a user only if current user is the creator, this api is used only during edit user
     @RequestMapping(value={"/user/{userId}"})
     public @ResponseBody User getUserById(@PathVariable("userId") Integer userId) {
         if(getCurrentUser() != null){
@@ -266,7 +267,7 @@ public class UserController {
             }
             return null;
         }
-            return null;
+        return null;
     }
 
 //    @RequestMapping(value={"/dto/{userId}"})
@@ -483,59 +484,59 @@ public class UserController {
 //        String captcha = decrypt(new LoginUser(forgotPasswordDto.getCaptcha()));
         if (serviceFunctions.validateCaptcha(forgotPasswordDto.getCaptchaResponse()).equals("success")) {
 //            if (captcha.equals(session.getAttribute("captcha"))) {
-                String userName = forgotPasswordDto.getUsername();
-                User user = userService.findUserByUsername(userName);
+            String userName = forgotPasswordDto.getUsername();
+            User user = userService.findUserByUsername(userName);
 
-                if (user != null) {
-                    String email = user.getEmailId();
-                    String password = serviceFunctions.generatePassword();
-                    byte[] encoded = Base64.encodeBase64((email + "||" + password + "||forgot").getBytes());
-                    String encrypted = new String(encoded);
-                    String url = "http://192.168.200.4:8080/NMSReportingSuite/nms/mail/sendPassword/" + encrypted;
-                    URL obj = new URL(url);
-                    HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            if (user != null) {
+                String email = user.getEmailId();
+                String password = serviceFunctions.generatePassword();
+                byte[] encoded = Base64.encodeBase64((email + "||" + password + "||forgot").getBytes());
+                String encrypted = new String(encoded);
+                String url = "http://192.168.200.4:8080/NMSReportingSuite/nms/mail/sendPassword/" + encrypted;
+                URL obj = new URL(url);
+                HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
-                    // optional default is GET
-                    con.setRequestMethod("GET");
+                // optional default is GET
+                con.setRequestMethod("GET");
 
-                    //add request header
-                    con.setRequestProperty("User-Agent", USER_AGENT);
+                //add request header
+                con.setRequestProperty("User-Agent", USER_AGENT);
 
-                    int responseCode = con.getResponseCode();
-                    System.out.println("\nSending 'GET' request to URL : " + url);
-                    System.out.println("Response Code : " + responseCode);
+                int responseCode = con.getResponseCode();
+                System.out.println("\nSending 'GET' request to URL : " + url);
+                System.out.println("Response Code : " + responseCode);
 
-                    BufferedReader in = new BufferedReader(
-                            new InputStreamReader(con.getInputStream()));
-                    String inputLine;
-                    StringBuffer response = new StringBuffer();
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(con.getInputStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
 
-                    while ((inputLine = in.readLine()) != null) {
-                        response.append(inputLine);
-                    }
-                    in.close();
-
-                    //print result
-                    System.out.println(response.toString());
-                    if ((response.toString()).equals("success")) {
-                        user.setPassword(passwordEncoder.encode(password));
-                        user.setDefault(true);
-                        user.setUnSuccessfulAttempts(0);
-                        userService.updateUser(user);
-                        ModificationTracker modification = new ModificationTracker();
-                        modification.setModificationDate(new Date(System.currentTimeMillis()));
-                        modification.setModificationType(ModificationType.UPDATE.getModificationType());
-                        modification.setModifiedUserId(user.getUserId());
-                        modification.setModifiedField("password");
-                        modification.setModifiedByUserId(user.getUserId());
-                        modificationTrackerService.saveModification(modification);
-                        session.removeAttribute("captcha");
-                        session.invalidate();
-                    }
-
-                    return "success";
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
                 }
-                return "invalid user";
+                in.close();
+
+                //print result
+                System.out.println(response.toString());
+                if ((response.toString()).equals("success")) {
+                    user.setPassword(passwordEncoder.encode(password));
+                    user.setDefault(true);
+                    user.setUnSuccessfulAttempts(0);
+                    userService.updateUser(user);
+                    ModificationTracker modification = new ModificationTracker();
+                    modification.setModificationDate(new Date(System.currentTimeMillis()));
+                    modification.setModificationType(ModificationType.UPDATE.getModificationType());
+                    modification.setModifiedUserId(user.getUserId());
+                    modification.setModifiedField("password");
+                    modification.setModifiedByUserId(user.getUserId());
+                    modificationTrackerService.saveModification(modification);
+                    session.removeAttribute("captcha");
+                    session.invalidate();
+                }
+
+                return "success";
+            }
+            return "invalid user";
         }
         return "invalid captcha";
     }
@@ -543,7 +544,7 @@ public class UserController {
 
 
 
-//changed delete user to post, added a token verification
+    //changed delete user to post, added a token verification
     @RequestMapping(value = {"/deleteUser"}, method = RequestMethod.POST)
     @ResponseBody
     public Map deleteExistingUser(HttpServletRequest request, @RequestBody Integer id) {
@@ -697,10 +698,10 @@ public class UserController {
 
             Date toDate = dateAdder(reportRequest.getToDate(),1);
 
-                List<MAPerformanceDto> summaryDto = new ArrayList<>();
-                List<AggregateCumulativeMA> cumulativesummaryReportStart = new ArrayList<>();
-                List<AggregateCumulativeMA> cumulativesummaryReportEnd = new ArrayList<>();
-                HashMap<Long,MAPerformanceCountsDto> performanceCounts = new HashMap<>();
+            List<MAPerformanceDto> summaryDto = new ArrayList<>();
+            List<AggregateCumulativeMA> cumulativesummaryReportStart = new ArrayList<>();
+            List<AggregateCumulativeMA> cumulativesummaryReportEnd = new ArrayList<>();
+            HashMap<Long,MAPerformanceCountsDto> performanceCounts = new HashMap<>();
 
             if (reportRequest.getStateId() == 0) {
                 cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0, "State", fromDate,false));
@@ -767,12 +768,15 @@ public class UserController {
                             summaryDto1.setLink(true);
                             summaryDto1.setLocationId((long) -1);
 
-                            }
-                            MAPerformanceCountsDto MAperformanceCounts = performanceCounts.get(a.getLocationId());
-                            summaryDto1.setAshasFailed(MAperformanceCounts.getAshasFailed());
-                            summaryDto1.setAshasAccessed(MAperformanceCounts.getAccessedAtleastOnce());
-                            summaryDto1.setAshasNotAccessed(MAperformanceCounts.getAccessedNotOnce());
-
+                        }
+                        MAPerformanceCountsDto MAperformanceCounts = performanceCounts.get(a.getLocationId());
+                        summaryDto1.setAshasFailed(MAperformanceCounts.getAshasFailed());
+                        summaryDto1.setAshasAccessed(MAperformanceCounts.getAccessedAtleastOnce());
+                        summaryDto1.setAshasNotAccessed(MAperformanceCounts.getAccessedNotOnce());
+                        summaryDto1.setAshasActivated(MAperformanceCounts.getAshasActivated());
+                        summaryDto1.setAshasDeactivated(MAperformanceCounts.getAshasDeactivated());
+                        summaryDto1.setAshasRefresherCourse(MAperformanceCounts.getAshasRefresherCourse());
+                        summaryDto1.setAshasJoined(MAperformanceCounts.getAshasActivated()+MAperformanceCounts.getAshasDeactivated());
 //                            summaryDto1.setAshasFailed(maPerformanceService.getAshasFailed(a.getLocationId().intValue(), a.getLocationType(), fromDate, toDate));
 //                            summaryDto1.setAshasAccessed(maPerformanceService.getAccessedCount(a.getLocationId().intValue(), a.getLocationType(), fromDate, toDate));
 //                            summaryDto1.setCompletedPercentage(a.getAshasCompleted()*100/a.getAshasStarted());
@@ -794,7 +798,7 @@ public class UserController {
         if (reportRequest.getReportType().equals(ReportType.maSubscriber.getReportType())) {
             Date fromDate = dateAdder(reportRequest.getFromDate(),0);
 
-                Date toDate = dateAdder(reportRequest.getToDate(),1);
+            Date toDate = dateAdder(reportRequest.getToDate(),1);
 
 
             List<MASubscriberDto> summaryDto = new ArrayList<>();
@@ -821,7 +825,7 @@ public class UserController {
 
             }
 
-                for (int i = 0; i < cumulativesummaryReportEnd.size(); i++) {
+            for (int i = 0; i < cumulativesummaryReportEnd.size(); i++) {
 
                 for (int j = 0; j < cumulativesummaryReportStart.size(); j++) {
                     boolean showRow = true;
@@ -869,15 +873,15 @@ public class UserController {
                             summaryDto1.setLink(true);
                             summaryDto1.setLocationId((long) -1);
 
-                            }
-                            if (locationType.equalsIgnoreCase("DifferenceBlock")) {
-                                summaryDto1.setLocationName("No Subcenter Count");
-                                summaryDto1.setLink(true);
-                                summaryDto1.setLocationId((long) -1);
+                        }
+                        if (locationType.equalsIgnoreCase("DifferenceBlock")) {
+                            summaryDto1.setLocationName("No Subcenter Count");
+                            summaryDto1.setLink(true);
+                            summaryDto1.setLocationId((long) -1);
 
-                            }
-                            if(a.getLocationType().equalsIgnoreCase("State")&& !serviceStarted(a.getLocationId().intValue(),"State",toDate,fromDate,"MOBILE_ACADEMY"))
-                            { showRow = false;}
+                        }
+                        if(a.getLocationType().equalsIgnoreCase("State")&& !serviceStarted(a.getLocationId().intValue(),"State",toDate,fromDate,"MOBILE_ACADEMY"))
+                        { showRow = false;}
 
                         if ((summaryDto1.getAshasCompleted() + summaryDto1.getAshasStarted() + summaryDto1.getAshasFailed() + summaryDto1.getAshasRejected()
                                 + summaryDto1.getAshasRegistered() + summaryDto1.getRegisteredNotCompletedend()
@@ -888,34 +892,34 @@ public class UserController {
                     }
 
 
-                    }
                 }
+            }
 
-                aggregateResponseDto.setTableData(summaryDto);
-                aggregateResponseDto.setBreadCrumbData(breadCrumbs);
-                return aggregateResponseDto;
+            aggregateResponseDto.setTableData(summaryDto);
+            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
+            return aggregateResponseDto;
 
 
         }
 
-            if (reportRequest.getReportType().equals(ReportType.maCumulative.getReportType())) {
+        if (reportRequest.getReportType().equals(ReportType.maCumulative.getReportType())) {
 
-                Date toDate = dateAdder(reportRequest.getToDate(),1);
-                List<AggregateCumulativeMADto> summaryDto = new ArrayList<>();
-                List<AggregateCumulativeMA> cumulativesummaryReport = new ArrayList<>();
+            Date toDate = dateAdder(reportRequest.getToDate(),1);
+            List<AggregateCumulativeMADto> summaryDto = new ArrayList<>();
+            List<AggregateCumulativeMA> cumulativesummaryReport = new ArrayList<>();
 
-                if (reportRequest.getStateId() == 0) {
-                    cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0, "State", toDate,true));
+            if (reportRequest.getStateId() == 0) {
+                cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0, "State", toDate,true));
+            } else {
+                if (reportRequest.getDistrictId() == 0) {
+                    cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(), "District", toDate,true));
                 } else {
-                    if (reportRequest.getDistrictId() == 0) {
-                        cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(), "District", toDate,true));
+                    if (reportRequest.getBlockId() == 0) {
+                        cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(), "Block", toDate,true));
                     } else {
-                        if (reportRequest.getBlockId() == 0) {
-                            cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(), "Block", toDate,true));
-                        } else {
-                            cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(), "Subcentre", toDate,true));
-                        }
+                        cumulativesummaryReport.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(), "Subcentre", toDate,true));
                     }
+                }
 
 
             }
@@ -972,10 +976,10 @@ public class UserController {
                     summaryDto.add(summaryDto1);
                 }
 
-                }
-                aggregateResponseDto.setTableData(summaryDto);
-                aggregateResponseDto.setBreadCrumbData(breadCrumbs);
-                return aggregateResponseDto;
+            }
+            aggregateResponseDto.setTableData(summaryDto);
+            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
+            return aggregateResponseDto;
 
         }
 
@@ -1003,10 +1007,10 @@ public class UserController {
                 return m;
             }
 
-                if (reportRequest.getStateId() != 0) {
-                    place = StReplace(locationService.findStateById(reportRequest.getStateId()).getStateName());
-                    rootPath += place + "/";
-                }
+            if (reportRequest.getStateId() != 0) {
+                place = StReplace(locationService.findStateById(reportRequest.getStateId()).getStateName());
+                rootPath += place + "/";
+            }
 
             if (reportRequest.getDistrictId() != 0) {
                 place = StReplace(locationService.findDistrictById(reportRequest.getDistrictId()).getDistrictName());

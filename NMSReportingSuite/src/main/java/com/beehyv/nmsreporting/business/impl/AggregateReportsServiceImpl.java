@@ -6,8 +6,11 @@ import com.beehyv.nmsreporting.business.AggregateReportsService;
 import com.beehyv.nmsreporting.dao.*;
 import com.beehyv.nmsreporting.entity.AggregateExcelDto;
 import com.beehyv.nmsreporting.entity.MASubscriberDto;
+import com.beehyv.nmsreporting.entity.Report;
+import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.*;
 import com.ibm.icu.text.NumberFormat;
+import org.apache.fontbox.ttf.CmapTable;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -327,9 +330,9 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
 
         XSSFRow dateRow = spreadsheet.createRow(7);
         Cell cellA = dateRow.createCell(0);
-        cellA.setCellValue("Date Filed");
+        cellA.setCellValue("Report Generated on:");
         cellA.setCellStyle(style);
-        Cell cellB = dateRow.createCell(1);
+        Cell cellB = dateRow.createCell(3);
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
@@ -345,7 +348,8 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         String YearString = String.valueOf(DateYear);
 
         cellB.setCellValue(DateString + " " + MonthString + " " + YearString);
-        CellRangeAddress dateRange = new CellRangeAddress(7, 7, 1, 3);
+        cellB.setCellStyle(style);
+        CellRangeAddress dateRange = new CellRangeAddress(7, 7, 0, 2);
         cleanBeforeMergeOnValidCells(spreadsheet, dateRange, style);
         spreadsheet.addMergedRegion(dateRange);
 
@@ -453,7 +457,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         int rowid = 8;
 
         if (gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix") || gridData.getReportName().equalsIgnoreCase("Kilkari Beneficiary Completion")
-        || gridData.getReportName().equalsIgnoreCase("Kilkari Usage") || gridData.getReportName().equalsIgnoreCase("Kilkari Call")) {
+                || gridData.getReportName().equalsIgnoreCase("Kilkari Usage") || gridData.getReportName().equalsIgnoreCase("Kilkari Call")) {
             for (int i = 1; i < 15; i++) {
                 spreadsheet.setColumnWidth(i, 10000);
             }
@@ -484,10 +488,29 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         Cell sno = row.createCell(colid++);
         sno.setCellValue("S.No");
         sno.setCellStyle(backgroundStyle);
+        Integer index =0;
+        Map<String, List<String>> headerComment = getHeaderComment();
+        List<String>comments = headerComment.get(gridData.getReportName());
+
         for (String header : gridData.getColumnHeaders()) {
             Cell cell1 = row.createCell(colid++);
             cell1.setCellValue(header);
             cell1.setCellStyle(backgroundStyle);
+            if(comments.size()!=0 && comments.get(index)!=null) {
+                CreationHelper creationHelper = workbook.getCreationHelper();
+                Drawing drawing = spreadsheet.createDrawingPatriarch();
+//            ClientAnchor clientAnchor = drawing.createAnchor(0, 0, 0, 0, 0, 7, 12, 17);
+                ClientAnchor anchor = creationHelper.createClientAnchor();
+                anchor.setCol1(cell1.getColumnIndex());
+                anchor.setCol2(cell1.getColumnIndex() + 3);
+                anchor.setRow1(row.getRowNum());
+                anchor.setRow2(row.getRowNum() + 1);
+                Comment comment = (Comment) drawing.createCellComment(anchor);
+                RichTextString richTextString = creationHelper.createRichTextString(comments.get(index));
+                comment.setString(richTextString);
+                cell1.setCellComment(comment);
+                index++;
+            }
         }
 
         for (ArrayList<String> rowData : gridData.getReportData()) {
@@ -608,7 +631,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                 for (String cellData : rowData) {
                     Cell cell1 = row.createCell(colid++);
 //                    if (colid == 2) {
-                        cell1.setCellValue(cellData);
+                    cell1.setCellValue(cellData);
 //                    } else {
 //                        cell1.setCellValue(parseDouble(cellData));
 //                    }
@@ -658,10 +681,40 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
 //                    gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener Month Wise")||
 //                    gridData.getReportName().equalsIgnoreCase("Kilkari Cumulative Summary")||
 //                    gridData.getReportName().equalsIgnoreCase("District-wise Performance of the State for Mobile Academy")){
-                spreadsheet.autoSizeColumn(1);
+        spreadsheet.autoSizeColumn(1);
 //            }
 
         createHeadersForAggreagateExcels(workbook, gridData);
+    }
+
+    private Map<String,List<String>> getHeaderComment() {
+
+
+        Map<String,List<String>> map = new HashMap<String, List<String>>();
+        map.put("MA Performance",Arrays.asList("State","ASHAs who have started the course for the first time in the selected period.","Number of ASHAs who had started the course before the selected period, had accessed the course at least once with one bookmark during the selected period and not completed the course till the end of the selected period ",
+                "Number of ASHAs who had started the course before the selected period and had not accessed the course once during the selected period. The count does NOT include ASHAs who have any successful completion till the end of the selected period." ,
+                "Number of ASHAs who have successfully completed the course for first time, during the selected period and secured pass marks.",
+                "Number of ASHAs who have completed the course during the selected period and did not secure passing marks even once till the end of selected period",
+                "Doing course more than once","Total Number of active Asha from beginning","Total Number of Asha joined from beginning",
+                "Total Number of asha deactivated or left from beginning"));
+        map.put("MA Subscriber",Arrays.asList("State","Number of ASHAs who have registered in the MA course prior to the start of the period but have not completed the course.",
+                "Number of ASHA Records that have been received from web service from MCTS/RCH during the period",
+                "Number of the records that have been rejected",
+                "number of ASHAs who have been added/subscribed in MA course for the first time in the selected period",
+                "Number of ASHAs who have successfully completed the course for the first time",
+                "Number of ASHAs presently Subscribed in the Mobile Academy program but are yet to start or complete the course."
+        ));
+        map.put("District-wise Performance of the State for Mobile Academy",Arrays.asList("State",
+                "Number of ASHAs registered with the program.","Number of ASHA have started the course","% Started (of total registered)",
+                "number of ASHAs who have passed the course (first successful completion only)",
+                "% Completed (of total registered)","Number of ASHA have not started the course","% Not Started (of total registered)",
+                "No of ASHA Failed Course","% Failed (of total registered)"));
+
+        map.put("Course Completion",Arrays.asList("ASHA Name","ASHA MCTS/RCH ID","Mobile Number","State","District","Taluka",
+                "Health Block","Health Facility","Health Sub Facility","Village","Date when ASHA records came in to the Mobile Academy system for the first time",
+                "The date when ASHA’s successfully completed the Mobile Academy course for the first time","the date when ASHA’s successfully completed the Mobile Academy course for the first time",
+                "SMS Sent Notification"));
+        return map;
     }
 
     public HashMap<Long, MASubscriberDto> getMASubscriberCounts (Integer locationId, String locationType, Date fromDate, Date toDate){
@@ -858,14 +911,14 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         float x = (page.getMediaBox().getWidth() - titleWidth) / 2;
         be.quodlibet.boxable.utils.PDStreamUtils.write(contents, title, font, fontSize, x, 150, java.awt.Color.BLACK);
 
-         title = "Mobile Academy and Kilkari";
-         titleWidth = font.getStringWidth(title) / 1000 * fontSize1;
-         x = (page.getMediaBox().getWidth() - titleWidth) / 2;
+        title = "Mobile Academy and Kilkari";
+        titleWidth = font.getStringWidth(title) / 1000 * fontSize1;
+        x = (page.getMediaBox().getWidth() - titleWidth) / 2;
         be.quodlibet.boxable.utils.PDStreamUtils.write(contents, title, font, fontSize1, x, 120, java.awt.Color.BLACK);
 
-         title = "Management and Information System";
-         titleWidth = font.getStringWidth(title) / 1000 * fontSize1;
-         x = (page.getMediaBox().getWidth() - titleWidth) / 2;
+        title = "Management and Information System";
+        titleWidth = font.getStringWidth(title) / 1000 * fontSize1;
+        x = (page.getMediaBox().getWidth() - titleWidth) / 2;
         be.quodlibet.boxable.utils.PDStreamUtils.write(contents, title, font, fontSize1, x, 100, java.awt.Color.BLACK);
 
 
@@ -922,9 +975,9 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         //System.out.println("this is the cellwidth " + gridData.getReportName());
         PDPageContentStream stream = new PDPageContentStream(document, page);
 
-         title = gridData.getReportName() + " Report";
-         titleWidth = font.getStringWidth(title) / 1000 * fontSize;
-         x = (page.getMediaBox().getWidth() - titleWidth) / 2;
+        title = gridData.getReportName() + " Report";
+        titleWidth = font.getStringWidth(title) / 1000 * fontSize;
+        x = (page.getMediaBox().getWidth() - titleWidth) / 2;
         be.quodlibet.boxable.utils.PDStreamUtils.write(stream, title, font, fontSize, x, 700, java.awt.Color.BLACK);
 
         //stream.newLine();
@@ -1000,9 +1053,9 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                 cell = row.createCell((cellWidth), gridData.getReportData().get(i).get(j), be.quodlibet.boxable.HorizontalAlignment.get("center"), be.quodlibet.boxable.VerticalAlignment.get("middle"));
                 cell.setFontSize(tableFont);
                 if(!gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener Month Wise")&&!gridData.getReportName().equalsIgnoreCase("kilkari message matrix for only successful calls"))
-                if(i ==gridData.getReportData().size()-1){
-                    cell.setFont(PDType1Font.TIMES_BOLD);
-                }
+                    if(i ==gridData.getReportData().size()-1){
+                        cell.setFont(PDType1Font.TIMES_BOLD);
+                    }
 
             }
 
