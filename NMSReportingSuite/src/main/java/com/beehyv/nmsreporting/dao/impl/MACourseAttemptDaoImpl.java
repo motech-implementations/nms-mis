@@ -87,5 +87,38 @@ public class MACourseAttemptDaoImpl extends AbstractDao<Integer, User> implement
 
     }
 
+    @Override
+    public List<MACourseFirstCompletion> getSuccessFulCompletion(Long msisdn) {
+        Criteria criteria = getSession().createCriteria(MACourseFirstCompletion.class);
+        criteria.add(Restrictions.eq("msisdn",msisdn));
+        return criteria.list();
+    }
+
+    @Override
+    public List<MACourseFirstCompletion> getSuccessFulCompletionByState(Long msisdn, Integer stateId) {
+        Criteria criteria = getSession().createCriteria(MACourseFirstCompletion.class);
+        criteria.add(Restrictions.eq("msisdn",msisdn))
+                .add(Restrictions.eq("stateId",stateId));
+        return criteria.list();
+    }
+
+    @Override
+    public List<MACourseFirstCompletion> getSuccessFulCompletionByDistrict(Long msisdn, Integer stateId, Integer districtId) {
+        Criteria criteria = getSession().createCriteria(MACourseFirstCompletion.class);
+        criteria.add(Restrictions.eq("msisdn",msisdn))
+                .add(Restrictions.eq("stateId",stateId))
+                .add(Restrictions.eq("districtId",districtId));
+        return criteria.list();
+    }
+
+    @Override
+    public List<MACourseFirstCompletion> getSuccessFulCompletionByBlock(Long msisdn, Integer stateId, Integer districtId, Integer blockId) {
+        Criteria criteria = getSession().createCriteria(MACourseFirstCompletion.class);
+        criteria.add(Restrictions.eq("msisdn",msisdn))
+                .add(Restrictions.eq("stateId",stateId))
+                .add(Restrictions.eq("districtId",districtId))
+                .add(Restrictions.eq("blockId",blockId));
+        return criteria.list();
+    }
 
 }

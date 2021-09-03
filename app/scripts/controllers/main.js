@@ -96,6 +96,13 @@
                         'sref': 'changePassword',
                         'active': false
                     }
+                ],
+                'pdf': [
+                    {
+                        'name': 'Certificate',
+                        'sref': 'certificate',
+                        'active': false
+                    }
                 ]
 			};
 
@@ -337,6 +344,21 @@
                 if ($state.current.name !== 'reports') {
                     $state.go('reports', {pageNum: 1});
                 };
+                $scope.removed();
+            };
+
+            $scope.goToCertificate = function() {
+                delete $localStorage.filter;
+                UserFormFactory.downloadCurrentUser().then(function(result){
+                    UserFormFactory.setCurrentUser(result.data);
+                    $scope.currentUser = UserFormFactory.getCurrentUser();
+                });
+                if($scope.disableCursor()){
+                    return false;
+                };
+
+                $state.go('certificate', {pageNum: 1});
+
                 $scope.removed();
             };
 

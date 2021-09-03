@@ -23,4 +23,13 @@ public interface MACourseAttemptDao {
    public MACourseFirstCompletion getSuccessFulCompletionByExtrnalFlwId(String forMonth, Long Extr_Flw_Id, Integer state_id);
 
    public void updateMACourseFirstCompletion(MACourseFirstCompletion maCourseFirstCompletion);
+
+   public List<MACourseFirstCompletion> getSuccessFulCompletion(Long msisdn);
+
+   public List<MACourseFirstCompletion> getSuccessFulCompletionByState(Long msisdn, Integer stateId);
+
+   public List<MACourseFirstCompletion> getSuccessFulCompletionByDistrict(Long msisdn, Integer stateId, Integer districtId);
+
+   public List<MACourseFirstCompletion> getSuccessFulCompletionByBlock(Long msisdn, Integer stateId, Integer districtId, Integer blockId);
+
 }
