@@ -1,7 +1,25 @@
 package com.beehyv.nmsreporting.htmlpages;
 
+import java.util.Properties;
+import static com.beehyv.nmsreporting.utils.Global.retrieveExternalProperties;
+
 public class AboutKilkari {
-    public static String pageContent ="<div class=\"container-fluid infoPages4\" data-ng-controller=\"AboutKilkariController\" >" +
+
+    private Properties props = retrieveExternalProperties();
+
+    private String tollfree = props.getProperty("kilkari.tollfree");
+    private String stats_starttime = props.getProperty("kilkari.stats.starttime");
+    private String stats_endtime = props.getProperty("kilkari.stats.endtime");
+    private String stats_subscribers = props.getProperty("kilkari.stats.subscribers");
+    private String stats_minutes = props.getProperty("kilkari.stats.minutes");
+    private String stats_calls = props.getProperty("kilkari.stats.calls");
+    private String support_endtime = props.getProperty("kilkari.support.endtime");
+    private String support_totalregions = props.getProperty("kilkari.support.totalregions");
+    private String support_regions = props.getProperty("kilkari.support.regions");
+    private String totallanguages = props.getProperty("kilkari.totallanguages");
+    private String languages = props.getProperty("kilkari.languages");
+
+    public String pageContent ="<div class=\"container-fluid infoPages4\" data-ng-controller=\"AboutKilkariController\" >" +
             "  <div class=\"row\">\n" +
             "        <div class=\"col-xs-12\">\n" +
             "            <table>\n" +
@@ -33,15 +51,14 @@ public class AboutKilkari {
             "                    continues for the next 48 weeks. The overall Kilkari subscription consists of 72 messages (24 + 48).</li>\n" +
             "                    <br/>\n" +
             "                <li>If a beneficiary has missed the weekly call or want to listen to the weekly message once again the beneficiary\n" +
-            "                    can dial the toll free number 1800-3010-1703 to listen to the weekly message again.</li>\n" +
+            "                    can dial " + tollfree + " toll free to listen to the weekly message again from her registered mobile number.</li>\n" +
             "                    <br/>\n" +
-            "                <li>From January 2016 to November 2018 we have more than 10 million subscribers and over 178 million minutes\n" +
-            "                    of heard Kilkari content. Kilkari is approximately calling more than two million subscribers every week.</li>\n" +
+            "                <li>From " + stats_starttime + " to " + stats_endtime + " we have around " + stats_subscribers + " subscribers and over " + stats_minutes + " minutes\n" +
+            "                    of heard Kilkari content. Kilkari is approximately calling more than " + stats_calls + " subscribers every week.</li>\n" +
             "                    <br/>\n" +
-            "                <li>As November 2018 Kilkari is live in 13 states of Assam, Bihar, Chhattisgarh, Delhi, Haryana, Himachal Pradesh,\n" +
-            "                    Jharkhand, Madhya Pradesh, Odisha, Rajasthan, Uttarakhand, Uttar Pradesh and West Bengal.</li>\n" +
+            "                <li>As of " + support_endtime + " Kilkari is live in " + support_totalregions + " states & UTs including of " + support_regions + ".</li>\n" +
             "                    <br/>\n" +
-            "                <li>Kilkari is currently live in four languages, which are – Hindi, Odia, Assamese & Bengali.</li>\n" +
+            "                <li>Kilkari is currently live in " + totallanguages + " languages, which are – " + languages + ".</li>\n" +
             "                </ul>\n" +
             "            </div>\n" +
             "        </div>\n" +
