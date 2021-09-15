@@ -76,6 +76,7 @@
             $scope.state = "";
             $scope.district = "";
             $scope.reportHeaderName = "";
+            $scope.certificateList = [];
             var parentScope = $scope.$parent;
             parentScope.child = $scope;
             var fileName;
@@ -90,7 +91,37 @@
             var rejectionStartDate = new Date(2017, 7, 31);
             var rejectionStart;
 
+            $scope.getCertificate = function() {
+                $scope.errorMessage=false;
+                $scope.fileDownloadedSucessFully=false;
 
+                if($scope.state != null){
+                }
+
+                const l = '' + $scope.mobile_number;
+                if(l.length==10) {
+                    $http({
+                        method: 'POST',
+                        url: backend_root + 'nms/user/asha/certificate' + "?msisdn=" + $scope.mobile_number ,
+                        headers: {'Content-Type': 'application/json', 'csrfToken': token}
+                    }).then(function (result) {
+                        if (result.data[0].status == "success") {
+                            $scope.fileDownloadedSucessFully = true;
+
+                            for(var i=0;i <result.data.length;i++){
+                                result.data[i].downloadCertificateUrl = backend_root + 'nms/user/downloadCertificate?fileName=' + result.data[i].file + '&rootPath=' + result.data[i].path;
+                            }
+                            $scope.certificateList = result.data;
+                        } else {
+                            $scope.errorMessage = true;
+                            $scope.message = result.data[0].status;
+                        }
+                    });
+                } else {
+                    $scope.errorMessage = true;
+                    $scope.message = "Please Enter Valid Mobile Number";
+                }
+            }
 
             $scope.popup2 = {
                 opened: false

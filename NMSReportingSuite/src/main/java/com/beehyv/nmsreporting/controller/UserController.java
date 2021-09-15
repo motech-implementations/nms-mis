@@ -39,6 +39,8 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.beehyv.nmsreporting.utils.CryptoService.decrypt;
 import static com.beehyv.nmsreporting.utils.Global.retrieveDocuments;
@@ -103,11 +105,15 @@ public class UserController {
     @Autowired
     private HealthSubFacilityDao healthSubFacilityDao;
 
+    @Autowired
+    private CertificateService certificateService;
+
     private ServiceFunctions serviceFunctions = new ServiceFunctions();
     private final String USER_AGENT = "Mozilla/5.0";
     private final Date bigBang = new Date(0);
     private final String documents = retrieveDocuments();
     private final String reports = documents+"Reports/";
+    private final String certificate = documents+"Certificate/";
     private Calendar c =Calendar.getInstance();
     @RequestMapping(value = {"/", "/list"}, method = RequestMethod.POST)
     public @ResponseBody List<User> getAllUsers() {
@@ -1501,6 +1507,84 @@ public class UserController {
     public @ResponseBody List<AshaInEachBlock> downloadReport(@PathVariable("districtId") Integer districtId, @PathVariable("year") Integer year) {
 
         return ashaEachBlockServiceDao.setQuery(districtId, year);
+    }
+
+    @RequestMapping(value = "asha/certificate", method = RequestMethod.POST)
+    @ResponseBody
+    public Object downloadAnmCertificate( @RequestParam Long  msisdn) throws ParseException, IOException {
+
+        Matcher matcher = Pattern.compile("\\d{10}").matcher(msisdn.toString());
+        if(!matcher.matches()) {
+            return "Invalid phone number";
+        }
+
+        User currentUser = userService.getCurrentUser();
+
+        if(!currentUser.getAccountStatus().equalsIgnoreCase("ACTIVE")){
+            return "User is deactivated";
+        }
+        // check weather certificate is generated or not
+
+        return certificateService.createSpecificCertificate( msisdn, currentUser);
+
+    }
+
+    @RequestMapping(value = "/downloadCertificate", method = RequestMethod.GET,produces = "application/pdf")
+    @ResponseBody
+    public String getCertificate(HttpServletResponse response, @DefaultValue("") @QueryParam("fileName") String fileName,
+                                 @DefaultValue("") @QueryParam("rootPath") String rootPath) throws ParseException {
+
+        response.setContentType("application/pdf");
+        if (StringUtils.isEmpty(fileName) || StringUtils.isEmpty(rootPath)) {
+            return "fail";
+        }
+
+        User currentUser = userService.getCurrentUser();
+        if( !currentUser.getAccountStatus().equalsIgnoreCase("ACTIVE") ){
+            return "User is deactivated";
+        }
+
+        String reportPath = certificate + "/Asha" + "/"+ rootPath +"/";
+        String accessLevel = currentUser.getAccessLevel();
+
+        String[] ids = rootPath.split("/");
+        String authorization = "";
+        if(accessLevel.equalsIgnoreCase(AccessLevel.NATIONAL.getAccessLevel())){
+            authorization = "Authorized";
+        }
+        else if( accessLevel.equalsIgnoreCase(AccessLevel.STATE.getAccessLevel()) &&
+                currentUser.getStateId() == Integer.parseInt(ids[0]) ){
+            authorization = "Authorized";
+        }
+        else if( accessLevel.equalsIgnoreCase(AccessLevel.DISTRICT.getAccessLevel()) &&
+                currentUser.getStateId() == Integer.parseInt(ids[0]) && currentUser.getDistrictId() == Integer.parseInt(ids[1]) ){
+            authorization = "Authorized";
+        }
+        else if(accessLevel.equalsIgnoreCase(AccessLevel.BLOCK.getAccessLevel()) &&
+                currentUser.getStateId() == Integer.parseInt(ids[0]) && currentUser.getDistrictId() == Integer.parseInt(ids[1]) &&
+                currentUser.getBlockId() == Integer.parseInt(ids[2])){
+            authorization = "Authorized";
+        }
+
+        if( !authorization.equals("Authorized") ){
+            return "Not Authorized";
+        }
+
+        try {
+            ServletOutputStream out = response.getOutputStream();
+
+            response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\"");
+            FileInputStream fl = new FileInputStream(reportPath + fileName);
+            int i;
+            while ((i = fl.read()) != -1) {
+                out.write(i);
+            }
+            fl.close();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "success";
     }
 
 }

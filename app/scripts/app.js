@@ -350,6 +350,14 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
         }).state('Downloads', {
             url: '/Downloads',
             templateUrl: 'views/downloads.html'
+        }).state('certificate', {
+            url: '/certificate',
+            templateUrl: 'views/certificate.html',
+            resolve : {
+                user : function ( authorization) {
+                    return authorization.authorize();
+                }
+            },
         });
         $urlRouterProvider.otherwise('/login');
         $httpProvider.defaults.headers.common = {};

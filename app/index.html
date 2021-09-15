@@ -205,7 +205,10 @@
                 </li>
                 <li class="pd" data-ng-class="{active: reportsActive(),pd1:!checkLogin()}">
                     <a data-ng-class="{dis1: disableCursor()}" data-ng-click="goToReports()" class="pointer">Reports</a>
-                 </li>
+				</li>
+				<li class="pd" data-ng-class="{active: activeTab('certificate'),pd1:!checkLogin()}">
+					<a  class="pointer" data-ng-class="" data-ng-click="goToCertificate()"  >MA Certificate</a>
+				</li>
             </ul>
 
         </div>
