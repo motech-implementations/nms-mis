@@ -215,7 +215,8 @@ public class HtmlPageReqController {
         if(currentUser==null) {
             return ResponseEntity.badRequest().body("Access Denied");
         }
-        String content= AboutKilkari.pageContent;
+        AboutKilkari aboutKilkari = new AboutKilkari();
+        String content= aboutKilkari.pageContent;
 
         Map<String, String> m = new HashMap<>();
         m.put("pagecontent",content);
@@ -229,7 +230,8 @@ public class HtmlPageReqController {
         if(currentUser==null) {
             return ResponseEntity.badRequest().body("Access Denied");
         }
-        String content= AboutMA.pageContent;
+        AboutMA aboutMA = new AboutMA();
+        String content= aboutMA.pageContent;
 
         Map<String, String> m = new HashMap<>();
         m.put("pagecontent",content);

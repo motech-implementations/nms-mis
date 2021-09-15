@@ -84,4 +84,26 @@ public  final class Global {
         return uiAddress;
     }
 
+    public static Properties retrieveExternalProperties() {
+        Properties prop = new Properties();
+        InputStream input = null;
+        try {
+            File file = new File(retrieveDocuments() + "ExternalProperties/external.properties");
+            input = new FileInputStream(file);
+            // load external properties file
+            prop.load(input);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return prop;
+    }
+
 }
