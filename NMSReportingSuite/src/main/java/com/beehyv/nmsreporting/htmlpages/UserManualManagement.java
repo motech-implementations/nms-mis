@@ -30,7 +30,7 @@ public class UserManualManagement {
             "            <br/><br/><br/>\n" +
             "            <p>Multiple Admins cannot be created for any State or District</p>\n" +
             "            <p>The following screen is shown with empty fields which are required to be filled.</p>\n" +
-            "            <p> All fields in the form are compulsory. Default password for creating a user is the user's contact number.</p>\n" +
+            "            <p> All fields in the form are compulsory. Default password will be shared with the user on his registered email id.</p>\n" +
             "            <p>Create user form has two action buttons: 'Create New User' and 'Cancel'.</p>\n" +
             "            <ul>\n" +
             "                <li>Create new User: creates a new user with details as filled in the form.</li>\n" +
