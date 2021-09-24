@@ -76,12 +76,12 @@ public class AutoReportEmailGeneration {
             aCalendar.add(Calendar.DAY_OF_WEEK, -(aCalendar.get(Calendar.DAY_OF_WEEK) - 1));
             Date toDate = aCalendar.getTime();
 
-            adminService.createFiles(ReportType.flwRejected.getReportType());
+//            adminService.createFiles(ReportType.flwRejected.getReportType());
             adminService.createFiles(ReportType.motherRejected.getReportType());
             adminService.createFiles(ReportType.childRejected.getReportType());
 
-            adminService.createFlwImportRejectedFiles(toDate);
-            System.out.println("FLW_Rejection reports generated");
+//            adminService.createFlwImportRejectedFiles(toDate);
+//            System.out.println("FLW_Rejection reports generated");
             adminService.createMotherImportRejectedFiles(toDate);
             System.out.println("Mother_Rejection reports generated");
             adminService.createChildImportRejectedFiles(toDate);

@@ -13,6 +13,8 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellUtil;
 import org.apache.poi.xssf.usermodel.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -104,7 +106,7 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
+    private Logger logger = LoggerFactory.getLogger(AdminServiceImpl.class);
     private final String documents = retrieveDocuments();
     private final String reports = documents+"Reports/";
     private Calendar c =Calendar.getInstance();
@@ -977,13 +979,13 @@ public class AdminServiceImpl implements AdminService {
             calendar.set(Calendar.SECOND, 0);
             calendar.set(Calendar.MINUTE, 0);
             calendar.set(Calendar.HOUR_OF_DAY, 0);
-            calendar.add(Calendar.DAY_OF_MONTH,1);
             toDate=calendar.getTime();
-            calendar.add(Calendar.DAY_OF_MONTH,-7);
+            calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
             fromDate=calendar.getTime();
-            //Date fromDate=calendar.getTime();
-//            List<FlwImportRejection> childImportRejections = flwImportRejectionDao.getAllRejectedFlwImportRecords(nextDay);
-            reportRequest.setFromDate(toDate);
+
+            reportRequest.setFromDate(fromDate);
+            reportRequest.setToDate(toDate);
+
             String stateName=StReplace(stateDao.findByStateId(stateId).getStateName());
             String rootPathState = rootPath+ stateName+ "/";
             if(districtId==0){
@@ -1522,7 +1524,11 @@ public class AdminServiceImpl implements AdminService {
         //Write the workbook in file system
         FileOutputStream out = null;
         try {
-            out = new FileOutputStream(new File(rootPath + ReportType.flwRejected.getReportType() + "_" + place + "_" + getDateMonthYear(toDate) + ".xlsx"));
+            Calendar tempCalender = Calendar.getInstance();
+            tempCalender.setTime(toDate);
+            tempCalender.add(Calendar.MONTH, 1);
+            Date reportMonthName = tempCalender.getTime();
+            out = new FileOutputStream(new File(rootPath + ReportType.flwRejected.getReportType() + "_" + place + "_" + getMonthYear(reportMonthName) + ".xlsx"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -1700,11 +1706,11 @@ public class AdminServiceImpl implements AdminService {
 
         map.put("Course Completion",Arrays.asList("S.No","ASHA Name","ASHA MCTS/RCH ID","Mobile Number","State","District","Taluka",
                 "Health Block","Health Facility","Health Sub Facility","Village","Date when ASHA records came in to the Mobile Academy system for the first time",
-                "The date when ASHA’s successfully completed the Mobile Academy course for the first time","the date when ASHA’s successfully completed the Mobile Academy course for the first time",
-                "SMS Sent Notification"));
+                "ASHA’s Status as received from MCTS/RCH","The date when ASHA’s successfully completed the Mobile Academy course for the first time",
+                "Refenrece ID generated and SMS sent from our system"));
 
         map.put("Anonymous User",Arrays.asList("S.No","Circle Name","Mobile Number","Last Called Date & Time"));
-        map.put("Cumulative Inactive Users",Arrays.asList("S.No","ASHA Name","ASHA MCTS/RCH ID","Mobile Number",
+        map.put("Registered ASHAs not Started MA Course",Arrays.asList("S.No","ASHA Name","ASHA MCTS/RCH ID","Mobile Number",
                 "State","District","Taluka","Health Block","Health Facility","Health Sub Facility","Village","This is the date when ASHA records came in to the Mobile Academy system for the first time",
                 "ASHA’s Status as received from MCTS/RCH"));
         map.put("Asha Rejected Records",Arrays.asList("S.No","ASHA Name","ASHA Id","ASHA Mobile Number","State Name","District Name","Taluka Name","Health Block","Health Facility",
@@ -1960,7 +1966,7 @@ public class AdminServiceImpl implements AdminService {
         XSSFWorkbook workbook = new XSSFWorkbook();
         //Create a blank sheet
         XSSFSheet spreadsheet = workbook.createSheet(
-                "Cumulative Inactive Users Report "+place+"_"+getMonthYear(toDate));
+                "Registered ASHAs not Started MA Course Report "+place+"_"+getMonthYear(toDate));
         spreadsheet.protectSheet("123");
         //Create row object
         XSSFRow row;
@@ -2033,13 +2039,13 @@ public class AdminServiceImpl implements AdminService {
                     (frontLineWorker.getSubfacility() == null) ? "No Health Subfacility" : healthSubFacilityDao.findByHealthSubFacilityId(frontLineWorker.getSubfacility()).getHealthSubFacilityName(),
                     (frontLineWorker.getVillage() == null) ? "No Village" : villageDao.findByVillageId(frontLineWorker.getVillage()).getVillageName(),
                     (frontLineWorker.getCreationDate() == null) ? "No Creation_date":frontLineWorker.getCreationDate(),
-                    (frontLineWorker.getJobStatus() == null) ? "No Designation":frontLineWorker.getJobStatus()
+//                    (frontLineWorker.getJobStatus() == null) ? "No Designation":frontLineWorker.getJobStatus()
             });
             counter++;
         }
         Set<String> keyid = empinfo.keySet();
         createHeadersForReportFiles(workbook, reportRequest);
-        List<String> comments= getHeaderComment().get("Cumulative Inactive Users");
+        List<String> comments= getHeaderComment().get("Registered ASHAs not Started MA Course");
         Integer index=0;
         int rowid=7;
         for (String key : keyid) {
@@ -3053,8 +3059,7 @@ public class AdminServiceImpl implements AdminService {
             cell5.setCellValue("Circle:");
             cell6.setCellValue(circleName);
         }else {
-            if(reportRequest.getReportType().equals(ReportType.flwRejected.getReportType())||
-                    reportRequest.getReportType().equals(ReportType.motherRejected.getReportType())||
+            if(reportRequest.getReportType().equals(ReportType.motherRejected.getReportType())||
                     reportRequest.getReportType().equals(ReportType.childRejected.getReportType())){
                 cell3.setCellValue("Week:");
                 cell4.setCellValue(getDateMonthYearName(reportRequest.getFromDate()));
@@ -3287,12 +3292,13 @@ public class AdminServiceImpl implements AdminService {
         aCalendar.set(Calendar.SECOND, 0);
         aCalendar.set(Calendar.MINUTE, 0);
         aCalendar.set(Calendar.HOUR_OF_DAY, 0);
-        aCalendar.add(Calendar.DAY_OF_MONTH,1);
+
         toDate=aCalendar.getTime();
-        aCalendar.add(Calendar.DAY_OF_MONTH, -7);
+        aCalendar.set(Calendar.DAY_OF_MONTH, aCalendar.getActualMinimum(Calendar.DAY_OF_MONTH));
         Date fromDate=aCalendar.getTime();
         ReportRequest reportRequest=new ReportRequest();
-        reportRequest.setFromDate(toDate);
+        reportRequest.setFromDate(fromDate);
+        reportRequest.setToDate(toDate);
         reportRequest.setBlockId(0);
         reportRequest.setDistrictId(0);
         reportRequest.setStateId(0);

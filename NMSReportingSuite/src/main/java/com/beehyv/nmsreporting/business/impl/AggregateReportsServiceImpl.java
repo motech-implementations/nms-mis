@@ -712,8 +712,8 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
 
        map.put("Course Completion",Arrays.asList("ASHA Name","ASHA MCTS/RCH ID","Mobile Number","State","District","Taluka",
                "Health Block","Health Facility","Health Sub Facility","Village","Date when ASHA records came in to the Mobile Academy system for the first time",
-               "The date when ASHA’s successfully completed the Mobile Academy course for the first time","the date when ASHA’s successfully completed the Mobile Academy course for the first time",
-               "SMS Sent Notification"));
+               "ASHA’s Status as received from MCTS/RCH","The date when ASHA’s successfully completed the Mobile Academy course for the first time",
+               "Refenrece ID generated and SMS sent from our system"));
             return map;
     }
 

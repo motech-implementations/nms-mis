@@ -387,7 +387,7 @@
                 }
                 else
                     $scope.periodType = ['Year','Financial Year','Quarter','Month','Week','Custom Range'];
-                if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  ($scope.report.name.toLowerCase().indexOf(("rejected").toLowerCase()) > -1)  ){
+                if(( $scope.reportCategory == 'Kilkari Reports') &&  ($scope.report.name.toLowerCase().indexOf(("rejected").toLowerCase()) > -1)  ){
                 	$scope.datePickerContent = "Select Week";
                 }
                 else
@@ -403,7 +403,7 @@
                 if($scope.report.name == 'District-wise Performance of the State for Mobile Academy') {
                 $scope.dateFormat = 'yyyy-MM-dd';
                                     $scope.endDatePickerOptions.minDate = new Date(2015,12,01)
-                                    $scope.endDatePickerOptions.maxDate = new Date();
+                                    $scope.endDatePickerOptions.maxDate = new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate()-1);
                 }
                 if($scope.report.reportEnum == 'Kilkari_Cumulative_Summary'){
                     $scope.dateFormat = 'yyyy-MM-dd';
@@ -630,7 +630,7 @@
 
 				$scope.endDatePickerOptions = {
                     formatYear: 'yyyy',
-                    maxDate: new Date() - 1,
+                    maxDate: new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate()-1) ,
                     minDate: minDate,
                     startingDay: 1
                 };
@@ -832,7 +832,7 @@
                  return;
                 }
                 $scope.format = 'yyyy-MM';
-               	if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  ($scope.report.name.toLowerCase().indexOf(("rejected").toLowerCase()) > -1) && $scope.dt != null) {
+               	if( ($scope.reportCategory == 'Kilkari Reports') &&  ($scope.report.name.toLowerCase().indexOf(("rejected").toLowerCase()) > -1) && $scope.dt != null) {
                		 $scope.getSundays($scope.dt);
                      $scope.sundaysTable = true;
 			    	 $scope.popup1.opened = true;
@@ -918,7 +918,7 @@
                         return;
                     }
 				}
-				if($scope.dt == null && ($scope.report.name.toLowerCase().indexOf(("rejected").toLowerCase()) > -1) ){
+				if($scope.dt == null && ($scope.reportCategory == 'Kilkari Reports') && ($scope.report.name.toLowerCase().indexOf(("rejected").toLowerCase()) > -1) ){
 					if(UserFormFactory.isInternetExplorer()){
                         alert("Please select a week")
                          return;
@@ -1086,7 +1086,7 @@
                     }
 		    	}
 
-		    	if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  ($scope.report.name.toLowerCase().indexOf(("rejected").toLowerCase()) > -1) && $scope.format == 'yyyy-MM'){
+		    	if(( $scope.reportCategory == 'Kilkari Reports') &&  ($scope.report.name.toLowerCase().indexOf(("rejected").toLowerCase()) > -1) && $scope.format == 'yyyy-MM'){
                    if(UserFormFactory.isInternetExplorer()){
                          alert("Please select a week")
                          return;
@@ -1571,7 +1571,7 @@
                 $scope.popup1.opened = true;
 				var currentDate = new Date();
 
-				if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  ($scope.report.name.toLowerCase().indexOf(("rejected").toLowerCase())  > -1 ) ){
+				if(($scope.reportCategory == 'Kilkari Reports') &&  ($scope.report.name.toLowerCase().indexOf(("rejected").toLowerCase())  > -1 ) ){
 				    if(currentDate.getMonth() == startMonth && currentDate.getDate() >= startDate && currentDate.getFullYear() == 2017 && $scope.getSundays(currentDate) > 0){
 				        $scope.dateOptions.maxDate = new Date().setMonth(new Date().getMonth());
 				    }
@@ -1593,7 +1593,7 @@
 
 				}
 
-				if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  ($scope.report.name.toLowerCase().indexOf(("rejected").toLowerCase()) > -1) && ($scope.format == 'yyyy-MM-dd' || $scope.format == 'yyyy-MM' )){
+				if((  $scope.reportCategory == 'Kilkari Reports') &&  ($scope.report.name.toLowerCase().indexOf(("rejected").toLowerCase()) > -1) && ($scope.format == 'yyyy-MM-dd' || $scope.format == 'yyyy-MM' )){
                     $scope.getSundays($scope.dt);
                     $scope.sundaysTable = true;
 
@@ -1705,7 +1705,7 @@
 			$scope.closeSundaysTable = function(date) {
             	$scope.sundaysTable = false;
             	$scope.sundays = [];
-            	if(($scope.reportCategory == 'Mobile Academy Reports' ||  $scope.reportCategory == 'Kilkari Reports') &&  ($scope.report.name.toLowerCase().indexOf(("rejected").toLowerCase()) > -1)  ){
+            	if(( $scope.reportCategory == 'Kilkari Reports') &&  ($scope.report.name.toLowerCase().indexOf(("rejected").toLowerCase()) > -1)  ){
             	$scope.dt = new Date($scope.dt.getFullYear(),$scope.dt.getMonth(),date);}
             	if($scope.showWeekTable()){
             	$scope.dt1 = new Date($scope.dt1.getFullYear(),$scope.dt1.getMonth(),date);}
@@ -2345,10 +2345,10 @@
                                                          { field: 'ashasNotAccessed',headerTooltip: 'Number of ASHAs who had started the course before the selected period and had not accessed the course once during the selected period. The count does NOT include ASHAs who have any successful completion till the end of the selected period.', displayName: 'Number of ASHA not Pursuing Course',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
                                                          { field: 'ashasCompleted',headerTooltip: 'Number of ASHAs who have successfully completed the course for first time, during the selected period and secured pass marks.', displayName: 'Number of ASHA Successfully Completed Course',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"18%",enableHiding: false},
                                                          { field: 'ashasFailed', headerTooltip: 'Number of ASHAs who have completed the course during the selected period and did not secure passing marks even once till the end of selected period', displayName: 'Number of ASHA who Failed the Course',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
-                { field: 'ashasRefresherCourse',  headerTooltip: 'Number of asha who had completed the course and taking the course once again', displayName: 'Number of ASHA doing Refresher course',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
-                { field: 'ashasActivated',  headerTooltip: 'Total Number of active Asha from beginning', displayName: 'Total no of active Asha',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
-                { field: 'ashasJoined',  headerTooltip: 'Total Number of Asha joined from beginning', displayName: 'No of Asha joined',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
-                { field: 'ashasDeactivated',  headerTooltip: 'Total Number of asha deactivated or left from beginning', displayName: 'No of Asha left',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                { field: 'ashasRefresherCourse',  headerTooltip: 'The No of ASHA\'s who completed the course before time period and again they completed the course from selected period.(As per KMA Dashboard Data)', displayName: 'Number of ASHA doing Refresher course',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                { field: 'ashasActivated',  headerTooltip: 'No of Registered ASHA (Same as MA district wise report)', displayName: 'No of Registered ASHA ',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                { field: 'ashasJoined',  headerTooltip: 'Number of ASHAs Joined the the system (and will be able to dial MA now)', displayName: 'No of Asha joined',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                { field: 'ashasDeactivated',  headerTooltip: 'Number of ASHAs Moved out of the system (and will not be able to dial MA)', displayName: 'No of Asha left',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
 
             ],
 

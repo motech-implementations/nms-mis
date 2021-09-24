@@ -269,8 +269,7 @@ public class AdminController {
         Calendar aCalendar = Calendar.getInstance();
         Date fromDate=new Date();
         Date toDate;
-        if(tempReportType.getReportType().equals(ReportType.flwRejected.getReportType()) ||
-                tempReportType.getReportType().equals(ReportType.motherRejected.getReportType()) ||
+        if(tempReportType.getReportType().equals(ReportType.motherRejected.getReportType()) ||
                 tempReportType.getReportType().equals(ReportType.childRejected.getReportType())) {
             aCalendar.add( Calendar.DAY_OF_WEEK, -(aCalendar.get(Calendar.DAY_OF_WEEK)-1));
             aCalendar.add(Calendar.DATE,-(7*(relativeMonth-1)));
