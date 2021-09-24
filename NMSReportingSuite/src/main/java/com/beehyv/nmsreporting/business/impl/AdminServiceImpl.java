@@ -3066,7 +3066,19 @@ public class AdminServiceImpl implements AdminService {
                 CellRangeAddress range4 = new CellRangeAddress(3,4,8,11);
                     cleanBeforeMergeOnValidCells(spreadsheet,range4,style );
                     spreadsheet.addMergedRegion(range4);
-            } else {
+            }
+            else if(reportRequest.getReportType().equals(ReportType.flwRejected.getReportType())){
+                Calendar tempCalender = Calendar.getInstance();
+                tempCalender.setTime(reportRequest.getToDate());
+                tempCalender.add(Calendar.MONTH, 1);
+                Date reportMonthName = tempCalender.getTime();
+                cell3.setCellValue("Month:");
+                cell4.setCellValue(getMonthYearName(reportMonthName));
+                CellRangeAddress range4 = new CellRangeAddress(3,4,8,11);
+                cleanBeforeMergeOnValidCells(spreadsheet,range4,style );
+                spreadsheet.addMergedRegion(range4);
+            }
+            else {
                 cell3.setCellValue("Month:");
                 cell4.setCellValue(getMonthYearName(reportRequest.getFromDate()));
                 CellRangeAddress range4 = new CellRangeAddress(3,4,8,11);
