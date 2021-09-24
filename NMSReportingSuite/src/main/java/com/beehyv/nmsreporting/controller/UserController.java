@@ -2,6 +2,7 @@ package com.beehyv.nmsreporting.controller;
 
 import com.beehyv.nmsreporting.business.*;
 import com.beehyv.nmsreporting.dao.*;
+import com.beehyv.nmsreporting.dao.impl.MAPerformanceDaoImpl;
 import com.beehyv.nmsreporting.entity.*;
 import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.AccessType;
@@ -778,7 +779,10 @@ public class UserController {
                             summaryDto1.setAshasFailed(MAperformanceCounts.getAshasFailed());
                             summaryDto1.setAshasAccessed(MAperformanceCounts.getAccessedAtleastOnce());
                             summaryDto1.setAshasNotAccessed(MAperformanceCounts.getAccessedNotOnce());
-
+                            summaryDto1.setAshasActivated(MAperformanceCounts.getAshasActivated());
+                            summaryDto1.setAshasDeactivated(MAperformanceCounts.getAshasDeactivated());
+                            summaryDto1.setAshasRefresherCourse(MAperformanceCounts.getAshasRefresherCourse());
+                            summaryDto1.setAshasJoined(MAperformanceCounts.getAshasActivated()+MAperformanceCounts.getAshasDeactivated());
 //                            summaryDto1.setAshasFailed(maPerformanceService.getAshasFailed(a.getLocationId().intValue(), a.getLocationType(), fromDate, toDate));
 //                            summaryDto1.setAshasAccessed(maPerformanceService.getAccessedCount(a.getLocationId().intValue(), a.getLocationType(), fromDate, toDate));
 //                            summaryDto1.setCompletedPercentage(a.getAshasCompleted()*100/a.getAshasStarted());
