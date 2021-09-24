@@ -17,8 +17,8 @@
         "service": "M"
       },
       {
-        "name": "Cumulative Inactive Users",
-        "reportEnum": "MA_Cumulative_Inactive_Users",
+        "name": "Registered ASHAs not Started MA Course",
+        "reportEnum": "Registered_ASHAs_not_Started_MA_Course",
         "icon": "images/drop-down-3.png",
         "service": "M"
       },

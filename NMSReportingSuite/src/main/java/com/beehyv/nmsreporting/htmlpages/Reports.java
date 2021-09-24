@@ -51,7 +51,7 @@ public class Reports {
             "\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-sm btn-default\" data-ng-click=\"open1()\"  data-ng-disabled='disableDate()' ><i class=\"glyphicon glyphicon-calendar\" data-ng-disabled=\"disableDate()\" ></i></button>\n" +
             "\t\t\t\t\t\t\t</span>\n" +
             "\t\t\t\t\t\t\t</p>\n" +
-            "\t\t\t\t\t\t\t<ul  class=\"sundays-list\"  tabindex=\"-1\" data-ng-blur=\"onBlur()\" focus=\"true\" data-ng-if= \" (reportCategory == 'Mobile Academy Reports' ||  reportCategory == 'Kilkari Reports') &&  (report.name == 'Asha Rejected Records' || report.name =='Mother Rejected Records' || report.name =='Child Rejected Records') && dt != null \" data-ng-show = \"popup1.opened\">\n" +
+            "\t\t\t\t\t\t\t<ul  class=\"sundays-list\"  tabindex=\"-1\" data-ng-blur=\"onBlur()\" focus=\"true\" data-ng-if= \" (reportCategory == 'Mobile Academy Reports' ||  reportCategory == 'Kilkari Reports') &&  (report.name == 'Mother Rejected Records' || report.name =='Child Rejected Records') && dt != null \" data-ng-show = \"popup1.opened\">\n" +
             "\t\t\t\t\t\t\t\t<li class=\"sunday-list-header\"><p>Sun</p></li>\n" +
             "\n" +
             "\t\t\t\t\t\t\t\t<li data-ng-repeat=\"date in sundays\"   data-ng-click='closeSundaysTable(date)' class=\"sunday-list-items\"><p>{{date}}</p></li>\n" +
@@ -375,6 +375,7 @@ public class Reports {
             "\t\t\t<p data-ng-if =\"!hideGrid && !waiting && (report.reportEnum == 'Kilkari_Subscriber')\" ><b>Note2 :</b> There may be non-zero count for some locations under the column 'Total subscriptions At The Start Of The Period' even before the launch of Kilkari service in that particular location.\n" +
             "\t\t\t\tThe reason is because few anonymous subscriptions were created through IVR, which were later converted as beneficiaries after the launch.</p>\n" +
             "\t\t\t<p data-ng-if =\"!hideGrid && !waiting && (report.reportEnum == 'Kilkari_Subscriber')\" ><b>Note3 :</b> rejection reasons are captured only after Sep 2017</p>\n" +
+            "\t\t\t<p data-ng-if =\"!hideGrid && !waiting && ((report.reportEnum == 'MA_Subscriber') || (report.reportEnum == 'MA_Performance') || (report.reportEnum == 'District-wise Performance of the State for Mobile Academy'))\" ><b>Note:</b> This report is a dynamic report and number of ASHAs (in each column) might differ for two given time periods.</p>\n" +
             "\n" +
             "\n" +
             "\t\t</div>\n" +
