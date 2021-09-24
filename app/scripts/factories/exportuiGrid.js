@@ -30,8 +30,27 @@
                 var data1 = uiGridExporterService.getData(gridApi1.grid, rowTypes, colTypes);
             }
 
+            Date.prototype.toShortFormat = function() {
 
+                var monthNames =["Jan","Feb","Mar","Apr",
+                    "May","Jun","Jul","Aug",
+                    "Sep", "Oct","Nov","Dec"];
+
+                var day = this.getDate();
+
+                var monthIndex = this.getMonth();
+                var monthName = monthNames[monthIndex];
+
+                var year = this.getFullYear();
+
+                return day+"-"+monthName+"-"+year;
+            };
+            var today = new Date();
             var CSV = '';
+
+            //set reportgeneratedon
+            CSV += 'Report Generated On: '+today.toShortFormat() +'\r\n\n';
+
             //Set Report title in first row or line
             if (excelHeaderName.reportName == "kilkari message matrix for only successful calls") {
                 CSV += 'Kilkari Pregnancy Content Data\r\n\n';
@@ -945,7 +964,7 @@
                 }
                 else if(excelHeaderName.reportName == "MA Performance"){
                 for (i = 0; i < exportColumnHeaders.length; i++) {
-                    colWidth[i+1] = 100;
+                    colWidth[i+1] = 60;
                     }
                 }
                 else if(excelHeaderName.reportName== "Kilkari Cumulative Summary"){

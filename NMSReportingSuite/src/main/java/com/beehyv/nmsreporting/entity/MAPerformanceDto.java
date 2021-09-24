@@ -17,6 +17,11 @@ public class MAPerformanceDto {
     Integer ashasCompleted;
     Integer ashasFailed;
     boolean link = false;
+    Long ashasRefresherCourse;
+    Long ashasDeactivated;
+    Long ashasActivated;
+    Long ashasJoined;
+
 //    Integer ashasRejected;
 //    Integer recordsReceived;
 //    Integer registeredNotCompletedStart;
@@ -101,5 +106,37 @@ public class MAPerformanceDto {
 
     public void setLink(boolean link) {
         this.link = link;
+    }
+
+    public Long getAshasRefresherCourse() {
+        return ashasRefresherCourse;
+    }
+
+    public void setAshasRefresherCourse(Long ashasRefresherCourse) {
+        this.ashasRefresherCourse = ashasRefresherCourse;
+    }
+
+    public Long getAshasDeactivated() {
+        return ashasDeactivated;
+    }
+
+    public void setAshasDeactivated(Long ashasDeactivated) {
+        this.ashasDeactivated = ashasDeactivated;
+    }
+
+    public Long getAshasActivated() {
+        return ashasActivated;
+    }
+
+    public void setAshasActivated(Long ashasActivated) {
+        this.ashasActivated = ashasActivated;
+    }
+
+    public Long getAshasJoined() {
+        return ashasJoined;
+    }
+
+    public void setAshasJoined(Long ashasJoined) {
+        this.ashasJoined = ashasJoined;
     }
 }

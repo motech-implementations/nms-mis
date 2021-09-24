@@ -1484,6 +1484,8 @@ public class AdminServiceImpl implements AdminService {
         }
         Set<String> keyid = empinfo.keySet();
         createHeadersForReportFiles(workbook, reportRequest);
+        List<String> comments= getHeaderComment().get("Asha Rejected Records");
+        Integer index=0;
         int rowid=7;
         for (String key : keyid) {
             row = spreadsheet.createRow(rowid++);
@@ -1510,6 +1512,10 @@ public class AdminServiceImpl implements AdminService {
                 }
                 else{
                     cell.setCellStyle(borderStyle);
+                }
+                if(key.equals("1")){
+                    createComment(cell,row,comments,index,workbook,spreadsheet);
+                    index++;
                 }
             }
         }
@@ -1622,6 +1628,8 @@ public class AdminServiceImpl implements AdminService {
             counter++;
 //            System.out.println("Added "+counter);
         }
+        List<String> comments= getHeaderComment().get("Course Completion");
+        Integer index=0;
         Set<String> keyid = empinfo.keySet();
         createHeadersForReportFiles(workbook, reportRequest);
         int rowid=7;
@@ -1651,6 +1659,21 @@ public class AdminServiceImpl implements AdminService {
                 else{
                     cell.setCellStyle(borderStyle);
                 }
+                if(key.equals("1")&&comments.size()!=0 && comments.get(index)!=null) {
+                    CreationHelper creationHelper = workbook.getCreationHelper();
+                    Drawing drawing = spreadsheet.createDrawingPatriarch();
+//            ClientAnchor clientAnchor = drawing.createAnchor(0, 0, 0, 0, 0, 7, 12, 17);
+                    ClientAnchor anchor = creationHelper.createClientAnchor();
+                    anchor.setCol1(cell.getColumnIndex());
+                    anchor.setCol2(cell.getColumnIndex() + 3);
+                    anchor.setRow1(row.getRowNum());
+                    anchor.setRow2(row.getRowNum() + 1);
+                    Comment comment = (Comment) drawing.createCellComment(anchor);
+                    RichTextString richTextString = creationHelper.createRichTextString(comments.get(index));
+                    comment.setString(richTextString);
+                    cell.setCellComment(comment);
+                    index++;
+                }
             }
         }
         //Write the workbook in file system
@@ -1670,6 +1693,23 @@ public class AdminServiceImpl implements AdminService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private Map<String,List<String>> getHeaderComment() {
+        Map<String,List<String>> map = new HashMap<String, List<String>>();
+
+        map.put("Course Completion",Arrays.asList("S.No","ASHA Name","ASHA MCTS/RCH ID","Mobile Number","State","District","Taluka",
+                "Health Block","Health Facility","Health Sub Facility","Village","Date when ASHA records came in to the Mobile Academy system for the first time",
+                "The date when ASHA’s successfully completed the Mobile Academy course for the first time","the date when ASHA’s successfully completed the Mobile Academy course for the first time",
+                "SMS Sent Notification"));
+
+        map.put("Anonymous User",Arrays.asList("S.No","Circle Name","Mobile Number","Last Called Date & Time"));
+        map.put("Cumulative Inactive Users",Arrays.asList("S.No","ASHA Name","ASHA MCTS/RCH ID","Mobile Number",
+                "State","District","Taluka","Health Block","Health Facility","Health Sub Facility","Village","This is the date when ASHA records came in to the Mobile Academy system for the first time",
+                "ASHA’s Status as received from MCTS/RCH"));
+        map.put("Asha Rejected Records",Arrays.asList("S.No","ASHA Name","ASHA Id","ASHA Mobile Number","State Name","District Name","Taluka Name","Health Block","Health Facility",
+                        "Health Sub-Facility","Village Name","ASHA’s GF Status as received from MCTS/RCH","This gives why the ASHA record was rejected"));
+        return map;
     }
 
     private void updateCumulativeCourseCompletion(List<MACourseFirstCompletion> successfulCandidates, String rootPath, String place, Date toDate, ReportRequest reportRequest) {
@@ -1812,6 +1852,7 @@ public class AdminServiceImpl implements AdminService {
         }
         Set<String> keyid = empinfo.keySet();
         createHeadersForReportFiles(workbook, reportRequest);
+        List<String> comments= getHeaderComment().get("Anonymous User");
         int rowid=7;
         for (String key : keyid) {
             row = spreadsheet.createRow(rowid++);
@@ -1824,8 +1865,12 @@ public class AdminServiceImpl implements AdminService {
                 Cell cell2=row.createCell(1);
                 Cell cell3=row.createCell(4);
                 Cell cell4=row.createCell(7);
-
-
+            if(key.equals("1")) {
+                createComment(cell1, row, comments, 0, workbook, spreadsheet);
+                createComment(cell2, row, comments, 1, workbook, spreadsheet);
+                createComment(cell3, row, comments, 2, workbook, spreadsheet);
+                createComment(cell4, row, comments, 3, workbook, spreadsheet);
+            }
                 if(rowid == 8){
                     CellRangeAddress range1 =new CellRangeAddress(rowid-1,rowid-1,0,0);
                     spreadsheet.addMergedRegion(range1);
@@ -1896,6 +1941,20 @@ public class AdminServiceImpl implements AdminService {
         }
     }
 
+    private void createComment(Cell cell1, XSSFRow row, List<String> comments, int i, XSSFWorkbook workbook, XSSFSheet spreadsheet) {
+            CreationHelper creationHelper = workbook.getCreationHelper();
+            Drawing drawing = spreadsheet.createDrawingPatriarch();
+            ClientAnchor anchor = creationHelper.createClientAnchor();
+            anchor.setCol1(cell1.getColumnIndex());
+            anchor.setCol2(cell1.getColumnIndex() + 3);
+            anchor.setRow1(row.getRowNum());
+            anchor.setRow2(row.getRowNum() + 1);
+            Comment comment = (Comment) drawing.createCellComment(anchor);
+            RichTextString richTextString = creationHelper.createRichTextString(comments.get(i));
+            comment.setString(richTextString);
+            cell1.setCellComment(comment);
+    }
+
     private void getCumulativeInactiveUsers(List<FrontLineWorkers> inactiveCandidates, String rootPath, String place, Date toDate, ReportRequest reportRequest) {
 
         XSSFWorkbook workbook = new XSSFWorkbook();
@@ -1955,7 +2014,6 @@ public class AdminServiceImpl implements AdminService {
                 "Health Sub Facility",
                 "Village",
                 "ASHA Creation Date",
-                "ASHA Job Status"
         });
         Integer counter = 2;
         if(inactiveCandidates.isEmpty()) {
@@ -1981,6 +2039,8 @@ public class AdminServiceImpl implements AdminService {
         }
         Set<String> keyid = empinfo.keySet();
         createHeadersForReportFiles(workbook, reportRequest);
+        List<String> comments= getHeaderComment().get("Cumulative Inactive Users");
+        Integer index=0;
         int rowid=7;
         for (String key : keyid) {
             row = spreadsheet.createRow(rowid++);
@@ -2010,6 +2070,12 @@ public class AdminServiceImpl implements AdminService {
                 else{
                     cell.setCellStyle(borderStyle);
                 }
+
+                if(key.equals("1")){
+                    createComment(cell,row,comments,index,workbook,spreadsheet);
+                    index++;
+                }
+
             }
         }
         //Write the workbook in file system
@@ -2969,6 +3035,7 @@ public class AdminServiceImpl implements AdminService {
         Cell cell8=row1.createCell(5);
         Cell cell9=row1.createCell(8);
         Cell cell10=row1.createCell(9);
+
         cell1.setCellValue("Report:");
         cell2.setCellValue(ReportType.getType(reportRequest.getReportType()).getReportHeader());
         if(reportRequest.getReportType().equals(ReportType.maAnonymous.getReportType())){
@@ -3025,6 +3092,7 @@ public class AdminServiceImpl implements AdminService {
             }
             cell9.setCellValue("Block:");
             cell10.setCellValue(blockName);
+
         }
         cell1.setCellStyle(style);
         cell2.setCellStyle(style);
@@ -3036,11 +3104,24 @@ public class AdminServiceImpl implements AdminService {
         cell7.setCellStyle(style);
         cell8.setCellStyle(style);
         cell9.setCellStyle(style);
-        cell10.setCellStyle(style);}
+        cell10.setCellStyle(style);
 
+
+
+        }
+        XSSFRow row2=spreadsheet.createRow(++rowid);
+        Cell cell11=row2.createCell(0);
+        Cell cell12=row2.createCell(3);
+        cell11.setCellValue("Report Generated on : ");
+        cell12.setCellValue(getTodayDateMonthYear());
+        cell11.setCellStyle(style);
+        cell12.setCellStyle(style);
         CellRangeAddress range5 =new CellRangeAddress(5,5,1,3);
             cleanBeforeMergeOnValidCells(spreadsheet,range5,style );
             spreadsheet.addMergedRegion(range5);
+        CellRangeAddress range8 = new CellRangeAddress(6, 6, 0, 2);
+        cleanBeforeMergeOnValidCells(spreadsheet, range8, style);
+        spreadsheet.addMergedRegion(range8);
         if(!reportRequest.getReportType().equals(ReportType.maAnonymous.getReportType())) {
             CellRangeAddress range6 = new CellRangeAddress(5, 5, 5, 7);
             cleanBeforeMergeOnValidCells(spreadsheet, range6, style);
@@ -3048,6 +3129,7 @@ public class AdminServiceImpl implements AdminService {
             CellRangeAddress range7 = new CellRangeAddress(5, 5, 9, 11);
             cleanBeforeMergeOnValidCells(spreadsheet, range7, style);
             spreadsheet.addMergedRegion(range7);
+
         }
 
     }
@@ -3862,7 +3944,28 @@ public class AdminServiceImpl implements AdminService {
 
         return monthString+" "+yearString;
     }
+    private String getTodayDateMonthYear() {
+        Calendar calendar=Calendar.getInstance();
+        calendar.setTime(new Date());
+        int date=calendar.get(Calendar.DATE);
+        int month=calendar.get(Calendar.MONTH)+1;
+        int year=(calendar.get(Calendar.YEAR))%100;
+        String dateString;
+        if(date<10) {
+            dateString="0"+String.valueOf(date);
+        }
+        else dateString=String.valueOf(date);
+        String monthString;
+        if(month<10){
+            monthString="0"+String.valueOf(month);
+        }
+        else monthString=String.valueOf(month);
 
+        String yearString=String.valueOf(year);
+
+        return dateString + "-" + monthString+"-"+yearString;
+
+    }
     /**
      * from date to todate in String format.
      * @param toDate

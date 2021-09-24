@@ -5,6 +5,9 @@ public class MAPerformanceCountsDto {
     Long accessedAtleastOnce;
     Integer ashasFailed;
     Long accessedNotOnce;
+    Long ashasRefresherCourse;
+    Long ashasDeactivated;
+    Long ashasActivated;
 
     public Long getAccessedAtleastOnce() {
         return accessedAtleastOnce;
@@ -28,5 +31,29 @@ public class MAPerformanceCountsDto {
 
     public void setAccessedNotOnce(Long accessedNotOnce) {
         this.accessedNotOnce = accessedNotOnce;
+    }
+
+    public Long getAshasRefresherCourse() {
+        return ashasRefresherCourse;
+    }
+
+    public void setAshasRefresherCourse(Long ashasRefresherCourse) {
+        this.ashasRefresherCourse = ashasRefresherCourse;
+    }
+
+    public Long getAshasDeactivated() {
+        return ashasDeactivated;
+    }
+
+    public void setAshasDeactivated(Long ashasDeactivated) {
+        this.ashasDeactivated = ashasDeactivated;
+    }
+
+    public Long getAshasActivated() {
+        return ashasActivated;
+    }
+
+    public void setAshasActivated(Long ashasActivated) {
+        this.ashasActivated = ashasActivated;
     }
 }
