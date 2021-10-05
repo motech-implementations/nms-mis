@@ -26,11 +26,21 @@
                 <div class="col-xs-3">
                     <p>The Certificate has been generated: </p>
                 </div>
-                <div class="col-xs-3" data-ng-repeat="i in certificateList">
-                    <b>{{i.AshaName}}</b> <br>
-                    <span data-ng-click="clearFile()">
-                    <a href="{{i.downloadCertificateUrl}}">Click here to download. <img alt="download" src="images/export2.png"></a>
-                    </span>
+                <div class="col-xs-6">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Name</th>
+                            <th>Certificate<br>Click on the icon to download</th>
+                        </tr>
+                        <tr data-ng-repeat="i in certificateList">
+                            <td><b>{{i.AshaName}}</b></td>
+                            <td>
+                                <span data-ng-click="clearFile()">
+                                    <a href="{{i.downloadCertificateUrl}}"><img alt="download" src="images/export2.png"></a>
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>
