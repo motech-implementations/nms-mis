@@ -128,7 +128,7 @@ public class CertificateServiceImpl implements CertificateService {
 //          PDFont textFont = PDType1Font.TIMES_ROMAN;
 
             int textFontSize = 16;
-            int dateFontSize = 14;
+            int dateFontSize = 10;
 
             //Loading an existing document
             File file = new File( retrieveDocuments() + "Certificate/SampleAshaCertificate.pdf");
