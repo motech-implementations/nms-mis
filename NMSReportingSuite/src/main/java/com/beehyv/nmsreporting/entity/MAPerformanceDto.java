@@ -21,6 +21,7 @@ public class MAPerformanceDto {
     Long ashasDeactivated;
     Long ashasActivated;
     Long ashasJoined;
+    Long ashasCompletedInGivenTime;
 
 //    Integer ashasRejected;
 //    Integer recordsReceived;
@@ -138,5 +139,13 @@ public class MAPerformanceDto {
 
     public void setAshasJoined(Long ashasJoined) {
         this.ashasJoined = ashasJoined;
+    }
+
+    public Long getAshasCompletedInGivenTime() {
+        return ashasCompletedInGivenTime;
+    }
+
+    public void setAshasCompletedInGivenTime(Long ashasCompletedInGivenTime) {
+        this.ashasCompletedInGivenTime = ashasCompletedInGivenTime;
     }
 }

@@ -17,4 +17,10 @@ public interface MAPerformanceDao {
     Long getAshaDeactivated(Integer locationId, String locationType, Date toDate);
 
     Long getAshaRefresherCourse(Integer locationId, String locationType);
+
+    Long getAshasCompletedInGivenTime(Integer locationId, String locationType, Date fromDate, Date toDate);
+
+    Long getAshaActivatedInBetween(Integer locationId, String locationType, Date fromDate, Date toDate);
+
+    Long getAshaDeactivatedInBetween(Integer locationId, String locationType, Date fromDate, Date toDate);
 }

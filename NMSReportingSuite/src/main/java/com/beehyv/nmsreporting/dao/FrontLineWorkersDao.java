@@ -25,4 +25,12 @@ public interface FrontLineWorkersDao {
 
     public List<FrontLineWorkers> getAllFrontLineWorkers(Date toDate, Integer stateId);
 
+    public List<FrontLineWorkers> getActiveFrontLineWorkers(Date toDate);
+
+    public List<FrontLineWorkers> getActiveFrontLineWorkersWithStateId(Date toDate, Integer stateId);
+
+    public List<FrontLineWorkers> getActiveFrontLineWorkersWithDistrictId(Date toDate, Integer districtId);
+
+    public List<FrontLineWorkers> getActiveFrontLineWorkersWithBlockId(Date toDate, Integer blockId);
+
 }

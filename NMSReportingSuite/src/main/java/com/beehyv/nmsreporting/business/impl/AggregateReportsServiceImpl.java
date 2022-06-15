@@ -691,12 +691,17 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
 
 
         Map<String,List<String>> map = new HashMap<String, List<String>>();
-       map.put("MA Performance",Arrays.asList("State","ASHAs who have started the course for the first time in the selected period.","Number of ASHAs who had started the course before the selected period, had accessed the course at least once with one bookmark during the selected period and not completed the course till the end of the selected period ",
-              "Number of ASHAs who had started the course before the selected period and had not accessed the course once during the selected period. The count does NOT include ASHAs who have any successful completion till the end of the selected period." ,
+       map.put("MA Performance",Arrays.asList("Location Name",
+               "Total Number of active Asha from beginning",
+               "ASHAs who have started the course for the first time in the selected period.",
+               "Number of ASHAs who had started the course before the selected period, had accessed the course at least once with one bookmark during the selected period and not completed the course till the end of the selected period ",
+               "Doing course more than once",
                "Number of ASHAs who have successfully completed the course for first time, during the selected period and secured pass marks.",
+               "Number of ASHAs Started and Completed the Course in the Given time period",
+               "Number of ASHAs who had started the course before the selected period and had not accessed the course once during the selected period. The count does NOT include ASHAs who have any successful completion till the end of the selected period." ,
                "Number of ASHAs who have completed the course during the selected period and did not secure passing marks even once till the end of selected period",
-               "Doing course more than once","Total Number of active Asha from beginning","Total Number of Asha joined from beginning",
-               "Total Number of asha deactivated or left from beginning"));
+               "Total Number of Asha joined during the selected time period",
+               "Total Number of asha deactivated or left during the selected time period"));
        map.put("MA Subscriber",Arrays.asList("State","Number of ASHAs who have registered in the MA course prior to the start of the period but have not completed the course.",
                "Number of ASHA Records that have been received from web service from MCTS/RCH during the period",
                "Number of the records that have been rejected",

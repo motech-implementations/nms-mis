@@ -779,10 +779,11 @@ public class UserController {
                             summaryDto1.setAshasFailed(MAperformanceCounts.getAshasFailed());
                             summaryDto1.setAshasAccessed(MAperformanceCounts.getAccessedAtleastOnce());
                             summaryDto1.setAshasNotAccessed(MAperformanceCounts.getAccessedNotOnce());
-                            summaryDto1.setAshasActivated(MAperformanceCounts.getAshasActivated());
-                            summaryDto1.setAshasDeactivated(MAperformanceCounts.getAshasDeactivated());
+                            summaryDto1.setAshasActivated(Long.valueOf(a.getAshasRegistered()));
+                            summaryDto1.setAshasDeactivated(MAperformanceCounts.getAshasDeactivatedInBetween());
                             summaryDto1.setAshasRefresherCourse(MAperformanceCounts.getAshasRefresherCourse());
-                            summaryDto1.setAshasJoined(MAperformanceCounts.getAshasActivated()+MAperformanceCounts.getAshasDeactivated());
+                            summaryDto1.setAshasCompletedInGivenTime(MAperformanceCounts.getAshasCompletedInGivenTime());
+                            summaryDto1.setAshasJoined(MAperformanceCounts.getAshasActivatedInBetween());
 //                            summaryDto1.setAshasFailed(maPerformanceService.getAshasFailed(a.getLocationId().intValue(), a.getLocationType(), fromDate, toDate));
 //                            summaryDto1.setAshasAccessed(maPerformanceService.getAccessedCount(a.getLocationId().intValue(), a.getLocationType(), fromDate, toDate));
 //                            summaryDto1.setCompletedPercentage(a.getAshasCompleted()*100/a.getAshasStarted());
@@ -1246,6 +1247,13 @@ public class UserController {
                 ReportType.maInactive.getSimpleName(),
                 "images/drop-down-3.png",
                 ReportType.maInactive.getServiceType(),showLinelistingReports)
+        );
+        maList.add(new Report(
+                ReportType.maFreshActive.getReportName(),
+                ReportType.maFreshActive.getReportType(),
+                ReportType.maFreshActive.getSimpleName(),
+                "images/drop-down-3.png",
+                ReportType.maFreshActive.getServiceType(),showLinelistingReports)
         );
         maList.add(new Report(
                 ReportType.flwRejected.getReportName(),
