@@ -12,6 +12,7 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -122,9 +123,12 @@ public class CertificateServiceImpl implements CertificateService {
 
         String response;
         try {
-            PDFont textFont = PDType1Font.TIMES_ROMAN;
+            String font_path = retrieveDocuments() + "caslon_italic.ttf";
+            PDFont textFont = PDType0Font.load( sampleDocument, new File(font_path) );
+//          PDFont textFont = PDType1Font.TIMES_ROMAN;
 
-            int textFontSize = 12;
+            int textFontSize = 16;
+            int dateFontSize = 14;
 
             //Loading an existing document
             File file = new File( retrieveDocuments() + "Certificate/SampleAshaCertificate.pdf");
@@ -136,10 +140,10 @@ public class CertificateServiceImpl implements CertificateService {
             PDRectangle mediaBox = page.getMediaBox();
 
             float nameX = mediaBox.getWidth() / 3 + 20;
-            float nameY = mediaBox.getHeight() / 2 + 25;
+            float nameY = mediaBox.getHeight() / 2 + 31;
 
-            float dateX = nameX - 50;
-            float dateY = nameY - 35;
+            float dateX = nameX - 71;
+            float dateY = nameY - 37;
 
             float mobileNoX = mediaBox.getWidth() / 2 - 35;
             float mobileNoY = dateY - 87;
@@ -148,14 +152,14 @@ public class CertificateServiceImpl implements CertificateService {
             float signatureY = mobileNoY - 30;
 
 
-            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MMMM-yyyy");
             String completion = formatter.format(completionDate);
 
 //          String signature = "Rakesh Kumar";
 
-            be.quodlibet.boxable.utils.PDStreamUtils.write(contents, name, textFont, textFontSize, nameX, nameY, Color.RED);
-            be.quodlibet.boxable.utils.PDStreamUtils.write(contents, completion, textFont, textFontSize, dateX, dateY, Color.RED);
-            be.quodlibet.boxable.utils.PDStreamUtils.write(contents, msisdn.toString(), textFont, textFontSize, mobileNoX, mobileNoY, Color.RED);
+            be.quodlibet.boxable.utils.PDStreamUtils.write(contents, name, textFont, textFontSize, nameX, nameY, Color.BLUE);
+            be.quodlibet.boxable.utils.PDStreamUtils.write(contents, completion, textFont, dateFontSize, dateX, dateY, Color.BLUE);
+            be.quodlibet.boxable.utils.PDStreamUtils.write(contents, msisdn.toString(), textFont, textFontSize, mobileNoX, mobileNoY, Color.BLUE);
 
 //          be.quodlibet.boxable.utils.PDStreamUtils.write(contents, signature, textFont, textFontSize, signatureX, signatureY, Color.RED);
 
