@@ -358,4 +358,113 @@ public class MAPerformanceDaoImpl extends AbstractDao<Integer, User> implements 
         }
         return 0l;
     }
+
+    @Override
+    public Long getAshasCompletedInGivenTime(Integer locationId, String locationType, Date fromDate, Date toDate) {
+
+        if(locationType.equalsIgnoreCase("state")) {
+            Query query = getSession().createSQLQuery("select count(f.flw_id) from front_line_worker f where f.flw_designation = 'ASHA' and f.state_id = :locationId AND f.course_start_date > :fromDate AND f.course_first_completion_date < :toDate");
+            query.setParameter("fromDate",fromDate);
+            query.setParameter("toDate",toDate);
+            query.setParameter("locationId",locationId);
+            return ((BigInteger) query.uniqueResult()).longValue();
+        }
+        if(locationType.equalsIgnoreCase("district")){
+            Query query = getSession().createSQLQuery("select count(f.flw_id) from front_line_worker f where f.flw_designation = 'ASHA' and f.district_id = :locationId AND f.course_start_date > :fromDate AND f.course_first_completion_date < :toDate");
+            query.setParameter("fromDate",fromDate);
+            query.setParameter("toDate",toDate);
+            query.setParameter("locationId",locationId);
+            return ((BigInteger) query.uniqueResult()).longValue();
+        }
+        if(locationType.equalsIgnoreCase("block")){
+            Query query = getSession().createSQLQuery("select count(distinct f.flw_id) from front_line_worker f where f.flw_designation = 'ASHA' and f.block_id = :locationId AND f.course_start_date > :fromDate AND f.course_first_completion_date < :toDate");
+            query.setParameter("fromDate",fromDate);
+            query.setParameter("toDate",toDate);
+            query.setParameter("locationId",locationId);
+            return ((BigInteger) query.uniqueResult()).longValue();
+        }
+        if(locationType.equalsIgnoreCase("subcenter")) {
+            Query query = getSession().createSQLQuery("select count(distinct f.flw_id) from front_line_worker f where f.flw_designation = 'ASHA' and f.healthsubfacility_id = :locationId AND f.course_start_date > :fromDate AND f.course_first_completion_date < :toDate");
+            query.setParameter("fromDate",fromDate);
+            query.setParameter("toDate",toDate);
+            query.setParameter("locationId",locationId);
+            return ((BigInteger) query.uniqueResult()).longValue();
+
+        }
+
+        return (long)0;
+    }
+
+    @Override
+    public Long getAshaActivatedInBetween(Integer locationId, String locationType, Date fromDate, Date toDate) {
+
+        if(locationType.equalsIgnoreCase("state")) {
+            Query query = getSession().createSQLQuery("select count(distinct f.flw_id) from front_line_worker f where f.flw_designation = 'ASHA' and f.state_id = :locationId AND f.job_status = 'ACTIVE' AND f.creationdate BETWEEN :fromDate AND :toDate");
+            query.setParameter("fromDate",fromDate);
+            query.setParameter("toDate",toDate);
+            query.setParameter("locationId",locationId);
+            return ((BigInteger) query.uniqueResult()).longValue();
+        }
+        if(locationType.equalsIgnoreCase("district")){
+            Query query = getSession().createSQLQuery("select count(distinct f.flw_id) from front_line_worker f where f.flw_designation = 'ASHA' and f.district_id = :locationId AND f.job_status = 'ACTIVE' AND f.creationdate BETWEEN :fromDate AND :toDate");
+            query.setParameter("fromDate",fromDate);
+            query.setParameter("toDate",toDate);
+            query.setParameter("locationId",locationId);
+            return ((BigInteger) query.uniqueResult()).longValue();
+        }
+        if(locationType.equalsIgnoreCase("block")){
+            Query query = getSession().createSQLQuery("select count(distinct f.flw_id) from front_line_worker f where f.flw_designation = 'ASHA' and f.block_id = :locationId AND f.job_status = 'ACTIVE' AND f.creationdate BETWEEN :fromDate AND :toDate");
+            query.setParameter("fromDate",fromDate);
+            query.setParameter("toDate",toDate);
+            query.setParameter("locationId",locationId);
+            return ((BigInteger) query.uniqueResult()).longValue();
+        }
+        if(locationType.equalsIgnoreCase("subcenter")) {
+            Query query = getSession().createSQLQuery("select count(distinct f.flw_id) from front_line_worker f where f.flw_designation = 'ASHA' and f.healthsubfacility_id = :locationId AND f.job_status = 'ACTIVE' AND f.creationdate BETWEEN :fromDate AND :toDate");
+            query.setParameter("fromDate",fromDate);
+            query.setParameter("toDate",toDate);
+            query.setParameter("locationId",locationId);
+            return ((BigInteger) query.uniqueResult()).longValue();
+
+        }
+
+        return (long)0;
+    }
+
+    @Override
+    public Long getAshaDeactivatedInBetween(Integer locationId, String locationType, Date fromDate, Date toDate) {
+
+        if(locationType.equalsIgnoreCase("state")) {
+            Query query = getSession().createSQLQuery("select count(distinct f.flw_id) from front_line_worker f where f.flw_designation = 'ASHA' and f.state_id = :locationId AND f.job_status = 'INACTIVE' AND f.modificationdate BETWEEN :fromDate AND :toDate");
+            query.setParameter("fromDate",fromDate);
+            query.setParameter("toDate",toDate);
+            query.setParameter("locationId",locationId);
+            return ((BigInteger) query.uniqueResult()).longValue();
+        }
+        if(locationType.equalsIgnoreCase("district")){
+            Query query = getSession().createSQLQuery("select count(distinct f.flw_id) from front_line_worker f where f.flw_designation = 'ASHA' and f.district_id = :locationId AND f.job_status = 'INACTIVE' AND f.modificationdate BETWEEN :fromDate AND :toDate");
+            query.setParameter("fromDate",fromDate);
+            query.setParameter("toDate",toDate);
+            query.setParameter("locationId",locationId);
+            return ((BigInteger) query.uniqueResult()).longValue();
+        }
+        if(locationType.equalsIgnoreCase("block")){
+            Query query = getSession().createSQLQuery("select count(distinct f.flw_id) from front_line_worker f where f.flw_designation = 'ASHA' and f.block_id = :locationId AND f.job_status = 'INACTIVE' AND f.modificationdate BETWEEN :fromDate AND :toDate");
+            query.setParameter("fromDate",fromDate);
+            query.setParameter("toDate",toDate);
+            query.setParameter("locationId",locationId);
+            return ((BigInteger) query.uniqueResult()).longValue();
+        }
+        if(locationType.equalsIgnoreCase("subcenter")) {
+            Query query = getSession().createSQLQuery("select count(distinct f.flw_id) from front_line_worker f where f.flw_designation = 'ASHA' and f.healthsubfacility_id = :locationId AND f.job_status = 'INACTIVE' AND f.modificationdate BETWEEN :fromDate AND :toDate");
+            query.setParameter("fromDate",fromDate);
+            query.setParameter("toDate",toDate);
+            query.setParameter("locationId",locationId);
+            return ((BigInteger) query.uniqueResult()).longValue();
+
+        }
+
+        return (long)0;
+    }
+
 }

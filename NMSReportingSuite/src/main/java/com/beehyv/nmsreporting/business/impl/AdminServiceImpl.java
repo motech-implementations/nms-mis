@@ -740,6 +740,41 @@ public class AdminServiceImpl implements AdminService {
                 }
             }
         }
+
+        else if(reportRequest.getReportType().equals(ReportType.maFreshActive.getReportType())){
+            reportRequest.setFromDate(toDate);
+            if(stateId==0){
+                List<FrontLineWorkers> allCandidates = frontLineWorkersDao.getActiveFrontLineWorkers(toDate);
+                getCumulativeActiveUsers(allCandidates, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate, reportRequest);
+            }
+            else{
+                String stateName=StReplace(stateDao.findByStateId(stateId).getStateName());
+                String rootPathState = rootPath+ stateName+ "/";
+                if(districtId==0){
+                    List<FrontLineWorkers> candidatesFromThisState = frontLineWorkersDao.getActiveFrontLineWorkersWithStateId(toDate,stateId);
+
+                    getCumulativeActiveUsers(candidatesFromThisState,rootPathState, stateName, toDate, reportRequest);
+                }
+                else{
+                    String districtName=StReplace(districtDao.findByDistrictId(districtId).getDistrictName());
+                    String rootPathDistrict = rootPathState+ districtName+ "/";
+                    if(blockId==0){
+                        List<FrontLineWorkers> candidatesFromThisDistrict = frontLineWorkersDao.getActiveFrontLineWorkersWithDistrictId(toDate,districtId);
+
+                        getCumulativeActiveUsers(candidatesFromThisDistrict,rootPathDistrict, districtName, toDate, reportRequest);
+                    }
+                    else{
+                        String blockName=StReplace(blockDao.findByblockId(blockId).getBlockName());
+                        String rootPathblock = rootPathDistrict + blockName+ "/";
+
+                        List<FrontLineWorkers> candidatesFromThisBlock = frontLineWorkersDao.getActiveFrontLineWorkersWithBlockId(toDate,blockId);
+
+                        getCumulativeActiveUsers(candidatesFromThisBlock, rootPathblock, blockName, toDate, reportRequest);
+                    }
+                }
+            }
+        }
+
         else if(reportRequest.getReportType().equals(ReportType.maAnonymous.getReportType())){
             reportRequest.setFromDate(toDate);
 
@@ -1713,6 +1748,9 @@ public class AdminServiceImpl implements AdminService {
         map.put("Registered ASHAs not Started MA Course",Arrays.asList("S.No","ASHA Name","ASHA MCTS/RCH ID","Mobile Number",
                 "State","District","Taluka","Health Block","Health Facility","Health Sub Facility","Village","This is the date when ASHA records came in to the Mobile Academy system for the first time",
                 "ASHA’s Status as received from MCTS/RCH"));
+        map.put("Registered Active ASHAs not completed MA Course",Arrays.asList("S.No","ASHA Name","ASHA MCTS/RCH ID","Mobile Number",
+                "State","District","Taluka","Health Block","Health Facility","Health Sub Facility","Village","This is the date when ASHA has started the course for the first time",
+                "ASHA’s Status as received from MCTS/RCH"));
         map.put("Asha Rejected Records",Arrays.asList("S.No","ASHA Name","ASHA Id","ASHA Mobile Number","State Name","District Name","Taluka Name","Health Block","Health Facility",
                         "Health Sub-Facility","Village Name","ASHA’s GF Status as received from MCTS/RCH","This gives why the ASHA record was rejected"));
         return map;
@@ -2102,6 +2140,151 @@ public class AdminServiceImpl implements AdminService {
             e.printStackTrace();
         }
     }
+
+    private void getCumulativeActiveUsers(List<FrontLineWorkers> activeCandidates, String rootPath, String place, Date toDate, ReportRequest reportRequest) {
+
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        //Create a blank sheet
+        XSSFSheet spreadsheet = workbook.createSheet(
+                "Registered Active ASHAs not Completed MA Course Report "+place+"_"+getMonthYear(toDate));
+        spreadsheet.protectSheet("123");
+        //Create row object
+        XSSFRow row;
+        //This data needs to be written (Object[])
+
+        XSSFCellStyle style = workbook.createCellStyle();//Create style
+        style.setAlignment(CellStyle.ALIGN_CENTER);
+        style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+        style.setFillForegroundColor(new XSSFColor(new java.awt.Color(33, 100, 178)));
+        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        style.setBorderBottom(CellStyle.BORDER_THIN);
+        style.setBottomBorderColor(IndexedColors.WHITE.getIndex());
+        style.setBorderLeft(CellStyle.BORDER_THIN);
+        style.setLeftBorderColor(IndexedColors.WHITE.getIndex());
+        style.setBorderRight(CellStyle.BORDER_THIN);
+        style.setRightBorderColor(IndexedColors.WHITE.getIndex());
+        style.setBorderTop(CellStyle.BORDER_THIN);
+        style.setTopBorderColor(IndexedColors.WHITE.getIndex());
+        style.setWrapText(true);
+
+        Font font = workbook.createFont();
+        font.setColor(HSSFColor.WHITE.index);
+        font.setFontName(HSSFFont.FONT_ARIAL);
+        font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+        style.setFont(font);
+
+        CellStyle borderStyle = workbook.createCellStyle();
+        borderStyle.setBorderBottom(CellStyle.BORDER_THIN);
+        borderStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setBorderLeft(CellStyle.BORDER_THIN);
+        borderStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setBorderRight(CellStyle.BORDER_THIN);
+        borderStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setBorderTop(CellStyle.BORDER_THIN);
+        borderStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        borderStyle.setWrapText(true);
+        borderStyle.setLocked(false);
+
+        Map<String, Object[]> empinfo =
+                new TreeMap<String, Object[]>();
+        empinfo.put("1", new Object[]{
+                "S.No",
+                "ASHA Name",
+                "ASHA MCTS/RCH ID",
+                "Mobile Number",
+                "State",
+                "District",
+                "Taluka",
+                "Health Block",
+                "Health Facility",
+                "Health Sub Facility",
+                "Village",
+                "ASHA Course Start Date",
+                "ASHA Job Status",
+        });
+        Integer counter = 2;
+        if(activeCandidates.isEmpty()) {
+            empinfo.put(counter.toString(),new Object[]{"No Records to display"});
+        }
+        for (FrontLineWorkers frontLineWorker : activeCandidates) {
+            empinfo.put((counter.toString()), new Object[]{
+                    counter-1,
+                    (frontLineWorker.getFullName() == null) ? "No Name":frontLineWorker.getFullName(),
+                    (frontLineWorker.getExternalFlwId() == null) ? "No FLW_ID":frontLineWorker.getExternalFlwId(),
+                    (frontLineWorker.getMobileNumber() == null) ? "No Phone":frontLineWorker.getMobileNumber(),
+                    (frontLineWorker.getState() == null) ? "No State":stateDao.findByStateId(frontLineWorker.getState()).getStateName(),
+                    (frontLineWorker.getDistrict() == null) ? "No District":districtDao.findByDistrictId(frontLineWorker.getDistrict()).getDistrictName(),
+                    (frontLineWorker.getTaluka() == null) ? "No Taluka" : talukaDao.findByTalukaId(frontLineWorker.getTaluka()).getTalukaName(),
+                    (frontLineWorker.getBlock() == null) ? "No Block" : blockDao.findByblockId(frontLineWorker.getBlock()).getBlockName(),
+                    (frontLineWorker.getFacility() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(frontLineWorker.getFacility()).getHealthFacilityName(),
+                    (frontLineWorker.getSubfacility() == null) ? "No Health Subfacility" : healthSubFacilityDao.findByHealthSubFacilityId(frontLineWorker.getSubfacility()).getHealthSubFacilityName(),
+                    (frontLineWorker.getVillage() == null) ? "No Village" : villageDao.findByVillageId(frontLineWorker.getVillage()).getVillageName(),
+                    (frontLineWorker.getCreationDate() == null) ? "No Course_start_date":frontLineWorker.getCourseStartDate(),
+                    (frontLineWorker.getJobStatus() == null) ? "Job status not defined":frontLineWorker.getJobStatus(),
+//                    (frontLineWorker.getJobStatus() == null) ? "No Designation":frontLineWorker.getJobStatus()
+            });
+            counter++;
+        }
+        Set<String> keyid = empinfo.keySet();
+        createHeadersForReportFiles(workbook, reportRequest);
+        List<String> comments= getHeaderComment().get("Registered Active ASHAs not completed MA Course");
+        Integer index=0;
+        int rowid=7;
+        for (String key : keyid) {
+            row = spreadsheet.createRow(rowid++);
+            if(rowid==8){
+                row.setHeight((short)1100);}
+            Object[] objectArr = empinfo.get(key);
+            int cellid = 0;
+            for (Object obj : objectArr) {
+
+                Cell cell = row.createCell(cellid++);
+
+                if(rowid!=8&&((cellid==4&&!obj.toString().equalsIgnoreCase("No Phone"))
+                        ||(cellid==3&&!obj.toString().equalsIgnoreCase("No FLW_ID")))){
+                    cell.setCellValue(obj.toString());}
+                else{
+                    cell.setCellValue(obj.toString());
+                }
+                if(rowid!=8&&cellid==1&& !activeCandidates.isEmpty()){
+                    cell.setCellValue(rowid-8);
+                }
+                if(rowid==8){
+                    cell.setCellStyle(style);}
+                else if(rowid==9 && activeCandidates.isEmpty()) {
+                    CellUtil.setAlignment(cell, workbook, CellStyle.ALIGN_CENTER);
+                    spreadsheet.addMergedRegion(CellRangeAddress.valueOf("A9:M9"));
+                }
+                else{
+                    cell.setCellStyle(borderStyle);
+                }
+
+                if(key.equals("1")){
+                    createComment(cell,row,comments,index,workbook,spreadsheet);
+                    index++;
+                }
+
+            }
+        }
+        //Write the workbook in file system
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(new File(rootPath + ReportType.maFreshActive.getReportType() + "_" + place + "_" + getMonthYear(toDate) + ".xlsx"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            workbook.write(out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void updateCumulativeInactiveUsers(List<FrontLineWorkers> inactiveCandidates, String rootPath, String place, Date toDate, ReportRequest reportRequest) {
 

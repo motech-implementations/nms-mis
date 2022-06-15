@@ -212,6 +212,7 @@ public class AdminController {
         adminService.createFiles(maCourse.getReportType());
         adminService.createFolders(ReportType.maAnonymous.getReportType());
         adminService.createFiles(ReportType.maInactive.getReportType());
+        adminService.createFiles(ReportType.maFreshActive.getReportType());
         adminService.createFiles(ReportType.lowUsage.getReportType());
         adminService.createFiles(ReportType.selfDeactivated.getReportType());
         adminService.createFiles(ReportType.sixWeeks.getReportType());

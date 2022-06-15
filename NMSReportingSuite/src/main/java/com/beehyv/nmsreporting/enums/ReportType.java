@@ -25,6 +25,7 @@ public enum ReportType {
     maCourse("MA_Cumulative_Course_Completion", "Course Completion", "MOBILE_ACADEMY","MA Completion Line-Listing Report", "Course Completion"),
     maAnonymous("MA_Anonymous_Users", "Circle wise Anonymous Users", "MOBILE_ACADEMY", "MA Circle Wise Anonymous Line-Listing Report", "Circle wise Anonymous Users"),
     maInactive("Registered_ASHAs_not_Started_MA_Course", "Registered ASHAs not Started MA Course", "MOBILE_ACADEMY", "Registered ASHAs not Started MA Course Line-Listing Report", "Registered ASHAs not Started MA Course"),
+    maFreshActive("Registered_Active_ASHAs_not_completed_MA_Course", "Registered Active ASHAs not Completed MA Course", "MOBILE_ACADEMY", "Registered Active ASHAs not Completed MA Course Line-Listing Report", "Registered Active ASHAs not Completed MA Course"),
     lowUsage("Kilkari_Low_Usage", "Listen to < 25% this month", "KILKARI","Kilkari Low Listenership Line Listing Report", "Listened to < 25% this month"),
     selfDeactivated("Kilkari_Self_Deactivated", "Self Deactivations", "KILKARI","Kilkari Self–deactivation line listing Report", "Self Deactivations"),
     sixWeeks("Kilkari_Six_Weeks_No_Answer", "Deactivated for not answering", "KILKARI","Kilkari Deactivations for not answering Report", "Deactivated for not answering"),

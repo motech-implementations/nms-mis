@@ -88,6 +88,70 @@ public class FrontLineWorkersDaoImpl extends AbstractDao<Integer,FrontLineWorker
     }
 
     @Override
+    public List<FrontLineWorkers> getActiveFrontLineWorkers(Date toDate) {
+        Criteria criteria = createEntityCriteria().addOrder(Order.asc("creationDate"));
+        criteria.add(Restrictions.and(
+                Restrictions.eq("status","ACTIVE").ignoreCase(),
+                Restrictions.eq("designation","ASHA").ignoreCase(),
+                Restrictions.lt("courseStartDate",toDate),
+                (Restrictions.not(
+                        Restrictions.in("district", new Integer[] {471,474,483,490})
+                )),
+                Restrictions.isNull("firstCompletionDate")
+        ));
+        return (List<FrontLineWorkers>) criteria.list();
+    }
+
+    @Override
+    public List<FrontLineWorkers> getActiveFrontLineWorkersWithStateId(Date toDate, Integer stateId) {
+        Criteria criteria = createEntityCriteria().addOrder(Order.asc("creationDate"));
+        criteria.add(Restrictions.and(
+                Restrictions.eq("status","ACTIVE").ignoreCase(),
+                Restrictions.eq("designation","ASHA").ignoreCase(),
+                Restrictions.lt("courseStartDate",toDate),
+                (Restrictions.not(
+                        Restrictions.in("district", new Integer[] {471,474,483,490})
+                )),
+                Restrictions.isNull("firstCompletionDate"),
+                Restrictions.eq("state",stateId)
+        ));
+        return (List<FrontLineWorkers>) criteria.list();
+    }
+
+    @Override
+    public List<FrontLineWorkers> getActiveFrontLineWorkersWithDistrictId(Date toDate, Integer districtId) {
+        Criteria criteria = createEntityCriteria().addOrder(Order.asc("creationDate"));
+        criteria.add(Restrictions.and(
+                Restrictions.eq("status","ACTIVE").ignoreCase(),
+                Restrictions.eq("designation","ASHA").ignoreCase(),
+                Restrictions.lt("courseStartDate",toDate),
+                (Restrictions.not(
+                        Restrictions.in("district", new Integer[] {471,474,483,490})
+                )),
+                Restrictions.isNull("firstCompletionDate"),
+                Restrictions.eq("district",districtId)
+        ));
+        return (List<FrontLineWorkers>) criteria.list();
+    }
+
+    @Override
+    public List<FrontLineWorkers> getActiveFrontLineWorkersWithBlockId(Date toDate, Integer blockId) {
+        Criteria criteria = createEntityCriteria().addOrder(Order.asc("creationDate"));
+        criteria.add(Restrictions.and(
+                Restrictions.eq("status","ACTIVE").ignoreCase(),
+                Restrictions.eq("designation","ASHA").ignoreCase(),
+                Restrictions.lt("courseStartDate",toDate),
+                (Restrictions.not(
+                        Restrictions.in("district", new Integer[] {471,474,483,490})
+                )),
+                Restrictions.isNull("firstCompletionDate"),
+                Restrictions.eq("block",blockId)
+        ));
+        return (List<FrontLineWorkers>) criteria.list();
+    }
+
+
+    @Override
     public Long getCountOfInactiveFrontLineWorkersForGivenDistrict(Date toDate, Integer districtId) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.and(
