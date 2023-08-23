@@ -33,4 +33,6 @@ public interface FrontLineWorkersDao {
 
     public List<FrontLineWorkers> getActiveFrontLineWorkersWithBlockId(Date toDate, Integer blockId);
 
+    public FrontLineWorkers getFlwById( Long flwId);
+
 }

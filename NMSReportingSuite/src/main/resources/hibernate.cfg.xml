@@ -32,6 +32,6 @@
         <mapping class="com.beehyv.nmsreporting.model.AggregateCumulativeMA"/>
         <mapping class="com.beehyv.nmsreporting.model.AuditLog"/>
         <mapping class="com.beehyv.nmsreporting.model.AshaInEachBlock"/>
-
+        <mapping class="com.beehyv.nmsreporting.model.BulkCertificateAudit"/>
     </session-factory>
 </hibernate-configuration>

@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 /**
@@ -17,7 +19,8 @@ public  final class Global {
         InputStream input = null;
         String fileLocation = null;
         try {
-            File file = new File("../webapps/NMSReportingSuite/WEB-INF/classes/app.properties");
+            String pathname = "../webapps/NMSReportingSuite/WEB-INF/classes/app.properties";
+            File file = new File(Paths.get(pathname).normalize().toString());
             input = new FileInputStream(file);
             // load a properties file
             prop.load(input);

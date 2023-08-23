@@ -20,9 +20,6 @@ public class ChildImportRejectionDaoImpl extends AbstractDao<Long, ChildImportRe
         criteria.add(Restrictions.lt("modificationDate",toDate))
                 .add(Restrictions.ge("modificationDate",fromDate))
                 .add(Restrictions.eq("accepted",false))
-                .add((Restrictions.not(
-                        Restrictions.in("districtId", new Integer[] {471,474,483,490})
-                )))
                 .add(Restrictions.disjunction()
                 .add(Restrictions.eq("rejectionReason","DUPLICATE_MOBILE_NUMBER_IN_DATASET"))
                 .add(Restrictions.eq("rejectionReason","MOBILE_NUMBER_ALREADY_SUBSCRIBED"))
@@ -41,9 +38,6 @@ public class ChildImportRejectionDaoImpl extends AbstractDao<Long, ChildImportRe
                 .add(Restrictions.ge("modificationDate",fromDate))
                 .add(Restrictions.eq("accepted",false))
                 .add(Restrictions.eq("stateId",stateId))
-                .add((Restrictions.not(
-                        Restrictions.in("districtId", new Integer[] {471,474,483,490})
-                )))
                 .add(Restrictions.disjunction()
                 .add(Restrictions.eq("rejectionReason","DUPLICATE_MOBILE_NUMBER_IN_DATASET"))
                 .add(Restrictions.eq("rejectionReason","MOBILE_NUMBER_ALREADY_SUBSCRIBED"))

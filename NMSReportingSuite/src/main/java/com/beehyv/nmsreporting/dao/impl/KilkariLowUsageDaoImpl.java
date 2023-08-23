@@ -21,10 +21,7 @@ public class KilkariLowUsageDaoImpl extends AbstractDao<Integer, KilkariLowUsage
         Criteria criteria = getSession().createCriteria(KilkariLowUsage.class);
         criteria.add(
                 Restrictions.like("forMonth",forMonth)
-        )
-                .add((Restrictions.not(
-                        Restrictions.in("districtId", new Integer[] {471,474,483,490})
-                )));
+        );
         criteria.addOrder(Order.asc("modificationDate"));
         return (List<KilkariLowUsage>) criteria.list();
     }
@@ -35,10 +32,7 @@ public class KilkariLowUsageDaoImpl extends AbstractDao<Integer, KilkariLowUsage
         criteria.add(
                 Restrictions.like("forMonth",forMonth)
         )
-                .add(Restrictions.eq("stateId",stateId))
-                .add((Restrictions.not(
-                        Restrictions.in("districtId", new Integer[] {471,474,483,490})
-                )));
+                .add(Restrictions.eq("stateId",stateId));
         criteria.addOrder(Order.asc("modificationDate"));
         return (List<KilkariLowUsage>) criteria.list();
     }

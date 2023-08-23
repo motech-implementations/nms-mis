@@ -21,9 +21,6 @@ public class KilkariSixWeeksNoAnswerDaoImpl extends AbstractDao<Integer, Kilkari
     public List<KilkariManualDeactivations> getKilkariUsers(Date fromDate, Date toDate) {
         Criteria criteria = getSession().createCriteria(KilkariManualDeactivations.class);
         criteria.add(Restrictions.and(
-                (Restrictions.not(
-                        Restrictions.in("districtId", new Integer[] {471,474,483,490})
-                )),
                 Restrictions.lt("deactivationDate",toDate),
                 Restrictions.ge("deactivationDate",fromDate),
                 Restrictions.eq("deactivationReason","WEEKLY_CALLS_NOT_ANSWERED")
@@ -36,9 +33,6 @@ public class KilkariSixWeeksNoAnswerDaoImpl extends AbstractDao<Integer, Kilkari
     public List<KilkariManualDeactivations> getKilkariUsersWithStateId(Date fromDate, Date toDate, Integer stateId) {
         Criteria criteria = getSession().createCriteria(KilkariManualDeactivations.class);
         criteria.add(Restrictions.and(
-                (Restrictions.not(
-                        Restrictions.in("districtId", new Integer[] {471,474,483,490})
-                )),
                 Restrictions.lt("deactivationDate",toDate),
                 Restrictions.ge("deactivationDate",fromDate),
                 Restrictions.eq("deactivationReason","WEEKLY_CALLS_NOT_ANSWERED")
@@ -93,9 +87,6 @@ public class KilkariSixWeeksNoAnswerDaoImpl extends AbstractDao<Integer, Kilkari
     public List<KilkariManualDeactivations> getLowListenershipUsers(Date fromDate, Date toDate) {
         Criteria criteria = getSession().createCriteria(KilkariManualDeactivations.class);
         criteria.add(Restrictions.and(
-                (Restrictions.not(
-                        Restrictions.in("districtId", new Integer[] {471,474,483,490})
-                )),
                 Restrictions.lt("deactivationDate",toDate),
                 Restrictions.ge("deactivationDate",fromDate),
                 Restrictions.eq("deactivationReason","LOW_LISTENERSHIP")
@@ -108,9 +99,6 @@ public class KilkariSixWeeksNoAnswerDaoImpl extends AbstractDao<Integer, Kilkari
     public List<KilkariManualDeactivations> getLowListenershipUsersWithStateId(Date fromDate, Date toDate, Integer stateId) {
         Criteria criteria = getSession().createCriteria(KilkariManualDeactivations.class);
         criteria.add(Restrictions.and(
-                (Restrictions.not(
-                        Restrictions.in("districtId", new Integer[] {471,474,483,490})
-                )),
                 Restrictions.lt("deactivationDate",toDate),
                 Restrictions.ge("deactivationDate",fromDate),
                 Restrictions.eq("deactivationReason","LOW_LISTENERSHIP")

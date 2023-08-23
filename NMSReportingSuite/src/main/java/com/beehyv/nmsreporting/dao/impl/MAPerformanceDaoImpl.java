@@ -467,4 +467,52 @@ public class MAPerformanceDaoImpl extends AbstractDao<Integer, User> implements 
         return (long)0;
     }
 
+    @Override
+    public Long getAshaRefresherCourseInBetween(Integer locationId, String locationType, Date fromDate, Date toDate) {
+
+        if(locationType.equalsIgnoreCase("state")) {
+            Query query = getSession().createSQLQuery("select count(distinct a.flw_id) from ma_course_completion a join front_line_worker f on f.flw_id=a.flw_id " +
+                    " where a.flw_id in (select distinct flw_id from ma_course_completion where creationDate < :previousDate) and a.creationDate BETWEEN :fromDate AND :toDate and " +
+                    " f.flw_designation = 'ASHA' and f.state_id = :locationId");
+            query.setParameter("previousDate",fromDate);
+            query.setParameter("fromDate",fromDate);
+            query.setParameter("toDate",toDate);
+            query.setParameter("locationId",locationId);
+            return ((BigInteger) query.uniqueResult()).longValue();
+        }
+        if(locationType.equalsIgnoreCase("district")){
+            Query query = getSession().createSQLQuery("select count(distinct a.flw_id) from ma_course_completion a join front_line_worker f on f.flw_id=a.flw_id " +
+                    " where a.flw_id in (select distinct flw_id from ma_course_completion where creationDate < :previousDate) and a.creationDate BETWEEN :fromDate AND :toDate and " +
+                    " f.flw_designation = 'ASHA' and f.district_id = :locationId");
+            query.setParameter("previousDate",fromDate);
+            query.setParameter("fromDate",fromDate);
+            query.setParameter("toDate",toDate);
+            query.setParameter("locationId",locationId);
+            return ((BigInteger) query.uniqueResult()).longValue();
+        }
+        if(locationType.equalsIgnoreCase("block")){
+            Query query = getSession().createSQLQuery("select count(distinct a.flw_id) from ma_course_completion a join front_line_worker f on f.flw_id=a.flw_id " +
+                    " where a.flw_id in (select distinct flw_id from ma_course_completion where creationDate < :previousDate) and a.creationDate BETWEEN :fromDate AND :toDate and " +
+                    " f.flw_designation = 'ASHA' and f.block_id = :locationId");
+            query.setParameter("previousDate",fromDate);
+            query.setParameter("fromDate",fromDate);
+            query.setParameter("toDate",toDate);
+            query.setParameter("locationId",locationId);
+            return ((BigInteger) query.uniqueResult()).longValue();
+        }
+        if(locationType.equalsIgnoreCase("subcenter")) {
+            Query query = getSession().createSQLQuery("select count(distinct a.flw_id) from ma_course_completion a join front_line_worker f on f.flw_id=a.flw_id " +
+                    " where a.flw_id in (select distinct flw_id from ma_course_completion where creationDate < :previousDate) and a.creationDate BETWEEN :fromDate AND :toDate and " +
+                    " f.flw_designation = 'ASHA' and f.healthsubfacility_id = :locationId");
+            query.setParameter("previousDate",fromDate);
+            query.setParameter("fromDate",fromDate);
+            query.setParameter("toDate",toDate);
+            query.setParameter("locationId",locationId);
+            return ((BigInteger) query.uniqueResult()).longValue();
+
+        }
+
+        return 0l;
+    }
+
 }

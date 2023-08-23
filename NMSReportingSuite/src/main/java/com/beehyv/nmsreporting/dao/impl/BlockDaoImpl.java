@@ -7,12 +7,14 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
  * Created by beehyv on 4/5/17.
  */
 @Repository("blockDao")
+@Transactional
 public class BlockDaoImpl extends AbstractDao<Integer, Block> implements BlockDao {
     @Override
     public Block findByblockId(Integer blockId) {

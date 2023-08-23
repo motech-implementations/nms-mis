@@ -23,9 +23,6 @@ public class MACourseAttemptDaoImpl extends AbstractDao<Integer, User> implement
     public List<MACourseFirstCompletion> getSuccessFulCompletion(String forMonth) {
         Criteria criteria = getSession().createCriteria(MACourseFirstCompletion.class);
         criteria.add(Restrictions.like("forMonth",forMonth))
-        .add((Restrictions.not(
-                Restrictions.in("districtId", new Integer[] {471,474,483,490})
-        )))
         .add(Restrictions.eq("jobStatus","ACTIVE").ignoreCase());
         return criteria.list();
     }
@@ -35,9 +32,6 @@ public class MACourseAttemptDaoImpl extends AbstractDao<Integer, User> implement
         Criteria criteria = getSession().createCriteria(MACourseFirstCompletion.class);
         criteria.add(Restrictions.like("forMonth",forMonth))
                 .add(Restrictions.eq("stateId",stateId))
-                .add((Restrictions.not(
-                        Restrictions.in("districtId", new Integer[] {471,474,483,490})
-                )))
         .add(Restrictions.eq("jobStatus","ACTIVE").ignoreCase());
         return criteria.list();
     }
@@ -115,6 +109,34 @@ public class MACourseAttemptDaoImpl extends AbstractDao<Integer, User> implement
     public List<MACourseFirstCompletion> getSuccessFulCompletionByBlock(Long msisdn, Integer stateId, Integer districtId, Integer blockId) {
         Criteria criteria = getSession().createCriteria(MACourseFirstCompletion.class);
         criteria.add(Restrictions.eq("msisdn",msisdn))
+                .add(Restrictions.eq("stateId",stateId))
+                .add(Restrictions.eq("districtId",districtId))
+                .add(Restrictions.eq("blockId",blockId));
+        return criteria.list();
+    }
+
+
+    @Override
+    public List<MACourseFirstCompletion> getSuccessFulCompletionByStateIdAndMonth(String forMonth, Integer stateId) {
+        Criteria criteria = getSession().createCriteria(MACourseFirstCompletion.class);
+        criteria.add(Restrictions.like("forMonth",forMonth))
+                .add(Restrictions.eq("stateId",stateId));
+        return criteria.list();
+    }
+
+    @Override
+    public List<MACourseFirstCompletion> getSuccessFulCompletionWithDistrictIdAndMonth(String forMonth, Integer stateId, Integer districtId) {
+        Criteria criteria = getSession().createCriteria(MACourseFirstCompletion.class);
+        criteria.add(Restrictions.like("forMonth",forMonth))
+                .add(Restrictions.eq("stateId",stateId))
+                .add(Restrictions.eq("districtId",districtId));
+        return criteria.list();
+    }
+
+    @Override
+    public List<MACourseFirstCompletion> getSuccessFulCompletionWithBlockIdAndMont(String forMonth, Integer stateId, Integer districtId, Integer blockId) {
+        Criteria criteria = getSession().createCriteria(MACourseFirstCompletion.class);
+        criteria.add(Restrictions.like("forMonth",forMonth))
                 .add(Restrictions.eq("stateId",stateId))
                 .add(Restrictions.eq("districtId",districtId))
                 .add(Restrictions.eq("blockId",blockId));

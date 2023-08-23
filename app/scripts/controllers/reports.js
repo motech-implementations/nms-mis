@@ -91,6 +91,164 @@
             var rejectionStartDate = new Date(2017, 7, 31);
             var rejectionStart;
 
+
+            $scope.downloadType=["Monthly Certificate Generation","Single Certificate Generation"];
+            $scope.selectedDownloadType=$scope.downloadType[0];
+            $scope.certificateDistrict=[];
+            $scope.certificateBlock=[];
+            $scope.downloadBulk=true;
+            $scope.selectedStateId='';
+            $scope.selectedDistrictId='';
+            $scope.selectedBlockId='';
+            $scope.certificateDate='';
+            $scope.downloadBulkCertificateUrl='';
+            $scope.disableCertiState=false;
+            $scope.disableCertiBlock=false;
+            $scope.disableCertiDistrict=false;
+            $scope.selectedState=null;
+            var certificateRequest={};
+
+            $scope.certificateDownloadType=function(selectedDownloadType){
+                if(selectedDownloadType==$scope.downloadType[1]){
+                    $scope.downloadBulk=false;
+                    $scope.zipFileGeneratedSucessFully = false;
+                }else{
+                    $scope.downloadBulk=true;
+                    $scope.fileDownloadedSucessFully=false;
+                }
+            }
+            $scope.getCertificateInBulk=function(){
+                certificateRequest.date =$scope.certificateDate;
+                certificateRequest.stateId =$scope.selectedStateId;
+                if($scope.selectedDistrictId=='' || $scope.selectedDistrictId==null){
+                    certificateRequest.districtId=0;
+                }else
+                certificateRequest.districtId =$scope.selectedDistrictId;
+                if($scope.selectedBlockId=='' || $scope.selectedBlockId==null){
+                    certificateRequest.blockId=0;
+                }else
+                certificateRequest.blockId =$scope.selectedBlockId;
+
+                $scope.errorMessage = false;
+                $scope.zipFileGeneratedSucessFully = false;
+                if($scope.certificateDate==''){
+                    $scope.errorMessage = true;
+                    $scope.message = "Please select Month";
+                }else if($scope.selectedStateId=='' ||$scope.selectedState==''){
+                    $scope.errorMessage = true;
+                    $scope.message = "Please select State";
+                }  else{
+                    $scope.isBeingGenerated=true;
+                    $http({
+                        method: 'POST',
+                        url: backend_root + 'nms/user/asha/bulkcertificate',
+                        data: certificateRequest, //forms user object
+                        headers: {'Content-Type': 'application/json', 'csrfToken': token}
+                    }).then(function (result) {
+                        $scope.isBeingGenerated=false;
+                        if (result.data.status != "success") {
+                            $scope.errorMessage = true;
+                            $scope.message = result.data.message;
+                        } else {
+                            $scope.zipFileGeneratedSucessFully = true;
+                            $scope.errorMessage = false;
+                            $scope.zipMessage=result.data.message;
+                            var zipDirName = result.data.fileDir;
+                            zipDirName = zipDirName.replace("&","%26")
+                            $scope.downloadBulkCertificateUrl = backend_root + 'nms/user/certificate/bulkdownload?zipDir=' + zipDirName;
+                        }
+                    },function(error){
+                        $scope.isBeingGenerated=false;
+                        $scope.errorMessage = true;
+                        $scope.message = "Something went wrong :(";
+                    });
+                }
+            }
+            $scope.getDistrictForCertificate = function(state){
+                try {
+                    $scope.selectedStateId = JSON.parse(state).stateId;
+                }catch (e) {
+                }
+                if( $scope.selectedStateId==undefined){
+                    $scope.selectedStateId= state;
+                }
+                $scope.certificateDistrict=[];
+                if( $scope.selectedStateId !='' &&  $scope.selectedStateId !=null) {
+                    return UserFormFactory.getDistricts($scope.selectedStateId)
+                        .then(function (result) {
+                            $scope.certificateDistrict = result.data;
+                            $scope.certificateBlock = [];
+                            $scope.certificateDistrict.sort(function (a, b) {
+                                if (a.districtName < b.districtName) {
+                                    return -1;
+                                }
+                                if (a.districtName > b.districtName) {
+                                    return 1;
+                                }
+                                return 0;
+                            });
+                            if ($scope.userHasDistrict()) {
+                                $scope.selectedDistrict = $scope.certificateDistrict[0].districtName;
+                                $scope.selectedDistrictId=$scope.certificateDistrict[0].districtId;
+                                $scope.getBlockForCertificate($scope.certificateDistrict[0].districtId);
+                                $scope.disableCertiDistrict = true;
+                            }
+                        });
+                }
+            }
+            $scope.onSelectBlockForCertificate=function(blockId){
+
+                $scope.selectedBlockId=blockId;
+                // $scope.selectedDistrictId=$scope.selectedDistrict;
+            }
+            $scope.getBlockForCertificate =function(districtId){
+                $scope.selectedDistrictId=districtId;
+                $scope.certificateBlock=[];
+                if($scope.selectedDistrictId!='' && $scope.selectedDistrictId!=null) {
+
+                    return UserFormFactory.getBlocks(districtId)
+                        .then(function (result) {
+                            $scope.certificateBlock = result.data;
+                            $scope.certificateBlock.sort(function (a, b) {
+                                if (a.blockName < b.blockName) {
+                                    return -1;
+                                }
+                                if (a.blockName > b.blockName) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                            if ($scope.userHasBlock()) {
+                                $scope.selectedBlock = $scope.certificateBlock[0].blockName;
+                                $scope.selectedBlockId=$scope.certificateBlock[0].blockId;
+                                $scope.disableCertiBlock = true;
+                            }
+                        });
+                }
+            }
+
+            $scope.getStatesForCerti = function(){
+
+                    return UserFormFactory.getStates()
+                        .then(function(result){
+                            $scope.certificateStates = result.data;
+
+                            $scope.certificateStates.sort(function(a, b){
+                                if(a.stateName < b.stateName) { return -1; }
+                                if(a.stateName > b.stateName) { return 1; }
+                                return -1;
+                            });
+
+
+                            if($scope.userHasState()){
+                                $scope.selectedState =$scope.certificateStates[0].stateName;
+                                $scope.getDistrictForCertificate($scope.certificateStates[0].stateId);
+                                $scope.disableCertiState=true;
+                            }
+                        });
+            }
+
+            $scope.getStatesForCerti();
             $scope.getCertificate = function() {
                 $scope.errorMessage=false;
                 $scope.fileDownloadedSucessFully=false;
@@ -100,11 +258,13 @@
 
                 const l = '' + $scope.mobile_number;
                 if(l.length==10) {
+                    $scope.isBeingGenerated=true;
                     $http({
                         method: 'POST',
                         url: backend_root + 'nms/user/asha/certificate' + "?msisdn=" + $scope.mobile_number ,
                         headers: {'Content-Type': 'application/json', 'csrfToken': token}
                     }).then(function (result) {
+                        $scope.isBeingGenerated=false;
                         if (result.data[0].status == "success") {
                             $scope.fileDownloadedSucessFully = true;
 
@@ -1172,7 +1332,7 @@
                          reportRequest.fromDate = new Date($scope.dt1.getFullYear(),0,1);
 
                          if($scope.dt1.getFullYear() == new Date().getFullYear() && $scope.currentDate.getMonth() > 0 && $scope.currentDate.getMonth()< 4){
-                            reportRequest.toDate = new Date($scope.dt1.getFullYear(),$scope.currentDate.getMonth()-1,$scope.currentDate.getMonth()-1,$scope.currentPeriodDate);
+                            reportRequest.toDate = new Date($scope.dt1.getFullYear(),$scope.currentDate.getMonth()-1,$scope.currentPeriodDate);
                             if($scope.currentDate.getMonth()!= 3){
                                 reportRequest.periodType = 'CURRENT QUARTER';
                             }

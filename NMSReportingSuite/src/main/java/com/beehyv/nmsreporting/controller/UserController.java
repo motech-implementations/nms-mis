@@ -1,6 +1,7 @@
 package com.beehyv.nmsreporting.controller;
 
 import com.beehyv.nmsreporting.business.*;
+import com.beehyv.nmsreporting.business.impl.CertificateServiceImpl;
 import com.beehyv.nmsreporting.dao.*;
 import com.beehyv.nmsreporting.dao.impl.MAPerformanceDaoImpl;
 import com.beehyv.nmsreporting.entity.*;
@@ -9,13 +10,8 @@ import com.beehyv.nmsreporting.enums.AccessType;
 import com.beehyv.nmsreporting.enums.ModificationType;
 import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.*;
-import com.beehyv.nmsreporting.utils.LoginUser;
 import com.beehyv.nmsreporting.utils.ServiceFunctions;
-import com.opencsv.exceptions.CsvDataTypeMismatchException;
-import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
-import javassist.bytecode.ByteArray;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,13 +33,13 @@ import javax.ws.rs.QueryParam;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.nio.file.Paths;
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.zip.ZipOutputStream;
 
-import static com.beehyv.nmsreporting.utils.CryptoService.decrypt;
 import static com.beehyv.nmsreporting.utils.Global.retrieveDocuments;
 import static com.beehyv.nmsreporting.utils.ServiceFunctions.StReplace;
 import static com.beehyv.nmsreporting.utils.ServiceFunctions.dateAdder;
@@ -108,6 +104,9 @@ public class UserController {
 
     @Autowired
     private CertificateService certificateService;
+
+    @Autowired
+    BulkCertificateAuditDao bulkCertificateAuditDao;
 
     private ServiceFunctions serviceFunctions = new ServiceFunctions();
     private final String USER_AGENT = "Mozilla/5.0";
@@ -1063,13 +1062,17 @@ public class UserController {
             rootPath = "";
             return "fail";
         }
+        if (rootPath.contains("..")) {
+            throw new IllegalArgumentException("Invalid rootPath");
+        }
         String reportName=fileName;
-        String reportPath=reports+rootPath;
+        //String reportPath=reports+rootPath;
+        String reportPath = Paths.get(reports, rootPath).normalize().toString();
         try {
             ServletOutputStream out = response.getOutputStream();
             String filename = reportName;
             response.setHeader("Content-Disposition", "attachment;filename=\"" + filename + "\"");
-            FileInputStream fl = new FileInputStream(reportPath + reportName);
+            FileInputStream fl = new FileInputStream(reportPath +"/"+ reportName);
             int i;
             while ((i = fl.read()) != -1) {
                 out.write(i);
@@ -1522,7 +1525,7 @@ public class UserController {
 
     @RequestMapping(value = "asha/certificate", method = RequestMethod.POST)
     @ResponseBody
-    public Object downloadAnmCertificate( @RequestParam Long  msisdn) throws ParseException, IOException {
+    public Object generateCertificate( @RequestParam Long  msisdn) throws ParseException, IOException {
 
         Matcher matcher = Pattern.compile("\\d{10}").matcher(msisdn.toString());
         if(!matcher.matches()) {
@@ -1554,8 +1557,12 @@ public class UserController {
         if( !currentUser.getAccountStatus().equalsIgnoreCase("ACTIVE") ){
             return "User is deactivated";
         }
+        if (rootPath.contains("..") || fileName.contains("..")) {
+            throw new IllegalArgumentException("Invalid rootPath");
+        }
 
         String reportPath = certificate + "/Asha" + "/"+ rootPath +"/";
+        String reportPath2 = Paths.get(reportPath).normalize().toString();
         String accessLevel = currentUser.getAccessLevel();
 
         String[] ids = rootPath.split("/");
@@ -1585,7 +1592,7 @@ public class UserController {
             ServletOutputStream out = response.getOutputStream();
 
             response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\"");
-            FileInputStream fl = new FileInputStream(reportPath + fileName);
+            FileInputStream fl = new FileInputStream(reportPath2 + "/" + fileName);
             int i;
             while ((i = fl.read()) != -1) {
                 out.write(i);
@@ -1597,5 +1604,212 @@ public class UserController {
         }
         return "success";
     }
+
+
+    @RequestMapping(value = "asha/bulkcertificate", method = RequestMethod.POST)
+    @ResponseBody
+    public Object generateCertificateInBulk(@RequestBody CertificateRequest certificateRequest ) throws ParseException, IOException {
+
+//        User currentUser = new User();
+//        currentUser.setAccessLevel(AccessLevel.STATE.getAccessLevel());
+//        currentUser.setStateId(32);
+//        currentUser.setAccountStatus("ACTIVE");
+//        currentUser.setDistrictId();
+        Map<String, String> response = new HashMap<>();
+        User currentUser = userService.getCurrentUser();
+        if(!currentUser.getAccountStatus().equalsIgnoreCase("ACTIVE")){
+            response.put("status","failed");
+            response.put("message","User is deactivated");
+            return response;
+        }
+
+        String accessLevel = currentUser.getAccessLevel();
+        String formonth = getMonthYear(certificateRequest.getDate());
+        String zipDir = formonth;
+        String queryLevel = "";
+        List<String> directories = new ArrayList<>();
+        boolean isAuthenticated = false;
+
+        Integer stateId = certificateRequest.getStateId();
+        Integer districtId = certificateRequest.getDistrictId();
+        Integer blockId = certificateRequest.getBlockId();
+        HashMap<Integer, String> districtMap = new HashMap<>();
+        HashMap<Integer, HashMap<Integer, String>> blockMap = new HashMap<>();
+
+        String stateName = stateDao.findByStateId(stateId).getStateName();
+        List<District> districts = new ArrayList<>();
+        List<Block> blocks = new ArrayList<>();
+
+
+        if( accessLevel.equalsIgnoreCase(AccessLevel.NATIONAL.getAccessLevel()) || (
+                accessLevel.equalsIgnoreCase(AccessLevel.STATE.getAccessLevel()) &&
+                        stateId.equals(currentUser.getStateId()) )
+        ){
+            districts = districtDao.getDistrictsOfState(stateId);
+            districtMap = getDistrictMap(districts);
+            for (District district : districts){
+                blockMap.put(district.getDistrictId(), getBlockMap(blockDao.getBlocksOfDistrict(district.getDistrictId())));
+            }
+
+            isAuthenticated = true;
+            zipDir = zipDir + "/" + stateId +"_" + stateName;
+            directories.add(zipDir);
+            if(districtId!=0){
+                zipDir = zipDir + "/" + districtId + "_" + districtMap.get(districtId);
+                directories.add(zipDir);
+                if(blockId!=0){
+                    zipDir = zipDir + "/" + blockId + "_" + blockMap.get(districtId).get(blockId);
+                    directories.add(zipDir);
+                    queryLevel = "BLOCK";
+                }else {
+                    queryLevel = "DISTRICT";
+                }
+            }
+            else {
+                queryLevel = "STATE";
+            }
+        }
+        else if(accessLevel.equalsIgnoreCase(AccessLevel.DISTRICT.getAccessLevel()) &&
+                (stateId.equals(currentUser.getStateId())) &&
+                (districtId.equals(currentUser.getDistrictId()))
+        ){
+            districts.add(districtDao.findByDistrictId(districtId));
+            districtMap = getDistrictMap(districts);
+            blockMap.put(districtId,getBlockMap(blockDao.getBlocksOfDistrict(districtId)));
+
+            isAuthenticated = true;
+            directories.add(zipDir + "/" + stateId +"_" + stateName);
+            zipDir = zipDir + "/" + stateId + "_" + stateName + "/" + districtId + "_" + districtMap.get(districtId);
+            directories.add(zipDir);
+            if(blockId==0){
+                queryLevel = "DISTRICT";
+            }
+            else {
+                queryLevel = "BLOCK";
+                zipDir = zipDir + "/" + blockId + "_" + blockMap.get(districtId).get(blockId);
+                directories.add(zipDir);
+            }
+        }
+        else if(accessLevel.equalsIgnoreCase(AccessLevel.BLOCK.getAccessLevel())&&
+                (stateId.equals(currentUser.getStateId())) &&
+                (districtId.equals(currentUser.getDistrictId())) &&
+                (blockId.equals(currentUser.getBlockId()))
+        ){
+            districts.add(districtDao.findByDistrictId(districtId));
+            districtMap = getDistrictMap(districts);
+            blocks.add(blockDao.findByblockId(blockId));
+            blockMap.put(districtId, getBlockMap(blocks));
+            zipDir = zipDir + "/" + stateId +"_" + stateName;
+            directories.add(zipDir);
+            zipDir = zipDir + "/" + districtId + "_" + districtMap.get(districtId);
+            directories.add(zipDir);
+            isAuthenticated = true;
+            queryLevel = "BLOCK";
+            zipDir = zipDir + "/" + blockId + "_" + blockMap.get(districtId).get(blockId);
+            directories.add(zipDir);
+        }
+
+        if(!isAuthenticated){
+            response.put("status","failed");
+            response.put("message","You don't have enough permission");
+            return response;
+        }
+
+        boolean auditable = !(getMonthYear(new Date()).equalsIgnoreCase(formonth));
+        if(bulkCertificateAuditDao.findByFileDirectoryAndMonth(directories).isEmpty()) {
+            response = certificateService.createCertificateInBulk(certificateRequest, formonth, auditable , queryLevel, zipDir, currentUser, stateName, districtMap, blockMap);
+        }
+        else {
+            File fileDr = new File( documents+"Certificate/Asha/"+zipDir);
+            if(!fileDr.exists()){
+                response.put("status", "failed");
+                response.put("message","NO Asha is available for the certificate with the above criteria");
+            }
+            else {
+                response.put("status", "success");
+                response.put("message", "certificate generated with the above criteria");
+            }
+
+            response.put("fileDir", zipDir);
+        }
+        return response;
+    }
+
+
+    @RequestMapping(value = "/certificate/bulkdownload", method = RequestMethod.GET, produces="application/zip")
+    @ResponseBody
+    public String getCertificateInBulk(HttpServletResponse response,
+                                 @DefaultValue("") @QueryParam("zipDir") String zipDir) throws ParseException, IOException {
+//
+//        User currentUser = new User();
+//        currentUser.setAccessLevel(AccessLevel.STATE.getAccessLevel());
+//        currentUser.setStateId(32);
+        User currentUser = userService.getCurrentUser();
+
+        if (StringUtils.isEmpty(zipDir)) {
+            return "fail";
+        }
+
+        if( !currentUser.getAccountStatus().equalsIgnoreCase("ACTIVE") ){
+            return "User is deactivated";
+        }
+
+        String accessLevel = currentUser.getAccessLevel();
+        String authString = "";
+        String fileName = "";
+        if(accessLevel.equalsIgnoreCase(AccessLevel.NATIONAL.getAccessLevel())){
+            authString = zipDir;
+        }
+        else if(accessLevel.equalsIgnoreCase(AccessLevel.STATE.getAccessLevel())){
+           authString = authString + currentUser.getStateId() + "_" + stateDao.findByStateId(currentUser.getStateId()).getStateName();
+        }
+        else if(accessLevel.equalsIgnoreCase(AccessLevel.DISTRICT.getAccessLevel())){
+            authString = authString + currentUser.getStateId() + "_" + stateDao.findByStateId(currentUser.getStateId()).getStateName() + "/" +
+                    currentUser.getDistrictId() + "_" + districtDao.findByDistrictId(currentUser.getDistrictId()).getDistrictName();
+        }
+        else if(accessLevel.equalsIgnoreCase(AccessLevel.BLOCK.getAccessLevel())){
+            authString = authString + currentUser.getStateId() + "_" + stateDao.findByStateId(currentUser.getStateId()).getStateName() + "/" +
+                    currentUser.getDistrictId() + "_" + districtDao.findByDistrictId(currentUser.getDistrictId()).getDistrictName()
+                    + "/" + currentUser.getBlockId() + "_" + blockDao.findByblockId(currentUser.getBlockId()).getBlockName();
+        }
+        else {
+            return  "Not enough permission";
+        }
+        if(!zipDir.contains(authString)){
+            return  "Not enough permission";
+        }
+
+        String sourceFile = documents +"Certificate/Asha/" + zipDir;
+
+        response.setStatus(HttpServletResponse.SC_OK);
+        String responseHeader ="attachment; filename=\"" +"Certificates_"+new Timestamp(System.currentTimeMillis())+".zip"+ "\"";
+        response.addHeader("Content-Disposition", responseHeader);
+
+//        sourceFile = retrieveDocuments()+zipDir;
+        ZipOutputStream zipOut = new ZipOutputStream(response.getOutputStream());
+        File fileToZip = new File(sourceFile);
+
+        CertificateServiceImpl.zipFile(fileToZip, fileToZip.getName(), zipOut);
+        zipOut.close();
+
+        return "success";
+    }
+
+    private HashMap<Integer, String> getDistrictMap(List<District> districts){
+        HashMap<Integer, String> districtMap = new HashMap<>();
+        for (District district : districts){
+            districtMap.put(district.getDistrictId(),district.getDistrictName());
+        }
+        return districtMap;
+    }
+
+    private HashMap<Integer, String> getBlockMap(List<Block> blocks){
+        HashMap<Integer, String> blockMap = new HashMap<>();
+        for (Block block : blocks){
+            blockMap.put(block.getBlockId(),block.getBlockName());
+        }
+        return blockMap;
+    }
+
 
 }
