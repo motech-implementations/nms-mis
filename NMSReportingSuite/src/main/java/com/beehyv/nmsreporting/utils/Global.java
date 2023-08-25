@@ -39,6 +39,30 @@ public  final class Global {
         return fileLocation;
     }
 
+    public static int retrieveFileSizeInMB(){
+        Properties prop = new Properties();
+        InputStream input = null;
+        int fileSize  = 1;
+        try{
+            File file = new File("../webapps/NMSReportingSuite/WEB-INF/classes/app.properties");
+            input = new FileInputStream(file);
+            // load a properties file
+            prop.load(input);
+            fileSize = Integer.parseInt(prop.getProperty("sizeOfFileInMB").trim());
+        }
+        catch (IOException ex){
+            ex.printStackTrace();
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return fileSize;
+    }
     public static String retrieveUiAddress() {
         Properties prop = new Properties();
         InputStream input = null;

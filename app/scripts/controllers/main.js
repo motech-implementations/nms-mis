@@ -396,6 +396,8 @@
                 UserFormFactory.logoutUser().then(function(result){
                     if(result.data){
                         window.localStorage.setItem('logged_in', false);
+                        window.localStorage.removeItem('accessLevel');
+                        window.localStorage.removeItem('roleName');
                         UserFormFactory.downloadCurrentUser().then(function(result){
                             UserFormFactory.setCurrentUser(result.data);
                             $scope.currentUser = UserFormFactory.getCurrentUser();

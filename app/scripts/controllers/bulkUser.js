@@ -32,6 +32,10 @@
                         return;
                     }
 				}
+				if (file.type != "text/csv"){
+                    UserFormFactory.showAlert("Please select a CSV file")
+                    return;
+                }
 
 				fd.append('bulkCsv', file);
 	//We can send anything in name parameter,

@@ -12,6 +12,8 @@ import com.beehyv.nmsreporting.model.ModificationTracker;
 import com.beehyv.nmsreporting.model.State;
 import com.beehyv.nmsreporting.model.User;
 import org.apache.commons.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.ParseException;
 import org.springframework.stereotype.Controller;
@@ -26,6 +28,7 @@ import java.util.*;
 
 import static com.beehyv.nmsreporting.enums.ReportType.maCourse;
 import static com.beehyv.nmsreporting.utils.Global.retrieveDocuments;
+import static com.beehyv.nmsreporting.utils.Global.retrieveFileSizeInMB;
 
 //import com.sun.corba.se.impl.orbutil.closure.Constant;
 
@@ -55,14 +58,41 @@ public class AdminController {
     private final String documents = retrieveDocuments();
     private final String reports = documents+"Reports/";
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AdminController.class);
     @RequestMapping(value = "/uploadFile",headers=("content-type=multipart/*"), method = RequestMethod.POST)
     @ResponseBody
     public Map uploadFileHandler(@RequestParam("bulkCsv") MultipartFile file) {
         String name = "BulkImportDatacr7ms10.csv";
 
+        final String CSV_CONTENT_TYPE = "text/csv";
+
+        int n = retrieveFileSizeInMB();
+
+        long MAX_FILE_SIZE = n*1024*1024;
+
         Map<Integer, String> responseMap = new HashMap<>();
         if (!file.isEmpty()) {
             try {
+                //validating file type and content type
+                if(!(file.getOriginalFilename().endsWith(".csv"))){
+                    responseMap.put(0 , "fail");
+                    responseMap.put(1 , "Upload csv file only " + file.getOriginalFilename());
+                    return responseMap;
+                }
+
+                if( !(CSV_CONTENT_TYPE.equals(file.getContentType()) || "application/vnd.ms-excel".equals(file.getContentType())) ){
+                    responseMap.put(0, "fail");
+                    responseMap.put(1 , "The uploaded file does not have a valid CSV content type");
+                    LOGGER.debug("The uploaded file does not have a valid CSV content type");
+                    return responseMap;
+                }
+
+                if(file.getSize() >= MAX_FILE_SIZE){
+                    responseMap.put(0 , "fail");
+                    responseMap.put(1 , "Size of file should be less than " + retrieveFileSizeInMB() + " MB");
+                    LOGGER.debug("file size exceeding limit " + retrieveFileSizeInMB() + " MB");
+                    return  responseMap;
+                }
                 byte[] bytes = file.getBytes();
 
                 // Creating the directory to store file
