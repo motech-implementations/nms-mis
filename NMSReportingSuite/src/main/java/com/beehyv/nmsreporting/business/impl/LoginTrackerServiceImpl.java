@@ -26,4 +26,18 @@ public class LoginTrackerServiceImpl implements LoginTrackerService{
     public Date getLastLoginTime(Integer userId) {
         return loginTrackerDao.getLastLoginTime(userId);
     }
+
+    @Override
+    public List<LoginTracker> getActiveLoginUsers(Integer userId){
+        return loginTrackerDao.getActiveLoginUsers(userId);
+    }
+
+    @Override
+    public void updateLoginDetails(LoginTracker loginTracker){
+        loginTrackerDao.updateLoginDetails(loginTracker);
+    }
+
+    public LoginTracker getLoginTrackerByUniqueId(String uniqueId){
+      return loginTrackerDao.getLoginTrackerByUniqueId(uniqueId);
+    }
 }
