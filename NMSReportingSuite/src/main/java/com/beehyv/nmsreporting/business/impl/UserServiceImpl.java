@@ -687,7 +687,6 @@ public class UserServiceImpl implements UserService{
             responseMap.put(rowNum, authorityError);
             return responseMap;
         }
-        String newPassword = decrypt(new LoginUser(passwordDto.getNewPassword()));
         //String newPassword  = decrypt(new LoginUser(passwordDto.getCipherTextHexNew(), passwordDto.getSaltHexNew()));
         currentUser.setPassword(passwordEncoder.encode(newPassword));
         currentUser.setDefault(false);
