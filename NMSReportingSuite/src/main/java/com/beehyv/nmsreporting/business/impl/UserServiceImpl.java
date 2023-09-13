@@ -680,8 +680,9 @@ public class UserServiceImpl implements UserService{
         }
 
         String oldPassword  = decrypt(new LoginUser(passwordDto.getOldPassword()));
+        String newPassword = decrypt(new LoginUser(passwordDto.getNewPassword()));
         //String oldPassword  = decrypt(new LoginUser(passwordDto.getCipherTextHexOld(), passwordDto.getSaltHexOld()));
-        if(!passwordEncoder.matches(oldPassword, currentUser.getPassword())){
+        if(!passwordEncoder.matches(oldPassword, currentUser.getPassword()) || passwordEncoder.matches(newPassword, currentUser.getPassword())){
             String authorityError = "Current Password is incorrect";
             responseMap.put(rowNum, authorityError);
             return responseMap;
