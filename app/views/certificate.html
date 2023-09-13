@@ -7,42 +7,108 @@
 <div class="container-fluid uMManagement" data-ng-controller="ReportsController">
     <div data-ui-view></div>
     <h4><b>Mobile Academy Certificate</b></h4>
-    <br/>
 
-    <div class=''>
-        <p>Enter Mobile Number:</p>
-        <input type="number" class="" data-ng-model="mobile_number" name="pdf">
-        <input type="button" class="btn btn-sm btn-primary" name="newUser" data-ng-click="getCertificate()" value="Search">
-    </div>
+<table class="table" style="border-collapse: collapse; border: none;">
+    <thead>
+    <tr>
+        <th scope="col-3" style="width: 20%; border: none;text-align: left;" >Download Type</th>
+        <th scope="col-3" style="width: 20%; border: none;text-align: left;" data-ng-if="downloadBulk"><label >Month</label></th>
+        <th scope="col-3" style="width: 20%; border: none;text-align: left;" data-ng-if="downloadBulk">State</th>
+        <th scope="col-3" style="width: 20%; border: none;text-align: left;" data-ng-if="downloadBulk">District</th>
+        <th scope="col-3" style="width: 20%; border: none;text-align: left;" data-ng-if="downloadBulk">Block</th>
+        <th scope="col-3" style="width: 20%; border: none;text-align: left;" data-ng-if="!downloadBulk">Enter Mobile Number</th>
+        <th scope="col-3" style="width: 60%; border: none;text-align: left;" data-ng-if="!downloadBulk"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="width: 20%; border: none;text-align: left;">
+
+            <select  style="width: 80%; height: 30px;" data-ng-options="i for i in downloadType" ng-change="certificateDownloadType(selectedDownloadType)" data-ng-model="selectedDownloadType"></select></td>
+        <td style="width: 20%; border: none;text-align: left;" data-ng-if="!downloadBulk"> <div class=''>
+            <input type="number" class="" data-ng-model="$parent.mobile_number" name="pdf">
+            <input type="button" class="btn btn-sm btn-primary" name="newUser" data-ng-click="getCertificate()"
+                   value="Search">
+        </div></td>
+        <td style="width: 20%; border: none;text-align: left;"><input style="width: 150px; height: 30px" type='month' ng-model='$parent.certificateDate'  data-ng-if="downloadBulk"></td>
+<!--       <td style="width: 20%; border: none;text-align: left;" data-ng-if="downloadBulk"> <select style="width: 150px; height: 30px"  ng-if= "selectedState.stateName!=''"  ng-change="getDistrictForCertificate(selectedState.stateId)" data-ng-options="o.stateName for o in certificateStates" data-ng-model="$parent.selectedState" data-ng-disabled="$parent.disableCertiState"></select></td>-->
+       <td style="width: 20%; border: none;text-align: left;" data-ng-if="downloadBulk">
+           <select style="width: 80%; height: 30px"  ng-model="$parent.selectedState"  data-ng-disabled="$parent.disableCertiState" ng-change="getDistrictForCertificate(selectedState)">
+
+            <option ng-if="$parent.disableCertiState">{{selectedState}}</option>
+           <option value="">Select</option>
+           <option data-ng-repeat=" selectedState in certificateStates " value="{{selectedState}}" ng-if= "selectedState.stateName!=''" >{{selectedState.stateName}}
+           </option>
+       </select></td>
+
+        <td style="width: 20%; border: none;text-align: left;" data-ng-if="downloadBulk">
+            <select style="width: 80%; height: 30px"  data-ng-model="$parent.selectedDistrict" data-ng-disabled="$parent.disableCertiDistrict"   ng-change="getBlockForCertificate(selectedDistrict)">
+
+                <option ng-if="$parent.disableCertiDistrict">{{selectedDistrict}}</option>
+                <option value="">ALL</option>
+                <option data-ng-repeat=" selectedDistrict in certificateDistrict " value="{{selectedDistrict.districtId}}" ng-if= "selectedDistrict.districtName!=''" >{{selectedDistrict.districtName}}
+                </option>
+            </select></td>
+<!--        <td style="width: 20%; border: none;text-align: left;" data-ng-if="downloadBulk"> <select style="width: 150px;height: 30px" ng-change="getBlockForCertificate(selectedDistrict.districtId)" data-ng-options="o.districtName for o in certificateDistrict" data-ng-model="$parent.selectedDistrict" data-ng-disabled="$parent.disableCertiDistrict"></select></td>-->
+
+        <td style="width: 20%; border: none;text-align: left;" data-ng-if="downloadBulk">
+            <select style="width: 80%; height: 30px"  data-ng-model="$parent.selectedBlock" data-ng-disabled="$parent.disableCertiBlock"   ng-change="onSelectBlockForCertificate(selectedBlock)">
+
+                <option ng-if="$parent.disableCertiBlock">{{selectedBlock}}</option>
+                <option value="">ALL</option>
+                <option data-ng-repeat=" selectedBlock in certificateBlock " value="{{selectedBlock.blockId}}" ng-if= "selectedBlock.blockName!=''" >{{selectedBlock.blockName}}
+                </option>
+            </select></td>
+<!--        <td style="width: 20%; border: none;text-align: left;" data-ng-if="downloadBulk"><select style="width: 150px;height: 30px" ng-change="onSelectBlockForCertificate(selectedBlock.blockId)" data-ng-options="o.blockName for o in certificateBlock" data-ng-model="$parent.selectedBlock" data-ng-disabled="$parent.disableCertiBlock"></select></select></td>-->
+
+        <td style="width: 60%; border: none;text-align: left;" data-ng-if="!downloadBulk"></td>
+    </tr>
+     <tr> <td style="width: 20%; border: none; padding-top: 40px;text-align: left;"><button  type="submit"  data-ng-if="downloadBulk" class="btn btn-sm btn-primary" data-ng-click="getCertificateInBulk()" value="Submit">Submit</button></td></tr>
+    </tbody>
+</table>
+
 
     <div class="block reports-body" data-ng-if="errorMessage">
         <p><b>{{message}}</b></p>
     </div>
 
-    <div class="block reports-body" data-ng-if="fileDownloadedSucessFully">
-        <br>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-xs-3">
-                    <p>The Certificate has been generated: </p>
-                </div>
-                <div class="col-xs-6">
-                    <table class="table table-bordered">
-                        <tr>
-                            <th>Name</th>
-                            <th>Certificate<br>Click on the icon to download</th>
-                        </tr>
-                        <tr data-ng-repeat="i in certificateList">
-                            <td><b>{{i.AshaName}}</b></td>
-                            <td>
+    <div class="block reports-body" data-ng-if="isBeingGenerated">
+        <img alt="page loading" src="images/pageloader.gif">
+        <p>Certificate being generated...</p>
+    </div>
+
+    <div class="block reports-body" data-ng-if="zipFileGeneratedSucessFully">
+<!--        <p>The Certificate Zip has been generated: </p>-->
+        <p>{{zipMessage}}</p>
+        <a href="{{downloadBulkCertificateUrl}}">Click Here To Download</a>
+
+    </div>
+
+
+            <div class="block reports-body" data-ng-if="fileDownloadedSucessFully">
+                <br>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <p>The Certificate has been generated: </p>
+                        </div>
+                        <div class="col-xs-6">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Certificate<br>Click on the icon to download</th>
+                                </tr>
+                                <tr data-ng-repeat="i in certificateList">
+                                    <td><b>{{i.AshaName}}</b></td>
+                                    <td>
                                 <span data-ng-click="clearFile()">
                                     <a href="{{i.downloadCertificateUrl}}"><img alt="download" src="images/export2.png"></a>
                                 </span>
-                            </td>
-                        </tr>
-                    </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
