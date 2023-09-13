@@ -128,6 +128,7 @@ public class LoginController extends HttpServlet{
                     loginTrackerService.saveLoginDetails(loginTracker);
                     Session session = SecurityUtils.getSubject().getSession();
                     session.setAttribute( "userName", user.getUsername());
+                    session.setAttribute("unique_id" , unique_id);
                     if (user.getDefault() == null) {
                         user.setDefault(true);
                     }
