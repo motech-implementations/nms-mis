@@ -264,6 +264,9 @@
         }
 
         function indianDecimal( value){
+        if(!value){
+            return "N/A";
+        }
                 x=value.toString();
                 var isNegative = false;
                 if (x.substring(0,1) === '-'){
@@ -290,6 +293,9 @@
         }
 
         function indianInteger(value){
+                            if(!value){
+                                return "N/A";
+                            }
                             x=value.toString();
                             var isNegative = false;
                             if (x.substring(0,1) === '-'){

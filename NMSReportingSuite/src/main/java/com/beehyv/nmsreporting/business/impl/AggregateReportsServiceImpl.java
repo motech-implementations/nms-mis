@@ -91,6 +91,8 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
     @Autowired
     private MASubscriberDao maSubscriberDao;
 
+//    private Logger LOGGER = LoggerFactory.getLogger(AggregateReportsServiceImpl.class);
+
 
     @Override
     public List<AggregateCumulativeMA> getCumulativeSummaryMAReport(Integer locationId, String locationType, Date toDate, boolean isCumulative) {
@@ -496,7 +498,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
             Cell cell1 = row.createCell(colid++);
             cell1.setCellValue(header);
             cell1.setCellStyle(backgroundStyle);
-            if(comments.size()!=0 && comments.get(index)!=null) {
+            if(comments != null && comments.size()!=0 && comments.get(index)!=null) {
                 CreationHelper creationHelper = workbook.getCreationHelper();
                 Drawing drawing = spreadsheet.createDrawingPatriarch();
 //            ClientAnchor clientAnchor = drawing.createAnchor(0, 0, 0, 0, 0, 7, 12, 17);
@@ -570,6 +572,9 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         }
 
         for (String footer : gridData.getColunmFooters()) {
+            if(footer == null){
+                continue;
+            }
             Cell cell1 = row.createCell(colid++);
             if (colid == 2 || footer.equalsIgnoreCase("N/A")) {
                 cell1.setCellValue(footer);
