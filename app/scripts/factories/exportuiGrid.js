@@ -114,14 +114,14 @@
                     } else if (ft.displayName == "Average Number Of Weeks In Service" && excelHeaderName.reportName == "Kilkari Beneficiary Completion") {
                         var temp = gridApi.grid.columns.length == 0 ? 0.00 : (gridApi.grid.columns[3].getAggregationValue());
                         v = Math.floor(parseFloat(temp) * 100) / 100;
-                    } else if (ft.displayName == "Average Duration Of Calls" && excelHeaderName.reportName == "Kilkari Call") {
+                    } else if (ft.displayName == "Average Duration of Calls(Mins)" && excelHeaderName.reportName == "Kilkari Call") {
                         var temp = gridApi.grid.columns[3].getAggregationValue() == 0 ? 0.00 : (gridApi.grid.columns[8].getAggregationValue() / gridApi.grid.columns[3].getAggregationValue());
                         v = Math.floor(parseFloat(temp) * 100) / 100;
                     } else if (ft.displayName == "Total Billable Minutes" && excelHeaderName.reportName == "Kilkari Call") {
                         var temp = ft.getAggregationValue();
                        v = Math.floor(parseFloat(temp) * 100) / 100;
                     }
-                    else if(ft.displayName == "Average Duration of Calls" && excelHeaderName.reportName == "District-wise Performance of the State for Kilkari"){
+                    else if(ft.displayName == "Average Duration of Calls(Mins)" && excelHeaderName.reportName == "District-wise Performance of the State for Kilkari"){
                         var temp = gridApi.grid.columns[4].getAggregationValue()==0?0.00: (gridApi.grid.columns[10].getAggregationValue()/gridApi.grid.columns[4].getAggregationValue());
                         v = Math.floor(parseFloat(temp) * 100) / 100;
                     }
@@ -1040,13 +1040,13 @@
                     } else if (ft.displayName == "Average Number Of Weeks In Service" && excelHeaderName.reportName == "Kilkari Beneficiary Completion") {
                         var temp = gridApi.grid.columns.length == 0 ? 0.00 : (gridApi.grid.columns[3].getAggregationValue());
                         v = Math.floor(parseFloat(temp) * 100) / 100;
-                    } else if (ft.displayName == "Average Duration Of Calls" && excelHeaderName.reportName == "Kilkari Call") {
+                    } else if (ft.displayName == "Average Duration of Calls(Mins)" && excelHeaderName.reportName == "Kilkari Call") {
                         var temp = gridApi.grid.columns[3].getAggregationValue() == 0 ? 0.00 : (gridApi.grid.columns[8].getAggregationValue() / gridApi.grid.columns[3].getAggregationValue());
                         v = Math.floor(parseFloat(temp)* 100) / 100;
                     } else if (ft.displayName == "Total Billable Minutes" && excelHeaderName.reportName == "Kilkari Call") {
                         var temp = ft.getAggregationValue();
                         v = Math.floor(parseFloat(temp)* 100) / 100;
-                    }else if(ft.displayName == "Average Duration of Calls" && excelHeaderName.reportName == "District-wise Performance of the State for Kilkari"){
+                    }else if(ft.displayName == "Average Duration of Calls(Mins)" && excelHeaderName.reportName == "District-wise Performance of the State for Kilkari"){
                         var temp = gridApi.grid.columns[4].getAggregationValue()==0?0.00: (gridApi.grid.columns[10].getAggregationValue()/gridApi.grid.columns[4].getAggregationValue());
                         v = Math.floor(parseFloat(temp)* 100) / 100;
                     }else if(ft.displayName == "Total Billable Minutes" && excelHeaderName.reportName == "District-wise Performance of the State for Kilkari"){
@@ -1937,7 +1937,7 @@
                     } else if (ft.displayName == "Average Number Of Weeks In Service" && excelHeaderName.reportName == "Kilkari Beneficiary Completion") {
                         var temp = gridApi.grid.columns.length == 0 ? 0.00 : (gridApi.grid.columns[3].getAggregationValue());
                         v = Math.floor(NumberparseFloat(temp) * 100) / 100;
-                    } else if (ft.displayName == "Average Duration Of Calls" && excelHeaderName.reportName == "Kilkari Call") {
+                    } else if (ft.displayName == "Average Duration of Calls(Mins)" && excelHeaderName.reportName == "Kilkari Call") {
                         var temp = gridApi.grid.columns[3].getAggregationValue() == 0 ? 0.00 : (gridApi.grid.columns[8].getAggregationValue() / gridApi.grid.columns[3].getAggregationValue());
                         v = Math.floor(NumberparseFloat(temp) * 100) / 100;
                     } else if (ft.displayName == "% Not Started (of total registered)" && excelHeaderName.reportName == "District-wise Performance of the State for Mobile Academy") {

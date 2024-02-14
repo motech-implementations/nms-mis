@@ -1924,7 +1924,7 @@
                                            var temp = $scope.gridApi.grid.columns.length==0?0.00: ($scope.gridApi.grid.columns[3].getAggregationValue());
                                            v = (parseFloat(temp));
                                        }
-                                       else if(ft.displayName == "Average Duration Of Calls" && excelHeaderName.reportName == "Kilkari Call"){
+                                       else if(ft.displayName == "Average Duration of Calls(Mins)" && excelHeaderName.reportName == "Kilkari Call"){
                                            var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[8].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue());
                                            v = (parseFloat(temp));
                                        }
@@ -1932,7 +1932,7 @@
                                            var temp = ft.getAggregationValue();
                                            v = (parseFloat(temp));
                                        }
-                                       else if(ft.displayName == "Average Duration of Calls" && excelHeaderName.reportName == "District-wise Performance of the State for Kilkari"){
+                                       else if(ft.displayName == "Average Duration of Calls(Mins)" && excelHeaderName.reportName == "District-wise Performance of the State for Kilkari"){
                                            var temp = $scope.gridApi.grid.columns[4].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[10].getAggregationValue()/$scope.gridApi.grid.columns[4].getAggregationValue());
                                            v = (parseFloat(temp));
                                        }
@@ -2160,7 +2160,7 @@
                             var temp = $scope.gridApi.grid.columns.length==0?0.00: ($scope.gridApi.grid.columns[3].getAggregationValue());
                             v = indianDecimal(temp);
                         }
-                        else if(ft.displayName == "Average Duration Of Calls" && excelHeaderName.reportName == "Kilkari Call"){
+                        else if(ft.displayName == "Average Duration of Calls(Mins)" && excelHeaderName.reportName == "Kilkari Call"){
                             var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[8].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue());
                             v = indianDecimal(temp);
                         }
@@ -2168,7 +2168,7 @@
                             var temp = ft.getAggregationValue();
                             v = indianDecimal(temp);
                         }
-                        else if(ft.displayName == "Average Duration Of Calls" && excelHeaderName.reportName == "District-wise Performance of the State for Kilkari"){
+                        else if(ft.displayName == "Average Duration of Calls(Mins)" && excelHeaderName.reportName == "District-wise Performance of the State for Kilkari"){
                             var temp = $scope.gridApi.grid.columns[4].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[10].getAggregationValue()/$scope.gridApi.grid.columns[4].getAggregationValue());
                             v = indianDecimal(temp);
                         }
@@ -2613,7 +2613,7 @@
                                                     { field: 'content_25_50', name: 'Total calls where greater than or equal to 25% to less than 50% content listened to',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                     { field: 'content_1_25', name: 'Total calls where less than 25%  content listened to',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                     { field: 'billableMinutes', name: 'Total Billable Minutes',cellFilter: 'indianDecimalFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, footerCellFilter: 'indianDecimalFilter', width:"*", enableHiding: false },
-                                                    { field: 'avgDuration', name: 'Average Duration of Calls',cellFilter: 'indianDecimalFilter', footerCellFilter: 'indianDecimalFilter', footerCellTemplate: '<div class="ui-grid-cell-contents" >{{(grid.columns[3].getAggregationValue()==0)?0.00: grid.columns[8].getAggregationValue()/grid.columns[3].getAggregationValue() | number:2}}</div>', width:"*", enableHiding: false},
+                                                    { field: 'avgDuration', name: 'Average Duration of Calls',displayName: 'Average Duration of Calls(Mins)',cellFilter: 'indianDecimalFilter', footerCellFilter: 'indianDecimalFilter', footerCellTemplate: '<div class="ui-grid-cell-contents" >{{(grid.columns[3].getAggregationValue()==0)?0.00: grid.columns[8].getAggregationValue()/grid.columns[3].getAggregationValue() | number:2}}</div>', width:"*", enableHiding: false},
                                                     { field: 'callsToInbox', name: 'Total number of calls to inbox where content is played',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
 
             ]
@@ -2633,7 +2633,7 @@
                 { field: 'content_1_25', displayName: 'Total calls where <25%  content listened to',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                 { field: 'percentageCalls_1_25', displayName: '% successful calls where <25% content listened to',cellFilter: 'indianDecimalFilter',footerCellFilter: 'indianDecimalFilter', footerCellTemplate: '<div class="ui-grid-cell-contents" >{{(grid.columns[4].getAggregationValue()==0)?0.00: (grid.columns[8].getAggregationValue()/grid.columns[4].getAggregationValue()) * 100 | number:2}}</div>',  width:"*", enableHiding: false},
                 { field: 'billableMinutes', displayName: 'Total Billable Minutes',cellFilter: 'indianDecimalFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, footerCellFilter: 'indianDecimalFilter', width:"*", enableHiding: false },
-                { field: 'avgDuration', displayName: 'Average Duration of Calls',cellFilter: 'indianDecimalFilter', footerCellFilter: 'indianDecimalFilter', footerCellTemplate: '<div class="ui-grid-cell-contents" >{{(grid.columns[4].getAggregationValue()==0)?0.00: grid.columns[10].getAggregationValue()/grid.columns[4].getAggregationValue() | number:2}}</div>', width:"*", enableHiding: false},
+                { field: 'avgDuration', displayName: 'Average Duration of Calls(Mins)',cellFilter: 'indianDecimalFilter', footerCellFilter: 'indianDecimalFilter', footerCellTemplate: '<div class="ui-grid-cell-contents" >{{(grid.columns[4].getAggregationValue()==0)?0.00: grid.columns[10].getAggregationValue()/grid.columns[4].getAggregationValue() | number:2}}</div>', width:"*", enableHiding: false},
 
             ]
 
