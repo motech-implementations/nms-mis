@@ -1,6 +1,7 @@
 package com.beehyv.nmsreporting.business.impl;
 
 import be.quodlibet.boxable.image.Image;
+import be.quodlibet.boxable.utils.PDStreamUtils;
 import com.beehyv.nmsreporting.business.CertificateService;
 import com.beehyv.nmsreporting.dao.*;
 import com.beehyv.nmsreporting.model.*;
@@ -47,6 +48,15 @@ public class CertificateServiceImpl implements CertificateService {
 
     @Autowired
     BlockDao blockDao;
+
+    @Autowired
+    VillageDao villageDao;
+
+    @Autowired
+    HealthFacilityDao healthFacilityDao;
+
+    @Autowired
+    HealthSubFacilityDao healthSubFacilityDao;
 
     @Autowired
     FrontLineWorkersDao frontLineWorkersDao;
@@ -104,9 +114,8 @@ public class CertificateServiceImpl implements CertificateService {
 //                PDDocument document = new PDDocument();
 //                PDDocument sampleDocument = new PDDocument();
 //                status = createCertificatePdf(document, sampleDocument, flw.getFullName(), mobileNo, flw.getFirstCompletionDate());
-
                 String fileName = flw.getMsisdn()+"_"+i+".pdf";
-                status = createCertificatePdf(rootDir+dir + "/" + fileName, frontLineWorkersDao.getFlwById(flw.getFlwId()).getFullName(), mobileNo, flw.getFirstCompletionDate());
+                status = createCertificatePdf(rootDir+dir + "/" + fileName, frontLineWorkersDao.getFlwById(flw.getFlwId()).getFullName(), mobileNo, flw.getFirstCompletionDate(),  frontLineWorkersDao.getFlwById(flw.getFlwId()));
                 if (status.equalsIgnoreCase("success")){
                     Map<String, String> response = new HashMap<>();
                     response.put("file",fileName);
@@ -209,7 +218,7 @@ public class CertificateServiceImpl implements CertificateService {
 //                status = createCertificatePdf(document, sampleDocument, frontLineWorkersDao.getFlwById(flw.getFlwId()).getFullName(), flw.getMsisdn(), flw.getFirstCompletionDate());
                     String fileName = flw.getMsisdn()+"_"+flw.getId()*2+1+".pdf";
 
-                    status = createCertificatePdf(rootDir+dir + "/" + fileName, frontLineWorkersDao.getFlwById(flw.getFlwId()).getFullName(), flw.getMsisdn(), flw.getFirstCompletionDate());
+                    status = createCertificatePdf(rootDir+dir + "/" + fileName, frontLineWorkersDao.getFlwById(flw.getFlwId()).getFullName(), flw.getMsisdn(), flw.getFirstCompletionDate(), frontLineWorkersDao.getFlwById(flw.getFlwId()));
                     if (status.equalsIgnoreCase("success")){
                         success++;
                     }
@@ -266,80 +275,184 @@ public class CertificateServiceImpl implements CertificateService {
         return response;
     }
 
-    private String createCertificatePdf(String pdfFile, String name, Long msisdn, Date completionDate) {
+    private String createCertificatePdf(String pdfFile, String name, Long msisdn, Date completionDate, FrontLineWorkers frontLineWorkers) {
+
+        String village = frontLineWorkers.getVillage() == null ? " " : villageDao.findByVillageId(frontLineWorkers.getVillage()).getVillageName();
+        String phc = frontLineWorkers.getFacility() == null ? " " : healthFacilityDao.findByHealthFacilityId(frontLineWorkers.getFacility()).getHealthFacilityName();
+        String district = frontLineWorkers.getDistrict() == null ? " " : districtDao.findByDistrictId(frontLineWorkers.getDistrict()).getDistrictName();
+        String rchId = frontLineWorkers.getExternalFlwId();
+        String healthSubFacility = frontLineWorkers.getSubfacility() == null ? " " : healthSubFacilityDao.findByHealthSubFacilityId(frontLineWorkers.getSubfacility()).getHealthSubFacilityName();
 
         PDDocument document = new PDDocument();
         PDDocument sampleDocument = new PDDocument();
 
-        String response;
+        String response ;
         try {
             String font_path = documents + "caslon_italic.ttf";
-            PDFont textFont = PDType0Font.load( sampleDocument, new File(font_path) );
+            PDFont textFont = PDType0Font.load(sampleDocument, new File(font_path));
 //          PDFont textFont = PDType1Font.TIMES_ROMAN;
 
             int textFontSize = 16;
             int dateFontSize = 10;
 
-            //Loading an existing document
-            File file = new File( documents + "Certificate/SampleAshaCertificate.pdf");
-            sampleDocument = PDDocument.load(file);
-            document.addPage(sampleDocument.getPage(0));
-            PDPage page = document.getPage(0);
+            int state = frontLineWorkers.getState();
+            if (state == 40) {
+                File file = new File(documents + "Certificate/TeluguSampleCertificate.pdf");
+                sampleDocument = PDDocument.load(file);
+                document.addPage(sampleDocument.getPage(0));
+                PDPage page = document.getPage(0);
 
-            PDPageContentStream contents = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true, true);
-            PDRectangle mediaBox = page.getMediaBox();
+                PDPageContentStream contents1 = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true, true);
+                PDRectangle mediaBox1 = page.getMediaBox();
+                float nameX = 5 * (mediaBox1.getWidth()) / 12 - 30;
+                float nameY = 2 * (mediaBox1.getHeight()) / 3 - 33;
 
-            float nameX = mediaBox.getWidth() / 3 + 20;
-            float nameY = mediaBox.getHeight() / 2 + 31;
+                float rchIdX = 5 * (mediaBox1.getWidth()) / 12;
+                float rchIdY = 2 * (mediaBox1.getHeight()) / 3 - 57;
 
-            float dateX = nameX - 71;
-            float dateY = nameY - 37;
+                float villageX = 65;
+                float villageY = mediaBox1.getHeight() / 2 + 12;
 
-            float mobileNoX = mediaBox.getWidth() / 2 - 35;
-            float mobileNoY = dateY - 87;
+                int villageFontTelugu = (100 - village.length()) / 8 + 2;
 
-            float signatureX = mobileNoX-40;
-            float signatureY = mobileNoY - 30;
+                float phcX = 120;
+                float phcY = mediaBox1.getHeight() / 2 - 10;
+                int phcFontTelugu = 16;
+
+                float districtX = 68;
+                int districtFontTelugu = (100 - district.length()) / 8 + 2;
+                float districtY = phcY - 22;
+
+                float healthSubFacilityX = mediaBox1.getWidth() / 2 - 65;
+                float healthSubFacilitY = villageY;
+                int healthSubFacilitFont = 12;
+
+                float dateX = mediaBox1.getWidth() / 2 - 20;
+                float dateY = phcY - 23;
+
+                float mobileNoX = mediaBox1.getWidth() / 3 + 98;
+                float mobileNoY = (mediaBox1.getHeight() / 3 + 14);
+
+                float signatureY = (mediaBox1.getHeight() / 5 + 60);
+                float signatureX1 = villageX + 85;
+                float signatureX2 = dateX - 7;
+                float signatureX3 = mediaBox1.getWidth() / 2 + 114;
 
 
-            SimpleDateFormat formatter = new SimpleDateFormat("dd-MMMM-yyyy");
-            String completion = formatter.format(completionDate);
-
-//          String signature = "Rakesh Kumar";
-
-            be.quodlibet.boxable.utils.PDStreamUtils.write(contents, name, textFont, textFontSize, nameX, nameY, Color.BLUE);
-            be.quodlibet.boxable.utils.PDStreamUtils.write(contents, completion, textFont, dateFontSize, dateX, dateY, Color.BLUE);
-            be.quodlibet.boxable.utils.PDStreamUtils.write(contents, msisdn.toString(), textFont, textFontSize, mobileNoX, mobileNoY, Color.BLUE);
+                SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+                String completion = formatter.format(completionDate);
+                PDStreamUtils.write(contents1, name, textFont, textFontSize, nameX, nameY, Color.BLUE);
+                PDStreamUtils.write(contents1, completion, textFont, dateFontSize + 3, dateX, dateY, Color.BLUE);
+                PDStreamUtils.write(contents1, msisdn.toString(), textFont, textFontSize, mobileNoX, mobileNoY, Color.BLUE);
+                PDStreamUtils.write(contents1, village, textFont, villageFontTelugu, villageX, villageY, Color.BLUE);
+                PDStreamUtils.write(contents1, healthSubFacility, textFont, healthSubFacilitFont, healthSubFacilityX, healthSubFacilitY, Color.BLUE);
+                PDStreamUtils.write(contents1, phc, textFont, phcFontTelugu, phcX, phcY, Color.BLUE);
+                PDStreamUtils.write(contents1, district, textFont, districtFontTelugu, districtX, districtY, Color.BLUE);
+                PDStreamUtils.write(contents1, rchId, textFont, textFontSize, rchIdX, rchIdY, Color.BLUE);
 
 //          be.quodlibet.boxable.utils.PDStreamUtils.write(contents, signature, textFont, textFontSize, signatureX, signatureY, Color.RED);
 
-            InputStream is = new FileInputStream(retrieveDocuments()+"Certificate/mission_director.png");
-            byte[] bytes = IOUtils.toByteArray(is);
-            ByteArrayInputStream bin = new ByteArrayInputStream(bytes);
-            Image image1 = new Image(ImageIO.read(bin));
-            is.close();
-            bin.close();
+                InputStream is = new FileInputStream(retrieveDocuments() + "Certificate/certificate_sign1.png");
+                byte[] bytes = IOUtils.toByteArray(is);
+                ByteArrayInputStream bin = new ByteArrayInputStream(bytes);
+                Image image1 = new Image(ImageIO.read(bin));
+                is.close();
+                bin.close();
 
-            float imageWidth =150;
-            float imageHeight =150;
-            image1 = image1.scaleByWidth(imageWidth);
-            image1 = image1.scaleByHeight(imageHeight);
-            image1.draw(document, contents, signatureX, signatureY);
+                float imageWidth = 110;
+                float imageHeight = 110;
+                image1 = image1.scaleByWidth(imageWidth);
+                image1 = image1.scaleByHeight(imageHeight);
+                image1.draw(document, contents1, signatureX1, signatureY - 10);
+                // contents1.close();
 
-            contents.close();
+                InputStream is2 = new FileInputStream(retrieveDocuments() + "Certificate/certificate_sign2.png");
+                byte[] bytes2 = IOUtils.toByteArray(is2);
+                ByteArrayInputStream bin2 = new ByteArrayInputStream(bytes2);
+                Image image2 = new Image(ImageIO.read(bin2));
+                is2.close();
+                bin2.close();
+
+                float imageWidth2 = 65;
+                float imageHeight2 = 55;
+                image2 = image2.scaleByWidth(imageWidth2);
+                image2 = image2.scaleByHeight(imageHeight2);
+                image2.draw(document, contents1, signatureX2, signatureY + 7);
+
+                InputStream is3 = new FileInputStream(retrieveDocuments() + "Certificate/certificate_sign3.png");
+                byte[] bytes3 = IOUtils.toByteArray(is3);
+                ByteArrayInputStream bin3 = new ByteArrayInputStream(bytes3);
+                Image image3 = new Image(ImageIO.read(bin3));
+                is3.close();
+                bin3.close();
+
+                float imageWidth3 = 70;
+                float imageHeight3 = 70;
+                image3 = image3.scaleByWidth(imageWidth3);
+                image3 = image3.scaleByHeight(imageHeight3);
+                image3.draw(document, contents1, signatureX3, signatureY - 7);
+                contents1.close();
+            } else {
+                //Loading an existing document
+                File file = new File(documents + "Certificate/SampleAshaCertificate.pdf");
+                sampleDocument = PDDocument.load(file);
+                document.addPage(sampleDocument.getPage(0));
+                PDPage page = document.getPage(0);
+
+                PDPageContentStream contents = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true, true);
+                PDRectangle mediaBox = page.getMediaBox();
+
+                float nameX = mediaBox.getWidth() / 3 + 20;
+                float nameY = mediaBox.getHeight() / 2 + 31;
+
+                float dateX = nameX - 71;
+                float dateY = nameY - 37;
+
+                float mobileNoX = mediaBox.getWidth() / 2 - 35;
+                float mobileNoY = dateY - 87;
+
+                float signatureX = mobileNoX - 40;
+                float signatureY = mobileNoY - 30;
+
+
+                SimpleDateFormat formatter = new SimpleDateFormat("dd-MMMM-yyyy");
+                String completion = formatter.format(completionDate);
+
+//          String signature = "Rakesh Kumar";
+
+                PDStreamUtils.write(contents, name, textFont, textFontSize, nameX, nameY, Color.BLUE);
+                PDStreamUtils.write(contents, completion, textFont, dateFontSize, dateX, dateY, Color.BLUE);
+                PDStreamUtils.write(contents, msisdn.toString(), textFont, textFontSize, mobileNoX, mobileNoY, Color.BLUE);
+
+//          be.quodlibet.boxable.utils.PDStreamUtils.write(contents, signature, textFont, textFontSize, signatureX, signatureY, Color.RED);
+
+                InputStream is = new FileInputStream(retrieveDocuments() + "Certificate/mission_director.png");
+                byte[] bytes = IOUtils.toByteArray(is);
+                ByteArrayInputStream bin = new ByteArrayInputStream(bytes);
+                Image image1 = new Image(ImageIO.read(bin));
+                is.close();
+                bin.close();
+
+                float imageWidth = 150;
+                float imageHeight = 150;
+                image1 = image1.scaleByWidth(imageWidth);
+                image1 = image1.scaleByHeight(imageHeight);
+                image1.draw(document, contents, signatureX, signatureY);
+
+                contents.close();
+            }
+
             response = "success";
             document.save(pdfFile);
             document.close();
             sampleDocument.close();
-        }
-       catch (IOException ignore) {
+
+
+        } catch (IOException ignore) {
             response = "failed to load sample certificate";
             System.out.println("---Error---=>" + response);
-       }
-
-
+        }
         return response;
-
     }
 
     public static void zipFile(File fileToZip, String fileName, ZipOutputStream zipOut) throws IOException {
