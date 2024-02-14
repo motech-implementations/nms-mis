@@ -2077,7 +2077,8 @@
                                     if(response.data =="success"){
                                     var fileName = $scope.gridApi.grid.options.exporterExcelFilename ? $scope.gridApi.grid.options.exporterExcelFilename : 'dokuman';
                                        fileName += '.xlsx';
-                                       window.location.href = backend_root + 'nms/user/downloadAgg?fileName='+fileName;
+                                       var encodedFileName = encodeURIComponent(fileName);
+                                       window.location.href = backend_root + 'nms/user/downloadAgg?fileName='+encodedFileName;
 
                                     }
                                     }
