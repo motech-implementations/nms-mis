@@ -264,6 +264,9 @@
         }
 
         function indianDecimal( value){
+        if(!value){
+            return "N/A";
+        }
                 x=value.toString();
                 var isNegative = false;
                 if (x.substring(0,1) === '-'){
@@ -290,6 +293,9 @@
         }
 
         function indianInteger(value){
+                            if(!value){
+                                return "N/A";
+                            }
                             x=value.toString();
                             var isNegative = false;
                             if (x.substring(0,1) === '-'){
@@ -325,6 +331,7 @@
             case 'Kilkari Thematic Content': pageHeading='Kilkari Thematic Content Report'; break;
             case 'Kilkari Repeat Listener Month Wise': pageHeading='Kilkari Repeat Listener Month Wise Report'; break;
             case 'Kilkari Subscriber': pageHeading='Kilkari Subscriber Report'; break;
+            case 'Kilkari Subscriber Registration Date': pageHeading='Kilkari Subscriber Registration Date Report'; break;
             case 'Kilkari Message Listenership': pageHeading='Kilkari Message Listenership Report'; break;
             case 'Kilkari Aggregate Beneficiaries': pageHeading='Kilkari Aggregate Beneficiaries Report'; break;
             }
@@ -979,7 +986,8 @@
                 }
                 else if(excelHeaderName.reportName== "Kilkari Usage"
                 ||excelHeaderName.reportName=="Kilkari Message Listenership"
-                ||excelHeaderName.reportName=="Kilkari Subscriber"){
+                ||excelHeaderName.reportName=="Kilkari Subscriber" ||
+                excelHeaderName.reportName == "Kilkari Subscriber Registration Date"){
                 for (i = 0; i < exportColumnHeaders.length; i++) {
                     colWidth[i+1] = 80;
                 }
@@ -1095,6 +1103,9 @@
                     }
 
                     if (ft.displayName != "S No.") {
+                        if(v == 'N/A' ){
+                            v = 0;
+                        }
                         tempfoot.push(v);
                     }
 
@@ -1107,7 +1118,7 @@
                 //exceed page-width
                 var fontHasSize;
                 if (
-                    excelHeaderName.reportName === 'Kilkari Subscriber') {
+                    excelHeaderName.reportName === 'Kilkari Subscriber' || excelHeaderName.reportName === 'Kilkari Subscriber Registration Date') {
                     fontHasSize = 10;
                 } else if (excelHeaderName.reportName === 'MA Subscriber' || excelHeaderName.reportName === 'MA Performance' ||
                     excelHeaderName.reportName === 'Kilkari Cumulative Summary' || excelHeaderName.reportName === 'Kilkari Usage' ||

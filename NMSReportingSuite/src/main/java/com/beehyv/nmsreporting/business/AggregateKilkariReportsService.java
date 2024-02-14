@@ -15,6 +15,8 @@ public interface AggregateKilkariReportsService {
 
     AggregateKilkariReportsDto getKilkariSubscriberCountReport(ReportRequest reportRequest);
 
+    AggregateKilkariReportsDto getKilkariSubscriberCountReportBasedOnRegistrationDate(ReportRequest reportRequest);
+
     List<KilkariAggregateBeneficiariesDto> getBeneficiaryReport(ReportRequest reportRequest, User currentUser);
 
     List<UsageDto> getUsageReport(ReportRequest reportRequest, User currentUser);

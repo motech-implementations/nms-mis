@@ -538,7 +538,7 @@
 				if($scope.userHasOneCircle()){
                 	$scope.selectCircle($scope.circles[0]);
                 }
-                if($scope.report.reportEnum == 'Kilkari_Message_Matrix' || $scope.report.reportEnum == 'Kilkari_Subscriber' || $scope.report.reportEnum == 'Kilkari_Listening_Matrix' || $scope.report.reportEnum == 'Kilkari_Usage' || $scope.report.reportEnum == 'Kilkari_Message_Listenership' || $scope.report.reportEnum == 'Kilkari_Thematic_Content' || $scope.report.reportEnum == 'Kilkari_Aggregate_Beneficiaries' || $scope.report.reportEnum == 'Kilkari_Beneficiary_Completion' || $scope.report.reportEnum == 'District-wise Performance of the State for Kilkari'){
+                if($scope.report.reportEnum == 'Kilkari_Message_Matrix' || $scope.report.reportEnum == 'Kilkari_Subscriber' || $scope.report.reportEnum == 'Kilkari_Subscriber_Report_with_RegistrationDate' || $scope.report.reportEnum == 'Kilkari_Listening_Matrix' || $scope.report.reportEnum == 'Kilkari_Usage' || $scope.report.reportEnum == 'Kilkari_Message_Listenership' || $scope.report.reportEnum == 'Kilkari_Thematic_Content' || $scope.report.reportEnum == 'Kilkari_Aggregate_Beneficiaries' || $scope.report.reportEnum == 'Kilkari_Beneficiary_Completion' || $scope.report.reportEnum == 'District-wise Performance of the State for Kilkari'){
                     $scope.periodType = ['Year','Financial Year','Quarter','Month','Week'];
                 }
                 else if($scope.report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise'){
@@ -1498,6 +1498,9 @@
                             if(rejectionStart)
                                 {$scope.gridOptions1.columnDefs = $scope.Kilkari_Subscriber_Definitions2;}
                         }
+                        else if($scope.report.reportEnum == 'Kilkari_Subscriber_with_RegistrationDate'){
+                                $scope.gridOptions1.columnDefs = $scope.Kilkari_Subscriber_with_RegistrationDate_Definitions;
+                        }
                         else if($scope.report.reportEnum == 'Kilkari_Message_Listenership'){
                              $scope.gridOptions1.columnDefs = $scope.Kilkari_Message_Listenership_Definitions;
                         }
@@ -2330,6 +2333,9 @@
 
 
             function indianDecimal( value){
+                            if(!value || value == null){
+                                return "N/A";
+                            }
                             x=value.toString();
                             var isNegative = false;
                                             if (x.substring(0,1) === '-'){
@@ -2360,6 +2366,9 @@
                     }
 
                     function indianInteger(value){
+                            if(!value || value==null){
+                                return "N/A";
+                            }
                                         x=value.toString();
                                         var isNegative = false;
                                                                                     if (x.substring(0,1) === '-'){
@@ -2701,6 +2710,20 @@
                                                      { field: 'totalSubscriptionsEnd', displayName: 'Total subscriptions at the end of the period', width:"10%", cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, enableHiding: false },
             ]
 
+            $scope.Kilkari_Subscriber_with_RegistrationDate_Definitions = [
+                                                     {name: 'S No.', displayName: 'S No.',width:"4%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
+                                                     { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents">Total</div>',defaultSort: { direction: uiGridConstants.ASC },
+                                                        cellTemplate:'<a   ng-if= !row.entity.link class="btn aggregate-location" title="{{COL_FIELD}}"  ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a><p ng-if= row.entity.link class="ui-grid-cell-contents" title="{{COL_FIELD}}" >{{ COL_FIELD }}</p>',
+                                                        enableHiding: false,width: "15%"
+                                                     },
+                                                     { field: 'totalSubscriberCount', displayName: 'Total Subscriptions', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"12%", enableHiding: false },
+                                                     { field: 'totalBeneficiaryWithActiveStatus', displayName: 'Active Subscriptions', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'totalRejectedSubscriberCount', displayName: 'Rejected Subscriptions', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'totalBeneficiaryWithOnHoldStatus', displayName: 'On Hold Subscriptions', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                     { field: 'totalBeneficiaryWithPendingStatus', displayName: 'Pending Activation Subscriptions', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'totalBeneficiaryWithDeactivatedStatus', displayName: 'Deactivated subscriptions', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'totalBeneficiaryWithCompletedStatus', displayName: 'Completed subscriptions', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+            ]
 
             $scope.Kilkari_Thematic_Content_Definitions = [
                                                     // {name: 'S No.', displayName: 'S No.',width:"7%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
@@ -2762,7 +2785,7 @@
                                     $scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.COLUMN );
                                     fileName = $scope.report.reportEnum + "_" + $scope.reportBreadCrumbData[$scope.reportBreadCrumbData.length -1].locationName ;
                                     $scope.gridOptions1.exporterExcelFilename = fileName + "_" + dateString;
-                                         if($scope.report.reportEnum == 'Kilkari_Subscriber'){
+                                         if($scope.report.reportEnum == 'Kilkari_Subscriber' || $scope.report.reportEnum == 'Kilkari_Subscriber_with_RegistrationDate'){
                                              if(!rejectionStart){
                                              var i;
                                                 for(i=0; i<$scope.gridOptions1.data.length ;i++){
@@ -2806,7 +2829,7 @@
                                        $scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.COLUMN );
                                        fileName = $scope.report.reportEnum + "_" + $scope.reportBreadCrumbData[$scope.reportBreadCrumbData.length -1].locationName ;
                                        $scope.gridOptions1.exporterExcelFilename = fileName + "_" + dateString;
-                                             if($scope.report.reportEnum == 'Kilkari_Subscriber'){
+                                             if($scope.report.reportEnum == 'Kilkari_Subscriber' || $scope.report.reportEnum == 'Kilkari_Subscriber_with_RegistrationDate'){
                                                  if(!rejectionStart){
                                                  var i;
                                                     for(i=0; i<$scope.gridOptions1.data.length ;i++){
@@ -2849,7 +2872,7 @@
                                      $scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.COLUMN );
                                      fileName = $scope.report.reportEnum + "_" + $scope.reportBreadCrumbData[$scope.reportBreadCrumbData.length -1].locationName ;
                                      $scope.gridOptions1.exporterExcelFilename = fileName + "_" + dateString;
-                                         if($scope.report.reportEnum == 'Kilkari_Subscriber'){
+                                         if($scope.report.reportEnum == 'Kilkari_Subscriber' || $scope.report.reportEnum == 'Kilkari_Subscriber_with_RegistrationDate'){
                                           if(!rejectionStart){
                                              var i;
                                                 for(i=0; i<$scope.gridOptions1.data.length ;i++){
@@ -2890,7 +2913,7 @@
                                      $scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.COLUMN );
                                      fileName = $scope.report.reportEnum + "_" + $scope.reportBreadCrumbData[$scope.reportBreadCrumbData.length -1].locationName ;
                                      $scope.gridOptions1.exporterExcelFilename = fileName + "_" + dateString;
-                                        if($scope.report.reportEnum == 'Kilkari_Subscriber'){
+                                        if($scope.report.reportEnum == 'Kilkari_Subscriber' || $scope.report.reportEnum == 'Kilkari_Subscriber_with_RegistrationDate'){
                                             if(!rejectionStart){
                                             var i;
                                                for(i=0; i<$scope.gridOptions1.data.length ;i++){

@@ -9,6 +9,8 @@ import com.beehyv.nmsreporting.business.BreadCrumbService;
 import com.beehyv.nmsreporting.dao.*;
 import com.beehyv.nmsreporting.entity.*;
 import com.beehyv.nmsreporting.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -60,6 +62,19 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
     private AggregateCumulativeBeneficiaryDao aggregateCumulativeBeneficiaryDao;
 
     @Autowired
+    private BeneficiaryWithRegistrationDateBlockDao beneficiaryWithRegistrationDateBlockDao;
+
+    @Autowired
+    private BeneficiaryWithRegistrationDateDistrictDao beneficiaryWithRegistrationDateDistrictDao;
+
+    @Autowired
+    private BeneficiaryWithRegistrationDateStateDao beneficiaryWithRegistrationDateStateDao;
+
+    @Autowired
+    private BeneficiaryWithRegistrationDateSubCentreDao beneficiaryWithRegistrationDateSubCentreDao;
+
+
+    @Autowired
     private KilkariUsageDao kilkariUsageDao;
 
     @Autowired
@@ -86,6 +101,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
     @Autowired
     private BreadCrumbService breadCrumbService;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AggregateKilkariReportsServiceImpl.class);
 
     /*----------5.3.1. Kilkari Cumulative Summary Report -------*/
 
@@ -431,7 +447,8 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             kilkariNoDistrictCount.setLocationType("DifferenceState");
             kilkariNoDistrictCount.setLocationId((long)-locationId);
             kilkariSubscribersCountList.add(kilkariNoDistrictCount);
-        } else if(locationType.equalsIgnoreCase("Block")) {
+        }
+        else if(locationType.equalsIgnoreCase("Block")) {
             if(date.before(stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(),"KILKARI"))){
                 date = stateServiceDao.getServiceStartDateForState(districtDao.findByDistrictId(locationId).getStateOfDistrict(),"KILKARI");
             }
@@ -521,6 +538,149 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         return kilkariSubscribersCountList;
     }
 
+    /*---------- Kilkari Subscriber Count Report Based on Registration Date -------*/
+
+    @Override
+    public AggregateKilkariReportsDto getKilkariSubscriberCountReportBasedOnRegistrationDate(ReportRequest reportRequest){
+
+        LOGGER.info("Operation getKilkariSubscriberCountReportBasedOnRegistrationDate , result = IN_PROGRESS, " +
+                        "reportStartDate = {} , reportEndDate = {} , PeriodType = {} " ,
+                reportRequest.getFromDate() , reportRequest.getToDate() , reportRequest.getPeriodType());
+
+        AggregateKilkariReportsDto aggregateKilkariReportsDto = new AggregateKilkariReportsDto();
+
+        DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        Calendar calendar = Calendar.getInstance();
+        Date toDate = new Date();
+        Date startDate=new Date(0);
+        Calendar aCalendar = Calendar.getInstance();
+        aCalendar.setTime(reportRequest.getFromDate());
+        aCalendar.set(Calendar.MILLISECOND, 0);
+        aCalendar.set(Calendar.SECOND, 0);
+        aCalendar.set(Calendar.MINUTE, 0);
+        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        Date fromDate = aCalendar.getTime();
+
+        aCalendar.setTime(reportRequest.getToDate());
+        aCalendar.set(Calendar.MILLISECOND, 0);
+        aCalendar.set(Calendar.SECOND, 0);
+        aCalendar.set(Calendar.MINUTE, 0);
+        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        aCalendar.add(Calendar.DATE, 1);
+        toDate = aCalendar.getTime();
+        List<KilkariSubscriberRegistrationDateDto> kilkariSubscriberList = new ArrayList<>();
+
+        List<KilkariSubscriberRegistrationDateRejectedCountDto> kilkariSubscriberRegistrationDateRejectedCountDtoList = new ArrayList<>();
+        if(reportRequest.getStateId() == 0){
+            kilkariSubscriberList = getKilkariSubscriberCountRegistrationDateWise( 0 , "State" , fromDate , toDate ,reportRequest.getPeriodType()  );
+
+            kilkariSubscriberRegistrationDateRejectedCountDtoList = beneficiaryWithRegistrationDateStateDao.duplicateRejectedSubscriberCount(fromDate , toDate);
+
+        }
+        else if (reportRequest.getDistrictId() == 0) {
+            kilkariSubscriberList = getKilkariSubscriberCountRegistrationDateWise( reportRequest.getStateId() , "District" , fromDate , toDate ,reportRequest.getPeriodType()  );
+
+            kilkariSubscriberRegistrationDateRejectedCountDtoList = beneficiaryWithRegistrationDateDistrictDao.duplicateRejectedSubscriberCount(reportRequest.getStateId() , fromDate , toDate);
+
+        } else if(reportRequest.getBlockId() == 0){
+            kilkariSubscriberList = getKilkariSubscriberCountRegistrationDateWise( reportRequest.getDistrictId() , "Block" , fromDate , toDate ,reportRequest.getPeriodType()  );
+
+            kilkariSubscriberRegistrationDateRejectedCountDtoList = beneficiaryWithRegistrationDateBlockDao.duplicateRejectedSubscriberCount(reportRequest.getDistrictId() , fromDate , toDate);
+
+        } else {
+            kilkariSubscriberList = getKilkariSubscriberCountRegistrationDateWise( reportRequest.getBlockId() , "SubCenter" , fromDate , toDate ,reportRequest.getPeriodType()  );
+
+            kilkariSubscriberRegistrationDateRejectedCountDtoList = beneficiaryWithRegistrationDateSubCentreDao.duplicateRejectedSubscriberCount(reportRequest.getBlockId() , fromDate , toDate);
+
+        }
+        List<KilkariSubscriberRegistrationDateListDto> kilkariSubscriberRegistrationDateListDtos = new ArrayList<>();
+
+        for(int i=0;i<kilkariSubscriberList.size();i++){
+            for(int j=0;j<kilkariSubscriberRegistrationDateRejectedCountDtoList.size();j++) {
+                if(kilkariSubscriberList.get(i).getLocationId() == kilkariSubscriberRegistrationDateRejectedCountDtoList.get(j).getLocationId()) {
+
+                    KilkariSubscriberRegistrationDateDto kilkariSubscriberRegistrationDateDto = kilkariSubscriberList.get(i);
+                    KilkariSubscriberRegistrationDateRejectedCountDto kilkariSubscriberRegistrationDateRejectedCountDto = kilkariSubscriberRegistrationDateRejectedCountDtoList.get(j);
+
+                    KilkariSubscriberRegistrationDateListDto kilkariSubscriberRegistrationDateListDto = new KilkariSubscriberRegistrationDateListDto();
+
+                    kilkariSubscriberRegistrationDateListDto.setLocationId(kilkariSubscriberRegistrationDateDto.getLocationId());
+                    kilkariSubscriberRegistrationDateListDto.setTotalBeneficiaryWithActiveStatus(kilkariSubscriberRegistrationDateDto.getTotalBeneficiaryWithActiveStatus());
+                    kilkariSubscriberRegistrationDateListDto.setTotalBeneficiaryWithPendingStatus(kilkariSubscriberRegistrationDateDto.getTotalBeneficiaryWithPendingStatus());
+                    kilkariSubscriberRegistrationDateListDto.setTotalBeneficiaryWithOnHoldStatus(kilkariSubscriberRegistrationDateDto.getTotalBeneficiaryWithHoldSubscriptionStatus());
+                    kilkariSubscriberRegistrationDateListDto.setTotalBeneficiaryWithDeactivatedStatus(kilkariSubscriberRegistrationDateDto.getTotalBeneficiaryWithDeactivatedStatus());
+                    kilkariSubscriberRegistrationDateListDto.setTotalRejectedSubscriberCount(kilkariSubscriberRegistrationDateDto.getTotalRecordsRejected() - kilkariSubscriberRegistrationDateRejectedCountDto.getSubscriberCount());
+                    kilkariSubscriberRegistrationDateListDto.setTotalSubscriberCount(kilkariSubscriberRegistrationDateDto.getTotalSubscriptions() - kilkariSubscriberRegistrationDateRejectedCountDto.getSubscriberCount());
+                    kilkariSubscriberRegistrationDateListDto.setTotalBeneficiaryWithCompletedStatus(kilkariSubscriberRegistrationDateDto.getTotalSubscriptionsCompletedStatus());
+                    String locationType = kilkariSubscriberRegistrationDateDto.getLocationType();
+                    kilkariSubscriberRegistrationDateListDto.setLocationType(locationType);
+                    try {
+                        LOGGER.debug("locationType is " + locationType);
+                        if (locationType.equalsIgnoreCase("State")) {
+                            kilkariSubscriberRegistrationDateListDto.setLocationName(stateDao.findByStateId(kilkariSubscriberRegistrationDateDto.getLocationId().intValue()).getStateName());
+                        }
+                        if (locationType.equalsIgnoreCase("District")) {
+                            kilkariSubscriberRegistrationDateListDto.setLocationName(districtDao.findByDistrictId(kilkariSubscriberRegistrationDateDto.getLocationId().intValue()).getDistrictName());
+                        }
+                        if (locationType.equalsIgnoreCase("Block")) {
+                            kilkariSubscriberRegistrationDateListDto.setLocationName(blockDao.findByblockId(kilkariSubscriberRegistrationDateDto.getLocationId().intValue()).getBlockName());
+                        }
+                        if (locationType.equalsIgnoreCase("SubCenter")) {
+                            kilkariSubscriberRegistrationDateListDto.setLocationName(healthSubFacilityDao.findByHealthSubFacilityId(kilkariSubscriberRegistrationDateDto.getLocationId().intValue()).getHealthSubFacilityName());
+                        }
+                        if(locationType.equalsIgnoreCase("No State Count")){
+                            kilkariSubscriberRegistrationDateListDto.setLocationName("No State Count");
+                        }
+                        if(locationType.equalsIgnoreCase("No District Count")){
+                            kilkariSubscriberRegistrationDateListDto.setLocationName("No District Count");
+                        }
+                        if(locationType.equalsIgnoreCase("No Block Count")){
+                            kilkariSubscriberRegistrationDateListDto.setLocationName("No Block Count");
+                        }
+                        if(locationType.equalsIgnoreCase("No SubCenter Count")){
+                            kilkariSubscriberRegistrationDateListDto.setLocationName("No SubCenter Count");
+                        }
+                    } catch (Exception e) {
+                        LOGGER.info("Location not found with id " + kilkariSubscriberRegistrationDateDto.getLocationId().intValue());
+                        e.printStackTrace();
+                    }
+
+                    if ((kilkariSubscriberRegistrationDateListDto.getTotalBeneficiaryWithActiveStatus()
+                            + kilkariSubscriberRegistrationDateListDto.getTotalBeneficiaryWithOnHoldStatus() + kilkariSubscriberRegistrationDateListDto.getTotalBeneficiaryWithDeactivatedStatus()
+                            + kilkariSubscriberRegistrationDateListDto.getTotalBeneficiaryWithPendingStatus() + kilkariSubscriberRegistrationDateListDto.getTotalSubscriberCount()) != 0 && !locationType.equalsIgnoreCase("DifferenceState")) {
+                        LOGGER.debug("Adding record for " + kilkariSubscriberRegistrationDateListDto.getLocationName());
+                        kilkariSubscriberRegistrationDateListDtos.add(kilkariSubscriberRegistrationDateListDto);
+                    }
+                }
+
+            }
+        }
+        aggregateKilkariReportsDto.setTableData(kilkariSubscriberRegistrationDateListDtos);
+        LOGGER.info("Operation = getKilkariSubscriberCountReportBasedOnRegistrationDate , status = COMPLETED Report Data generated " );
+        return  aggregateKilkariReportsDto;
+    }
+
+
+
+
+    private List<KilkariSubscriberRegistrationDateDto> getKilkariSubscriberCountRegistrationDateWise (Integer locationId , String locationType, Date fromDate, Date toDate , String periodType){
+
+        List<KilkariSubscriberRegistrationDateDto> kilkariSubscriberRegistrationDateDtoList = new ArrayList<KilkariSubscriberRegistrationDateDto>();
+
+        if(locationType.equalsIgnoreCase("State")){
+            kilkariSubscriberRegistrationDateDtoList = beneficiaryWithRegistrationDateStateDao.allCountOffReports( fromDate, toDate);
+        }
+        else if(locationType.equalsIgnoreCase("District")){
+            kilkariSubscriberRegistrationDateDtoList = beneficiaryWithRegistrationDateDistrictDao.allCountOffReports(locationId, fromDate, toDate);
+        }
+        else if(locationType.equalsIgnoreCase("Block")) {
+            kilkariSubscriberRegistrationDateDtoList = beneficiaryWithRegistrationDateBlockDao.allCountOffReports(locationId, fromDate, toDate);
+        }
+        else if (locationType.equalsIgnoreCase("SubCenter")){
+            kilkariSubscriberRegistrationDateDtoList = beneficiaryWithRegistrationDateSubCentreDao.allCountOffReports(locationId , fromDate , toDate);
+        }
+        return kilkariSubscriberRegistrationDateDtoList;
+    }
     /*----------5.3.3. Kilkari Aggregate Beneficiaries Report -------*/
 
     @Override

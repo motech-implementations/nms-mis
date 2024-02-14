@@ -627,6 +627,11 @@ public class UserController {
             return aggregateKilkariResponseDto;
         }
 
+        if (reportRequest.getReportType().equals(ReportType.kilkariSubscriberWithRegistrationDate.getReportType())){
+            aggregateKilkariResponseDto = aggregateKilkariReportsService.getKilkariSubscriberCountReportBasedOnRegistrationDate(reportRequest);
+            aggregateKilkariResponseDto.setBreadCrumbData(breadCrumbs);
+            return aggregateKilkariResponseDto;
+        }
         if (reportRequest.getReportType().equals(ReportType.beneficiary.getReportType())) {
             aggregateResponseDto.setBreadCrumbData(breadCrumbs);
             List<KilkariAggregateBeneficiariesDto> kilkariAggregateBeneficiariesDtos = aggregateKilkariReportsService.getBeneficiaryReport(reportRequest, currentUser);
@@ -1408,6 +1413,14 @@ public class UserController {
                 ReportType.kilkariSubscriber.getSimpleName(),
                 "images/drop-down-2.png",
                 ReportType.kilkariSubscriber.getServiceType(),showAggregateReports)
+        );
+
+        kList.add(new Report(
+                ReportType.kilkariSubscriberWithRegistrationDate.getReportName(),
+                ReportType.kilkariSubscriberWithRegistrationDate.getReportType(),
+                ReportType.kilkariSubscriberWithRegistrationDate.getSimpleName(),
+                "images/drop-down-2.png",
+                ReportType.kilkariSubscriberWithRegistrationDate.getServiceType(),showAggregateReports)
         );
         kList.add(new Report(
                 ReportType.kilkariMessageListenership.getReportName(),

@@ -35,6 +35,7 @@ public enum ReportType {
     lowListenership("Kilkari_Low_Listenership_Deactivation", "Deactivated for Low Listenership","KILKARI",
             "Kilkari Deactivations for For Low Listening Report", "Deactivated for Low Listenership"),
     kilkariSubscriber("Kilkari_Subscriber","Kilkari Subscriber","KILKARI","Kilkari Subscriber Report", "Subscriber Report"),
+    kilkariSubscriberWithRegistrationDate("Kilkari_Subscriber_with_RegistrationDate" , "Kilkari Subscriber Registration Date" , "KILKARI" , "Kilkari Subscriber Report Registration Date wise" , "Subscriber Report Registration Date wise"),
     kilkariMessageListenership("Kilkari_Message_Listenership","Kilkari Message Listenership","KILKARI","Kilkari Message Listenership Report", "Message Listenership"),
     kilkariThematicContent("Kilkari_Thematic_Content","Kilkari Thematic Content","KILKARI","Kilkari Thematic Content Report", "Thematic Content"),
     kilkariRepeatListenerMonthWise("Kilkari_Repeat_Listener_Month_Wise","Kilkari Repeat Listener","KILKARI","Kilkari_Repeat_Listener_Month_Wise Report", "Repeat Listener");
