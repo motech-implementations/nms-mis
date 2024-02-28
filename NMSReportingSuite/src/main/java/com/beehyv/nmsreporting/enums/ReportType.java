@@ -41,9 +41,6 @@ public enum ReportType {
     private final String serviceType;
     private final String reportHeader;
     private final String simpleName;
-    aggregateWhatsappSubscriber("Aggregate_Whatsapp_Subscriber","Aggregate Whatsapp Subscriber","KILKARI","Aggregate Whatsapp Subscriber", "Aggregate Whatsapp Subscriber"),
-    aggregateWhatsappMessage("Aggregate_Whatsapp_Message","Aggregate Whatsapp Message","KILKARI","Aggregate Whatsapp Message", "Aggregate Whatsapp Message"),
-    aggregateWhatsappReport("Aggregate_Whatsapp_Opt_In_Report","Aggregate Whatsapp","KILKARI","Aggregate Whatsapp Opt In Report", "Aggregate Whatsapp Opt In Report");
 
 
     public String getReportType() {
