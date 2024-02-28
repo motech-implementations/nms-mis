@@ -1438,6 +1438,14 @@ public class UserController {
                 ReportType.beneficiary.getServiceType(),showAggregateReports)
         );
 
+        kList.add(new Report(
+                ReportType.aggregateWhatsappSubscriber.getReportName(),
+                ReportType.aggregateWhatsappSubscriber.getReportType(),
+                ReportType.aggregateWhatsappSubscriber.getSimpleName(),
+                "images/drop-down-2.png",
+                ReportType.aggregateWhatsappSubscriber.getServiceType(),showAggregateReports)
+        );
+
 
         kMenu.put("service", kList.get(0).getService());
         kMenu.put("options", kList);
