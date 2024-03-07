@@ -15,6 +15,7 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,9 +42,6 @@ public class CertificateServiceImpl implements CertificateService {
     private BulkCertificateAuditDao bulkCertificateAuditDao;
 
     @Autowired
-    StateDao stateDao;
-
-    @Autowired
     DistrictDao districtDao;
 
     @Autowired
@@ -64,6 +62,8 @@ public class CertificateServiceImpl implements CertificateService {
     private final Calendar c =Calendar.getInstance();
 
     private final String documents = retrieveDocuments();
+    private final int teluguStateCode = 40;
+    private final int chhatisgarhStateCode = 46;
 
     @Override
     public List<Map<String, String>> createSpecificCertificate(Long mobileNo, User currentUser) {
@@ -296,102 +296,18 @@ public class CertificateServiceImpl implements CertificateService {
             int dateFontSize = 10;
 
             int state = frontLineWorkers.getState();
-            if (state == 40) {
+            if(state == teluguStateCode) {
                 File file = new File(documents + "Certificate/TeluguSampleCertificate.pdf");
                 sampleDocument = PDDocument.load(file);
                 document.addPage(sampleDocument.getPage(0));
-                PDPage page = document.getPage(0);
-
-                PDPageContentStream contents1 = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true, true);
-                PDRectangle mediaBox1 = page.getMediaBox();
-                float nameX = 5 * (mediaBox1.getWidth()) / 12 - 30;
-                float nameY = 2 * (mediaBox1.getHeight()) / 3 - 33;
-
-                float rchIdX = 5 * (mediaBox1.getWidth()) / 12;
-                float rchIdY = 2 * (mediaBox1.getHeight()) / 3 - 57;
-
-                float villageX = 65;
-                float villageY = mediaBox1.getHeight() / 2 + 12;
-
-                int villageFontTelugu = (100 - village.length()) / 8 + 2;
-
-                float phcX = 120;
-                float phcY = mediaBox1.getHeight() / 2 - 10;
-                int phcFontTelugu = 16;
-
-                float districtX = 68;
-                int districtFontTelugu = (100 - district.length()) / 8 + 2;
-                float districtY = phcY - 22;
-
-                float healthSubFacilityX = mediaBox1.getWidth() / 2 - 65;
-                float healthSubFacilitY = villageY;
-                int healthSubFacilitFont = 12;
-
-                float dateX = mediaBox1.getWidth() / 2 - 20;
-                float dateY = phcY - 23;
-
-                float mobileNoX = mediaBox1.getWidth() / 3 + 98;
-                float mobileNoY = (mediaBox1.getHeight() / 3 + 14);
-
-                float signatureY = (mediaBox1.getHeight() / 5 + 60);
-                float signatureX1 = villageX + 85;
-                float signatureX2 = dateX - 7;
-                float signatureX3 = mediaBox1.getWidth() / 2 + 114;
-
-
-                SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-                String completion = formatter.format(completionDate);
-                PDStreamUtils.write(contents1, name, textFont, textFontSize, nameX, nameY, Color.BLUE);
-                PDStreamUtils.write(contents1, completion, textFont, dateFontSize + 3, dateX, dateY, Color.BLUE);
-                PDStreamUtils.write(contents1, msisdn.toString(), textFont, textFontSize, mobileNoX, mobileNoY, Color.BLUE);
-                PDStreamUtils.write(contents1, village, textFont, villageFontTelugu, villageX, villageY, Color.BLUE);
-                PDStreamUtils.write(contents1, healthSubFacility, textFont, healthSubFacilitFont, healthSubFacilityX, healthSubFacilitY, Color.BLUE);
-                PDStreamUtils.write(contents1, phc, textFont, phcFontTelugu, phcX, phcY, Color.BLUE);
-                PDStreamUtils.write(contents1, district, textFont, districtFontTelugu, districtX, districtY, Color.BLUE);
-                PDStreamUtils.write(contents1, rchId, textFont, textFontSize, rchIdX, rchIdY, Color.BLUE);
-
-//          be.quodlibet.boxable.utils.PDStreamUtils.write(contents, signature, textFont, textFontSize, signatureX, signatureY, Color.RED);
-
-                InputStream is = new FileInputStream(retrieveDocuments() + "Certificate/certificate_sign1.png");
-                byte[] bytes = IOUtils.toByteArray(is);
-                ByteArrayInputStream bin = new ByteArrayInputStream(bytes);
-                Image image1 = new Image(ImageIO.read(bin));
-                is.close();
-                bin.close();
-
-                float imageWidth = 110;
-                float imageHeight = 110;
-                image1 = image1.scaleByWidth(imageWidth);
-                image1 = image1.scaleByHeight(imageHeight);
-                image1.draw(document, contents1, signatureX1, signatureY - 10);
-                // contents1.close();
-
-                InputStream is2 = new FileInputStream(retrieveDocuments() + "Certificate/certificate_sign2.png");
-                byte[] bytes2 = IOUtils.toByteArray(is2);
-                ByteArrayInputStream bin2 = new ByteArrayInputStream(bytes2);
-                Image image2 = new Image(ImageIO.read(bin2));
-                is2.close();
-                bin2.close();
-
-                float imageWidth2 = 65;
-                float imageHeight2 = 55;
-                image2 = image2.scaleByWidth(imageWidth2);
-                image2 = image2.scaleByHeight(imageHeight2);
-                image2.draw(document, contents1, signatureX2, signatureY + 7);
-
-                InputStream is3 = new FileInputStream(retrieveDocuments() + "Certificate/certificate_sign3.png");
-                byte[] bytes3 = IOUtils.toByteArray(is3);
-                ByteArrayInputStream bin3 = new ByteArrayInputStream(bytes3);
-                Image image3 = new Image(ImageIO.read(bin3));
-                is3.close();
-                bin3.close();
-
-                float imageWidth3 = 70;
-                float imageHeight3 = 70;
-                image3 = image3.scaleByWidth(imageWidth3);
-                image3 = image3.scaleByHeight(imageHeight3);
-                image3.draw(document, contents1, signatureX3, signatureY - 7);
-                contents1.close();
+                generateTeluguCertificate(document, textFont, name, rchId, msisdn, district, phc, village, healthSubFacility, completionDate);
+            } else if(state == chhatisgarhStateCode){
+                File file = new File(documents + "Certificate/ChhatisgarhAshaCertificateSample.pdf");
+                sampleDocument = PDDocument.load(file);
+                document.addPage(sampleDocument.getPage(0));
+                String healthBlock = frontLineWorkers.getBlock() == null ? " " : blockDao.findByblockId(frontLineWorkers.getBlock()).getBlockName();
+                textFont = PDType1Font.HELVETICA_BOLD;
+                generateChattisgarhCertificate(document, textFont, name, msisdn, district, healthBlock, healthSubFacility, completionDate);
             } else {
                 //Loading an existing document
                 File file = new File(documents + "Certificate/SampleAshaCertificate.pdf");
@@ -453,6 +369,151 @@ public class CertificateServiceImpl implements CertificateService {
             System.out.println("---Error---=>" + response);
         }
         return response;
+    }
+
+    private void generateTeluguCertificate(PDDocument document, PDFont textFont, String name, String rchId, Long msisdn, String district, String phc, String village, String healthSubFacility, Date completionDate){
+        try {
+            int textFontSize = 16;
+            PDPage page = document.getPage(0);
+            PDPageContentStream contents1 = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true, true);
+            PDRectangle mediaBox1 = page.getMediaBox();
+            float nameX = 5*(mediaBox1.getWidth()) / 12 - 30;
+            float nameY = 2* (mediaBox1.getHeight()) / 3 - 33 ;
+
+            float rchIdX = (mediaBox1.getWidth()) / 4 ;
+            float rchIdY =  2* (mediaBox1.getHeight()) / 3 - 57;
+
+            float villageX = (mediaBox1.getWidth()) / 2 - 10;
+            float villageY = rchIdY;
+
+            int villageFontTelugu = (100-village.length())/8+5;
+
+            float phcY = mediaBox1.getHeight()/2 -10;
+            int phcFontTelugu = 16 - (phc.length()/12);
+            float phcX = phcFontTelugu > 13 ? rchIdX -40 : rchIdX - 60;
+
+            float districtX = rchIdX - 20 ;
+            int districtFontTelugu = 16 - (district.length()/12);
+            float districtY = phcY -22 ;
+
+            float healthSubFacilitY = mediaBox1.getHeight()/2 +15 ;
+            int healthSubFacilitFont = 16 - (healthSubFacility.length()/12) ;
+            float healthSubFacilityX = healthSubFacilitFont > 13 ? rchIdX : rchIdX - 40 ;
+
+            float dateX = mediaBox1.getWidth()/2+80;
+            float dateY = phcY-23;
+
+            float mobileNoX = mediaBox1.getWidth() / 2 ;
+            float mobileNoY = (mediaBox1.getHeight()/3+14) ;
+
+            float signatureY =  (mediaBox1.getHeight()/5+ 60);
+            float signatureX1 = rchIdX;
+            float signatureX2 = mediaBox1.getWidth()/2;
+            float signatureX3 = mediaBox1.getWidth()/2 + 114;
+
+
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+            String completion = formatter.format(completionDate);
+            be.quodlibet.boxable.utils.PDStreamUtils.write(contents1, name, textFont, textFontSize, nameX, nameY, Color.BLUE);
+            be.quodlibet.boxable.utils.PDStreamUtils.write(contents1, completion, textFont, textFontSize-2, dateX, dateY, Color.BLUE);
+            be.quodlibet.boxable.utils.PDStreamUtils.write(contents1, msisdn.toString(), textFont, textFontSize, mobileNoX, mobileNoY, Color.BLUE);
+            be.quodlibet.boxable.utils.PDStreamUtils.write(contents1, village, textFont, villageFontTelugu, villageX, villageY, Color.BLUE);
+            be.quodlibet.boxable.utils.PDStreamUtils.write(contents1, healthSubFacility, textFont, healthSubFacilitFont, healthSubFacilityX, healthSubFacilitY, Color.BLUE);
+            be.quodlibet.boxable.utils.PDStreamUtils.write(contents1, phc, textFont, phcFontTelugu, phcX, phcY, Color.BLUE);
+            be.quodlibet.boxable.utils.PDStreamUtils.write(contents1, district, textFont, districtFontTelugu, districtX, districtY, Color.BLUE);
+            be.quodlibet.boxable.utils.PDStreamUtils.write(contents1, rchId, textFont, textFontSize, rchIdX, rchIdY, Color.BLUE);
+
+//          be.quodlibet.boxable.utils.PDStreamUtils.write(contents, signature, textFont, textFontSize, signatureX, signatureY, Color.RED);
+
+            InputStream is = new FileInputStream(retrieveDocuments() + "Certificate/certificate_sign1.png");
+            byte[] bytes = IOUtils.toByteArray(is);
+            ByteArrayInputStream bin = new ByteArrayInputStream(bytes);
+            Image image1 = new Image(ImageIO.read(bin));
+            is.close();
+            bin.close();
+
+            float imageWidth = 110;
+            float imageHeight = 110;
+            image1 = image1.scaleByWidth(imageWidth);
+            image1 = image1.scaleByHeight(imageHeight);
+            image1.draw(document, contents1, signatureX1, signatureY -10);
+            // contents1.close();
+
+            InputStream is2 = new FileInputStream(retrieveDocuments() + "Certificate/certificate_sign2.png");
+            byte[] bytes2 = IOUtils.toByteArray(is2);
+            ByteArrayInputStream bin2 = new ByteArrayInputStream(bytes2);
+            Image image2 = new Image(ImageIO.read(bin2));
+            is2.close();
+            bin2.close();
+
+            float imageWidth2 = 65;
+            float imageHeight2 = 55;
+            image2 = image2.scaleByWidth(imageWidth2);
+            image2 = image2.scaleByHeight(imageHeight2);
+            image2.draw(document, contents1, signatureX2, signatureY+7);
+
+            InputStream is3 = new FileInputStream(retrieveDocuments() + "Certificate/certificate_sign3.png");
+            byte[] bytes3 = IOUtils.toByteArray(is3);
+            ByteArrayInputStream bin3 = new ByteArrayInputStream(bytes3);
+            Image image3 = new Image(ImageIO.read(bin3));
+            is3.close();
+            bin3.close();
+
+            float imageWidth3 = 70;
+            float imageHeight3 = 70;
+            image3 = image3.scaleByWidth(imageWidth3);
+            image3 = image3.scaleByHeight(imageHeight3);
+            image3.draw(document, contents1, signatureX3, signatureY - 7);
+            contents1.close();
+        } catch (IOException erros){
+            System.out.println("---Error---=>" + erros);
+        }
+    }
+
+    private void generateChattisgarhCertificate(PDDocument document, PDFont textFont, String name, Long msisdn, String district, String healthBlock, String subCentre, Date completionDate){
+
+        try {
+            int textFontSize = 16;
+            PDPage page = document.getPage(0);
+            PDPageContentStream contents1 = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true, true);
+            PDRectangle mediaBox1 = page.getMediaBox();
+
+            float nameY =  (mediaBox1.getHeight()) / 2 + 11;
+            int nameFont = Math.max((16 - (Math.max((name.length() - 10), 0) / 2)), 7);
+            float nameX = nameFont > 12  ? (mediaBox1.getWidth()) / 4 -20 : (mediaBox1.getWidth()) / 4 -30 ;
+
+            float subCentreY = nameY ;
+            int subCentreFont = Math.max((16 - (Math.max((subCentre.length() - 10),0) / 2)), 7);
+            float subCentreX = subCentreFont > 12 ? 3*(mediaBox1.getWidth()) / 4 - 31 : 3*(mediaBox1.getWidth()) / 4 - 36;
+
+            float blockY = mediaBox1.getHeight()/2 - 12 ;
+            int blockFont =Math.max((16 - (Math.max((healthBlock.length() - 22), 0) / 2)), 7);
+            float blockX = blockFont > 12 ? (mediaBox1.getWidth())/5 +10 : (mediaBox1.getWidth())/5 ;
+
+            float districtY = blockY ;
+            int districtFont = Math.max((16 - (Math.max((district.length() - 24), 0) / 2)), 8);
+            float districtX = districtFont > 12 ? mediaBox1.getWidth()/2 + 45 : mediaBox1.getWidth()/2 + 35;
+
+            float dateX = (mediaBox1.getWidth())/2 +25 ;
+            float dateY = blockY-27;
+
+            float mobileNoX = mediaBox1.getWidth() / 2 - 30 ;
+            float mobileNoY = (mediaBox1.getHeight()/3) ;
+
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+            String completion = formatter.format(completionDate);
+            be.quodlibet.boxable.utils.PDStreamUtils.write(contents1, name, textFont, nameFont, nameX, nameY, Color.DARK_GRAY);
+            be.quodlibet.boxable.utils.PDStreamUtils.write(contents1, completion, textFont, textFontSize, dateX, dateY, Color.DARK_GRAY);
+            be.quodlibet.boxable.utils.PDStreamUtils.write(contents1, msisdn.toString(), textFont, textFontSize, mobileNoX, mobileNoY, Color.DARK_GRAY);
+            be.quodlibet.boxable.utils.PDStreamUtils.write(contents1, subCentre, textFont, subCentreFont, subCentreX, subCentreY, Color.DARK_GRAY);
+            be.quodlibet.boxable.utils.PDStreamUtils.write(contents1, healthBlock, textFont, blockFont, blockX, blockY, Color.DARK_GRAY);
+            be.quodlibet.boxable.utils.PDStreamUtils.write(contents1, district, textFont, districtFont, districtX, districtY, Color.DARK_GRAY);
+
+            contents1.close();
+
+        } catch (IOException erros){
+            System.out.println("---Error---=>" + erros);
+        }
     }
 
     public static void zipFile(File fileToZip, String fileName, ZipOutputStream zipOut) throws IOException {
