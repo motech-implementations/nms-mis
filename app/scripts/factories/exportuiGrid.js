@@ -1011,6 +1011,12 @@
                                                                            colWidth[i+1] = 90;
                                                                        }
                                                                    }
+                }
+                else{
+                     for (i = 0; i < exportColumnHeaders.length; i++) {
+                        colWidth[i+1] = 60;
+                     }
+                }
 
                 var customMarginLeft;
                 if(excelHeaderName.reportName == "Kilkari Call" || excelHeaderName.reportName == "District-wise Performance of the State for Mobile Academy"||excelHeaderName.reportName == "District-wise Performance of the State for Kilkari") {
