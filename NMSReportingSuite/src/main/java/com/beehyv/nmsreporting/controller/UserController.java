@@ -653,6 +653,25 @@ public class UserController {
             return aggregateKilkariResponseDto;
         }
 
+        if (reportRequest.getReportType().equals(ReportType.aggregateWhatsappSubscriber.getReportType())){
+            aggregateKilkariResponseDto = aggregateKilkariReportsService.getWhatsAppSubscriberCountReport(reportRequest);
+            aggregateKilkariResponseDto.setBreadCrumbData(breadCrumbs);
+            return aggregateKilkariResponseDto;
+        }
+
+        if (reportRequest.getReportType().equals(ReportType.aggregateWhatsappMessage.getReportType())){
+            aggregateKilkariResponseDto = aggregateKilkariReportsService.getWhatsAppMessageCountReport(reportRequest);
+            aggregateKilkariResponseDto.setBreadCrumbData(breadCrumbs);
+            return aggregateKilkariResponseDto;
+        }
+
+        if (reportRequest.getReportType().equals(ReportType.aggregateWhatsappReport.getReportType())){
+            aggregateKilkariResponseDto = aggregateKilkariReportsService.getWhatsAppReport(reportRequest);
+            aggregateKilkariResponseDto.setBreadCrumbData(breadCrumbs);
+            return aggregateKilkariResponseDto;
+        }
+
+
         if (reportRequest.getReportType().equals(ReportType.beneficiaryCompletion.getReportType())) {
             aggregateResponseDto.setBreadCrumbData(breadCrumbs);
             List<AggCumulativeBeneficiaryComplDto> aggCumulativeBeneficiaryComplDtos = aggregateKilkariReportsService.getCumulativeBeneficiaryCompletion(reportRequest, currentUser);
@@ -1444,6 +1463,22 @@ public class UserController {
                 ReportType.aggregateWhatsappSubscriber.getSimpleName(),
                 "images/drop-down-2.png",
                 ReportType.aggregateWhatsappSubscriber.getServiceType(),showAggregateReports)
+        );
+
+        kList.add(new Report(
+                ReportType.aggregateWhatsappMessage.getReportName(),
+                ReportType.aggregateWhatsappMessage.getReportType(),
+                ReportType.aggregateWhatsappMessage.getSimpleName(),
+                "images/drop-down-2.png",
+                ReportType.aggregateWhatsappMessage.getServiceType(),showAggregateReports)
+        );
+
+        kList.add(new Report(
+                ReportType.aggregateWhatsappReport.getReportName(),
+                ReportType.aggregateWhatsappReport.getReportType(),
+                ReportType.aggregateWhatsappReport.getSimpleName(),
+                "images/drop-down-2.png",
+                ReportType.aggregateWhatsappReport.getServiceType(),showAggregateReports)
         );
 
 

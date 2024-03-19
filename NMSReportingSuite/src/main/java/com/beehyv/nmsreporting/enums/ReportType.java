@@ -39,7 +39,10 @@ public enum ReportType {
     kilkariMessageListenership("Kilkari_Message_Listenership","Kilkari Message Listenership","KILKARI","Kilkari Message Listenership Report", "Message Listenership"),
     kilkariThematicContent("Kilkari_Thematic_Content","Kilkari Thematic Content","KILKARI","Kilkari Thematic Content Report", "Thematic Content"),
     kilkariRepeatListenerMonthWise("Kilkari_Repeat_Listener_Month_Wise","Kilkari Repeat Listener","KILKARI","Kilkari_Repeat_Listener_Month_Wise Report", "Repeat Listener"),
-    aggregateWhatsappSubscriber("Aggregate_Whatsapp_Subscriber","Aggregate Whatsapp Subscriber","KILKARI","Aggregate Whatsapp Subscriber", "Aggregate Whatsapp Subscriber");
+    aggregateWhatsappSubscriber("Aggregate_Whatsapp_Subscriber","Aggregate Whatsapp Subscriber","KILKARI","Aggregate Whatsapp Subscriber", "Aggregate Whatsapp Subscriber"),
+    aggregateWhatsappMessage("Aggregate_Whatsapp_Message","Aggregate Whatsapp Message","KILKARI","Aggregate Whatsapp Message", "Aggregate Whatsapp Message"),
+    aggregateWhatsappReport("Aggregate_Whatsapp_Report","Aggregate Whatsapp","KILKARI","Aggregate Whatsapp Report", "Aggregate Whatsapp Report");
+
     private String reportType;
     private String reportName;
     private String serviceType;
