@@ -16,7 +16,7 @@
 	 <!--Global site tag (gtag.js) - Google Analytics-->
 	<script type="text/javascript">
 		if(typeof nmsReportsApp === 'undefined'){
-           window.location.assign('https://kma.mohfw.gov.in/#!/login');
+           window.location.assign('http://192.168.6.31:8080/#!/login');
 		}
 	</script>
 
@@ -58,8 +58,8 @@
 
 
 	<!--<script src="dist/vendor1.js" ></script>-->
-	<script src="dist/app1.js?v=1.2"></script>
-	<script src="dist/app2.js?v=1.2"></script>
+	<script src="dist/app1.js?v=1"></script>
+	<script src="dist/app2.js?v=1"></script>
 
 	<!--<script src='https://www.google.com/recaptcha/api.js'></script>-->
 	<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-recaptcha/4.2.0/angular-recaptcha.js"></script>-->
@@ -72,7 +72,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.9.12/xlsx.full.min.js"></script>
 	<script src="https://fastcdn.org/FileSaver.js/1.1.20151003/FileSaver.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-validate/1.2.2/validate.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.0/ui-bootstrap-tpls.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-messages/1.8.3/angular-messages.min.js"></script>
@@ -93,6 +92,7 @@
 
 
 	<!--<script src="scripts/directives/pagination.js"></script>-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-119876170-1"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-recaptcha/4.2.0/angular-recaptcha.min.js"></script>
     <script
@@ -109,7 +109,7 @@
 
 	<!-- build:css assets/css/phpflow.min.css -->
 	<link rel="styleSheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.5/angular-material.min.css"/>
-<!--	<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">-->
+	<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
@@ -117,7 +117,7 @@
 	<link rel="styleSheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.10/angular-material.min.css"/>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="styleSheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-grid/4.6.3/ui-grid.min.css" />
-	<link rel="stylesheet" href="styles/style.css?v=1.2">
+	<link rel="stylesheet" href="styles/style.css?v=1">
 
 
 	<!--<script src="dist/app.css" ></script>-->
@@ -161,10 +161,6 @@
         <div class="nav">
 
 			<ul class="nav-menu-left" data-ng-hide = 'menuChecker()'>
-				<li data-ng-class="{active: activeTab('Home')}">
-					<a  data-ng-class="{dis1: disableCursor()}" data-ng-click="goToHome()"  class="pointer">Home</a>
-					<!--<a  data-ng-class="{dis1: disableCursor()}" data-ng-click="goToAboutus()" class="pointer">About us</a>-->
-				</li>
 				<li data-ng-class="{active: activeTab('AboutUs')}">
 					<a  data-ng-class="{dis1: disableCursor()}" href="https://mohfw.gov.in/" target="_blank" class="pointer">About us</a>
 					<!--<a  data-ng-class="{dis1: disableCursor()}" data-ng-click="goToAboutus()" class="pointer">About us</a>-->
@@ -176,7 +172,7 @@
 					<a data-ng-class="{dis1: disableCursor()}" data-ng-click="goToMobileA()" class="pointer">Mobile Academy</a>
 				</li>
 				<li data-ng-if='!checkLogin()' data-ng-class="{active: activeTab('userManual')}">
-					<a  data-ng-class="{dis1: disableCursor()}" data-ng-click="goToUserManual()"  class="pointer">Help</a>
+					<a  data-ng-class="{dis1: disableCursor()}" data-ng-click="goToUserManual()"  class="pointer">User Manual</a>
 				</li>
 				<li data-ng-if='!checkLogin()' data-ng-class="{active: activeTab('faq')}">
 					<a  data-ng-class="{dis1: disableCursor()}" data-ng-click="goToFaq()" class="pointer">FAQ</a>
@@ -199,53 +195,8 @@
 				<li data-ng-if='!checkLogin()' data-ng-class="{active: activeTab('feedbackForm')}" >
 					<a data-ng-class="{dis1: disableCursor()}" data-ng-click="goToFeedback()" class="pointer">Feedback</a>
 				</li>
-				<li data-ng-if='!checkLogin()' >
-					<a data-ng-class="{dis1: disableCursor()}" data-ng-click="fetchNotifications()" class="pointer">
-						<i class="fa fa-bell"></i>
-						<span class="badge" ng-if="notifications.length">{{ notifications.length }}</span>
-					</a>
-				</li>
 
 			</ul>
-
-			<div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationModalLabel" aria-hidden="true">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="notificationModalLabel">Notifications</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<!--<div class="modal-body">
-							<ul class="list-group">
-								<li class="list-group-item" ng-repeat="notification in notifications">
-									{{ notification }}
-								</li>
-							</ul>
-						</div>-->
-						<div class="modal-body">
-							<table class="table table-striped">
-								<thead>
-								<tr>
-									<th>Date</th>
-									<th>Notification</th>
-								</tr>
-								</thead>
-								<tbody>
-								<tr ng-repeat="notification in notifications">
-									<td>{{ notification.date }}</td>
-									<td>{{ notification.message }}</td>
-								</tr>
-								</tbody>
-							</table>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-						</div>
-					</div>
-				</div>
-			</div>
 
             <ul class="nav-menu" data-ng-hide='menuChecker()'>
 
@@ -319,12 +270,12 @@
 			</div>
 		</div>
 		<div class="col-md-5 col-sm-5 col-xs-5 footer-image">
-			<h3 style="color:black; margin-top:15px"><b>Ministry of Health and Family Welfare</b></h3>
+			<img class="footer-logo" alt="india-logo" src="images/india-logo.png">
 		</div>
 		<div class="col-md-3 col-sm-3 col-xs-3 footer-right">
 			<div>Last updated : {{last_updated}}</div>
-			<!--<div>Visitors: &lt;!&ndash;<hit-counter style="background-color: #a4574c;color: white"></hit-counter></div>&ndash;&gt;
-				&lt;!&ndash;<img src='https://www.counter12.com/img-y1ZZZZDZD6BZy4C0-3.gif' class="visitors" alt='count'><script  src='https://www.counter12.com/ad.js?id=y1ZZZZDZD6BZy4C0'></script>&ndash;&gt;</div>-->
+			<div>Visitors: <!--<hit-counter style="background-color: #a4574c;color: white"></hit-counter></div>-->
+				<img src='https://www.counter12.com/img-y1ZZZZDZD6BZy4C0-3.gif' class="visitors" alt='count'><script  src='https://www.counter12.com/ad.js?id=y1ZZZZDZD6BZy4C0'></script></div>
 			<div>Dt:  {{date | date:'medium'}}</div>
 		</div>
 
