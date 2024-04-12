@@ -50,8 +50,10 @@ public class BeneficiaryWithRegistrationDateDistrictDaoImpl extends AbstractDao<
                 "COUNT(CASE WHEN s.subscription_status = 'PENDING_ACTIVATION' THEN s.subscription_id END) AS subscriptions_pending , " +
                 "COUNT(CASE WHEN s.subscription_status = 'COMPLETED' THEN s.subscription_id END) AS subscriptions_completed , " +
                 "0 AS subscriptions_rejected "+
-                "FROM subscriptions s INNER JOIN Beneficiary b ON s.beneficiary_id = b.id " +
-                "WHERE (registrationDate BETWEEN :fromDate AND :toDate)" +
+                "FROM Beneficiary b INNER JOIN ( SELECT beneficiary_id, MAX(subscription_id) as max_id " +
+                "FROM subscriptions s  group by beneficiary_id ) max_ids ON b.id = max_ids.beneficiary_id  " +
+                "INNER JOIN subscriptions s ON max_ids.max_id = s.subscription_id " +
+                "WHERE registrationDate >= :fromDate AND registrationDate < :toDate " +
                 "AND b.state_id = :stateId GROUP BY b.district_id "+
 
                 "UNION ALL " +
