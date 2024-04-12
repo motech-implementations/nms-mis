@@ -32,7 +32,7 @@ public class WhatsAppReports {
     @Column(name = "welcome_call_provided_opt_in", columnDefinition = "INT(11)")
     private Integer welcomeCallProvidedOptIn;
 
-    @Column(name = "welcome_call_provided_opt_ou", columnDefinition = "INT(11)")
+    @Column(name = "welcome_call_provided_opt_out", columnDefinition = "INT(11)")
     private Integer welcomeCallProvidedOptOut;
 
     @Column(name="opt_in_successful_calls", columnDefinition = "INT(11)")
@@ -47,7 +47,7 @@ public class WhatsAppReports {
     @Column(name = "opt_in_provided_opt_in", columnDefinition = "INT(11)")
     private Integer optInProvidedOptIn;
 
-    @Column(name = "opt_in_provided_opt_ou", columnDefinition = "INT(11)")
+    @Column(name = "opt_in_provided_opt_out", columnDefinition = "INT(11)")
     private Integer optInProvidedOptOut;
     @Column(name="period_type", columnDefinition = "VARCHAR(45)")
     private String periodType;
