@@ -572,74 +572,42 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         List<KilkariSubscriberRegistrationDateDto> kilkariSubscriberList = new ArrayList<>();
         ExecutorService executor = Executors.newFixedThreadPool(2);
         List<KilkariSubscriberRegistrationDateRejectedCountDto> kilkariSubscriberRegistrationDateRejectedCountDtoList = new ArrayList<>();
+        Integer locationId ;
+        String locationType ;
         if(reportRequest.getStateId() == 0){
-            FetchRegistrationDateReportData registrationDateAllCountData = new RegistrationDateAllCountDataImpl(0, "State" , fromDate , toDate);
-            FetchRegistrationDateReportData registrationDateDuplicateCountData = new RegistrationDateDuplicateDataImpl(0 , "State" , fromDate , toDate);
-            List<Callable<Object>> tasks = new ArrayList<>();
-            tasks.add(registrationDateAllCountData);
-            tasks.add(registrationDateDuplicateCountData);
-            try {
-                List<Future<Object>> futures = executor.invokeAll(tasks);
-                kilkariSubscriberList = (List<KilkariSubscriberRegistrationDateDto>) futures.get(0).get();
-                kilkariSubscriberRegistrationDateRejectedCountDtoList = (List<KilkariSubscriberRegistrationDateRejectedCountDto>) futures.get(1).get();
-                executor.shutdown();
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
+            locationId = 0;
+            locationType = "State";
         }
-        else if (reportRequest.getDistrictId() == 0) {
-            FetchRegistrationDateReportData registrationDateAllCountData = new RegistrationDateAllCountDataImpl(reportRequest.getStateId() , "District" , fromDate , toDate);
-            FetchRegistrationDateReportData registrationDateDuplicateCountData = new RegistrationDateDuplicateDataImpl(reportRequest.getStateId() , "District" , fromDate , toDate);
-
-            List<Callable<Object>> tasks = new ArrayList<>();
-
-            tasks.add(registrationDateAllCountData);
-            tasks.add(registrationDateDuplicateCountData);
-            try {
-                List<Future<Object>> futures = executor.invokeAll(tasks);
-                kilkariSubscriberList = (List<KilkariSubscriberRegistrationDateDto>) futures.get(0).get();
-                kilkariSubscriberRegistrationDateRejectedCountDtoList = (List<KilkariSubscriberRegistrationDateRejectedCountDto>) futures.get(1).get();
-                executor.shutdown();
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
-        } else if(reportRequest.getBlockId() == 0){
-            FetchRegistrationDateReportData registrationDateAllCountData = new RegistrationDateAllCountDataImpl(reportRequest.getDistrictId() , "Block" , fromDate , toDate);
-            FetchRegistrationDateReportData registrationDateDuplicateCountData = new RegistrationDateDuplicateDataImpl(reportRequest.getDistrictId() , "Block" , fromDate , toDate);
-
-            List<Callable<Object>> tasks = new ArrayList<>();
-
-            tasks.add(registrationDateAllCountData);
-            tasks.add(registrationDateDuplicateCountData);
-            try {
-                List<Future<Object>> futures = executor.invokeAll(tasks);
-                kilkariSubscriberList = (List<KilkariSubscriberRegistrationDateDto>) futures.get(0).get();
-                kilkariSubscriberRegistrationDateRejectedCountDtoList = (List<KilkariSubscriberRegistrationDateRejectedCountDto>) futures.get(1).get();
-                executor.shutdown();
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
-        } else {
-            FetchRegistrationDateReportData registrationDateAllCountData = new RegistrationDateAllCountDataImpl(reportRequest.getBlockId() , "SubCenter" , fromDate , toDate);
-            FetchRegistrationDateReportData registrationDateDuplicateCountData = new RegistrationDateDuplicateDataImpl(reportRequest.getBlockId() , "SubCenter" , fromDate , toDate);
-
-            List<Callable<Object>> tasks = new ArrayList<>();
-
-            tasks.add(registrationDateAllCountData);
-            tasks.add(registrationDateDuplicateCountData);
-            try {
-                List<Future<Object>> futures = executor.invokeAll(tasks);
-                kilkariSubscriberList = (List<KilkariSubscriberRegistrationDateDto>) futures.get(0).get();
-                kilkariSubscriberRegistrationDateRejectedCountDtoList = (List<KilkariSubscriberRegistrationDateRejectedCountDto>) futures.get(1).get();
-                executor.shutdown();
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
+        else if(reportRequest.getDistrictId() == 0){
+            locationId = reportRequest.getStateId();
+            locationType = "District";
         }
+        else if(reportRequest.getBlockId() == 0){
+            locationId = reportRequest.getDistrictId();
+            locationType = "Block";
+        }
+        else {
+            locationId = reportRequest.getBlockId();
+            locationType = "SubCenter";
+        }
+
+            FetchRegistrationDateReportData registrationDateAllCountData = new RegistrationDateAllCountDataImpl(locationId , locationType , fromDate , toDate);
+            FetchRegistrationDateReportData registrationDateDuplicateCountData = new RegistrationDateDuplicateDataImpl(locationId , locationType , fromDate , toDate);
+
+            List<Callable<Object>> tasks = new ArrayList<>();
+
+            tasks.add(registrationDateAllCountData);
+            tasks.add(registrationDateDuplicateCountData);
+            try {
+                List<Future<Object>> futures = executor.invokeAll(tasks);
+                kilkariSubscriberList = (List<KilkariSubscriberRegistrationDateDto>) futures.get(0).get();
+                kilkariSubscriberRegistrationDateRejectedCountDtoList = (List<KilkariSubscriberRegistrationDateRejectedCountDto>) futures.get(1).get();
+                executor.shutdown();
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+
         List<KilkariSubscriberRegistrationDateListDto> kilkariSubscriberRegistrationDateListDtos = new ArrayList<>();
         for(int i=0;i<kilkariSubscriberList.size();i++){
             for(int j=0;j<kilkariSubscriberRegistrationDateRejectedCountDtoList.size();j++) {
@@ -658,7 +626,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     kilkariSubscriberRegistrationDateListDto.setTotalRejectedSubscriberCount(kilkariSubscriberRegistrationDateDto.getTotalRecordsRejected() - kilkariSubscriberRegistrationDateRejectedCountDto.getSubscriberCount());
                     kilkariSubscriberRegistrationDateListDto.setTotalSubscriberCount(kilkariSubscriberRegistrationDateDto.getTotalSubscriptions() - kilkariSubscriberRegistrationDateRejectedCountDto.getSubscriberCount());
                     kilkariSubscriberRegistrationDateListDto.setTotalBeneficiaryWithCompletedStatus(kilkariSubscriberRegistrationDateDto.getTotalSubscriptionsCompletedStatus());
-                    String locationType = kilkariSubscriberRegistrationDateDto.getLocationType();
+                    locationType = kilkariSubscriberRegistrationDateDto.getLocationType();
                     kilkariSubscriberRegistrationDateListDto.setLocationType(locationType);
                     try {
                         LOGGER.debug("locationType is " + locationType);
