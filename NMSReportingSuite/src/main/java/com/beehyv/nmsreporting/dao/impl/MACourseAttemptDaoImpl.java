@@ -9,6 +9,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -121,6 +122,21 @@ public class MACourseAttemptDaoImpl extends AbstractDao<Integer, User> implement
         Criteria criteria = getSession().createCriteria(MACourseFirstCompletion.class);
         criteria.add(Restrictions.like("forMonth",forMonth))
                 .add(Restrictions.eq("stateId",stateId));
+        return criteria.list();
+    }
+
+    @Override
+    public List<MACourseFirstCompletion> getSuccessFulCompletionByStateId(Integer stateId){
+        Criteria criteria = getSession().createCriteria(MACourseFirstCompletion.class);
+        criteria.add(Restrictions.eq("stateId",stateId));
+        return criteria.list();
+    }
+
+    @Override
+    public List<MACourseFirstCompletion> getSuccessFullCompletionByStateAndCompletionDate(Integer stateId, Date firstCompletionDate) {
+        Criteria criteria = getSession().createCriteria(MACourseFirstCompletion.class);
+        criteria.add(Restrictions.eq("stateId",stateId))
+                .add(Restrictions.gt("firstCompletionDate", firstCompletionDate));
         return criteria.list();
     }
 

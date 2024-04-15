@@ -61,9 +61,12 @@ public class CertificateServiceImpl implements CertificateService {
 
     private final Calendar c =Calendar.getInstance();
 
-    private final String documents = retrieveDocuments();
+    private static final String documents = retrieveDocuments();
     private final int teluguStateCode = 40;
     private final int chhatisgarhStateCode = 46;
+    private static File TeluguCertificateFile = new File(documents + "Certificate/TeluguSampleCertificate.pdf");
+    private static File chhatisgarhCertificateFile = new File(documents + "Certificate/ChhatisgarhAshaCertificateSample.pdf");
+    private final String rootDir ="/usr/local/FullCertificate/Asha/";
 
     @Override
     public List<Map<String, String>> createSpecificCertificate(Long mobileNo, User currentUser) {
@@ -275,6 +278,81 @@ public class CertificateServiceImpl implements CertificateService {
         return response;
     }
 
+    @Override
+    public Map<String, String> createAllCertificateUptoCurrentMonthInBulk(String forMonth, State state, HashMap<Integer, String> districtMap, HashMap<Integer, HashMap<Integer, String>> blockMap) {
+        List<MACourseFirstCompletion> flws;
+        // String rootDir = documents + "WholeCertificate/Asha/";
+        Integer stateId = state.getStateId();
+        String stateName = state.getStateName();
+        String stateDir = rootDir + stateId+"_"+stateName;
+        Map<String, String> response = new HashMap<>();
+
+        int failed = 0;
+        int success = 0;
+        int totalAsha = 0;
+        String status;
+        File fileAlreadyExist = new File(stateDir);
+        if(!fileAlreadyExist.exists()){
+            flws = maCourseAttemptDao.getSuccessFulCompletionByStateId(stateId);
+        } else {
+            List<BulkCertificateAudit> bulkCertificateAudits;
+            bulkCertificateAudits = bulkCertificateAuditDao.findByFileDirectory(stateDir);
+            Calendar calendar = Calendar.getInstance();
+            Date date = bulkCertificateAudits.isEmpty() ? new Date() : bulkCertificateAudits.get(bulkCertificateAudits.size() - 1).getGeneratedOn();
+            calendar.setTime(date);
+            calendar.add(Calendar.MONTH, -1);
+            Date newDate = calendar.getTime();
+            flws = bulkCertificateAudits.isEmpty() ? maCourseAttemptDao.getSuccessFulCompletionByStateId(stateId) : maCourseAttemptDao.getSuccessFullCompletionByStateAndCompletionDate(stateId, newDate) ;
+        }
+
+        for (MACourseFirstCompletion flw : flws) {
+            try {
+                if (flw.getFirstCompletionDate() != null) {
+
+                    // creating directories
+                    String dir = flw.getStateId() + "_" + stateName + "/";
+                    if (flw.getDistrictId() != null) {
+                        dir = dir + "/" + flw.getDistrictId() + "_" + districtMap.get(flw.getDistrictId());
+                        if (flw.getBlockId() != null) {
+                            dir = dir + "/" + flw.getBlockId() + "_" + blockMap.get(flw.getDistrictId()).get(flw.getBlockId());
+                        } else {
+                            dir = dir + "/" + "other";
+                        }
+                    } else {
+                        dir = dir + "/" + "other";
+                    }
+
+                    File fileDr = new File(rootDir + dir);
+                    if (!fileDr.exists()) {
+                        fileDr.mkdirs();
+                    }
+
+                    String fileName = flw.getMsisdn() + "_" + flw.getId() * 2 + 1 + ".pdf";
+
+                    status = createCertificatePdf(rootDir + dir + "/" + fileName, frontLineWorkersDao.getFlwById(flw.getFlwId()).getFullName(), flw.getMsisdn(), flw.getFirstCompletionDate(), frontLineWorkersDao.getFlwById(flw.getFlwId()));
+                    if (status.equalsIgnoreCase("success")) {
+                        success++;
+                    } else {
+                        failed++;
+                    }
+                }
+            } catch (Exception e) {
+                failed++;
+            }
+        }
+        BulkCertificateAudit bulkAudit = new BulkCertificateAudit();
+        bulkAudit.setFileDirectory(stateDir);
+        bulkAudit.setGeneratedOn(new Date());
+        bulkCertificateAuditDao.saveAudit(bulkAudit);
+        totalAsha += flws.size();
+
+        response.put("Total_Asha", String.valueOf(totalAsha));
+        response.put("Total_Certificate", Integer.toString(success));
+        response.put("Error", Integer.toString(failed));
+
+        return response;
+    }
+
     private String createCertificatePdf(String pdfFile, String name, Long msisdn, Date completionDate, FrontLineWorkers frontLineWorkers) {
 
         String village = frontLineWorkers.getVillage() == null ? " " : villageDao.findByVillageId(frontLineWorkers.getVillage()).getVillageName();
@@ -297,13 +375,13 @@ public class CertificateServiceImpl implements CertificateService {
 
             int state = frontLineWorkers.getState();
             if(state == teluguStateCode) {
-                File file = new File(documents + "Certificate/TeluguSampleCertificate.pdf");
-                sampleDocument = PDDocument.load(file);
+                // File file = new File(documents + "Certificate/TeluguSampleCertificate.pdf");
+                sampleDocument = PDDocument.load(TeluguCertificateFile);
                 document.addPage(sampleDocument.getPage(0));
                 generateTeluguCertificate(document, textFont, name, rchId, msisdn, district, phc, village, healthSubFacility, completionDate);
             } else if(state == chhatisgarhStateCode){
-                File file = new File(documents + "Certificate/ChhatisgarhAshaCertificateSample.pdf");
-                sampleDocument = PDDocument.load(file);
+                // File file = new File(documents + "Certificate/ChhatisgarhAshaCertificateSample.pdf");
+                sampleDocument = PDDocument.load(chhatisgarhCertificateFile);
                 document.addPage(sampleDocument.getPage(0));
                 String healthBlock = frontLineWorkers.getBlock() == null ? " " : blockDao.findByblockId(frontLineWorkers.getBlock()).getBlockName();
                 textFont = PDType1Font.HELVETICA_BOLD;

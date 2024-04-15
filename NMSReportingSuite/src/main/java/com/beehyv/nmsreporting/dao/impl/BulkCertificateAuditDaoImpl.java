@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Repository("bulkCertificateAudit")
@@ -24,6 +25,13 @@ public class BulkCertificateAuditDaoImpl extends AbstractDao<Integer, BulkCertif
         Criteria criteria = getSession().createCriteria(BulkCertificateAudit.class);
         criteria.add(Restrictions.in("fileDirectory", directories));
 //        criteria.add(Restrictions.eq("fileDirectory", directory));
+        return (List<BulkCertificateAudit>) criteria.list();
+    }
+
+    @Override
+    public List<BulkCertificateAudit> findByFileDirectory(String directory) {
+        Criteria criteria = getSession().createCriteria(BulkCertificateAudit.class);
+        criteria.add(Restrictions.eq("fileDirectory",directory));
         return (List<BulkCertificateAudit>) criteria.list();
     }
 
