@@ -34,6 +34,10 @@ public interface MACourseAttemptDao {
 
    public List<MACourseFirstCompletion> getSuccessFulCompletionByStateIdAndMonth(String forMonth, Integer stateId);
 
+   public List<MACourseFirstCompletion> getSuccessFulCompletionByStateId(Integer stateId);
+
+   public  List<MACourseFirstCompletion> getSuccessFullCompletionByStateAndCompletionDate(Integer stateId, Date firstCompletionDate);
+
    public List<MACourseFirstCompletion> getSuccessFulCompletionWithDistrictIdAndMonth(String forMonth, Integer stateId, Integer districtId);
 
    public List<MACourseFirstCompletion> getSuccessFulCompletionWithBlockIdAndMont(String forMonth, Integer stateId, Integer districtId, Integer blockId);

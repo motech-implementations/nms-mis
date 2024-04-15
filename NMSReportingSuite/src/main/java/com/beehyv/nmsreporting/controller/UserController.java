@@ -11,6 +11,7 @@ import com.beehyv.nmsreporting.enums.ModificationType;
 import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.*;
 import com.beehyv.nmsreporting.utils.ServiceFunctions;
+import com.google.gson.Gson;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -1822,6 +1823,30 @@ public class UserController {
             blockMap.put(block.getBlockId(),block.getBlockName());
         }
         return blockMap;
+    }
+
+    @RequestMapping(value = "asha/bulkcertificateTillLastMonth/{stateId}", method = RequestMethod.GET)
+    @ResponseBody
+    public String generateTotalCertificateInBulkDistrictWise(@PathVariable Integer stateId ){
+
+        Map<String, String> response = new HashMap<>();
+        Gson gson = new Gson();
+        String formonth = getMonthYear(new Date());
+
+        HashMap<Integer, String> districtMap = new HashMap<>();
+        HashMap<Integer, HashMap<Integer, String>> blockMap = new HashMap<>();
+        State state = stateDao.findByStateId(stateId);
+        List<District> districts;
+
+            districts = districtDao.getDistrictsOfState(stateId);
+            districtMap = getDistrictMap(districts);
+            for (District district : districts){
+                blockMap.put(district.getDistrictId(), getBlockMap(blockDao.getBlocksOfDistrict(district.getDistrictId())));
+            }
+
+            response = certificateService.createAllCertificateUptoCurrentMonthInBulk(formonth, state, districtMap, blockMap);
+
+        return gson.toJson(response);
     }
 
 
