@@ -45,11 +45,13 @@ public class BeneficiaryWithRegistrationDateBlockDaoImpl extends AbstractDao<Int
                 "COUNT(Case when s.subscription_status = 'ACTIVE' THEN s.subscription_id END) AS subscriptions_active, " +
                 "COUNT(Case when s.subscription_status = 'HOLD' THEN s.subscription_id END) AS subscriptions_on_hold, " +
                 "COUNT(Case when s.subscription_status = 'DEACTIVATED' THEN s.subscription_id END) AS subscriptions_deactivated, " +
-                "COUNT(Case when s.subscription_status = 'PENDING_ACTIVATION' THEN s.subscription_id END) AS subscriptions_pending," +
+                "COUNT(Case when s.subscription_status = 'PENDING_ACTIVATION' THEN s.subscription_id END) AS subscriptions_pending, " +
                 "COUNT(Case when s.subscription_status = 'COMPLETED' THEN s.subscription_id END) AS subscriptions_completed, " +
                 "0 AS subscriptions_rejected "+
-                "FROM subscriptions s INNER JOIN Beneficiary b ON s.beneficiary_id = b.id " +
-                "WHERE (registrationDate BETWEEN :fromDate AND :toDate)" +
+                "FROM Beneficiary b INNER JOIN ( SELECT beneficiary_id, MAX(subscription_id) as max_id " +
+                "FROM subscriptions s  GROUP BY beneficiary_id ) max_ids ON b.id = max_ids.beneficiary_id " +
+                "INNER JOIN subscriptions s ON max_ids.max_id = s.subscription_id " +
+                "WHERE registrationDate >= :fromDate AND registrationDate < :toDate " +
                 "AND b.district_id = :districtId GROUP BY b.healthBlock_id "+
 
                 "UNION ALL " +

@@ -19,6 +19,7 @@ import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.*;
 
 @Service("aggregateKilkariReportsService")
 @Transactional
@@ -569,32 +570,45 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         aCalendar.add(Calendar.DATE, 1);
         toDate = aCalendar.getTime();
         List<KilkariSubscriberRegistrationDateDto> kilkariSubscriberList = new ArrayList<>();
-
+        ExecutorService executor = Executors.newFixedThreadPool(2);
         List<KilkariSubscriberRegistrationDateRejectedCountDto> kilkariSubscriberRegistrationDateRejectedCountDtoList = new ArrayList<>();
+        Integer locationId ;
+        String locationType ;
         if(reportRequest.getStateId() == 0){
-            kilkariSubscriberList = getKilkariSubscriberCountRegistrationDateWise( 0 , "State" , fromDate , toDate ,reportRequest.getPeriodType()  );
-
-            kilkariSubscriberRegistrationDateRejectedCountDtoList = beneficiaryWithRegistrationDateStateDao.duplicateRejectedSubscriberCount(fromDate , toDate);
-
+            locationId = 0;
+            locationType = "State";
         }
-        else if (reportRequest.getDistrictId() == 0) {
-            kilkariSubscriberList = getKilkariSubscriberCountRegistrationDateWise( reportRequest.getStateId() , "District" , fromDate , toDate ,reportRequest.getPeriodType()  );
-
-            kilkariSubscriberRegistrationDateRejectedCountDtoList = beneficiaryWithRegistrationDateDistrictDao.duplicateRejectedSubscriberCount(reportRequest.getStateId() , fromDate , toDate);
-
-        } else if(reportRequest.getBlockId() == 0){
-            kilkariSubscriberList = getKilkariSubscriberCountRegistrationDateWise( reportRequest.getDistrictId() , "Block" , fromDate , toDate ,reportRequest.getPeriodType()  );
-
-            kilkariSubscriberRegistrationDateRejectedCountDtoList = beneficiaryWithRegistrationDateBlockDao.duplicateRejectedSubscriberCount(reportRequest.getDistrictId() , fromDate , toDate);
-
-        } else {
-            kilkariSubscriberList = getKilkariSubscriberCountRegistrationDateWise( reportRequest.getBlockId() , "SubCenter" , fromDate , toDate ,reportRequest.getPeriodType()  );
-
-            kilkariSubscriberRegistrationDateRejectedCountDtoList = beneficiaryWithRegistrationDateSubCentreDao.duplicateRejectedSubscriberCount(reportRequest.getBlockId() , fromDate , toDate);
-
+        else if(reportRequest.getDistrictId() == 0){
+            locationId = reportRequest.getStateId();
+            locationType = "District";
         }
+        else if(reportRequest.getBlockId() == 0){
+            locationId = reportRequest.getDistrictId();
+            locationType = "Block";
+        }
+        else {
+            locationId = reportRequest.getBlockId();
+            locationType = "SubCenter";
+        }
+
+            FetchRegistrationDateReportData registrationDateAllCountData = new RegistrationDateAllCountDataImpl(locationId , locationType , fromDate , toDate);
+            FetchRegistrationDateReportData registrationDateDuplicateCountData = new RegistrationDateDuplicateDataImpl(locationId , locationType , fromDate , toDate);
+
+            List<Callable<Object>> tasks = new ArrayList<>();
+
+            tasks.add(registrationDateAllCountData);
+            tasks.add(registrationDateDuplicateCountData);
+            try {
+                List<Future<Object>> futures = executor.invokeAll(tasks);
+                kilkariSubscriberList = (List<KilkariSubscriberRegistrationDateDto>) futures.get(0).get();
+                kilkariSubscriberRegistrationDateRejectedCountDtoList = (List<KilkariSubscriberRegistrationDateRejectedCountDto>) futures.get(1).get();
+                executor.shutdown();
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+
         List<KilkariSubscriberRegistrationDateListDto> kilkariSubscriberRegistrationDateListDtos = new ArrayList<>();
-
         for(int i=0;i<kilkariSubscriberList.size();i++){
             for(int j=0;j<kilkariSubscriberRegistrationDateRejectedCountDtoList.size();j++) {
                 if(kilkariSubscriberList.get(i).getLocationId() == kilkariSubscriberRegistrationDateRejectedCountDtoList.get(j).getLocationId()) {
@@ -612,7 +626,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     kilkariSubscriberRegistrationDateListDto.setTotalRejectedSubscriberCount(kilkariSubscriberRegistrationDateDto.getTotalRecordsRejected() - kilkariSubscriberRegistrationDateRejectedCountDto.getSubscriberCount());
                     kilkariSubscriberRegistrationDateListDto.setTotalSubscriberCount(kilkariSubscriberRegistrationDateDto.getTotalSubscriptions() - kilkariSubscriberRegistrationDateRejectedCountDto.getSubscriberCount());
                     kilkariSubscriberRegistrationDateListDto.setTotalBeneficiaryWithCompletedStatus(kilkariSubscriberRegistrationDateDto.getTotalSubscriptionsCompletedStatus());
-                    String locationType = kilkariSubscriberRegistrationDateDto.getLocationType();
+                    locationType = kilkariSubscriberRegistrationDateDto.getLocationType();
                     kilkariSubscriberRegistrationDateListDto.setLocationType(locationType);
                     try {
                         LOGGER.debug("locationType is " + locationType);
@@ -659,27 +673,76 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         LOGGER.info("Operation = getKilkariSubscriberCountReportBasedOnRegistrationDate , status = COMPLETED Report Data generated " );
         return  aggregateKilkariReportsDto;
     }
+    interface FetchRegistrationDateReportData<R> extends Callable<R> { }
+    class RegistrationDateAllCountDataImpl implements FetchRegistrationDateReportData {
+        Integer locationId ;
+        String locationType ;
+        Date fromDate;
+        Date toDate;
 
-
-
-
-    private List<KilkariSubscriberRegistrationDateDto> getKilkariSubscriberCountRegistrationDateWise (Integer locationId , String locationType, Date fromDate, Date toDate , String periodType){
-
-        List<KilkariSubscriberRegistrationDateDto> kilkariSubscriberRegistrationDateDtoList = new ArrayList<KilkariSubscriberRegistrationDateDto>();
-
-        if(locationType.equalsIgnoreCase("State")){
-            kilkariSubscriberRegistrationDateDtoList = beneficiaryWithRegistrationDateStateDao.allCountOffReports( fromDate, toDate);
+        public RegistrationDateAllCountDataImpl(Integer locationId, String locationType, Date fromDate, Date toDate) {
+            this.locationId = locationId;
+            this.locationType = locationType;
+            this.fromDate = fromDate;
+            this.toDate = toDate;
         }
-        else if(locationType.equalsIgnoreCase("District")){
-            kilkariSubscriberRegistrationDateDtoList = beneficiaryWithRegistrationDateDistrictDao.allCountOffReports(locationId, fromDate, toDate);
+
+        @Override
+        public List<KilkariSubscriberRegistrationDateDto> call(){
+            return getKilkariSubscriberCountRegistrationDateWise(this.locationId , this.locationType , this.fromDate , this.toDate);
         }
-        else if(locationType.equalsIgnoreCase("Block")) {
-            kilkariSubscriberRegistrationDateDtoList = beneficiaryWithRegistrationDateBlockDao.allCountOffReports(locationId, fromDate, toDate);
+
+        private List<KilkariSubscriberRegistrationDateDto> getKilkariSubscriberCountRegistrationDateWise (Integer locationId , String locationType, Date fromDate, Date toDate ){
+            List<KilkariSubscriberRegistrationDateDto> kilkariSubscriberRegistrationDateDtoList = new ArrayList<KilkariSubscriberRegistrationDateDto>();
+            if(locationType.equalsIgnoreCase("State")){
+                kilkariSubscriberRegistrationDateDtoList = beneficiaryWithRegistrationDateStateDao.allCountOffReports( fromDate, toDate);
+            }
+            else if(locationType.equalsIgnoreCase("District")){
+                kilkariSubscriberRegistrationDateDtoList = beneficiaryWithRegistrationDateDistrictDao.allCountOffReports(locationId, fromDate, toDate);
+            }
+            else if(locationType.equalsIgnoreCase("Block")) {
+                kilkariSubscriberRegistrationDateDtoList = beneficiaryWithRegistrationDateBlockDao.allCountOffReports(locationId, fromDate, toDate);
+            }
+            else if (locationType.equalsIgnoreCase("SubCenter")){
+                kilkariSubscriberRegistrationDateDtoList = beneficiaryWithRegistrationDateSubCentreDao.allCountOffReports(locationId , fromDate , toDate);
+            }
+            return kilkariSubscriberRegistrationDateDtoList;
         }
-        else if (locationType.equalsIgnoreCase("SubCenter")){
-            kilkariSubscriberRegistrationDateDtoList = beneficiaryWithRegistrationDateSubCentreDao.allCountOffReports(locationId , fromDate , toDate);
+    }
+
+    class RegistrationDateDuplicateDataImpl implements FetchRegistrationDateReportData {
+        Integer locationId ;
+        String locationType ;
+        Date fromDate;
+        Date toDate;
+
+        public RegistrationDateDuplicateDataImpl(Integer locationId, String locationType, Date fromDate, Date toDate) {
+            this.locationId = locationId;
+            this.locationType = locationType;
+            this.fromDate = fromDate;
+            this.toDate = toDate;
         }
-        return kilkariSubscriberRegistrationDateDtoList;
+        @Override
+        public List<KilkariSubscriberRegistrationDateRejectedCountDto> call(){
+            return getKilkariSubscriberCountRegistrationDateWise(this.locationId , this.locationType , this.fromDate , this.toDate);
+        }
+
+        private List<KilkariSubscriberRegistrationDateRejectedCountDto> getKilkariSubscriberCountRegistrationDateWise (Integer locationId , String locationType, Date fromDate, Date toDate ){
+            List<KilkariSubscriberRegistrationDateRejectedCountDto> kilkariSubscriberRegistrationDateRejectedCountDtoList = new ArrayList<>();
+            if(locationType.equalsIgnoreCase("State")){
+                kilkariSubscriberRegistrationDateRejectedCountDtoList = beneficiaryWithRegistrationDateStateDao.duplicateRejectedSubscriberCount( fromDate, toDate);
+            }
+            else if(locationType.equalsIgnoreCase("District")){
+                kilkariSubscriberRegistrationDateRejectedCountDtoList = beneficiaryWithRegistrationDateDistrictDao.duplicateRejectedSubscriberCount(locationId, fromDate, toDate);
+            }
+            else if(locationType.equalsIgnoreCase("Block")) {
+                kilkariSubscriberRegistrationDateRejectedCountDtoList = beneficiaryWithRegistrationDateBlockDao.duplicateRejectedSubscriberCount(locationId, fromDate, toDate);
+            }
+            else if (locationType.equalsIgnoreCase("SubCenter")){
+                kilkariSubscriberRegistrationDateRejectedCountDtoList = beneficiaryWithRegistrationDateSubCentreDao.duplicateRejectedSubscriberCount(locationId , fromDate , toDate);
+            }
+            return kilkariSubscriberRegistrationDateRejectedCountDtoList;
+        }
     }
     /*----------5.3.3. Kilkari Aggregate Beneficiaries Report -------*/
 

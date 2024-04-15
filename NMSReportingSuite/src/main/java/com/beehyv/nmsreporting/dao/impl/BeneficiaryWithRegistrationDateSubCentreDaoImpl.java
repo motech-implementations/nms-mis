@@ -50,8 +50,10 @@ public class BeneficiaryWithRegistrationDateSubCentreDaoImpl extends AbstractDao
                 "COUNT(CASE WHEN s.subscription_status = 'PENDING_ACTIVATION' THEN s.subscription_id END) AS subscriptions_pending , " +
                 "COUNT(CASE WHEN s.subscription_status = 'COMPLETED' THEN s.subscription_id END) AS subscriptions_completed , " +
                 "0 AS subscriptions_rejected "+
-                "FROM subscriptions s INNER JOIN Beneficiary b ON s.beneficiary_id = b.id LEFT JOIN beneficiary_tracker bt " +
-                "ON s.beneficiaryTracking_id = bt.id WHERE (registrationDate BETWEEN :fromDate AND :toDate)" +
+                "FROM Beneficiary b INNER JOIN ( SELECT beneficiary_id, MAX(subscription_id) as max_id " +
+                "FROM subscriptions s  group by beneficiary_id ) max_ids ON b.id = max_ids.beneficiary_id " +
+                "INNER JOIN subscriptions s ON max_ids.max_id = s.subscription_id "+
+                "WHERE registrationDate >= :fromDate AND registrationDate < :toDate " +
                 "AND b.healthBlock_id = :blockId GROUP BY b.healthSubFacility_id " +
 
                 "UNION ALL " +
@@ -119,7 +121,7 @@ public class BeneficiaryWithRegistrationDateSubCentreDaoImpl extends AbstractDao
                 "SELECT cir.subcentre_id , COUNT(distinct(cir.registration_no)) AS duplicate_subscribers " +
                 "FROM child_import_rejection cir INNER JOIN Beneficiary b ON b.rch_id = cir.registration_no " +
                 "WHERE (registration_date >= :fromDate AND registration_date < :toDate) AND cir.health_block_id = :blockId " +
-                "GROUP BY cir.phc_id ) AS a GROUP BY a.subcentre_id ";
+                "GROUP BY cir.subcentre_id ) AS a GROUP BY a.subcentre_id ";
 
         Query query = getSession().createSQLQuery(query_string)
                 .setParameter("blockId" , blockId)
