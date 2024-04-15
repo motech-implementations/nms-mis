@@ -66,7 +66,7 @@ public class CertificateServiceImpl implements CertificateService {
     private final int chhatisgarhStateCode = 46;
     private static File TeluguCertificateFile = new File(documents + "Certificate/TeluguSampleCertificate.pdf");
     private static File chhatisgarhCertificateFile = new File(documents + "Certificate/ChhatisgarhAshaCertificateSample.pdf");
-    private final String rootDir ="/usr/local/FullCertificate/Asha/";
+    private final String rootDir = documents + "WholeCertificate/Asha/";
 
     @Override
     public List<Map<String, String>> createSpecificCertificate(Long mobileNo, User currentUser) {
