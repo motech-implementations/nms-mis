@@ -36,7 +36,7 @@ public enum ReportType {
     MAHomePageReport("MA_Report","MA Report","MOBILE_ACADEMY","MA Count Report","Count Report"),
     aggregateWhatsappSubscriber("Aggregate_Whatsapp_Subscriber","Aggregate Whatsapp Subscriber","KILKARI","Aggregate Whatsapp Subscriber", "Aggregate Whatsapp Subscriber"),
     aggregateWhatsappMessage("Aggregate_Whatsapp_Message","Aggregate Whatsapp Message","KILKARI","Aggregate Whatsapp Message", "Aggregate Whatsapp Message"),
-    aggregateWhatsappReport("Aggregate_Whatsapp_Report","Aggregate Whatsapp","KILKARI","Aggregate Whatsapp Report", "Aggregate Whatsapp Report");
+    aggregateWhatsappReport("Aggregate_Whatsapp_Opt_In_Report","Aggregate Whatsapp","KILKARI","Aggregate Whatsapp Opt In Report", "Aggregate Whatsapp Opt In Report");
 
 
     private final String reportType;
