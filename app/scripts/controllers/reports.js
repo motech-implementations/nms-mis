@@ -553,7 +553,7 @@
 				if($scope.userHasOneCircle()){
                 	$scope.selectCircle($scope.circles[0]);
                 }
-                if($scope.report.reportEnum == 'Kilkari_Message_Matrix' || $scope.report.reportEnum == 'Kilkari_Subscriber' || $scope.report.reportEnum == 'Kilkari_Subscriber_Report_with_RegistrationDate' || $scope.report.reportEnum == 'Kilkari_Listening_Matrix' || $scope.report.reportEnum == 'Kilkari_Usage' || $scope.report.reportEnum == 'Kilkari_Message_Listenership' || $scope.report.reportEnum == 'Kilkari_Thematic_Content' || $scope.report.reportEnum == 'Kilkari_Aggregate_Beneficiaries' || $scope.report.reportEnum == 'Kilkari_Beneficiary_Completion' || $scope.report.reportEnum == 'District-wise Performance of the State for Kilkari' || $scope.report.reportEnum == 'Aggregate_Whatsapp_Subscriber' || $scope.report.reportEnum == 'Aggregate_Whatsapp_Message' || $scope.report.reportEnum == 'Aggregate_Whatsapp_Report'){
+                if($scope.report.reportEnum == 'Kilkari_Message_Matrix' || $scope.report.reportEnum == 'Kilkari_Subscriber' || $scope.report.reportEnum == 'Kilkari_Subscriber_Report_with_RegistrationDate' || $scope.report.reportEnum == 'Kilkari_Listening_Matrix' || $scope.report.reportEnum == 'Kilkari_Usage' || $scope.report.reportEnum == 'Kilkari_Message_Listenership' || $scope.report.reportEnum == 'Kilkari_Thematic_Content' || $scope.report.reportEnum == 'Kilkari_Aggregate_Beneficiaries' || $scope.report.reportEnum == 'Kilkari_Beneficiary_Completion' || $scope.report.reportEnum == 'District-wise Performance of the State for Kilkari' || $scope.report.reportEnum == 'Aggregate_Whatsapp_Subscriber' || $scope.report.reportEnum == 'Aggregate_Whatsapp_Message' || $scope.report.reportEnum == 'Aggregate_Whatsapp_Opt_In_Report'){
                     $scope.periodType = ['Year','Financial Year','Quarter','Month','Week'];
                 }
                 else if($scope.report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise'){
@@ -1554,8 +1554,8 @@
                         else if($scope.report.reportEnum == 'Aggregate_Whatsapp_Message'){
                              $scope.gridOptions1.columnDefs = $scope.Aggregate_Whatsapp_Message_Definitions;
                         }
-                        else if($scope.report.reportEnum == 'Aggregate_Whatsapp_Report'){
-                             $scope.gridOptions1.columnDefs = $scope.Aggregate_Whatsapp_Report_Definitions;
+                        else if($scope.report.reportEnum == 'Aggregate_Whatsapp_Opt_In_Report'){
+                             $scope.gridOptions1.columnDefs = $scope.Aggregate_Whatsapp_Opt_In_Report_Definitions;
                         }
                         else if($scope.report.reportEnum == 'Kilkari_Message_Listenership'){
                              $scope.gridOptions1.columnDefs = $scope.Kilkari_Message_Listenership_Definitions;
@@ -2805,7 +2805,7 @@
                                                                { field: 'coreMessagesDelivered', displayName: 'Core Messages Delivered', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                                { field: 'coreMessagesRead', displayName: 'Core Messages Read', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
                                                 ]
-            $scope.Aggregate_Whatsapp_Report_Definitions = [
+            $scope.Aggregate_Whatsapp_Opt_In_Report_Definitions = [
                                                                {name: 'S No.', displayName: 'S No.',width:"4%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
                                                                { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents">Total</div>',defaultSort: { direction: uiGridConstants.ASC },
                                                                   cellTemplate:'<a   ng-if= !row.entity.link class="btn aggregate-location" title="{{COL_FIELD}}"  ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a><p ng-if= row.entity.link class="ui-grid-cell-contents" title="{{COL_FIELD}}" >{{ COL_FIELD }}</p>',
