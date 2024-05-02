@@ -36,7 +36,7 @@ public class KilkariSubscriberReportDaoImpl extends AbstractDao<Integer,KilkariS
         kilkariSubscriber.setEligibleForSubscriptions(kilkariSubscriber.getEligibleForSubscriptions() == null ? 0 : kilkariSubscriber.getEligibleForSubscriptions());
         kilkariSubscriber.setTotalSubscriptionsCompleted(kilkariSubscriber.getTotalSubscriptionsCompleted() == null ? 0 : kilkariSubscriber.getTotalSubscriptionsCompleted());
         kilkariSubscriber.setTotalSubscriptionsAccepted(kilkariSubscriber.getTotalSubscriptionsAccepted() == null ? 0 : kilkariSubscriber.getTotalSubscriptionsAccepted());
-//        kilkariSubscriber.setTotalSubscriptionsRejected(kilkariSubscriber.getTotalSubscriptionsRejected() == null ? 0 : kilkariSubscriber.getTotalSubscriptionsRejected());
+        kilkariSubscriber.setTotalSubscriptionsRejected(kilkariSubscriber.getTotalSubscriptionsRejected() == null ? 0 : kilkariSubscriber.getTotalSubscriptionsRejected());
         kilkariSubscriber.setTotalSubscriptions(kilkariSubscriber.getTotalSubscriptions() == null ? 0 : kilkariSubscriber.getTotalSubscriptions());
         return kilkariSubscriber;
     }
