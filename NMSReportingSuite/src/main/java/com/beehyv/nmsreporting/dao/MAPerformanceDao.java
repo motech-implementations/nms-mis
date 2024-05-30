@@ -1,6 +1,7 @@
 package com.beehyv.nmsreporting.dao;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by beehyv on 22/9/17.
@@ -25,4 +26,6 @@ public interface MAPerformanceDao {
     Long getAshaActivatedInBetween(Integer locationId, String locationType, Date fromDate, Date toDate);
 
     Long getAshaDeactivatedInBetween(Integer locationId, String locationType, Date fromDate, Date toDate);
+
+    List<Object[]> getPerformanceCount(List<Integer> locationIds, String locationType, Date fromDateTemp, Date toDate);
 }

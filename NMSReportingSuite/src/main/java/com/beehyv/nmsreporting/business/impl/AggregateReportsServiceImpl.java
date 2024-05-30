@@ -91,19 +91,28 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
     @Autowired
     private MASubscriberDao maSubscriberDao;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AggregateReportsServiceImpl.class);
+
 
     @Override
     public List<AggregateCumulativeMA> getCumulativeSummaryMAReport(Integer locationId, String locationType, Date toDate, boolean isCumulative) {
+       LOGGER.info("todate is " + toDate );
         Date date = toDate;
+        LOGGER.info("date is " + date );
         List<AggregateCumulativeMA> CumulativeSummery = new ArrayList<>();
         List<String> Headers = new ArrayList<>();
         if (locationType.equalsIgnoreCase("State")) {
             List<State> states = stateDao.getStatesByServiceType("MOBILE_ACADEMY");
             for (State s : states) {
-                if (date.before(stateServiceDao.getServiceStartDateForState(s.getStateId(), "MOBILE_ACADEMY")) && !isCumulative) {
-                    date = stateServiceDao.getServiceStartDateForState(s.getStateId(), "MOBILE_ACADEMY");
+                Date serviceStartDate = stateServiceDao.getServiceStartDateForState(s.getStateId(), "MOBILE_ACADEMY");
+                if (serviceStartDate == null) {
+                    LOGGER.info("service start date is null for stateID"+s.getStateId());
+                    continue;
                 }
-                if (!isCumulative || !toDate.before(stateServiceDao.getServiceStartDateForState(s.getStateId(), "MOBILE_ACADEMY"))) {
+                if (date.before(serviceStartDate) && !isCumulative) {
+                    date = serviceStartDate;
+                }
+                if (!isCumulative || !toDate.before(serviceStartDate)) {
                     CumulativeSummery.add(aggregateCumulativeMADao.getMACumulativeSummery(s.getStateId(), locationType, date));
                 }
                 date = toDate;

@@ -4,10 +4,16 @@ import com.beehyv.nmsreporting.business.MAPerformanceService;
 import com.beehyv.nmsreporting.dao.*;
 import com.beehyv.nmsreporting.entity.MAPerformanceCountsDto;
 import com.beehyv.nmsreporting.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.Transactional;
+import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -40,6 +46,8 @@ public class MAPerformanceServiceImpl implements MAPerformanceService{
 
     @Autowired
     private HealthSubFacilityDao healthSubFacilityDao;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MAPerformanceServiceImpl.class);
 
 //    @Override
 //    public Long getAccessedCount(Integer locationId, String locationType, Date fromDate, Date toDate){
@@ -194,37 +202,50 @@ public class MAPerformanceServiceImpl implements MAPerformanceService{
 
         if(locationType.equalsIgnoreCase("State")){
             List<State> states=stateDao.getStatesByServiceType("MOBILE_ACADEMY");
-            for(State s:states){
+            List<Integer> stateIds = new ArrayList<>();
+            for(State state : states){
+                stateIds.add(state.getStateId());
+            }
+
+            List<Object[]> results = maPerformanceDao.getPerformanceCount(stateIds,locationType, fromDateTemp,toDate);
+            for (Object[] counts : results) {
+                Long stateId =0L;
                 Long accessedCount = 0L;
                 Long notAccessedCount = 0L;
                 Integer failedCount = 0;
-                Long activatedInBetweenCount=0L;
-                Long deactivatedInBetweenCount=0L;
-                Long refresherCourse=0L;
-                Long completedInGivenTimeCount=0L;
-                if(fromDate.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"MOBILE_ACADEMY"))){
-                    fromDateTemp = stateServiceDao.getServiceStartDateForState(s.getStateId(),"MOBILE_ACADEMY");
-                }
-                MAPerformanceCountsDto statePerformance = new MAPerformanceCountsDto();
-                if(!toDate.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"MOBILE_ACADEMY"))) {
-                    accessedCount = maPerformanceDao.accessedAtLeastOnce(s.getStateId(), locationType, fromDateTemp, toDate);
-                    notAccessedCount = maPerformanceDao.accessedNotOnce(s.getStateId(), locationType, fromDateTemp, toDate);
-                    failedCount = maPerformanceDao.getAshasFailed(s.getStateId(), locationType, fromDateTemp, toDate);
-                    activatedInBetweenCount=maPerformanceDao.getAshaActivatedInBetween(s.getStateId(), locationType, fromDateTemp, toDate);
-                    deactivatedInBetweenCount=maPerformanceDao.getAshaDeactivatedInBetween(s.getStateId(), locationType, fromDateTemp, toDate);
-                    refresherCourse= maPerformanceDao.getAshaRefresherCourseInBetween(s.getStateId(), locationType, fromDateTemp, toDate);
-                    completedInGivenTimeCount = maPerformanceDao.getAshasCompletedInGivenTime(s.getStateId(), locationType, fromDateTemp, toDate);
-                 }
-                statePerformance.setAccessedAtleastOnce(accessedCount);
-                statePerformance.setAccessedNotOnce(notAccessedCount);
-                statePerformance.setAshasFailed(failedCount);
-                statePerformance.setAshasActivatedInBetween(activatedInBetweenCount);
-                statePerformance.setAshasDeactivatedInBetween(deactivatedInBetweenCount);
-                statePerformance.setAshasRefresherCourse(refresherCourse);
-                statePerformance.setAshasCompletedInGivenTime(completedInGivenTimeCount);
-                countMap.put((long)s.getStateId(),statePerformance);
+                Long activatedInBetweenCount = 0L;
+                Long deactivatedInBetweenCount = 0L;
+                Long refresherCourse = 0L;
+                Long completedInGivenTimeCount = 0L;
 
-                fromDateTemp = fromDate;
+//                Date serviceStartDate = serviceStartDates.get(s.getStateId());
+
+//                if (!toDate.before(serviceStartDate)) {
+
+
+                            stateId = ((BigInteger)counts[0]).longValue();
+                            accessedCount = ((BigInteger) counts[1]).longValue();
+                            notAccessedCount = ((BigInteger) counts[2]).longValue();
+                            failedCount = ((BigInteger) counts[3]).intValue();
+                            activatedInBetweenCount = ((BigInteger) counts[4]).longValue();
+                            deactivatedInBetweenCount = ((BigInteger) counts[5]).longValue();
+                            refresherCourse = ((BigInteger) counts[6]).longValue();
+                            completedInGivenTimeCount = ((BigInteger) counts[7]).longValue();
+
+
+
+
+
+                MAPerformanceCountsDto statePerformance = new MAPerformanceCountsDto();
+                statePerformance.setAccessedAtleastOnce(accessedCount!=null?accessedCount:0L);
+                statePerformance.setAccessedNotOnce(notAccessedCount!=null?notAccessedCount:0L);
+                statePerformance.setAshasFailed(failedCount!=null?failedCount:0);
+                statePerformance.setAshasActivatedInBetween(activatedInBetweenCount!=null?activatedInBetweenCount:0L);
+                statePerformance.setAshasDeactivatedInBetween(deactivatedInBetweenCount!=null?deactivatedInBetweenCount:0L);
+                statePerformance.setAshasRefresherCourse(refresherCourse!=null?refresherCourse:0L);
+                statePerformance.setAshasCompletedInGivenTime(completedInGivenTimeCount!=null?completedInGivenTimeCount:0L);
+
+                countMap.put(stateId, statePerformance);
             }
 
         }
@@ -248,26 +269,36 @@ public class MAPerformanceServiceImpl implements MAPerformanceService{
                 Long deactivatedInBetweenCount=0L;
                 Long refresherCourseCount=0L;
                 Long completedInGivenTimeCount=0L;
-                for(District d:districts){
+
+                List<Integer> districtIds = new ArrayList<>();
+                for(District district : districts){
+                    districtIds.add(district.getDistrictId());
+                }
+
+                List<Object[]> results = maPerformanceDao.getPerformanceCount(districtIds,locationType,fromDateTemp,toDate);
+
+
+                for(Object[] result:results){
                     MAPerformanceCountsDto districtPerformance = new MAPerformanceCountsDto();
-                    Long districtCount1 = maPerformanceDao.accessedAtLeastOnce(d.getDistrictId(),locationType,fromDateTemp,toDate);
-                    Long districtCount2 = maPerformanceDao.accessedNotOnce(d.getDistrictId(),locationType,fromDateTemp,toDate);
-                    Integer districtCount3 = maPerformanceDao.getAshasFailed(d.getDistrictId(),locationType,fromDateTemp,toDate);
-                    Long districtCount4=maPerformanceDao.getAshaActivatedInBetween(d.getDistrictId(),locationType, fromDateTemp, toDate);
-                    Long districtCount5=maPerformanceDao.getAshaDeactivatedInBetween(d.getDistrictId(),locationType, fromDateTemp, toDate);
-                    Long districtCount6= maPerformanceDao.getAshaRefresherCourseInBetween(d.getDistrictId(),locationType,fromDateTemp,toDate);
-                    Long districtCount7 = maPerformanceDao.getAshasCompletedInGivenTime(d.getDistrictId(),locationType,fromDateTemp,toDate);
-                    districtPerformance.setAccessedAtleastOnce(districtCount1);
-                    districtPerformance.setAccessedNotOnce(districtCount2);
-                    districtPerformance.setAshasFailed(districtCount3);
-                    districtPerformance.setAshasActivatedInBetween(districtCount4);
-                    districtPerformance.setAshasDeactivatedInBetween(districtCount5);
-                    districtPerformance.setAshasRefresherCourse(districtCount6);
-                    districtPerformance.setAshasCompletedInGivenTime(districtCount7);
-                     countMap.put((long)d.getDistrictId(),districtPerformance);
+                    Long districtId = ((BigInteger)result[0]).longValue();
+                    Long districtCount1 = ((BigInteger)result[1]).longValue();
+                    Long districtCount2 = ((BigInteger)result[2]).longValue();
+                    Integer districtCount3 = ((BigInteger)result[3]).intValue();
+                    Long districtCount4= ((BigInteger)result[4]).longValue();
+                    Long districtCount5= ((BigInteger)result[5]).longValue();
+                    Long districtCount6=  ((BigInteger)result[6]).longValue();
+                    Long districtCount7 = ((BigInteger)result[7]).longValue();
+                    districtPerformance.setAccessedAtleastOnce(districtCount1!=null?districtCount1:0L);
+                    districtPerformance.setAccessedNotOnce(districtCount2!=null?districtCount2:0L);
+                    districtPerformance.setAshasFailed(districtCount3!=null?districtCount3:0);
+                    districtPerformance.setAshasActivatedInBetween(districtCount4!=null?districtCount4:0L);
+                    districtPerformance.setAshasDeactivatedInBetween(districtCount5!=null?districtCount5:0L);
+                    districtPerformance.setAshasRefresherCourse(districtCount6!=null?districtCount6:0L);
+                    districtPerformance.setAshasCompletedInGivenTime(districtCount7!=null?districtCount7:0L);
+                     countMap.put(districtId,districtPerformance);
                     accessedCount+=districtCount1;
                     notAccessedCount+=districtCount2;
-                    failedCount+=districtCount3;
+                    failedCount+=districtCount3!=null?districtCount3:0;
                     activatedInBetweenCount+=districtCount4;
                     deactivatedInBetweenCount+=districtCount5;
                     refresherCourseCount+=districtCount6;
@@ -318,27 +349,45 @@ public class MAPerformanceServiceImpl implements MAPerformanceService{
                     Long deactivatedInBetweenCount=0L;
                     Long refresherCourseCount=0L;
                     Long completedInGivenTimeCount=0L;
-                    for (Block d : blocks) {
-                        MAPerformanceCountsDto blockPerformance = new MAPerformanceCountsDto();
-                        Long blockCount1 = maPerformanceDao.accessedAtLeastOnce(d.getBlockId(),locationType,fromDateTemp,toDate);
-                        Long blockCount2 = maPerformanceDao.accessedNotOnce(d.getBlockId(),locationType,fromDateTemp,toDate);
-                        Integer blockCount3 = maPerformanceDao.getAshasFailed(d.getBlockId(),locationType,fromDateTemp,toDate);
-                        Long blockCount4=maPerformanceDao.getAshaActivatedInBetween(d.getBlockId(),locationType, fromDateTemp,toDate);
-                        Long blockCount5=maPerformanceDao.getAshaDeactivatedInBetween(d.getBlockId(),locationType, fromDateTemp,toDate);
-                        Long blockCount6= maPerformanceDao.getAshaRefresherCourseInBetween(d.getBlockId(),locationType,fromDateTemp,toDate);
-                        Long blockCount7 = maPerformanceDao.getAshasCompletedInGivenTime(d.getBlockId(),locationType,fromDateTemp,toDate);
 
-                        blockPerformance.setAccessedAtleastOnce(blockCount1);
-                        blockPerformance.setAccessedNotOnce(blockCount2);
-                        blockPerformance.setAshasFailed(blockCount3);
-                        blockPerformance.setAshasActivatedInBetween(blockCount4);
-                        blockPerformance.setAshasDeactivatedInBetween(blockCount5);
-                        blockPerformance.setAshasRefresherCourse(blockCount6);
-                        blockPerformance.setAshasCompletedInGivenTime(blockCount7);
-                        countMap.put((long)d.getBlockId(),blockPerformance);
+                    List<Integer> blockIds = new ArrayList<>();
+                    for(Block block:blocks){
+                         blockIds.add(block.getBlockId());
+
+                    }
+//                    List<Integer> blockIds  = blocks.stream().map(Block::getBlockId).collect(Collectors.toList());
+                    LOGGER.info("these are the block ids {}",blockIds);
+
+
+                    LOGGER.info("Executing performance count query with params: fromDate={}, toDate={}, blockIds={}", fromDateTemp, toDate, blockIds);
+                    List<Object[]> results = maPerformanceDao.getPerformanceCount(blockIds,  locationType, fromDateTemp,toDate);
+                    LOGGER.info("Query result: {}", results);
+
+
+
+                    for (Object[] result : results) {
+                        MAPerformanceCountsDto blockPerformance = new MAPerformanceCountsDto();
+                        if (result == null) continue;
+                        Long blockId = ((BigInteger) result[0]).longValue();
+                        Long blockCount1 = ((BigInteger) result[1]).longValue();
+                        Long blockCount2 = ((BigInteger) result[2]).longValue();
+                        Integer blockCount3 = ((BigInteger) result[3]).intValue();
+                        Long blockCount4=((BigInteger) result[4]).longValue();
+                        Long blockCount5=((BigInteger) result[5]).longValue();
+                        Long blockCount6= ((BigInteger) result[6]).longValue();
+                        Long blockCount7 = ((BigInteger) result[7]).longValue();
+
+                        blockPerformance.setAccessedAtleastOnce(blockCount1!= null ? blockCount1 : 0L);
+                        blockPerformance.setAccessedNotOnce(blockCount2!= null ? blockCount2 : 0L);
+                        blockPerformance.setAshasFailed(blockCount3 != null ? blockCount3 : 0);
+                        blockPerformance.setAshasActivatedInBetween(blockCount4!= null ? blockCount4 : 0L);
+                        blockPerformance.setAshasDeactivatedInBetween(blockCount5!= null ? blockCount5 : 0L);
+                        blockPerformance.setAshasRefresherCourse(blockCount6!= null ? blockCount6 : 0L);
+                        blockPerformance.setAshasCompletedInGivenTime(blockCount7!= null ? blockCount7 : 0L);
+                        countMap.put(blockId,blockPerformance);
                         accessedCount+=blockCount1;
                         notAccessedCount+=blockCount2;
-                        failedCount+=blockCount3;
+                        failedCount+=(blockCount3 != null ? blockCount3 : 0);;
                         activatedInBetweenCount+=blockCount4;
                         deactivatedInBetweenCount+=blockCount5;
                         refresherCourseCount+=blockCount6;
@@ -392,15 +441,24 @@ public class MAPerformanceServiceImpl implements MAPerformanceService{
                     Long deactivatedInBetweenCount=0L;
                     Long refresherCourseCount=0L;
                     Long completedInGivenTimeCount=0L;
-                    for(HealthSubFacility s: subcenters){
+
+                    List<Integer> healthSubFacilityIds = new ArrayList<>();
+                    for (HealthSubFacility healthSubFacility : subcenters) {
+                        healthSubFacilityIds.add(healthSubFacility.getHealthSubFacilityId());
+                    }
+
+//                    List<Integer> healthSubFacilityIds = subcenters.stream().map(HealthSubFacility::getHealthSubFacilityId).collect(Collectors.toList());
+                    List<Object[]> results = maPerformanceDao.getPerformanceCount(healthSubFacilityIds,locationType,fromDateTemp,toDate);
+                    for(Object[] result : results){
                         MAPerformanceCountsDto subcentrePerformance = new MAPerformanceCountsDto();
-                        Long subcentreCount1 = maPerformanceDao.accessedAtLeastOnce(s.getHealthSubFacilityId(),locationType,fromDateTemp,toDate);
-                        Long subcentreCount2 = maPerformanceDao.accessedNotOnce(s.getHealthSubFacilityId(),locationType,fromDateTemp,toDate);
-                        Integer subcentreCount3 = maPerformanceDao.getAshasFailed(s.getHealthSubFacilityId(),locationType,fromDateTemp,toDate);
-                        Long subcentreCount4=maPerformanceDao.getAshaActivatedInBetween(s.getHealthSubFacilityId(),locationType, fromDateTemp, toDate);
-                        Long subcentreCount5=maPerformanceDao.getAshaDeactivatedInBetween(s.getHealthSubFacilityId(),locationType, fromDateTemp, toDate);
-                        Long subcentreCount6= maPerformanceDao.getAshaRefresherCourseInBetween(s.getHealthSubFacilityId(),locationType,fromDateTemp,toDate);
-                        Long subcentreCount7 = maPerformanceDao.getAshasCompletedInGivenTime(s.getHealthSubFacilityId(),locationType,fromDateTemp,toDate);
+                        Long healthSubFacilityId = ((BigInteger)result[0]).longValue();
+                        Long subcentreCount1 = ((BigInteger)result[1]).longValue();
+                        Long subcentreCount2 = ((BigInteger)result[2]).longValue();
+                        Integer subcentreCount3 = ((BigInteger)result[3]).intValue();
+                        Long subcentreCount4=((BigInteger)result[4]).longValue();
+                        Long subcentreCount5=((BigInteger)result[5]).longValue();
+                        Long subcentreCount6= ((BigInteger)result[6]).longValue();
+                        Long subcentreCount7 = ((BigInteger)result[7]).longValue();
 
                         subcentrePerformance.setAccessedAtleastOnce(subcentreCount1);
                         subcentrePerformance.setAccessedNotOnce(subcentreCount2);
@@ -409,7 +467,7 @@ public class MAPerformanceServiceImpl implements MAPerformanceService{
                         subcentrePerformance.setAshasDeactivatedInBetween(subcentreCount5);
                         subcentrePerformance.setAshasRefresherCourse(subcentreCount6);
                         subcentrePerformance.setAshasCompletedInGivenTime(subcentreCount7);
-                        countMap.put((long)s.getHealthSubFacilityId(),subcentrePerformance);
+                        countMap.put(healthSubFacilityId,subcentrePerformance);
                         accessedCount+=subcentreCount1;
                         notAccessedCount+=subcentreCount2;
                         failedCount+=subcentreCount3;
