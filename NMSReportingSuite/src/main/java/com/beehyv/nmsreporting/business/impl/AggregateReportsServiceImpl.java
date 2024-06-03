@@ -98,19 +98,15 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
 
     @Override
     public List<AggregateCumulativeMA> getCumulativeSummaryMAReport(Integer locationId, String locationType, Date toDate, boolean isCumulative) {
-       LOGGER.info("todate is " + toDate );
+
         Date date = toDate;
-        LOGGER.info("date is " + date );
         List<AggregateCumulativeMA> CumulativeSummery = new ArrayList<>();
         List<String> Headers = new ArrayList<>();
         if (locationType.equalsIgnoreCase("State")) {
             List<State> states = stateDao.getStatesByServiceType("MOBILE_ACADEMY");
             for (State s : states) {
-                LOGGER.info("StateId is " + s.getStateId() );
                 Date serviceStartDate = stateServiceDao.getServiceStartDateForState(s.getStateId(), "MOBILE_ACADEMY");
-                LOGGER.info("serviceStartDate" + serviceStartDate );
                 if (serviceStartDate == null) {
-                    LOGGER.info("service start date is null for stateID" + s.getStateId());
                     continue;
                 }
                 SimpleDateFormat desiredFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
@@ -118,19 +114,15 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                 Date tempDate = null;
                 try {
                     tempDate = desiredFormat.parse(formattedDate);
-                    LOGGER.info("tempDate" + tempDate );
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
                 if (date.before(tempDate) && !isCumulative) {
-                    LOGGER.info("tempDate is bebore date" );
                     date = tempDate;
-                    LOGGER.info("date after change is " + date );
                 }
                 if (!isCumulative || !toDate.before(tempDate)) {
 
                     AggregateCumulativeMA result = aggregateCumulativeMADao.getMACumulativeSummery(s.getStateId(), locationType, date);
-                    LOGGER.info("result for StateID is " + result );
                     CumulativeSummery.add(result);
                 }
                 date = toDate;
