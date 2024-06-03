@@ -37,6 +37,8 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.beehyv.nmsreporting.utils.Constants.*;
@@ -104,16 +106,32 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         if (locationType.equalsIgnoreCase("State")) {
             List<State> states = stateDao.getStatesByServiceType("MOBILE_ACADEMY");
             for (State s : states) {
+                LOGGER.info("StateId is " + s.getStateId() );
                 Date serviceStartDate = stateServiceDao.getServiceStartDateForState(s.getStateId(), "MOBILE_ACADEMY");
+                LOGGER.info("serviceStartDate" + serviceStartDate );
                 if (serviceStartDate == null) {
-                    LOGGER.info("service start date is null for stateID"+s.getStateId());
+                    LOGGER.info("service start date is null for stateID" + s.getStateId());
                     continue;
                 }
-                if (date.before(serviceStartDate) && !isCumulative) {
-                    date = serviceStartDate;
+                SimpleDateFormat desiredFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+                String formattedDate = desiredFormat.format(serviceStartDate);
+                Date tempDate = null;
+                try {
+                    tempDate = desiredFormat.parse(formattedDate);
+                    LOGGER.info("tempDate" + tempDate );
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
-                if (!isCumulative || !toDate.before(serviceStartDate)) {
-                    CumulativeSummery.add(aggregateCumulativeMADao.getMACumulativeSummery(s.getStateId(), locationType, date));
+                if (date.before(tempDate) && !isCumulative) {
+                    LOGGER.info("tempDate is bebore date" );
+                    date = tempDate;
+                    LOGGER.info("date after change is " + date );
+                }
+                if (!isCumulative || !toDate.before(tempDate)) {
+
+                    AggregateCumulativeMA result = aggregateCumulativeMADao.getMACumulativeSummery(s.getStateId(), locationType, date);
+                    LOGGER.info("result for StateID is " + result );
+                    CumulativeSummery.add(result);
                 }
                 date = toDate;
             }

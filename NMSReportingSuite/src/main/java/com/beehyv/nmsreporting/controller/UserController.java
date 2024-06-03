@@ -793,11 +793,11 @@ public class UserController {
                         System.out.println("this is the location id " + end.getLocationId());
                         MAPerformanceCountsDto MAperformanceCounts = performanceCounts.get(end.getLocationId());
                         System.out.println("this is performance count " + MAperformanceCounts);
+                        summaryDto1.setAshasActivated(end.getAshasRegistered() != null ? end.getAshasRegistered() : 0L);
                         if (MAperformanceCounts != null) {
                             summaryDto1.setAshasFailed(MAperformanceCounts.getAshasFailed() != null ? MAperformanceCounts.getAshasFailed() : 0);
                             summaryDto1.setAshasAccessed(MAperformanceCounts.getAccessedAtleastOnce() != null ? MAperformanceCounts.getAccessedAtleastOnce() : 0L);
                             summaryDto1.setAshasNotAccessed(MAperformanceCounts.getAccessedNotOnce() != null ? MAperformanceCounts.getAccessedNotOnce() : 0L);
-                            summaryDto1.setAshasActivated(end.getAshasRegistered() != null ? end.getAshasRegistered() : 0L);
                             summaryDto1.setAshasDeactivated(MAperformanceCounts.getAshasDeactivatedInBetween() != null ? MAperformanceCounts.getAshasDeactivatedInBetween() : 0L);
                             summaryDto1.setAshasRefresherCourse(MAperformanceCounts.getAshasRefresherCourse() != null ? MAperformanceCounts.getAshasRefresherCourse() : 0L);
                             summaryDto1.setAshasCompletedInGivenTime(MAperformanceCounts.getAshasCompletedInGivenTime() != null ? MAperformanceCounts.getAshasCompletedInGivenTime() : 0L);
@@ -810,10 +810,11 @@ public class UserController {
                         int ashasStarted = summaryDto1.getAshasStarted() != null ? summaryDto1.getAshasStarted() : 0;
                         long ashasAccessed = summaryDto1.getAshasAccessed() != null ? summaryDto1.getAshasAccessed() : 0;
                         long ashasNotAccessed = summaryDto1.getAshasNotAccessed() != null ? summaryDto1.getAshasNotAccessed() : 0;
+                        long ashasJoined = summaryDto1.getAshasJoined() != null ? summaryDto1.getAshasJoined() :0;
 
-                        int totalSum = ashasCompleted + ashasFailed + ashasStarted + (int) (ashasAccessed + ashasNotAccessed);
+                        int totalSum = ashasCompleted + ashasFailed + ashasStarted + (int) (ashasAccessed + ashasNotAccessed + ashasJoined);
                         System.out.println("total sum for locationId"+totalSum);
-                            int absSum = Math.abs(ashasCompleted) + Math.abs(ashasFailed) + Math.abs(ashasStarted) + (int) (Math.abs(ashasAccessed) + Math.abs(ashasNotAccessed));
+                            int absSum = Math.abs(ashasCompleted) + Math.abs(ashasFailed) + Math.abs(ashasStarted) + (int) (Math.abs(ashasAccessed) + Math.abs(ashasNotAccessed) + Math.abs(ashasJoined));
                         System.out.println("total abssum for locationId"+totalSum);
 
                             if ((totalSum != 0 || absSum != 0) && !end.getLocationType().equalsIgnoreCase("DifferenceState")) {
