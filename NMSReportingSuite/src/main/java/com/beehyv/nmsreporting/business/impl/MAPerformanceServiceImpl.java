@@ -218,11 +218,6 @@ public class MAPerformanceServiceImpl implements MAPerformanceService{
                 Long refresherCourse = 0L;
                 Long completedInGivenTimeCount = 0L;
 
-//                Date serviceStartDate = serviceStartDates.get(s.getStateId());
-
-//                if (!toDate.before(serviceStartDate)) {
-
-
                             stateId = ((BigInteger)counts[0]).longValue();
                             accessedCount = ((BigInteger) counts[1]).longValue();
                             notAccessedCount = ((BigInteger) counts[2]).longValue();
@@ -231,9 +226,6 @@ public class MAPerformanceServiceImpl implements MAPerformanceService{
                             deactivatedInBetweenCount = ((BigInteger) counts[5]).longValue();
                             refresherCourse = ((BigInteger) counts[6]).longValue();
                             completedInGivenTimeCount = ((BigInteger) counts[7]).longValue();
-
-
-
 
 
                 MAPerformanceCountsDto statePerformance = new MAPerformanceCountsDto();
@@ -275,8 +267,9 @@ public class MAPerformanceServiceImpl implements MAPerformanceService{
                     districtIds.add(district.getDistrictId());
                 }
 
+                LOGGER.info("Executing performance count query with params: fromDate={}, toDate={}, blockIds={}", fromDateTemp, toDate, districtIds);
                 List<Object[]> results = maPerformanceDao.getPerformanceCount(districtIds,locationType,fromDateTemp,toDate);
-
+                LOGGER.info("Query result: {}", results);
 
                 for(Object[] result:results){
                     MAPerformanceCountsDto districtPerformance = new MAPerformanceCountsDto();
@@ -355,14 +348,12 @@ public class MAPerformanceServiceImpl implements MAPerformanceService{
                          blockIds.add(block.getBlockId());
 
                     }
-//                    List<Integer> blockIds  = blocks.stream().map(Block::getBlockId).collect(Collectors.toList());
                     LOGGER.info("these are the block ids {}",blockIds);
 
 
                     LOGGER.info("Executing performance count query with params: fromDate={}, toDate={}, blockIds={}", fromDateTemp, toDate, blockIds);
                     List<Object[]> results = maPerformanceDao.getPerformanceCount(blockIds,  locationType, fromDateTemp,toDate);
                     LOGGER.info("Query result: {}", results);
-
 
 
                     for (Object[] result : results) {
@@ -447,8 +438,11 @@ public class MAPerformanceServiceImpl implements MAPerformanceService{
                         healthSubFacilityIds.add(healthSubFacility.getHealthSubFacilityId());
                     }
 
-//                    List<Integer> healthSubFacilityIds = subcenters.stream().map(HealthSubFacility::getHealthSubFacilityId).collect(Collectors.toList());
+                    LOGGER.info("Executing performance count query with params: fromDate={}, toDate={}, blockIds={}", fromDateTemp, toDate, healthSubFacilityIds);
                     List<Object[]> results = maPerformanceDao.getPerformanceCount(healthSubFacilityIds,locationType,fromDateTemp,toDate);
+                    LOGGER.info("Query result: {}", results);
+
+
                     for(Object[] result : results){
                         MAPerformanceCountsDto subcentrePerformance = new MAPerformanceCountsDto();
                         Long healthSubFacilityId = ((BigInteger)result[0]).longValue();

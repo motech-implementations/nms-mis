@@ -742,7 +742,6 @@ public class UserController {
 
             Map<Long, AggregateCumulativeMA> startMap =new HashMap<>();
 
-
             for(AggregateCumulativeMA aggregateCumulativeMAS : cumulativesummaryReportStart){
                 startMap.put(aggregateCumulativeMAS.getLocationId(),aggregateCumulativeMAS);
             }
@@ -790,9 +789,7 @@ public class UserController {
                     }
 
                     try {
-                        System.out.println("this is the location id " + end.getLocationId());
                         MAPerformanceCountsDto MAperformanceCounts = performanceCounts.get(end.getLocationId());
-                        System.out.println("this is performance count " + MAperformanceCounts);
                         summaryDto1.setAshasActivated(end.getAshasRegistered() != null ? end.getAshasRegistered() : 0L);
                         if (MAperformanceCounts != null) {
                             summaryDto1.setAshasFailed(MAperformanceCounts.getAshasFailed() != null ? MAperformanceCounts.getAshasFailed() : 0);
@@ -804,7 +801,6 @@ public class UserController {
                             summaryDto1.setAshasJoined(MAperformanceCounts.getAshasActivatedInBetween() != null ? MAperformanceCounts.getAshasActivatedInBetween() : 0L);
                         }
 
-
                         int ashasCompleted = summaryDto1.getAshasCompleted() != null ? summaryDto1.getAshasCompleted() : 0;
                         int ashasFailed = summaryDto1.getAshasFailed() != null ? summaryDto1.getAshasFailed() : 0;
                         int ashasStarted = summaryDto1.getAshasStarted() != null ? summaryDto1.getAshasStarted() : 0;
@@ -813,9 +809,7 @@ public class UserController {
                         long ashasJoined = summaryDto1.getAshasJoined() != null ? summaryDto1.getAshasJoined() :0;
 
                         int totalSum = ashasCompleted + ashasFailed + ashasStarted + (int) (ashasAccessed + ashasNotAccessed + ashasJoined);
-                        System.out.println("total sum for locationId"+totalSum);
-                            int absSum = Math.abs(ashasCompleted) + Math.abs(ashasFailed) + Math.abs(ashasStarted) + (int) (Math.abs(ashasAccessed) + Math.abs(ashasNotAccessed) + Math.abs(ashasJoined));
-                        System.out.println("total abssum for locationId"+totalSum);
+                        int absSum = Math.abs(ashasCompleted) + Math.abs(ashasFailed) + Math.abs(ashasStarted) + (int) (Math.abs(ashasAccessed) + Math.abs(ashasNotAccessed) + Math.abs(ashasJoined));
 
                             if ((totalSum != 0 || absSum != 0) && !end.getLocationType().equalsIgnoreCase("DifferenceState")) {
                                 summaryDto.add(summaryDto1);
