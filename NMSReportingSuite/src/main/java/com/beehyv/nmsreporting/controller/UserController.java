@@ -757,31 +757,31 @@ public class UserController {
                     summaryDto1.setAshasStarted(end.getAshasStarted() - start.getAshasStarted());
                     summaryDto1.setLocationType(end.getLocationType());
 
-                    switch (end.getLocationType()) {
-                        case "State":
+                    switch (end.getLocationType().toLowerCase()) {
+                        case "state":
                             summaryDto1.setLocationName(stateDao.findByStateId(end.getLocationId().intValue()).getStateName());
                             break;
-                        case "District":
+                        case "district":
                             summaryDto1.setLocationName(districtDao.findByDistrictId(end.getLocationId().intValue()).getDistrictName());
                             break;
-                        case "Block":
+                        case "block":
                             summaryDto1.setLocationName(blockDao.findByblockId(end.getLocationId().intValue()).getBlockName());
                             break;
-                        case "Subcentre":
+                        case "subcentre":
                             summaryDto1.setLocationName(healthSubFacilityDao.findByHealthSubFacilityId(end.getLocationId().intValue()).getHealthSubFacilityName());
                             summaryDto1.setLink(true);
                             break;
-                        case "DifferenceState":
+                        case "differencestate":
                             summaryDto1.setLocationName("No District Count");
                             summaryDto1.setLink(true);
                             summaryDto1.setLocationId((long) -1);
                             break;
-                        case "DifferenceDistrict":
+                        case "differencedistrict":
                             summaryDto1.setLocationName("No Block Count");
                             summaryDto1.setLink(true);
                             summaryDto1.setLocationId((long) -1);
                             break;
-                        case "DifferenceBlock":
+                        case "differenceblock":
                             summaryDto1.setLocationName("No Subcenter Count");
                             summaryDto1.setLink(true);
                             summaryDto1.setLocationId((long) -1);
