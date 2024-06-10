@@ -705,137 +705,158 @@ public class UserController {
 
         if (reportRequest.getReportType().equals(ReportType.maPerformance.getReportType())) {
 
-            Date fromDate = dateAdder(reportRequest.getFromDate(),0);
+            Date fromDate = dateAdder(reportRequest.getFromDate(), 0);
+            Date toDate = dateAdder(reportRequest.getToDate(), 1);
 
-            Date toDate = dateAdder(reportRequest.getToDate(),1);
+            List<MAPerformanceDto> summaryDto = new ArrayList<>();
+            List<AggregateCumulativeMA> cumulativesummaryReportStart = new ArrayList<>();
+            List<AggregateCumulativeMA> cumulativesummaryReportEnd = new ArrayList<>();
+            Map<Long, MAPerformanceCountsDto> performanceCounts = new HashMap<>();
 
-                List<MAPerformanceDto> summaryDto = new ArrayList<>();
-                List<AggregateCumulativeMA> cumulativesummaryReportStart = new ArrayList<>();
-                List<AggregateCumulativeMA> cumulativesummaryReportEnd = new ArrayList<>();
-                HashMap<Long,MAPerformanceCountsDto> performanceCounts = new HashMap<>();
+            String locationType;
+            Integer locationId;
 
             if (reportRequest.getStateId() == 0) {
-                cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0, "State", fromDate,false));
-                cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0, "State", toDate,false));
-                performanceCounts = maPerformanceService.getMAPerformanceCounts(0,"State",fromDate,toDate);
+                locationType = "State";
+                locationId = 0;
+            } else if (reportRequest.getDistrictId() == 0) {
+                locationType = "District";
+                locationId = reportRequest.getStateId();
+            } else if (reportRequest.getBlockId() == 0) {
+                locationType = "Block";
+                locationId = reportRequest.getDistrictId();
             } else {
-                if (reportRequest.getDistrictId() == 0) {
-                    cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(), "District", fromDate,false));
-                    cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(), "District", toDate,false));
-                    performanceCounts = maPerformanceService.getMAPerformanceCounts(reportRequest.getStateId(),"District",fromDate,toDate);
-                } else {
-                    if (reportRequest.getBlockId() == 0) {
-                        cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(), "Block", fromDate,false));
-                        cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(), "Block", toDate,false));
-                        performanceCounts = maPerformanceService.getMAPerformanceCounts(reportRequest.getDistrictId(),"Block",fromDate,toDate);
-                    } else {
-                        cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(), "Subcentre", fromDate,false));
-                        cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(), "Subcentre", toDate,false));
-                        performanceCounts = maPerformanceService.getMAPerformanceCounts(reportRequest.getBlockId(),"Subcentre",fromDate,toDate);
-                    }
-                }
+                locationType = "Subcentre";
+                locationId = reportRequest.getBlockId();
             }
 
-            for (int i = 0; i < cumulativesummaryReportEnd.size(); i++) {
-                for (int j = 0; j < cumulativesummaryReportStart.size(); j++) {
-                    if (cumulativesummaryReportEnd.get(i).getLocationId().equals(cumulativesummaryReportStart.get(j).getLocationId())) {
-                        AggregateCumulativeMA a = cumulativesummaryReportEnd.get(i);
-                        AggregateCumulativeMA b = cumulativesummaryReportStart.get(j);
-                        MAPerformanceDto summaryDto1 = new MAPerformanceDto();
-                        summaryDto1.setId(a.getId());
-                        summaryDto1.setLocationId(a.getLocationId());
-                        summaryDto1.setAshasCompleted(a.getAshasCompleted() - b.getAshasCompleted());
-//                            summaryDto1.setAshasFailed(a.getAshasFailed() - b.getAshasFailed());
-                        summaryDto1.setAshasStarted(a.getAshasStarted() - b.getAshasStarted());
-                        summaryDto1.setLocationType(a.getLocationType());
+            System.out.println("locationId is"+locationId);;
+            try {
+                cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(locationId, locationType, fromDate, false));
+                cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(locationId, locationType, toDate, false));
+                performanceCounts = maPerformanceService.getMAPerformanceCounts(locationId, locationType, fromDate, toDate);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
 
-                        String locationType = a.getLocationType();
-                        if (locationType.equalsIgnoreCase("State")) {
-                            summaryDto1.setLocationName(stateDao.findByStateId(a.getLocationId().intValue()).getStateName());
-                        }
-                        if (locationType.equalsIgnoreCase("District")) {
-                            summaryDto1.setLocationName(districtDao.findByDistrictId(a.getLocationId().intValue()).getDistrictName());
-                        }
-                        if (locationType.equalsIgnoreCase("Block")) {
-                            summaryDto1.setLocationName(blockDao.findByblockId(a.getLocationId().intValue()).getBlockName());
-                        }
-                        if (locationType.equalsIgnoreCase("Subcentre")) {
-                            summaryDto1.setLocationName(healthSubFacilityDao.findByHealthSubFacilityId(a.getLocationId().intValue()).getHealthSubFacilityName());
+            }
+
+            Map<Long, AggregateCumulativeMA> startMap =new HashMap<>();
+
+            for(AggregateCumulativeMA aggregateCumulativeMAS : cumulativesummaryReportStart){
+                startMap.put(aggregateCumulativeMAS.getLocationId(),aggregateCumulativeMAS);
+            }
+
+
+            for (AggregateCumulativeMA end : cumulativesummaryReportEnd) {
+                AggregateCumulativeMA start = startMap.get(end.getLocationId());
+                if (start != null) {
+                    MAPerformanceDto summaryDto1 = new MAPerformanceDto();
+                    summaryDto1.setId(end.getId());
+                    summaryDto1.setLocationId(end.getLocationId());
+                    summaryDto1.setAshasCompleted(end.getAshasCompleted() - start.getAshasCompleted());
+                    summaryDto1.setAshasStarted(end.getAshasStarted() - start.getAshasStarted());
+                    summaryDto1.setLocationType(end.getLocationType());
+
+                    switch (end.getLocationType()) {
+                        case "State":
+                            summaryDto1.setLocationName(stateDao.findByStateId(end.getLocationId().intValue()).getStateName());
+                            break;
+                        case "District":
+                            summaryDto1.setLocationName(districtDao.findByDistrictId(end.getLocationId().intValue()).getDistrictName());
+                            break;
+                        case "Block":
+                            summaryDto1.setLocationName(blockDao.findByblockId(end.getLocationId().intValue()).getBlockName());
+                            break;
+                        case "Subcentre":
+                            summaryDto1.setLocationName(healthSubFacilityDao.findByHealthSubFacilityId(end.getLocationId().intValue()).getHealthSubFacilityName());
                             summaryDto1.setLink(true);
-                        }
-                        if (locationType.equalsIgnoreCase("DifferenceState")) {
+                            break;
+                        case "DifferenceState":
                             summaryDto1.setLocationName("No District Count");
                             summaryDto1.setLink(true);
                             summaryDto1.setLocationId((long) -1);
-                        }
-                        if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
+                            break;
+                        case "DifferenceDistrict":
                             summaryDto1.setLocationName("No Block Count");
                             summaryDto1.setLink(true);
                             summaryDto1.setLocationId((long) -1);
-
-                        }
-                        if (locationType.equalsIgnoreCase("DifferenceBlock")) {
+                            break;
+                        case "DifferenceBlock":
                             summaryDto1.setLocationName("No Subcenter Count");
                             summaryDto1.setLink(true);
                             summaryDto1.setLocationId((long) -1);
+                            break;
+                    }
 
-                            }
-                            MAPerformanceCountsDto MAperformanceCounts = performanceCounts.get(a.getLocationId());
-                            summaryDto1.setAshasFailed(MAperformanceCounts.getAshasFailed());
-                            summaryDto1.setAshasAccessed(MAperformanceCounts.getAccessedAtleastOnce());
-                            summaryDto1.setAshasNotAccessed(MAperformanceCounts.getAccessedNotOnce());
-                            summaryDto1.setAshasActivated(Long.valueOf(a.getAshasRegistered()));
-                            summaryDto1.setAshasDeactivated(MAperformanceCounts.getAshasDeactivatedInBetween());
-                            summaryDto1.setAshasRefresherCourse(MAperformanceCounts.getAshasRefresherCourse());
-                            summaryDto1.setAshasCompletedInGivenTime(MAperformanceCounts.getAshasCompletedInGivenTime());
-                            summaryDto1.setAshasJoined(MAperformanceCounts.getAshasActivatedInBetween());
-//                            summaryDto1.setAshasFailed(maPerformanceService.getAshasFailed(a.getLocationId().intValue(), a.getLocationType(), fromDate, toDate));
-//                            summaryDto1.setAshasAccessed(maPerformanceService.getAccessedCount(a.getLocationId().intValue(), a.getLocationType(), fromDate, toDate));
-//                            summaryDto1.setCompletedPercentage(a.getAshasCompleted()*100/a.getAshasStarted());
-//                            summaryDto1.setFailedpercentage(a.getAshasFailed()*100/a.getAshasStarted());
-//                            summaryDto1.setNotStartedpercentage(a.getAshasNotStarted()*100/a.getAshasRegistered());
-//                            summaryDto1.setAshasNotAccessed(maPerformanceService.getNotAccessedcount(a.getLocationId().intValue(), a.getLocationType(), fromDate, toDate));
-
-                        if (summaryDto1.getAshasCompleted() + summaryDto1.getAshasFailed() + summaryDto1.getAshasStarted() + summaryDto1.getAshasAccessed() + summaryDto1.getAshasNotAccessed() != 0 &&!locationType.equalsIgnoreCase("DifferenceState")) {
-                            summaryDto.add(summaryDto1);
+                    try {
+                        MAPerformanceCountsDto MAperformanceCounts = performanceCounts.get(end.getLocationId());
+                        summaryDto1.setAshasActivated(end.getAshasRegistered() != null ? end.getAshasRegistered() : 0L);
+                        if (MAperformanceCounts != null) {
+                            summaryDto1.setAshasFailed(MAperformanceCounts.getAshasFailed() != null ? MAperformanceCounts.getAshasFailed() : 0);
+                            summaryDto1.setAshasAccessed(MAperformanceCounts.getAccessedAtleastOnce() != null ? MAperformanceCounts.getAccessedAtleastOnce() : 0L);
+                            summaryDto1.setAshasNotAccessed(MAperformanceCounts.getAccessedNotOnce() != null ? MAperformanceCounts.getAccessedNotOnce() : 0L);
+                            summaryDto1.setAshasDeactivated(MAperformanceCounts.getAshasDeactivatedInBetween() != null ? MAperformanceCounts.getAshasDeactivatedInBetween() : 0L);
+                            summaryDto1.setAshasRefresherCourse(MAperformanceCounts.getAshasRefresherCourse() != null ? MAperformanceCounts.getAshasRefresherCourse() : 0L);
+                            summaryDto1.setAshasCompletedInGivenTime(MAperformanceCounts.getAshasCompletedInGivenTime() != null ? MAperformanceCounts.getAshasCompletedInGivenTime() : 0L);
+                            summaryDto1.setAshasJoined(MAperformanceCounts.getAshasActivatedInBetween() != null ? MAperformanceCounts.getAshasActivatedInBetween() : 0L);
                         }
+
+                        int ashasCompleted = summaryDto1.getAshasCompleted() != null ? summaryDto1.getAshasCompleted() : 0;
+                        int ashasFailed = summaryDto1.getAshasFailed() != null ? summaryDto1.getAshasFailed() : 0;
+                        int ashasStarted = summaryDto1.getAshasStarted() != null ? summaryDto1.getAshasStarted() : 0;
+                        long ashasAccessed = summaryDto1.getAshasAccessed() != null ? summaryDto1.getAshasAccessed() : 0;
+                        long ashasNotAccessed = summaryDto1.getAshasNotAccessed() != null ? summaryDto1.getAshasNotAccessed() : 0;
+                        long ashasJoined = summaryDto1.getAshasJoined() != null ? summaryDto1.getAshasJoined() :0;
+
+                        int totalSum = ashasCompleted + ashasFailed + ashasStarted + (int) (ashasAccessed + ashasNotAccessed + ashasJoined);
+                        int absSum = Math.abs(ashasCompleted) + Math.abs(ashasFailed) + Math.abs(ashasStarted) + (int) (Math.abs(ashasAccessed) + Math.abs(ashasNotAccessed) + Math.abs(ashasJoined));
+
+                            if ((totalSum != 0 || absSum != 0) && !end.getLocationType().equalsIgnoreCase("DifferenceState")) {
+                                summaryDto.add(summaryDto1);
+                            }
+
+                    } catch (NullPointerException e) {
+
+                        e.printStackTrace();
                     }
                 }
             }
+
             aggregateResponseDto.setTableData(summaryDto);
             aggregateResponseDto.setBreadCrumbData(breadCrumbs);
             return aggregateResponseDto;
         }
 
-        if (reportRequest.getReportType().equals(ReportType.maSubscriber.getReportType())) {
-            Date fromDate = dateAdder(reportRequest.getFromDate(),0);
 
-                Date toDate = dateAdder(reportRequest.getToDate(),1);
+        if (reportRequest.getReportType().equals(ReportType.maSubscriber.getReportType())) {
+
+            Date fromDate = dateAdder(reportRequest.getFromDate(),0);
+            Date toDate = dateAdder(reportRequest.getToDate(),1);
 
 
             List<MASubscriberDto> summaryDto = new ArrayList<>();
             List<AggregateCumulativeMA> cumulativesummaryReportStart = new ArrayList<>();
             List<AggregateCumulativeMA> cumulativesummaryReportEnd = new ArrayList<>();
 
-            if (reportRequest.getStateId() == 0) {
-                cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0, "State", fromDate,false));
-                cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(0, "State", toDate,false));
-            } else {
-                if (reportRequest.getDistrictId() == 0) {
-                    cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(), "District", fromDate,false));
-                    cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getStateId(), "District", toDate,false));
-                } else {
-                    if (reportRequest.getBlockId() == 0) {
-                        cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(), "Block", fromDate,false));
-                        cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getDistrictId(), "Block", toDate,false));
-                    } else {
-                        cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(), "Subcentre", fromDate,false));
-                        cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(reportRequest.getBlockId(), "Subcentre", toDate,false));
-                    }
-                }
+            String locationTypes;
+            long locationId;
 
-
+            if(reportRequest.getStateId()==0){
+                locationTypes = "State";
+                locationId = 0;
+            }else if (reportRequest.getDistrictId()==0){
+                locationTypes = "District";
+                locationId = reportRequest.getStateId();
+            } else if (reportRequest.getBlockId()==0) {
+                locationTypes = "Block";
+                locationId = reportRequest.getDistrictId();
+            }else {
+                locationTypes = "Subcentre";
+                locationId = reportRequest.getBlockId();
             }
+
+            cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport((int) locationId, locationTypes, fromDate,false));
+            cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport((int) locationId, locationTypes, toDate,false));
 
                 for (int i = 0; i < cumulativesummaryReportEnd.size(); i++) {
 
@@ -895,9 +916,22 @@ public class UserController {
                             if(a.getLocationType().equalsIgnoreCase("State")&& !serviceStarted(a.getLocationId().intValue(),"State",toDate,fromDate,"MOBILE_ACADEMY"))
                             { showRow = false;}
 
-                        if ((summaryDto1.getAshasCompleted() + summaryDto1.getAshasStarted() + summaryDto1.getAshasFailed() + summaryDto1.getAshasRejected()
-                                + summaryDto1.getAshasRegistered() + summaryDto1.getRegisteredNotCompletedend()
-                                + summaryDto1.getRegisteredNotCompletedStart() + summaryDto1.getRecordsReceived() + summaryDto1.getAshasNotStarted() != 0 &&!locationType.equalsIgnoreCase("DifferenceState"))&&showRow) {
+                        int ashasCompleted = summaryDto1.getAshasCompleted();
+                        int ashasStarted = summaryDto1.getAshasStarted();
+                        int ashasFailed = summaryDto1.getAshasFailed();
+                        int ashasRejected = summaryDto1.getAshasRejected();
+                        int ashasRegistered = summaryDto1.getAshasRegistered();
+                        int registeredNotCompletedEnd = summaryDto1.getRegisteredNotCompletedend();
+                        int registeredNotCompletedStart = summaryDto1.getRegisteredNotCompletedStart();
+                        int recordsReceived = summaryDto1.getRecordsReceived();
+                        int ashasNotStarted = summaryDto1.getAshasNotStarted();
+
+
+                        int totalSum = ashasCompleted + ashasStarted + ashasFailed + ashasRejected + ashasRegistered + registeredNotCompletedEnd + registeredNotCompletedStart + recordsReceived + ashasNotStarted;
+
+                        int absSum = Math.abs(ashasCompleted) + Math.abs(ashasStarted) + Math.abs(ashasFailed) + Math.abs(ashasRejected) + Math.abs(ashasRegistered) + Math.abs(registeredNotCompletedEnd) + Math.abs(registeredNotCompletedStart) + Math.abs(recordsReceived) + Math.abs(ashasNotStarted);
+
+                        if ((totalSum != 0 || absSum != 0) && !locationType.equalsIgnoreCase("DifferenceState") && showRow) {
                             summaryDto.add(summaryDto1);
                         }
 

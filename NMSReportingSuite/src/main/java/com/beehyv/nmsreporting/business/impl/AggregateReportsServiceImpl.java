@@ -37,6 +37,8 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.beehyv.nmsreporting.utils.Constants.*;
@@ -91,20 +93,37 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
     @Autowired
     private MASubscriberDao maSubscriberDao;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AggregateReportsServiceImpl.class);
+
 
     @Override
     public List<AggregateCumulativeMA> getCumulativeSummaryMAReport(Integer locationId, String locationType, Date toDate, boolean isCumulative) {
+
         Date date = toDate;
         List<AggregateCumulativeMA> CumulativeSummery = new ArrayList<>();
         List<String> Headers = new ArrayList<>();
         if (locationType.equalsIgnoreCase("State")) {
             List<State> states = stateDao.getStatesByServiceType("MOBILE_ACADEMY");
             for (State s : states) {
-                if (date.before(stateServiceDao.getServiceStartDateForState(s.getStateId(), "MOBILE_ACADEMY")) && !isCumulative) {
-                    date = stateServiceDao.getServiceStartDateForState(s.getStateId(), "MOBILE_ACADEMY");
+                Date serviceStartDate = stateServiceDao.getServiceStartDateForState(s.getStateId(), "MOBILE_ACADEMY");
+                if (serviceStartDate == null) {
+                    continue;
                 }
-                if (!isCumulative || !toDate.before(stateServiceDao.getServiceStartDateForState(s.getStateId(), "MOBILE_ACADEMY"))) {
-                    CumulativeSummery.add(aggregateCumulativeMADao.getMACumulativeSummery(s.getStateId(), locationType, date));
+                SimpleDateFormat desiredFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+                String formattedDate = desiredFormat.format(serviceStartDate);
+                Date tempDate = null;
+                try {
+                    tempDate = desiredFormat.parse(formattedDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                if (date.before(tempDate) && !isCumulative) {
+                    date = tempDate;
+                }
+                if (!isCumulative || !toDate.before(tempDate)) {
+
+                    AggregateCumulativeMA result = aggregateCumulativeMADao.getMACumulativeSummery(s.getStateId(), locationType, date);
+                    CumulativeSummery.add(result);
                 }
                 date = toDate;
             }

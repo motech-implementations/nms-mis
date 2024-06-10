@@ -10,10 +10,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static com.beehyv.nmsreporting.utils.ServiceFunctions.dateAdder;
 
@@ -513,6 +510,68 @@ public class MAPerformanceDaoImpl extends AbstractDao<Integer, User> implements 
         }
 
         return 0l;
+    }
+
+    @Override
+    public List<Object[]> getPerformanceCount(List<Integer> locationIds, String locationType, Date fromDate, Date toDate){
+
+
+        String locationColumn;
+       switch (locationType.toLowerCase()){
+           case "state":
+               locationColumn = "state_id";
+               break;
+           case "district":
+               locationColumn = "district_id";
+               break;
+           case "block":
+               locationColumn = "block_id";
+               break;
+           case "subcenter":
+               locationColumn = "healthsubfacility_id";
+               break;
+           default:
+               return Collections.emptyList();
+       }
+
+        String sql = "SELECT f."+locationColumn+ ", " +
+                "COUNT(DISTINCT CASE " +
+                "WHEN f.flw_id NOT IN (SELECT DISTINCT flw_id FROM ma_course_completion WHERE has_passed = 1 and creationDate < :toDate) " +
+                "AND f.flw_id IN (SELECT DISTINCT flw_id FROM ma_call_detail_measure WHERE start_time BETWEEN :fromDate and :toDate) " +
+                "AND f.flw_id IN (SELECT DISTINCT flw_id FROM ma_call_detail_measure WHERE start_time < :fromDate) " +
+                "AND f.flw_status = 'ACTIVE' " +
+                "AND f.job_status = 'ACTIVE' " +
+                "THEN f.flw_id END) AS accessedAtleastOnceCount, " +
+                "COUNT(DISTINCT CASE " +
+                "WHEN f.flw_id NOT IN (SELECT DISTINCT flw_id FROM ma_course_completion WHERE has_passed = 1 AND creationDate < :previousDate) " +
+                "AND f.flw_id NOT IN (SELECT DISTINCT flw_id FROM ma_call_detail_measure WHERE start_time BETWEEN :fromDate AND :toDate) " +
+                "AND f.flw_id IN (SELECT DISTINCT flw_id FROM ma_call_detail_measure WHERE start_time < :fromDate) " +
+                "AND f.flw_status = 'ACTIVE' " +
+                "AND f.job_status = 'ACTIVE' " +
+                "THEN f.flw_id END) AS accessedNotOnceCount, " +
+                "COUNT(DISTINCT CASE " +
+                "WHEN f.flw_id IN (SELECT DISTINCT flw_id FROM ma_course_completion  WHERE has_passed = 0 and (modificationdate between :fromDate AND :toDate)) " +
+                "and f.flw_id NOT IN (SELECT DISTINCT flw_id FROM ma_course_completion WHERE has_passed = 1 AND modificationdate < :toDate) " +
+                "THEN f.flw_id END) AS ashasfailedCount, " +
+                "COUNT(DISTINCT CASE WHEN f.job_status = 'ACTIVE' AND (f.creationdate BETWEEN :fromDate AND :toDate) THEN f.flw_id END) AS ashaActivatedInBetweenCount, " +
+                "COUNT(DISTINCT CASE WHEN f.job_status = 'INACTIVE' AND (f.modificationdate BETWEEN :fromDate AND :toDate) THEN f.flw_id END) AS ashaDeactivatedInBetweenCount, " +
+                "COUNT(DISTINCT CASE WHEN mc.flw_id IN (SELECT DISTINCT flw_id FROM ma_course_completion WHERE creationDate < :previousDate) AND (mc.creationDate BETWEEN :fromDate AND :toDate) THEN mc.flw_id END) AS refresherCourseCount, " +
+                "COUNT(DISTINCT CASE WHEN f.course_start_date > :fromDate AND f.course_first_completion_date < :toDate THEN f.flw_id END) AS ashasCompletedInGivenTimeCount " +
+                "FROM front_line_worker f " +
+                "LEFT JOIN ma_course_completion mc ON f.flw_id = mc.flw_id " +
+                "WHERE f.flw_designation = 'ASHA' AND f." + locationColumn + " IN (:locationIds) " +
+                "GROUP BY f." + locationColumn;
+
+        Query query = getSession().createSQLQuery(sql);
+        query.setParameter("fromDate", fromDate);
+        query.setParameter("previousDate", fromDate);
+        query.setParameter("toDate", toDate);
+        query.setParameterList("locationIds", locationIds!=null ? locationIds.toArray(new Integer[0]) :new Integer[0]);
+
+
+
+        return query.list();
+
     }
 
 }
