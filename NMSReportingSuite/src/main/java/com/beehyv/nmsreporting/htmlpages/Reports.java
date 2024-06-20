@@ -391,9 +391,12 @@ public class Reports {
             "\n" +
             "\t\t<div class=\"block reports-body\" data-ng-if=\"!waiting && status == 'success'\">\n" +
             "\t\t\t<p>The following report has been generated: </p>\n" +
+            "\t\t\t<input type=\"hidden\">\n" +
+//            "\t\t\t<div style=\"margin-bottom: 15px;padding-left: 12px;\" vc-recaptcha key=\"'6LcJgYgUAAAAANaRqYM6UFUaY8H3pPUTK6Tt1qsL'\"></div>\n" +
             "\t\t\t<p>{{fileName}}</p>\n" +
-            "\t\t\t<span data-ng-click=\"clearFile()\">\n" +
-            "\t\t\t<a id=\"downloadReportLink\" href=\"{{downloadReportUrl}}\">Click here to download. <img alt=\"download\" src=\"images/export3.png\"></a>\n" +
+            "\t\t\t<div style=\"margin-bottom: 15px; padding-left: 12px; display: flex; justify-content: center;\" vc-recaptcha key=\"'6LcJgYgUAAAAANaRqYM6UFUaY8H3pPUTK6Tt1qsL'\"></div>\n" +
+            "\t\t\t<span data-ng-click=\"handleDownloadClick()\">\n" +
+            "\t\t\t<a id=\"downloadReportLink\" ng-href=\"{{getCaptchaResolved() ? downloadReportUrl : ''}}\" ng-style=\"{'pointer-events': getCaptchaResolved() ? 'auto' : 'auto'}\">Click here to download. <img alt=\"download\" src=\"images/export3.png\"></a>\n" +
             "\t\t</span>\n" +
             "\n" +
             "\t\t</div>\n" +
@@ -405,3 +408,5 @@ public class Reports {
             "\t\t</div>\n" +
             "\t</div>";
 }
+
+
