@@ -227,6 +227,21 @@
                 }
             }
 
+            $scope.getCaptchaResolved= function(){
+                return grecaptcha.getResponse() !== '';
+            }
+
+            $scope.handleDownloadClick = function() {
+
+                if (!$scope.getCaptchaResolved()) {
+                    event.preventDefault();
+                    alert('Please verify the captcha before downloading the report.');
+
+                } else {
+                    $scope.clearFile();
+                }
+            }
+
             $scope.getStatesForCerti = function(){
 
                     return UserFormFactory.getStates()

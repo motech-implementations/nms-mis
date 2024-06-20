@@ -690,6 +690,7 @@ public class UserServiceImpl implements UserService{
         //String newPassword  = decrypt(new LoginUser(passwordDto.getCipherTextHexNew(), passwordDto.getSaltHexNew()));
         currentUser.setPassword(passwordEncoder.encode(newPassword));
         currentUser.setDefault(false);
+        currentUser.setLastPasswordChangeDate(new Date());
         String success="Password changed successfully";
         responseMap.put(rowNum, success);
         return responseMap;

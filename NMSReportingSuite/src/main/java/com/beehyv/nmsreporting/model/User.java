@@ -49,6 +49,9 @@ public class User {
 	@Column(name="creation_date")
 	private Date creationDate;
 
+	@Column(name = "last_password_change_date")
+	private Date lastPasswordChangeDate;
+
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="created_by_user")
@@ -238,6 +241,14 @@ public class User {
 
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
+	}
+
+	public Date getLastPasswordChangeDate() {
+		return lastPasswordChangeDate;
+	}
+
+	public void setLastPasswordChangeDate(Date lastPasswordChangeDate) {
+		this.lastPasswordChangeDate = lastPasswordChangeDate;
 	}
 
 	public Boolean getLoggedAtLeastOnce() {

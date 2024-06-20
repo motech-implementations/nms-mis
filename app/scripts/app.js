@@ -1,6 +1,6 @@
 
 var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 'ui.validate', 'ngMessages', 'ui.router', 'ui.grid', 'ngMaterial', 'ngFileUpload', 'ng.deviceDetector', 'ui.grid.exporter', 'ngStorage', 'ngAnimate', '$idle', 'mdo-angular-cryptography'])
-    .run(['$rootScope', '$state', '$stateParams', '$idle', '$http', '$window', function($rootScope, $state, $stateParams, $idle, $http, $window) {
+    .run(['$rootScope', '$state', '$stateParams', '$idle', '$http', '$window', '$timeout', function($rootScope, $state, $stateParams, $idle, $http, $window, $timeout) {
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
         $idle.watch();
@@ -17,8 +17,8 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
         }, false);
     }])
 
-    .factory('authorization', ['$http', '$state',
-        function($http, $state) {
+    .factory('authorization', ['$http', '$state', '$timeout',
+        function($http, $state, $timeout) {
             return {
                 authorize: function() {
                     return $http.post(backend_root + 'nms/user/isLoggedIn')
@@ -30,9 +30,23 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
                             else {
                                 $http.post(backend_root + 'nms/user/currentUser')
                                     .then(function(result){
-                                        if(result.data.default){
-                                            $state.go('changePassword', {});
-                                        }
+                                    var lastPasswordChangeDate = new Date(result.data.lastPasswordChangeDate);
+                                    var currentDate = new Date();
+                                    var diffInMillies = Math.abs(currentDate - lastPasswordChangeDate);
+                                    var diff = Math.ceil(diffInMillies / (1000 * 60 * 60 * 24));
+                                    var alertShown = false;
+                                    console.log("diff: " + diff);
+                                    if (result.data.default) {
+                                          $state.go('changePassword', {});
+                                    }else if (diff > 30 && !alertShown) {
+                                                 alertShown = true;
+                                                 $timeout(function() {
+                                                 if($state.current.url=="/changePassword"){
+                                                 alert("You have not changed your password in the last 30 days. Please change it.");}
+                                                 $state.go('changePassword', {});
+                                                 });
+                                    }
+
                                     });
                             }
                         });
