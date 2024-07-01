@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by beehyv on 4/5/17.
@@ -45,5 +46,12 @@ public class BlockDaoImpl extends AbstractDao<Integer, Block> implements BlockDa
     @Override
     public Integer getDistrictOfBlock(Block block) {
         return block.getDistrictOfBlock();
+    }
+
+    @Override
+    public List<Block> findByIds(Set<Integer> blockIds){
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.in("blockId",blockIds));
+        return (List<Block>) criteria.list();
     }
 }
