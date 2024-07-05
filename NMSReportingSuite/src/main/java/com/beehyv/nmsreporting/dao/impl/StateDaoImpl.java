@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by beehyv on 4/5/17.
@@ -53,6 +54,13 @@ public class StateDaoImpl extends AbstractDao<Integer, State> implements StateDa
                 Restrictions.eq("serviceType", type).ignoreCase(),
                 Restrictions.eq("serviceType", "ALL")));
 
+        return (List<State>) criteria.list();
+    }
+
+    @Override
+    public List<State> findByIds(Set<Integer> stateIds) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.in("stateId", stateIds));
         return (List<State>) criteria.list();
     }
 

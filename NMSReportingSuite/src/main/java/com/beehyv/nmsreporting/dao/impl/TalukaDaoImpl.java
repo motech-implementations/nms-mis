@@ -8,6 +8,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by beehyv on 4/5/17.
@@ -26,4 +27,10 @@ public class TalukaDaoImpl extends AbstractDao<Integer, Taluka> implements Taluk
         return (List<Taluka>) criteria.list();
     }
 
+    @Override
+    public List<Taluka> findByIds(Set<Integer> talukaIds) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.in("talukaId", talukaIds));
+        return (List<Taluka>) criteria.list();
+    }
 }

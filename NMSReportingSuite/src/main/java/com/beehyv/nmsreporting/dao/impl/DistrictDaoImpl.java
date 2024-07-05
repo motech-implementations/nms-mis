@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by beehyv on 4/5/17.
@@ -41,4 +42,10 @@ public class DistrictDaoImpl extends AbstractDao<Integer, District> implements D
         return (List<District>) criteria.list();
     }
 
+    @Override
+    public List<District> findByIds(Set<Integer> districtIds) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.in("districtId", districtIds));
+        return (List<District>) criteria.list();
+    }
 }

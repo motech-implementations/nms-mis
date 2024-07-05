@@ -3084,24 +3084,145 @@ public class AdminServiceImpl implements AdminService {
         if(kilkariLowUsageList.isEmpty()) {
             empinfo.put(counter.toString(),new Object[]{"No Records to display"});
         }
-        for (KilkariLowUsage kilkari : kilkariLowUsageList) {
-            empinfo.put((counter.toString()), new Object[]{
-                    counter-1,
-                    (kilkari.getName() == null) ? "No Name" : kilkari.getName(),
-                    (kilkari.getMctsId() == null) ? "No MCTS Id" : kilkari.getMctsId(),
-                    (kilkari.getRchId() == null) ? "No RCH Id" : kilkari.getRchId(),
-                    (kilkari.getMsisdn() == null) ? "No MSISDN" : kilkari.getMsisdn(),
-                    (kilkari.getStateId() == null) ? "No State" : stateDao.findByStateId(kilkari.getStateId()).getStateName(),
-                    (kilkari.getDistrictId() == null) ? "No District" : districtDao.findByDistrictId(kilkari.getDistrictId()).getDistrictName(),
-                    (kilkari.getTalukaId() == null) ? "No Taluka" : talukaDao.findByTalukaId(kilkari.getTalukaId()).getTalukaName(),
-                    (kilkari.getBlockId() == null) ? "No Block" : blockDao.findByblockId(kilkari.getBlockId()).getBlockName(),
-                    (kilkari.getHcenterId() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(kilkari.getHcenterId()).getHealthFacilityName(),
-                    (kilkari.getHsubcenterId() == null) ? "No Health Subfacility" : healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthSubFacilityName(),
-                    (kilkari.getVillageId() == null) ? "No Village" : villageDao.findByVillageId(kilkari.getVillageId()).getVillageName(),
-                    (kilkari.getAgeOnService() == null) ? "No Age_Data" : kilkari.getAgeOnService(),
-            });
-            counter++;
-        }
+         logger.info("this is currenttime before the loop: {} ",new Date());
+//        for (KilkariLowUsage kilkari : kilkariLowUsageList) {
+//
+//
+//            empinfo.put((counter.toString()), new Object[]{
+//                    counter-1,
+//                    (kilkari.getName() == null) ? "No Name" : kilkari.getName(),
+//                    (kilkari.getMctsId() == null) ? "No MCTS Id" : kilkari.getMctsId(),
+//                    (kilkari.getRchId() == null) ? "No RCH Id" : kilkari.getRchId(),
+//                    (kilkari.getMsisdn() == null) ? "No MSISDN" : kilkari.getMsisdn(),
+//                    (kilkari.getStateId() == null) ? "No State" : stateDao.findByStateId(kilkari.getStateId()).getStateName(),
+//                    (kilkari.getDistrictId() == null) ? "No District" : districtDao.findByDistrictId(kilkari.getDistrictId()).getDistrictName(),
+//                    (kilkari.getTalukaId() == null) ? "No Taluka" : talukaDao.findByTalukaId(kilkari.getTalukaId()).getTalukaName(),
+//                    (kilkari.getBlockId() == null) ? "No Block" : blockDao.findByblockId(kilkari.getBlockId()).getBlockName(),
+//                    (kilkari.getHcenterId() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(kilkari.getHcenterId()).getHealthFacilityName(),
+//                    (kilkari.getHsubcenterId() == null) ? "No Health Subfacility" : healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthSubFacilityName(),
+//                    (kilkari.getVillageId() == null) ? "No Village" : villageDao.findByVillageId(kilkari.getVillageId()).getVillageName(),
+//                    (kilkari.getAgeOnService() == null) ? "No Age_Data" : kilkari.getAgeOnService(),
+//            });
+//            counter++;
+//
+//        }
+
+         Set<Integer> stateIds = new HashSet<>();
+         Set<Integer> districtIds = new HashSet<>();
+         Set<Integer> talukaIds = new HashSet<>();
+         Set<Integer> blockIds = new HashSet<>();
+         Set<Integer> healthFacilityIds = new HashSet<>();
+         Set<Integer> healthSubFacilityIds = new HashSet<>();
+         Set<Integer> villageIds = new HashSet<>();
+
+
+         for (KilkariLowUsage kilkari : kilkariLowUsageList) {
+             if (kilkari.getStateId() != null) stateIds.add(kilkari.getStateId());
+             if (kilkari.getDistrictId() != null) districtIds.add(kilkari.getDistrictId());
+             if (kilkari.getTalukaId() != null) talukaIds.add(kilkari.getTalukaId());
+             if (kilkari.getBlockId() != null) blockIds.add(kilkari.getBlockId());
+             if (kilkari.getHcenterId() != null) healthFacilityIds.add(kilkari.getHcenterId());
+             if (kilkari.getHsubcenterId() != null) healthSubFacilityIds.add(kilkari.getHsubcenterId());
+             if (kilkari.getVillageId() != null) villageIds.add(kilkari.getVillageId());
+         }
+
+
+         logger.info("this is stateIds: {}, districtIds: {},talukaIds: {},blockIds: {},healthFacilityIds: {}",stateIds,districtIds,talukaIds,blockIds,healthFacilityIds);
+         Map<Integer, String> stateMap = new HashMap<>();
+         Map<Integer, String> districtMap = new HashMap<>();
+         Map<Integer, String> talukaMap = new HashMap<>();
+         Map<Integer, String> blockMap = new HashMap<>();
+         Map<Integer, String> healthFacilityMap = new HashMap<>();
+         Map<Integer, String> healthSubFacilityMap = new HashMap<>();
+         Map<Integer, String> villageMap = new HashMap<>();
+
+         if (stateIds != null && !stateIds.isEmpty()) {
+             List<State> states = stateDao.findByIds(stateIds);
+             logger.info("States: {}", states);
+
+             for (State state : states) {
+                 stateMap.put(state.getStateId(), state.getStateName());
+             }
+         }
+
+         if (districtIds != null && !districtIds.isEmpty()) {
+             List<District> districts = districtDao.findByIds(districtIds);
+             logger.info("Districts: {}", districts);
+
+             for (District district : districts) {
+                 districtMap.put(district.getDistrictId(), district.getDistrictName());
+             }
+         }
+
+         if (talukaIds != null && !talukaIds.isEmpty()) {
+             List<Taluka> talukas = talukaDao.findByIds(talukaIds);
+             logger.info("Talukas: {}", talukas);
+
+             for (Taluka taluka : talukas) {
+                 talukaMap.put(taluka.getTalukaId(), taluka.getTalukaName());
+             }
+         }
+
+         if (blockIds != null && !blockIds.isEmpty()) {
+             List<Block> blocks = blockDao.findByIds(blockIds);
+             logger.info("Blocks: {}", blocks);
+
+             for (Block block : blocks) {
+                 blockMap.put(block.getBlockId(), block.getBlockName());
+             }
+         }
+
+         if (healthFacilityIds != null && !healthFacilityIds.isEmpty()) {
+             List<HealthFacility> healthFacilities = healthFacilityDao.findByIds(healthFacilityIds);
+             logger.info("Health Facilities: {}", healthFacilities);
+
+             for (HealthFacility healthFacility : healthFacilities) {
+                 healthFacilityMap.put(healthFacility.getHealthFacilityId(), healthFacility.getHealthFacilityName());
+             }
+         }
+
+         if (healthSubFacilityIds != null && !healthSubFacilityIds.isEmpty()) {
+             List<HealthSubFacility> healthSubFacilities = healthSubFacilityDao.findByIds(healthSubFacilityIds);
+             logger.info("Health Sub Facilities: {}", healthSubFacilities);
+
+             for (HealthSubFacility healthSubFacility : healthSubFacilities) {
+                 healthSubFacilityMap.put(healthSubFacility.getHealthSubFacilityId(), healthSubFacility.getHealthSubFacilityName());
+             }
+         }
+
+         if (villageIds != null && !villageIds.isEmpty()) {
+             List<Village> villages = villageDao.findByVillageIds(villageIds);
+             logger.info("Villages: {}", villages);
+
+             for (Village village : villages) {
+                 villageMap.put(village.getVillageId(), village.getVillageName());
+             }
+         }
+
+
+
+
+         logger.info("before kilkari loop");
+         for (KilkariLowUsage kilkari : kilkariLowUsageList) {
+             empinfo.put(String.valueOf(counter), new Object[]{
+                     counter - 1,
+                     (kilkari.getName() == null) ? "No Name" : kilkari.getName(),
+                     (kilkari.getMctsId() == null) ? "No MCTS Id" : kilkari.getMctsId(),
+                     (kilkari.getRchId() == null) ? "No RCH Id" : kilkari.getRchId(),
+                     (kilkari.getMsisdn() == null) ? "No MSISDN" : kilkari.getMsisdn(),
+                     (kilkari.getStateId() == null) ? "No State" : stateMap.get(kilkari.getStateId()),
+                     (kilkari.getDistrictId() == null) ? "No District" : districtMap.get(kilkari.getDistrictId()),
+                     (kilkari.getTalukaId() == null) ? "No Taluka" : talukaMap.get(kilkari.getTalukaId()),
+                     (kilkari.getBlockId() == null) ? "No Block" : blockMap.get(kilkari.getBlockId()),
+                     (kilkari.getHcenterId() == null) ? "No Health Facility" : healthFacilityMap.get(kilkari.getHcenterId()),
+                     (kilkari.getHsubcenterId() == null) ? "No Health Subfacility" : healthSubFacilityMap.get(kilkari.getHsubcenterId()),
+                     (kilkari.getVillageId() == null) ? "No Village" : villageMap.get(kilkari.getVillageId()),
+                     (kilkari.getAgeOnService() == null) ? "No Age_Data" : kilkari.getAgeOnService()
+             });
+             counter++;
+         }
+
+        logger.info("this is currenttime after the loop: {} ",new Date());
         Set<String> keyid = empinfo.keySet();
         createHeadersForReportFiles(workbook, reportRequest);
         int rowid=7;
@@ -3934,7 +4055,7 @@ public class AdminServiceImpl implements AdminService {
         reportRequest.setDistrictId(0);
         reportRequest.setStateId(0);
         reportRequest.setReportType(ReportType.lowUsage.getReportType());
-        getKilkariLowUsage(kilkariLowUsageList, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate,reportRequest);
+//        getKilkariLowUsage(kilkariLowUsageList, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate,reportRequest);
         for (State state : states) {
             String stateName = StReplace(state.getStateName());
             String rootPathState = rootPath + stateName+ "/";

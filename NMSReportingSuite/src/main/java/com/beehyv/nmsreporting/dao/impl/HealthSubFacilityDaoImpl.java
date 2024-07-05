@@ -8,6 +8,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by beehyv on 23/5/17.
@@ -30,6 +31,13 @@ public class HealthSubFacilityDaoImpl extends AbstractDao<Integer, HealthSubFaci
     public List<HealthSubFacility> getSubcentersOfBlock(Integer blockId) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.eq("blockOfhealthSubFacility", blockId));
+        return (List<HealthSubFacility>) criteria.list();
+    }
+
+    @Override
+    public List<HealthSubFacility> findByIds(Set<Integer> healthSubFacilityIds) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.in("healthSubFacilityId", healthSubFacilityIds));
         return (List<HealthSubFacility>) criteria.list();
     }
 
