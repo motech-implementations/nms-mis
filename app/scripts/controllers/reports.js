@@ -227,6 +227,21 @@
                 }
             }
 
+            $scope.getCaptchaResolved= function(){
+                return grecaptcha.getResponse() !== '';
+            }
+
+            $scope.handleDownloadClick = function() {
+
+                if (!$scope.getCaptchaResolved()) {
+                    event.preventDefault();
+                    alert('Please verify the captcha before downloading the report.');
+
+                } else {
+                    $scope.clearFile();
+                }
+            }
+
             $scope.getStatesForCerti = function(){
 
                     return UserFormFactory.getStates()
@@ -762,7 +777,9 @@
                  if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Child_Import_Rejects'){
                     minDate = new Date(2017, 08, 01);
                  }
-
+                 if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Subscriber_with_RegistrationDate'){
+                    minDate = new Date(2024, 03, 01);
+                 }
 				if(!$scope.isCircleReport() && $scope.state != null && Date.parse($scope.state.serviceStartDate) > minDate){
 					minDate = $scope.state.serviceStartDate;
 				}

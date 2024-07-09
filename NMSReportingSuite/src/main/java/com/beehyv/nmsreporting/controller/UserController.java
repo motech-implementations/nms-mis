@@ -3,7 +3,6 @@ package com.beehyv.nmsreporting.controller;
 import com.beehyv.nmsreporting.business.*;
 import com.beehyv.nmsreporting.business.impl.CertificateServiceImpl;
 import com.beehyv.nmsreporting.dao.*;
-import com.beehyv.nmsreporting.dao.impl.MAPerformanceDaoImpl;
 import com.beehyv.nmsreporting.entity.*;
 import com.beehyv.nmsreporting.enums.AccessLevel;
 import com.beehyv.nmsreporting.enums.AccessType;
@@ -15,6 +14,8 @@ import com.google.gson.Gson;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.ParseException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -108,6 +109,9 @@ public class UserController {
 
     @Autowired
     BulkCertificateAuditDao bulkCertificateAuditDao;
+
+    @Autowired
+    private DownloadReportActivityService downloadReportActivityService;
 
     private ServiceFunctions serviceFunctions = new ServiceFunctions();
     private final String USER_AGENT = "Mozilla/5.0";
@@ -1096,6 +1100,8 @@ public class UserController {
     public String getBulkDataImportCSV(HttpServletResponse response, @DefaultValue("") @QueryParam("fileName") String fileName,
                                        @DefaultValue("") @QueryParam("rootPath") String rootPath) throws ParseException, java.text.ParseException {
 //        adminService.getBulkDataImportCSV();
+
+        User currentUser = userService.getCurrentUser();
         response.setContentType("APPLICATION/OCTECT-STREAM");
         if (StringUtils.isEmpty(fileName) || StringUtils.isEmpty(rootPath)) {
             fileName = "";
@@ -1119,6 +1125,8 @@ public class UserController {
             }
             fl.close();
             out.close();
+            downloadReportActivityService.recordDownloadActivity(currentUser.getUsername(), reportName, currentUser.getUserId());
+
         } catch (IOException e) {
             e.printStackTrace();
         }

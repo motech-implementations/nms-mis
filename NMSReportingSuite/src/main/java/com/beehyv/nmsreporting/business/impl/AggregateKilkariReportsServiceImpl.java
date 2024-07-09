@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.*;
@@ -562,6 +563,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         aCalendar.set(Calendar.HOUR_OF_DAY, 0);
         Date fromDate = aCalendar.getTime();
 
+
         aCalendar.setTime(reportRequest.getToDate());
         aCalendar.set(Calendar.MILLISECOND, 0);
         aCalendar.set(Calendar.SECOND, 0);
@@ -569,6 +571,18 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         aCalendar.set(Calendar.HOUR_OF_DAY, 0);
         aCalendar.add(Calendar.DATE, 1);
         toDate = aCalendar.getTime();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = "2024-04-01";
+        try {
+            Date comparisonDate = sdf.parse(dateString);
+            if(toDate.before(comparisonDate)){
+                return aggregateKilkariReportsDto;
+            }
+        }
+        catch (ParseException e){
+            e.printStackTrace();
+        }
         List<KilkariSubscriberRegistrationDateDto> kilkariSubscriberList = new ArrayList<>();
         ExecutorService executor = Executors.newFixedThreadPool(2);
         List<KilkariSubscriberRegistrationDateRejectedCountDto> kilkariSubscriberRegistrationDateRejectedCountDtoList = new ArrayList<>();
