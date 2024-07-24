@@ -18,16 +18,23 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.transaction.Transactional;
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.beehyv.nmsreporting.utils.Constants.header_base64;
 import static com.beehyv.nmsreporting.utils.Global.retrieveDocuments;
 import static com.beehyv.nmsreporting.utils.ServiceFunctions.StReplace;
-import static com.beehyv.nmsreporting.utils.Constants.header_base64;
 import static java.lang.Integer.parseInt;
 //import static java.util.Objects.isNull;
 
@@ -105,6 +112,13 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    private final TransactionTemplate transactionTemplate;
+
+    @Autowired
+    public AdminServiceImpl(PlatformTransactionManager transactionManager) {
+        this.transactionTemplate = new TransactionTemplate(transactionManager);
+    }
 
     private Logger logger = LoggerFactory.getLogger(AdminServiceImpl.class);
     private final String documents = retrieveDocuments();
@@ -3126,8 +3140,6 @@ public class AdminServiceImpl implements AdminService {
              if (kilkari.getVillageId() != null) villageIds.add(kilkari.getVillageId());
          }
 
-
-         logger.info("this is stateIds: {}, districtIds: {},talukaIds: {},blockIds: {},healthFacilityIds: {}",stateIds,districtIds,talukaIds,blockIds,healthFacilityIds);
          Map<Integer, String> stateMap = new HashMap<>();
          Map<Integer, String> districtMap = new HashMap<>();
          Map<Integer, String> talukaMap = new HashMap<>();
@@ -3138,16 +3150,15 @@ public class AdminServiceImpl implements AdminService {
 
          if (stateIds != null && !stateIds.isEmpty()) {
              List<State> states = stateDao.findByIds(stateIds);
-             logger.info("States: {}", states);
 
              for (State state : states) {
                  stateMap.put(state.getStateId(), state.getStateName());
+                 logger.info("this is state id: {}",state);
              }
          }
 
          if (districtIds != null && !districtIds.isEmpty()) {
              List<District> districts = districtDao.findByIds(districtIds);
-             logger.info("Districts: {}", districts);
 
              for (District district : districts) {
                  districtMap.put(district.getDistrictId(), district.getDistrictName());
@@ -3156,7 +3167,6 @@ public class AdminServiceImpl implements AdminService {
 
          if (talukaIds != null && !talukaIds.isEmpty()) {
              List<Taluka> talukas = talukaDao.findByIds(talukaIds);
-             logger.info("Talukas: {}", talukas);
 
              for (Taluka taluka : talukas) {
                  talukaMap.put(taluka.getTalukaId(), taluka.getTalukaName());
@@ -3165,7 +3175,6 @@ public class AdminServiceImpl implements AdminService {
 
          if (blockIds != null && !blockIds.isEmpty()) {
              List<Block> blocks = blockDao.findByIds(blockIds);
-             logger.info("Blocks: {}", blocks);
 
              for (Block block : blocks) {
                  blockMap.put(block.getBlockId(), block.getBlockName());
@@ -3174,7 +3183,6 @@ public class AdminServiceImpl implements AdminService {
 
          if (healthFacilityIds != null && !healthFacilityIds.isEmpty()) {
              List<HealthFacility> healthFacilities = healthFacilityDao.findByIds(healthFacilityIds);
-             logger.info("Health Facilities: {}", healthFacilities);
 
              for (HealthFacility healthFacility : healthFacilities) {
                  healthFacilityMap.put(healthFacility.getHealthFacilityId(), healthFacility.getHealthFacilityName());
@@ -3183,7 +3191,6 @@ public class AdminServiceImpl implements AdminService {
 
          if (healthSubFacilityIds != null && !healthSubFacilityIds.isEmpty()) {
              List<HealthSubFacility> healthSubFacilities = healthSubFacilityDao.findByIds(healthSubFacilityIds);
-             logger.info("Health Sub Facilities: {}", healthSubFacilities);
 
              for (HealthSubFacility healthSubFacility : healthSubFacilities) {
                  healthSubFacilityMap.put(healthSubFacility.getHealthSubFacilityId(), healthSubFacility.getHealthSubFacilityName());
@@ -3192,7 +3199,6 @@ public class AdminServiceImpl implements AdminService {
 
          if (villageIds != null && !villageIds.isEmpty()) {
              List<Village> villages = villageDao.findByVillageIds(villageIds);
-             logger.info("Villages: {}", villages);
 
              for (Village village : villages) {
                  villageMap.put(village.getVillageId(), village.getVillageName());
@@ -3239,7 +3245,7 @@ public class AdminServiceImpl implements AdminService {
                         ||(cellid==5&&!obj.toString().equalsIgnoreCase("No MSISDN")))){
                     cell.setCellValue(obj.toString());}
                 else{
-                    cell.setCellValue(obj.toString());
+                    cell.setCellValue(obj != null ? obj.toString() : "");
                 }
                 if(rowid!=8&&cellid==1&& !kilkariLowUsageList.isEmpty()){
                     cell.setCellValue(rowid-8);
@@ -4044,6 +4050,7 @@ public class AdminServiceImpl implements AdminService {
         }
     }
 
+    //Method Deprecated, It was taking more than 24 hours of time to generate line list
     @Override
     public void getKilkariLowUsageFiles(Date fromDate, Date toDate) {
         List<State> states = stateDao.getStatesByServiceType(ReportType.lowUsage.getServiceType());
@@ -4101,6 +4108,100 @@ public class AdminServiceImpl implements AdminService {
             }
         }
     }
+
+
+    @Transactional
+    @Override
+    public void processKilkariLowUsageFiles(Date fromDate, Date toDate) {
+        final Date finalToDate = toDate;
+        final String rootPath = reports + ReportType.lowUsage.getReportType() + "/";
+        final List<State> states = stateDao.getStatesByServiceType(ReportType.lowUsage.getServiceType());
+        final List<KilkariLowUsage> kilkariLowUsageList = kilkariLowUsageDao.getKilkariLowUsageUsers(getMonthYear(finalToDate));
+
+        ExecutorService executorService = Executors.newFixedThreadPool(8);
+
+        try {
+            for ( final State state : states) {
+                logger.info("State name is: {}", state.getStateName());
+                final String stateName = StReplace(state.getStateName());
+                final String rootPathState = rootPath + stateName + "/";
+                final int stateId = state.getStateId();
+                final List<KilkariLowUsage> candidatesFromThisState = new ArrayList<KilkariLowUsage>();
+                for (KilkariLowUsage kilkari : kilkariLowUsageList) {
+                    if ((kilkari.getStateId() != null) && (kilkari.getStateId() == stateId)) {
+                        candidatesFromThisState.add(kilkari);
+                    }
+                }
+
+                executorService.submit(new Runnable() {
+                    @Override
+                    public void run() {
+                        transactionTemplate.execute(new TransactionCallback<Void>() {
+                            @Override
+                            public Void doInTransaction(TransactionStatus status) {
+                                try {
+                                    ReportRequest reportRequest = new ReportRequest();
+                                    reportRequest.setFromDate(finalToDate);
+                                    reportRequest.setBlockId(0);
+                                    reportRequest.setDistrictId(0);
+                                    reportRequest.setStateId(stateId);
+                                    reportRequest.setReportType(ReportType.lowUsage.getReportType());
+                                    getKilkariLowUsage(candidatesFromThisState, rootPathState, stateName, finalToDate, reportRequest);
+
+                                    List<District> districts = districtDao.getDistrictsOfState(stateId);
+                                    for (final District district : districts) {
+                                        String districtName = StReplace(district.getDistrictName());
+                                        String rootPathDistrict = rootPathState + districtName + "/";
+                                        int districtId = district.getDistrictId();
+                                        List<KilkariLowUsage> candidatesFromThisDistrict = new ArrayList<KilkariLowUsage>();
+                                        for (KilkariLowUsage kilkari : candidatesFromThisState) {
+                                            if ((kilkari.getDistrictId() != null) && (kilkari.getDistrictId() == districtId)) {
+                                                candidatesFromThisDistrict.add(kilkari);
+                                            }
+                                        }
+
+                                        reportRequest.setDistrictId(districtId);
+                                        reportRequest.setBlockId(0);
+                                        getKilkariLowUsage(candidatesFromThisDistrict, rootPathDistrict, districtName, finalToDate, reportRequest);
+
+                                        List<Block> blocks = blockDao.getBlocksOfDistrict(districtId);
+                                        for (final Block block : blocks) {
+                                            String blockName = StReplace(block.getBlockName());
+                                            String rootPathBlock = rootPathDistrict + blockName + "/";
+                                            int blockId = block.getBlockId();
+                                            List<KilkariLowUsage> candidatesFromThisBlock = new ArrayList<KilkariLowUsage>();
+                                            for (KilkariLowUsage kilkari : candidatesFromThisDistrict) {
+                                                if ((kilkari.getBlockId() != null) && (kilkari.getBlockId() == blockId)) {
+                                                    candidatesFromThisBlock.add(kilkari);
+                                                }
+                                            }
+
+                                            reportRequest.setBlockId(blockId);
+                                            getKilkariLowUsage(candidatesFromThisBlock, rootPathBlock, blockName, finalToDate, reportRequest);
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    logger.error("Error processing state: {} - {}", state.getStateName(), e.getMessage(), e);
+
+                                }
+                                return null;
+                            }
+                        });
+                    }
+                });
+            }
+        } finally {
+            executorService.shutdown();
+            try {
+                executorService.awaitTermination(5, TimeUnit.HOURS);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                logger.error("ExecutorService termination interrupted.", e);
+            }
+        }
+    }
+
 
     @Override
     public void getKilkariSelfDeactivationFiles(Date fromDate, Date toDate) {
