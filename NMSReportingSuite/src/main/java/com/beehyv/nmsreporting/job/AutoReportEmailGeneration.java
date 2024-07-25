@@ -61,7 +61,7 @@ public class AutoReportEmailGeneration {
             System.out.println("LowListenershipDeactivation reports generated");
             adminService.getKilkariSelfDeactivationFiles(fromDate, toDate);
             System.out.println("KilkariSelfDeactivation reports generated");
-            adminService.getKilkariLowUsageFiles(fromDate, toDate);
+            adminService.processKilkariLowUsageFiles(fromDate, toDate);
             System.out.println("KilkariLowUsage reports generated");
             System.out.println("Report generation done");
 
