@@ -778,7 +778,7 @@
                     minDate = new Date(2017, 8, 1);
                  }
                  if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Subscriber_with_RegistrationDate'){
-                    minDate = new Date(2024, 03, 01);
+                    minDate = new Date(2024, 3, 1);
                  }
 				if(!$scope.isCircleReport() && $scope.state != null && Date.parse($scope.state.serviceStartDate) > minDate){
 					minDate = $scope.state.serviceStartDate;
