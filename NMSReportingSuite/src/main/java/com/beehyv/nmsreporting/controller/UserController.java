@@ -11,11 +11,12 @@ import com.beehyv.nmsreporting.enums.ReportType;
 import com.beehyv.nmsreporting.model.*;
 import com.beehyv.nmsreporting.utils.ServiceFunctions;
 import com.google.gson.Gson;
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.ParseException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,6 +38,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -108,10 +110,13 @@ public class UserController {
     private CertificateService certificateService;
 
     @Autowired
-    BulkCertificateAuditDao bulkCertificateAuditDao;
+    private NoticeDao noticeDao;
 
     @Autowired
-    private DownloadReportActivityService downloadReportActivityService;
+    BulkCertificateAuditDao bulkCertificateAuditDao;
+
+    private final CacheManager cacheManager = CacheManager.create();
+    private final Cache etlNotificationCache = cacheManager.getCache("etlNotificationCache");
 
     private ServiceFunctions serviceFunctions = new ServiceFunctions();
     private final String USER_AGENT = "Mozilla/5.0";
@@ -440,6 +445,32 @@ public class UserController {
                 modificationTrackerService.saveModification(modification);
             }
             return map;
+        } else
+            return null;
+    }
+
+    @RequestMapping(value = {"/etlNotification"}, method = RequestMethod.GET)
+    @ResponseBody
+    public List<String> etlNotification() throws Exception {
+        User currentUser = userService.getCurrentUser();
+        if(currentUser != null) {
+            Element cacheElement = etlNotificationCache.get("etlNotification");
+            if (cacheElement != null) {
+                return (List<String>) cacheElement.getObjectValue();
+            }
+
+            List<String> noticeList = new ArrayList<>();
+            List<Notice> notices = noticeDao.findNoticeForLast28Days();
+            if (notices != null) {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yy");
+                for (Notice notice : notices) {
+                    String etlNotification;
+                    etlNotification = sdf.format(notice.getDate()) + "_" + notice.getMessage();
+                    noticeList.add(etlNotification);
+                }
+            }
+            etlNotificationCache.put(new Element("etlNotification", noticeList));
+            return noticeList;
         } else
             return null;
     }
@@ -1100,8 +1131,6 @@ public class UserController {
     public String getBulkDataImportCSV(HttpServletResponse response, @DefaultValue("") @QueryParam("fileName") String fileName,
                                        @DefaultValue("") @QueryParam("rootPath") String rootPath) throws ParseException, java.text.ParseException {
 //        adminService.getBulkDataImportCSV();
-
-        User currentUser = userService.getCurrentUser();
         response.setContentType("APPLICATION/OCTECT-STREAM");
         if (StringUtils.isEmpty(fileName) || StringUtils.isEmpty(rootPath)) {
             fileName = "";
@@ -1125,8 +1154,6 @@ public class UserController {
             }
             fl.close();
             out.close();
-            downloadReportActivityService.recordDownloadActivity(currentUser.getUsername(), reportName, currentUser.getUserId());
-
         } catch (IOException e) {
             e.printStackTrace();
         }

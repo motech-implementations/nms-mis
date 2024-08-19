@@ -577,12 +577,12 @@
                 $scope.showEmptyData = false;
                 if($scope.report.name == 'District-wise Performance of the State for Mobile Academy') {
                 $scope.dateFormat = 'yyyy-MM-dd';
-                                    $scope.endDatePickerOptions.minDate = new Date(2015,12,01)
+                                    $scope.endDatePickerOptions.minDate = new Date(2015,11,1)
                                     $scope.endDatePickerOptions.maxDate = new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate()-1);
                 }
                 if($scope.report.reportEnum == 'Kilkari_Cumulative_Summary'){
                     $scope.dateFormat = 'yyyy-MM-dd';
-                    $scope.endDatePickerOptions.minDate = new Date(2016,11,01)
+                    $scope.endDatePickerOptions.minDate = new Date(2016,11,1)
                     $scope.endDatePickerOptions.maxDate = new Date();
                 }
 
@@ -739,26 +739,26 @@
 
 			$scope.setDateOptions =function(){
                 if($scope.isAggregateReport()&&($scope.periodDisplayType == 'Month'||$scope.periodDisplayType == 'Week'||$scope.periodDisplayType == 'Custom Range')){
-                    var minDate = new Date(2016, 11, 01);
+                    var minDate = new Date(2016, 11, 1);
                 }
                 else if($scope.isAggregateReport()&&($scope.periodDisplayType == 'Year'||$scope.periodDisplayType == 'Quarter'||$scope.periodDisplayType == 'Financial Year')){
-                    var minDate = new Date(2017, 00, 01);
+                    var minDate = new Date(2017, 0, 1);
                 }
                 else{
                     var minDate = new Date(2016, 11, 30);
                 }
 
 				if($scope.report != null && $scope.report.service == 'M'){
-					minDate = new Date(2015, 10, 01);
+					minDate = new Date(2015, 10, 1);
 				}
 				if($scope.report != null && $scope.report.reportEnum == 'MA_Cumulative_Inactive_Users'){
-                	minDate = new Date(2015, 12, 01);
+                	minDate = new Date(2015, 11, 1);
                 }
                 if($scope.report != null && $scope.report.reportEnum == 'MA_Cumulative_Course_Completion'){
-                	minDate = new Date(2015, 12, 01);
+                	minDate = new Date(2015, 11, 1);
                 }
                 if($scope.report != null && $scope.report.reportEnum == 'MA_Anonymous_Users'){
-                    minDate = new Date(2017, 01, 01);
+                    minDate = new Date(2017, 1, 1);
                 }
                 if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Low_Usage'){
                     minDate = new Date(2016, 11, 30);
@@ -766,16 +766,16 @@
 
                 //In case of change in minDate for rejection reports, please change startMonth and startDate variable accordingly
                 if($scope.report != null && $scope.report.reportEnum == 'MA_Asha_Import_Rejects'){
-                    minDate = new Date(2017, 08, 01);
+                    minDate = new Date(2017, 8, 1);
                  }
                  if($scope.report != null && ($scope.report.reportEnum == 'MA_Performance' || $scope.report.reportEnum == 'MA_Subscriber')) {
-                    minDate = new Date(2015,12,01);
+                    minDate = new Date(2015,11,1);
                  }
                  if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Mother_Import_Rejects'){
-                    minDate = new Date(2017, 08, 01);
+                    minDate = new Date(2017, 8, 1);
                  }
                  if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Child_Import_Rejects'){
-                    minDate = new Date(2017, 08, 01);
+                    minDate = new Date(2017, 8, 1);
                  }
                  if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Subscriber_with_RegistrationDate'){
                     minDate = new Date(2024, 03, 01);

@@ -72,6 +72,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.9.12/xlsx.full.min.js"></script>
 	<script src="https://fastcdn.org/FileSaver.js/1.1.20151003/FileSaver.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-validate/1.2.2/validate.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.0/ui-bootstrap-tpls.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-messages/1.8.3/angular-messages.min.js"></script>
@@ -92,7 +93,6 @@
 
 
 	<!--<script src="scripts/directives/pagination.js"></script>-->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-119876170-1"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-recaptcha/4.2.0/angular-recaptcha.min.js"></script>
     <script
@@ -195,8 +195,53 @@
 				<li data-ng-if='!checkLogin()' data-ng-class="{active: activeTab('feedbackForm')}" >
 					<a data-ng-class="{dis1: disableCursor()}" data-ng-click="goToFeedback()" class="pointer">Feedback</a>
 				</li>
+				<li data-ng-if='!checkLogin()' >
+					<a data-ng-class="{dis1: disableCursor()}" data-ng-click="fetchNotifications()" class="pointer">
+						<i class="fa fa-bell"></i>
+						<span class="badge" ng-if="notifications.length">{{ notifications.length }}</span>
+					</a>
+				</li>
 
 			</ul>
+
+			<div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="notificationModalLabel">Notifications</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<!--<div class="modal-body">
+							<ul class="list-group">
+								<li class="list-group-item" ng-repeat="notification in notifications">
+									{{ notification }}
+								</li>
+							</ul>
+						</div>-->
+						<div class="modal-body">
+							<table class="table table-striped">
+								<thead>
+								<tr>
+									<th>Date</th>
+									<th>Notification</th>
+								</tr>
+								</thead>
+								<tbody>
+								<tr ng-repeat="notification in notifications">
+									<td>{{ notification.date }}</td>
+									<td>{{ notification.message }}</td>
+								</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
 
             <ul class="nav-menu" data-ng-hide='menuChecker()'>
 

@@ -106,6 +106,9 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private ReportTypeDao reportTypeDao;
 
+    @Autowired
+    private ScheduledReportTrackerDao scheduledReportTrackerDao;
+
 
     @Autowired
     private ModificationTrackerDao modificationTrackerDao;
@@ -3735,6 +3738,7 @@ public class AdminServiceImpl implements AdminService {
                 }
             }
         }
+        scheduledReportTrackerDao.saveScheduleReportTracker(new ScheduledReportTracker(ReportType.maCourse.getReportName(), new Date(), (toDate.getMonth()) + "_" + toDate.getYear()%100));
     }
 
     @Override
@@ -3824,6 +3828,7 @@ public class AdminServiceImpl implements AdminService {
             reportRequest.setCircleId(circle.getCircleId());
             getCircleWiseAnonymousUsers(anonymousUsersListCircle, rootPathCircle, circleFullName, toDate, reportRequest);
         }
+        scheduledReportTrackerDao.saveScheduleReportTracker(new ScheduledReportTracker(ReportType.maAnonymous.getReportName(), new Date(), (toDate.getMonth()) + "_" + toDate.getYear()%100));
     }
 
     @Override
@@ -3883,6 +3888,7 @@ public class AdminServiceImpl implements AdminService {
                 }
             }
         }
+        scheduledReportTrackerDao.saveScheduleReportTracker(new ScheduledReportTracker(ReportType.maInactive.getReportName(), new Date(), (toDate.getMonth()) + "_" + toDate.getYear()%100));
     }
 
     @Override
@@ -3988,6 +3994,7 @@ public class AdminServiceImpl implements AdminService {
                 }
             }
         }
+        scheduledReportTrackerDao.saveScheduleReportTracker(new ScheduledReportTracker(ReportType.sixWeeks.getReportName(), new Date(), (toDate.getMonth()) + "_" + toDate.getYear()%100));
     }
 
     @Override
@@ -4048,6 +4055,7 @@ public class AdminServiceImpl implements AdminService {
                 }
             }
         }
+        scheduledReportTrackerDao.saveScheduleReportTracker(new ScheduledReportTracker(ReportType.lowListenership.getReportName(), new Date(), (toDate.getMonth()) + "_" + toDate.getYear()%100));
     }
 
     //Method Deprecated, It was taking more than 24 hours of time to generate line list
@@ -4107,6 +4115,7 @@ public class AdminServiceImpl implements AdminService {
                 }
             }
         }
+        scheduledReportTrackerDao.saveScheduleReportTracker(new ScheduledReportTracker(ReportType.selfDeactivated.getReportName(), new Date(), (toDate.getMonth()) + "_" + toDate.getYear()%100));
     }
 
 
@@ -4260,6 +4269,7 @@ public class AdminServiceImpl implements AdminService {
                 }
             }
         }
+        scheduledReportTrackerDao.saveScheduleReportTracker(new ScheduledReportTracker(ReportType.lowUsage.getReportName(), new Date(), (toDate.getMonth()) + "_" + toDate.getYear()%100));
     }
 
 
