@@ -527,7 +527,7 @@ public class MAPerformanceDaoImpl extends AbstractDao<Integer, User> implements 
            case "block":
                locationColumn = "block_id";
                break;
-           case "subcenter":
+           case "subcentre":
                locationColumn = "healthsubfacility_id";
                break;
            default:

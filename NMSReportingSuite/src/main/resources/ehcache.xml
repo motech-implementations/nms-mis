@@ -33,4 +33,12 @@
            timeToLiveSeconds="3600"
            overflowToDisk="true"/>
 
+    <cache name="etlNotificationCache"
+           maxElementsInMemory="1000"
+           eternal="false"
+           timeToIdleSeconds="600"
+           timeToLiveSeconds="600"
+           overflowToDisk="false"
+           memoryStoreEvictionPolicy="LRU"/>
+
 </ehcache>

@@ -27,6 +27,8 @@ public interface AggregateKilkariReportsService {
 
     List<ListeningMatrixDto> getListeningMatrixReport(ReportRequest reportRequest, User currentUser);
 
+    List<KilkariHomePageReportsDto> getkilkariHomePageReport(ReportRequest reportRequest);
+
     AggregateKilkariReportsDto getKilkariThematicContentReport(ReportRequest reportRequest);
 
     MessageMatrixResponseDto getMessageMatrixReport(ReportRequest reportRequest, User currentUser);

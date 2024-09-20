@@ -5,6 +5,7 @@ import com.beehyv.nmsreporting.dao.AggregateCumulativeBeneficiaryDao;
 import com.beehyv.nmsreporting.model.AggregateCumulativeBeneficiary;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
@@ -48,6 +49,30 @@ public class AggregateCumulativeBeneficiaryDaoImpl extends AbstractDao<Integer,A
 
         return aggregateCumulativeBeneficiary;
     }
+
+    public Long getCumulativeJoinedSubscription(Long locationId, String locationType, Date toDate) {
+        String hql;
+        Query query;
+
+        if (locationId == 0 && "State".equalsIgnoreCase(locationType)) {
+            hql = "SELECT COALESCE(SUM(CAST(joinedSubscription AS long)), 0) FROM AggregateCumulativeBeneficiary WHERE locationType = :locationType AND date <= :toDate AND periodType = 'WEEK'";
+            query = getSession().createQuery(hql);
+            query.setParameter("locationType", "State");
+        } else {
+            hql = "SELECT COALESCE(SUM(CAST(joinedSubscription AS long)), 0) FROM AggregateCumulativeBeneficiary WHERE locationId = :locationId AND locationType = :locationType AND date <= :toDate AND periodType = 'WEEK'";
+            query = getSession().createQuery(hql);
+            query.setParameter("locationId", locationId);
+            query.setParameter("locationType", locationType);
+        }
+
+        query.setParameter("toDate", toDate);
+
+        Long result = (Long) query.uniqueResult();
+        return result != null ? result : 0L;
+    }
+
+
+
 
     @Override
     public Long getTotalBeneficiariesCalled(Long locationId, String locationType, Date date){
@@ -144,4 +169,65 @@ public class AggregateCumulativeBeneficiaryDaoImpl extends AbstractDao<Integer,A
         }
         return result;
     }
+
+    @Override
+    public Long getJoinedSubscriptionSum(Integer locationId, String locationType, Date fromDate, Date toDate, String periodType) {
+        String sql = "SELECT SUM(joined_subscription) " +
+                "FROM agg_aggregate_beneficiaries " +
+                "WHERE location_id = :locationId " +
+                "AND location_type = :locationType " +
+                "AND period_type = :periodType " +
+                "AND date BETWEEN :fromDate AND :toDate";
+
+        SQLQuery query = getSession().createSQLQuery(sql);
+        query.setParameter("locationId", locationId.longValue());
+        query.setParameter("locationType", locationType);
+        query.setParameter("periodType", periodType);
+        query.setParameter("fromDate", fromDate);
+        query.setParameter("toDate", toDate);
+
+        Object result = query.uniqueResult();
+        return result != null ? ((Number) result).longValue() : 0L;
+    }
+
+    @Override
+    public Long getJoinedSubscriptionSumTillDate(Integer locationId, String locationType, Date toDate) {
+        String sql = "SELECT SUM(joined_subscription) " +
+                "FROM agg_aggregate_beneficiaries " +
+                "WHERE location_id = :locationId " +
+                "AND location_type = :locationType " +
+                "AND period_type = :periodType " +
+                "AND date <= :toDate " ;
+
+        SQLQuery query = getSession().createSQLQuery(sql);
+        query.setParameter("locationId", locationId.longValue());
+        query.setParameter("locationType", locationType);
+        query.setParameter("periodType", "WEEK");
+        query.setParameter("toDate", toDate);
+
+        Object result = query.uniqueResult();
+        return result != null ? ((Number) result).longValue() : 0L;
+    }
+
+
+    @Override
+    public Long getTotalDeactivationSum(Integer locationId, String locationType, Date fromDate, Date toDate, String periodType) {
+        String sql = "SELECT SUM(no_answer_deactivation+low_listener_deactivation+system_deactivation) " +
+                "FROM agg_aggregate_beneficiaries " +
+                "WHERE location_id = :locationId " +
+                "AND location_type = :locationType " +
+                "AND period_type = :periodType " +
+                "AND date BETWEEN :fromDate AND :toDate";
+
+        SQLQuery query = getSession().createSQLQuery(sql);
+        query.setParameter("locationId", locationId.longValue());
+        query.setParameter("locationType", locationType);
+        query.setParameter("periodType", periodType);
+        query.setParameter("fromDate", fromDate);
+        query.setParameter("toDate", toDate);
+
+        Object result = query.uniqueResult();
+        return result != null ? ((Number) result).longValue() : 0L;
+    }
+
 }

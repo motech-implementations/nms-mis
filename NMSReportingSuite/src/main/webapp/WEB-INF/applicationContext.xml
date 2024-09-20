@@ -214,9 +214,11 @@
 
 </mvc:interceptors>
     <bean id="autoReportMail" class="com.beehyv.nmsreporting.job.AutoReportEmailGeneration"/>
+    <bean id="etlNotificationService" class="com.beehyv.nmsreporting.business.impl.EtlNotificationServiceImpl"/>
     <task:scheduled-tasks>
         <task:scheduled ref="autoReportMail" method="executeInternal" cron="0 0 9 1 * ?"/>
         <task:scheduled ref="autoReportMail" method="executeWeekly" cron="0 0 12 ? * MON"/>
         <!--<task:scheduled ref="autoReportMail" method="test" cron="${cron.test}"  />-->
+        <task:scheduled ref="etlNotificationService" method="scheduledNotification" cron="0 */15 * * * ?"/>
     </task:scheduled-tasks>
 </beans>

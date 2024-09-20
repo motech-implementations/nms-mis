@@ -84,4 +84,73 @@ public class KilkariThematicContentReportDaoImpl extends AbstractDao<Integer,Kil
         }
         return result.longValue();
     }
+
+    @Override
+    public String getMostHeardCallWeek(Integer locationId, String locationType, Date startDate, Date endDate, String periodType) {
+        String sql = "SELECT message_week_number " +
+                "FROM agg_kilkari_thematic_content " +
+                "WHERE location_id = :locationId " +
+                "  AND location_type = :locationType " +
+                "  AND date BETWEEN :startDate AND :endDate " +
+                "  AND message_week_number <> 'w1' " +
+                "  AND period_type = :periodType " +
+                "GROUP BY message_week_number " +
+                "ORDER BY SUM(minutes_consumed) DESC " +
+                "LIMIT 1";
+
+        Query query = getSession().createSQLQuery(sql);
+        query.setParameter("locationId", locationId);
+        query.setParameter("locationType", locationType);
+        query.setParameter("startDate", startDate);
+        query.setParameter("endDate", endDate);
+        query.setParameter("periodType", periodType);
+
+        Object result = query.uniqueResult();
+        return result != null ? result.toString() : null;
+    }
+
+    @Override
+    public String getLeastHeardCallWeek(Integer locationId, String locationType, Date startDate, Date endDate, String periodType) {
+        String sql = "SELECT message_week_number " +
+                "FROM agg_kilkari_thematic_content " +
+                "WHERE location_id = :locationId " +
+                "  AND location_type = :locationType " +
+                "  AND date BETWEEN :startDate AND :endDate " +
+                "  AND message_week_number <> 'w1' " +
+                "  AND period_type = :periodType " +
+                "GROUP BY message_week_number " +
+                "ORDER BY SUM(minutes_consumed) ASC " +
+                "LIMIT 1";
+
+        Query query = getSession().createSQLQuery(sql);
+        query.setParameter("locationId", locationId);
+        query.setParameter("locationType", locationType);
+        query.setParameter("startDate", startDate);
+        query.setParameter("endDate", endDate);
+        query.setParameter("periodType", periodType);
+
+        Object result = query.uniqueResult();
+        return result != null ? result.toString() : null;
+    }
+
+    @Override
+    public double getAverageDurationOfCalls(Integer locationId, String locationType, Date startDate, Date endDate, String periodType) {
+        String sql = "SELECT SUM(minutes_consumed) / NULLIF(SUM(calls_answered), 0) AS average_duration_of_calls " +
+                "FROM agg_kilkari_thematic_content " +
+                "WHERE location_id = :locationId " +
+                "AND location_type = :locationType " +
+                "AND date BETWEEN :startDate AND :endDate " +
+                "AND period_type = :periodType";
+
+        Query query = getSession().createSQLQuery(sql)
+                .setParameter("locationId", locationId)
+                .setParameter("locationType", locationType)
+                .setParameter("startDate", startDate)
+                .setParameter("endDate", endDate)
+                .setParameter("periodType", periodType);
+
+        Object result = query.uniqueResult();
+        return result != null ? ((Number) result).doubleValue() : 0.0;
+    }
+
 }

@@ -45,8 +45,16 @@ public class KilkariSubscriber {
     @Column(name="total_subscriptions_completed", columnDefinition = "INT(11)")
     private Integer totalSubscriptionsCompleted;
 
+    @Column(name="total_records_received_ANC", columnDefinition = "INT(11)")
+    private Integer totalRecordsReceivedANC;
 
-    public KilkariSubscriber(Integer id, String locationType, Long locationId, Date date, Integer totalSubscriptions, Integer totalRecordsReceived_MCTS_RCH, Integer eligibleForSubscriptions, Integer totalSubscriptionsRejected, Integer totalSubscriptionsAccepted, Integer totalSubscriptionsCompleted) {
+    @Column(name="total_records_received_PNC", columnDefinition = "INT(11)")
+    private Integer totalRecordsReceivedPNC;
+
+    @Column(name="total_records_transitioned_ANC_to_PNC", columnDefinition = "INT(11)")
+    private Integer totalRecordsTransitionedANCToPNC;
+
+    public KilkariSubscriber(Integer id, String locationType, Long locationId, Date date, Integer totalSubscriptions, Integer totalRecordsReceived_MCTS_RCH, Integer eligibleForSubscriptions, Integer totalSubscriptionsRejected, Integer totalSubscriptionsAccepted, Integer totalSubscriptionsCompleted, Integer totalRecordsReceivedANC, Integer totalRecordsReceivedPNC, Integer totalRecordsTransitionedANCToPNC) {
         this.id = id;
         this.locationType = locationType;
         this.locationId = locationId;
@@ -57,6 +65,9 @@ public class KilkariSubscriber {
         this.totalSubscriptionsRejected = totalSubscriptionsRejected;
         this.totalSubscriptionsAccepted = totalSubscriptionsAccepted;
         this.totalSubscriptionsCompleted = totalSubscriptionsCompleted;
+        this.totalRecordsReceivedANC = totalRecordsReceivedANC;
+        this.totalRecordsReceivedPNC = totalRecordsReceivedPNC;
+        this.totalRecordsTransitionedANCToPNC = totalRecordsTransitionedANCToPNC;
     }
 
     public KilkariSubscriber(){
@@ -141,5 +152,29 @@ public class KilkariSubscriber {
 
     public void setTotalSubscriptionsCompleted(Integer totalSubscriptionsCompleted) {
         this.totalSubscriptionsCompleted = totalSubscriptionsCompleted;
+    }
+
+    public Integer getTotalRecordsReceivedANC(){
+        return totalRecordsReceivedANC;
+    }
+
+    public void setTotalRecordsReceivedANC(Integer totalRecordsReceivedANC){
+        this.totalRecordsReceivedANC = totalRecordsReceivedANC;
+    }
+
+    public Integer getTotalRecordsReceivedPNC(){
+        return totalRecordsReceivedPNC;
+    }
+
+    public void setTotalRecordsReceivedPNC(Integer totalRecordsReceivedPNC){
+        this.totalRecordsReceivedPNC = totalRecordsReceivedPNC;
+    }
+
+    public Integer getTotalRecordsTransitionedANCToPNC(){
+        return totalRecordsTransitionedANCToPNC;
+    }
+
+    public void setTotalRecordsTransitionedANCToPNC(Integer totalRecordsTransitionedANCToPNC){
+        this.totalRecordsTransitionedANCToPNC = totalRecordsTransitionedANCToPNC;
     }
 }

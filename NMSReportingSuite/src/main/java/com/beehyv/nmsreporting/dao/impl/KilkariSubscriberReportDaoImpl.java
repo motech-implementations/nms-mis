@@ -27,7 +27,7 @@ public class KilkariSubscriberReportDaoImpl extends AbstractDao<Integer,KilkariS
         List<KilkariSubscriber> result = criteria.list();
 
         if(result.isEmpty()){
-            KilkariSubscriber kilkariSubscriber = new KilkariSubscriber(0,locationType,locationId.longValue(),toDate,0,0,0,0,0,0);
+            KilkariSubscriber kilkariSubscriber = new KilkariSubscriber(0,locationType,locationId.longValue(),toDate,0,0,0,0,0,0,0,0,0);
             return kilkariSubscriber;
         }
 
@@ -38,6 +38,9 @@ public class KilkariSubscriberReportDaoImpl extends AbstractDao<Integer,KilkariS
         kilkariSubscriber.setTotalSubscriptionsAccepted(kilkariSubscriber.getTotalSubscriptionsAccepted() == null ? 0 : kilkariSubscriber.getTotalSubscriptionsAccepted());
 //        kilkariSubscriber.setTotalSubscriptionsRejected(kilkariSubscriber.getTotalSubscriptionsRejected() == null ? 0 : kilkariSubscriber.getTotalSubscriptionsRejected());
         kilkariSubscriber.setTotalSubscriptions(kilkariSubscriber.getTotalSubscriptions() == null ? 0 : kilkariSubscriber.getTotalSubscriptions());
+        kilkariSubscriber.setTotalRecordsReceivedANC(kilkariSubscriber.getTotalRecordsReceivedANC() == null ? 0 : kilkariSubscriber.getTotalRecordsReceivedANC());
+        kilkariSubscriber.setTotalRecordsReceivedPNC(kilkariSubscriber.getTotalRecordsReceivedPNC() == null ? 0 : kilkariSubscriber.getTotalRecordsReceivedPNC());
+        kilkariSubscriber.setTotalRecordsTransitionedANCToPNC(kilkariSubscriber.getTotalRecordsTransitionedANCToPNC() == null ? 0 : kilkariSubscriber.getTotalRecordsTransitionedANCToPNC());
         return kilkariSubscriber;
     }
 

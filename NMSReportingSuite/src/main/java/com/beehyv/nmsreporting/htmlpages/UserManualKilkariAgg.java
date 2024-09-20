@@ -98,7 +98,7 @@ public class UserManualKilkariAgg {
             "                        <p>When-ever the user clicks on the “Bar Chart button”, the application must display graphical\n" +
             "                            output of the respective report. A typical graphical output of the data of the first grid\n" +
             "                            could be as shown below.</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/aggregates/Kilkari/KK_Repeat_1.png\"><br><br><br>\n" +
@@ -190,7 +190,7 @@ public class UserManualKilkariAgg {
             "                                this beneficiary twice; thereby a ‘Total’ row for this report is meaningless.\n" +
             "                            </li>\n" +
             "                        </ol>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/aggregates/Kilkari/KK_MM_1.png\"><br><br><br>\n" +
@@ -268,7 +268,7 @@ public class UserManualKilkariAgg {
             "                            <li>Column 10 is based on the formula: (9)/(4)</li>\n" +
             "                            <li>Column 11 reflects Total number of calls to inbox where content is played</li>\n" +
             "                        </ol>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/aggregates/Kilkari/KK_Call_1.png\"><br><br><br>\n" +
@@ -361,7 +361,7 @@ public class UserManualKilkariAgg {
             "                        <p>When a national or State / UT or district or block user selects a particular block, the\n" +
             "                            report shows data pertaining to calls made for individual messages for the selected\n" +
             "                            block.</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/aggregates/Kilkari/KK_Them_Content_1.png\"><br><br><br>\n" +
@@ -439,7 +439,7 @@ public class UserManualKilkariAgg {
             "                                </li>\n" +
             "                            </ol>\n" +
             "                        </ol>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/aggregates/Kilkari/KK_Lis_Matrix_1.png\"><br><br><br>\n" +
@@ -537,7 +537,7 @@ public class UserManualKilkariAgg {
             "                                made to them in the specified date range.\n" +
             "                            </li>\n" +
             "                        </ol>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/aggregates/Kilkari/KK_ML_1.png\"><br><br><br>\n" +
@@ -637,7 +637,7 @@ public class UserManualKilkariAgg {
             "                                range.\n" +
             "                            </li>\n" +
             "                        </ol>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/aggregates/Kilkari/KK_Agg_Ben_1.png\"><br><br><br>\n" +
@@ -737,7 +737,7 @@ public class UserManualKilkariAgg {
             "                                ascending or descending order.\n" +
             "                            </li>\n" +
             "                        </ol>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/aggregates/Kilkari/KK_Usage_1.png\"><br><br><br>\n" +
@@ -789,7 +789,7 @@ public class UserManualKilkariAgg {
             "                        </ol>\n" +
             "                        <p>Drill-down from State to District to Block and Sub-center is available for this report.</p>\n" +
             "\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/aggregates/Kilkari/KK_Cum_Sum_1.png\"><br><br><br>\n" +
@@ -853,7 +853,7 @@ public class UserManualKilkariAgg {
             "                                end of the period.\n" +
             "                            </li>\n" +
             "                        </ol>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/aggregates/Kilkari/KK_Subscriber_1.png\"><br><br><br>\n" +
@@ -958,7 +958,7 @@ public class UserManualKilkariAgg {
             "                                ascending or descending order.\n" +
             "                            </li>\n" +
             "                        </ol>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/aggregates/Kilkari/KK_Ben_Comp_1.png\"><br><br><br>\n" +
@@ -1047,7 +1047,7 @@ public class UserManualKilkariAgg {
             "                        <p>When-ever the user clicks on the “Bar Chart button”, the application must display graphical\n" +
             "                            output of the respective report. A typical graphical output of the data of the first grid\n" +
             "                            could be as shown below.</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/kil_agg/state/1.png\"><br><br><br>\n" +
@@ -1139,7 +1139,7 @@ public class UserManualKilkariAgg {
             "                                this beneficiary twice; thereby a ‘Total’ row for this report is meaningless.\n" +
             "                            </li>\n" +
             "                        </ol>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/kil_agg/state/1.png\"><br><br><br>\n" +
@@ -1217,7 +1217,7 @@ public class UserManualKilkariAgg {
             "                            <li>Column 10 is based on the formula: (9)/(4)</li>\n" +
             "                            <li>Column 11 reflects Total number of calls to inbox where content is played</li>\n" +
             "                        </ol>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/kil_agg/state/1.png\"><br><br><br>\n" +
@@ -1310,7 +1310,7 @@ public class UserManualKilkariAgg {
             "                        <p>When a national or State / UT or district or block user selects a particular block, the\n" +
             "                            report shows data pertaining to calls made for individual messages for the selected\n" +
             "                            block.</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/kil_agg/state/1.png\"><br><br><br>\n" +
@@ -1388,7 +1388,7 @@ public class UserManualKilkariAgg {
             "                                </li>\n" +
             "                            </ol>\n" +
             "                        </ol>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/kil_agg/state/1.png\"><br><br><br>\n" +
@@ -1486,7 +1486,7 @@ public class UserManualKilkariAgg {
             "                                made to them in the specified date range.\n" +
             "                            </li>\n" +
             "                        </ol>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/kil_agg/state/1.png\"><br><br><br>\n" +
@@ -1587,7 +1587,7 @@ public class UserManualKilkariAgg {
             "                                range.\n" +
             "                            </li>\n" +
             "                        </ol>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/kil_agg/state/1.png\"><br><br><br>\n" +
@@ -1687,7 +1687,7 @@ public class UserManualKilkariAgg {
             "                                ascending or descending order.\n" +
             "                            </li>\n" +
             "                        </ol>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/kil_agg/state/1.png\"><br><br><br>\n" +
@@ -1738,7 +1738,7 @@ public class UserManualKilkariAgg {
             "                            <li>Average duration of call: (5)/(4)</li>\n" +
             "                        </ol>\n" +
             "                        <p>Drill-down from State to District to Block and Sub-center is available for this report.</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/kil_agg/state/1.png\"><br><br><br>\n" +
@@ -1802,7 +1802,7 @@ public class UserManualKilkariAgg {
             "                                end of the period.\n" +
             "                            </li>\n" +
             "                        </ol>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/kil_agg/state/1.png\"><br><br><br>\n" +
@@ -1908,7 +1908,7 @@ public class UserManualKilkariAgg {
             "                                ascending or descending order.\n" +
             "                            </li>\n" +
             "                        </ol>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/kil_agg/state/1.png\"><br><br><br>\n" +
@@ -1996,7 +1996,7 @@ public class UserManualKilkariAgg {
             "                        <p>When-ever the user clicks on the “Bar Chart button”, the application must display graphical\n" +
             "                            output of the respective report. A typical graphical output of the data of the first grid\n" +
             "                            could be as shown below.</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/kil_agg/district/1.png\"><br><br><br>\n" +
@@ -2088,7 +2088,7 @@ public class UserManualKilkariAgg {
             "                                this beneficiary twice; thereby a ‘Total’ row for this report is meaningless.\n" +
             "                            </li>\n" +
             "                        </ol>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/kil_agg/district/1.png\"><br><br><br>\n" +
@@ -2166,7 +2166,7 @@ public class UserManualKilkariAgg {
             "                            <li>Column 10 is based on the formula: (9)/(4)</li>\n" +
             "                            <li>Column 11 reflects Total number of calls to inbox where content is played</li>\n" +
             "                        </ol>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/kil_agg/district/1.png\"><br><br><br>\n" +
@@ -2259,7 +2259,7 @@ public class UserManualKilkariAgg {
             "                        <p>When a national or State / UT or district or block user selects a particular block, the\n" +
             "                            report shows data pertaining to calls made for individual messages for the selected\n" +
             "                            block.</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/kil_agg/district/1.png\"><br><br><br>\n" +
@@ -2338,7 +2338,7 @@ public class UserManualKilkariAgg {
             "                                </li>\n" +
             "                            </ol>\n" +
             "                        </ol>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/kil_agg/district/1.png\"><br><br><br>\n" +
@@ -2435,7 +2435,7 @@ public class UserManualKilkariAgg {
             "                                made to them in the specified date range.\n" +
             "                            </li>\n" +
             "                        </ol>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/kil_agg/district/1.png\"><br><br><br>\n" +
@@ -2536,7 +2536,7 @@ public class UserManualKilkariAgg {
             "                                range.\n" +
             "                            </li>\n" +
             "                        </ol>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/kil_agg/district/1.png\"><br><br><br>\n" +
@@ -2636,7 +2636,7 @@ public class UserManualKilkariAgg {
             "                                ascending or descending order.\n" +
             "                            </li>\n" +
             "                        </ol>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/kil_agg/district/1.png\"><br><br><br>\n" +
@@ -2687,7 +2687,7 @@ public class UserManualKilkariAgg {
             "                            <li>Average duration of call: (5)/(4)</li>\n" +
             "                        </ol>\n" +
             "                        <p>Drill-down from State to District to Block and Sub-center is available for this report.</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/kil_agg/district/1.png\"><br><br><br>\n" +
@@ -2752,7 +2752,7 @@ public class UserManualKilkariAgg {
             "                                end of the period.\n" +
             "                            </li>\n" +
             "                        </ol>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/kil_agg/district/1.png\"><br><br><br>\n" +
@@ -2857,7 +2857,7 @@ public class UserManualKilkariAgg {
             "                                ascending or descending order.\n" +
             "                            </li>\n" +
             "                        </ol>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/kil_agg/district/1.png\"><br><br><br>\n" +
@@ -2945,7 +2945,7 @@ public class UserManualKilkariAgg {
             "                        <p>When-ever the user clicks on the “Bar Chart button”, the application must display graphical\n" +
             "                            output of the respective report. A typical graphical output of the data of the first grid\n" +
             "                            could be as shown below.</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/kil_agg/block/1.png\"><br><br><br>\n" +
@@ -3037,7 +3037,7 @@ public class UserManualKilkariAgg {
             "                                this beneficiary twice; thereby a ‘Total’ row for this report is meaningless.\n" +
             "                            </li>\n" +
             "                        </ol>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/kil_agg/block/1.png\"><br><br><br>\n" +
@@ -3115,7 +3115,7 @@ public class UserManualKilkariAgg {
             "                            <li>Column 10 is based on the formula: (9)/(4)</li>\n" +
             "                            <li>Column 11 reflects Total number of calls to inbox where content is played</li>\n" +
             "                        </ol>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/kil_agg/block/1.png\"><br><br><br>\n" +
@@ -3209,7 +3209,7 @@ public class UserManualKilkariAgg {
             "                        <p>When a national or State / UT or district or block user selects a particular block, the\n" +
             "                            report shows data pertaining to calls made for individual messages for the selected\n" +
             "                            block.</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/kil_agg/block/1.png\"><br><br><br>\n" +
@@ -3287,7 +3287,7 @@ public class UserManualKilkariAgg {
             "                                </li>\n" +
             "                            </ol>\n" +
             "                        </ol>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/kil_agg/block/1.png\"><br><br><br>\n" +
@@ -3384,7 +3384,7 @@ public class UserManualKilkariAgg {
             "                                made to them in the specified date range.\n" +
             "                            </li>\n" +
             "                        </ol>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/kil_agg/block/1.png\"><br><br><br>\n" +
@@ -3485,7 +3485,7 @@ public class UserManualKilkariAgg {
             "                                range.\n" +
             "                            </li>\n" +
             "                        </ol>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/kil_agg/block/1.png\"><br><br><br>\n" +
@@ -3585,7 +3585,7 @@ public class UserManualKilkariAgg {
             "                                ascending or descending order.\n" +
             "                            </li>\n" +
             "                        </ol>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/kil_agg/block/1.png\"><br><br><br>\n" +
@@ -3636,7 +3636,7 @@ public class UserManualKilkariAgg {
             "                            <li>Total billable minutes played</li>\n" +
             "                            <li>Average duration of call: (5)/(4)</li>\n" +
             "                        </ol>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/kil_agg/block/1.png\"><br><br><br>\n" +
@@ -3700,7 +3700,7 @@ public class UserManualKilkariAgg {
             "                                end of the period.\n" +
             "                            </li>\n" +
             "                        </ol>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/kil_agg/block/1.png\"><br><br><br>\n" +
@@ -3805,7 +3805,7 @@ public class UserManualKilkariAgg {
             "                                ascending or descending order.\n" +
             "                            </li>\n" +
             "                        </ol>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Kilkari Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/kil_agg/block/1.png\"><br><br><br>\n" +

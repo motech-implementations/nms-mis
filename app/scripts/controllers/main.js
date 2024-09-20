@@ -208,6 +208,17 @@
                 $scope.removed();
 
             }
+//            $scope.goToHome = function () {
+//            delete $localStorage.filter;
+//                            UserFormFactory.downloadCurrentUser().then(function(result){
+//                                UserFormFactory.setCurrentUser(result.data);
+//                                $scope.currentUser = UserFormFactory.getCurrentUser();
+//                            });
+//                            if (!($scope.disableCursor())){
+//                                $state.go('home', {pageNum: 1});
+//                            }
+//                            $scope.removed();
+//            }
             $scope.goToKilkari = function () {
                 UserFormFactory.downloadCurrentUser().then(function(result){
                     UserFormFactory.setCurrentUser(result.data);
@@ -377,6 +388,21 @@
                 };
                 $scope.removed();
             };
+
+             $scope.goToHome = function() {
+             delete $localStorage.filter;
+                UserFormFactory.downloadCurrentUser().then(function(result){
+                    UserFormFactory.setCurrentUser(result.data);
+                    $scope.currentUser = UserFormFactory.getCurrentUser();
+                });
+                if($scope.disableCursor()){
+                     return false;
+                };
+
+                $state.go('home', {pageNum: 1});
+
+                $scope.removed();
+             };
 
             $scope.goToCertificate = function() {
                 delete $localStorage.filter;

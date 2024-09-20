@@ -1,6 +1,7 @@
 package com.beehyv.nmsreporting.controller;
 
 import com.beehyv.nmsreporting.business.*;
+import com.beehyv.nmsreporting.business.impl.AggregateKilkariReportsServiceImpl;
 import com.beehyv.nmsreporting.business.impl.CertificateServiceImpl;
 import com.beehyv.nmsreporting.dao.*;
 import com.beehyv.nmsreporting.entity.*;
@@ -17,8 +18,11 @@ import net.sf.ehcache.Element;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.ParseException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -88,6 +92,9 @@ public class UserController {
     private BlockDao blockDao;
 
     @Autowired
+    private AggregateCumulativeBeneficiaryDao aggregateCumulativeBeneficiaryDao;
+
+    @Autowired
     private MAPerformanceService maPerformanceService;
 
 
@@ -115,9 +122,16 @@ public class UserController {
     @Autowired
     BulkCertificateAuditDao bulkCertificateAuditDao;
 
+    @Autowired
+    private EtlNotificationService etlNotificationService;
+
+    @Autowired
+    private DownloadReportActivityService downloadReportActivityService;
+
     private final CacheManager cacheManager = CacheManager.create();
     private final Cache etlNotificationCache = cacheManager.getCache("etlNotificationCache");
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
     private ServiceFunctions serviceFunctions = new ServiceFunctions();
     private final String USER_AGENT = "Mozilla/5.0";
     private final Date bigBang = new Date(0);
@@ -620,6 +634,56 @@ public class UserController {
         return userName;
     }
 
+    private int countLocationsWithHighCompletion(List<AggregateCumulativeMA> startData, List<AggregateCumulativeMA> endData) {
+        int count = 0;
+        Map<Long, AggregateCumulativeMA> startMap = new HashMap<>();
+
+        for (AggregateCumulativeMA start : startData) {
+            startMap.put(start.getLocationId(), start);
+        }
+
+        for (AggregateCumulativeMA end : endData) {
+            AggregateCumulativeMA start = startMap.get(end.getLocationId());
+            if (start != null) {
+                int registered = end.getAshasRegistered() - start.getAshasRegistered();
+                int completed = end.getAshasCompleted() - start.getAshasCompleted();
+
+                if (registered > 0) {
+                    double completionPercentage = ((double) completed / registered) * 100;
+                    if (completionPercentage > 70) {
+                        count++;
+                    }
+                }
+            }
+        }
+        return count;
+    }
+
+    private int countLocationsWithHighStarted(List<AggregateCumulativeMA> startData, List<AggregateCumulativeMA> endData) {
+        int count = 0;
+        Map<Long, AggregateCumulativeMA> startMap = new HashMap<>();
+
+        for (AggregateCumulativeMA start : startData) {
+            startMap.put(start.getLocationId(), start);
+        }
+
+        for (AggregateCumulativeMA end : endData) {
+            AggregateCumulativeMA start = startMap.get(end.getLocationId());
+            if (start != null) {
+                int registered = end.getAshasRegistered() - start.getAshasRegistered();
+                int started = end.getAshasStarted() - start.getAshasRegistered();
+
+                if (registered > 0) {
+                    double completionPercentage = ((double) started / registered) * 100;
+                    if (completionPercentage > 70) {
+                        count++;
+                    }
+                }
+            }
+        }
+        return count;
+    }
+
     @RequestMapping(value = "/getReport", method = RequestMethod.POST/*,produces = "application/vnd.ms-excel"*/)
     @ResponseBody
     @Transactional
@@ -682,6 +746,14 @@ public class UserController {
             return aggregateResponseDto;
         }
 
+        if(reportRequest.getReportType().equals(ReportType.kilkariHomePageReport.getReportType())){
+            LOGGER.debug("inside this home api");
+            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
+            List<KilkariHomePageReportsDto> kilkariHomePageReportsDtos = aggregateKilkariReportsService.getkilkariHomePageReport(reportRequest);
+            aggregateResponseDto.setTableData(kilkariHomePageReportsDtos);
+            return aggregateResponseDto;
+        }
+
         if (reportRequest.getReportType().equals(ReportType.kilkariMessageListenership.getReportType())) {
 
             aggregateKilkariResponseDto = aggregateKilkariReportsService.getKilkariMessageListenershipReport(reportRequest);
@@ -738,10 +810,96 @@ public class UserController {
             return aggregateResponseDto;
         }
 
+        if(reportRequest.getReportType().equals(ReportType.MAHomePageReport.getReportType())){
+
+            Date fromDate = dateAdder(reportRequest.getFromDate(), 0);
+            Date toDate = dateAdder(reportRequest.getToDate(), 1);
+            List<LocationCountDto> locationCounts = new ArrayList<>();
+
+
+
+            String locationType = null;
+            Integer locationId = null;
+            if (reportRequest.getStateId() == 0) {
+                locationType = "State";
+                locationId = 0;
+            } else if (reportRequest.getDistrictId() == 0) {
+                locationType = "District";
+                locationId = reportRequest.getStateId();
+            } else if (reportRequest.getBlockId() == 0) {
+                locationType = "Block";
+                locationId = reportRequest.getDistrictId();
+            } else {
+                locationType = "Subcentre";
+                locationId = reportRequest.getBlockId();
+            }
+
+
+
+            if (locationType.equalsIgnoreCase("State")) {
+                List<State> states = stateDao.getStatesByServiceType("MOBILE_ACADEMY");
+                for (State state : states) {
+                    Date serviceStartDate = stateServiceDao.getServiceStartDateForState(state.getStateId(), "MOBILE_ACADEMY");
+                    if (serviceStartDate == null) {
+                        continue;
+                    }
+                    List<AggregateCumulativeMA> districtDataEnd = aggregateReportsService.getCumulativeSummaryMAReport(state.getStateId(), "District", toDate, false);
+                    List<AggregateCumulativeMA> districtDataStart = aggregateReportsService.getCumulativeSummaryMAReport(state.getStateId(), "District", fromDate, false);
+                    int districtCountforCompletion = countLocationsWithHighCompletion(districtDataStart, districtDataEnd);
+                    int districtCountforStarted = countLocationsWithHighStarted(districtDataStart, districtDataEnd);
+                    LocationCountDto dto = new LocationCountDto();
+                    dto.setLocationId((long) state.getStateId());
+                    dto.setLocationName(state.getStateName());
+                    dto.setCompletedCount(districtCountforCompletion);
+                    dto.setStartedCount(districtCountforStarted);
+                    dto.setLocationType(locationType);
+                    locationCounts.add(dto);
+
+                }
+            } else if (locationType.equalsIgnoreCase("District")) {
+                List<District> districts = districtDao.getDistrictsOfState(locationId);
+                for (District district : districts) {
+                    List<AggregateCumulativeMA> blockDataEnd = aggregateReportsService.getCumulativeSummaryMAReport(district.getDistrictId(), "Block", toDate, false);
+                    List<AggregateCumulativeMA> blockDataStart = aggregateReportsService.getCumulativeSummaryMAReport(district.getDistrictId(), "Block", fromDate, false);
+
+                    int blockCountforCompletion = countLocationsWithHighCompletion(blockDataStart, blockDataEnd);
+                    int blockCountforStarted = countLocationsWithHighStarted(blockDataStart, blockDataEnd);
+                    LocationCountDto dto = new LocationCountDto();
+                    dto.setLocationId((long) district.getDistrictId());
+                    dto.setLocationName(district.getDistrictName());
+                    dto.setCompletedCount(blockCountforCompletion);
+                    dto.setStartedCount(blockCountforStarted);
+                    dto.setLocationType(locationType);
+                    locationCounts.add(dto);
+                }
+            } else if (locationType.equalsIgnoreCase("Block")) {
+                List<Block> blocks = blockDao.getBlocksOfDistrict(locationId);
+                for (Block block : blocks) {
+                    List<AggregateCumulativeMA> subcentreDataEnd = aggregateReportsService.getCumulativeSummaryMAReport(block.getBlockId(), "Subcentre", toDate, false);
+                    List<AggregateCumulativeMA> subcentreDataStart = aggregateReportsService.getCumulativeSummaryMAReport(block.getBlockId(), "Subcentre", fromDate, false);
+
+                    int subcentreCountforCompletion = countLocationsWithHighCompletion(subcentreDataStart, subcentreDataEnd);
+                    int subcentreCountforStarted = countLocationsWithHighStarted(subcentreDataStart, subcentreDataEnd);
+                    LocationCountDto dto = new LocationCountDto();
+                    dto.setLocationId((long) block.getBlockId());
+                    dto.setLocationName(block.getBlockName());
+                    dto.setCompletedCount(subcentreCountforCompletion);
+                    dto.setStartedCount(subcentreCountforStarted);
+                    dto.setLocationType(locationType);
+                    locationCounts.add(dto);            }
+            }
+
+            aggregateResponseDto.setTableData(locationCounts);
+            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
+
+            return aggregateResponseDto;
+
+        }
         if (reportRequest.getReportType().equals(ReportType.maPerformance.getReportType())) {
 
             Date fromDate = dateAdder(reportRequest.getFromDate(), 0);
             Date toDate = dateAdder(reportRequest.getToDate(), 1);
+            LOGGER.info("this is todateperformance: {}",toDate);
 
             List<MAPerformanceDto> summaryDto = new ArrayList<>();
             List<AggregateCumulativeMA> cumulativesummaryReportStart = new ArrayList<>();
@@ -767,6 +925,7 @@ public class UserController {
 
             System.out.println("locationId is"+locationId);;
             try {
+                LOGGER.info("this is fromdate and to date: {}, {}",fromDate,toDate);
                 cumulativesummaryReportStart.addAll(aggregateReportsService.getCumulativeSummaryMAReport(locationId, locationType, fromDate, false));
                 cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(locationId, locationType, toDate, false));
                 performanceCounts = maPerformanceService.getMAPerformanceCounts(locationId, locationType, fromDate, toDate);
@@ -835,18 +994,25 @@ public class UserController {
                             summaryDto1.setAshasCompletedInGivenTime(MAperformanceCounts.getAshasCompletedInGivenTime() != null ? MAperformanceCounts.getAshasCompletedInGivenTime() : 0L);
                             summaryDto1.setAshasJoined(MAperformanceCounts.getAshasActivatedInBetween() != null ? MAperformanceCounts.getAshasActivatedInBetween() : 0L);
                         }
+                        else {
+                            summaryDto1.setAshasFailed(0);
+                            summaryDto1.setAshasAccessed(0L);
+                            summaryDto1.setAshasNotAccessed(0L);
+                            summaryDto1.setAshasDeactivated(0L);
+                            summaryDto1.setAshasRefresherCourse(0L);
+                            summaryDto1.setAshasCompletedInGivenTime(0L);
+                            summaryDto1.setAshasJoined(0L);
+                        }
 
-                        int ashasCompleted = summaryDto1.getAshasCompleted() != null ? summaryDto1.getAshasCompleted() : 0;
-                        int ashasFailed = summaryDto1.getAshasFailed() != null ? summaryDto1.getAshasFailed() : 0;
-                        int ashasStarted = summaryDto1.getAshasStarted() != null ? summaryDto1.getAshasStarted() : 0;
-                        long ashasAccessed = summaryDto1.getAshasAccessed() != null ? summaryDto1.getAshasAccessed() : 0;
-                        long ashasNotAccessed = summaryDto1.getAshasNotAccessed() != null ? summaryDto1.getAshasNotAccessed() : 0;
-                        long ashasJoined = summaryDto1.getAshasJoined() != null ? summaryDto1.getAshasJoined() :0;
+//                        int ashasCompleted = summaryDto1.getAshasCompleted() != null ? summaryDto1.getAshasCompleted() : 0;
+//                        int ashasFailed = summaryDto1.getAshasFailed() != null ? summaryDto1.getAshasFailed() : 0;
+//                        int ashasStarted = summaryDto1.getAshasStarted() != null ? summaryDto1.getAshasStarted() : 0;
+//                        long ashasAccessed = summaryDto1.getAshasAccessed() != null ? summaryDto1.getAshasAccessed() : 0;
+//                        long ashasNotAccessed = summaryDto1.getAshasNotAccessed() != null ? summaryDto1.getAshasNotAccessed() : 0;
+//                        long ashasJoined = summaryDto1.getAshasJoined() != null ? summaryDto1.getAshasJoined() :0;
 
-                        int totalSum = ashasCompleted + ashasFailed + ashasStarted + (int) (ashasAccessed + ashasNotAccessed + ashasJoined);
-                        int absSum = Math.abs(ashasCompleted) + Math.abs(ashasFailed) + Math.abs(ashasStarted) + (int) (Math.abs(ashasAccessed) + Math.abs(ashasNotAccessed) + Math.abs(ashasJoined));
 
-                            if ((totalSum != 0 || absSum != 0) && !end.getLocationType().equalsIgnoreCase("DifferenceState")) {
+                            if (!end.getLocationType().equalsIgnoreCase("DifferenceState")) {
                                 summaryDto.add(summaryDto1);
                             }
 
@@ -1124,6 +1290,99 @@ public class UserController {
         return m;
     }
 
+    @RequestMapping(value = "/asha-count", method = RequestMethod.GET/*,produces = "application/vnd.ms-excel"*/)
+    @Transactional
+    public ResponseEntity<AshaPerformanceDto> getCountTillDate(){
+
+        User currentUser = userService.getCurrentUser();
+//        Date toDate = new Date();
+        Date toDate = dateAdder(new Date(),1);
+        LOGGER.info("this is todate: {}",toDate);
+
+
+
+        String locationType = null;
+        Integer locationId = null;
+        LOGGER.info("access level: {}",currentUser.getAccessLevel());
+        LOGGER.info("access level 1: {}",AccessLevel.NATIONAL.getAccessLevel());
+        if (currentUser.getAccessLevel().equals(AccessLevel.NATIONAL.getAccessLevel())) {
+            locationType = "State";
+            locationId = 0;
+        } else if (currentUser.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel())) {
+            locationType = "District";
+            locationId = currentUser.getStateId();
+        } else if (currentUser.getAccessLevel().equals(AccessLevel.DISTRICT.getAccessLevel())) {
+            locationType = "Block";
+            locationId = currentUser.getDistrictId();
+        } else {
+            locationType = "Subcentre";
+            locationId = currentUser.getBlockId();
+        }
+        List<AggregateCumulativeMA> cumulativesummaryReportEnd = new ArrayList<>();
+
+        cumulativesummaryReportEnd.addAll(aggregateReportsService.getCumulativeSummaryMAReport(locationId, locationType, toDate, false));
+
+
+        LOGGER.info("this is cumulativeMAData: {}",cumulativesummaryReportEnd);
+
+        Long ashaStarted = 0L;
+        Long ashaCompleted = 0L;
+        for(AggregateCumulativeMA end : cumulativesummaryReportEnd){
+
+            LOGGER.info("this is asha started in loop: {}",end.getAshasStarted());
+            LOGGER.info("this is asha completed in loop: {}",end.getAshasCompleted());
+            ashaStarted += Long.valueOf(end.getAshasStarted());
+            ashaCompleted += end.getAshasCompleted();
+
+        }
+
+
+        return ResponseEntity.ok(new AshaPerformanceDto(ashaStarted,ashaCompleted));
+
+    }
+
+    @RequestMapping(value = "/cumulative-beneficiaries", method = RequestMethod.GET/*,produces = "application/vnd.ms-excel"*/)
+    @Transactional
+    public ResponseEntity<Long> getCumulativeBeneficiaries(){
+
+        User currentUser = userService.getCurrentUser();
+        Date toDate = new Date();
+
+        String locationType = null;
+        Long locationId = null;
+//        ReportRequest reportRequest = new ReportRequest();
+//        reportRequest.setPeriodType("MONTH");
+//        reportRequest.setFromDate(toDate);
+        LOGGER.info("access level: {}",currentUser.getAccessLevel());
+        LOGGER.info("access level 1: {}",AccessLevel.NATIONAL.getAccessLevel());
+        if (currentUser.getAccessLevel().equals(AccessLevel.NATIONAL.getAccessLevel())) {
+            locationType = "State";
+            locationId = 0L; // National level
+        } else if (currentUser.getAccessLevel().equals(AccessLevel.STATE.getAccessLevel())) {
+            locationType = "District";
+            locationId = currentUser.getStateId().longValue();
+        } else if (currentUser.getAccessLevel().equals(AccessLevel.DISTRICT.getAccessLevel())) {
+            locationType = "Block";
+            locationId = currentUser.getDistrictId().longValue();
+        } else {
+            locationType = "Subcentre";
+            locationId = currentUser.getBlockId().longValue();
+        }
+
+
+        Long cumulativeJoinedSubscription = aggregateCumulativeBeneficiaryDao.getCumulativeJoinedSubscription(locationId, locationType, toDate);
+        return ResponseEntity.ok(cumulativeJoinedSubscription);
+//        Long ashaStarted = 0L;
+//        Long ashaCompleted = 0L;
+//        for(AggregateCumulativeMA end : cumulativeMAData){
+//
+//            ashaStarted += Long.valueOf(end.getAshasStarted());
+//            ashaCompleted += end.getAshasCompleted();
+//
+//        }
+
+    }
+
 
 
     @RequestMapping(value = "/downloadReport", method = RequestMethod.GET,produces = "application/vnd.ms-excel")
@@ -1131,6 +1390,8 @@ public class UserController {
     public String getBulkDataImportCSV(HttpServletResponse response, @DefaultValue("") @QueryParam("fileName") String fileName,
                                        @DefaultValue("") @QueryParam("rootPath") String rootPath) throws ParseException, java.text.ParseException {
 //        adminService.getBulkDataImportCSV();
+
+        User currentUser = userService.getCurrentUser();
         response.setContentType("APPLICATION/OCTECT-STREAM");
         if (StringUtils.isEmpty(fileName) || StringUtils.isEmpty(rootPath)) {
             fileName = "";
@@ -1154,6 +1415,8 @@ public class UserController {
             }
             fl.close();
             out.close();
+            downloadReportActivityService.recordDownloadActivity(currentUser.getUsername(), reportName, currentUser.getUserId());
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -1292,6 +1555,63 @@ public class UserController {
             e.printStackTrace();
         }
         return "success";
+    }
+
+    @RequestMapping(value={"/homePageMenu"} , method = RequestMethod.POST)
+    public @ResponseBody List<Map<String, Object>> getHomePageMenu() {
+        User currentUser = userService.getCurrentUser();
+        Map<String, Object> maMenu = new HashMap<>();
+        boolean showAggregateReports = true;
+        boolean showLinelistingReports =true;
+        maMenu.put("name", "Mobile Academy Reports");
+        maMenu.put("icon", "images/drop-down-3.png");
+
+        List<Report> maList = new ArrayList<>();
+
+        maList.add(new Report(
+                ReportType.MAHomePageReport.getReportName(),
+                ReportType.MAHomePageReport.getReportType(),
+                ReportType.MAHomePageReport.getSimpleName(),
+                "images/drop-down-3.png",
+                ReportType.MAHomePageReport.getServiceType(),showLinelistingReports)
+        );
+
+        maMenu.put("service", maList.get(0).getService());
+        maMenu.put("options", maList);
+
+        Map<String, Object> kMenu = new HashMap<>();
+
+        kMenu.put("name", "Kilkari Reports");
+        kMenu.put("icon", "images/drop-down-3.png");
+
+        List<Report> kList = new ArrayList<>();
+        kList.add(new Report(
+                ReportType.kilkariHomePageReport.getReportName(),
+                ReportType.kilkariHomePageReport.getReportType(),
+                ReportType.kilkariHomePageReport.getSimpleName(),
+                "images/drop-down-3.png",
+                ReportType.kilkariHomePageReport.getServiceType(),showLinelistingReports)
+        );
+
+        kMenu.put("service", kList.get(0).getService());
+        kMenu.put("options", kList);
+
+        List<Map<String, Object>> l = new ArrayList<>();
+
+        if(currentUser.getAccessLevel().equals(AccessLevel.NATIONAL.getAccessLevel())){
+            l.add(maMenu);
+            l.add(kMenu);
+        }
+        else{
+            State state = locationService.findStateById(currentUser.getStateId());
+            if(("MOBILE_ACADEMY").equals(state.getServiceType()) || ("ALL").equals(state.getServiceType())){
+                l.add(maMenu);
+            }
+            if(("KILKARI").equals(state.getServiceType()) || ("ALL").equals(state.getServiceType())){
+                l.add(kMenu);
+            }
+        }
+        return l;
     }
 
 

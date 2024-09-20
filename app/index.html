@@ -109,7 +109,7 @@
 
 	<!-- build:css assets/css/phpflow.min.css -->
 	<link rel="styleSheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.5/angular-material.min.css"/>
-	<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<!--	<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">-->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
@@ -161,6 +161,10 @@
         <div class="nav">
 
 			<ul class="nav-menu-left" data-ng-hide = 'menuChecker()'>
+				<li data-ng-class="{active: activeTab('Home')}">
+					<a  data-ng-class="{dis1: disableCursor()}" data-ng-click="goToHome()"  class="pointer">Home</a>
+					<!--<a  data-ng-class="{dis1: disableCursor()}" data-ng-click="goToAboutus()" class="pointer">About us</a>-->
+				</li>
 				<li data-ng-class="{active: activeTab('AboutUs')}">
 					<a  data-ng-class="{dis1: disableCursor()}" href="https://mohfw.gov.in/" target="_blank" class="pointer">About us</a>
 					<!--<a  data-ng-class="{dis1: disableCursor()}" data-ng-click="goToAboutus()" class="pointer">About us</a>-->

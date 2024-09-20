@@ -84,7 +84,7 @@ public class UserManualMobileAcademy {
             "                            </li>\n" +
             "                        </ol>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Mobile Academy Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/National/MA/NA_MA_RC.png\"\n" +
@@ -181,7 +181,7 @@ public class UserManualMobileAcademy {
             "                            </li>\n" +
             "                        </ol>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Mobile Academy Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/National/MA/NA_MA_RC.png\"><br><br><br>\n" +
@@ -251,7 +251,7 @@ public class UserManualMobileAcademy {
             "                            </li>\n" +
             "                        </ol>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Mobile Academy Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/National/MA/NA_MA_RC.png\"><br><br><br>\n" +
@@ -332,7 +332,7 @@ public class UserManualMobileAcademy {
             "                            </li>\n" +
             "                        </ol>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Mobile Academy Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/National/MA/NA_MA_RC.png\"><br><br><br>\n" +
@@ -422,7 +422,7 @@ public class UserManualMobileAcademy {
             "                            </li>\n" +
             "                        </ol>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Mobile Academy Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/State/MA1/SA_MA_RC.png\"\n" +
@@ -517,7 +517,7 @@ public class UserManualMobileAcademy {
             "                            </li>\n" +
             "                        </ol>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Mobile Academy Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/State/MA1/SA_MA_RC.png\"><br><br><br>\n" +
@@ -587,7 +587,7 @@ public class UserManualMobileAcademy {
             "                            </li>\n" +
             "                        </ol>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Mobile Academy Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/State/MA1/SA_MA_RC.png\"><br><br><br>\n" +
@@ -666,7 +666,7 @@ public class UserManualMobileAcademy {
             "                            </li>\n" +
             "                        </ol>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Mobile Academy Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/State/MA1/SA_MA_RC.png\"><br><br><br>\n" +
@@ -755,7 +755,7 @@ public class UserManualMobileAcademy {
             "                            </li>\n" +
             "                        </ol>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Mobile Academy Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/District/MA/DA_RC.png\"\n" +
@@ -847,7 +847,7 @@ public class UserManualMobileAcademy {
             "                            </li>\n" +
             "                        </ol>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Mobile Academy Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/District/MA/DA_RC.png\"><br><br><br>\n" +
@@ -917,7 +917,7 @@ public class UserManualMobileAcademy {
             "                            </li>\n" +
             "                        </ol>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Mobile Academy Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/District/MA/DA_RC.png\"><br><br><br>\n" +
@@ -992,7 +992,7 @@ public class UserManualMobileAcademy {
             "                            </li>\n" +
             "                        </ol>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Mobile Academy Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/District/MA/DA_RC.png\"><br><br><br>\n" +
@@ -1076,7 +1076,7 @@ public class UserManualMobileAcademy {
             "                            </li>\n" +
             "                        </ol>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Mobile Academy Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/Block/MA0/BU_MA_RC.png\"\n" +
@@ -1166,7 +1166,7 @@ public class UserManualMobileAcademy {
             "                            </li>\n" +
             "                        </ol>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Mobile Academy Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/Block/MA0/BU_MA_RC.png\"><br><br><br>\n" +
@@ -1235,7 +1235,7 @@ public class UserManualMobileAcademy {
             "                            </li>\n" +
             "                        </ol>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Mobile Academy Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/Block/MA0/BU_MA_RC.png\"><br><br><br>\n" +
@@ -1309,7 +1309,7 @@ public class UserManualMobileAcademy {
             "                            </li>\n" +
             "                        </ol>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Under \"Reports Category\" select \"Mobile Academy Reports\", then</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/Block/MA0/BU_MA_RC.png\"><br><br><br>\n" +

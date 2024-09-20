@@ -12,6 +12,7 @@ import com.beehyv.nmsreporting.model.KilkariThematicContent;
 import com.beehyv.nmsreporting.model.State;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -49,5 +50,27 @@ public class KilkariMessageListenershipDaoImpl extends AbstractDao<Integer,Kilka
         kilkariMessageListenership.setAnswered1To25Per(kilkariMessageListenership.getAnswered1To25Per() == null ? 0 : kilkariMessageListenership.getAnswered1To25Per());
         kilkariMessageListenership.setAnsweredAtleastOneCall(kilkariMessageListenership.getAnsweredAtleastOneCall() == null ? 0 : kilkariMessageListenership.getAnsweredAtleastOneCall());
         return kilkariMessageListenership;
+    }
+
+
+
+    @Override
+    public Long getTotalAnsweredAtLeastOneCall(Integer locationId, String locationType, Date fromDate, Date toDate, String periodType) {
+        String sql = "SELECT SUM(answered_atleast_one_call) " +
+                "FROM agg_kilkari_message_listenership " +
+                "WHERE location_id = :locationId " +
+                "AND location_type = :locationType " +
+                "AND period_type = :periodType " +
+                "AND date BETWEEN :fromDate AND :toDate";
+
+        SQLQuery query = getSession().createSQLQuery(sql);
+        query.setParameter("locationId", locationId.longValue());
+        query.setParameter("locationType", locationType);
+        query.setParameter("periodType", periodType);
+        query.setParameter("fromDate", fromDate);
+        query.setParameter("toDate", toDate);
+
+        Object result = query.uniqueResult();
+        return result != null ? ((Number) result).longValue() : 0L;
     }
 }

@@ -392,6 +392,20 @@ public class HtmlPageReqController {
         return ResponseEntity.ok().body(m);
     }
 
+    @RequestMapping(value = {"/home"}, method = RequestMethod.GET)
+    protected ResponseEntity homeView() {
+        User currentUser = userService.getCurrentUser();
+
+        if(currentUser==null) {
+            return ResponseEntity.badRequest().body("Access Denied");
+        }
+        String content= Home.pageContent;
+
+        Map<String, String> m = new HashMap<>();
+        m.put("pagecontent",content);
+        return ResponseEntity.ok().body(m);
+    }
+
     @RequestMapping(value = {"/downloads"}, method = RequestMethod.GET)
     protected ResponseEntity downloadsView() {
         User currentUser = userService.getCurrentUser();

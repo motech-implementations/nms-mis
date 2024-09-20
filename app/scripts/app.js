@@ -197,6 +197,14 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
             url: '/sitemap',
             templateUrl: 'views/sitemap.html'
 
+        }).state('home', {
+              url: '/home',
+              templateUrl: 'views/home.html',
+              resolve : {
+                  user : function ( authorization) {
+                      return authorization.authorize();
+                  }
+              }
         }).state('AboutKilkari', {
             url: '/kilkari',
             templateUrl: 'views/aboutKilkari.html',

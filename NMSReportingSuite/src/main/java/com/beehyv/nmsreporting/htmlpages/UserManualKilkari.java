@@ -51,7 +51,7 @@ public class UserManualKilkari {
             "                            respective ANMs) that would be accessible to the beneficiary more frequently. ASHAs should\n" +
             "                            be encouraged to update status of the listed non-answering numbers to the concerned\n" +
             "                            officials so that the necessary data corrections in the system can be made.</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Select \"Kilkari Reports\" under \"Reports Category\"</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/National/MA/NA_MA_RC.png\"><br><br><br>\n" +
@@ -95,7 +95,7 @@ public class UserManualKilkari {
             "                            status of the listed non-answering numbers to the concerned officials so that the necessary\n" +
             "                            data corrections in the system can be made. </p>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Select \"Kilkari Reports\" under \"Reports Category\"</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/National/MA/NA_MA_RC.png\"><br><br><br>\n" +
@@ -139,7 +139,7 @@ public class UserManualKilkari {
             "                            of the listed non-answering numbers to the concerned officials so that the necessary data\n" +
             "                            corrections in the system can be made.</p>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) select \"Kilkari Reports\" under \"Reports Category\" </p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/National/MA/NA_MA_RC.png\"><br><br><br>\n" +
@@ -184,7 +184,7 @@ public class UserManualKilkari {
             "                            numbers to the concerned officials so that the necessary data corrections in the system can\n" +
             "                            be made.</p>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Select \"Kilkari Reports\" under \"Reports Category\"</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/National/MA/NA_MA_RC.png\"><br><br><br>\n" +
@@ -223,7 +223,7 @@ public class UserManualKilkari {
             "                            from the Kilkari program rolled out by the MoHFW. This report is a very useful actionable\n" +
             "                            report for the State / UT to correct the beneficiary contact mobile number.</p>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Select \"Kilkari Reports\" under \"Reports Category\"</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/National/MA/NA_MA_RC.png\"><br><br><br>\n" +
@@ -265,7 +265,7 @@ public class UserManualKilkari {
             "                            from the Kilkari program rolled out by the MoHFW. This report is a very useful actionable\n" +
             "                            report for the State / UT to correct the beneficiary contact mobile number.</p>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Select \"Kilkari Reports\" under \"Reports Category\"</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/National/MA/NA_MA_RC.png\"><br><br><br>\n" +
@@ -315,7 +315,7 @@ public class UserManualKilkari {
             "                            be encouraged to update status of the listed non-answering numbers to the concerned\n" +
             "                            officials so that the necessary data corrections in the system can be made.</p>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Select \"Kilkari Reports\" under \"Reports Category\"</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/State/KA1/SA_KA_RC.png\"\n" +
@@ -358,7 +358,7 @@ public class UserManualKilkari {
             "                        status of the listed non-answering numbers to the concerned officials so that the necessary\n" +
             "                        data corrections in the system can be made. </p>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Select \"Kilkari Reports\" under \"Reports Category\"</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/State/KA1/SA_KA_RC.png\"><br><br><br>\n" +
@@ -400,7 +400,7 @@ public class UserManualKilkari {
             "                            of the listed non-answering numbers to the concerned officials so that the necessary data\n" +
             "                            corrections in the system can be made.</p>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) select \"Kilkari Reports\" under \"Reports Category\" </p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/State/KA1/SA_KA_RC.png\"><br><br><br>\n" +
@@ -444,7 +444,7 @@ public class UserManualKilkari {
             "                            numbers to the concerned officials so that the necessary data corrections in the system can\n" +
             "                            be made.</p>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Select \"Kilkari Reports\" under \"Reports Category\"</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/State/KA1/SA_KA_RC.png\"><br><br><br>\n" +
@@ -481,7 +481,7 @@ public class UserManualKilkari {
             "                            from the Kilkari program rolled out by the MoHFW. This report is a very useful actionable\n" +
             "                            report for the State / UT to correct the beneficiary contact mobile number.</p>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Select \"Kilkari Reports\" under \"Reports Category\"</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/State/KA1/SA_KA_RC.png\"><br><br><br>\n" +
@@ -521,7 +521,7 @@ public class UserManualKilkari {
             "                            from the Kilkari program rolled out by the MoHFW. This report is a very useful actionable\n" +
             "                            report for the State / UT to correct the beneficiary contact mobile number.</p>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Select \"Kilkari Reports\" under \"Reports Category\"</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/State/KA1/SA_KA_RC.png\"><br><br><br>\n" +
@@ -569,7 +569,7 @@ public class UserManualKilkari {
             "                            be encouraged to update status of the listed non-answering numbers to the concerned\n" +
             "                            officials so that the necessary data corrections in the system can be made.</p>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Select \"Kilkari Reports\" under \"Reports Category\"</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/District/MA/DA_RC.png\"\n" +
@@ -610,7 +610,7 @@ public class UserManualKilkari {
             "                        status of the listed non-answering numbers to the concerned officials so that the necessary\n" +
             "                        data corrections in the system can be made. </p>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Select \"Kilkari Reports\" under \"Reports Category\"</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/District/MA/DA_RC.png\"><br><br><br>\n" +
@@ -648,7 +648,7 @@ public class UserManualKilkari {
             "                            of the listed non-answering numbers to the concerned officials so that the necessary data\n" +
             "                            corrections in the system can be made.</p>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) select \"Kilkari Reports\" under \"Reports Category\" </p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/District/MA/DA_RC.png\"><br><br><br>\n" +
@@ -687,7 +687,7 @@ public class UserManualKilkari {
             "                            numbers to the concerned officials so that the necessary data corrections in the system can\n" +
             "                            be made.</p>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Select \"Kilkari Reports\" under \"Reports Category\"</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/District/MA/DA_RC.png\"><br><br><br>\n" +
@@ -720,7 +720,7 @@ public class UserManualKilkari {
             "                            from the Kilkari program rolled out by the MoHFW. This report is a very useful actionable\n" +
             "                            report for the State / UT to correct the beneficiary contact mobile number.</p>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Select \"Kilkari Reports\" under \"Reports Category\"</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/District/MA/DA_RC.png\"><br><br><br>\n" +
@@ -756,7 +756,7 @@ public class UserManualKilkari {
             "                            from the Kilkari program rolled out by the MoHFW. This report is a very useful actionable\n" +
             "                            report for the State / UT to correct the beneficiary contact mobile number.</p>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Select \"Kilkari Reports\" under \"Reports Category\"</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/District/MA/DA_RC.png\"><br><br><br>\n" +
@@ -802,7 +802,7 @@ public class UserManualKilkari {
             "                            be encouraged to update status of the listed non-answering numbers to the concerned\n" +
             "                            officials so that the necessary data corrections in the system can be made.</p>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Select \"Kilkari Reports\" under \"Reports Category\"</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/Block/MA0/BU_MA_RC.png\"\n" +
@@ -841,7 +841,7 @@ public class UserManualKilkari {
             "                        status of the listed non-answering numbers to the concerned officials so that the necessary\n" +
             "                        data corrections in the system can be made. </p>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Select \"Kilkari Reports\" under \"Reports Category\"</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/Block/MA0/BU_MA_RC.png\"><br><br><br>\n" +
@@ -878,7 +878,7 @@ public class UserManualKilkari {
             "                            of the listed non-answering numbers to the concerned officials so that the necessary data\n" +
             "                            corrections in the system can be made.</p>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) select \"Kilkari Reports\" under \"Reports Category\" </p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/Block/MA0/BU_MA_RC.png\"><br><br><br>\n" +
@@ -916,7 +916,7 @@ public class UserManualKilkari {
             "                            numbers to the concerned officials so that the necessary data corrections in the system can\n" +
             "                            be made.</p>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Select \"Kilkari Reports\" under \"Reports Category\"</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/Block/MA0/BU_MA_RC.png\"><br><br><br>\n" +
@@ -948,7 +948,7 @@ public class UserManualKilkari {
             "                            from the Kilkari program rolled out by the MoHFW. This report is a very useful actionable\n" +
             "                            report for the State / UT to correct the beneficiary contact mobile number.</p>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Select \"Kilkari Reports\" under \"Reports Category\"</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/Block/MA0/BU_MA_RC.png\"><br><br><br>\n" +
@@ -983,7 +983,7 @@ public class UserManualKilkari {
             "                            from the Kilkari program rolled out by the MoHFW. This report is a very useful actionable\n" +
             "                            report for the State / UT to correct the beneficiary contact mobile number.</p>\n" +
             "                        <p>Steps to download the reports</p>\n" +
-            "                        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.\n" +
+            "                        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.\n" +
             "                        </p>\n" +
             "                        <p>2) Select \"Kilkari Reports\" under \"Reports Category\"</p>\n" +
             "                        <img alt=\"user manual\" src=\"./images/Block/MA0/BU_MA_RC.png\"><br><br><br>\n" +

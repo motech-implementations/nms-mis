@@ -1,5 +1,7 @@
 package com.beehyv.nmsreporting.entity;
 
+import javax.persistence.criteria.CriteriaBuilder;
+
 /**
  * Created by himanshu on 06/10/17.
  */
@@ -16,6 +18,8 @@ public class KilkariSubscriberDto {
     private Integer totalRecordsRejected;
     private Integer totalSubscriptionsCompleted;
     private Integer totalSubscriptionsEnd;
+    private Integer totalANCRecords;
+    private Integer totalPNCRecords;
     private boolean link = false;
 
     public int getId() {
@@ -104,6 +108,22 @@ public class KilkariSubscriberDto {
 
     public void setTotalSubscriptionsCompleted(Integer totalSubscriptionsCompleted) {
         this.totalSubscriptionsCompleted = totalSubscriptionsCompleted;
+    }
+
+    public Integer getTotalANCRecords() {
+        return totalANCRecords;
+    }
+
+    public void setTotalANCRecords(Integer totalANCRecords) {
+        this.totalANCRecords = totalANCRecords;
+    }
+
+    public Integer getTotalPNCRecords() {
+        return totalPNCRecords;
+    }
+
+    public void setTotalPNCRecords(Integer totalPNCRecords) {
+        this.totalPNCRecords = totalPNCRecords;
     }
 
     public boolean isLink() {
