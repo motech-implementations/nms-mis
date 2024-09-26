@@ -4,13 +4,6 @@ package com.beehyv.nmsreporting.enums;
  * Created by beehyv on 24/5/17.
  */
 public enum ReportType {
-
-//    maCourse("CumulativeCourseCompletion"),
-//    maAnonymous("Circle wise Anonymous Users"),
-//    maInactive("maInactive"),
-//    lowUsage("KillowUsage"),
-//    selfDeactivated("selfDeactivated"),
-//    sixWeeks("sixWeeks");
     messageMatrix("Kilkari_Message_Matrix","Kilkari Message Matrix","KILKARI","Kilkari Message Matrix Report", "Message Matrix"),
     kilkariCalls("Kilkari_Call","Kilkari Call","KILKARI","Kilkari Call Report", "Call Report"),
     kilkariCallsWithBeneficiaries("District-wise Performance of the State for Kilkari","District-wise Performance of the State for Kilkari","KILKARI","District-wise Performance of the State for Kilkari", "District-wise Performance of the State for Kilkari"),
@@ -43,11 +36,11 @@ public enum ReportType {
     MAHomePageReport("MA_Report","MA Report","MOBILE_ACADEMY","MA Count Report","Count Report");
 
 
-    private String reportType;
-    private String reportName;
-    private String serviceType;
-    private String reportHeader;
-    private String simpleName;
+    private final String reportType;
+    private final String reportName;
+    private final String serviceType;
+    private final String reportHeader;
+    private final String simpleName;
 
     public String getReportType() {
         return reportType;
