@@ -233,9 +233,15 @@ public class EtlNotificationServiceImpl implements EtlNotificationService {
 
     private List<String> getStrings(Date date, List<ScheduledReportTracker> generatedReportsForMonth) {
         List <String> reportsTracker = new ArrayList<>();
+        Set<String> maReports = new HashSet<>();
+        maReports.add(ReportType.maCourse.getReportName());
+        maReports.add(ReportType.maAnonymous.getReportName());
+        maReports.add(ReportType.maInactive.getReportName());
+
         if(generatedReportsForMonth != null){
         for (ScheduledReportTracker scheduledReportTracker : generatedReportsForMonth){
-            String notificationLine = "Kilkari Monthly line-list " + scheduledReportTracker.getReportName() + " for the " + getMonthName(date) + " generated" ;
+            String reportType = maReports.contains(scheduledReportTracker.getReportName()) ? "MA" : "Kilkari";
+            String notificationLine = reportType + " Monthly line-list " + scheduledReportTracker.getReportName() + " for the " + getMonthName(date) + " generated" ;
             reportsTracker.add(notificationLine);
         }
         }
