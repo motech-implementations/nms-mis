@@ -334,6 +334,8 @@
             case 'Kilkari Subscriber Registration Date': pageHeading='Kilkari Subscriber Registration Date Report'; break;
             case 'Kilkari Message Listenership': pageHeading='Kilkari Message Listenership Report'; break;
             case 'Kilkari Aggregate Beneficiaries': pageHeading='Kilkari Aggregate Beneficiaries Report'; break;
+            case 'MA Report' : pageHeading='MA Report'; break;
+            case 'Kilkari Report' : pageHeading='Kilkari Report'; break;
             }
 
             var newD = new Date();
@@ -1000,7 +1002,15 @@
                     for (i = 0; i < exportColumnHeaders.length; i++) {
                         colWidth[i+1] = 54;
                     }
-                }
+                }else if(excelHeaderName.reportName == "MA Report"){
+                                     for (i = 0; i < exportColumnHeaders.length; i++) {
+                                         colWidth[i+1] = 90;
+                                     }
+                                 }else if(excelHeaderName.reportName == "Kilkari Report"){
+                                                                       for (i = 0; i < exportColumnHeaders.length; i++) {
+                                                                           colWidth[i+1] = 90;
+                                                                       }
+                                                                   }
 
                 var customMarginLeft;
                 if(excelHeaderName.reportName == "Kilkari Call" || excelHeaderName.reportName == "District-wise Performance of the State for Mobile Academy"||excelHeaderName.reportName == "District-wise Performance of the State for Kilkari") {
