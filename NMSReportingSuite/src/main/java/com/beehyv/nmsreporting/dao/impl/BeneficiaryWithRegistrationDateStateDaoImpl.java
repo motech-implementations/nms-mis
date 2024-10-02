@@ -54,18 +54,21 @@ public class BeneficiaryWithRegistrationDateStateDaoImpl extends AbstractDao<Int
                 "FROM subscriptions s  group by beneficiary_id ) max_ids ON b.id = max_ids.beneficiary_id  " +
                 "INNER JOIN subscriptions s ON max_ids.max_id = s.subscription_id " +
                 "WHERE registrationDate >= :fromDate AND registrationDate < :toDate " +
+                " AND b.state_id NOT IN (43, 42) " + //removing Kerala and TamilNadu
                 "GROUP BY b.state_id "+
 
                 "UNION ALL " +
                 "SELECT state_id , COUNT(*) AS total_subscriptions , 0 AS subscriptions_active, 0 AS subscriptions_on_hold, 0 AS subscriptions_deactivated ," +
                 "0 AS subscriptions_deactivated_LIVE_BIRTH , 0 AS subscriptions_pending , 0 AS subscriptions_completed , COUNT(*) AS subscriptions_rejected FROM mother_import_rejection " +
                 "WHERE registration_date >= :fromDate AND registration_date < :toDate  " +
+                " AND state_id NOT IN (43, 42) " + //removing Kerala and TamilNadu
                 "GROUP BY state_id " +
 
                 "UNION ALL " +
                 "SELECT state_id , COUNT(*) AS total_subscriptions , 0 AS subscriptions_active, 0 AS subscriptions_on_hold, 0 AS subscriptions_deactivated ," +
                 "0 AS subscriptions_deactivated_LIVE_BIRTH , 0 AS subscriptions_pending , 0 AS subscriptions_completed , COUNT(*) AS subscriptions_rejected FROM child_import_rejection " +
                 "WHERE registration_date >= :fromDate AND registration_date < :toDate " +
+                " AND state_id NOT IN (43, 42) " + //removing Kerala and TamilNadu
                 "GROUP BY state_id )" +
                 "AS a GROUP BY a.state_id ";
 
@@ -114,11 +117,11 @@ public class BeneficiaryWithRegistrationDateStateDaoImpl extends AbstractDao<Int
         String query_string = "SELECT a.state_id , SUM(a.duplicate_subscribers) AS duplicate_subscribers FROM " +
                 "(SELECT mir.state_id , COUNT(distinct(mir.registration_no) ) AS duplicate_subscribers " +
                 "FROM mother_import_rejection mir INNER JOIN Beneficiary b ON b.rch_id = mir.registration_no " +
-                "WHERE (registration_date >= :fromDate AND registration_date < :toDate ) GROUP BY mir.state_id  " +
+                "WHERE (registration_date >= :fromDate AND registration_date < :toDate ) AND mir.state_id NOT IN (43, 42) GROUP BY mir.state_id  " +
                 "UNION ALL " +
                 "SELECT cir.state_id , COUNT(distinct(cir.registration_no) )  AS duplicate_subscribers " +
                 "FROM child_import_rejection cir INNER JOIN Beneficiary b ON b.rch_id = cir.registration_no " +
-                "WHERE (registration_date >= :fromDate AND registration_date < :toDate) " +
+                "WHERE (registration_date >= :fromDate AND registration_date < :toDate) AND cir.state_id NOT IN (43, 42) " +
                 "GROUP BY cir.state_id ) AS a GROUP BY a.state_id ";
 
         Query query = getSession().createSQLQuery(query_string)

@@ -488,6 +488,11 @@ public class UserController {
         } else
             return null;
     }
+
+    @RequestMapping(value = {"/noticeScheduler"}, method  = RequestMethod.GET)
+    public void noticeScheduler() throws Exception {
+        etlNotificationService.scheduledNotification();
+    }
 //
 //    @RequestMapping(value={"/getCaptcha"} , method = RequestMethod.GET)
 //    public @ResponseBody String getCaptcha(
@@ -1296,7 +1301,7 @@ public class UserController {
 
         User currentUser = userService.getCurrentUser();
 //        Date toDate = new Date();
-        Date toDate = dateAdder(new Date(),1);
+        Date toDate = dateAdder(new Date(),-1);
         LOGGER.info("this is todate: {}",toDate);
 
 

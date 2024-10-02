@@ -3,7 +3,8 @@ package com.beehyv.nmsreporting.model;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity(name = "ScheduledReportTracker")
+@Entity
+@Table(name = "scheduled_report_tracker")
 public class ScheduledReportTracker {
 
     @Id
