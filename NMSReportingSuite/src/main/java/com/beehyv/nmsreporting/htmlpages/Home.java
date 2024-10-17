@@ -6,36 +6,44 @@ public class Home {
             "\t\t\t<h1 class=\"heading\">Cumulative Coverage till date</h1>\n" +
             "\t\t<div class=\"home-top-section\" style=\"display:flex\">\n" +
 
-            "\t\t\t<div class=\"col-xs-6\">\n" +
-            "\t\t\t\t<h2 class=\"heading\">Kilkari</h2>\n" +
+            "\t\t\t<div class=\"col-xs-5 col-xs-offset-1\" style=\"text-align: center;\">\n" +
+            "\t\t\t\t<h2 class=\"heading\" style=\"font-weight: normal;\">Kilkari</h2>\n" +
             "\t\t\t\t<div class=\"row\">\n" +
             "\t\t\t\t\t<div class=\"col-xs-12\">\n" +
-            "\t\t\t\t\t\t<table class=\"table table-bordered\">\n" +
-            "\t\t\t\t\t\t\t<tbody>\n" +
-            "\t\t\t\t\t\t\t\t<tr>\n" +
-            "\t\t\t\t\t\t\t\t\t<td>Cumulative Beneficiaries till Date Since beginning</td>\n" +
-            "\t\t\t\t\t\t\t\t\t<td>{{cumulativeBeneficiaryData}}</td>\n" +
-            "\t\t\t\t\t\t\t\t</tr>\n" +
-            "\t\t\t\t\t\t\t</tbody>\n" +
-            "\t\t\t\t\t\t</table>\n" +
+            "\t\t\t\t\t\t<div style=\"border: 1.5px solid #333; overflow: hidden;\">\n" +
+            "\t\t\t\t\t\t\t<table class=\"table table-bordered table-custom\" style=\"margin: 0; border-color: #333;\">\n" +
+            "\t\t\t\t\t\t\t\t<tbody>\n" +
+            "\t\t\t\t\t\t\t\t\t<tr>\n" +
+            "\t\t\t\t\t\t\t\t\t\t<td style=\"text-align: center; font-weight: normal; border-color: #333;\">Cumulative Beneficiaries</td>\n" +
+            "\t\t\t\t\t\t\t\t\t\t<td style=\"text-align: center; border-color: #333; width: 25%;\">{{cumulativeBeneficiaryData}}</td>\n" +
+            "\t\t\t\t\t\t\t\t\t</tr>\n" +
+            "\t\t\t\t\t\t\t\t</tbody>\n" +
+            "\t\t\t\t\t\t\t</table>\n" +
+            "\t\t\t\t\t\t</div>\n" +
             "\t\t\t\t\t</div>\n" +
             "\t\t\t\t</div>\n" +
             "\t\t\t</div>\n" +
 
-            "\t\t\t<div class=\"col-xs-6\">\n" +
-            "\t\t\t\t<h2 class=\"heading\">MA</h2>\n" +
-            "\t\t\t\t\t<table class=\"table table-bordered\">\n" +
+            "\t\t\t<div class=\"col-xs-5\" style=\"text-align: center; margin-left: 20px;\">\n" +
+            "\t\t\t\t<h2 class=\"heading\" style=\"font-weight: normal;\">MA</h2>\n" +
+            "\t\t\t\t<div style=\"border: 1.5px solid #333; overflow: hidden;\">\n" +
+            "\t\t\t\t\t<table class=\"table table-bordered table-custom\" style=\"margin: 0; border-color: #333;\">\n" +
             "\t\t\t\t\t\t<tbody>\n" +
-            "\t\t\t\t\t\t\t<tr>\n" +
-            "\t\t\t\t\t\t\t\t<td>ASHA Started</td>\n" +
-            "\t\t\t\t\t\t\t\t<td>{{ashaStarted}}</td>\n" +
+            "\t\t\t\t\t\t\t<tr class=\"hover-row\">\n" +
+            "\t\t\t\t\t\t\t\t<td style=\"text-align: center; font-weight: normal; border-color: #333;\">ASHA Started</td>\n" +
+            "\t\t\t\t\t\t\t\t<td style=\"text-align: center; border-color: #333; width: 25%;\">{{ashaStarted}}</td>\n" +
             "\t\t\t\t\t\t\t</tr>\n" +
-            "\t\t\t\t\t\t\t<tr>\n" +
-            "\t\t\t\t\t\t\t\t<td>ASHA Completed</td>\n" +
-            "\t\t\t\t\t\t\t\t<td>{{ashaCompleted}}</td>\n" +
+            "\t\t\t\t\t\t\t<tr class=\"hover-row\">\n" +
+            "\t\t\t\t\t\t\t\t<td style=\"text-align: center; font-weight: normal; border-color: #333;\">ASHA Completed</td>\n" +
+            "\t\t\t\t\t\t\t\t<td style=\"text-align: center; border-color: #333; width: 25%;\">{{ashaCompleted}}</td>\n" +
+            "\t\t\t\t\t\t\t</tr>\n" +
+            "\t\t\t\t\t\t\t<tr class=\"hover-row\">\n" +
+            "\t\t\t\t\t\t\t\t<td style=\"text-align: center; font-weight: normal; border-color: #333;\">ASHA Registered</td>\n" +
+            "\t\t\t\t\t\t\t\t<td style=\"text-align: center; border-color: #333; width: 25%;\">{{ashaRegistered}}</td>\n" +
             "\t\t\t\t\t\t\t</tr>\n" +
             "\t\t\t\t\t\t</tbody>\n" +
             "\t\t\t\t\t</table>\n" +
+            "\t\t\t\t</div>\n" +
             "\t\t\t</div>\n" +
 
             "\t\t</div>\n" +
@@ -221,9 +229,9 @@ public class Home {
             "\t\t\t\t</div>\n" +
             "\n" +
             "\t\t\t\t<div class=\"row\">\n" +
-            "\t\t\t\t\t<div class=\"col-xs-12 left\">\n" +
+            "\t\t\t\t\t<div class=\"col-xs-7 left\">\n" +
             "\n" +
-            "\t\t\t\t\t\t<div class=\"form-group col-xs-2\" data-ng-hide = \"report.name == 'District-wise Performance of the State for Mobile Academy' || report.reportEnum == 'Kilkari_Cumulative_Summary'\">\n" +
+            "\t\t\t\t\t\t<div class=\"form-group col-xs-4\" data-ng-hide = \"report.name == 'District-wise Performance of the State for Mobile Academy' || report.reportEnum == 'Kilkari_Cumulative_Summary'\">\n" +
             "\t\t\t\t\t\t\t<label> Period Type</label><br>\n" +
             "\t\t\t\t\t\t\t<div class=\"btn-group \" data-uib-dropdown data-dropdown-append-to-body >\n" +
             "\t\t\t\t\t\t\t\t<button id=\"btn-append-to-body9\" type=\"button\"  class=\"btn btn-sm btn-default\"  data-uib-dropdown-toggle >\n" +
@@ -243,7 +251,7 @@ public class Home {
             "\t\t\t\t\t\t\t</div>\n" +
             "\t\t\t\t\t\t</div>\n" +
             "\n" +
-            "\t\t\t\t\t\t<div class=\"form-group col-xs-2\" data-ng-hide = \" periodDisplayType == '' || (report.name == 'District-wise Performance of the State for Mobile Academy' ||  report.reportEnum == 'Kilkari_Cumulative_Summary' || periodDisplayType == 'Current Period' ) \">\n" +
+            "\t\t\t\t\t\t<div class=\"form-group col-xs-4\" data-ng-hide = \" periodDisplayType == '' || (report.name == 'District-wise Performance of the State for Mobile Academy' ||  report.reportEnum == 'Kilkari_Cumulative_Summary' || periodDisplayType == 'Current Period' ) \">\n" +
             "\t\t\t\t\t\t\t<label>{{periodTypeContent}}</label><br>\n" +
             "\t\t\t\t\t\t\t<p class=\"input-group\" data-ng-class=\"{disabled :disableDate() }\" data-ng-disabled=\"disableDate()\">\n" +
             "\t\t\t\t\t\t\t\t<input type=\"text\" class=\"form-control input input-sm\" data-uib-datepicker-popup=\"{{dateFormat}}\" data-ng-model=\"dt1\" is-open=\"popup2.opened\" datepicker-options=\"datePickerOptions\"  data-ng-required = \"true\" close-text=\"Close\" alt-input-formats=\"altInputFormats\" data-ng-disabled='disableDate()' readonly />\n" +
@@ -259,7 +267,7 @@ public class Home {
             "\t\t\t\t\t\t\t</ul>\n" +
             "\t\t\t\t\t\t</div>\n" +
             "\n" +
-            "\t\t\t\t\t\t<div class=\"form-group col-xs-2\" data-ng-hide = \" (report.name != 'District-wise Performance of the State for Mobile Academy' &&  report.reportEnum != 'Kilkari_Cumulative_Summary' && periodDisplayType != 'Custom Range')\">\n" +
+            "\t\t\t\t\t\t<div class=\"form-group col-xs-4\" data-ng-hide = \" (report.name != 'District-wise Performance of the State for Mobile Academy' &&  report.reportEnum != 'Kilkari_Cumulative_Summary' && periodDisplayType != 'Custom Range')\">\n" +
             "\t\t\t\t\t\t\t<label>End Date</label><br>\n" +
             "\t\t\t\t\t\t\t<p class=\"input-group\" data-ng-class=\"{disabled :disableDate() }\" data-ng-disabled=\"disableDate()\">\n" +
             "\t\t\t\t\t\t\t\t<input type=\"text\" class=\"form-control input input-sm\" data-uib-datepicker-popup=\"{{dateFormat}}\" data-ng-model=\"dt2\" is-open=\"popup3.opened\" datepicker-options=\"endDatePickerOptions\"  data-ng-required= \"true\" close-text=\"Close\" alt-input-formats=\"altInputFormats\" data-ng-disabled='disableDate()' readonly />\n" +
@@ -289,7 +297,9 @@ public class Home {
             "                            </div>\n" +
             "                        </div>-->\n" +
             "\n" +
-            "\t\t\t\t\t\t<div class=\"form-group col-xs-2 aggregate-submit\">\n" +
+            "\t\t\t\t\t</div>\n" +
+            "\t\t\t\t\t<div class=\"col-xs-2 left\">\n" +
+            "\t\t\t\t\t\t<div class=\"form-group col-xs-12 aggregate-submit\">\n" +
             "\t\t\t\t\t\t\t<button class=\"btn btn-sm btn-primary\" data-ng-click=\"getReport()\">Submit</button>\n" +
             "\t\t\t\t\t\t\t<button class=\"btn btn-sm btn-primary\" data-ng-click=\"reset()\">Reset</button>\n" +
             "\t\t\t\t\t\t</div>\n" +

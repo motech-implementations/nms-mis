@@ -132,6 +132,7 @@ console.log("sdkjghkjhkjhkj")
                             }).then(function(result){
                                 $scope.ashaStarted= result.data.ashaStarted;
                                 $scope.ashaCompleted= result.data.ashaCompleted;
+                                $scope.ashaRegistered= result.data.ashaRegistered;
                             });
                         }
                         $scope.fetchSummaryData();

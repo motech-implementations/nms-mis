@@ -530,7 +530,7 @@
 			    if (toState.name === 'login') {
 			        UserFormFactory.isLoggedIn().then(function(res) {
                         if (res.data) {
-                            $state.go('reports');
+                            $state.go('home');
                         }
                     });
                 }

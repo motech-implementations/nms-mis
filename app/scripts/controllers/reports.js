@@ -1478,6 +1478,9 @@
 
 					    if($scope.report.reportEnum == 'District-wise Performance of the State for Mobile Academy'){
 					        $scope.gridOptions1.columnDefs = $scope.MA_Cumulative_Column_Definitions;
+					        $scope.gridOptions1.columnDefs.forEach(function(column){
+                                column.cellClass= $scope.getCellClass_MA;
+                            });
 					    }
 					    else if($scope.report.reportEnum == 'MA_Performance'){
 					        $scope.gridOptions1.columnDefs = $scope.MA_Performance_Column_Definitions;
@@ -1528,9 +1531,19 @@
 					    }
 					    else if($scope.report.reportEnum == 'Kilkari_Subscriber'){
 					        if(!rejectionStart)
-                                {$scope.gridOptions1.columnDefs = $scope.Kilkari_Subscriber_Definitions;}
+                                {
+                                    $scope.gridOptions1.columnDefs = $scope.Kilkari_Subscriber_Definitions;
+                                    $scope.gridOptions1.columnDefs.forEach(function(column){
+                                        column.cellClass= $scope.getCellClass_Kilkari_subscriber;
+                                    });
+                                }
                             if(rejectionStart)
-                                {$scope.gridOptions1.columnDefs = $scope.Kilkari_Subscriber_Definitions2;}
+                                {
+                                    $scope.gridOptions1.columnDefs = $scope.Kilkari_Subscriber_Definitions2;
+                                    $scope.gridOptions1.columnDefs.forEach(function(column){
+                                        column.cellClass= $scope.getCellClass_Kilkari_subscriber;
+                                    });
+                                }
                         }
                         else if($scope.report.reportEnum == 'Kilkari_Subscriber_with_RegistrationDate'){
                                 $scope.gridOptions1.columnDefs = $scope.Kilkari_Subscriber_with_RegistrationDate_Definitions;
@@ -2445,12 +2458,30 @@
               };
 
             $scope.getCellClass= function(grid, row, col, rowRenderIndex, colRenderIndex){
-                var fieldsToCheck= ["ashasCompleted", "ashasCompleted", "ashasFailed", "ashasStarted", "ashasAccessed", "ashasNotAccessed", "ashasJoined"];
+                var fieldsToCheck= ["ashasCompleted", "ashasFailed", "ashasStarted", "ashasAccessed", "ashasNotAccessed", "ashasJoined"];
                 var allZero = fieldsToCheck.every(function(field) {
                     return row.entity[field] === 0 || row.entity[field] === null;
                });
 
                return allZero ? 'highlight-row' : '';
+            }
+
+            $scope.getCellClass_MA= function(grid, row, col, rowRenderIndex, colRenderIndex){
+                var fieldsToCheck= ["ashasStarted", "ashasCompleted", "ashasNotStarted", "ashasFailed", "ashasRegistered"];
+                var allZero = fieldsToCheck.every(function(field) {
+                    return row.entity[field] === 0 || row.entity[field] === null;
+                });
+
+                return allZero ? 'highlight-row' : '';
+            }
+
+            $scope.getCellClass_Kilkari_subscriber= function(grid, row, col, rowRenderIndex, colRenderIndex){
+                var fieldsToCheck= ["totalSubscriptionsEnd", "totalSubscriptionsStart", "totalBeneficiaryRecordsReceived", "totalBeneficiaryRecordsEligible", "totalBeneficiaryRecordsAccepted", "totalRecordsRejected", "totalSubscriptionsCompleted"];
+                var allZero = fieldsToCheck.every(function(field) {
+                    return row.entity[field] === 0 || row.entity[field] === null;
+                });
+
+                return allZero ? 'highlight-row' : '';
             }
 
             $scope.MA_Cumulative_Column_Definitions =[

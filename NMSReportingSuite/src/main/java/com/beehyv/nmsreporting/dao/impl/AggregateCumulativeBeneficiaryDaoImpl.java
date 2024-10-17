@@ -8,6 +8,8 @@ import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigInteger;
@@ -19,6 +21,8 @@ import java.util.List;
  */
 @Repository("aggregateCumulativeBeneficiaryDao")
 public class AggregateCumulativeBeneficiaryDaoImpl extends AbstractDao<Integer,AggregateCumulativeBeneficiary> implements AggregateCumulativeBeneficiaryDao {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AggregateCumulativeBeneficiaryDaoImpl.class);
 
     @Override
     public AggregateCumulativeBeneficiary getCumulativeBeneficiary(Long locationId, String locationType, Date toDate,String periodType){
@@ -179,6 +183,7 @@ public class AggregateCumulativeBeneficiaryDaoImpl extends AbstractDao<Integer,A
                 "AND period_type = :periodType " +
                 "AND date BETWEEN :fromDate AND :toDate";
 
+        LOGGER.info("Query - {}, locationId:{}" , sql, locationId);
         SQLQuery query = getSession().createSQLQuery(sql);
         query.setParameter("locationId", locationId.longValue());
         query.setParameter("locationType", locationType);
@@ -187,6 +192,8 @@ public class AggregateCumulativeBeneficiaryDaoImpl extends AbstractDao<Integer,A
         query.setParameter("toDate", toDate);
 
         Object result = query.uniqueResult();
+        LOGGER.info("Operation = JoinedSubscriptionSum, status = COMPLETED" );
+        LOGGER.info("result:{}", result != null ? ((Number) result).longValue() : 0L);
         return result != null ? ((Number) result).longValue() : 0L;
     }
 
@@ -219,6 +226,7 @@ public class AggregateCumulativeBeneficiaryDaoImpl extends AbstractDao<Integer,A
                 "AND period_type = :periodType " +
                 "AND date BETWEEN :fromDate AND :toDate";
 
+        LOGGER.info("Query - {} " , sql);
         SQLQuery query = getSession().createSQLQuery(sql);
         query.setParameter("locationId", locationId.longValue());
         query.setParameter("locationType", locationType);
@@ -227,6 +235,8 @@ public class AggregateCumulativeBeneficiaryDaoImpl extends AbstractDao<Integer,A
         query.setParameter("toDate", toDate);
 
         Object result = query.uniqueResult();
+        LOGGER.info("Operation = TotalDeactivationSum, status = COMPLETED" );
+        LOGGER.info("result:{}", result != null ? ((Number) result).longValue() : 0L);
         return result != null ? ((Number) result).longValue() : 0L;
     }
 

@@ -12,6 +12,8 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
@@ -24,6 +26,8 @@ import java.util.*;
 
 @Repository("kilkariThematicContentReportDao")
 public class KilkariThematicContentReportDaoImpl extends AbstractDao<Integer,KilkariThematicContent> implements KilkariThematicContentReportDao{
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(KilkariThematicContentReportDaoImpl.class);
 
     @Override
     public Map<String,KilkariThematicContent> getKilkariThematicContentReportData(Integer locationId, String locationType, Date date, String periodType){
@@ -98,6 +102,7 @@ public class KilkariThematicContentReportDaoImpl extends AbstractDao<Integer,Kil
                 "ORDER BY SUM(minutes_consumed) DESC " +
                 "LIMIT 1";
 
+        LOGGER.info("Query - {} " , sql);
         Query query = getSession().createSQLQuery(sql);
         query.setParameter("locationId", locationId);
         query.setParameter("locationType", locationType);
@@ -106,6 +111,8 @@ public class KilkariThematicContentReportDaoImpl extends AbstractDao<Integer,Kil
         query.setParameter("periodType", periodType);
 
         Object result = query.uniqueResult();
+        LOGGER.info("Operation = MostHeardCallWeek, status = COMPLETED" );
+        LOGGER.info("result:{}", result != null ? result.toString() : null);
         return result != null ? result.toString() : null;
     }
 
@@ -122,6 +129,7 @@ public class KilkariThematicContentReportDaoImpl extends AbstractDao<Integer,Kil
                 "ORDER BY SUM(minutes_consumed) ASC " +
                 "LIMIT 1";
 
+        LOGGER.info("Query - {} " , sql);
         Query query = getSession().createSQLQuery(sql);
         query.setParameter("locationId", locationId);
         query.setParameter("locationType", locationType);
@@ -130,6 +138,8 @@ public class KilkariThematicContentReportDaoImpl extends AbstractDao<Integer,Kil
         query.setParameter("periodType", periodType);
 
         Object result = query.uniqueResult();
+        LOGGER.info("Operation = LeastHeardCallWeek, status = COMPLETED" );
+        LOGGER.info("result:{}", result != null ? result.toString() : null);
         return result != null ? result.toString() : null;
     }
 
@@ -142,6 +152,7 @@ public class KilkariThematicContentReportDaoImpl extends AbstractDao<Integer,Kil
                 "AND date BETWEEN :startDate AND :endDate " +
                 "AND period_type = :periodType";
 
+        LOGGER.info("Query - {} " , sql);
         Query query = getSession().createSQLQuery(sql)
                 .setParameter("locationId", locationId)
                 .setParameter("locationType", locationType)
@@ -150,6 +161,8 @@ public class KilkariThematicContentReportDaoImpl extends AbstractDao<Integer,Kil
                 .setParameter("periodType", periodType);
 
         Object result = query.uniqueResult();
+        LOGGER.info("Operation = AverageDurationOfCalls, status = COMPLETED" );
+        LOGGER.info("result:{}", result != null ? ((Number) result).doubleValue() : 0.0);
         return result != null ? ((Number) result).doubleValue() : 0.0;
     }
 

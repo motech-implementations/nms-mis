@@ -7,6 +7,8 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -14,6 +16,9 @@ import java.util.List;
 
 @Repository("motherImportRejectionDao")
 public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImportRejection> implements MotherImportRejectionDao {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MotherImportRejectionDaoImpl.class);
+
     @Override
     public List<MotherImportRejection> getAllRejectedMotherImportRecords(Date fromDate, Date toDate) {
         Criteria criteria = createEntityCriteria();
@@ -120,12 +125,15 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
                 "      AND accepted = false " +
                 ") AS combined_duplicates";
 
+        LOGGER.info("Query - {} " , sql);
         Query query = getSession().createSQLQuery(sql);
         query.setParameter("fromDate", fromDate);
         query.setParameter("toDate", toDate);
         query.setParameter("stateId", stateId);
 
         Object result = query.uniqueResult();
+        LOGGER.info("Operation = UniqueDuplicatePhoneNumberCountForState, status = COMPLETED" );
+        LOGGER.info("result:{}", result != null ? ((Number) result).longValue() : 0L);
         return result != null ? ((Number) result).longValue() : 0L;
     }
 
@@ -150,12 +158,15 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
                 "      AND accepted = false " +
                 ") AS combined_duplicates";
 
+        LOGGER.info("Query - {} " , sql);
         Query query = getSession().createSQLQuery(sql);
         query.setParameter("fromDate", fromDate);
         query.setParameter("toDate", toDate);
         query.setParameter("districtId", districtId);
 
         Object result = query.uniqueResult();
+        LOGGER.info("Operation = UniqueDuplicatePhoneNumberCountForDistrict, status = COMPLETED" );
+        LOGGER.info("result:{}", result != null ? ((Number) result).longValue() : 0L);
         return result != null ? ((Number) result).longValue() : 0L;
     }
 
@@ -180,12 +191,15 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
                 "      AND accepted = false " +
                 ") AS combined_duplicates";
 
+        LOGGER.info("Query - {} " , sql);
         Query query = getSession().createSQLQuery(sql);
         query.setParameter("fromDate", fromDate);
         query.setParameter("toDate", toDate);
         query.setParameter("blockId", blockId);
 
         Object result = query.uniqueResult();
+        LOGGER.info("Operation = UniqueDuplicatePhoneNumberCountForBlock, status = COMPLETED" );
+        LOGGER.info("result:{}", result != null ? ((Number) result).longValue() : 0L);
         return result != null ? ((Number) result).longValue() : 0L;
     }
 
@@ -210,12 +224,15 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
                 "      AND accepted = false " +
                 ") AS combined_duplicates";
 
+        LOGGER.info("Query - {} " , sql);
         Query query = getSession().createSQLQuery(sql);
         query.setParameter("fromDate", fromDate);
         query.setParameter("toDate", toDate);
         query.setParameter("healthFacilityId", healthFacilityId);
 
         Object result = query.uniqueResult();
+        LOGGER.info("Operation = UniqueDuplicatePhoneNumberCountForHealthFacility, status = COMPLETED" );
+        LOGGER.info("result:{}", result != null ? ((Number) result).longValue() : 0L);
         return result != null ? ((Number) result).longValue() : 0L;
     }
 
@@ -237,13 +254,16 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
                 ") AS combined_ineligible";
 
 
-            Query query = getSession().createSQLQuery(sql);
+        LOGGER.info("Query - {} " , sql);
+        Query query = getSession().createSQLQuery(sql);
             query.setParameter("fromDate", fromDate);
             query.setParameter("toDate", toDate);
             query.setParameter("stateId", stateId);
 
             Object result = query.uniqueResult();
-            return result != null ? ((Number) result).longValue() : 0L;
+            LOGGER.info("Operation = TotalIneligibleCountByState, status = COMPLETED" );
+            LOGGER.info("result:{}", result != null ? ((Number) result).longValue() : 0L);
+        return result != null ? ((Number) result).longValue() : 0L;
 
     }
 
@@ -263,13 +283,15 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
                 "      AND accepted = false " +
                 ") AS combined_ineligible";
 
-
+        LOGGER.info("Query - {} " , sql);
         Query query = getSession().createSQLQuery(sql);
         query.setParameter("fromDate", fromDate);
         query.setParameter("toDate", toDate);
         query.setParameter("districtId", districtId);
 
         Object result = query.uniqueResult();
+        LOGGER.info("Operation = TotalIneligibleCountByDistrict, status = COMPLETED" );
+        LOGGER.info("result:{}", result != null ? ((Number) result).longValue() : 0L);
         return result != null ? ((Number) result).longValue() : 0L;
 
     }
@@ -291,12 +313,15 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
                 ") AS combined_ineligible";
 
 
+        LOGGER.info("Query - {} " , sql);
         Query query = getSession().createSQLQuery(sql);
         query.setParameter("fromDate", fromDate);
         query.setParameter("toDate", toDate);
         query.setParameter("blockId", blockId);
 
         Object result = query.uniqueResult();
+        LOGGER.info("Operation = TotalIneligibleCountByBlock, status = COMPLETED" );
+        LOGGER.info("result:{}", result != null ? ((Number) result).longValue() : 0L);
         return result != null ? ((Number) result).longValue() : 0L;
 
     }
@@ -317,13 +342,15 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
                 "      AND accepted = false " +
                 ") AS combined_ineligible";
 
-
+        LOGGER.info("Query - {} " , sql);
         Query query = getSession().createSQLQuery(sql);
         query.setParameter("fromDate", fromDate);
         query.setParameter("toDate", toDate);
         query.setParameter("healthFacilityId", healthFacilityId);
 
         Object result = query.uniqueResult();
+        LOGGER.info("Operation = TotalIneligibleCountByHealthFacility, status = COMPLETED" );
+        LOGGER.info("result:{}", result != null ? ((Number) result).longValue() : 0L);
         return result != null ? ((Number) result).longValue() : 0L;
 
     }

@@ -3,10 +3,12 @@ package com.beehyv.nmsreporting.entity;
 public class AshaPerformanceDto {
      Long ashaStarted;
      Long ashaCompleted;
+     Long ashaRegistered;
 
-    public AshaPerformanceDto(Long ashaStarted, Long ashaCompleted) {
+    public AshaPerformanceDto(Long ashaStarted, Long ashaCompleted, Long ashaRegistered) {
         this.ashaStarted = ashaStarted;
         this.ashaCompleted = ashaCompleted;
+        this.ashaRegistered = ashaRegistered;
     }
 
     public Long getAshaStarted() {
@@ -23,5 +25,13 @@ public class AshaPerformanceDto {
 
     public void setAshaCompleted(Long ashaCompleted) {
         this.ashaCompleted = ashaCompleted;
+    }
+
+    public Long getAshaRegistered() {
+        return ashaRegistered;
+    }
+
+    public void setAshaRegistered(Long ashaRegistered) {
+        this.ashaRegistered = ashaRegistered;
     }
 }
