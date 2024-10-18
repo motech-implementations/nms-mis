@@ -14,8 +14,8 @@ WHILE dt < curdate DO
 TRUNCATE table agg_kilkari_subscriber_day_wise_temp;
 
 INSERT INTO agg_kilkari_subscriber_day_wise_temp (state_id, district_id, healthBlock_id, subcentre_id, date, total_records_received_MCTS_RCH, eligible_for_subscriptions, total_subscriptions_accepted, total_subscriptions_completed, total_subscriptions)
- 
-select a.state_id, a.district_id, a.healthBlock_id, a.subcentre_id, a.date as date, SUM(subscriptions_received) as subscriptions_received, SUM(eligible_for_subscriptions) as eligible_for_subscriptions, SUM(subscriptions_accepted) as subscriptions_accepted, SUM(subscriptions_completed) as subscriptions_completed, SUM(total_subscriptions) as total_subscriptions from  
+
+select a.state_id, a.district_id, a.healthBlock_id, a.subcentre_id, a.date as date, SUM(subscriptions_received) as subscriptions_received, SUM(eligible_for_subscriptions) as eligible_for_subscriptions, SUM(subscriptions_accepted) as subscriptions_accepted, SUM(subscriptions_completed) as subscriptions_completed, SUM(total_subscriptions) as total_subscriptions from
 
 (select b.state_id, b.district_id, b.healthBlock_id, b.healthSubFacility_id as subcentre_id, dt as date, COUNT(case when a.creationdate >= DATE_ADD(dt, INTERVAL -1 DAY) and a.creationdate < dt THEN a.subscription_id END) as 'Subscriptions_Received', 0 as eligible_for_subscriptions, COUNT(case when a.creationdate >= DATE_ADD(dt, INTERVAL -1 DAY) and a.creationdate < dt THEN a.subscription_id END) as 'subscriptions_accepted', COUNT(case when a.subscription_status='COMPLETED' and a.enddate >= DATE_ADD(dt, INTERVAL -1 DAY) and a.enddate < dt THEN a.subscription_id END) as 'subscriptions_completed', COUNT(distinct case when a.creationdate >= DATE_ADD(dt, INTERVAL -1 DAY) and a.creationdate < dt THEN a.subscription_id END) as 'total_subscriptions' from subscriptions a LEFT JOIN beneficiary_tracker b on a.beneficiaryTracking_id=b.id where ((a.creationdate >= DATE_ADD(dt, INTERVAL -1 DAY) and a.creationdate < dt) or (a.enddate >= DATE_ADD(dt, INTERVAL -1 DAY) and a.enddate < dt)) group by b.state_id, b.district_id, b.healthBlock_id, b.healthSubFacility_id
 
@@ -27,7 +27,7 @@ select state_id, district_id, health_block_id as healthBlock_id, subcentre_id, d
 
 truncate table agg_kilkari_subscriber_day_wise;
 
-INSERT INTO agg_kilkari_subscriber_day_wise (location_type, location_id, date, total_records_received_MCTS_RCH, eligible_for_subscriptions, total_subscriptions_accepted, total_subscriptions_completed, total_subscriptions) 
+INSERT INTO agg_kilkari_subscriber_day_wise (location_type, location_id, date, total_records_received_MCTS_RCH, eligible_for_subscriptions, total_subscriptions_accepted, total_subscriptions_completed, total_subscriptions)
 
 select 'STATE' as location_type, state_id, dt, SUM(total_records_received_MCTS_RCH), SUM(eligible_for_subscriptions), SUM(total_subscriptions_accepted), SUM(total_subscriptions_completed), SUM(total_subscriptions) from agg_kilkari_subscriber_day_wise_temp group by state_id
 
@@ -43,7 +43,7 @@ select 'SUBCENTRE' as location_type, subcentre_id, date, SUM(total_records_recei
 
 INSERT INTO agg_kilkari_subscriber (location_type, location_id, date, total_records_received_MCTS_RCH, eligible_for_subscriptions, total_subscriptions_accepted, total_subscriptions_completed, total_subscriptions)
 
-select a.location_type, a.location_id, dt, SUM(total_records_received_MCTS_RCH), SUM(eligible_for_subscriptions), SUM(total_subscriptions_accepted), SUM(total_subscriptions_completed), SUM(total_subscriptions) from 
+select a.location_type, a.location_id, dt, SUM(total_records_received_MCTS_RCH), SUM(eligible_for_subscriptions), SUM(total_subscriptions_accepted), SUM(total_subscriptions_completed), SUM(total_subscriptions) from
 
 (select location_type, location_id, date, total_records_received_MCTS_RCH, eligible_for_subscriptions, total_subscriptions_accepted, total_subscriptions_completed, total_subscriptions from agg_kilkari_subscriber_day_wise
 

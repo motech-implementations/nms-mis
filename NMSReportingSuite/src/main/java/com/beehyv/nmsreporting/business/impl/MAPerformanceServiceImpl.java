@@ -9,11 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.Transactional;
 import java.math.BigInteger;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -441,7 +438,7 @@ public class MAPerformanceServiceImpl implements MAPerformanceService{
                     LOGGER.info("Executing performance count query with params: fromDate={}, toDate={}, blockIds={}", fromDateTemp, toDate, healthSubFacilityIds);
                     List<Object[]> results = maPerformanceDao.getPerformanceCount(healthSubFacilityIds,locationType,fromDateTemp,toDate);
                     LOGGER.info("Query result: {}", results);
-
+                    int cnt = 0;
 
                     for(Object[] result : results){
                         MAPerformanceCountsDto subcentrePerformance = new MAPerformanceCountsDto();
@@ -454,13 +451,13 @@ public class MAPerformanceServiceImpl implements MAPerformanceService{
                         Long subcentreCount6= ((BigInteger)result[6]).longValue();
                         Long subcentreCount7 = ((BigInteger)result[7]).longValue();
 
-                        subcentrePerformance.setAccessedAtleastOnce(subcentreCount1);
-                        subcentrePerformance.setAccessedNotOnce(subcentreCount2);
-                        subcentrePerformance.setAshasFailed(subcentreCount3);
-                        subcentrePerformance.setAshasActivatedInBetween(subcentreCount4);
-                        subcentrePerformance.setAshasDeactivatedInBetween(subcentreCount5);
-                        subcentrePerformance.setAshasRefresherCourse(subcentreCount6);
-                        subcentrePerformance.setAshasCompletedInGivenTime(subcentreCount7);
+                        subcentrePerformance.setAccessedAtleastOnce(subcentreCount1 != null ? subcentreCount1 : 0L);
+                        subcentrePerformance.setAccessedNotOnce(subcentreCount2 != null ? subcentreCount2 : 0L);
+                        subcentrePerformance.setAshasFailed(subcentreCount3 != null ? subcentreCount3 : 0);
+                        subcentrePerformance.setAshasActivatedInBetween(subcentreCount4 != null ? subcentreCount4 : 0L);
+                        subcentrePerformance.setAshasDeactivatedInBetween(subcentreCount5 != null ? subcentreCount5 : 0L);
+                        subcentrePerformance.setAshasRefresherCourse(subcentreCount6 != null ? subcentreCount6 : 0L);
+                        subcentrePerformance.setAshasCompletedInGivenTime(subcentreCount7 != null ? subcentreCount7 : 0L);
                         countMap.put(healthSubFacilityId,subcentrePerformance);
                         accessedCount+=subcentreCount1;
                         notAccessedCount+=subcentreCount2;
@@ -469,6 +466,8 @@ public class MAPerformanceServiceImpl implements MAPerformanceService{
                         deactivatedInBetweenCount+=subcentreCount5;
                         refresherCourseCount+=subcentreCount6;
                         completedInGivenTimeCount+=subcentreCount7;
+                        LOGGER.info("locationId:{}, Atleastonce:{}, Notonce:{}, Failed:{}, Activatedinbetween:{}, Deactivatedinbetween:{}, refreshercource:{}, completedingiventime:{}", healthSubFacilityId,subcentrePerformance.getAccessedAtleastOnce(), subcentrePerformance.getAccessedNotOnce(), subcentrePerformance.getAshasFailed(),subcentrePerformance.getAshasActivatedInBetween(), subcentrePerformance.getAshasDeactivatedInBetween(), subcentrePerformance.getAshasRefresherCourse(),subcentrePerformance.getAshasCompletedInGivenTime());
+                        cnt++;
                     }
                     Long noSubcentreCount1 = 0L;
                     Long noSubcentreCount2 = 0L;
@@ -493,6 +492,8 @@ public class MAPerformanceServiceImpl implements MAPerformanceService{
                     noSubcentrePerformance.setAshasRefresherCourse(noSubcentreCount6);
                     noSubcentrePerformance.setAshasCompletedInGivenTime(noSubcentreCount7);
                     countMap.put((long)-locationId,noSubcentrePerformance);
+                    cnt++;
+                    LOGGER.info("count : {}", cnt);
                 }
             }
         }

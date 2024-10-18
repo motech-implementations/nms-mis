@@ -122,7 +122,10 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                 }
                 if (!isCumulative || !toDate.before(tempDate)) {
 
+                    LOGGER.debug("this is the stateid : {}",s.getStateId());
                     AggregateCumulativeMA result = aggregateCumulativeMADao.getMACumulativeSummery(s.getStateId(), locationType, date);
+                    LOGGER.debug("this is the result : {}",result);
+                    LOGGER.debug("this is the ashastarted : {},this is asha completed: {}",result.getAshasStarted(),result.getAshasCompleted());
                     CumulativeSummery.add(result);
                 }
                 date = toDate;
@@ -130,7 +133,9 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
 
         } else {
             if (locationType.equalsIgnoreCase("District")) {
-                if (date.before(stateServiceDao.getServiceStartDateForState(locationId, "MOBILE_ACADEMY")) && !isCumulative) {
+                Date serviceStartDate = stateServiceDao.getServiceStartDateForState(locationId, "MOBILE_ACADEMY");
+
+                if (date.before(serviceStartDate) && !isCumulative) {
                     date = stateServiceDao.getServiceStartDateForState(locationId, "MOBILE_ACADEMY");
                 }
                 List<District> districts = districtDao.getDistrictsOfState(locationId);

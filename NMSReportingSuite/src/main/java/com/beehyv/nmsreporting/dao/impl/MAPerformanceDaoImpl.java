@@ -527,7 +527,7 @@ public class MAPerformanceDaoImpl extends AbstractDao<Integer, User> implements 
            case "block":
                locationColumn = "block_id";
                break;
-           case "subcenter":
+           case "subcentre":
                locationColumn = "healthsubfacility_id";
                break;
            default:
@@ -556,7 +556,20 @@ public class MAPerformanceDaoImpl extends AbstractDao<Integer, User> implements 
                 "COUNT(DISTINCT CASE WHEN f.job_status = 'ACTIVE' AND (f.creationdate BETWEEN :fromDate AND :toDate) THEN f.flw_id END) AS ashaActivatedInBetweenCount, " +
                 "COUNT(DISTINCT CASE WHEN f.job_status = 'INACTIVE' AND (f.modificationdate BETWEEN :fromDate AND :toDate) THEN f.flw_id END) AS ashaDeactivatedInBetweenCount, " +
                 "COUNT(DISTINCT CASE WHEN mc.flw_id IN (SELECT DISTINCT flw_id FROM ma_course_completion WHERE creationDate < :previousDate) AND (mc.creationDate BETWEEN :fromDate AND :toDate) THEN mc.flw_id END) AS refresherCourseCount, " +
-                "COUNT(DISTINCT CASE WHEN f.course_start_date > :fromDate AND f.course_first_completion_date < :toDate THEN f.flw_id END) AS ashasCompletedInGivenTimeCount " +
+                "COUNT(DISTINCT CASE WHEN f.course_start_date > :fromDate AND f.course_first_completion_date < :toDate THEN f.flw_id END) AS ashasCompletedInGivenTimeCount, " +
+                "COUNT(DISTINCT CASE " +
+                "WHEN f.job_status = 'INACTIVE' " +
+                "AND f.course_start_date IS NOT NULL " +
+                "AND f.course_start_date < :toDate " +
+                "AND f.modificationdate BETWEEN :fromDate AND :toDate " +
+                "THEN f.flw_id END) AS ashaDeactivatedStartedCourseInBetweenCount, " +
+                "COUNT(DISTINCT CASE " +
+                "WHEN f.job_status = 'INACTIVE' " +
+                "AND f.course_first_completion_date IS NOT NULL " +
+                "AND mc.has_passed = 1 " +
+                "AND f.course_first_completion_date <= :toDate " +
+                "AND f.modificationdate BETWEEN :fromDate AND :toDate " +
+                "THEN f.flw_id END) AS ashaDeactivatedCompletedCourseInBetweenCount " +
                 "FROM front_line_worker f " +
                 "LEFT JOIN ma_course_completion mc ON f.flw_id = mc.flw_id " +
                 "WHERE f.flw_designation = 'ASHA' AND f." + locationColumn + " IN (:locationIds) " +
@@ -567,8 +580,6 @@ public class MAPerformanceDaoImpl extends AbstractDao<Integer, User> implements 
         query.setParameter("previousDate", fromDate);
         query.setParameter("toDate", toDate);
         query.setParameterList("locationIds", locationIds!=null ? locationIds.toArray(new Integer[0]) :new Integer[0]);
-
-
 
         return query.list();
 

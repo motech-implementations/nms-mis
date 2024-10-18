@@ -1478,9 +1478,29 @@
 
 					    if($scope.report.reportEnum == 'District-wise Performance of the State for Mobile Academy'){
 					        $scope.gridOptions1.columnDefs = $scope.MA_Cumulative_Column_Definitions;
+					        $scope.gridOptions1.columnDefs.forEach(function(column){
+                                column.cellClass= $scope.getCellClass_MA;
+                            });
 					    }
 					    else if($scope.report.reportEnum == 'MA_Performance'){
 					        $scope.gridOptions1.columnDefs = $scope.MA_Performance_Column_Definitions;
+                            $scope.gridOptions1.getRowStyle= function (params) {
+                                                                 if (params.node.rowIndex % 2 === 0) {
+                                                                     return { background: 'red' };
+                                                                 }
+                                                             };
+                            $scope.gridOptions1.columnDefs.forEach(function(column){
+                                column.cellClass= $scope.getCellClass;
+                            });
+					        $scope.gridOptions1.data = result.data.tableData.map(row => {
+                                row.totalSum = (row.ashasCompleted || 0) + (row.ashasFailed || 0) +
+                                               (row.ashasStarted || 0) + (row.ashasAccessed || 0) +
+                                               (row.ashasNotAccessed || 0) + (row.ashasJoined || 0);
+                                return row;
+                            });
+
+                            console.log($scope.gridOptions1.data);
+
 					    }
 					    else if($scope.report.reportEnum == 'MA_Subscriber'){
 					        $scope.gridOptions1.columnDefs = $scope.MA_Subscriber_Column_Definitions;
@@ -1511,9 +1531,19 @@
 					    }
 					    else if($scope.report.reportEnum == 'Kilkari_Subscriber'){
 					        if(!rejectionStart)
-                                {$scope.gridOptions1.columnDefs = $scope.Kilkari_Subscriber_Definitions;}
+                                {
+                                    $scope.gridOptions1.columnDefs = $scope.Kilkari_Subscriber_Definitions;
+                                    $scope.gridOptions1.columnDefs.forEach(function(column){
+                                        column.cellClass= $scope.getCellClass_Kilkari_subscriber;
+                                    });
+                                }
                             if(rejectionStart)
-                                {$scope.gridOptions1.columnDefs = $scope.Kilkari_Subscriber_Definitions2;}
+                                {
+                                    $scope.gridOptions1.columnDefs = $scope.Kilkari_Subscriber_Definitions2;
+                                    $scope.gridOptions1.columnDefs.forEach(function(column){
+                                        column.cellClass= $scope.getCellClass_Kilkari_subscriber;
+                                    });
+                                }
                         }
                         else if($scope.report.reportEnum == 'Kilkari_Subscriber_with_RegistrationDate'){
                                 $scope.gridOptions1.columnDefs = $scope.Kilkari_Subscriber_with_RegistrationDate_Definitions;
@@ -2427,6 +2457,33 @@
                     },
               };
 
+            $scope.getCellClass= function(grid, row, col, rowRenderIndex, colRenderIndex){
+                var fieldsToCheck= ["ashasCompleted", "ashasFailed", "ashasStarted", "ashasAccessed", "ashasNotAccessed", "ashasJoined"];
+                var allZero = fieldsToCheck.every(function(field) {
+                    return row.entity[field] === 0 || row.entity[field] === null;
+               });
+
+               return allZero ? 'highlight-row' : '';
+            }
+
+            $scope.getCellClass_MA= function(grid, row, col, rowRenderIndex, colRenderIndex){
+                var fieldsToCheck= ["ashasStarted", "ashasCompleted", "ashasNotStarted", "ashasFailed", "ashasRegistered"];
+                var allZero = fieldsToCheck.every(function(field) {
+                    return row.entity[field] === 0 || row.entity[field] === null;
+                });
+
+                return allZero ? 'highlight-row' : '';
+            }
+
+            $scope.getCellClass_Kilkari_subscriber= function(grid, row, col, rowRenderIndex, colRenderIndex){
+                var fieldsToCheck= ["totalSubscriptionsEnd", "totalSubscriptionsStart", "totalBeneficiaryRecordsReceived", "totalBeneficiaryRecordsEligible", "totalBeneficiaryRecordsAccepted", "totalRecordsRejected", "totalSubscriptionsCompleted"];
+                var allZero = fieldsToCheck.every(function(field) {
+                    return row.entity[field] === 0 || row.entity[field] === null;
+                });
+
+                return allZero ? 'highlight-row' : '';
+            }
+
             $scope.MA_Cumulative_Column_Definitions =[
                                                        {name: 'S No.', displayName: 'S No.',width:"6%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no" >{{rowRenderIndex+1}}</p>'},
                                                        { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>', defaultSort: { direction: uiGridConstants.ASC },
@@ -2733,12 +2790,13 @@
                                                         cellTemplate:'<a   ng-if= !row.entity.link class="btn aggregate-location" title="{{COL_FIELD}}"  ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a><p ng-if= row.entity.link class="ui-grid-cell-contents" title="{{COL_FIELD}}" >{{ COL_FIELD }}</p>',
                                                         enableHiding: false,width: "15%"
                                                      },
-                                                     { field: 'totalSubscriberCount', displayName: 'Total Subscriptions', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"12%", enableHiding: false },
+                                                     { field: 'totalSubscriberCount', displayName: 'Total data received from RCH', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"12%", enableHiding: false },
                                                      { field: 'totalBeneficiaryWithActiveStatus', displayName: 'Active Subscriptions', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'totalRejectedSubscriberCount', displayName: 'Rejected Subscriptions', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'totalBeneficiaryWithOnHoldStatus', displayName: 'On Hold Subscriptions', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
-                                                     { field: 'totalBeneficiaryWithPendingStatus', displayName: 'Pending Activation Subscriptions', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'totalRejectedSubscriberCount', displayName: 'Ineligible for Kilkari Calls', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'totalBeneficiaryWithOnHoldStatus', displayName: 'On hold data count', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                     { field: 'totalBeneficiaryWithPendingStatus', displayName: 'Pending activation beneficiary', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                      { field: 'totalBeneficiaryWithDeactivatedStatus', displayName: 'Deactivated subscriptions', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'totalBeneficiaryWithDeactivatedStatus_LIVE_BIRTH', displayName: 'Mother Pack converted to Child Pack' , cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width: "*", enableHiding: false },
                                                      { field: 'totalBeneficiaryWithCompletedStatus', displayName: 'Completed subscriptions', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
             ]
 

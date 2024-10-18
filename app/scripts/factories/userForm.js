@@ -68,10 +68,14 @@
 					return $http.get(backend_root + 'nms/location/circle/' + service);
 				},
 
-				getReportsMenu: function(){
-				   return $http.post(backend_root + 'nms/user/reportsMenu/');
+				getHomePageMenu: function(){
+				   return $http.post(backend_root + 'nms/user/homePageMenu/');
 //                   return $http.get("scripts/json/reportDetails.json");
 				},
+
+				getReportsMenu: function(){
+                   return $http.post(backend_root + 'nms/user/reportsMenu/');
+                },
 
 				getUser: function(id){
 					return $http.get(backend_root + 'nms/user/user/' + id);

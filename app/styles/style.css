@@ -349,3 +349,7 @@ div.bold div.ui-grid-row:last-child{font-weight:bold;}
 .hidden {display:none;}
 
 .margin-left-40px {margin-left: 40px;}
+
+.highlight-row{
+    background-color: #ffdddd !important;
+}

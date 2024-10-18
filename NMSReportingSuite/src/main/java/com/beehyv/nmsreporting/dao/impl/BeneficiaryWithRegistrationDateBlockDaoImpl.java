@@ -36,6 +36,7 @@ public class BeneficiaryWithRegistrationDateBlockDaoImpl extends AbstractDao<Int
                 "SUM(a.subscriptions_active) AS subscriptions_active , " +
                 "SUM(a.subscriptions_on_hold) AS subscriptions_on_hold , " +
                 "SUM(a.subscriptions_deactivated) AS subscriptions_deactivated , " +
+                "SUM(a.subscriptions_deactivated_LIVE_BIRTH) AS subscriptions_deactivated_LIVE_BIRTH , " +
                 "SUM(a.subscriptions_pending) AS subscriptions_pending , " +
                 "SUM(a.subscriptions_completed) AS subscriptions_completed , " +
                 "SUM(a.subscriptions_rejected) AS subscriptions_rejected " +
@@ -44,7 +45,8 @@ public class BeneficiaryWithRegistrationDateBlockDaoImpl extends AbstractDao<Int
                 "COUNT(distinct(subscription_id) ) AS total_subscriptions , " +
                 "COUNT(Case when s.subscription_status = 'ACTIVE' THEN s.subscription_id END) AS subscriptions_active, " +
                 "COUNT(Case when s.subscription_status = 'HOLD' THEN s.subscription_id END) AS subscriptions_on_hold, " +
-                "COUNT(Case when s.subscription_status = 'DEACTIVATED' THEN s.subscription_id END) AS subscriptions_deactivated, " +
+                "COUNT(CASE WHEN s.subscription_status = 'DEACTIVATED' AND s.deactivation_reason != 'LIVE_BIRTH' THEN s.subscription_id END) AS subscriptions_deactivated , " +
+                "COUNT(CASE WHEN s.subscription_status = 'DEACTIVATED' AND s.deactivation_reason = 'LIVE_BIRTH' THEN s.subscription_id END) AS subscriptions_deactivated_LIVE_BIRTH , " +
                 "COUNT(Case when s.subscription_status = 'PENDING_ACTIVATION' THEN s.subscription_id END) AS subscriptions_pending, " +
                 "COUNT(Case when s.subscription_status = 'COMPLETED' THEN s.subscription_id END) AS subscriptions_completed, " +
                 "0 AS subscriptions_rejected "+
@@ -56,13 +58,13 @@ public class BeneficiaryWithRegistrationDateBlockDaoImpl extends AbstractDao<Int
 
                 "UNION ALL " +
                 "SELECT health_block_id , COUNT(*) AS total_subscriptions , 0 AS subscriptions_active, 0 AS subscriptions_on_hold, 0 AS subscriptions_deactivated ," +
-                "0 AS subscriptions_pending , 0 AS subscriptions_completed, COUNT(*) AS subscriptions_rejected FROM mother_import_rejection " +
+                " 0 AS subscriptions_deactivated_LIVE_BIRTH , 0 AS subscriptions_pending , 0 AS subscriptions_completed, COUNT(*) AS subscriptions_rejected FROM mother_import_rejection " +
                 "WHERE registration_date >= :fromDate AND registration_date < :toDate AND district_id = :districtId " +
                 "GROUP BY health_block_id " +
 
                 "UNION ALL " +
                 "SELECT health_block_id , COUNT(*) AS total_subscriptions , 0 AS subscriptions_active, 0 AS subscriptions_on_hold, 0 AS subscriptions_deactivated ," +
-                "0 AS subscriptions_pending , 0 AS subscriptions_completed , COUNT(*) AS subscriptions_rejected FROM child_import_rejection " +
+                " 0 AS subscriptions_deactivated_LIVE_BIRTH , 0 AS subscriptions_pending , 0 AS subscriptions_completed , COUNT(*) AS subscriptions_rejected FROM child_import_rejection " +
                 "WHERE registration_date >= :fromDate AND registration_date < :toDate AND district_id = :districtId " +
                 "GROUP BY health_block_id ) AS a GROUP BY a.healthBlock_id " ;
 
@@ -84,7 +86,7 @@ public class BeneficiaryWithRegistrationDateBlockDaoImpl extends AbstractDao<Int
                         ((BigDecimal) row[1]).intValue(), ((BigDecimal) row[2]).intValue(),
                         ((BigDecimal) row[3]).intValue(), ((BigDecimal) row[4]).intValue(),
                         ((BigDecimal) row[5]).intValue(), ((BigDecimal) row[6]).intValue(),
-                        ((BigDecimal) row[7]).intValue()
+                        ((BigDecimal) row[7]).intValue(), ((BigDecimal) row[8]).intValue()
                 );
                 if(row[0] == null){
                     dto.setLocationId(0L);

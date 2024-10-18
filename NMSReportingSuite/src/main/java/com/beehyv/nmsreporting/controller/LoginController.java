@@ -126,7 +126,7 @@ public class LoginController extends HttpServlet{
                     }
                     userService.setLoggedIn();
                     if (!user.getDefault() && (loginUser.getFromUrl() == null || loginUser.getFromUrl().equals(""))) {
-                        return retrieveUiAddress() + "reports";
+                        return retrieveUiAddress() + "home";
                     }
                     return loginUser.getFromUrl();
 

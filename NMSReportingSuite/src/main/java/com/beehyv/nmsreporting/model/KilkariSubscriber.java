@@ -45,6 +45,14 @@ public class KilkariSubscriber {
     @Column(name="total_subscriptions_completed", columnDefinition = "INT(11)")
     private Integer totalSubscriptionsCompleted;
 
+    @Column(name="total_records_received_ANC", columnDefinition = "INT(11)")
+    private Integer totalRecordsReceivedANC;
+
+    @Column(name="total_records_received_PNC", columnDefinition = "INT(11)")
+    private Integer totalRecordsReceivedPNC;
+
+    @Column(name="total_records_transitioned_ANC_to_PNC", columnDefinition = "INT(11)")
+    private Integer totalRecordsTransitionedANCToPNC;
 
     public KilkariSubscriber(Integer id, String locationType, Long locationId, Date date, Integer totalSubscriptions, Integer totalRecordsReceived_MCTS_RCH, Integer eligibleForSubscriptions, Integer totalSubscriptionsRejected, Integer totalSubscriptionsAccepted, Integer totalSubscriptionsCompleted) {
         this.id = id;
