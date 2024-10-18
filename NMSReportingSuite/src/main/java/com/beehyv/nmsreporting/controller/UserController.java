@@ -662,10 +662,15 @@ public class UserController {
                     LOGGER.debug("this is subcentre datastart asha regi : {}", start.getAshasRegistered());
                     LOGGER.debug("this is subcentre end asha regi : {}", end.getAshasRegistered());
                     MAPerformanceCountsDto maPerformanceCountsDto = performanceCount.get(end.getLocationId());
+                    if(maPerformanceCountsDto!=null){
                     Long ashaDeactivatedTotalCount = maPerformanceCountsDto.getAshasDeactivatedInBetween() != null ? maPerformanceCountsDto.getAshasDeactivatedInBetween() : 0L;
                     Long ashaDeactivatedCompletedTotalCount = maPerformanceCountsDto.getAshaDeactivatedCompletedCourseInBetweenCount() != null ? maPerformanceCountsDto.getAshaDeactivatedCompletedCourseInBetweenCount() : 0L;
                     registered = end.getAshasRegistered() - start.getAshasRegistered() + ashaDeactivatedTotalCount;
                     completed = end.getAshasCompleted() - start.getAshasCompleted() + ashaDeactivatedCompletedTotalCount;
+                }}
+                else{
+                    registered = (long) (end.getAshasRegistered() - start.getAshasRegistered());
+                    completed = (long) (end.getAshasCompleted() - start.getAshasCompleted());
                 }
                 } catch (NullPointerException e) {
 
@@ -703,12 +708,17 @@ public class UserController {
                 try{
                 if(performanceCount!=null) {
                     MAPerformanceCountsDto maPerformanceCountsDto = performanceCount.get(end.getLocationId());
+                    if(maPerformanceCountsDto!=null){
                     Long ashaDeactivatedTotalCount = maPerformanceCountsDto.getAshasDeactivatedInBetween() != null ? maPerformanceCountsDto.getAshasDeactivatedInBetween() : 0L;
                     Long ashaDeactivatedStartedCount = maPerformanceCountsDto.getAshaDeactivatedStartedCourseInBetweenCount() != null ? maPerformanceCountsDto.getAshaDeactivatedStartedCourseInBetweenCount() : 0L;
 
                     registered = end.getAshasRegistered() - start.getAshasRegistered()+ ashaDeactivatedTotalCount;
                     started = end.getAshasStarted() - start.getAshasStarted() + ashaDeactivatedStartedCount;
 
+                }}
+                else {
+                    registered = (long) (end.getAshasRegistered() - start.getAshasRegistered());
+                    started = (long) (end.getAshasStarted() - start.getAshasStarted());
                 }
                 } catch (NullPointerException e) {
 
