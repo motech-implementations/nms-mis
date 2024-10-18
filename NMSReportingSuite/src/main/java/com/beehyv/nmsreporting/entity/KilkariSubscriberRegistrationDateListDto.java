@@ -10,6 +10,7 @@ public class KilkariSubscriberRegistrationDateListDto {
     private Integer totalBeneficiaryWithPendingStatus;
 //    private Integer totalRecordsRejected;
     private Integer totalBeneficiaryWithDeactivatedStatus;
+    private Integer totalBeneficiaryWithDeactivatedStatus_LIVE_BIRTH;
     private Integer totalSubscriberCount;
     private Integer totalRejectedSubscriberCount;
     private Integer totalBeneficiaryWithCompletedStatus;
@@ -79,6 +80,11 @@ public class KilkariSubscriberRegistrationDateListDto {
         this.totalBeneficiaryWithDeactivatedStatus = totalBeneficiaryWithDeactivatedStatus;
     }
 
+    public Integer getTotalBeneficiaryWithDeactivatedStatus_LIVE_BIRTH() { return totalBeneficiaryWithDeactivatedStatus_LIVE_BIRTH; }
+
+    public void setTotalBeneficiaryWithDeactivatedStatus_LIVE_BIRTH(Integer totalBeneficiaryWithDeactivatedStatus_LIVE_BIRTH) {
+        this.totalBeneficiaryWithDeactivatedStatus_LIVE_BIRTH = totalBeneficiaryWithDeactivatedStatus_LIVE_BIRTH;
+    }
     public Integer getTotalSubscriberCount() {
         return totalSubscriberCount;
     }

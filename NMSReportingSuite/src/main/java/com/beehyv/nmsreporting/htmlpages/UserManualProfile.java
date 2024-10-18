@@ -4,7 +4,7 @@ public class UserManualProfile {
     public static String pageContent ="<div class=\"container-fluid\" data-ng-controller=\"userManual_ProfileController\" style=\"padding-left: 30px\">" +
             "    <h2>Profile</h2>\n" +
             "    <div class = \"userManualPic\">\n" +
-            "        <p>1) The users can login into the system using the URL: <a href=\"https://rchivrreports.in/\">https://rchivrreports.in/</a>.</p>\n" +
+            "        <p>1) The users can login into the system using the URL: <a href=\"http://192.168.200.13:8080/\">http://192.168.200.13:8080/</a>.</p>\n" +
             "        <img src=\"images/ProfileLogin.png\" alt=\"User Manual Login\"><br><br>\n" +
             "        <p>2) Enter the valid User Name and Password combination, check the Captcha tickbox and click on ‘Login’ button to log in to the MIS interface. Following screen appears on successful login.</p> <br>\n" +
             "        <img src=\"images/UMwebInfo/UMp1.png\" alt=\"user Manual Profile\"><br><br><br>\n" +

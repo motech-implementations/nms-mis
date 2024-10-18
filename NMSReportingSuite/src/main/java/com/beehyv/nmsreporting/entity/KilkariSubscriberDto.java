@@ -1,5 +1,7 @@
 package com.beehyv.nmsreporting.entity;
 
+import javax.persistence.criteria.CriteriaBuilder;
+
 /**
  * Created by himanshu on 06/10/17.
  */

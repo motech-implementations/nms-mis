@@ -11,6 +11,7 @@ public class KilkariSubscriberRegistrationDateDto {
     private Integer totalBeneficiaryWithPendingStatus;
     private Integer totalRecordsRejected;
     private Integer totalBeneficiaryWithDeactivatedStatus;
+    private Integer totalBeneficiaryWithDeactivatedStatus_LIVE_BIRTH;
     private Integer totalSubscriptionsCompletedStatus;
     private boolean link = false;
 
@@ -35,6 +36,18 @@ public class KilkariSubscriberRegistrationDateDto {
         this.totalSubscriptionsCompletedStatus = totalSubscriptionsCompletedStatus;
         this.totalRecordsRejected = totalRecordsRejected;
     }
+
+    public KilkariSubscriberRegistrationDateDto(Integer totalSubscriptions, Integer totalBeneficiaryWithActiveStatus, Integer totalBeneficiaryWithOnHoldStatus, Integer totalBeneficiaryWithDeactivatedStatus, Integer totalBeneficiaryWithDeactivatedStatus_LIVE_BIRTH,Integer totalBeneficiaryWithPendingStatus, Integer totalSubscriptionsCompletedStatus, Integer totalRecordsRejected ) {
+        this.totalSubscriptions = totalSubscriptions;
+        this.totalBeneficiaryWithActiveStatus = totalBeneficiaryWithActiveStatus;
+        this.totalBeneficiaryWithOnHoldStatus = totalBeneficiaryWithOnHoldStatus;
+        this.totalBeneficiaryWithDeactivatedStatus = totalBeneficiaryWithDeactivatedStatus;
+        this.totalBeneficiaryWithDeactivatedStatus_LIVE_BIRTH = totalBeneficiaryWithDeactivatedStatus_LIVE_BIRTH;
+        this.totalBeneficiaryWithPendingStatus = totalBeneficiaryWithPendingStatus;
+        this.totalSubscriptionsCompletedStatus = totalSubscriptionsCompletedStatus;
+        this.totalRecordsRejected = totalRecordsRejected;
+    }
+
 
     public int getId() {
         return id;
@@ -108,6 +121,13 @@ public class KilkariSubscriberRegistrationDateDto {
         this.totalBeneficiaryWithDeactivatedStatus = totalBeneficiaryWithDeactivatedStatus;
     }
 
+    public Integer getTotalBeneficiaryWithDeactivatedStatus_LIVE_BIRTH() {
+        return totalBeneficiaryWithDeactivatedStatus_LIVE_BIRTH;
+    }
+
+    public void setTotalBeneficiaryWithDeactivatedStatus_LIVE_BIRTH(Integer totalBeneficiaryWithDeactivatedStatus_LIVE_BIRTH){
+        this.totalBeneficiaryWithDeactivatedStatus_LIVE_BIRTH = totalBeneficiaryWithDeactivatedStatus_LIVE_BIRTH;
+    }
     public Integer getTotalSubscriptionsCompletedStatus() {
         return totalSubscriptionsCompletedStatus;
     }

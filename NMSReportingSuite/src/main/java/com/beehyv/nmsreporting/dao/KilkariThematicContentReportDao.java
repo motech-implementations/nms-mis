@@ -19,4 +19,10 @@ public interface KilkariThematicContentReportDao {
     String getMessageWeekNumber(Integer messageWeekNumber);
 
     Long getUniqueBeneficiariesCalled(Date startDate, Date toDate, String messageId);
+
+    String getMostHeardCallWeek(Integer locationId, String locationType, Date startDate, Date endDate, String periodType);
+
+    String getLeastHeardCallWeek(Integer locationId, String locationType, Date startDate, Date endDate, String periodType);
+
+    double getAverageDurationOfCalls(Integer locationId, String locationType, Date startDate, Date endDate, String periodType);
 }

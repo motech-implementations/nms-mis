@@ -17,4 +17,8 @@ import java.util.List;
 public interface KilkariMessageListenershipReportDao {
 
     KilkariMessageListenership getListenerData(Integer locationId, String locationType, Date date,String periodType);
+
+     Long getTotalAnsweredAtLeastOneCall(Integer locationId, String locationType, Date fromDate, Date toDate, String periodType);
+
+
 }

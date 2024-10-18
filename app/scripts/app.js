@@ -79,9 +79,9 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
                             else {
                                 return $http.post(backend_root + 'nms/user/currentUser')
                                     .then(function(result1){
-                                        if(result1.data.roleName == 'USER'){
-                                            $state.go('reports', {});
-                                        }
+
+                                            $state.go('home', {});
+
                                     });
 
                             }
@@ -197,6 +197,14 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
             url: '/sitemap',
             templateUrl: 'views/sitemap.html'
 
+        }).state('home', {
+              url: '/home',
+              templateUrl: 'views/home.html',
+              resolve : {
+                  user : function ( authorization) {
+                      return authorization.authorize();
+                  }
+              }
         }).state('AboutKilkari', {
             url: '/kilkari',
             templateUrl: 'views/aboutKilkari.html',

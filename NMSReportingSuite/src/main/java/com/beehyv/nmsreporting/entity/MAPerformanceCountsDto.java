@@ -9,6 +9,8 @@ public class MAPerformanceCountsDto {
     Long ashasActivatedInBetween;
     Long ashasDeactivatedInBetween;
     Long ashasCompletedInGivenTime;
+    Long ashaDeactivatedStartedCourseInBetweenCount;
+    Long ashaDeactivatedCompletedCourseInBetweenCount;
 
     public Long getAccessedAtleastOnce() {
         return accessedAtleastOnce;
@@ -66,4 +68,19 @@ public class MAPerformanceCountsDto {
         this.ashasCompletedInGivenTime = ashasCompletedInGivenTime;
     }
 
+    public Long getAshaDeactivatedStartedCourseInBetweenCount() {
+        return ashaDeactivatedStartedCourseInBetweenCount;
+    }
+
+    public void setAshaDeactivatedStartedCourseInBetweenCount(Long ashaDeactivatedStartedCourseInBetweenCount) {
+        this.ashaDeactivatedStartedCourseInBetweenCount = ashaDeactivatedStartedCourseInBetweenCount;
+    }
+
+    public Long getAshaDeactivatedCompletedCourseInBetweenCount() {
+        return ashaDeactivatedCompletedCourseInBetweenCount;
+    }
+
+    public void setAshaDeactivatedCompletedCourseInBetweenCount(Long ashaDeactivatedCompletedCourseInBetweenCount) {
+        this.ashaDeactivatedCompletedCourseInBetweenCount = ashaDeactivatedCompletedCourseInBetweenCount;
+    }
 }

@@ -1,7 +1,38 @@
  (function(){
 	var nmsReportsApp = angular
 		.module('nmsReports')
-		.controller("MainController", ['$scope', '$state', '$http', '$localStorage', '$rootScope', 'UserFormFactory','$idle','$window','$interval', function($scope, $state, $http, $localStorage, $rootScope, UserFormFactory,$idle,$window,$interval) {
+		.controller("MainController", ['$scope', '$state', '$http', '$localStorage', '$rootScope', 'UserFormFactory','etlNotification','$idle','$window','$interval', function($scope, $state, $http, $localStorage, $rootScope, UserFormFactory, etlNotification, $idle,$window,$interval) {
+
+        $scope.notifications = [];
+
+        $scope.checkNotificationStatus = function() {
+                return !($state.current.name == "login" || $state.current.name == "forgotPassword" || !$scope.currentUser);
+            };
+
+            $scope.fetchNotifications = function() {
+            if ($scope.checkNotificationStatus()) {
+                etlNotification.getNotifications()
+                    .then(function(response) {
+                        // Assuming notifications are returned as an array of strings
+                        $scope.notifications = response.data.map(function(notification) {
+                            let parts = notification.split('_');
+                            return {
+                                date: parts[0],
+                                message: parts.slice(1).join('_')
+                            };
+                        });
+                        $('#notificationModal').modal('show'); // Show the modal after fetching notifications
+                    })
+                    .catch(function(error) {
+                        console.error('Error fetching notifications:', error);
+                    });
+                    } else {
+                       console.log('User is not logged in');
+                    }
+            };
+
+            // Call fetchNotifications initially or as needed
+            $scope.fetchNotifications();
 
 		    var logoutUrl = backend_root + "nms/logout";
 		    var timestamp = new Date().getTime();
@@ -177,6 +208,17 @@
                 $scope.removed();
 
             }
+//            $scope.goToHome = function () {
+//            delete $localStorage.filter;
+//                            UserFormFactory.downloadCurrentUser().then(function(result){
+//                                UserFormFactory.setCurrentUser(result.data);
+//                                $scope.currentUser = UserFormFactory.getCurrentUser();
+//                            });
+//                            if (!($scope.disableCursor())){
+//                                $state.go('home', {pageNum: 1});
+//                            }
+//                            $scope.removed();
+//            }
             $scope.goToKilkari = function () {
                 UserFormFactory.downloadCurrentUser().then(function(result){
                     UserFormFactory.setCurrentUser(result.data);
@@ -347,6 +389,21 @@
                 $scope.removed();
             };
 
+             $scope.goToHome = function() {
+             delete $localStorage.filter;
+                UserFormFactory.downloadCurrentUser().then(function(result){
+                    UserFormFactory.setCurrentUser(result.data);
+                    $scope.currentUser = UserFormFactory.getCurrentUser();
+                });
+                if($scope.disableCursor()){
+                     return false;
+                };
+
+                $state.go('home', {pageNum: 1});
+
+                $scope.removed();
+             };
+
             $scope.goToCertificate = function() {
                 delete $localStorage.filter;
                 UserFormFactory.downloadCurrentUser().then(function(result){
@@ -473,7 +530,7 @@
 			    if (toState.name === 'login') {
 			        UserFormFactory.isLoggedIn().then(function(res) {
                         if (res.data) {
-                            $state.go('reports');
+                            $state.go('home');
                         }
                     });
                 }

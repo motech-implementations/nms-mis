@@ -577,12 +577,12 @@
                 $scope.showEmptyData = false;
                 if($scope.report.name == 'District-wise Performance of the State for Mobile Academy') {
                 $scope.dateFormat = 'yyyy-MM-dd';
-                                    $scope.endDatePickerOptions.minDate = new Date(2015,12,01)
+                                    $scope.endDatePickerOptions.minDate = new Date(2015,11,1)
                                     $scope.endDatePickerOptions.maxDate = new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate()-1);
                 }
                 if($scope.report.reportEnum == 'Kilkari_Cumulative_Summary'){
                     $scope.dateFormat = 'yyyy-MM-dd';
-                    $scope.endDatePickerOptions.minDate = new Date(2016,11,01)
+                    $scope.endDatePickerOptions.minDate = new Date(2016,11,1)
                     $scope.endDatePickerOptions.maxDate = new Date();
                 }
 
@@ -739,26 +739,26 @@
 
 			$scope.setDateOptions =function(){
                 if($scope.isAggregateReport()&&($scope.periodDisplayType == 'Month'||$scope.periodDisplayType == 'Week'||$scope.periodDisplayType == 'Custom Range')){
-                    var minDate = new Date(2016, 11, 01);
+                    var minDate = new Date(2016, 11, 1);
                 }
                 else if($scope.isAggregateReport()&&($scope.periodDisplayType == 'Year'||$scope.periodDisplayType == 'Quarter'||$scope.periodDisplayType == 'Financial Year')){
-                    var minDate = new Date(2017, 00, 01);
+                    var minDate = new Date(2017, 0, 1);
                 }
                 else{
                     var minDate = new Date(2016, 11, 30);
                 }
 
 				if($scope.report != null && $scope.report.service == 'M'){
-					minDate = new Date(2015, 10, 01);
+					minDate = new Date(2015, 10, 1);
 				}
 				if($scope.report != null && $scope.report.reportEnum == 'MA_Cumulative_Inactive_Users'){
-                	minDate = new Date(2015, 12, 01);
+                	minDate = new Date(2015, 11, 1);
                 }
                 if($scope.report != null && $scope.report.reportEnum == 'MA_Cumulative_Course_Completion'){
-                	minDate = new Date(2015, 12, 01);
+                	minDate = new Date(2015, 11, 1);
                 }
                 if($scope.report != null && $scope.report.reportEnum == 'MA_Anonymous_Users'){
-                    minDate = new Date(2017, 01, 01);
+                    minDate = new Date(2017, 1, 1);
                 }
                 if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Low_Usage'){
                     minDate = new Date(2016, 11, 30);
@@ -766,19 +766,19 @@
 
                 //In case of change in minDate for rejection reports, please change startMonth and startDate variable accordingly
                 if($scope.report != null && $scope.report.reportEnum == 'MA_Asha_Import_Rejects'){
-                    minDate = new Date(2017, 08, 01);
+                    minDate = new Date(2017, 8, 1);
                  }
                  if($scope.report != null && ($scope.report.reportEnum == 'MA_Performance' || $scope.report.reportEnum == 'MA_Subscriber')) {
-                    minDate = new Date(2015,12,01);
+                    minDate = new Date(2015,11,1);
                  }
                  if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Mother_Import_Rejects'){
-                    minDate = new Date(2017, 08, 01);
+                    minDate = new Date(2017, 8, 1);
                  }
                  if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Child_Import_Rejects'){
-                    minDate = new Date(2017, 08, 01);
+                    minDate = new Date(2017, 8, 1);
                  }
                  if($scope.report != null && $scope.report.reportEnum == 'Kilkari_Subscriber_with_RegistrationDate'){
-                    minDate = new Date(2024, 03, 01);
+                    minDate = new Date(2024, 3, 1);
                  }
 				if(!$scope.isCircleReport() && $scope.state != null && Date.parse($scope.state.serviceStartDate) > minDate){
 					minDate = $scope.state.serviceStartDate;
@@ -1478,9 +1478,29 @@
 
 					    if($scope.report.reportEnum == 'District-wise Performance of the State for Mobile Academy'){
 					        $scope.gridOptions1.columnDefs = $scope.MA_Cumulative_Column_Definitions;
+					        $scope.gridOptions1.columnDefs.forEach(function(column){
+                                column.cellClass= $scope.getCellClass_MA;
+                            });
 					    }
 					    else if($scope.report.reportEnum == 'MA_Performance'){
 					        $scope.gridOptions1.columnDefs = $scope.MA_Performance_Column_Definitions;
+                            $scope.gridOptions1.getRowStyle= function (params) {
+                                                                 if (params.node.rowIndex % 2 === 0) {
+                                                                     return { background: 'red' };
+                                                                 }
+                                                             };
+                            $scope.gridOptions1.columnDefs.forEach(function(column){
+                                column.cellClass= $scope.getCellClass;
+                            });
+					        $scope.gridOptions1.data = result.data.tableData.map(row => {
+                                row.totalSum = (row.ashasCompleted || 0) + (row.ashasFailed || 0) +
+                                               (row.ashasStarted || 0) + (row.ashasAccessed || 0) +
+                                               (row.ashasNotAccessed || 0) + (row.ashasJoined || 0);
+                                return row;
+                            });
+
+                            console.log($scope.gridOptions1.data);
+
 					    }
 					    else if($scope.report.reportEnum == 'MA_Subscriber'){
 					        $scope.gridOptions1.columnDefs = $scope.MA_Subscriber_Column_Definitions;
@@ -1511,9 +1531,19 @@
 					    }
 					    else if($scope.report.reportEnum == 'Kilkari_Subscriber'){
 					        if(!rejectionStart)
-                                {$scope.gridOptions1.columnDefs = $scope.Kilkari_Subscriber_Definitions;}
+                                {
+                                    $scope.gridOptions1.columnDefs = $scope.Kilkari_Subscriber_Definitions;
+                                    $scope.gridOptions1.columnDefs.forEach(function(column){
+                                        column.cellClass= $scope.getCellClass_Kilkari_subscriber;
+                                    });
+                                }
                             if(rejectionStart)
-                                {$scope.gridOptions1.columnDefs = $scope.Kilkari_Subscriber_Definitions2;}
+                                {
+                                    $scope.gridOptions1.columnDefs = $scope.Kilkari_Subscriber_Definitions2;
+                                    $scope.gridOptions1.columnDefs.forEach(function(column){
+                                        column.cellClass= $scope.getCellClass_Kilkari_subscriber;
+                                    });
+                                }
                         }
                         else if($scope.report.reportEnum == 'Kilkari_Subscriber_with_RegistrationDate'){
                                 $scope.gridOptions1.columnDefs = $scope.Kilkari_Subscriber_with_RegistrationDate_Definitions;
@@ -2427,6 +2457,33 @@
                     },
               };
 
+            $scope.getCellClass= function(grid, row, col, rowRenderIndex, colRenderIndex){
+                var fieldsToCheck= ["ashasCompleted", "ashasFailed", "ashasStarted", "ashasAccessed", "ashasNotAccessed", "ashasJoined"];
+                var allZero = fieldsToCheck.every(function(field) {
+                    return row.entity[field] === 0 || row.entity[field] === null;
+               });
+
+               return allZero ? 'highlight-row' : '';
+            }
+
+            $scope.getCellClass_MA= function(grid, row, col, rowRenderIndex, colRenderIndex){
+                var fieldsToCheck= ["ashasStarted", "ashasCompleted", "ashasNotStarted", "ashasFailed", "ashasRegistered"];
+                var allZero = fieldsToCheck.every(function(field) {
+                    return row.entity[field] === 0 || row.entity[field] === null;
+                });
+
+                return allZero ? 'highlight-row' : '';
+            }
+
+            $scope.getCellClass_Kilkari_subscriber= function(grid, row, col, rowRenderIndex, colRenderIndex){
+                var fieldsToCheck= ["totalSubscriptionsEnd", "totalSubscriptionsStart", "totalBeneficiaryRecordsReceived", "totalBeneficiaryRecordsEligible", "totalBeneficiaryRecordsAccepted", "totalRecordsRejected", "totalSubscriptionsCompleted"];
+                var allZero = fieldsToCheck.every(function(field) {
+                    return row.entity[field] === 0 || row.entity[field] === null;
+                });
+
+                return allZero ? 'highlight-row' : '';
+            }
+
             $scope.MA_Cumulative_Column_Definitions =[
                                                        {name: 'S No.', displayName: 'S No.',width:"6%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no" >{{rowRenderIndex+1}}</p>'},
                                                        { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>', defaultSort: { direction: uiGridConstants.ASC },
@@ -2733,12 +2790,13 @@
                                                         cellTemplate:'<a   ng-if= !row.entity.link class="btn aggregate-location" title="{{COL_FIELD}}"  ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a><p ng-if= row.entity.link class="ui-grid-cell-contents" title="{{COL_FIELD}}" >{{ COL_FIELD }}</p>',
                                                         enableHiding: false,width: "15%"
                                                      },
-                                                     { field: 'totalSubscriberCount', displayName: 'Total Subscriptions', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"12%", enableHiding: false },
+                                                     { field: 'totalSubscriberCount', displayName: 'Total data received from RCH', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"12%", enableHiding: false },
                                                      { field: 'totalBeneficiaryWithActiveStatus', displayName: 'Active Subscriptions', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'totalRejectedSubscriberCount', displayName: 'Rejected Subscriptions', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
-                                                     { field: 'totalBeneficiaryWithOnHoldStatus', displayName: 'On Hold Subscriptions', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
-                                                     { field: 'totalBeneficiaryWithPendingStatus', displayName: 'Pending Activation Subscriptions', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'totalRejectedSubscriberCount', displayName: 'Ineligible for Kilkari Calls', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'totalBeneficiaryWithOnHoldStatus', displayName: 'On hold data count', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                     { field: 'totalBeneficiaryWithPendingStatus', displayName: 'Pending activation beneficiary', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                      { field: 'totalBeneficiaryWithDeactivatedStatus', displayName: 'Deactivated subscriptions', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                     { field: 'totalBeneficiaryWithDeactivatedStatus_LIVE_BIRTH', displayName: 'Mother Pack converted to Child Pack' , cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width: "*", enableHiding: false },
                                                      { field: 'totalBeneficiaryWithCompletedStatus', displayName: 'Completed subscriptions', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
             ]
 

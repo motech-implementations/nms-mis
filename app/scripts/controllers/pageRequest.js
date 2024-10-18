@@ -120,6 +120,23 @@
                 )
 
         }])
+         .controller("homeHtPageController", ['$scope', '$state', '$http', '$sce', function($scope, $state, $http, $sce){
+
+             $http.get(backend_root + 'page/home')
+                 .then(function(result){
+                         if(result.status===200){
+                             $scope.homePage= result.data.pagecontent;
+                             $scope.homePageContent = $sce.trustAsHtml($scope.homePage);
+                         }
+                         else {
+                             state.go('login', {});
+                         }
+                      }, function(error){
+                              $state.go('login', {});
+                      }
+                 )
+
+         }])
         .controller("aboutMAHtPageController", ['$scope', '$state', '$http', '$sce', function($scope, $state, $http, $sce){
 
             $http.get(backend_root + 'page/aboutMA')
