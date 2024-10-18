@@ -856,6 +856,9 @@ public class UserController {
             Date fromDate = dateAdder(reportRequest.getFromDate(), 0);
             Date toDate = dateAdder(reportRequest.getToDate(), 1);
             List<LocationCountDto> locationCounts = new ArrayList<>();
+            Map<Long,MAPerformanceCountsDto> performanceCounts = new HashMap<>();
+            LOGGER.debug("this is from date : {}",fromDate);
+            LOGGER.debug("this is to date : {}",toDate);
 
 
 
