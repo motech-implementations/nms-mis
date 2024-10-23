@@ -13,8 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigInteger;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by beehyv on 9/10/17.
@@ -175,26 +174,44 @@ public class AggregateCumulativeBeneficiaryDaoImpl extends AbstractDao<Integer,A
     }
 
     @Override
-    public Long getJoinedSubscriptionSum(Integer locationId, String locationType, Date fromDate, Date toDate, String periodType) {
-        String sql = "SELECT SUM(joined_subscription) " +
+    public Map<Integer, Long> getJoinedSubscriptionSum(List<Integer> locationIds, String locationType, Date fromDate, Date toDate, String periodType) {
+
+        StringBuilder locationIdPlaceholders = new StringBuilder();
+        for (int i = 0; i < locationIds.size(); i++) {
+            locationIdPlaceholders.append("?");
+            if (i < locationIds.size() - 1) {
+                locationIdPlaceholders.append(",");
+            }
+        }
+        String sql = "SELECT location_id, SUM(joined_subscription) " +
                 "FROM agg_aggregate_beneficiaries " +
-                "WHERE location_id = :locationId " +
+                "WHERE location_id IN (" + locationIdPlaceholders.toString() + ") " +
                 "AND location_type = :locationType " +
                 "AND period_type = :periodType " +
-                "AND date BETWEEN :fromDate AND :toDate";
+                "AND date BETWEEN :fromDate AND :toDate " +
+                "GROUP BY location_id ";
 
-        LOGGER.info("Query - {}, locationId:{}" , sql, locationId);
+        LOGGER.info("Query - {}, locationIds:{}" , sql, locationIds);
         SQLQuery query = getSession().createSQLQuery(sql);
-        query.setParameter("locationId", locationId.longValue());
+        for (int i = 0; i < locationIds.size(); i++) {
+            query.setParameter(i, locationIds.get(i));
+        }
         query.setParameter("locationType", locationType);
         query.setParameter("periodType", periodType);
         query.setParameter("fromDate", fromDate);
         query.setParameter("toDate", toDate);
 
-        Object result = query.uniqueResult();
+        List<Object[]> results = query.list();
+
+        Map<Integer, Long> resultMap = new HashMap<>();
+        for (Object[] row : results) {
+            Integer locationId = ((Number) row[0]).intValue();
+            Long joinedSubscriptionSum = row[1] != null ? ((Number) row[1]).longValue() : 0L;
+            resultMap.put(locationId, joinedSubscriptionSum);
+        }
         LOGGER.info("Operation = JoinedSubscriptionSum, status = COMPLETED" );
-        LOGGER.info("result:{}", result != null ? ((Number) result).longValue() : 0L);
-        return result != null ? ((Number) result).longValue() : 0L;
+        LOGGER.info("Result map: {}", resultMap);
+        return resultMap;
     }
 
     @Override
@@ -218,26 +235,44 @@ public class AggregateCumulativeBeneficiaryDaoImpl extends AbstractDao<Integer,A
 
 
     @Override
-    public Long getTotalDeactivationSum(Integer locationId, String locationType, Date fromDate, Date toDate, String periodType) {
-        String sql = "SELECT SUM(no_answer_deactivation+low_listener_deactivation+system_deactivation) " +
+    public Map<Integer,Long> getTotalDeactivationSum(List<Integer> locationIds, String locationType, Date fromDate, Date toDate, String periodType) {
+        StringBuilder locationIdPlaceholders = new StringBuilder();
+        for (int i = 0; i < locationIds.size(); i++) {
+            locationIdPlaceholders.append("?");
+            if (i < locationIds.size() - 1) {
+                locationIdPlaceholders.append(",");
+            }
+        }
+        String sql = "SELECT location_id, SUM(no_answer_deactivation+low_listener_deactivation+system_deactivation) " +
                 "FROM agg_aggregate_beneficiaries " +
-                "WHERE location_id = :locationId " +
+                "WHERE location_id IN (" + locationIdPlaceholders.toString() + ") " +
                 "AND location_type = :locationType " +
                 "AND period_type = :periodType " +
-                "AND date BETWEEN :fromDate AND :toDate";
+                "AND date BETWEEN :fromDate AND :toDate " +
+                "GROUP BY location_id ";
 
         LOGGER.info("Query - {} " , sql);
         SQLQuery query = getSession().createSQLQuery(sql);
-        query.setParameter("locationId", locationId.longValue());
+        for (int i = 0; i < locationIds.size(); i++) {
+            query.setParameter(i, locationIds.get(i));
+        }
         query.setParameter("locationType", locationType);
         query.setParameter("periodType", periodType);
         query.setParameter("fromDate", fromDate);
         query.setParameter("toDate", toDate);
 
-        Object result = query.uniqueResult();
+        List<Object[]> results = query.list();
+
+        Map<Integer, Long> resultMap = new HashMap<>();
+
+        for (Object[] row : results) {
+            Integer locationId = ((Number) row[0]).intValue();
+            Long totalDeactivationSum = row[1] != null ? ((Number) row[1]).longValue() : 0L;
+            resultMap.put(locationId, totalDeactivationSum);
+        }
         LOGGER.info("Operation = TotalDeactivationSum, status = COMPLETED" );
-        LOGGER.info("result:{}", result != null ? ((Number) result).longValue() : 0L);
-        return result != null ? ((Number) result).longValue() : 0L;
+        LOGGER.info("Result map: {}", resultMap);
+        return resultMap;
     }
 
 }

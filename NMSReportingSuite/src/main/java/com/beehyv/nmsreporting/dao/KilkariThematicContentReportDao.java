@@ -1,7 +1,6 @@
 package com.beehyv.nmsreporting.dao;
 
 
-import com.beehyv.nmsreporting.entity.ReportRequest;
 import com.beehyv.nmsreporting.model.KilkariThematicContent;
 
 import java.util.Date;
@@ -20,9 +19,9 @@ public interface KilkariThematicContentReportDao {
 
     Long getUniqueBeneficiariesCalled(Date startDate, Date toDate, String messageId);
 
-    String getMostHeardCallWeek(Integer locationId, String locationType, Date startDate, Date endDate, String periodType);
+    Map<Integer,String> getMostHeardCallWeek(List<Integer> locationId, String locationType, Date startDate, Date endDate, String periodType);
 
-    String getLeastHeardCallWeek(Integer locationId, String locationType, Date startDate, Date endDate, String periodType);
+    Map<Integer, String> getLeastHeardCallWeek(List<Integer> locationIds, String locationType, Date startDate, Date endDate, String periodType);
 
-    double getAverageDurationOfCalls(Integer locationId, String locationType, Date startDate, Date endDate, String periodType);
+    Map<Integer, Double> getAverageDurationOfCalls(List<Integer> locationIds, String locationType, Date startDate, Date endDate, String periodType);
 }

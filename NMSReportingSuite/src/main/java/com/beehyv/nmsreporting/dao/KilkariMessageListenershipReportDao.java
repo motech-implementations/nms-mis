@@ -13,12 +13,13 @@ import com.beehyv.nmsreporting.model.State;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public interface KilkariMessageListenershipReportDao {
 
     KilkariMessageListenership getListenerData(Integer locationId, String locationType, Date date,String periodType);
 
-     Long getTotalAnsweredAtLeastOneCall(Integer locationId, String locationType, Date fromDate, Date toDate, String periodType);
+     Map<Integer,Long> getTotalAnsweredAtLeastOneCall(List<Integer> locationIds, String locationType, Date fromDate, Date toDate, String periodType);
 
 
 }

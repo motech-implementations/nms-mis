@@ -4,6 +4,7 @@ import com.beehyv.nmsreporting.model.MotherImportRejection;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public interface MotherImportRejectionDao {
 
@@ -17,20 +18,20 @@ public interface MotherImportRejectionDao {
 
     Long getCountOFRejectedMotherImportRecordsWithDistrictId(Date fromDate, Date toDate, Integer districtId);
 
-    Long getUniqueDuplicatePhoneNumberCountForBlock(Date fromDate, Date toDate, Integer blockId);
+    Map<Integer, Long> getUniqueDuplicatePhoneNumberCountForBlock(Date fromDate, Date toDate, List<Integer> blockIds);
 
-    Long getUniqueDuplicatePhoneNumberCountForState(Date fromDate, Date toDate, Integer stateId);
+    Map<Integer, Long> getUniqueDuplicatePhoneNumberCountForState(Date fromDate, Date toDate, List<Integer> stateIds);
 
-    Long getUniqueDuplicatePhoneNumberCountForDistrict(Date fromDate, Date toDate, Integer districtId);
+    Map<Integer, Long> getUniqueDuplicatePhoneNumberCountForDistrict(Date fromDate, Date toDate, List<Integer> districtIds);
 
-    Long getUniqueDuplicatePhoneNumberCountForHealthFacility(Date fromDate, Date toDate, Integer healthFacilityId);
+    Map<Integer, Long> getUniqueDuplicatePhoneNumberCountForHealthFacility(Date fromDate, Date toDate, List<Integer> healthFacilityIds);
 
-    Long getTotalIneligibleCountByState(Date fromDate, Date toDate, Integer stateId);
+    Map<Integer, Long> getTotalIneligibleCountByState(Date fromDate, Date toDate, List<Integer> stateIds);
 
-    Long getTotalIneligibleCountByDistrict(Date fromDate, Date toDate, Integer districtId);
+    Map<Integer, Long> getTotalIneligibleCountByDistrict(Date fromDate, Date toDate, List<Integer> districtIds);
 
-    Long getTotalIneligibleCountByBlock(Date fromDate, Date toDate, Integer blockId);
+    Map<Integer, Long> getTotalIneligibleCountByBlock(Date fromDate, Date toDate, List<Integer> blockIds);
 
-    Long getTotalIneligibleCountByHealthFacility(Date fromDate, Date toDate, Integer healthFacilityId);
+    Map<Integer, Long> getTotalIneligibleCountByHealthFacility(Date fromDate, Date toDate, List<Integer> healthFacilityIds);
 
 }
