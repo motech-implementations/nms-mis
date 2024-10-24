@@ -80,7 +80,7 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
                                 return $http.post(backend_root + 'nms/user/currentUser')
                                     .then(function(result1){
 
-                                        $state.go('home', {});
+                                            $state.go('home', {});
 
                                     });
 
