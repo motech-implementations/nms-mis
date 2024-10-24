@@ -79,9 +79,8 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
                             else {
                                 return $http.post(backend_root + 'nms/user/currentUser')
                                     .then(function(result1){
-                                        if(result1.data.roleName == 'USER'){
-                                            $state.go('home', {});
-                                        }
+
+                                        $state.go('home', {});
 
                                     });
 
