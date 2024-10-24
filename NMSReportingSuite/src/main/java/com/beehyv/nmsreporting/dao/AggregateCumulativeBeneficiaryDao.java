@@ -3,6 +3,8 @@ package com.beehyv.nmsreporting.dao;
 import com.beehyv.nmsreporting.model.AggregateCumulativeBeneficiary;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by beehyv on 9/10/17.
@@ -17,9 +19,9 @@ public interface AggregateCumulativeBeneficiaryDao {
 
     Long getCalledKilkariInboxCount(Long locationId, String locationType, Date date);
 
-    Long getJoinedSubscriptionSum(Integer locationId, String locationType, Date fromDate, Date toDate, String periodType);
+    Map<Integer, Long> getJoinedSubscriptionSum(List<Integer> locationIds, String locationType, Date fromDate, Date toDate, String periodType);
 
-    Long getTotalDeactivationSum(Integer locationId, String locationType, Date fromDate, Date toDate, String periodType);
+    Map<Integer,Long> getTotalDeactivationSum(List<Integer> locationId, String locationType, Date fromDate, Date toDate, String periodType);
 
     Long getJoinedSubscriptionSumTillDate(Integer locationId, String locationType, Date toDate);
 

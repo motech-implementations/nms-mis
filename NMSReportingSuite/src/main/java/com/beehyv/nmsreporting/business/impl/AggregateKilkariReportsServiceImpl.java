@@ -1508,6 +1508,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         List<KilkariHomePageReportsDto> kilkariHomePageReportsDtoList = new ArrayList<>();
         if(locationType.equalsIgnoreCase("State")){
             List<State> states=stateDao.getStatesByServiceType("KILKARI");
+            List<Integer> stateIds = new ArrayList<>();
             for(State s:states){
                 Long beneficiariesJoinedTillLastMonth=0L;
                 Long beneficiariesAnsweredAtLeastOneCall=0L;
@@ -1547,10 +1548,42 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 kilkariHomePageReportsDto.setLocationType(locationType);
 
                 kilkariHomePageReportsDtoList.add(kilkariHomePageReportsDto);
+                if (!toDate.before(stateServiceDao.getServiceStartDateForState(s.getStateId(), "KILKARI"))) {
+                    stateIds.add(s.getStateId()!=null? s.getStateId() : 0);
+                }
             }
+
+            Map<Integer, Long> beneficiariesJoinedTillLastMonth = aggregateCumulativeBeneficiaryDao.getJoinedSubscriptionSum(stateIds, locationType, fromDate, toDate, periodType);
+            Map<Integer, Long> beneficiariesAnsweredAtLeastOneCall = kilkariMessageListenershipReportDao.getTotalAnsweredAtLeastOneCall(stateIds, locationType, fromDate, toDate, periodType);
+            Map<Integer, Long> totalDeactivations = aggregateCumulativeBeneficiaryDao.getTotalDeactivationSum(stateIds, locationType, fromDate, toDate, periodType);
+            Map<Integer, String> mostHeardCallWeekNo = kilkariThematicContentReportDao.getMostHeardCallWeek(stateIds, locationType, fromDate, toDate, periodType);
+            Map<Integer, String> leastHeardCallWeekNo = kilkariThematicContentReportDao.getLeastHeardCallWeek(stateIds, locationType, fromDate, toDate, periodType);
+            Map<Integer, Double> avgDurationOfCalls = kilkariThematicContentReportDao.getAverageDurationOfCalls(stateIds, locationType, fromDate, toDate, periodType);
+            Map<Integer, Long> duplicatePhoneNumberCount = motherImportRejectionDao.getUniqueDuplicatePhoneNumberCountForState(fromDate, toDate, stateIds);
+            Map<Integer, Long>totalIneligible = motherImportRejectionDao.getTotalIneligibleCountByState(fromDate, toDate, stateIds);
+
+            for(Integer stateId : stateIds){
+                KilkariHomePageReportsDto kilkariHomePageReportsDto = new KilkariHomePageReportsDto();
+
+                //we need to set location in this dto
+                kilkariHomePageReportsDto.setBeneficiariesJoinedTillLastMonth(beneficiariesJoinedTillLastMonth.get(stateId)!=null ? beneficiariesJoinedTillLastMonth.get(stateId).intValue() : 0);
+                kilkariHomePageReportsDto.setBeneficiariesAnsweredAtLeastOneCall(beneficiariesAnsweredAtLeastOneCall.get(stateId) != null ? beneficiariesAnsweredAtLeastOneCall.get(stateId).intValue():0);
+                kilkariHomePageReportsDto.setTotalDeactivations(totalDeactivations.get(stateId) != null ? totalDeactivations.get(stateId).intValue():0);
+                kilkariHomePageReportsDto.setMostHeardCallWeekNo(this.extractWeekNumberAsInt(mostHeardCallWeekNo.get(stateId)));
+                kilkariHomePageReportsDto.setLeastHeardCallWeekNo(this.extractWeekNumberAsInt(leastHeardCallWeekNo.get(stateId)));
+                kilkariHomePageReportsDto.setAvgDurationOfCalls(avgDurationOfCalls.get(stateId) != null ? avgDurationOfCalls.get(stateId) : 0.0);
+                kilkariHomePageReportsDto.setDuplicatePhoneNumberCount(duplicatePhoneNumberCount.get(stateId) != null ? duplicatePhoneNumberCount.get(stateId).intValue():0);
+                kilkariHomePageReportsDto.setTotalIneligible(totalIneligible.get(stateId) != null ? totalIneligible.get(stateId).intValue():0);
+                kilkariHomePageReportsDto.setLocationId(stateId.longValue());
+                kilkariHomePageReportsDto.setLocationType(locationType);
+
+                kilkariHomePageReportsDtoList.add(kilkariHomePageReportsDto);
+            }
+
         } else if (locationType.equalsIgnoreCase("District")) {
 
                 List<District> districts = districtDao.getDistrictsOfState(locationId);
+                List<Integer> districtIds = new ArrayList<>();
 //                Long stateCount1=aggregateCumulativeBeneficiaryDao.getJoinedSubscriptionSum(locationId, "STATE", fromDate, toDate, periodType);;
 //                Long stateCount2=kilkariMessageListenershipReportDao.getTotalAnsweredAtLeastOneCall(locationId, "STATE", fromDate, toDate, periodType);;
 //                Long stateCount3=aggregateCumulativeBeneficiaryDao.getTotalDeactivationSum( locationId,  "STATE",  fromDate,  toDate,  periodType);;
@@ -1571,46 +1604,9 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
 //                int totalIneligible=0;
 
                 for(District d:districts){
+                    districtIds.add(d.getDistrictId()!=null ? d.getDistrictId() :0);
 
-                    Long districtId = 0L;
-                    Long districtCount1 = 0L;
-                    Long districtCount2 = 0L;
-                    Long districtCount3 = 0L;
-                    int districtCount4 = 0;
-                    int districtCount5 = 0;
-                    double districtCount6 = 0;
-                    Long districtCount7 = 0L;
-                    Long districtCount8 = 0L;
-                    try {
-                        districtCount1 = aggregateCumulativeBeneficiaryDao.getJoinedSubscriptionSum(d.getDistrictId(), locationType, fromDate, toDate, periodType);
-                        ;
-                        districtCount2 = kilkariMessageListenershipReportDao.getTotalAnsweredAtLeastOneCall(d.getDistrictId(), locationType, fromDate, toDate, periodType);
-                        ;
-                        districtCount3 = aggregateCumulativeBeneficiaryDao.getTotalDeactivationSum(d.getDistrictId(), locationType, fromDate, toDate, periodType);
-                        ;
-                        districtCount4 = this.extractWeekNumberAsInt(kilkariThematicContentReportDao.getMostHeardCallWeek(d.getDistrictId(), locationType, fromDate, toDate, periodType));
-                        districtCount5 = this.extractWeekNumberAsInt(kilkariThematicContentReportDao.getLeastHeardCallWeek(d.getDistrictId(), locationType, fromDate, toDate, periodType));
-                        districtCount6 = kilkariThematicContentReportDao.getAverageDurationOfCalls(d.getDistrictId(), locationType, fromDate, toDate, periodType);
-                        districtCount7 = motherImportRejectionDao.getUniqueDuplicatePhoneNumberCountForDistrict(fromDate, toDate, d.getDistrictId());
-                        districtCount8 = motherImportRejectionDao.getTotalIneligibleCountByDistrict(fromDate, toDate, d.getDistrictId());
-                        LOGGER.info("these are the values of columns in state- beneficiariesJoinedTillLastMonth: {},beneficiariesAnsweredAtLeastOneCall: {}", districtCount1, districtCount2);
-                    } catch (Exception e){
-                        LOGGER.debug(e.getMessage());
-                    }
-
-                    //we need to set location in this dto
-                    KilkariHomePageReportsDto kilkariHomePageReportsDto = new KilkariHomePageReportsDto();
-                    kilkariHomePageReportsDto.setBeneficiariesJoinedTillLastMonth(districtCount1 != null ? districtCount1.intValue():0);
-                    kilkariHomePageReportsDto.setBeneficiariesAnsweredAtLeastOneCall(districtCount2 != null ? districtCount2.intValue():0);
-                    kilkariHomePageReportsDto.setTotalDeactivations(districtCount3 != null ?  districtCount3.intValue():0);
-                    kilkariHomePageReportsDto.setMostHeardCallWeekNo(districtCount4);
-                    kilkariHomePageReportsDto.setLeastHeardCallWeekNo(districtCount5);
-                    kilkariHomePageReportsDto.setAvgDurationOfCalls(districtCount6);
-                    kilkariHomePageReportsDto.setDuplicatePhoneNumberCount(districtCount7 != null ? districtCount7.intValue():0);
-                    kilkariHomePageReportsDto.setTotalIneligible(districtCount8 != null ? districtCount8.intValue():0);
-                    kilkariHomePageReportsDto.setLocationId(d.getDistrictId() != null ? d.getDistrictId().longValue():0);
-                    kilkariHomePageReportsDto.setLocationType(locationType);
-                    kilkariHomePageReportsDtoList.add(kilkariHomePageReportsDto);
+//                    LOGGER.info("these are the values of columns in state- beneficiariesJoinedTillLastMonth: {},beneficiariesAnsweredAtLeastOneCall: {}",beneficiariesJoinedTillLastMonth,beneficiariesAnsweredAtLeastOneCall);
 //                    beneficiariesJoinedTillLastMonth+=districtCount1;
 //                    beneficiariesAnsweredAtLeastOneCall+=districtCount2;
 //                    totalDeactivations+=districtCount3;
@@ -1621,6 +1617,33 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
 //                    totalIneligible+=districtCount8;
 
                 }
+                Map<Integer, Long> districtCount1 = aggregateCumulativeBeneficiaryDao.getJoinedSubscriptionSum(districtIds, locationType, fromDate, toDate, periodType);
+                Map<Integer, Long> districtCount2 = kilkariMessageListenershipReportDao.getTotalAnsweredAtLeastOneCall(districtIds, locationType, fromDate, toDate, periodType);
+                Map<Integer, Long> districtCount3 = aggregateCumulativeBeneficiaryDao.getTotalDeactivationSum(districtIds, locationType, fromDate, toDate, periodType);
+                Map<Integer, String> districtCount4 = kilkariThematicContentReportDao.getMostHeardCallWeek(districtIds, locationType, fromDate, toDate, periodType);
+                Map<Integer, String> districtCount5 = kilkariThematicContentReportDao.getLeastHeardCallWeek(districtIds, locationType, fromDate, toDate, periodType);
+                Map<Integer, Double> districtCount6 = kilkariThematicContentReportDao.getAverageDurationOfCalls(districtIds, locationType, fromDate, toDate, periodType);
+                Map<Integer, Long> districtCount7 = motherImportRejectionDao.getUniqueDuplicatePhoneNumberCountForDistrict(fromDate, toDate, districtIds);
+                Map<Integer, Long> districtCount8 = motherImportRejectionDao.getTotalIneligibleCountByDistrict(fromDate, toDate, districtIds);
+
+                for(Integer districtId : districtIds){
+                    KilkariHomePageReportsDto kilkariHomePageReportsDto = new KilkariHomePageReportsDto();
+
+                    //we need to set location in this dto
+                    kilkariHomePageReportsDto.setBeneficiariesJoinedTillLastMonth(districtCount1.get(districtId)!=null ? districtCount1.get(districtId).intValue() : 0);
+                    kilkariHomePageReportsDto.setBeneficiariesAnsweredAtLeastOneCall(districtCount2.get(districtId) != null ? districtCount2.get(districtId).intValue():0);
+                    kilkariHomePageReportsDto.setTotalDeactivations(districtCount3.get(districtId) != null ? districtCount3.get(districtId).intValue():0);
+                    kilkariHomePageReportsDto.setMostHeardCallWeekNo(this.extractWeekNumberAsInt(districtCount4.get(districtId)));
+                    kilkariHomePageReportsDto.setLeastHeardCallWeekNo(this.extractWeekNumberAsInt(districtCount5.get(districtId)));
+                    kilkariHomePageReportsDto.setAvgDurationOfCalls(districtCount6.get(districtId) != null ? districtCount6.get(districtId) : 0.0);
+                    kilkariHomePageReportsDto.setDuplicatePhoneNumberCount(districtCount7.get(districtId) != null ? districtCount7.get(districtId).intValue():0);
+                    kilkariHomePageReportsDto.setTotalIneligible(districtCount8.get(districtId) != null ? districtCount8.get(districtId).intValue():0);
+                    kilkariHomePageReportsDto.setLocationId(districtId.longValue());
+                    kilkariHomePageReportsDto.setLocationType(locationType);
+
+                    kilkariHomePageReportsDtoList.add(kilkariHomePageReportsDto);
+                }
+
 //                KilkariHomePageReportsDto noDistrictCount = new KilkariHomePageReportsDto();
 //                noDistrictCount.setBeneficiariesJoinedTillLastMonth(stateCount1.intValue()-beneficiariesJoinedTillLastMonth);
 //                noDistrictCount.setBeneficiariesAnsweredAtLeastOneCall(stateCount2.intValue()-beneficiariesAnsweredAtLeastOneCall);
@@ -1638,6 +1661,8 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
 
         }else if(locationType.equalsIgnoreCase("Block")) {
             List<Block> blocks = blockDao.getBlocksOfDistrict(locationId);
+            List<Integer> blockIds = new ArrayList<>();
+
             //fetch all the data for district for no block count
 //            Long districtCount1 = aggregateCumulativeBeneficiaryDao.getJoinedSubscriptionSum(locationId, "DISTRICT", fromDate, toDate, periodType);;
 //            Long districtCount2 = kilkariMessageListenershipReportDao.getTotalAnsweredAtLeastOneCall(locationId, "DISTRICT", fromDate, toDate, periodType);;
@@ -1658,46 +1683,8 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
 //            int totalIneligible=0;
 
             for(Block b:blocks){
+                blockIds.add(b.getBlockId()!=null ? b.getBlockId() : 0);
 
-                Long blockId = 0L;//fetch ddata from db for block
-                Long blockCount1 = 0L;
-                Long blockCount2 = 0L;
-                Long blockCount3 = 0L;
-                int blockCount4 = 0;
-                int blockCount5 = 0;
-                double blockCount6 = 0;
-                Long blockCount7 = 0L;
-                Long blockCount8 = 0L;
-
-                try {
-                    blockCount1 = aggregateCumulativeBeneficiaryDao.getJoinedSubscriptionSum(b.getBlockId(), locationType, fromDate, toDate, periodType);
-                    ;
-                    blockCount2 = kilkariMessageListenershipReportDao.getTotalAnsweredAtLeastOneCall(b.getBlockId(), locationType, fromDate, toDate, periodType);
-                    ;
-                    blockCount3 = aggregateCumulativeBeneficiaryDao.getTotalDeactivationSum(b.getBlockId(), locationType, fromDate, toDate, periodType);
-                    ;
-                    blockCount4 = this.extractWeekNumberAsInt(kilkariThematicContentReportDao.getMostHeardCallWeek(b.getBlockId(), locationType, fromDate, toDate, periodType));
-                    blockCount5 = this.extractWeekNumberAsInt(kilkariThematicContentReportDao.getLeastHeardCallWeek(b.getBlockId(), locationType, fromDate, toDate, periodType));
-                    blockCount6 = kilkariThematicContentReportDao.getAverageDurationOfCalls(b.getBlockId(), locationType, fromDate, toDate, periodType);
-                    blockCount7 = motherImportRejectionDao.getUniqueDuplicatePhoneNumberCountForBlock(fromDate, toDate, b.getBlockId());
-                    blockCount8 = motherImportRejectionDao.getTotalIneligibleCountByBlock(fromDate, toDate, b.getBlockId());
-                } catch (Exception e){
-                    LOGGER.debug(e.getMessage());
-                }
-
-                //we need to set location in this dto
-                KilkariHomePageReportsDto kilkariHomePageReportsDto = new KilkariHomePageReportsDto();
-                kilkariHomePageReportsDto.setBeneficiariesJoinedTillLastMonth(blockCount1 != null ? blockCount1.intValue():0);
-                kilkariHomePageReportsDto.setBeneficiariesAnsweredAtLeastOneCall(blockCount2 != null ? blockCount2.intValue():0);
-                kilkariHomePageReportsDto.setTotalDeactivations(blockCount3 != null ? blockCount3.intValue():0);
-                kilkariHomePageReportsDto.setMostHeardCallWeekNo(blockCount4);
-                kilkariHomePageReportsDto.setLeastHeardCallWeekNo(blockCount5);
-                kilkariHomePageReportsDto.setAvgDurationOfCalls(blockCount6);
-                kilkariHomePageReportsDto.setDuplicatePhoneNumberCount(blockCount7 != null ? blockCount7.intValue():0);
-                kilkariHomePageReportsDto.setTotalIneligible(blockCount8 != null ? blockCount8.intValue():0);
-                kilkariHomePageReportsDto.setLocationId(b.getBlockId()!=null ? b.getBlockId().longValue():0);
-                kilkariHomePageReportsDto.setLocationType(locationType);
-                kilkariHomePageReportsDtoList.add(kilkariHomePageReportsDto);
 //                beneficiariesJoinedTillLastMonth+=blockCount1;
 //                beneficiariesAnsweredAtLeastOneCall+=blockCount2;
 //                totalDeactivations+=blockCount3;
@@ -1708,6 +1695,33 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
 //                totalIneligible+=blockCount8;
 
             }
+            Map<Integer, Long> blockCount1 = aggregateCumulativeBeneficiaryDao.getJoinedSubscriptionSum(blockIds, locationType, fromDate, toDate, periodType);
+            Map<Integer, Long> blockCount2 = kilkariMessageListenershipReportDao.getTotalAnsweredAtLeastOneCall(blockIds, locationType, fromDate, toDate, periodType);
+            Map<Integer, Long> blockCount3 = aggregateCumulativeBeneficiaryDao.getTotalDeactivationSum(blockIds, locationType, fromDate, toDate, periodType);
+            Map<Integer, String> blockCount4 = kilkariThematicContentReportDao.getMostHeardCallWeek(blockIds, locationType, fromDate, toDate, periodType);
+            Map<Integer, String> blockCount5 = kilkariThematicContentReportDao.getLeastHeardCallWeek(blockIds, locationType, fromDate, toDate, periodType);
+            Map<Integer, Double> blockCount6 = kilkariThematicContentReportDao.getAverageDurationOfCalls(blockIds, locationType, fromDate, toDate, periodType);
+            Map<Integer, Long> blockCount7 = motherImportRejectionDao.getUniqueDuplicatePhoneNumberCountForBlock(fromDate, toDate, blockIds);
+            Map<Integer, Long> blockCount8 = motherImportRejectionDao.getTotalIneligibleCountByBlock(fromDate, toDate, blockIds);
+
+            for(Integer blockId : blockIds){
+                KilkariHomePageReportsDto kilkariHomePageReportsDto = new KilkariHomePageReportsDto();
+
+                //we need to set location in this dto
+                kilkariHomePageReportsDto.setBeneficiariesJoinedTillLastMonth(blockCount1.get(blockId)!=null ? blockCount1.get(blockId).intValue() : 0);
+                kilkariHomePageReportsDto.setBeneficiariesAnsweredAtLeastOneCall(blockCount2.get(blockId) != null ? blockCount2.get(blockId).intValue():0);
+                kilkariHomePageReportsDto.setTotalDeactivations(blockCount3.get(blockId) != null ? blockCount3.get(blockId).intValue():0);
+                kilkariHomePageReportsDto.setMostHeardCallWeekNo(this.extractWeekNumberAsInt(blockCount4.get(blockId)));
+                kilkariHomePageReportsDto.setLeastHeardCallWeekNo(this.extractWeekNumberAsInt(blockCount5.get(blockId)));
+                kilkariHomePageReportsDto.setAvgDurationOfCalls(blockCount6.get(blockId) != null ? blockCount6.get(blockId) : 0.0);
+                kilkariHomePageReportsDto.setDuplicatePhoneNumberCount(blockCount7.get(blockId) != null ? blockCount7.get(blockId).intValue():0);
+                kilkariHomePageReportsDto.setTotalIneligible(blockCount8.get(blockId) != null ? blockCount8.get(blockId).intValue():0);
+                kilkariHomePageReportsDto.setLocationId(blockId.longValue());
+                kilkariHomePageReportsDto.setLocationType(locationType);
+
+                kilkariHomePageReportsDtoList.add(kilkariHomePageReportsDto);
+            }
+
 //            KilkariHomePageReportsDto noBlockCount = new KilkariHomePageReportsDto();
 //            noBlockCount.setBeneficiariesJoinedTillLastMonth(districtCount1.intValue()-beneficiariesJoinedTillLastMonth);
 //            noBlockCount.setBeneficiariesAnsweredAtLeastOneCall(districtCount2.intValue()-beneficiariesAnsweredAtLeastOneCall);
@@ -1727,6 +1741,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             for(HealthFacility hf :healthFacilities){
                 subcenters.addAll(healthSubFacilityDao.findByHealthFacilityId(hf.getHealthFacilityId()));
             }
+            List<Integer> subcenterIds = new ArrayList<>();
 //            Long blockCount1 = aggregateCumulativeBeneficiaryDao.getJoinedSubscriptionSum(locationId, "BLOCK", fromDate, toDate, periodType);;
 //            Long blockCount2 = kilkariMessageListenershipReportDao.getTotalAnsweredAtLeastOneCall(locationId, "BLOCK", fromDate, toDate, periodType);;
 //            Long blockCount3 = aggregateCumulativeBeneficiaryDao.getTotalDeactivationSum(locationId,  "BLOCK",  fromDate,  toDate,  periodType);;
@@ -1746,46 +1761,8 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
 //            int totalIneligible=0;
 
             for(HealthSubFacility s: subcenters){
-                Long subcenterId = 0L;//fetch ddata from db for subCenter
-                Long subcentreCount1 = 0L;
-                Long subcentreCount2 = 0L;
-                Long subcentreCount3 = 0L;
-                int subcentreCount4 = 0;
-                int subcentreCount5 = 0;
-                double subcentreCount6 = 0;
-                Long subcentreCount7 = 0L;
-                Long subcentreCount8 = 0L;
 
-                try {
-                    subcentreCount1 = aggregateCumulativeBeneficiaryDao.getJoinedSubscriptionSum(s.getHealthSubFacilityId(), locationType, fromDate, toDate, periodType);
-                    ;
-                    subcentreCount2 = kilkariMessageListenershipReportDao.getTotalAnsweredAtLeastOneCall(s.getHealthSubFacilityId(), locationType, fromDate, toDate, periodType);
-                    ;
-                    subcentreCount3 = aggregateCumulativeBeneficiaryDao.getTotalDeactivationSum(s.getHealthSubFacilityId(), locationType, fromDate, toDate, periodType);
-                    ;
-                    subcentreCount4 = this.extractWeekNumberAsInt(kilkariThematicContentReportDao.getMostHeardCallWeek(s.getHealthSubFacilityId(), locationType, fromDate, toDate, periodType));
-                    subcentreCount5 = this.extractWeekNumberAsInt(kilkariThematicContentReportDao.getLeastHeardCallWeek(s.getHealthSubFacilityId(), locationType, fromDate, toDate, periodType));
-                    subcentreCount6 = kilkariThematicContentReportDao.getAverageDurationOfCalls(s.getHealthSubFacilityId(), locationType, fromDate, toDate, periodType);
-                    subcentreCount7 = motherImportRejectionDao.getUniqueDuplicatePhoneNumberCountForHealthFacility(fromDate, toDate, s.getHealthSubFacilityId());
-                    subcentreCount8 = motherImportRejectionDao.getTotalIneligibleCountByHealthFacility(fromDate, toDate, s.getHealthSubFacilityId());
-                } catch (Exception e){
-                    LOGGER.debug(e.getMessage());
-                }
-                //we need to set location in this dto
-                KilkariHomePageReportsDto kilkariHomePageReportsDto = new KilkariHomePageReportsDto();
-                kilkariHomePageReportsDto.setBeneficiariesJoinedTillLastMonth(subcentreCount1 != null ? subcentreCount1.intValue():0);
-                kilkariHomePageReportsDto.setBeneficiariesAnsweredAtLeastOneCall(subcentreCount2 != null ? subcentreCount2.intValue():0);
-                kilkariHomePageReportsDto.setTotalDeactivations(subcentreCount3 != null ? subcentreCount3.intValue():0);
-                kilkariHomePageReportsDto.setMostHeardCallWeekNo(subcentreCount4);
-                kilkariHomePageReportsDto.setLeastHeardCallWeekNo(subcentreCount5);
-                kilkariHomePageReportsDto.setAvgDurationOfCalls(subcentreCount6);
-                kilkariHomePageReportsDto.setDuplicatePhoneNumberCount(subcentreCount7 != null ? subcentreCount7.intValue():0);
-                kilkariHomePageReportsDto.setTotalIneligible(subcentreCount8 != null ? subcentreCount8.intValue():0);
-                kilkariHomePageReportsDto.setLocationId(s.getHealthSubFacilityId() != null ? s.getHealthSubFacilityId().longValue():0);
-                kilkariHomePageReportsDto.setLocationType(locationType);
-                kilkariHomePageReportsDtoList.add(kilkariHomePageReportsDto);
-
-                kilkariHomePageReportsDtoList.add(kilkariHomePageReportsDto);
+                subcenterIds.add(s.getHealthSubFacilityId()!=null ? s.getHealthSubFacilityId() : 0);
 //                beneficiariesJoinedTillLastMonth+=subcentreCount1;
 //                beneficiariesAnsweredAtLeastOneCall+=subcentreCount2;
 //                totalDeactivations+=subcentreCount3;
@@ -1795,6 +1772,33 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
 //                duplicatePhoneNumberCount+=subcentreCount7;
 //                totalIneligible+=subcentreCount8;
             }
+            Map<Integer, Long> subcentreCount1 = aggregateCumulativeBeneficiaryDao.getJoinedSubscriptionSum(subcenterIds, locationType, fromDate, toDate, periodType);
+            Map<Integer, Long> subcentreCount2 = kilkariMessageListenershipReportDao.getTotalAnsweredAtLeastOneCall(subcenterIds, locationType, fromDate, toDate, periodType);
+            Map<Integer, Long> subcentreCount3 = aggregateCumulativeBeneficiaryDao.getTotalDeactivationSum(subcenterIds, locationType, fromDate, toDate, periodType);
+            Map<Integer, String> subcentreCount4 = kilkariThematicContentReportDao.getMostHeardCallWeek(subcenterIds, locationType, fromDate, toDate, periodType);
+            Map<Integer, String> subcentreCount5 = kilkariThematicContentReportDao.getLeastHeardCallWeek(subcenterIds, locationType, fromDate, toDate, periodType);
+            Map<Integer, Double> subcentreCount6 = kilkariThematicContentReportDao.getAverageDurationOfCalls(subcenterIds, locationType, fromDate, toDate, periodType);
+            Map<Integer, Long> subcentreCount7 = motherImportRejectionDao.getUniqueDuplicatePhoneNumberCountForHealthFacility(fromDate, toDate, subcenterIds);
+            Map<Integer, Long> subcentreCount8 = motherImportRejectionDao.getTotalIneligibleCountByHealthFacility(fromDate, toDate, subcenterIds);
+
+            for(Integer subcenterId : subcenterIds){
+                KilkariHomePageReportsDto kilkariHomePageReportsDto = new KilkariHomePageReportsDto();
+
+                //we need to set location in this dto
+                kilkariHomePageReportsDto.setBeneficiariesJoinedTillLastMonth(subcentreCount1.get(subcenterId)!=null ? subcentreCount1.get(subcenterId).intValue() : 0);
+                kilkariHomePageReportsDto.setBeneficiariesAnsweredAtLeastOneCall(subcentreCount2.get(subcenterId) != null ? subcentreCount2.get(subcenterId).intValue():0);
+                kilkariHomePageReportsDto.setTotalDeactivations(subcentreCount3.get(subcenterId) != null ? subcentreCount3.get(subcenterId).intValue():0);
+                kilkariHomePageReportsDto.setMostHeardCallWeekNo(this.extractWeekNumberAsInt(subcentreCount4.get(subcenterId)));
+                kilkariHomePageReportsDto.setLeastHeardCallWeekNo(this.extractWeekNumberAsInt(subcentreCount5.get(subcenterId)));
+                kilkariHomePageReportsDto.setAvgDurationOfCalls(subcentreCount6.get(subcenterId) != null ? subcentreCount6.get(subcenterId) : 0.0);
+                kilkariHomePageReportsDto.setDuplicatePhoneNumberCount(subcentreCount7.get(subcenterId) != null ? subcentreCount7.get(subcenterId).intValue():0);
+                kilkariHomePageReportsDto.setTotalIneligible(subcentreCount8.get(subcenterId) != null ? subcentreCount8.get(subcenterId).intValue():0);
+                kilkariHomePageReportsDto.setLocationId(subcenterId.longValue());
+                kilkariHomePageReportsDto.setLocationType(locationType);
+
+                kilkariHomePageReportsDtoList.add(kilkariHomePageReportsDto);
+            }
+
 //            KilkariHomePageReportsDto noBlockCount = new KilkariHomePageReportsDto();
 //            noBlockCount.setBeneficiariesJoinedTillLastMonth(blockCount1.intValue()-beneficiariesJoinedTillLastMonth);
 //            noBlockCount.setBeneficiariesAnsweredAtLeastOneCall(blockCount2.intValue()-beneficiariesAnsweredAtLeastOneCall);

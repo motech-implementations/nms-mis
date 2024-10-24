@@ -3,21 +3,16 @@ package com.beehyv.nmsreporting.dao.impl;
 
 import com.beehyv.nmsreporting.dao.AbstractDao;
 import com.beehyv.nmsreporting.dao.KilkariThematicContentReportDao;
-import com.beehyv.nmsreporting.entity.AggregateKilkariReportsDto;
-import com.beehyv.nmsreporting.entity.ReportRequest;
-import com.beehyv.nmsreporting.model.AggregateCumulativeKilkari;
 import com.beehyv.nmsreporting.model.KilkariThematicContent;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.lang.Double;
 import java.util.*;
 
 /**
@@ -90,48 +85,64 @@ public class KilkariThematicContentReportDaoImpl extends AbstractDao<Integer,Kil
     }
 
     @Override
-    public String getMostHeardCallWeek(Integer locationId, String locationType, Date startDate, Date endDate, String periodType) {
-        String sql = "SELECT message_week_number " +
+    public Map<Integer, String> getMostHeardCallWeek(List<Integer> locationIds, String locationType, Date startDate, Date endDate, String periodType) {
+
+        String sql = "SELECT location_id, message_week_number, SUM(minutes_consumed) AS total_minutes " +
                 "FROM agg_kilkari_thematic_content " +
-                "WHERE location_id = :locationId " +
-                "  AND location_type = :locationType " +
-                "  AND date BETWEEN :startDate AND :endDate " +
-                "  AND message_week_number <> 'w1' " +
-                "  AND period_type = :periodType " +
-                "GROUP BY message_week_number " +
-                "ORDER BY SUM(minutes_consumed) DESC " +
-                "LIMIT 1";
+                "WHERE location_id IN (:locationIds) " +
+                "    AND location_type = :locationType " +
+                "    AND date BETWEEN :startDate AND :endDate " +
+                "    AND message_week_number <> 'w1' " +
+                "    AND period_type = :periodType " +
+                "GROUP BY location_id, message_week_number " +
+                "ORDER BY location_id, total_minutes DESC ";
+
 
         LOGGER.info("Query - {} " , sql);
         Query query = getSession().createSQLQuery(sql);
-        query.setParameter("locationId", locationId);
+        query.setParameterList("locationIds", locationIds);
         query.setParameter("locationType", locationType);
         query.setParameter("startDate", startDate);
         query.setParameter("endDate", endDate);
         query.setParameter("periodType", periodType);
 
         Object result = query.uniqueResult();
+        List<Object[]> results = query.list();
+
+        Map<Integer, String> resultMap = new HashMap<>();
+        Integer previousLocationId = null;
+
+        for (Object[] row : results) {
+            Integer locationId = ((Number) row[0]).intValue();
+            String messageWeekNumber = row[1] != null ? row[1].toString() : null;
+            if (!locationId.equals(previousLocationId)) {
+                previousLocationId = locationId;
+                resultMap.put(locationId, messageWeekNumber);
+            }
+        }
         LOGGER.info("Operation = MostHeardCallWeek, status = COMPLETED" );
-        LOGGER.info("result:{}", result != null ? result.toString() : null);
-        return result != null ? result.toString() : null;
+        LOGGER.info("Result map: {}", resultMap);
+        return resultMap;
     }
 
     @Override
-    public String getLeastHeardCallWeek(Integer locationId, String locationType, Date startDate, Date endDate, String periodType) {
-        String sql = "SELECT message_week_number " +
+    public Map<Integer, String> getLeastHeardCallWeek(List<Integer> locationIds, String locationType, Date startDate, Date endDate, String periodType) {
+        LOGGER.debug("locationIds: {}, locationType: {}, startDate: {}, endDate: {}, periodType: {}", locationIds, locationType, startDate, endDate, periodType);
+
+
+        String sql = "SELECT location_id, message_week_number, SUM(COALESCE(minutes_consumed, 0)) AS total_minutes " +
                 "FROM agg_kilkari_thematic_content " +
-                "WHERE location_id = :locationId " +
+                "WHERE location_id IN (:locationIds) " +
                 "  AND location_type = :locationType " +
                 "  AND date BETWEEN :startDate AND :endDate " +
                 "  AND message_week_number <> 'w1' " +
                 "  AND period_type = :periodType " +
-                "GROUP BY message_week_number " +
-                "ORDER BY SUM(minutes_consumed) ASC " +
-                "LIMIT 1";
+                "GROUP BY location_id, message_week_number " +
+                "ORDER BY location_id, total_minutes ASC ";
 
-        LOGGER.info("Query - {} " , sql);
+        LOGGER.info("Query - {} ", sql);
         Query query = getSession().createSQLQuery(sql);
-        query.setParameter("locationId", locationId);
+        query.setParameterList("locationIds", locationIds);
         query.setParameter("locationType", locationType);
         query.setParameter("startDate", startDate);
         query.setParameter("endDate", endDate);
@@ -141,29 +152,57 @@ public class KilkariThematicContentReportDaoImpl extends AbstractDao<Integer,Kil
         LOGGER.info("Operation = LeastHeardCallWeek, status = COMPLETED" );
         LOGGER.info("result:{}", result != null ? result.toString() : null);
         return result != null ? result.toString() : null;
+
+        List<Object[]> results = query.list();
+
+        Map<Integer, String> resultMap = new HashMap<>();
+        Integer previousLocationId = null;
+
+        for (Object[] row : results) {
+            Integer locationId = ((Number) row[0]).intValue();
+            String messageWeekNumber = row[1] != null ? row[1].toString() : null;
+            if (!locationId.equals(previousLocationId)) {
+                previousLocationId = locationId;
+                resultMap.put(locationId, messageWeekNumber);
+            }
+        }
+
+        LOGGER.info("Operation = LeastHeardCallWeek, status = COMPLETED");
+        LOGGER.info("Result map: {}", resultMap);
+        return resultMap;
     }
 
     @Override
-    public double getAverageDurationOfCalls(Integer locationId, String locationType, Date startDate, Date endDate, String periodType) {
-        String sql = "SELECT SUM(minutes_consumed) / NULLIF(SUM(calls_answered), 0) AS average_duration_of_calls " +
+    public Map<Integer, Double> getAverageDurationOfCalls(List<Integer> locationIds, String locationType, Date startDate, Date endDate, String periodType) {
+
+
+        String sql = "SELECT location_id, SUM(minutes_consumed) / NULLIF(SUM(calls_answered), 0) AS average_duration_of_calls " +
                 "FROM agg_kilkari_thematic_content " +
-                "WHERE location_id = :locationId " +
+                "WHERE location_id IN (:locationIds) " +
                 "AND location_type = :locationType " +
                 "AND date BETWEEN :startDate AND :endDate " +
-                "AND period_type = :periodType";
+                "AND period_type = :periodType " +
+                "GROUP BY location_id ";
 
         LOGGER.info("Query - {} " , sql);
-        Query query = getSession().createSQLQuery(sql)
-                .setParameter("locationId", locationId)
-                .setParameter("locationType", locationType)
-                .setParameter("startDate", startDate)
-                .setParameter("endDate", endDate)
-                .setParameter("periodType", periodType);
+        Query query = getSession().createSQLQuery(sql);
+            query.setParameterList("locationIds", locationIds);
+            query.setParameter("locationType", locationType);
+            query.setParameter("startDate", startDate);
+            query.setParameter("endDate", endDate);
+            query.setParameter("periodType", periodType);
 
-        Object result = query.uniqueResult();
+        List<Object[]> results = query.list();
+
+        Map<Integer, Double> resultMap = new HashMap<>();
+        for (Object[] row : results) {
+            Integer locationId = ((Number) row[0]).intValue();
+            Double averageDurationOfCalls = row[1] != null ? ((Number) row[1]).doubleValue() : 0.0;
+            resultMap.put(locationId, averageDurationOfCalls);
+        }
         LOGGER.info("Operation = AverageDurationOfCalls, status = COMPLETED" );
-        LOGGER.info("result:{}", result != null ? ((Number) result).doubleValue() : 0.0);
-        return result != null ? ((Number) result).doubleValue() : 0.0;
+        LOGGER.info("Result map: {}", resultMap);
+        return resultMap;
     }
 
 }
