@@ -1510,44 +1510,9 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             List<State> states=stateDao.getStatesByServiceType("KILKARI");
             List<Integer> stateIds = new ArrayList<>();
             for(State s:states){
-                Long beneficiariesJoinedTillLastMonth=0L;
-                Long beneficiariesAnsweredAtLeastOneCall=0L;
-                Long totalDeactivations=0L;
-                int mostHeardCallWeekNo=0;
-                int leastHeardCallWeekNo=0;
-                double avgDurationOfCalls=0;
-                Long duplicatePhoneNumberCount=0L;
-                Long totalIneligible=0L;
 
-                KilkariHomePageReportsDto kilkariHomePageReportsDto = new KilkariHomePageReportsDto();
-                try {
-                    if (!toDate.before(stateServiceDao.getServiceStartDateForState(s.getStateId(), "KILKARI"))) {
-
-                        beneficiariesJoinedTillLastMonth = aggregateCumulativeBeneficiaryDao.getJoinedSubscriptionSum(s.getStateId(), locationType, fromDate, toDate, periodType);
-                        beneficiariesAnsweredAtLeastOneCall = kilkariMessageListenershipReportDao.getTotalAnsweredAtLeastOneCall(s.getStateId(), locationType, fromDate, toDate, periodType);
-                        totalDeactivations = aggregateCumulativeBeneficiaryDao.getTotalDeactivationSum(s.getStateId(), locationType, fromDate, toDate, periodType);
-                        mostHeardCallWeekNo = this.extractWeekNumberAsInt(kilkariThematicContentReportDao.getMostHeardCallWeek(s.getStateId(), locationType, fromDate, toDate, periodType));
-                        leastHeardCallWeekNo = this.extractWeekNumberAsInt(kilkariThematicContentReportDao.getLeastHeardCallWeek(s.getStateId(), locationType, fromDate, toDate, periodType));
-                        avgDurationOfCalls = kilkariThematicContentReportDao.getAverageDurationOfCalls(s.getStateId(), locationType, fromDate, toDate, periodType);
-                        duplicatePhoneNumberCount = motherImportRejectionDao.getUniqueDuplicatePhoneNumberCountForState(fromDate, toDate, s.getStateId());
-                        totalIneligible = motherImportRejectionDao.getTotalIneligibleCountByState(fromDate, toDate, s.getStateId());
-                    }
-                } catch (Exception e){
-                    LOGGER.debug(e.getMessage());
-                }
-                LOGGER.info("these are the values of columns in state- beneficiariesJoinedTillLastMonth: {},beneficiariesAnsweredAtLeastOneCall: {}",beneficiariesJoinedTillLastMonth,beneficiariesAnsweredAtLeastOneCall);
-                kilkariHomePageReportsDto.setBeneficiariesJoinedTillLastMonth(beneficiariesJoinedTillLastMonth != null ? beneficiariesJoinedTillLastMonth.intValue():0);
-                kilkariHomePageReportsDto.setBeneficiariesAnsweredAtLeastOneCall(beneficiariesAnsweredAtLeastOneCall != null ? beneficiariesAnsweredAtLeastOneCall.intValue():0);
-                kilkariHomePageReportsDto.setTotalDeactivations(totalDeactivations != null ? totalDeactivations.intValue():0);
-                kilkariHomePageReportsDto.setMostHeardCallWeekNo(mostHeardCallWeekNo);
-                kilkariHomePageReportsDto.setLeastHeardCallWeekNo(leastHeardCallWeekNo);
-                kilkariHomePageReportsDto.setAvgDurationOfCalls(avgDurationOfCalls);
-                kilkariHomePageReportsDto.setDuplicatePhoneNumberCount(duplicatePhoneNumberCount != null ? duplicatePhoneNumberCount.intValue():0);
-                kilkariHomePageReportsDto.setTotalIneligible(totalIneligible != null ? totalIneligible.intValue():0);
-                kilkariHomePageReportsDto.setLocationId(s.getStateId() != null ? s.getStateId().longValue():0);
-                kilkariHomePageReportsDto.setLocationType(locationType);
-
-                kilkariHomePageReportsDtoList.add(kilkariHomePageReportsDto);
+//                LOGGER.info("these are the values of columns in state- beneficiariesJoinedTillLastMonth: {},beneficiariesAnsweredAtLeastOneCall: {}",beneficiariesJoinedTillLastMonth,beneficiariesAnsweredAtLeastOneCall);
+                LOGGER.info("stateid:{}", s.getStateId());
                 if (!toDate.before(stateServiceDao.getServiceStartDateForState(s.getStateId(), "KILKARI"))) {
                     stateIds.add(s.getStateId()!=null? s.getStateId() : 0);
                 }

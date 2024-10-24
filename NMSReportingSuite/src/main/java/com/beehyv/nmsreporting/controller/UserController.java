@@ -639,7 +639,7 @@ public class UserController {
         return userName;
     }
 
-    private int countLocationsWithHighCompletion(List<AggregateCumulativeMA> startData, List<AggregateCumulativeMA> endData, Map<Long, MAPerformanceCountsDto> performanceCount) {
+    private int countLocationsWithHighCompletion(List<AggregateCumulativeMA> startData, List<AggregateCumulativeMA> endData) {
         int count = 0;
         Map<Long, AggregateCumulativeMA> startMap = new HashMap<>();
 
@@ -656,22 +656,9 @@ public class UserController {
             AggregateCumulativeMA start = startMap.get(end.getLocationId());
             if (start != null) {
                 try{
-                if(performanceCount!=null) {
-                    LOGGER.debug("this is subcentre datastart asha completed : {}", start.getAshasCompleted());
-                    LOGGER.debug("this is subcentre end asha completed : {}", end.getAshasCompleted());
-                    LOGGER.debug("this is subcentre datastart asha regi : {}", start.getAshasRegistered());
-                    LOGGER.debug("this is subcentre end asha regi : {}", end.getAshasRegistered());
-                    MAPerformanceCountsDto maPerformanceCountsDto = performanceCount.get(end.getLocationId());
-                    if(maPerformanceCountsDto!=null){
-                    Long ashaDeactivatedTotalCount = maPerformanceCountsDto.getAshasDeactivatedInBetween() != null ? maPerformanceCountsDto.getAshasDeactivatedInBetween() : 0L;
-                    Long ashaDeactivatedCompletedTotalCount = maPerformanceCountsDto.getAshaDeactivatedCompletedCourseInBetweenCount() != null ? maPerformanceCountsDto.getAshaDeactivatedCompletedCourseInBetweenCount() : 0L;
-                    registered = end.getAshasRegistered() - start.getAshasRegistered() + ashaDeactivatedTotalCount;
-                    completed = end.getAshasCompleted() - start.getAshasCompleted() + ashaDeactivatedCompletedTotalCount;
-                }}
-                else{
                     registered = (long) (end.getAshasRegistered() - start.getAshasRegistered());
                     completed = (long) (end.getAshasCompleted() - start.getAshasCompleted());
-                }
+
                 } catch (NullPointerException e) {
 
                     e.printStackTrace();
@@ -687,7 +674,7 @@ public class UserController {
         return count;
     }
 
-    private int countLocationsWithHighStarted(List<AggregateCumulativeMA> startData, List<AggregateCumulativeMA> endData,Map<Long, MAPerformanceCountsDto> performanceCount) {
+    private int countLocationsWithHighStarted(List<AggregateCumulativeMA> startData, List<AggregateCumulativeMA> endData) {
         int count = 0;
         Map<Long, AggregateCumulativeMA> startMap = new HashMap<>();
         LOGGER.debug("we are inside started method");
@@ -706,20 +693,10 @@ public class UserController {
                 LOGGER.debug("this is subcentre datastart asha regi : {}",start.getAshasRegistered());
                 LOGGER.debug("this is subcentre end asha regi : {}",end.getAshasRegistered());
                 try{
-                if(performanceCount!=null) {
-                    MAPerformanceCountsDto maPerformanceCountsDto = performanceCount.get(end.getLocationId());
-                    if(maPerformanceCountsDto!=null){
-                    Long ashaDeactivatedTotalCount = maPerformanceCountsDto.getAshasDeactivatedInBetween() != null ? maPerformanceCountsDto.getAshasDeactivatedInBetween() : 0L;
-                    Long ashaDeactivatedStartedCount = maPerformanceCountsDto.getAshaDeactivatedStartedCourseInBetweenCount() != null ? maPerformanceCountsDto.getAshaDeactivatedStartedCourseInBetweenCount() : 0L;
 
-                    registered = end.getAshasRegistered() - start.getAshasRegistered()+ ashaDeactivatedTotalCount;
-                    started = end.getAshasStarted() - start.getAshasStarted() + ashaDeactivatedStartedCount;
-
-                }}
-                else {
                     registered = (long) (end.getAshasRegistered() - start.getAshasRegistered());
                     started = (long) (end.getAshasStarted() - start.getAshasStarted());
-                }
+
                 } catch (NullPointerException e) {
 
                     e.printStackTrace();
@@ -899,10 +876,10 @@ public class UserController {
                     }
                     List<AggregateCumulativeMA> districtDataEnd = aggregateReportsService.getCumulativeSummaryMAReport(state.getStateId(), "District", toDate, false);
                     List<AggregateCumulativeMA> districtDataStart = aggregateReportsService.getCumulativeSummaryMAReport(state.getStateId(), "District", fromDate, false);
-                    performanceCounts = maPerformanceService.getMAPerformanceCounts(state.getStateId(), "District", fromDate, toDate);
+//                    performanceCounts = maPerformanceService.getMAPerformanceCounts(state.getStateId(), "District", fromDate, toDate);
 
-                    int districtCountforCompletion = countLocationsWithHighCompletion(districtDataStart, districtDataEnd,performanceCounts);
-                    int districtCountforStarted = countLocationsWithHighStarted(districtDataStart, districtDataEnd,performanceCounts);
+                    int districtCountforCompletion = countLocationsWithHighCompletion(districtDataStart, districtDataEnd);
+                    int districtCountforStarted = countLocationsWithHighStarted(districtDataStart, districtDataEnd);
                     LocationCountDto dto = new LocationCountDto();
                     dto.setLocationId((long) state.getStateId());
                     dto.setLocationName(state.getStateName());
@@ -917,10 +894,10 @@ public class UserController {
                 for (District district : districts) {
                     List<AggregateCumulativeMA> blockDataEnd = aggregateReportsService.getCumulativeSummaryMAReport(district.getDistrictId(), "Block", toDate, false);
                     List<AggregateCumulativeMA> blockDataStart = aggregateReportsService.getCumulativeSummaryMAReport(district.getDistrictId(), "Block", fromDate, false);
-                    performanceCounts = maPerformanceService.getMAPerformanceCounts(district.getDistrictId(), "Block", fromDate, toDate);
+//                    performanceCounts = maPerformanceService.getMAPerformanceCounts(district.getDistrictId(), "Block", fromDate, toDate);
 
-                    int blockCountforCompletion = countLocationsWithHighCompletion(blockDataStart, blockDataEnd,performanceCounts);
-                    int blockCountforStarted = countLocationsWithHighStarted(blockDataStart, blockDataEnd,performanceCounts);
+                    int blockCountforCompletion = countLocationsWithHighCompletion(blockDataStart, blockDataEnd);
+                    int blockCountforStarted = countLocationsWithHighStarted(blockDataStart, blockDataEnd);
                     LocationCountDto dto = new LocationCountDto();
                     dto.setLocationId((long) district.getDistrictId());
                     dto.setLocationName(district.getDistrictName());
@@ -934,11 +911,11 @@ public class UserController {
                 for (Block block : blocks) {
                     List<AggregateCumulativeMA> subcentreDataEnd = aggregateReportsService.getCumulativeSummaryMAReport(block.getBlockId(), "Subcentre", toDate, false);
                     List<AggregateCumulativeMA> subcentreDataStart = aggregateReportsService.getCumulativeSummaryMAReport(block.getBlockId(), "Subcentre", fromDate, false);
-                    performanceCounts = maPerformanceService.getMAPerformanceCounts(block.getBlockId(), "Subcentre", fromDate, toDate);
+//                    performanceCounts = maPerformanceService.getMAPerformanceCounts(block.getBlockId(), "Subcentre", fromDate, toDate);
 
 
-                    int subcentreCountforCompletion = countLocationsWithHighCompletion(subcentreDataStart, subcentreDataEnd,performanceCounts);
-                    int subcentreCountforStarted = countLocationsWithHighStarted(subcentreDataStart, subcentreDataEnd,performanceCounts);
+                    int subcentreCountforCompletion = countLocationsWithHighCompletion(subcentreDataStart, subcentreDataEnd);
+                    int subcentreCountforStarted = countLocationsWithHighStarted(subcentreDataStart, subcentreDataEnd);
                     LocationCountDto dto = new LocationCountDto();
                     dto.setLocationId((long) block.getBlockId());
                     dto.setLocationName(block.getBlockName());

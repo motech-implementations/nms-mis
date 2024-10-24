@@ -106,7 +106,6 @@ public class KilkariThematicContentReportDaoImpl extends AbstractDao<Integer,Kil
         query.setParameter("endDate", endDate);
         query.setParameter("periodType", periodType);
 
-        Object result = query.uniqueResult();
         List<Object[]> results = query.list();
 
         Map<Integer, String> resultMap = new HashMap<>();
@@ -148,10 +147,6 @@ public class KilkariThematicContentReportDaoImpl extends AbstractDao<Integer,Kil
         query.setParameter("endDate", endDate);
         query.setParameter("periodType", periodType);
 
-        Object result = query.uniqueResult();
-        LOGGER.info("Operation = LeastHeardCallWeek, status = COMPLETED" );
-        LOGGER.info("result:{}", result != null ? result.toString() : null);
-        return result != null ? result.toString() : null;
 
         List<Object[]> results = query.list();
 

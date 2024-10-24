@@ -145,11 +145,7 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
                 .setParameter("fromDate", fromDate)
                 .setParameter("toDate", toDate);
 
-        LOGGER.info("Query - {} " , sql);
-        Query query = getSession().createSQLQuery(sql);
-        query.setParameter("fromDate", fromDate);
-        query.setParameter("toDate", toDate);
-        query.setParameter("stateId", stateId);
+
 
         List<Object[]> results = query.list();
         Map<Integer, Long> resultMap = new HashMap<>();
@@ -196,7 +192,6 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
         Query query = getSession().createSQLQuery(sql);
         query.setParameter("fromDate", fromDate);
         query.setParameter("toDate", toDate);
-        query.setParameter("districtId", districtId);
 
         List<Object[]> results = query.list();
         Map<Integer, Long> resultMap = new HashMap<>();
@@ -242,7 +237,6 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
         Query query = getSession().createSQLQuery(sql);
         query.setParameter("fromDate", fromDate);
         query.setParameter("toDate", toDate);
-        query.setParameter("blockId", blockId);
 
         List<Object[]> results = query.list();
         Map<Integer, Long> resultMap = new HashMap<>();
@@ -289,7 +283,6 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
         Query query = getSession().createSQLQuery(sql);
         query.setParameter("fromDate", fromDate);
         query.setParameter("toDate", toDate);
-        query.setParameter("healthFacilityId", healthFacilityId);
 
         List<Object[]> results = query.list();
         Map<Integer, Long> resultMap = new HashMap<>();
@@ -335,7 +328,6 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
         Query query = getSession().createSQLQuery(sql);
             query.setParameter("fromDate", fromDate);
             query.setParameter("toDate", toDate);
-            query.setParameter("stateId", stateId);
 
         List<Object[]> results = query.list();
         Map<Integer, Long> resultMap = new HashMap<>();
@@ -379,7 +371,6 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
         Query query = getSession().createSQLQuery(sql);
         query.setParameter("fromDate", fromDate);
         query.setParameter("toDate", toDate);
-        query.setParameter("districtId", districtId);
 
         List<Object[]> results = query.list();
         Map<Integer, Long> resultMap = new HashMap<>();
@@ -425,7 +416,6 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
         Query query = getSession().createSQLQuery(sql);
         query.setParameter("fromDate", fromDate);
         query.setParameter("toDate", toDate);
-        query.setParameter("blockId", blockId);
 
         List<Object[]> results = query.list();
         Map<Integer, Long> resultMap = new HashMap<>();
@@ -469,7 +459,6 @@ public class MotherImportRejectionDaoImpl extends AbstractDao<Long, MotherImport
         Query query = getSession().createSQLQuery(sql);
         query.setParameter("fromDate", fromDate);
         query.setParameter("toDate", toDate);
-        query.setParameter("healthFacilityId", healthFacilityId);
 
         List<Object[]> results = query.list();
         Map<Integer, Long> resultMap = new HashMap<>();
