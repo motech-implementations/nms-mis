@@ -13,6 +13,9 @@ public class KilkariSubscriberRegistrationDateDto {
     private Integer totalBeneficiaryWithDeactivatedStatus;
     private Integer totalBeneficiaryWithDeactivatedStatus_LIVE_BIRTH;
     private Integer totalSubscriptionsCompletedStatus;
+    private Integer totalSubscriptions_PW;
+    private Integer totalSubscriptions_Child;
+    private Integer totalSubscriptions_Ineligible;
     private boolean link = false;
 
     public KilkariSubscriberRegistrationDateDto() {
@@ -46,6 +49,20 @@ public class KilkariSubscriberRegistrationDateDto {
         this.totalBeneficiaryWithPendingStatus = totalBeneficiaryWithPendingStatus;
         this.totalSubscriptionsCompletedStatus = totalSubscriptionsCompletedStatus;
         this.totalRecordsRejected = totalRecordsRejected;
+    }
+
+    public KilkariSubscriberRegistrationDateDto(Integer totalSubscriptions, Integer totalBeneficiaryWithActiveStatus, Integer totalBeneficiaryWithOnHoldStatus, Integer totalBeneficiaryWithDeactivatedStatus, Integer totalBeneficiaryWithDeactivatedStatus_LIVE_BIRTH,Integer totalBeneficiaryWithPendingStatus, Integer totalSubscriptionsCompletedStatus, Integer totalRecordsRejected , Integer totalSubscriptions_PW, Integer totalSubscriptions_Child, Integer totalSubscriptions_Ineligible) {
+        this.totalSubscriptions = totalSubscriptions;
+        this.totalBeneficiaryWithActiveStatus = totalBeneficiaryWithActiveStatus;
+        this.totalBeneficiaryWithOnHoldStatus = totalBeneficiaryWithOnHoldStatus;
+        this.totalBeneficiaryWithDeactivatedStatus = totalBeneficiaryWithDeactivatedStatus;
+        this.totalBeneficiaryWithDeactivatedStatus_LIVE_BIRTH = totalBeneficiaryWithDeactivatedStatus_LIVE_BIRTH;
+        this.totalBeneficiaryWithPendingStatus = totalBeneficiaryWithPendingStatus;
+        this.totalSubscriptionsCompletedStatus = totalSubscriptionsCompletedStatus;
+        this.totalRecordsRejected = totalRecordsRejected;
+        this.totalSubscriptions_PW = totalSubscriptions_PW;
+        this.totalSubscriptions_Child = totalSubscriptions_Child;
+        this.totalSubscriptions_Ineligible = totalSubscriptions_Ineligible;
     }
 
 
@@ -134,6 +151,30 @@ public class KilkariSubscriberRegistrationDateDto {
 
     public void setTotalSubscriptionsCompletedStatus(Integer totalSubscriptionsCompletedStatus) {
         this.totalSubscriptionsCompletedStatus = totalSubscriptionsCompletedStatus;
+    }
+
+    public void setTotalSubscriptions_PW(Integer totalSubscriptions_PW) {
+        this.totalSubscriptions_PW = totalSubscriptions_PW;
+    }
+
+    public Integer getTotalSubscriptions_PW() {
+        return totalSubscriptions_PW;
+    }
+
+    public void setTotalSubscriptions_Child(Integer totalSubscriptions_Child) {
+        this.totalSubscriptions_Child = totalSubscriptions_Child;
+    }
+
+    public Integer getTotalSubscriptions_Child() {
+        return totalSubscriptions_Child;
+    }
+
+    public void setTotalSubscriptions_Ineligible(Integer totalSubscriptions_Ineligible) {
+        this.totalSubscriptions_Ineligible = totalSubscriptions_Ineligible;
+    }
+
+    public Integer getTotalSubscriptions_Ineligible() {
+        return totalSubscriptions_Ineligible;
     }
 
     public boolean isLink() {

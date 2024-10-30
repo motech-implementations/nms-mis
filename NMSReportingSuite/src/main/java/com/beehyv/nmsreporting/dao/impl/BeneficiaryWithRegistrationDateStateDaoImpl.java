@@ -39,7 +39,10 @@ public class BeneficiaryWithRegistrationDateStateDaoImpl extends AbstractDao<Int
                 "SUM(a.subscriptions_deactivated_LIVE_BIRTH) AS subscriptions_deactivated_LIVE_BIRTH, " +
                 "SUM(a.subscriptions_pending) AS subscriptions_pending , " +
                 "SUM(a.subscriptions_completed) AS subscriptions_completed , " +
-                "SUM(a.subscriptions_rejected) AS subscriptions_rejected " +
+                "SUM(a.subscriptions_rejected) AS subscriptions_rejected , " +
+                "SUM(a.Subscriptions_Received_for_PW) AS Subscriptions_Received_for_PW , " +
+                "SUM(a.Subscriptions_Received_for_Child) AS Subscriptions_Received_for_Child, " +
+                "SUM(a.Subscriptions_Ineligible) AS Subscriptions_Ineligible " +
 
                 "FROM (SELECT b.state_id , " +
                 "COUNT(distinct(subscription_id) ) AS total_subscriptions , " +
@@ -49,7 +52,10 @@ public class BeneficiaryWithRegistrationDateStateDaoImpl extends AbstractDao<Int
                 "COUNT(CASE WHEN s.subscription_status = 'DEACTIVATED' AND s.deactivation_reason = 'LIVE_BIRTH' THEN s.subscription_id END) AS subscriptions_deactivated_LIVE_BIRTH , " +
                 "COUNT(CASE WHEN s.subscription_status = 'PENDING_ACTIVATION' THEN s.subscription_id END) AS subscriptions_pending , " +
                 "COUNT(CASE WHEN s.subscription_status = 'COMPLETED' THEN s.subscription_id END) AS subscriptions_completed ," +
-                "0 AS subscriptions_rejected "+
+                "0 AS subscriptions_rejected , "+
+                "COUNT(DISTINCT CASE WHEN s.subscriptionPack_id = 1 AND DATEDIFF(registrationDate, s.start_date) BETWEEN -90 AND 168 THEN s.subscription_id ELSE NULL END) AS Subscriptions_Received_for_PW , "+
+                "COUNT(DISTINCT CASE WHEN s.subscriptionPack_id = 2 OR DATEDIFF(registrationDate, s.start_date) BETWEEN 169 AND 504 THEN s.subscription_id ELSE NULL END) AS Subscriptions_Received_for_Child, "+
+                "COUNT(DISTINCT CASE WHEN s.subscriptionPack_id = 1 AND DATEDIFF(registrationDate, s.start_date) < -90 THEN s.subscription_id ELSE NULL END) AS Subscriptions_Ineligible "+
                 "FROM Beneficiary b INNER JOIN ( SELECT beneficiary_id, MAX(subscription_id) as max_id " +
                 "FROM subscriptions s  group by beneficiary_id ) max_ids ON b.id = max_ids.beneficiary_id  " +
                 "INNER JOIN subscriptions s ON max_ids.max_id = s.subscription_id " +
@@ -59,14 +65,25 @@ public class BeneficiaryWithRegistrationDateStateDaoImpl extends AbstractDao<Int
 
                 "UNION ALL " +
                 "SELECT state_id , COUNT(*) AS total_subscriptions , 0 AS subscriptions_active, 0 AS subscriptions_on_hold, 0 AS subscriptions_deactivated ," +
-                "0 AS subscriptions_deactivated_LIVE_BIRTH , 0 AS subscriptions_pending , 0 AS subscriptions_completed , COUNT(*) AS subscriptions_rejected FROM mother_import_rejection " +
+                "0 AS subscriptions_deactivated_LIVE_BIRTH , 0 AS subscriptions_pending , 0 AS subscriptions_completed , COUNT(*) AS subscriptions_rejected , " +
+                "COUNT(CASE WHEN DATEDIFF(registration_date," +
+                "        CASE WHEN LENGTH(lmp_date) = 29 THEN STR_TO_DATE(SUBSTRING_INDEX(lmp_date, '.', 1), '%Y-%m-%dT%H:%i:%s') END) + 90 BETWEEN -90 AND 168 THEN 1" +
+                "        WHEN LENGTH(lmp_date) < 5 OR lmp_date IS NULL THEN 1 ELSE NULL END) AS Subscriptions_Received_for_PW , "+
+                "COUNT(CASE WHEN DATEDIFF(registration_date," +
+                "        CASE WHEN LENGTH(lmp_date) = 29 THEN STR_TO_DATE(SUBSTRING_INDEX(lmp_date, '.', 1), '%Y-%m-%dT%H:%i:%s') END) + 90 >= 169 THEN 1 ELSE NULL " +
+                "        END) AS Subscriptions_Received_for_Child, "+
+                "COUNT(CASE WHEN DATEDIFF(registration_date," +
+                "        CASE WHEN LENGTH(lmp_date) = 29 THEN STR_TO_DATE(SUBSTRING_INDEX(lmp_date, '.', 1), '%Y-%m-%dT%H:%i:%s') END) + 90 < -90 THEN 1 ELSE NULL" +
+                "        END) AS Subscriptions_Ineligible "+
+                "FROM mother_import_rejection " +
                 "WHERE registration_date >= :fromDate AND registration_date < :toDate  " +
                 " AND state_id NOT IN (43, 42) " + //removing Kerala and TamilNadu
                 "GROUP BY state_id " +
 
                 "UNION ALL " +
                 "SELECT state_id , COUNT(*) AS total_subscriptions , 0 AS subscriptions_active, 0 AS subscriptions_on_hold, 0 AS subscriptions_deactivated ," +
-                "0 AS subscriptions_deactivated_LIVE_BIRTH , 0 AS subscriptions_pending , 0 AS subscriptions_completed , COUNT(*) AS subscriptions_rejected FROM child_import_rejection " +
+                "0 AS subscriptions_deactivated_LIVE_BIRTH , 0 AS subscriptions_pending , 0 AS subscriptions_completed , COUNT(*) AS subscriptions_rejected , " +
+                "0 AS Subscriptions_Received_for_PW, COUNT(*) AS Subscriptions_Received_for_Child, 0 AS Subscriptions_Ineligible FROM child_import_rejection " +
                 "WHERE registration_date >= :fromDate AND registration_date < :toDate " +
                 " AND state_id NOT IN (43, 42) " + //removing Kerala and TamilNadu
                 "GROUP BY state_id )" +
@@ -88,7 +105,9 @@ public class BeneficiaryWithRegistrationDateStateDaoImpl extends AbstractDao<Int
                         ((BigDecimal) row[1]).intValue(), ((BigDecimal) row[2]).intValue(),
                         ((BigDecimal) row[3]).intValue(), ((BigDecimal) row[4]).intValue(),
                         ((BigDecimal) row[5]).intValue(), ((BigDecimal) row[6]).intValue(),
-                        ((BigDecimal) row[7]).intValue(), ((BigDecimal) row[8]).intValue()
+                        ((BigDecimal) row[7]).intValue(), ((BigDecimal) row[8]).intValue(),
+                        ((BigDecimal) row[9]).intValue(), ((BigDecimal) row[10]).intValue(),
+                        ((BigDecimal) row[11]).intValue()
                 );
                 if(row[0] == null){
                     dto.setLocationId(0L);
@@ -114,12 +133,30 @@ public class BeneficiaryWithRegistrationDateStateDaoImpl extends AbstractDao<Int
 
         LOGGER.info("Operation = duplicateRejectedSubscriberCount, status = IN_PROGRESS , fromDate = {} , toDate = {}" , fromDate , toDate  );
 
-        String query_string = "SELECT a.state_id , SUM(a.duplicate_subscribers) AS duplicate_subscribers FROM " +
-                "(SELECT mir.state_id , COUNT(distinct(mir.registration_no) ) AS duplicate_subscribers " +
-                "FROM mother_import_rejection mir INNER JOIN Beneficiary b ON b.rch_id = mir.registration_no " +
-                "WHERE (registration_date >= :fromDate AND registration_date < :toDate ) AND mir.state_id NOT IN (43, 42) GROUP BY mir.state_id  " +
+        String query_string = "SELECT a.state_id , SUM(a.duplicate_subscribers) AS duplicate_subscribers , " +
+                "SUM(a.duplicate_subscribers_PW) AS duplicate_subscribers_PW , SUM(a.duplicate_subscribers_Child) AS duplicate_subscribers_Child , " +
+                "SUM(a.duplicate_subscribers_Ineligible) AS duplicate_subscribers_Ineligible FROM " +
+                "(SELECT mir.state_id, " +
+                "       COUNT(DISTINCT mir.registration_no) AS duplicate_subscribers, " +
+                "       COUNT(DISTINCT CASE WHEN date_diff + 90 BETWEEN -90 AND 168 THEN mir.registration_no ELSE NULL END) AS duplicate_subscribers_PW, " +
+                "       COUNT(DISTINCT CASE WHEN date_diff + 90 >= 169 THEN mir.registration_no ELSE NULL END) AS duplicate_subscribers_Child, " +
+                "       COUNT(DISTINCT CASE WHEN date_diff + 90 < -90 THEN mir.registration_no ELSE NULL END) AS duplicate_subscribers_Ineligible " +
+                "FROM ( " +
+                "    SELECT mir.*, " +
+                "           DATEDIFF(mir.registration_date, STR_TO_DATE(SUBSTRING_INDEX(mir.lmp_date, '.', 1), '%Y-%m-%dT%H:%i:%s')) AS date_diff " +
+                "    FROM mother_import_rejection mir " +
+                "    INNER JOIN ( " +
+                "        SELECT MAX(id) AS id " +
+                "        FROM mother_import_rejection " +
+                "        GROUP BY registration_no " +
+                "    ) mir_latest ON mir.id = mir_latest.id " +
+                "    WHERE (mir.registration_date >= :fromDate AND mir.registration_date < :toDate) AND mir.state_id NOT IN (43, 42) " +
+                ") mir " +
+                "INNER JOIN Beneficiary b ON b.rch_id = mir.registration_no " +
+                "GROUP BY mir.state_id " +
                 "UNION ALL " +
-                "SELECT cir.state_id , COUNT(distinct(cir.registration_no) )  AS duplicate_subscribers " +
+                "SELECT cir.state_id , COUNT(DISTINCT cir.registration_no)  AS duplicate_subscribers , " +
+                "0 AS duplicate_subscribers_PW, COUNT(DISTINCT cir.registration_no) AS duplicate_subscribers_Child, 0 AS duplicate_subscribers_Ineligible "+
                 "FROM child_import_rejection cir INNER JOIN Beneficiary b ON b.rch_id = cir.registration_no " +
                 "WHERE (registration_date >= :fromDate AND registration_date < :toDate) AND cir.state_id NOT IN (43, 42) " +
                 "GROUP BY cir.state_id ) AS a GROUP BY a.state_id ";
@@ -146,6 +183,9 @@ public class BeneficiaryWithRegistrationDateStateDaoImpl extends AbstractDao<Int
                     dto.setLocationId( ((BigInteger) row[0]).longValue() );
                 }
                 dto.setSubscriberCount( ((BigDecimal) row[1]).intValue() );
+                dto.setSubscriberCount_PW( ((BigDecimal) row[2]).intValue() );
+                dto.setSubscriberCount_Child( ((BigDecimal) row[3]).intValue() );
+                dto.setSubscriberCount_Ineligible( ((BigDecimal) row[4]).intValue() );
                 kilkariSubscriberRegistrationDateRejectedCountDtos.add(dto);
             }
             List<State> states = stateDao.getAllStates();
@@ -155,6 +195,9 @@ public class BeneficiaryWithRegistrationDateStateDaoImpl extends AbstractDao<Int
                     KilkariSubscriberRegistrationDateRejectedCountDto dto = new KilkariSubscriberRegistrationDateRejectedCountDto();
                     dto.setLocationId(state.getStateId());
                     dto.setSubscriberCount(0);
+                    dto.setSubscriberCount_PW(0);
+                    dto.setSubscriberCount_Child(0);
+                    dto.setSubscriberCount_Ineligible(0);
                     kilkariSubscriberRegistrationDateRejectedCountDtos.add(dto);
                 }
             }
