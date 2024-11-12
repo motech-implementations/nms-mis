@@ -569,7 +569,15 @@ public class MAPerformanceDaoImpl extends AbstractDao<Integer, User> implements 
                 "AND mc.has_passed = 1 " +
                 "AND f.course_first_completion_date <= :toDate " +
                 "AND f.modificationdate BETWEEN :fromDate AND :toDate " +
-                "THEN f.flw_id END) AS ashaDeactivatedCompletedCourseInBetweenCount " +
+                "THEN f.flw_id END) AS ashaDeactivatedCompletedCourseInBetweenCount, " +
+                "COUNT(DISTINCT CASE " +
+                "WHEN f.job_status = 'ACTIVE' " +
+                "AND f.course_start_date BETWEEN :fromDate AND :toDate " +
+                "THEN f.flw_id END) AS ashas_started, " +
+                "COUNT(DISTINCT CASE WHEN mc.has_passed = 1 " +
+                "AND f.job_status = 'ACTIVE' " +
+                "AND f.course_first_completion_date  BETWEEN :fromDate AND :toDate " +
+                "THEN mc.flw_id END) AS ashas_completed " +
                 "FROM front_line_worker f " +
                 "LEFT JOIN ma_course_completion mc ON f.flw_id = mc.flw_id " +
                 "WHERE f.flw_designation = 'ASHA' AND f." + locationColumn + " IN (:locationIds) " +

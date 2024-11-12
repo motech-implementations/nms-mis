@@ -990,12 +990,12 @@ public class UserController {
                         summaryDto1.setAshasActivated(end.getAshasRegistered() != null ? end.getAshasRegistered() : 0L);
                         if (MAperformanceCounts != null) {
                             summaryDto1.setAshasFailed(MAperformanceCounts.getAshasFailed() != null ? MAperformanceCounts.getAshasFailed() : 0);
-                            int ashasStartedDifference = end.getAshasStarted() - start.getAshasStarted();
-                            int ashasCompletedDifference = end.getAshasCompleted()-start.getAshasCompleted();
-                            long ashaDeactivatedStartedCourseInBetweenCount = MAperformanceCounts.getAshaDeactivatedStartedCourseInBetweenCount() != null ? MAperformanceCounts.getAshaDeactivatedStartedCourseInBetweenCount() : 0L;
-                            long ashaDeactivatedCompletedCourseInBetweenCount = MAperformanceCounts.getAshaDeactivatedCompletedCourseInBetweenCount() != null ? MAperformanceCounts.getAshaDeactivatedCompletedCourseInBetweenCount() : 0L;
-                            summaryDto1.setAshasCompleted((int) (ashasCompletedDifference+ashaDeactivatedCompletedCourseInBetweenCount));
-                            summaryDto1.setAshasStarted((int) (ashasStartedDifference + ashaDeactivatedStartedCourseInBetweenCount));
+//                            int ashasStartedDifference = end.getAshasStarted() - start.getAshasStarted();
+//                            int ashasCompletedDifference = end.getAshasCompleted()-start.getAshasCompleted();
+//                            long ashaDeactivatedStartedCourseInBetweenCount = MAperformanceCounts.getAshaDeactivatedStartedCourseInBetweenCount() != null ? MAperformanceCounts.getAshaDeactivatedStartedCourseInBetweenCount() : 0L;
+//                            long ashaDeactivatedCompletedCourseInBetweenCount = MAperformanceCounts.getAshaDeactivatedCompletedCourseInBetweenCount() != null ? MAperformanceCounts.getAshaDeactivatedCompletedCourseInBetweenCount() : 0L;
+                            summaryDto1.setAshasCompleted((int) (MAperformanceCounts.getAshasCompleted()!=null ? MAperformanceCounts.getAshasCompleted() : 0L));
+                            summaryDto1.setAshasStarted((int) (MAperformanceCounts.getAshasStarted()!=null ? MAperformanceCounts.getAshasStarted() : 0L));
                             summaryDto1.setAshasAccessed(MAperformanceCounts.getAccessedAtleastOnce() != null ? MAperformanceCounts.getAccessedAtleastOnce() : 0L);
                             summaryDto1.setAshasNotAccessed(MAperformanceCounts.getAccessedNotOnce() != null ? MAperformanceCounts.getAccessedNotOnce() : 0L);
                             summaryDto1.setAshasDeactivated(MAperformanceCounts.getAshasDeactivatedInBetween() != null ? MAperformanceCounts.getAshasDeactivatedInBetween() : 0L);
@@ -1144,8 +1144,8 @@ public class UserController {
                                 long ashaDeactivatedCompletedCourseInBetweenCount = MAperformanceCounts.getAshaDeactivatedCompletedCourseInBetweenCount() != null ? MAperformanceCounts.getAshaDeactivatedCompletedCourseInBetweenCount() : 0L;
                                 long totalashasDeactivated = MAperformanceCounts.getAshasDeactivatedInBetween() != null ? MAperformanceCounts.getAshasDeactivatedInBetween() : 0L;
                                 LOGGER.debug("ashasStartedDifference: {}, ashasCompletedDifference: {}, totalashasDeactivated: {}, ashaDeactivatedStartedCourseInBetweenCount: {},ashaDeactivatedCompletedCourseInBetweenCount: {}",ashasStartedDifference,ashasCompletedDifference,totalashasDeactivated,ashaDeactivatedStartedCourseInBetweenCount,ashaDeactivatedCompletedCourseInBetweenCount);
-                                summaryDto1.setAshasCompleted((int) (ashasCompletedDifference + ashaDeactivatedCompletedCourseInBetweenCount));
-                                summaryDto1.setAshasStarted((int) (ashasStartedDifference + ashaDeactivatedStartedCourseInBetweenCount));
+                                summaryDto1.setAshasCompleted((int) (MAperformanceCounts.getAshasCompleted()!=null ? MAperformanceCounts.getAshasCompleted() : 0L));
+                                summaryDto1.setAshasStarted((int) (MAperformanceCounts.getAshasStarted()!=null ? MAperformanceCounts.getAshasStarted() : 0L));
                                 summaryDto1.setAshasRegistered((int) (a.getAshasRegistered() - b.getAshasRegistered() + totalashasDeactivated));
                                 summaryDto1.setRecordsReceived((int) ((a.getAshasRegistered() + a.getAshasRejected()) - (b.getAshasRejected() + b.getAshasRegistered()) + totalashasDeactivated));
                                 LOGGER.debug("this is recordes received value: {}",(a.getAshasRegistered() + a.getAshasRejected()) - (b.getAshasRejected() + b.getAshasRegistered()));
