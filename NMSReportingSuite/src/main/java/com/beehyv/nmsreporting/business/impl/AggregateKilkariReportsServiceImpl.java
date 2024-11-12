@@ -647,6 +647,9 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                     kilkariSubscriberRegistrationDateListDto.setTotalBeneficiaryWithDeactivatedStatus(kilkariSubscriberRegistrationDateDto.getTotalBeneficiaryWithDeactivatedStatus());
                     kilkariSubscriberRegistrationDateListDto.setTotalBeneficiaryWithDeactivatedStatus_LIVE_BIRTH(kilkariSubscriberRegistrationDateDto.getTotalBeneficiaryWithDeactivatedStatus_LIVE_BIRTH());
                     kilkariSubscriberRegistrationDateListDto.setTotalRejectedSubscriberCount(kilkariSubscriberRegistrationDateDto.getTotalRecordsRejected() - kilkariSubscriberRegistrationDateRejectedCountDto.getSubscriberCount());
+                    kilkariSubscriberRegistrationDateListDto.setTotalSubscriberCount_PW(kilkariSubscriberRegistrationDateDto.getTotalSubscriptions_PW()-kilkariSubscriberRegistrationDateRejectedCountDto.getSubscriberCount_PW());
+                    kilkariSubscriberRegistrationDateListDto.setTotalSubscriberCount_Child(kilkariSubscriberRegistrationDateDto.getTotalSubscriptions_Child() - kilkariSubscriberRegistrationDateRejectedCountDto.getSubscriberCount_Child());
+                    kilkariSubscriberRegistrationDateListDto.setTotalSubscriberCount_Ineligible(kilkariSubscriberRegistrationDateDto.getTotalSubscriptions_Ineligible() - kilkariSubscriberRegistrationDateRejectedCountDto.getSubscriberCount_Ineligible());
                     kilkariSubscriberRegistrationDateListDto.setTotalSubscriberCount(kilkariSubscriberRegistrationDateDto.getTotalSubscriptions() - kilkariSubscriberRegistrationDateRejectedCountDto.getSubscriberCount());
                     kilkariSubscriberRegistrationDateListDto.setTotalBeneficiaryWithCompletedStatus(kilkariSubscriberRegistrationDateDto.getTotalSubscriptionsCompletedStatus());
                     locationType = kilkariSubscriberRegistrationDateDto.getLocationType();
@@ -728,6 +731,9 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 kilkariSubscriberRegistrationDateListDto.setTotalBeneficiaryWithDeactivatedStatus(0);
                 kilkariSubscriberRegistrationDateListDto.setTotalBeneficiaryWithDeactivatedStatus_LIVE_BIRTH(0);
                 kilkariSubscriberRegistrationDateListDto.setTotalRejectedSubscriberCount(0);
+                kilkariSubscriberRegistrationDateListDto.setTotalSubscriberCount_PW(0);
+                kilkariSubscriberRegistrationDateListDto.setTotalSubscriberCount_Child(0);
+                kilkariSubscriberRegistrationDateListDto.setTotalSubscriberCount_Ineligible(0);
                 kilkariSubscriberRegistrationDateListDto.setTotalSubscriberCount(0);
                 kilkariSubscriberRegistrationDateListDto.setTotalBeneficiaryWithCompletedStatus(0);
                 kilkariSubscriberRegistrationDateListDto.setLocationType("District");

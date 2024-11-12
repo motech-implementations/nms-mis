@@ -14,6 +14,9 @@ public class KilkariSubscriberRegistrationDateListDto {
     private Integer totalSubscriberCount;
     private Integer totalRejectedSubscriberCount;
     private Integer totalBeneficiaryWithCompletedStatus;
+    private Integer totalSubscriberCount_PW;
+    private Integer totalSubscriberCount_Child;
+    private Integer totalSubscriberCount_Ineligible;
 
 
     public int getId() {
@@ -107,5 +110,29 @@ public class KilkariSubscriberRegistrationDateListDto {
 
     public void setTotalBeneficiaryWithCompletedStatus(Integer totalBeneficiaryWithCompletedStatus) {
         this.totalBeneficiaryWithCompletedStatus = totalBeneficiaryWithCompletedStatus;
+    }
+
+    public Integer getTotalSubscriberCount_PW() {
+        return totalSubscriberCount_PW;
+    }
+
+    public void setTotalSubscriberCount_PW(Integer totalSubscriberCount_PW) {
+        this.totalSubscriberCount_PW = totalSubscriberCount_PW;
+    }
+
+    public Integer getTotalSubscriberCount_Child() {
+        return totalSubscriberCount_Child;
+    }
+
+    public void setTotalSubscriberCount_Child(Integer totalSubscriberCount_Child) {
+        this.totalSubscriberCount_Child = totalSubscriberCount_Child;
+    }
+
+    public Integer getTotalSubscriberCount_Ineligible() {
+        return totalSubscriberCount_Ineligible;
+    }
+
+    public void setTotalSubscriberCount_Ineligible(Integer totalSubscriberCount_Ineligible) {
+        this.totalSubscriberCount_Ineligible = totalSubscriberCount_Ineligible;
     }
 }
