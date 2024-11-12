@@ -11,6 +11,8 @@ public class MAPerformanceCountsDto {
     Long ashasCompletedInGivenTime;
     Long ashaDeactivatedStartedCourseInBetweenCount;
     Long ashaDeactivatedCompletedCourseInBetweenCount;
+    Long ashasStarted;
+    Long ashasCompleted;
 
     public Long getAccessedAtleastOnce() {
         return accessedAtleastOnce;
@@ -82,5 +84,21 @@ public class MAPerformanceCountsDto {
 
     public void setAshaDeactivatedCompletedCourseInBetweenCount(Long ashaDeactivatedCompletedCourseInBetweenCount) {
         this.ashaDeactivatedCompletedCourseInBetweenCount = ashaDeactivatedCompletedCourseInBetweenCount;
+    }
+
+    public Long getAshasStarted() {
+        return ashasStarted;
+    }
+
+    public void setAshasStarted(Long ashasStarted) {
+        this.ashasStarted = ashasStarted;
+    }
+
+    public Long getAshasCompleted() {
+        return ashasCompleted;
+    }
+
+    public void setAshasCompleted(Long ashasCompleted) {
+        this.ashasCompleted = ashasCompleted;
     }
 }
