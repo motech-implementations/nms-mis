@@ -697,7 +697,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
 
                     if ((kilkariSubscriberRegistrationDateListDto.getTotalBeneficiaryWithActiveStatus()
                             + kilkariSubscriberRegistrationDateListDto.getTotalBeneficiaryWithOnHoldStatus() + kilkariSubscriberRegistrationDateListDto.getTotalBeneficiaryWithDeactivatedStatus()
-                            + kilkariSubscriberRegistrationDateListDto.getTotalBeneficiaryWithPendingStatus() + kilkariSubscriberRegistrationDateListDto.getTotalSubscriberCount()) != 0 && !locationType.equalsIgnoreCase("DifferenceState")) {
+                            + kilkariSubscriberRegistrationDateDto.getTotalBeneficiaryWithDeactivatedStatus_LIVE_BIRTH() + kilkariSubscriberRegistrationDateListDto.getTotalBeneficiaryWithPendingStatus() + kilkariSubscriberRegistrationDateListDto.getTotalSubscriberCount()) != 0 && !locationType.equalsIgnoreCase("DifferenceState")) {
                         LOGGER.debug("Adding record for " + kilkariSubscriberRegistrationDateListDto.getLocationName());
                         kilkariSubscriberRegistrationDateListDtos.add(kilkariSubscriberRegistrationDateListDto);
                     }
