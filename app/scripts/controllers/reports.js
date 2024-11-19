@@ -553,7 +553,7 @@
 				if($scope.userHasOneCircle()){
                 	$scope.selectCircle($scope.circles[0]);
                 }
-                if($scope.report.reportEnum == 'Kilkari_Message_Matrix' || $scope.report.reportEnum == 'Kilkari_Subscriber' || $scope.report.reportEnum == 'Kilkari_Subscriber_Report_with_RegistrationDate' || $scope.report.reportEnum == 'Kilkari_Listening_Matrix' || $scope.report.reportEnum == 'Kilkari_Usage' || $scope.report.reportEnum == 'Kilkari_Message_Listenership' || $scope.report.reportEnum == 'Kilkari_Thematic_Content' || $scope.report.reportEnum == 'Kilkari_Aggregate_Beneficiaries' || $scope.report.reportEnum == 'Kilkari_Beneficiary_Completion' || $scope.report.reportEnum == 'District-wise Performance of the State for Kilkari'){
+                if($scope.report.reportEnum == 'Kilkari_Message_Matrix' || $scope.report.reportEnum == 'Kilkari_Subscriber' || $scope.report.reportEnum == 'Kilkari_Subscriber_Report_with_RegistrationDate' || $scope.report.reportEnum == 'Kilkari_Listening_Matrix' || $scope.report.reportEnum == 'Kilkari_Usage' || $scope.report.reportEnum == 'Kilkari_Message_Listenership' || $scope.report.reportEnum == 'Kilkari_Thematic_Content' || $scope.report.reportEnum == 'Kilkari_Aggregate_Beneficiaries' || $scope.report.reportEnum == 'Kilkari_Beneficiary_Completion' || $scope.report.reportEnum == 'District-wise Performance of the State for Kilkari' || $scope.report.reportEnum == 'Aggregate_Whatsapp_Subscriber' || $scope.report.reportEnum == 'Aggregate_Whatsapp_Message' || $scope.report.reportEnum == 'Aggregate_Whatsapp_Opt_In_Report'){
                     $scope.periodType = ['Year','Financial Year','Quarter','Month','Week'];
                 }
                 else if($scope.report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise'){
@@ -1547,6 +1547,15 @@
                         }
                         else if($scope.report.reportEnum == 'Kilkari_Subscriber_with_RegistrationDate'){
                                 $scope.gridOptions1.columnDefs = $scope.Kilkari_Subscriber_with_RegistrationDate_Definitions;
+                        }
+                        else if($scope.report.reportEnum == 'Aggregate_Whatsapp_Subscriber'){
+                             $scope.gridOptions1.columnDefs = $scope.Aggregate_Whatsapp_Subscriber_Definitions;
+                        }
+                        else if($scope.report.reportEnum == 'Aggregate_Whatsapp_Message'){
+                             $scope.gridOptions1.columnDefs = $scope.Aggregate_Whatsapp_Message_Definitions;
+                        }
+                        else if($scope.report.reportEnum == 'Aggregate_Whatsapp_Opt_In_Report'){
+                             $scope.gridOptions1.columnDefs = $scope.Aggregate_Whatsapp_Opt_In_Report_Definitions;
                         }
                         else if($scope.report.reportEnum == 'Kilkari_Message_Listenership'){
                              $scope.gridOptions1.columnDefs = $scope.Kilkari_Message_Listenership_Definitions;
@@ -2769,6 +2778,50 @@
                                                      { field: 'totalSubscriptionsCompleted', displayName: 'Total number of subscriptions who have completed their packs', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                      { field: 'totalSubscriptionsEnd', displayName: 'Total subscriptions at the end of the period', width:"10%", cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, enableHiding: false },
             ]
+
+
+            $scope.Aggregate_Whatsapp_Subscriber_Definitions = [
+                                                                 {name: 'S No.', displayName: 'S No.',width:"4%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
+                                                                 { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents">Total</div>',defaultSort: { direction: uiGridConstants.ASC },
+                                                                    cellTemplate:'<a   ng-if= !row.entity.link class="btn aggregate-location" title="{{COL_FIELD}}"  ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a><p ng-if= row.entity.link class="ui-grid-cell-contents" title="{{COL_FIELD}}" >{{ COL_FIELD }}</p>',
+                                                                    enableHiding: false,width: "15%"
+                                                                 },
+                                                                 { field: 'activeWhatsAppSubscribers', displayName: 'Total Subscribers', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"12%", enableHiding: false },
+                                                                 { field: 'newWhatsAppOptIns', displayName: 'New opt-ins', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                                 { field: 'newWhatsAppSubscribers', displayName: 'New Subscribers', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                                 { field: 'selfWhatsAppDeactivatedSubscriber', displayName: 'Subscribers who have self-deactivated', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                                 { field: 'deliveryFailureWhatsAppDeactivatedSubscriber', displayName: 'Subscribers deactivated for delivery failures', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                                 { field: 'motherPackCompletedSubscribers', displayName: 'Subscribers who completed Mother Pack', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                                 { field: 'childPackCompletedSubscribers', displayName: 'Subscribers who completed Child Pack', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                        ]
+            $scope.Aggregate_Whatsapp_Message_Definitions = [
+                                                               {name: 'S No.', displayName: 'S No.',width:"4%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
+                                                               { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents">Total</div>',defaultSort: { direction: uiGridConstants.ASC },
+                                                                  cellTemplate:'<a   ng-if= !row.entity.link class="btn aggregate-location" title="{{COL_FIELD}}"  ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a><p ng-if= row.entity.link class="ui-grid-cell-contents" title="{{COL_FIELD}}" >{{ COL_FIELD }}</p>',
+                                                                  enableHiding: false,width: "15%"
+                                                               },
+                                                               { field: 'totalSubscribers', displayName: 'Total Subscribers', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"12%", enableHiding: false },
+                                                               { field: 'coreMessagesSent', displayName: 'Core Messages Sent', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                               { field: 'coreMessagesDelivered', displayName: 'Core Messages Delivered', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                               { field: 'coreMessagesRead', displayName: 'Core Messages Read', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                ]
+            $scope.Aggregate_Whatsapp_Opt_In_Report_Definitions = [
+                                                               {name: 'S No.', displayName: 'S No.',width:"4%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
+                                                               { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents">Total</div>',defaultSort: { direction: uiGridConstants.ASC },
+                                                                  cellTemplate:'<a   ng-if= !row.entity.link class="btn aggregate-location" title="{{COL_FIELD}}"  ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a><p ng-if= row.entity.link class="ui-grid-cell-contents" title="{{COL_FIELD}}" >{{ COL_FIELD }}</p>',
+                                                                  enableHiding: false,width: "15%"
+                                                               },
+                                                               { field: 'welcomeCallSuccessfulCalls', displayName: 'Welcome call: No. of successful calls', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"12%", enableHiding: false },
+                                                               { field: 'welcomeCallCallsAnswered', displayName: 'Welcome call: No. of calls answered', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                               { field: 'welcomeCallEnteredAnOption', displayName: 'Welcome call: Entered an option', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                               { field: 'welcomeCallProvidedOptIn', displayName: 'Welcome call: Provided opt-in', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                               { field: 'welcomeCallProvidedOptOut', displayName: 'Welcome call: Provided opt-out', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"12%", enableHiding: false },
+                                                               { field: 'optInSuccessfulCalls', displayName: 'Opt-in call: No. of successful calls', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                               { field: 'optInCallsAnswered', displayName: 'Opt-in call: No. of calls answered', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                               { field: 'optInEnteredAnOption', displayName: 'Opt-in call: Entered an option', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                               { field: 'optInProvidedOptIn', displayName: 'Opt-in call: Provided opt-in', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                               { field: 'optInProvidedOptOut', displayName: 'Opt-in call: Provided opt-out', cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                ]
             $scope.Kilkari_Subscriber_Definitions2 = [
                                                      {name: 'S No.', displayName: 'S No.',width:"4%",enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
                                                      { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents">Total</div>',defaultSort: { direction: uiGridConstants.ASC },

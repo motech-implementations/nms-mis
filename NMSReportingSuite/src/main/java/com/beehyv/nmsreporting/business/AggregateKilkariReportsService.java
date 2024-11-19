@@ -23,6 +23,12 @@ public interface AggregateKilkariReportsService {
 
     AggregateKilkariReportsDto getKilkariMessageListenershipReport(ReportRequest reportRequest);
 
+    AggregateKilkariReportsDto getWhatsAppSubscriberCountReport(ReportRequest reportRequest);
+
+    AggregateKilkariReportsDto getWhatsAppMessageCountReport(ReportRequest reportRequest);
+
+    AggregateKilkariReportsDto getWhatsAppReport(ReportRequest reportRequest);
+
     List<AggCumulativeBeneficiaryComplDto> getCumulativeBeneficiaryCompletion(ReportRequest reportRequest, User currentUser);
 
     List<ListeningMatrixDto> getListeningMatrixReport(ReportRequest reportRequest, User currentUser);

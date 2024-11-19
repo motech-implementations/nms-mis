@@ -87,6 +87,15 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
     private KilkariMessageListenershipReportDao kilkariMessageListenershipReportDao;
 
     @Autowired
+    private WhatsAppSubscribersReportDao whatsAppSubscribersReportDao;
+
+    @Autowired
+    private WhatsAppMessagesReportDao whatsAppMessagesReportDao;
+
+    @Autowired
+    private WhatsAppReportsDao whatsAppReportsDao;
+
+    @Autowired
     private AggCumulativeBeneficiaryComplDao aggCumulativeBeneficiaryComplDao;
 
     @Autowired
@@ -631,6 +640,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             }
 
         List<KilkariSubscriberRegistrationDateListDto> kilkariSubscriberRegistrationDateListDtos = new ArrayList<>();
+
         for(int i=0;i<kilkariSubscriberList.size();i++){
             for(int j=0;j<kilkariSubscriberRegistrationDateRejectedCountDtoList.size();j++) {
                 if(kilkariSubscriberList.get(i).getLocationId() == kilkariSubscriberRegistrationDateRejectedCountDtoList.get(j).getLocationId()) {
@@ -1497,6 +1507,255 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         return aggregateKilkariReportsDto;
     }
 
+    @Override
+    public AggregateKilkariReportsDto getWhatsAppSubscriberCountReport(ReportRequest reportRequest) {
+        AggregateKilkariReportsDto aggregateKilkariReportsDto = new AggregateKilkariReportsDto();
+
+        Calendar aCalendar = Calendar.getInstance();
+        aCalendar.setTime(reportRequest.getFromDate());
+        aCalendar.set(Calendar.MILLISECOND, 0);
+        aCalendar.set(Calendar.SECOND, 0);
+        aCalendar.set(Calendar.MINUTE, 0);
+        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+
+
+        aCalendar.add(Calendar.DATE, 0);
+        Date fromDate = aCalendar.getTime();
+        aCalendar.setTime(reportRequest.getToDate());
+        aCalendar.set(Calendar.MILLISECOND, 0);
+        aCalendar.set(Calendar.SECOND, 0);
+        aCalendar.set(Calendar.MINUTE, 0);
+        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        Date toDate  = aCalendar.getTime();
+
+
+        List<WhatsAppSubscriberDto> whatsAppSubscriberDtoList = new ArrayList<>();
+        List<WhatsAppSubscribers> whatsAppSubscribersList = new ArrayList<>();
+
+        if (reportRequest.getStateId() == 0) {
+            whatsAppSubscribersList.addAll(getWhatsAppSubscriberData(0,"State",fromDate,toDate,reportRequest.getPeriodType()));
+        } else if (reportRequest.getDistrictId() == 0) {
+            whatsAppSubscribersList.addAll(getWhatsAppSubscriberData(reportRequest.getStateId(),"District",fromDate,toDate,reportRequest.getPeriodType()));
+        } else if(reportRequest.getBlockId() == 0){
+            whatsAppSubscribersList.addAll(getWhatsAppSubscriberData(reportRequest.getDistrictId(),"Block",fromDate,toDate,reportRequest.getPeriodType()));
+        } else {
+            whatsAppSubscribersList.addAll(getWhatsAppSubscriberData(reportRequest.getBlockId(),"Subcentre",fromDate,toDate,reportRequest.getPeriodType()));
+        }
+
+        if(!(whatsAppSubscribersList.isEmpty())){
+            for(WhatsAppSubscribers subscriber : whatsAppSubscribersList){
+                WhatsAppSubscriberDto whatsAppSubscriberDto = new WhatsAppSubscriberDto();
+                whatsAppSubscriberDto.setId(subscriber.getId());
+                whatsAppSubscriberDto.setLocationId(subscriber.getLocationId());
+                whatsAppSubscriberDto.setLocationType(subscriber.getLocationType());
+                whatsAppSubscriberDto.setActiveWhatsAppSubscribers(subscriber.getActiveWhatsAppSubscribers());
+                whatsAppSubscriberDto.setNewWhatsAppOptIns(subscriber.getNewWhatsAppOptIns());
+                whatsAppSubscriberDto.setNewWhatsAppSubscribers(subscriber.getNewWhatsAppSubscribers());
+                whatsAppSubscriberDto.setSelfWhatsAppDeactivatedSubscriber(subscriber.getSelfWhatsAppDeactivatedSubscriber());
+                whatsAppSubscriberDto.setDeliveryFailureWhatsAppDeactivatedSubscriber(subscriber.getDeliveryFailureWhatsAppDeactivatedSubscriber());
+                whatsAppSubscriberDto.setMotherPackCompletedSubscribers(subscriber.getMotherPackCompletedSubscribers());
+                whatsAppSubscriberDto.setChildPackCompletedSubscribers(subscriber.getChildPackCompletedSubscribers());
+                String locationType = subscriber.getLocationType();
+                if(locationType.equalsIgnoreCase("State")){
+                    whatsAppSubscriberDto.setLocationName(stateDao.findByStateId(subscriber.getLocationId().intValue()).getStateName());
+                }
+                if(locationType.equalsIgnoreCase("District")){
+                    whatsAppSubscriberDto.setLocationName(districtDao.findByDistrictId(subscriber.getLocationId().intValue()).getDistrictName());
+                }
+                if(locationType.equalsIgnoreCase("Block")){
+                    whatsAppSubscriberDto.setLocationName(blockDao.findByblockId(subscriber.getLocationId().intValue()).getBlockName());
+                }
+                if(locationType.equalsIgnoreCase("Subcentre")){
+                    whatsAppSubscriberDto.setLocationName(healthSubFacilityDao.findByHealthSubFacilityId(subscriber.getLocationId().intValue()).getHealthSubFacilityName());
+                    whatsAppSubscriberDto.setLink(true);
+                }
+                if (locationType.equalsIgnoreCase("DifferenceState")) {
+                    whatsAppSubscriberDto.setLocationName("No District");
+                    whatsAppSubscriberDto.setLink(true);
+                }
+                if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
+                    whatsAppSubscriberDto.setLocationName("No Block");
+                    whatsAppSubscriberDto.setLink(true);
+                }
+                if (locationType.equalsIgnoreCase("DifferenceBlock")) {
+                    whatsAppSubscriberDto.setLocationName("No Subcentre");
+                    whatsAppSubscriberDto.setLink(true);
+                }
+                if(subscriber.getId()!=0 && !locationType.equalsIgnoreCase("DifferenceState")){
+                    whatsAppSubscriberDtoList.add(whatsAppSubscriberDto);
+                }
+            }
+        }
+        aggregateKilkariReportsDto.setTableData(whatsAppSubscriberDtoList);
+        return aggregateKilkariReportsDto;
+    }
+
+    @Override
+    public AggregateKilkariReportsDto getWhatsAppMessageCountReport(ReportRequest reportRequest) {
+        AggregateKilkariReportsDto aggregateKilkariReportsDto = new AggregateKilkariReportsDto();
+
+        Calendar aCalendar = Calendar.getInstance();
+        aCalendar.setTime(reportRequest.getFromDate());
+        aCalendar.set(Calendar.MILLISECOND, 0);
+        aCalendar.set(Calendar.SECOND, 0);
+        aCalendar.set(Calendar.MINUTE, 0);
+        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+
+
+        aCalendar.add(Calendar.DATE, 0);
+        Date fromDate = aCalendar.getTime();
+        aCalendar.setTime(reportRequest.getToDate());
+        aCalendar.set(Calendar.MILLISECOND, 0);
+        aCalendar.set(Calendar.SECOND, 0);
+        aCalendar.set(Calendar.MINUTE, 0);
+        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        Date toDate  = aCalendar.getTime();
+
+
+        List<WhatsAppMessageDto> whatsAppMessageDtoList = new ArrayList<>();
+        List<WhatsAppMessages> whatsAppMessagesList = new ArrayList<>();
+
+        if (reportRequest.getStateId() == 0) {
+            whatsAppMessagesList.addAll(getWhatsAppMessageData(0,"State",fromDate,toDate,reportRequest.getPeriodType()));
+        } else if (reportRequest.getDistrictId() == 0) {
+            whatsAppMessagesList.addAll(getWhatsAppMessageData(reportRequest.getStateId(),"District",fromDate,toDate,reportRequest.getPeriodType()));
+        } else if(reportRequest.getBlockId() == 0){
+            whatsAppMessagesList.addAll(getWhatsAppMessageData(reportRequest.getDistrictId(),"Block",fromDate,toDate,reportRequest.getPeriodType()));
+        } else {
+            whatsAppMessagesList.addAll(getWhatsAppMessageData(reportRequest.getBlockId(),"Subcentre",fromDate,toDate,reportRequest.getPeriodType()));
+        }
+
+        if(!(whatsAppMessagesList.isEmpty())){
+            for(WhatsAppMessages message : whatsAppMessagesList){
+                WhatsAppMessageDto whatsAppMessageDto = new WhatsAppMessageDto();
+                whatsAppMessageDto.setId(message.getId());
+                whatsAppMessageDto.setLocationId(message.getLocationId());
+                whatsAppMessageDto.setLocationType(message.getLocationType());
+                whatsAppMessageDto.setTotalSubscribers(message.getTotalSubscribers());
+                whatsAppMessageDto.setCoreMessagesSent(message.getCoreMessagesSent());
+                whatsAppMessageDto.setCoreMessagesDelivered(message.getCoreMessagesDelivered());
+                whatsAppMessageDto.setCoreMessagesRead(message.getCoreMessagesRead());
+                String locationType = message.getLocationType();
+                if(locationType.equalsIgnoreCase("State")){
+                    whatsAppMessageDto.setLocationName(stateDao.findByStateId(message.getLocationId().intValue()).getStateName());
+                }
+                if(locationType.equalsIgnoreCase("District")){
+                    whatsAppMessageDto.setLocationName(districtDao.findByDistrictId(message.getLocationId().intValue()).getDistrictName());
+                }
+                if(locationType.equalsIgnoreCase("Block")){
+                    whatsAppMessageDto.setLocationName(blockDao.findByblockId(message.getLocationId().intValue()).getBlockName());
+                }
+                if(locationType.equalsIgnoreCase("Subcentre")){
+                    whatsAppMessageDto.setLocationName(healthSubFacilityDao.findByHealthSubFacilityId(message.getLocationId().intValue()).getHealthSubFacilityName());
+                    whatsAppMessageDto.setLink(true);
+                }
+                if (locationType.equalsIgnoreCase("DifferenceState")) {
+                    whatsAppMessageDto.setLocationName("No District");
+                    whatsAppMessageDto.setLink(true);
+                }
+                if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
+                    whatsAppMessageDto.setLocationName("No Block");
+                    whatsAppMessageDto.setLink(true);
+                }
+                if (locationType.equalsIgnoreCase("DifferenceBlock")) {
+                    whatsAppMessageDto.setLocationName("No Subcentre");
+                    whatsAppMessageDto.setLink(true);
+                }
+                if(message.getId()!=0 && !locationType.equalsIgnoreCase("DifferenceState")){
+                    whatsAppMessageDtoList.add(whatsAppMessageDto);
+                }
+            }
+        }
+        aggregateKilkariReportsDto.setTableData(whatsAppMessageDtoList);
+        return aggregateKilkariReportsDto;
+    }
+
+    @Override
+    public AggregateKilkariReportsDto getWhatsAppReport(ReportRequest reportRequest) {
+        AggregateKilkariReportsDto aggregateKilkariReportsDto = new AggregateKilkariReportsDto();
+
+        Calendar aCalendar = Calendar.getInstance();
+        aCalendar.setTime(reportRequest.getFromDate());
+        aCalendar.set(Calendar.MILLISECOND, 0);
+        aCalendar.set(Calendar.SECOND, 0);
+        aCalendar.set(Calendar.MINUTE, 0);
+        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+
+
+        aCalendar.add(Calendar.DATE, 0);
+        Date fromDate = aCalendar.getTime();
+        aCalendar.setTime(reportRequest.getToDate());
+        aCalendar.set(Calendar.MILLISECOND, 0);
+        aCalendar.set(Calendar.SECOND, 0);
+        aCalendar.set(Calendar.MINUTE, 0);
+        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        Date toDate  = aCalendar.getTime();
+
+
+        List<WhatsAppReportDto> whatsAppReportDtoList = new ArrayList<>();
+        List<WhatsAppReports> whatsAppReportsList = new ArrayList<>();
+
+        if (reportRequest.getStateId() == 0) {
+            whatsAppReportsList.addAll(getWhatsAppReportData(0,"State",fromDate,toDate,reportRequest.getPeriodType()));
+        } else if (reportRequest.getDistrictId() == 0) {
+            whatsAppReportsList.addAll(getWhatsAppReportData(reportRequest.getStateId(),"District",fromDate,toDate,reportRequest.getPeriodType()));
+        } else if(reportRequest.getBlockId() == 0){
+            whatsAppReportsList.addAll(getWhatsAppReportData(reportRequest.getDistrictId(),"Block",fromDate,toDate,reportRequest.getPeriodType()));
+        } else {
+            whatsAppReportsList.addAll(getWhatsAppReportData(reportRequest.getBlockId(),"Subcentre",fromDate,toDate,reportRequest.getPeriodType()));
+        }
+
+        if(!(whatsAppReportsList.isEmpty())){
+            for(WhatsAppReports report : whatsAppReportsList){
+                WhatsAppReportDto whatsAppReportDto = new WhatsAppReportDto();
+                whatsAppReportDto.setId(report.getId());
+                whatsAppReportDto.setLocationId(report.getLocationId());
+                whatsAppReportDto.setLocationType(report.getLocationType());
+                whatsAppReportDto.setWelcomeCallSuccessfulCalls(report.getWelcomeCallSuccessfulCalls());
+                whatsAppReportDto.setWelcomeCallCallsAnswered(report.getWelcomeCallCallsAnswered());
+                whatsAppReportDto.setWelcomeCallEnteredAnOption(report.getWelcomeCallEnteredAnOption());
+                whatsAppReportDto.setWelcomeCallProvidedOptIn(report.getWelcomeCallProvidedOptIn());
+                whatsAppReportDto.setWelcomeCallProvidedOptOut(report.getWelcomeCallProvidedOptOut());
+                whatsAppReportDto.setOptInSuccessfulCalls(report.getOptInSuccessfulCalls());
+                whatsAppReportDto.setOptInCallsAnswered(report.getOptInCallsAnswered());
+                whatsAppReportDto.setOptInEnteredAnOption(report.getOptInEnteredAnOption());
+                whatsAppReportDto.setOptInProvidedOptIn(report.getOptInProvidedOptIn());
+                whatsAppReportDto.setOptInProvidedOptOut(report.getOptInProvidedOptOut());
+                String locationType = report.getLocationType();
+                if(locationType.equalsIgnoreCase("State")){
+                    whatsAppReportDto.setLocationName(stateDao.findByStateId(report.getLocationId().intValue()).getStateName());
+                }
+                if(locationType.equalsIgnoreCase("District")){
+                    whatsAppReportDto.setLocationName(districtDao.findByDistrictId(report.getLocationId().intValue()).getDistrictName());
+                }
+                if(locationType.equalsIgnoreCase("Block")){
+                    whatsAppReportDto.setLocationName(blockDao.findByblockId(report.getLocationId().intValue()).getBlockName());
+                }
+                if(locationType.equalsIgnoreCase("Subcentre")){
+                    whatsAppReportDto.setLocationName(healthSubFacilityDao.findByHealthSubFacilityId(report.getLocationId().intValue()).getHealthSubFacilityName());
+                    whatsAppReportDto.setLink(true);
+                }
+                if (locationType.equalsIgnoreCase("DifferenceState")) {
+                    whatsAppReportDto.setLocationName("No District");
+                    whatsAppReportDto.setLink(true);
+                }
+                if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
+                    whatsAppReportDto.setLocationName("No Block");
+                    whatsAppReportDto.setLink(true);
+                }
+                if (locationType.equalsIgnoreCase("DifferenceBlock")) {
+                    whatsAppReportDto.setLocationName("No Subcentre");
+                    whatsAppReportDto.setLink(true);
+                }
+                if(report.getId()!=0 && !locationType.equalsIgnoreCase("DifferenceState")){
+                    whatsAppReportDtoList.add(whatsAppReportDto);
+                }
+            }
+        }
+        aggregateKilkariReportsDto.setTableData(whatsAppReportDtoList);
+        return aggregateKilkariReportsDto;
+    }
+
     public int extractWeekNumberAsInt(String weekString) {
         if (weekString != null && weekString.startsWith("w")) {
             try {
@@ -1907,6 +2166,379 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             kilkariMessageListenershipList.add(noSubcenterCount);
         }
         return kilkariMessageListenershipList;
+    }
+
+    private List<WhatsAppSubscribers> getWhatsAppSubscriberData(Integer locationId, String locationType, Date date,Date toDate,String periodType){
+        List<WhatsAppSubscribers> whatsAppSubscribersList = new ArrayList<>();
+        if(locationType.equalsIgnoreCase("State")){
+            List<State> states=stateDao.getStatesByServiceType("KILKARI");
+            for(State s:states){
+                if(!toDate.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"KILKARI"))){
+                    whatsAppSubscribersList.add(whatsAppSubscribersReportDao.getWhatsAppSubscriberCounts(s.getStateId(),locationType,date,periodType));
+                }}
+        }
+        else if(locationType.equalsIgnoreCase("District")){
+            List<District> districts = districtDao.getDistrictsOfState(locationId);
+
+            WhatsAppSubscribers stateCounts = whatsAppSubscribersReportDao.getWhatsAppSubscriberCounts(locationId,"State", date,periodType);
+
+
+            Integer totalActiveWhatsAppSubscribers = 0;
+            Integer totalNewWhatsAppOptIns = 0;
+            Integer totalNewWhatsAppSubscribers = 0;
+            Integer totalSelfWhatsAppDeactivatedSubscriber = 0;
+            Integer totalDeliveryFailureWhatsAppDeactivatedSubscriber = 0;
+            Integer totalMotherPackCompletedSubscribers = 0;
+            Integer totalChildPackCompletedSubscribers = 0;
+            for(District district :districts){
+                WhatsAppSubscribers districtCount = whatsAppSubscribersReportDao.getWhatsAppSubscriberCounts(district.getDistrictId(),locationType, date, periodType);
+                whatsAppSubscribersList.add(districtCount);
+                totalActiveWhatsAppSubscribers += districtCount.getActiveWhatsAppSubscribers();
+                totalNewWhatsAppOptIns += districtCount.getNewWhatsAppOptIns();
+                totalNewWhatsAppSubscribers += districtCount.getNewWhatsAppSubscribers();
+                totalSelfWhatsAppDeactivatedSubscriber += districtCount.getSelfWhatsAppDeactivatedSubscriber();
+                totalDeliveryFailureWhatsAppDeactivatedSubscriber += districtCount.getDeliveryFailureWhatsAppDeactivatedSubscriber();
+                totalMotherPackCompletedSubscribers += districtCount.getMotherPackCompletedSubscribers();
+                totalChildPackCompletedSubscribers += districtCount.getChildPackCompletedSubscribers();
+            }
+            WhatsAppSubscribers noDistrictCount = new WhatsAppSubscribers();
+            noDistrictCount.setActiveWhatsAppSubscribers(stateCounts.getActiveWhatsAppSubscribers() - totalActiveWhatsAppSubscribers);
+            noDistrictCount.setNewWhatsAppOptIns(stateCounts.getNewWhatsAppOptIns() - totalNewWhatsAppOptIns);
+            noDistrictCount.setNewWhatsAppSubscribers(stateCounts.getNewWhatsAppSubscribers() - totalNewWhatsAppSubscribers);
+            noDistrictCount.setSelfWhatsAppDeactivatedSubscriber(stateCounts.getSelfWhatsAppDeactivatedSubscriber() - totalSelfWhatsAppDeactivatedSubscriber);
+            noDistrictCount.setDeliveryFailureWhatsAppDeactivatedSubscriber(stateCounts.getDeliveryFailureWhatsAppDeactivatedSubscriber() - totalDeliveryFailureWhatsAppDeactivatedSubscriber);
+            noDistrictCount.setMotherPackCompletedSubscribers(stateCounts.getMotherPackCompletedSubscribers() - totalMotherPackCompletedSubscribers);
+            noDistrictCount.setChildPackCompletedSubscribers(stateCounts.getChildPackCompletedSubscribers() - totalChildPackCompletedSubscribers);
+            noDistrictCount.setLocationType("DifferenceState");
+            noDistrictCount.setId(0);
+            noDistrictCount.setLocationId((long)(-locationId));
+            whatsAppSubscribersList.add(noDistrictCount);
+        }
+        else if(locationType.equalsIgnoreCase("Block")) {
+            List<Block> blocks = blockDao.getBlocksOfDistrict(locationId);
+            WhatsAppSubscribers districtCounts = whatsAppSubscribersReportDao.getWhatsAppSubscriberCounts(locationId,"district",date,periodType);
+            Integer totalActiveWhatsAppSubscribers = 0;
+            Integer totalNewWhatsAppOptIns = 0;
+            Integer totalNewWhatsAppSubscribers = 0;
+            Integer totalSelfWhatsAppDeactivatedSubscriber = 0;
+            Integer totalDeliveryFailureWhatsAppDeactivatedSubscriber = 0;
+            Integer totalMotherPackCompletedSubscribers = 0;
+            Integer totalChildPackCompletedSubscribers = 0;
+
+            for (Block d : blocks) {
+                WhatsAppSubscribers blockCount =  whatsAppSubscribersReportDao.getWhatsAppSubscriberCounts(d.getBlockId(),locationType,date,periodType);
+                whatsAppSubscribersList.add(blockCount);
+                totalActiveWhatsAppSubscribers += blockCount.getActiveWhatsAppSubscribers();
+                totalNewWhatsAppOptIns += blockCount.getNewWhatsAppOptIns();
+                totalNewWhatsAppSubscribers += blockCount.getNewWhatsAppSubscribers();
+                totalSelfWhatsAppDeactivatedSubscriber += blockCount.getSelfWhatsAppDeactivatedSubscriber();
+                totalDeliveryFailureWhatsAppDeactivatedSubscriber += blockCount.getDeliveryFailureWhatsAppDeactivatedSubscriber();
+                totalMotherPackCompletedSubscribers += blockCount.getMotherPackCompletedSubscribers();
+                totalChildPackCompletedSubscribers += blockCount.getChildPackCompletedSubscribers();
+            }
+            WhatsAppSubscribers noBlockCount = new WhatsAppSubscribers();
+            noBlockCount.setActiveWhatsAppSubscribers(districtCounts.getActiveWhatsAppSubscribers() - totalActiveWhatsAppSubscribers);
+            noBlockCount.setNewWhatsAppOptIns(districtCounts.getNewWhatsAppOptIns() - totalNewWhatsAppOptIns);
+            noBlockCount.setNewWhatsAppSubscribers(districtCounts.getNewWhatsAppSubscribers() - totalNewWhatsAppSubscribers);
+            noBlockCount.setSelfWhatsAppDeactivatedSubscriber(districtCounts.getSelfWhatsAppDeactivatedSubscriber() - totalSelfWhatsAppDeactivatedSubscriber);
+            noBlockCount.setDeliveryFailureWhatsAppDeactivatedSubscriber(districtCounts.getDeliveryFailureWhatsAppDeactivatedSubscriber() - totalDeliveryFailureWhatsAppDeactivatedSubscriber);
+            noBlockCount.setMotherPackCompletedSubscribers(districtCounts.getMotherPackCompletedSubscribers() - totalMotherPackCompletedSubscribers);
+            noBlockCount.setChildPackCompletedSubscribers(districtCounts.getChildPackCompletedSubscribers() - totalChildPackCompletedSubscribers);
+            noBlockCount.setLocationType("DifferenceDistrict");
+            noBlockCount.setId(0);
+            noBlockCount.setLocationId((long)(-locationId));
+            whatsAppSubscribersList.add(noBlockCount);
+        }
+        else {
+            List<HealthFacility> healthFacilities = healthFacilitydao.findByHealthBlockId(locationId);
+            List<HealthSubFacility> subcenters = new ArrayList<>();
+            for(HealthFacility hf :healthFacilities){
+                subcenters.addAll(healthSubFacilityDao.findByHealthFacilityId(hf.getHealthFacilityId()));
+            }
+            WhatsAppSubscribers blockCounts = whatsAppSubscribersReportDao.getWhatsAppSubscriberCounts(locationId,"block",date,periodType);
+            Integer totalActiveWhatsAppSubscribers = 0;
+            Integer totalNewWhatsAppOptIns = 0;
+            Integer totalNewWhatsAppSubscribers = 0;
+            Integer totalSelfWhatsAppDeactivatedSubscriber = 0;
+            Integer totalDeliveryFailureWhatsAppDeactivatedSubscriber = 0;
+            Integer totalMotherPackCompletedSubscribers = 0;
+            Integer totalChildPackCompletedSubscribers = 0;
+
+            for(HealthSubFacility s: subcenters){
+                WhatsAppSubscribers subcenterCount = whatsAppSubscribersReportDao.getWhatsAppSubscriberCounts(s.getHealthSubFacilityId(),locationType,date,periodType);
+                whatsAppSubscribersList.add(subcenterCount);
+                totalActiveWhatsAppSubscribers += subcenterCount.getActiveWhatsAppSubscribers();
+                totalNewWhatsAppOptIns += subcenterCount.getNewWhatsAppOptIns();
+                totalNewWhatsAppSubscribers += subcenterCount.getNewWhatsAppSubscribers();
+                totalSelfWhatsAppDeactivatedSubscriber += subcenterCount.getSelfWhatsAppDeactivatedSubscriber();
+                totalDeliveryFailureWhatsAppDeactivatedSubscriber += subcenterCount.getDeliveryFailureWhatsAppDeactivatedSubscriber();
+                totalMotherPackCompletedSubscribers += subcenterCount.getMotherPackCompletedSubscribers();
+                totalChildPackCompletedSubscribers += subcenterCount.getChildPackCompletedSubscribers();
+
+            }
+            WhatsAppSubscribers noSubcenterCount = new WhatsAppSubscribers();
+            noSubcenterCount.setActiveWhatsAppSubscribers(blockCounts.getActiveWhatsAppSubscribers() - totalActiveWhatsAppSubscribers);
+            noSubcenterCount.setNewWhatsAppOptIns(blockCounts.getNewWhatsAppOptIns() - totalNewWhatsAppOptIns);
+            noSubcenterCount.setNewWhatsAppSubscribers(blockCounts.getNewWhatsAppSubscribers() - totalNewWhatsAppSubscribers);
+            noSubcenterCount.setSelfWhatsAppDeactivatedSubscriber(blockCounts.getSelfWhatsAppDeactivatedSubscriber() - totalSelfWhatsAppDeactivatedSubscriber);
+            noSubcenterCount.setDeliveryFailureWhatsAppDeactivatedSubscriber(blockCounts.getDeliveryFailureWhatsAppDeactivatedSubscriber() - totalDeliveryFailureWhatsAppDeactivatedSubscriber);
+            noSubcenterCount.setMotherPackCompletedSubscribers(blockCounts.getMotherPackCompletedSubscribers() - totalMotherPackCompletedSubscribers);
+            noSubcenterCount.setChildPackCompletedSubscribers(blockCounts.getChildPackCompletedSubscribers() - totalChildPackCompletedSubscribers);
+            noSubcenterCount.setLocationType("DifferenceBlock");
+            noSubcenterCount.setId(0);
+            noSubcenterCount.setLocationId((long)(-locationId));
+            whatsAppSubscribersList.add(noSubcenterCount);
+        }
+        return whatsAppSubscribersList;
+    }
+
+
+    private List<WhatsAppMessages> getWhatsAppMessageData(Integer locationId, String locationType, Date date,Date toDate,String periodType){
+        List<WhatsAppMessages> whatsAppMessagesList = new ArrayList<>();
+        if(locationType.equalsIgnoreCase("State")){
+            List<State> states=stateDao.getStatesByServiceType("KILKARI");
+            for(State s:states){
+                if(!toDate.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"KILKARI"))){
+                    whatsAppMessagesList.add(whatsAppMessagesReportDao.getWhatsAppMessageCounts(s.getStateId(),locationType,date,periodType));
+                }}
+        }
+        else if(locationType.equalsIgnoreCase("District")){
+            List<District> districts = districtDao.getDistrictsOfState(locationId);
+
+            WhatsAppMessages stateCounts = whatsAppMessagesReportDao.getWhatsAppMessageCounts(locationId,"State", date,periodType);
+
+
+            Integer totalSubscribers = 0;
+            Integer totalCoreMessagesSent = 0;
+            Integer totalCoreMessagesDelivered = 0;
+            Integer totalCoreMessagesRead = 0;
+            for(District district :districts){
+                WhatsAppMessages districtCount = whatsAppMessagesReportDao.getWhatsAppMessageCounts(district.getDistrictId(),locationType, date, periodType);
+                whatsAppMessagesList.add(districtCount);
+                totalSubscribers += districtCount.getTotalSubscribers();
+                totalCoreMessagesSent += districtCount.getCoreMessagesSent();
+                totalCoreMessagesDelivered += districtCount.getCoreMessagesDelivered();
+                totalCoreMessagesRead += districtCount.getCoreMessagesRead();
+            }
+            WhatsAppMessages noDistrictCount = new WhatsAppMessages();
+            noDistrictCount.setTotalSubscribers(stateCounts.getTotalSubscribers() - totalSubscribers);
+            noDistrictCount.setCoreMessagesRead(stateCounts.getCoreMessagesRead() - totalCoreMessagesSent);
+            noDistrictCount.setCoreMessagesDelivered(stateCounts.getCoreMessagesDelivered() - totalCoreMessagesDelivered);
+            noDistrictCount.setCoreMessagesRead(stateCounts.getCoreMessagesRead() - totalCoreMessagesRead);
+            noDistrictCount.setLocationType("DifferenceState");
+            noDistrictCount.setId(0);
+            noDistrictCount.setLocationId((long)(-locationId));
+            whatsAppMessagesList.add(noDistrictCount);
+        }
+        else if(locationType.equalsIgnoreCase("Block")) {
+            List<Block> blocks = blockDao.getBlocksOfDistrict(locationId);
+            WhatsAppMessages districtCounts = whatsAppMessagesReportDao.getWhatsAppMessageCounts(locationId,"district",date,periodType);
+            Integer totalSubscribers = 0;
+            Integer totalCoreMessagesSent = 0;
+            Integer totalCoreMessagesDelivered = 0;
+            Integer totalCoreMessagesRead = 0;
+
+            for (Block d : blocks) {
+                WhatsAppMessages blockCount =  whatsAppMessagesReportDao.getWhatsAppMessageCounts(d.getBlockId(),locationType,date,periodType);
+                whatsAppMessagesList.add(blockCount);
+                totalSubscribers += blockCount.getTotalSubscribers();
+                totalCoreMessagesSent += blockCount.getCoreMessagesSent();
+                totalCoreMessagesDelivered += blockCount.getCoreMessagesDelivered();
+                totalCoreMessagesRead += blockCount.getCoreMessagesRead();
+            }
+            WhatsAppMessages noBlockCount = new WhatsAppMessages();
+            noBlockCount.setTotalSubscribers(districtCounts.getTotalSubscribers() - totalSubscribers);
+            noBlockCount.setCoreMessagesRead(districtCounts.getCoreMessagesRead() - totalCoreMessagesSent);
+            noBlockCount.setCoreMessagesDelivered(districtCounts.getCoreMessagesDelivered() - totalCoreMessagesDelivered);
+            noBlockCount.setCoreMessagesRead(districtCounts.getCoreMessagesRead() - totalCoreMessagesRead);
+            noBlockCount.setLocationType("DifferenceDistrict");
+            noBlockCount.setId(0);
+            noBlockCount.setLocationId((long)(-locationId));
+            whatsAppMessagesList.add(noBlockCount);
+        }
+        else {
+            List<HealthFacility> healthFacilities = healthFacilitydao.findByHealthBlockId(locationId);
+            List<HealthSubFacility> subcenters = new ArrayList<>();
+            for(HealthFacility hf :healthFacilities){
+                subcenters.addAll(healthSubFacilityDao.findByHealthFacilityId(hf.getHealthFacilityId()));
+            }
+            WhatsAppMessages blockCounts = whatsAppMessagesReportDao.getWhatsAppMessageCounts(locationId,"block",date,periodType);
+            Integer totalSubscribers = 0;
+            Integer totalCoreMessagesSent = 0;
+            Integer totalCoreMessagesDelivered = 0;
+            Integer totalCoreMessagesRead = 0;
+
+            for(HealthSubFacility s: subcenters){
+                WhatsAppMessages subcenterCount = whatsAppMessagesReportDao.getWhatsAppMessageCounts(s.getHealthSubFacilityId(),locationType,date,periodType);
+                whatsAppMessagesList.add(subcenterCount);
+                totalSubscribers += subcenterCount.getTotalSubscribers();
+                totalCoreMessagesSent += subcenterCount.getCoreMessagesSent();
+                totalCoreMessagesDelivered += subcenterCount.getCoreMessagesDelivered();
+                totalCoreMessagesRead += subcenterCount.getCoreMessagesRead();
+
+            }
+            WhatsAppMessages noSubcenterCount = new WhatsAppMessages();
+            noSubcenterCount.setTotalSubscribers(blockCounts.getTotalSubscribers() - totalSubscribers);
+            noSubcenterCount.setCoreMessagesRead(blockCounts.getCoreMessagesRead() - totalCoreMessagesSent);
+            noSubcenterCount.setCoreMessagesDelivered(blockCounts.getCoreMessagesDelivered() - totalCoreMessagesDelivered);
+            noSubcenterCount.setCoreMessagesRead(blockCounts.getCoreMessagesRead() - totalCoreMessagesRead);
+            noSubcenterCount.setLocationType("DifferenceBlock");
+            noSubcenterCount.setId(0);
+            noSubcenterCount.setLocationId((long)(-locationId));
+            whatsAppMessagesList.add(noSubcenterCount);
+        }
+        return whatsAppMessagesList;
+    }
+
+    private List<WhatsAppReports> getWhatsAppReportData(Integer locationId, String locationType, Date date,Date toDate,String periodType){
+        List<WhatsAppReports> whatsAppReportList = new ArrayList<>();
+        if(locationType.equalsIgnoreCase("State")){
+            List<State> states=stateDao.getStatesByServiceType("KILKARI");
+            for(State s:states){
+                if(!toDate.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"KILKARI"))){
+                    whatsAppReportList.add(whatsAppReportsDao.getWhatsAppReportCounts(s.getStateId(),locationType,date,periodType));
+                }}
+        }
+        else if(locationType.equalsIgnoreCase("District")){
+            List<District> districts = districtDao.getDistrictsOfState(locationId);
+
+            WhatsAppReports stateCounts =whatsAppReportsDao.getWhatsAppReportCounts(locationId,"State", date,periodType);
+            Integer totalWelcomeCallSuccessfulCalls = 0;
+            Integer totalWelcomeCallCallsAnswered = 0;
+            Integer totalWelcomeCallEnteredAnOption = 0;
+            Integer totalWelcomeCallProvidedOptIn = 0;
+            Integer totalWelcomeCallProvidedOptOut = 0;
+            Integer totalOptInSuccessfulCalls = 0;
+            Integer totalOptInCallsAnswered = 0;
+            Integer totalOptInEnteredAnOption = 0;
+            Integer totalOptInProvidedOptIn = 0;
+            Integer totalOptInProvidedOptOut = 0;
+
+            for(District district :districts){
+                WhatsAppReports districtCount = whatsAppReportsDao.getWhatsAppReportCounts(district.getDistrictId(),locationType, date, periodType);
+                whatsAppReportList.add(districtCount);
+                totalWelcomeCallSuccessfulCalls += districtCount.getWelcomeCallSuccessfulCalls();
+                totalWelcomeCallCallsAnswered += districtCount.getWelcomeCallCallsAnswered();
+                totalWelcomeCallEnteredAnOption += districtCount.getWelcomeCallEnteredAnOption();
+                totalWelcomeCallProvidedOptIn += districtCount.getWelcomeCallProvidedOptIn();
+                totalWelcomeCallProvidedOptOut += districtCount.getWelcomeCallProvidedOptOut();
+                totalOptInSuccessfulCalls += districtCount.getOptInSuccessfulCalls();
+                totalOptInCallsAnswered += districtCount.getOptInCallsAnswered();
+                totalOptInEnteredAnOption += districtCount.getOptInEnteredAnOption();
+                totalOptInProvidedOptIn += districtCount.getOptInProvidedOptIn();
+                totalOptInProvidedOptOut += districtCount.getOptInProvidedOptOut();
+            }
+            WhatsAppReports noDistrictCount = new WhatsAppReports();
+            noDistrictCount.setWelcomeCallSuccessfulCalls(stateCounts.getWelcomeCallSuccessfulCalls() - totalWelcomeCallSuccessfulCalls);
+            noDistrictCount.setWelcomeCallCallsAnswered(stateCounts.getWelcomeCallCallsAnswered() - totalWelcomeCallCallsAnswered);
+            noDistrictCount.setWelcomeCallEnteredAnOption(stateCounts.getWelcomeCallEnteredAnOption() - totalWelcomeCallEnteredAnOption);
+            noDistrictCount.setWelcomeCallProvidedOptIn(stateCounts.getWelcomeCallProvidedOptIn() - totalWelcomeCallProvidedOptIn);
+            noDistrictCount.setWelcomeCallProvidedOptOut(stateCounts.getWelcomeCallProvidedOptOut() - totalWelcomeCallProvidedOptOut);
+            noDistrictCount.setOptInSuccessfulCalls(stateCounts.getOptInSuccessfulCalls() - totalOptInSuccessfulCalls);
+            noDistrictCount.setOptInCallsAnswered(stateCounts.getOptInCallsAnswered() - totalOptInCallsAnswered);
+            noDistrictCount.setOptInEnteredAnOption(stateCounts.getOptInEnteredAnOption() - totalOptInEnteredAnOption);
+            noDistrictCount.setOptInProvidedOptIn(stateCounts.getOptInProvidedOptIn() - totalOptInProvidedOptIn);
+            noDistrictCount.setOptInProvidedOptOut(stateCounts.getOptInProvidedOptOut() - totalOptInProvidedOptOut);
+            noDistrictCount.setLocationType("DifferenceState");
+            noDistrictCount.setId(0);
+            noDistrictCount.setLocationId((long)(-locationId));
+            whatsAppReportList.add(noDistrictCount);
+        }
+        else if(locationType.equalsIgnoreCase("Block")) {
+            List<Block> blocks = blockDao.getBlocksOfDistrict(locationId);
+            WhatsAppReports districtCounts = whatsAppReportsDao.getWhatsAppReportCounts(locationId,"district",date,periodType);
+            Integer totalWelcomeCallSuccessfulCalls = 0;
+            Integer totalWelcomeCallCallsAnswered = 0;
+            Integer totalWelcomeCallEnteredAnOption = 0;
+            Integer totalWelcomeCallProvidedOptIn = 0;
+            Integer totalWelcomeCallProvidedOptOut = 0;
+            Integer totalOptInSuccessfulCalls = 0;
+            Integer totalOptInCallsAnswered = 0;
+            Integer totalOptInEnteredAnOption = 0;
+            Integer totalOptInProvidedOptIn = 0;
+            Integer totalOptInProvidedOptOut = 0;
+
+
+            for (Block d : blocks) {
+                WhatsAppReports blockCount =  whatsAppReportsDao.getWhatsAppReportCounts(d.getBlockId(),locationType,date,periodType);
+                whatsAppReportList.add(blockCount);
+                totalWelcomeCallSuccessfulCalls += blockCount.getWelcomeCallSuccessfulCalls();
+                totalWelcomeCallCallsAnswered += blockCount.getWelcomeCallCallsAnswered();
+                totalWelcomeCallEnteredAnOption += blockCount.getWelcomeCallEnteredAnOption();
+                totalWelcomeCallProvidedOptIn += blockCount.getWelcomeCallProvidedOptIn();
+                totalWelcomeCallProvidedOptOut += blockCount.getWelcomeCallProvidedOptOut();
+                totalOptInSuccessfulCalls += blockCount.getOptInSuccessfulCalls();
+                totalOptInCallsAnswered += blockCount.getOptInCallsAnswered();
+                totalOptInEnteredAnOption += blockCount.getOptInEnteredAnOption();
+                totalOptInProvidedOptIn += blockCount.getOptInProvidedOptIn();
+                totalOptInProvidedOptOut += blockCount.getOptInProvidedOptOut();
+            }
+            WhatsAppReports noBlockCount = new WhatsAppReports();
+            noBlockCount.setWelcomeCallSuccessfulCalls(districtCounts.getWelcomeCallSuccessfulCalls() - totalWelcomeCallSuccessfulCalls);
+            noBlockCount.setWelcomeCallCallsAnswered(districtCounts.getWelcomeCallCallsAnswered() - totalWelcomeCallCallsAnswered);
+            noBlockCount.setWelcomeCallEnteredAnOption(districtCounts.getWelcomeCallEnteredAnOption() - totalWelcomeCallEnteredAnOption);
+            noBlockCount.setWelcomeCallProvidedOptIn(districtCounts.getWelcomeCallProvidedOptIn() - totalWelcomeCallProvidedOptIn);
+            noBlockCount.setWelcomeCallProvidedOptOut(districtCounts.getWelcomeCallProvidedOptOut() - totalWelcomeCallProvidedOptOut);
+            noBlockCount.setOptInSuccessfulCalls(districtCounts.getOptInSuccessfulCalls() - totalOptInSuccessfulCalls);
+            noBlockCount.setOptInCallsAnswered(districtCounts.getOptInCallsAnswered() - totalOptInCallsAnswered);
+            noBlockCount.setOptInEnteredAnOption(districtCounts.getOptInEnteredAnOption() - totalOptInEnteredAnOption);
+            noBlockCount.setOptInProvidedOptIn(districtCounts.getOptInProvidedOptIn() - totalOptInProvidedOptIn);
+            noBlockCount.setOptInProvidedOptOut(districtCounts.getOptInProvidedOptOut() - totalOptInProvidedOptOut);
+            noBlockCount.setLocationType("DifferenceDistrict");
+            noBlockCount.setId(0);
+            noBlockCount.setLocationId((long)(-locationId));
+            whatsAppReportList.add(noBlockCount);
+        }
+        else {
+            List<HealthFacility> healthFacilities = healthFacilitydao.findByHealthBlockId(locationId);
+            List<HealthSubFacility> subcenters = new ArrayList<>();
+            for(HealthFacility hf :healthFacilities){
+                subcenters.addAll(healthSubFacilityDao.findByHealthFacilityId(hf.getHealthFacilityId()));
+            }
+            WhatsAppReports blockCounts = whatsAppReportsDao.getWhatsAppReportCounts(locationId,"block",date,periodType);
+            Integer totalWelcomeCallSuccessfulCalls = 0;
+            Integer totalWelcomeCallCallsAnswered = 0;
+            Integer totalWelcomeCallEnteredAnOption = 0;
+            Integer totalWelcomeCallProvidedOptIn = 0;
+            Integer totalWelcomeCallProvidedOptOut = 0;
+            Integer totalOptInSuccessfulCalls = 0;
+            Integer totalOptInCallsAnswered = 0;
+            Integer totalOptInEnteredAnOption = 0;
+            Integer totalOptInProvidedOptIn = 0;
+            Integer totalOptInProvidedOptOut = 0;
+
+            for(HealthSubFacility s: subcenters){
+                WhatsAppReports subcenterCount = whatsAppReportsDao.getWhatsAppReportCounts(s.getHealthSubFacilityId(),locationType,date,periodType);
+                whatsAppReportList.add(subcenterCount);
+                totalWelcomeCallSuccessfulCalls += subcenterCount.getWelcomeCallSuccessfulCalls();
+                totalWelcomeCallCallsAnswered += subcenterCount.getWelcomeCallCallsAnswered();
+                totalWelcomeCallEnteredAnOption += subcenterCount.getWelcomeCallEnteredAnOption();
+                totalWelcomeCallProvidedOptIn += subcenterCount.getWelcomeCallProvidedOptIn();
+                totalWelcomeCallProvidedOptOut += subcenterCount.getWelcomeCallProvidedOptOut();
+                totalOptInSuccessfulCalls += subcenterCount.getOptInSuccessfulCalls();
+                totalOptInCallsAnswered += subcenterCount.getOptInCallsAnswered();
+                totalOptInEnteredAnOption += subcenterCount.getOptInEnteredAnOption();
+                totalOptInProvidedOptIn += subcenterCount.getOptInProvidedOptIn();
+                totalOptInProvidedOptOut += subcenterCount.getOptInProvidedOptOut();
+
+            }
+            WhatsAppReports noSubcenterCount = new WhatsAppReports();
+            noSubcenterCount.setWelcomeCallSuccessfulCalls(blockCounts.getWelcomeCallSuccessfulCalls() - totalWelcomeCallSuccessfulCalls);
+            noSubcenterCount.setWelcomeCallCallsAnswered(blockCounts.getWelcomeCallCallsAnswered() - totalWelcomeCallCallsAnswered);
+            noSubcenterCount.setWelcomeCallEnteredAnOption(blockCounts.getWelcomeCallEnteredAnOption() - totalWelcomeCallEnteredAnOption);
+            noSubcenterCount.setWelcomeCallProvidedOptIn(blockCounts.getWelcomeCallProvidedOptIn() - totalWelcomeCallProvidedOptIn);
+            noSubcenterCount.setWelcomeCallProvidedOptOut(blockCounts.getWelcomeCallProvidedOptOut() - totalWelcomeCallProvidedOptOut);
+            noSubcenterCount.setOptInSuccessfulCalls(blockCounts.getOptInSuccessfulCalls() - totalOptInSuccessfulCalls);
+            noSubcenterCount.setOptInCallsAnswered(blockCounts.getOptInCallsAnswered() - totalOptInCallsAnswered);
+            noSubcenterCount.setOptInEnteredAnOption(blockCounts.getOptInEnteredAnOption() - totalOptInEnteredAnOption);
+            noSubcenterCount.setOptInProvidedOptIn(blockCounts.getOptInProvidedOptIn() - totalOptInProvidedOptIn);
+            noSubcenterCount.setOptInProvidedOptOut(blockCounts.getOptInProvidedOptOut() - totalOptInProvidedOptOut);
+            noSubcenterCount.setLocationType("DifferenceBlock");
+            noSubcenterCount.setId(0);
+            noSubcenterCount.setLocationId((long)(-locationId));
+            whatsAppReportList.add(noSubcenterCount);
+        }
+        return whatsAppReportList;
     }
 
 
