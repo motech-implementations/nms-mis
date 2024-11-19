@@ -58,11 +58,11 @@ public class AggregateCumulativeBeneficiaryDaoImpl extends AbstractDao<Integer,A
         Query query;
 
         if (locationId == 0 && "State".equalsIgnoreCase(locationType)) {
-            hql = "SELECT COALESCE(SUM(CAST(total_beneficiaries AS long)), 0) FROM agg_kilkari_call_report WHERE location_type = :locationType AND date = :toDate";
+            hql = "SELECT COALESCE(SUM(CAST(total_beneficiaries AS SIGNED)), 0) FROM agg_kilkari_call_report WHERE location_type = :locationType AND date = :toDate";
             query = getSession().createQuery(hql);
             query.setParameter("locationType", "State");
         } else {
-            hql = "SELECT COALESCE(SUM(CAST(total_beneficiaries AS long)), 0) FROM agg_kilkari_call_report WHERE locationId = :locationId AND location_type = :locationType AND date = :toDate";
+            hql = "SELECT COALESCE(SUM(CAST(total_beneficiaries AS SIGNED)), 0) FROM agg_kilkari_call_report WHERE locationId = :locationId AND location_type = :locationType AND date = :toDate";
             query = getSession().createQuery(hql);
             query.setParameter("locationId", locationId);
             query.setParameter("locationType", locationType);
