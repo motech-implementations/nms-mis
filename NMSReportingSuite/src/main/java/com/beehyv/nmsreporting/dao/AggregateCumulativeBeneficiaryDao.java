@@ -24,6 +24,4 @@ public interface AggregateCumulativeBeneficiaryDao {
     Map<Integer,Long> getTotalDeactivationSum(List<Integer> locationId, String locationType, Date fromDate, Date toDate, String periodType);
 
     Long getJoinedSubscriptionSumTillDate(Integer locationId, String locationType, Date toDate);
-
-    Long getCumulativeJoinedSubscription(Long locationId, String locationType, Date toDate);
 }
