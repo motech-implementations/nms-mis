@@ -5,6 +5,7 @@ import com.beehyv.nmsreporting.dao.KilkariCallReportDao;
 import com.beehyv.nmsreporting.model.KilkariCalls;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -46,6 +47,24 @@ public class KilkariCallReportDaoImpl extends AbstractDao<Integer,KilkariCalls> 
         kilkariCalls.setSuccessfulCalls(kilkariCalls.getSuccessfulCalls() == null ? 0 : kilkariCalls.getSuccessfulCalls());
         kilkariCalls.setUniqueBeneficiaries(kilkariCalls.getUniqueBeneficiaries()== null? 0 : kilkariCalls.getUniqueBeneficiaries());
         return kilkariCalls;
+    }
+
+    @Override
+    public Long getCumulativeJoinedSubscription(Long locationId, String locationType, Date toDate) {
+        Criteria criteria = createEntityCriteria();
+
+        if (locationId == 0 && "State".equalsIgnoreCase(locationType)) {
+            criteria.add(Restrictions.eq("locationType", locationType));
+        } else {
+            criteria.add(Restrictions.eq("locationId", locationId));
+            criteria.add(Restrictions.eq("locationType", locationType));
+        }
+        criteria.add(Restrictions.eq("date", toDate));
+
+        criteria.setProjection(Projections.sum("uniqueBeneficiaries"));
+
+        Long result = (Long) criteria.uniqueResult();
+        return result != null ? result : 0L;
     }
 }
 

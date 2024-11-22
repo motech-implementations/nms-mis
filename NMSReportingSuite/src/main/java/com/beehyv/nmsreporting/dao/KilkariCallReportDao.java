@@ -9,4 +9,7 @@ import java.util.Date;
  */
 public interface KilkariCallReportDao {
     KilkariCalls getKilkariCallreport(Integer locationId, String locationType, Date toDate);
+
+    Long getCumulativeJoinedSubscription(Long locationId, String locationType, Date toDate);
+
 }

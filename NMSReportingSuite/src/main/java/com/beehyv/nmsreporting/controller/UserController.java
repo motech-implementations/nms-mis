@@ -128,6 +128,9 @@ public class UserController {
     @Autowired
     private DownloadReportActivityService downloadReportActivityService;
 
+    @Autowired
+    private KilkariCallReportDao kilkariCallReportDao;
+
     private final CacheManager cacheManager = CacheManager.create();
     private final Cache etlNotificationCache = cacheManager.getCache("etlNotificationCache");
 
@@ -1440,7 +1443,7 @@ public class UserController {
         }
 
 
-        Long cumulativeJoinedSubscription = aggregateCumulativeBeneficiaryDao.getCumulativeJoinedSubscription(locationId, locationType, toDate);
+        Long cumulativeJoinedSubscription = kilkariCallReportDao.getCumulativeJoinedSubscription(locationId, locationType, toDate);
         return ResponseEntity.ok(cumulativeJoinedSubscription);
 //        Long ashaStarted = 0L;
 //        Long ashaCompleted = 0L;
