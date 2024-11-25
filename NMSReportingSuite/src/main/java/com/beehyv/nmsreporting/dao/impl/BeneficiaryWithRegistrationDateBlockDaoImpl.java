@@ -54,7 +54,7 @@ public class BeneficiaryWithRegistrationDateBlockDaoImpl extends AbstractDao<Int
                 "COUNT(Case when s.subscription_status = 'COMPLETED' THEN s.subscription_id END) AS subscriptions_completed, " +
                 "0 AS subscriptions_rejected , "+
                 "COUNT(DISTINCT CASE WHEN s.subscriptionPack_id = 1 AND DATEDIFF(registrationDate, s.start_date) BETWEEN -90 AND 168  THEN s.subscription_id ELSE NULL END) AS Subscriptions_Received_for_PW , "+
-                "COUNT(DISTINCT CASE WHEN s.subscriptionPack_id = 2 OR DATEDIFF(registrationDate, s.start_date) BETWEEN 169 AND 504 THEN s.subscription_id ELSE NULL END) AS Subscriptions_Received_for_Child , "+
+                "COUNT(DISTINCT CASE WHEN s.subscriptionPack_id = 2 OR DATEDIFF(registrationDate, s.start_date) >= 169 THEN s.subscription_id ELSE NULL END) AS Subscriptions_Received_for_Child , "+
                 "COUNT(DISTINCT CASE WHEN s.subscriptionPack_id = 1 AND DATEDIFF(registrationDate, s.start_date) < -90 THEN s.subscription_id ELSE NULL END) AS Subscriptions_Ineligible "+
                 "FROM Beneficiary b " +
                 "    INNER JOIN subscriptions s ON b.id = s.beneficiary_id AND s.subscription_id = (SELECT MAX(subscription_id) FROM subscriptions WHERE beneficiary_id = b.id) " +
