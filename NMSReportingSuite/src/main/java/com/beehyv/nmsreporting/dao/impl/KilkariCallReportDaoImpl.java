@@ -6,13 +6,11 @@ import com.beehyv.nmsreporting.model.KilkariCalls;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Created by beehyv on 11/10/17.
