@@ -485,9 +485,9 @@ public class CertificateServiceImpl implements CertificateService {
             float mobileNoY = (mediaBox1.getHeight()/3+14) ;
 
             float signatureY =  (mediaBox1.getHeight()/5+ 60);
-            float signatureX1 = rchIdX;
-            float signatureX2 = mediaBox1.getWidth()/2;
-            float signatureX3 = mediaBox1.getWidth()/2 + 80;
+            float signatureX1 = rchIdX + 5;
+            float signatureX2 = mediaBox1.getWidth()/2 - 5;
+            float signatureX3 = mediaBox1.getWidth()/2 + 75;
 
 
             SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
@@ -537,8 +537,8 @@ public class CertificateServiceImpl implements CertificateService {
             is3.close();
             bin3.close();
 
-            float imageWidth3 = 120;
-            float imageHeight3 = 100;
+            float imageWidth3 = 125;
+            float imageHeight3 = 105;
             image3 = image3.scaleByWidth(imageWidth3);
             image3 = image3.scaleByHeight(imageHeight3);
             image3.draw(document, contents1, signatureX3, signatureY - 17);
