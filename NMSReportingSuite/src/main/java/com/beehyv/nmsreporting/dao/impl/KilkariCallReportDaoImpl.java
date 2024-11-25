@@ -4,8 +4,8 @@ import com.beehyv.nmsreporting.dao.AbstractDao;
 import com.beehyv.nmsreporting.dao.KilkariCallReportDao;
 import com.beehyv.nmsreporting.model.KilkariCalls;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -51,20 +51,29 @@ public class KilkariCallReportDaoImpl extends AbstractDao<Integer,KilkariCalls> 
 
     @Override
     public Long getCumulativeJoinedSubscription(Long locationId, String locationType, Date toDate) {
-        Criteria criteria = createEntityCriteria();
+        String hql;
 
         if (locationId == 0 && "State".equalsIgnoreCase(locationType)) {
-            criteria.add(Restrictions.eq("locationType", locationType));
+            String sql = "SELECT COALESCE(SUM(CAST(total_beneficiaries AS SIGNED)), 0) " +
+                    "FROM agg_kilkari_call_report " +
+                    "WHERE location_type = :locationType AND date = (SELECT date FROM agg_kilkari_call_report ORDER BY date DESC LIMIT 1)";
+            Query query = getSession().createSQLQuery(sql);
+            query.setParameter("locationType", locationType);
+//            query.setParameter("toDate", toDate);
+            Long result = ((Number) query.uniqueResult()).longValue();
+            return result != null ? result : 0L;
         } else {
-            criteria.add(Restrictions.eq("locationId", locationId));
-            criteria.add(Restrictions.eq("locationType", locationType));
+            String sql = "SELECT COALESCE(SUM(CAST(total_beneficiaries AS SIGNED)), 0) " +
+                    "FROM agg_kilkari_call_report " +
+                    "WHERE location_id = :locationId AND location_type = :locationType AND date = (SELECT date FROM agg_kilkari_call_report ORDER BY date DESC LIMIT 1)";
+            Query query = getSession().createSQLQuery(sql);
+            query.setParameter("locationId", locationId);
+            query.setParameter("locationType", locationType);
+//            query.setParameter("toDate", toDate);
+            Long result = ((Number) query.uniqueResult()).longValue();
+            return result != null ? result : 0L;
         }
-        criteria.add(Restrictions.eq("date", toDate));
 
-        criteria.setProjection(Projections.sum("uniqueBeneficiaries"));
-
-        Long result = (Long) criteria.uniqueResult();
-        return result != null ? result : 0L;
     }
 }
 
