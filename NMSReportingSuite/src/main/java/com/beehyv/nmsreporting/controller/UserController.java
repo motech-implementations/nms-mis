@@ -1444,6 +1444,7 @@ public class UserController {
 
 
         Long cumulativeJoinedSubscription = kilkariCallReportDao.getCumulativeJoinedSubscription(locationId, locationType, toDate);
+        LOGGER.info("cumulativecount:{},date:{},locationType:{},locationId:{}",cumulativeJoinedSubscription,toDate,locationType,locationId);
         return ResponseEntity.ok(cumulativeJoinedSubscription);
 //        Long ashaStarted = 0L;
 //        Long ashaCompleted = 0L;
