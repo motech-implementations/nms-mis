@@ -487,7 +487,7 @@ public class CertificateServiceImpl implements CertificateService {
             float signatureY =  (mediaBox1.getHeight()/5+ 60);
             float signatureX1 = rchIdX;
             float signatureX2 = mediaBox1.getWidth()/2;
-            float signatureX3 = mediaBox1.getWidth()/2 + 80;
+            float signatureX3 = mediaBox1.getWidth()/2 + 114;
 
 
             SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
@@ -537,11 +537,11 @@ public class CertificateServiceImpl implements CertificateService {
             is3.close();
             bin3.close();
 
-            float imageWidth3 = 120;
-            float imageHeight3 = 100;
+            float imageWidth3 = 70;
+            float imageHeight3 = 70;
             image3 = image3.scaleByWidth(imageWidth3);
             image3 = image3.scaleByHeight(imageHeight3);
-            image3.draw(document, contents1, signatureX3, signatureY - 17);
+            image3.draw(document, contents1, signatureX3, signatureY - 7);
             contents1.close();
         } catch (IOException erros){
             System.out.println("---Error---=>" + erros);

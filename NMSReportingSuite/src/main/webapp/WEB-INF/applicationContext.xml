@@ -219,6 +219,6 @@
         <task:scheduled ref="autoReportMail" method="executeInternal" cron="0 0 9 1 * ?"/>
         <task:scheduled ref="autoReportMail" method="executeWeekly" cron="0 0 12 ? * MON"/>
         <!--<task:scheduled ref="autoReportMail" method="test" cron="${cron.test}"  />-->
-        <task:scheduled ref="etlNotificationService" method="scheduledNotification" cron="0 30 7 * * ?"/>
+        <task:scheduled ref="etlNotificationService" method="scheduledNotification" cron="0 30 4 * * ?"/>
     </task:scheduled-tasks>
 </beans>
