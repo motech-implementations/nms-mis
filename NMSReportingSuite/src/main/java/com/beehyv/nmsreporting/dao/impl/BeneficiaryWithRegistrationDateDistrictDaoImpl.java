@@ -58,9 +58,8 @@ public class BeneficiaryWithRegistrationDateDistrictDaoImpl extends AbstractDao<
                 "COUNT(DISTINCT CASE WHEN s.subscriptionPack_id = 1 AND DATEDIFF(registrationDate, s.start_date) BETWEEN -90 AND 168  THEN s.subscription_id ELSE NULL END) AS Subscriptions_Received_for_PW , "+
                 "COUNT(DISTINCT CASE WHEN s.subscriptionPack_id = 2 OR DATEDIFF(registrationDate, s.start_date) BETWEEN 169 AND 504 THEN s.subscription_id ELSE NULL END) AS Subscriptions_Received_for_Child , "+
                 "COUNT(DISTINCT CASE WHEN s.subscriptionPack_id = 1 AND DATEDIFF(registrationDate, s.start_date) < -90 THEN s.subscription_id ELSE NULL END) AS Subscriptions_Ineligible "+
-                "FROM Beneficiary b INNER JOIN ( SELECT beneficiary_id, MAX(subscription_id) as max_id " +
-                "FROM subscriptions s  group by beneficiary_id ) max_ids ON b.id = max_ids.beneficiary_id  " +
-                "INNER JOIN subscriptions s ON max_ids.max_id = s.subscription_id " +
+                "FROM Beneficiary b " +
+                "    INNER JOIN subscriptions s ON b.id = s.beneficiary_id AND s.subscription_id = (SELECT MAX(subscription_id) FROM subscriptions WHERE beneficiary_id = b.id) " +
                 "WHERE registrationDate >= :fromDate AND registrationDate < :toDate " +
                 "AND b.state_id = :stateId GROUP BY b.district_id "+
 
@@ -142,16 +141,19 @@ public class BeneficiaryWithRegistrationDateDistrictDaoImpl extends AbstractDao<
                 "       COUNT(DISTINCT CASE WHEN date_diff + 90 >= 169 THEN mir.registration_no ELSE NULL END) AS duplicate_subscribers_Child, " +
                 "       COUNT(DISTINCT CASE WHEN date_diff + 90 < -90 THEN mir.registration_no ELSE NULL END) AS duplicate_subscribers_Ineligible " +
                 "FROM ( " +
-                "    SELECT mir.*, " +
+                "    SELECT mir.district_id, " +
+                "            mir.registration_no, " +
                 "           DATEDIFF(mir.registration_date, STR_TO_DATE(SUBSTRING_INDEX(mir.lmp_date, '.', 1), '%Y-%m-%dT%H:%i:%s')) AS date_diff " +
                 "    FROM mother_import_rejection mir " +
                 "    INNER JOIN ( " +
-                "        SELECT MAX(id) AS id " +
+                "        SELECT registration_no, MAX(id) AS max_id " +
                 "        FROM mother_import_rejection " +
+                "        WHERE registration_date >= :fromDate " +
+                "        AND registration_date < :toDate " +
+                "        AND state_id = :stateId " +
                 "        GROUP BY registration_no " +
-                "    ) mir_latest ON mir.id = mir_latest.id " +
-                "    WHERE mir.state_id = :stateId " +
-                "      AND (mir.registration_date >= :fromDate AND mir.registration_date < :toDate) " +
+                "    ) latest ON mir.registration_no = latest.registration_no AND mir.id = latest.max_id " +
+                "    INNER JOIN Beneficiary b ON b.rch_id = mir.registration_no " +
                 ") mir " +
                 "INNER JOIN Beneficiary b ON b.rch_id = mir.registration_no " +
                 "GROUP BY mir.district_id " +
