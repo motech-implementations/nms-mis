@@ -1,0 +1,48 @@
+<div class="container-fluid uMManagement" data-ng-controller="AshaIndividualCertificateController">
+    <div data-ui-view></div>
+    <h4><b>Mobile Academy Certificate</b></h4>
+    <br/>
+
+    <div class=''>
+        <p>Enter Mobile Number:</p>
+        <input type = "number" ng-model="mobile_number"
+               name="mobileNumber">
+        <input style="margin-left: 10px;" ng-disabled="otpButtonDisabled" type="button" class="btn btn-sm btn-success" name="getOTPButton" data-ng-click="getAshaCertificateOTP()" value="Request OTP">
+        <p>{{countdownMessage}}</p>
+        <p style="margin-top: 10px;">Enter OTP:</p>
+        <input type="number" class="" data-ng-model="certificate_otp" name="otp">
+        <input style="margin-left: 10px;" type="button" class="btn btn-sm btn-primary" name="newUser" data-ng-click="getAshaCertificate()" value="Get Certificate">
+    </div>
+
+
+    <div class="block reports-body" data-ng-if="errorMessage">
+        <p><b>{{message}}</b></p>
+    </div>
+
+    <div class="block reports-body" data-ng-if="fileDownloadedSuccessFully">
+        <br>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-3">
+                    <p>The Certificate has been generated: </p>
+                </div>
+                <div class="col-xs-6">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Name</th>
+                            <th>Certificate<br>Click on the icon to download</th>
+                        </tr>
+                        <tr>
+                            <td><b>{{certificate.AshaName}}</b></td>
+                            <td>
+                                <span data-ng-click="clearFile()">
+                                    <a href="{{certificate.downloadCertificateUrl}}"><img alt="download" src="images/export2.png"></a>
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

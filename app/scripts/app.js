@@ -185,6 +185,9 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
             url: '/contactUs',
             templateUrl: 'views/contactUs.html'
 
+        }).state('ashaCertificate', {
+                    url: '/ashaCertificate',
+                    templateUrl: 'views/ashaCertificate.html'
         }).state('contactUsResponse', {
             url: '/contactUsResponse',
             templateUrl: 'views/contactUsResponse.html',
