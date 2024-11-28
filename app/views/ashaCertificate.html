@@ -3,21 +3,56 @@
     <h4><b>Mobile Academy Certificate</b></h4>
     <br/>
 
-    <div class=''>
-        <p>Enter Mobile Number:</p>
-        <input type = "number" ng-model="mobile_number"
-               name="mobileNumber">
-        <input style="margin-left: 10px;" ng-disabled="otpButtonDisabled" type="button" class="btn btn-sm btn-success" name="getOTPButton" data-ng-click="getAshaCertificateOTP()" value="Request OTP">
-        <p>{{countdownMessage}}</p>
-        <p style="margin-top: 10px;">Enter OTP:</p>
-        <input type="number" class="" data-ng-model="certificate_otp" name="otp">
-        <input style="margin-left: 10px;" type="button" class="btn btn-sm btn-primary" name="newUser" data-ng-click="getAshaCertificate()" value="Get Certificate">
+    <div class='col-6-sm' style="
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    height: 100vh;
+    margin: 0 auto;
+    text-align: center;">
+
+        <div>
+            <p style="text-align: left;">Enter Mobile Number:</p>
+            <input type="number" ng-model="mobile_number" name="mobileNumber" style="width: 200px; padding: 8px;">
+            <input
+                    style="margin-left: 10px; padding: 8px 12px;"
+                    ng-disabled="otpButtonDisabled"
+                    type="button"
+                    class="btn btn-sm btn-success"
+                    name="getOTPButton"
+                    data-ng-click="getAshaCertificateOTP()"
+                    value="Request OTP">
+            <p>{{countdownMessage}}</p>
+        </div>
+
+        <div>
+            <div vc-recaptcha key="'6LcJgYgUAAAAANaRqYM6UFUaY8H3pPUTK6Tt1qsL'"></div>
+        </div>
+
+        <div>
+            <p style="text-align: left;">Enter OTP:</p>
+            <input
+                    type="number"
+                    data-ng-model="certificate_otp"
+                    name="otp"
+                    style="width: 200px; padding: 8px;">
+            <input
+                    style="margin-left: 10px; padding: 8px 12px;"
+                    type="button"
+                    class="btn btn-sm btn-primary"
+                    name="newUser"
+                    data-ng-click="getAshaCertificate()"
+                    value="Get Certificate">
+        </div>
+
+        <div class="block reports-body" data-ng-if="errorMessage">
+            <p><b>{{message}}</b></p>
+        </div>
+
     </div>
 
 
-    <div class="block reports-body" data-ng-if="errorMessage">
-        <p><b>{{message}}</b></p>
-    </div>
 
     <div class="block reports-body" data-ng-if="fileDownloadedSuccessFully">
         <br>
