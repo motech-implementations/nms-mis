@@ -2035,6 +2035,30 @@ public class UserController {
         return certificateService.createSpecificCertificate( msisdn, currentUser);
 
     }
+    @RequestMapping(value = "asha/getCertificate", method = RequestMethod.POST)
+    @ResponseBody
+    public Object getAshaCertificate( @RequestParam Long  msisdn, @RequestParam Integer otp ) throws ParseException, IOException {
+
+        Matcher matcher = Pattern.compile("\\d{10}").matcher(msisdn.toString());
+        if(!matcher.matches()) {
+            return "Invalid phone number";
+        }
+        return certificateService.getCertificate( msisdn, otp);
+
+    }
+    @RequestMapping(value = "asha/generateOTP", method = RequestMethod.GET)
+    @ResponseBody
+    public Object generateOTPToDownloadCertificate( @RequestParam Long  msisdn) throws Exception {
+
+        Matcher matcher = Pattern.compile("\\d{10}").matcher(msisdn.toString());
+        if(!matcher.matches()) {
+            return "Invalid phone number";
+        }
+        // check whether certificate is generated or not
+
+        return certificateService.generateOTPForAshaCertificate(msisdn);
+
+    }
 
     @RequestMapping(value = "/downloadCertificate", method = RequestMethod.GET,produces = "application/pdf")
     @ResponseBody

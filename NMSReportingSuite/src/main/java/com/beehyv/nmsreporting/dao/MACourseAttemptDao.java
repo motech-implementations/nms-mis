@@ -26,6 +26,8 @@ public interface MACourseAttemptDao {
 
    public List<MACourseFirstCompletion> getSuccessFulCompletion(Long msisdn);
 
+   public MACourseFirstCompletion getMACourseFirstCompletionByMobileNo(Long msisdn);
+
    public List<MACourseFirstCompletion> getSuccessFulCompletionByState(Long msisdn, Integer stateId);
 
    public List<MACourseFirstCompletion> getSuccessFulCompletionByDistrict(Long msisdn, Integer stateId, Integer districtId);

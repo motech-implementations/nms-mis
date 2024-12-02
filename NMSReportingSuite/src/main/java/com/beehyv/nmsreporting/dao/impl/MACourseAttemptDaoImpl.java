@@ -5,6 +5,7 @@ import com.beehyv.nmsreporting.dao.MACourseAttemptDao;
 import com.beehyv.nmsreporting.model.MACourseFirstCompletion;
 import com.beehyv.nmsreporting.model.User;
 import org.hibernate.Criteria;
+import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
@@ -87,6 +88,14 @@ public class MACourseAttemptDaoImpl extends AbstractDao<Integer, User> implement
         Criteria criteria = getSession().createCriteria(MACourseFirstCompletion.class);
         criteria.add(Restrictions.eq("msisdn",msisdn));
         return criteria.list();
+    }
+
+    @Override
+    public MACourseFirstCompletion getMACourseFirstCompletionByMobileNo(Long msisdn) {
+        SQLQuery query = getSession().createSQLQuery("SELECT mccf.* from ma_course_completion_first mccf Join front_line_worker flw on flw.flw_id = mccf.flw_id where flw.job_status = 'ACTIVE' and flw.flw_msisdn = :msisdn");
+                query.setParameter("msisdn", msisdn);
+                query.addEntity(MACourseFirstCompletion.class);
+                return (MACourseFirstCompletion) query.uniqueResult();
     }
 
     @Override

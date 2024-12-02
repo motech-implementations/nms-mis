@@ -30,7 +30,7 @@ public class MACourseCompletion {
     private String lastDeliveryStatus;
 
     @Column(name="sent_notification")
-    private Boolean senrNotification;
+    private Boolean sentNotification;
 
     @Column(name="modificationdate")
     private Date lastModifiedDate;
@@ -83,12 +83,12 @@ public class MACourseCompletion {
         this.lastDeliveryStatus = lastDeliveryStatus;
     }
 
-    public Boolean getSenrNotification() {
-        return senrNotification;
+    public Boolean getSentNotification() {
+        return sentNotification;
     }
 
-    public void setSenrNotification(Boolean senrNotification) {
-        this.senrNotification = senrNotification;
+    public void setSentNotification(Boolean sentNotification) {
+        this.sentNotification = sentNotification;
     }
 
     public Date getLastModifiedDate() {
@@ -97,5 +97,19 @@ public class MACourseCompletion {
 
     public void setLastModifiedDate(Date lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
+    }
+
+    @Override
+    public String toString() {
+        return "MACourseCompletion{" +
+                "Id=" + Id +
+                ", flwId=" + flwId +
+                ", score=" + score +
+                ", passed=" + passed +
+                ", chapterWiseScore='" + chapterWiseScore + '\'' +
+                ", lastDeliveryStatus='" + lastDeliveryStatus + '\'' +
+                ", sentNotification=" + sentNotification +
+                ", lastModifiedDate=" + lastModifiedDate +
+                '}';
     }
 }
