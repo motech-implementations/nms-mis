@@ -2054,7 +2054,6 @@ public class UserController {
         if(!matcher.matches()) {
             return "Invalid phone number";
         }
-        // check whether certificate is generated or not
 
         return certificateService.generateOTPForAshaCertificate(msisdn);
 

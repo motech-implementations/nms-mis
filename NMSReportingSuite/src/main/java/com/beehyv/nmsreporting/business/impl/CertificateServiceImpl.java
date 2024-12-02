@@ -306,11 +306,8 @@ public class CertificateServiceImpl implements CertificateService {
                 String rootDir = documents + "Certificate/Asha/";
                 String status;
                 if (maCourseFirstCompletion.getFirstCompletionDate() != null) {
-            //                MACourseCompletion maCourseCompletion = maCourseCompletionDao.getAshaByFLWId(maCourseFirstCompletion.getFlwId());
-                                    // Get the current time in seconds since the Unix epoch
                         long currentTime = System.currentTimeMillis() / 1000;
-                                    // Set the time step duration (in seconds)
-                        long timeStep = Long.parseLong(retrieveOTPLifeSpan()); // 5 minutes
+                        long timeStep = Long.parseLong(retrieveOTPLifeSpan());
 
                         if((maCourseFirstCompletion.getEncryptedOTP() != null && !passwordEncoder.matches( String.valueOf(otp), maCourseFirstCompletion.getEncryptedOTP()) ) || !Objects.equals(String.valueOf(otp), String.valueOf(maCourseFirstCompletion.getFlwId() % 1000000))){
                             response.put("status", "failed");

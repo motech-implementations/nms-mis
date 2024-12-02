@@ -5,9 +5,9 @@ import com.beehyv.nmsreporting.model.MACourseCompletion;
 import com.beehyv.nmsreporting.model.MACourseFirstCompletion;
 
 public interface SmsService {
-    public String sendSms(MACourseCompletion maCourseCompletion, String template);
+     String sendSms(MACourseCompletion maCourseCompletion, String template);
 
-    public String buildCertificateSMS(CourseCompletionDTO courseCompletionDTO, String message_content);
+     String buildCertificateSMS(CourseCompletionDTO courseCompletionDTO, String message_content);
 
-    public String buildOTPSMS(MACourseFirstCompletion maCourseFirstCompletion, String message_content);
+     String buildOTPSMS(MACourseFirstCompletion maCourseFirstCompletion, String message_content);
 }

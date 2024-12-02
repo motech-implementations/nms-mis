@@ -82,13 +82,6 @@ public class MACourseCompletionDaoImpl extends AbstractDao<Long,MACourseCompleti
         return result;
     }
 
-    public MACourseCompletion getAshaByPhoneNo(long flw_msisdn ) {
-        Criteria criteria = getSession().createCriteria(MACourseCompletion.class);
-        criteria.add(Restrictions.eq("flw_msisdn", flw_msisdn));
-        MACourseCompletion result = (MACourseCompletion) criteria.uniqueResult();
-        return result;
-    }
-
     public long getAshaPhoneNo(long flwId) {
         SQLQuery query = getSession().createSQLQuery("SELECT flw_msisdn FROM front_line_worker WHERE flw_id = :flwId")
                 .addScalar("flw_msisdn", LongType.INSTANCE);
