@@ -32,7 +32,7 @@
                         $scope.isBeingGenerated=false;
                         if (result.data.status == "success") {
                             $scope.fileDownloadedSuccessFully = true;
-                            result.data.downloadCertificateUrl = backend_root + 'nms/user/downloadCertificate?fileName=' + result.data.file + '&rootPath=' + result.data.path;
+//                            result.data.downloadCertificateUrl = backend_root + 'nms/user/downloadCertificate?fileName=' + result.data.file + '&rootPath=' + result.data.path;
                             console.log("result", result);
                             $scope.certificate = result.data;
                             console.log("certificate", $scope.certificate);
