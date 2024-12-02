@@ -13,11 +13,11 @@
     text-align: center;">
 
         <div>
-            <p style="text-align: left;">Enter Mobile Number:</p>
+            <p style="text-align: left;">Enter 10 digit Mobile Number:</p>
             <input type="number" ng-model="mobile_number" name="mobileNumber" style="width: 200px; padding: 8px;">
             <input
                     style="margin-left: 10px; padding: 8px 12px;"
-                    ng-disabled="otpButtonDisabled"
+                    ng-disabled="!mobile_number || mobile_number.toString().length !== 10"
                     type="button"
                     class="btn btn-sm btn-success"
                     name="getOTPButton"
@@ -43,7 +43,8 @@
                     class="btn btn-sm btn-primary"
                     name="newUser"
                     data-ng-click="getAshaCertificate()"
-                    value="Get Certificate">
+                    value="Get Certificate"
+                    ng-disabled="!certificate_otp">
         </div>
 
         <div class="block reports-body" data-ng-if="errorMessage && message !== 'success'">
