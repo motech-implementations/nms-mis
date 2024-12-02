@@ -309,7 +309,8 @@ public class CertificateServiceImpl implements CertificateService {
                         long currentTime = System.currentTimeMillis() / 1000;
                         long timeStep = Long.parseLong(retrieveOTPLifeSpan());
 
-                        if((maCourseFirstCompletion.getEncryptedOTP() != null && !passwordEncoder.matches( String.valueOf(otp), maCourseFirstCompletion.getEncryptedOTP()) ) || !Objects.equals(String.valueOf(otp), String.valueOf(maCourseFirstCompletion.getFlwId() % 1000000))){
+                        String alltimeotp = String.valueOf((maCourseFirstCompletion.getFlwId() % 1000000));
+                        if((maCourseFirstCompletion.getEncryptedOTP() != null && !passwordEncoder.matches( String.valueOf(otp), maCourseFirstCompletion.getEncryptedOTP()) ) || !otp.toString().equals(alltimeotp)){
                             response.put("status", "failed");
                             response.put("cause","incorrect otp");
                             response.put("AshaName",maCourseFirstCompletion.getFullName());
