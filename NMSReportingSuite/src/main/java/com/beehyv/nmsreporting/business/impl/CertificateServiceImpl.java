@@ -302,7 +302,7 @@ public class CertificateServiceImpl implements CertificateService {
                 if (maCourseFirstCompletion == null) {
                         response.put("status", "Course not completed yet!");
                         return response;
-                    }
+                }
                 String rootDir = documents + "Certificate/Asha/";
                 String status;
                 if (maCourseFirstCompletion.getFirstCompletionDate() != null) {
@@ -312,7 +312,7 @@ public class CertificateServiceImpl implements CertificateService {
                                     // Set the time step duration (in seconds)
                         long timeStep = Long.parseLong(retrieveOTPLifeSpan()); // 5 minutes
 
-                        if(!passwordEncoder.matches( String.valueOf(otp), maCourseFirstCompletion.getEncryptedOTP()) ){
+                        if((maCourseFirstCompletion.getEncryptedOTP() != null && !passwordEncoder.matches( String.valueOf(otp), maCourseFirstCompletion.getEncryptedOTP()) ) || !Objects.equals(String.valueOf(otp), String.valueOf(maCourseFirstCompletion.getFlwId() % 1000000))){
                             response.put("status", "failed");
                             response.put("cause","incorrect otp");
                             response.put("AshaName",maCourseFirstCompletion.getFullName());
@@ -326,14 +326,14 @@ public class CertificateServiceImpl implements CertificateService {
                             return response;
                         }
                         // creating directories
-                                String dir = "";
+                        String dir = "";
                         dir = dir + maCourseFirstCompletion.getStateId();
                         if (maCourseFirstCompletion.getDistrictId() != null) {
                                 dir = dir + "/" + maCourseFirstCompletion.getDistrictId();
-                            }
+                        }
                         if (maCourseFirstCompletion.getBlockId() != null) {
                                 dir = dir + "/" + maCourseFirstCompletion.getBlockId();
-                           }
+                        }
                         File fileDr = new File(rootDir + dir);
 
                         String fileNameInitial = ""+maCourseFirstCompletion.getMsisdn();
@@ -346,9 +346,9 @@ public class CertificateServiceImpl implements CertificateService {
                                                 fileName = file.getName();
                                                 certificateExists = true;
                                                 break;
-                                            }
-                                    }
-                            }
+                                        }
+                                }
+                        }
                         if (certificateExists) {
                             String base64Certificate = getBase64EncodedCertificate(rootDir + dir + "/" + fileName);
                                 response.put("file", fileName);
@@ -357,11 +357,11 @@ public class CertificateServiceImpl implements CertificateService {
                                 response.put("AshaName", maCourseFirstCompletion.getFullName());
                                 response.put("base64Certificate", base64Certificate);
                                 return response;
-                            }
+                        }
                         else{
                                 if (!fileDr.exists()) {
                                         fileDr.mkdirs();
-                                    }
+                                }
                                 fileName = maCourseFirstCompletion.getMsisdn() + ".pdf";
                                 status = createCertificatePdf(rootDir + dir + "/" + fileName, maCourseFirstCompletion.getFullName(), msisdn, maCourseFirstCompletion.getFirstCompletionDate(), frontLineWorkersDao.getFlwById(maCourseFirstCompletion.getFlwId()) );
 
@@ -375,9 +375,9 @@ public class CertificateServiceImpl implements CertificateService {
                                         response.put("AshaName", maCourseFirstCompletion.getFullName());
                                         response.put("base64Certificate", base64Certificate);
                                        return response;
-                                    }
                             }
-                    }
+                        }
+                }
                 return response;
     }
 
