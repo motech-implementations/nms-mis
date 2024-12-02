@@ -35,6 +35,9 @@ public class MACourseCompletion {
     @Column(name="modificationdate")
     private Date lastModifiedDate;
 
+    @Column(name = "schedule_message_sent", columnDefinition = "BOOLEAN DEFAULT 0")
+    private Boolean scheduleMessageSent;
+
     public Long getId() {
         return Id;
     }
@@ -83,13 +86,13 @@ public class MACourseCompletion {
         this.lastDeliveryStatus = lastDeliveryStatus;
     }
 
-    public Boolean getSentNotification() {
-        return sentNotification;
-    }
+    public Boolean getSentNotification() { return sentNotification;}
 
-    public void setSentNotification(Boolean sentNotification) {
-        this.sentNotification = sentNotification;
-    }
+    public void setSentNotification(Boolean sentNotification) { this.sentNotification = sentNotification; }
+
+    public Boolean getScheduleMessageSent() {return scheduleMessageSent;}
+
+    public void setScheduleMessageSent(Boolean scheduleMessageSent) {this.scheduleMessageSent = scheduleMessageSent;}
 
     public Date getLastModifiedDate() {
         return lastModifiedDate;
@@ -110,6 +113,7 @@ public class MACourseCompletion {
                 ", lastDeliveryStatus='" + lastDeliveryStatus + '\'' +
                 ", sentNotification=" + sentNotification +
                 ", lastModifiedDate=" + lastModifiedDate +
+                ", scheduleMessageSent=" + scheduleMessageSent +
                 '}';
     }
 }

@@ -221,6 +221,6 @@
         <task:scheduled ref="autoReportMail" method="executeWeekly" cron="0 0 12 ? * MON"/>
         <!--<task:scheduled ref="autoReportMail" method="test" cron="${cron.test}"  />-->
         <task:scheduled ref="etlNotificationService" method="scheduledNotification" cron="0 30 7 * * ?"/>
-        <task:scheduled ref="sendSMSForCertificate" method="executeSendSMSForCertificate" cron="0 2,5,10,12,15,17,20,22,25,27,30,32,35,37,40,42,45,47,50,52,55,57 16 * * ?"/>
+        <task:scheduled ref="sendSMSForCertificate" method="executeSendSMSForCertificate" cron="0 50 6 * * ?"/>
     </task:scheduled-tasks>
 </beans>

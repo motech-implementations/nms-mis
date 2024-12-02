@@ -310,14 +310,22 @@ public class CertificateServiceImpl implements CertificateService {
                         long timeStep = Long.parseLong(retrieveOTPLifeSpan());
 
                         String alltimeotp = String.valueOf((maCourseFirstCompletion.getFlwId() % 1000000));
-                        if((maCourseFirstCompletion.getEncryptedOTP() != null && !passwordEncoder.matches( String.valueOf(otp), maCourseFirstCompletion.getEncryptedOTP()) ) || !otp.toString().equals(alltimeotp)){
-                            response.put("status", "failed");
-                            response.put("cause","incorrect otp");
-                            response.put("AshaName",maCourseFirstCompletion.getFullName());
-                            return response;
-                        }
+                    boolean allTimeOtpValid = otp.toString().trim().equals(alltimeotp.trim());
+                    boolean encryptedOtpValid = maCourseFirstCompletion.getEncryptedOTP() != null &&
+                            passwordEncoder.matches(String.valueOf(otp), maCourseFirstCompletion.getEncryptedOTP());
 
-                        if(currentTime - maCourseFirstCompletion.getNormalisedOTPEpoch() > timeStep){
+                    if(allTimeOtpValid){
+                       response.put("status", "success") ;
+                    } else if (encryptedOtpValid) {
+                        response.put("status", "success");
+                    } else {
+                        response.put("status", "failed");
+                        response.put("cause","incorrect otp");
+                        response.put("AshaName",maCourseFirstCompletion.getFullName());
+                        return response;
+                    }
+
+                    if(currentTime - maCourseFirstCompletion.getNormalisedOTPEpoch() > timeStep){
                             response.put("status", "failed");
                             response.put("cause","otp expired! please try again");
                             response.put("AshaName",maCourseFirstCompletion.getFullName());

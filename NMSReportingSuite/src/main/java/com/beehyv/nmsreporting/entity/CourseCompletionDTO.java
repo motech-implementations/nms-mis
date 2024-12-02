@@ -2,8 +2,6 @@ package com.beehyv.nmsreporting.entity;
 
 import com.beehyv.nmsreporting.model.MACourseCompletion;
 
-import java.util.Date;
-
 public class CourseCompletionDTO extends MACourseCompletion{
 
     private Long mobileNumber;
@@ -22,6 +20,7 @@ public class CourseCompletionDTO extends MACourseCompletion{
         this.setLastDeliveryStatus(macc.getLastDeliveryStatus());
         this.setSentNotification(macc.getSentNotification());
         this.setLastModifiedDate(macc.getLastModifiedDate());
+        this.setScheduleMessageSent(macc.getScheduleMessageSent());
         this.setMobileNumber(mobileNumber);
         this.setLanguageId(languageId);
     }

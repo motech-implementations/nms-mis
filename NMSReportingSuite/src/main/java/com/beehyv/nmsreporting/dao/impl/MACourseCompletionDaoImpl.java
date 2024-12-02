@@ -5,6 +5,7 @@ import com.beehyv.nmsreporting.dao.MACourseCompletionDao;
 import com.beehyv.nmsreporting.entity.CourseCompletionDTO;
 import com.beehyv.nmsreporting.model.MACourseCompletion;
 import org.hibernate.*;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.type.IntegerType;
 import org.hibernate.type.LongType;
@@ -25,9 +26,10 @@ public class MACourseCompletionDaoImpl extends AbstractDao<Long,MACourseCompleti
 
         Session session = getSession();
 
+        //TODO -- LIMIT NEED TO BE REMOVED BEFORE PRODUCTION
         // Create the native SQL query with a JOIN
-        String sql = "SELECT ma.id as Id, ma.flw_id as flwId , ma.score as score, ma.has_passed as passed, ma.chapter_wise_score as chapterWiseScore, ma.last_delivery_status as lastDeliveryStatus, ma.sent_notification as sentNotification, ma.modificationdate as lastModifiedDate, flw.flw_msisdn AS mobileNumber, flw.language as languageId" +
-                "  FROM ma_course_completion ma " +  "INNER JOIN front_line_worker flw ON ma.flw_id = flw.flw_id WHERE ma.sent_notification = 0 AND ma.has_passed = 1 limit 10";
+        String sql = "SELECT ma.id as Id, ma.flw_id as flwId , ma.score as score, ma.has_passed as passed, ma.chapter_wise_score as chapterWiseScore, ma.last_delivery_status as lastDeliveryStatus, ma.sent_notification as sentNotification, ma.modificationdate as lastModifiedDate, ma.schedule_message_sent as scheduleMessageSent, flw.flw_msisdn AS mobileNumber, flw.language as languageId" +
+                "  FROM ma_course_completion ma " +  "INNER JOIN front_line_worker flw ON ma.flw_id = flw.flw_id WHERE ma.schedule_message_sent = 0 AND ma.has_passed = 1 LIMIT 10";
 
         SQLQuery query = session.createSQLQuery(sql);
 
@@ -48,10 +50,11 @@ public class MACourseCompletionDaoImpl extends AbstractDao<Long,MACourseCompleti
             macc.setLastDeliveryStatus((String) row[5]);
             macc.setSentNotification((Boolean) row[6]);
             macc.setLastModifiedDate((Date) row[7]);
+            macc.setScheduleMessageSent((Boolean) row[8]);
 
-            BigInteger bigMobile = (BigInteger) row[8];
+            BigInteger bigMobile = (BigInteger) row[9];
             Long mobile = bigMobile.longValue();
-            String languageId = (String) row[9];
+            String languageId = (String) row[10];
 
             CourseCompletionDTO dto = new CourseCompletionDTO(macc, mobile, languageId);
             courseCompletionDTOs.add(dto);
@@ -70,8 +73,9 @@ public class MACourseCompletionDaoImpl extends AbstractDao<Long,MACourseCompleti
     public MACourseCompletion getAshaByFLWId(long flwId ) {
         Criteria criteria = getSession().createCriteria(MACourseCompletion.class);
         criteria.add(Restrictions.eq("flwId", flwId));
-        MACourseCompletion result = (MACourseCompletion) criteria.uniqueResult();
-        return result;
+        criteria.addOrder(Order.desc("Id"));
+        criteria.setMaxResults(1);
+        return (MACourseCompletion) criteria.uniqueResult();
     }
 
     @Override

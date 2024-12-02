@@ -24,9 +24,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
@@ -79,9 +76,7 @@ public class SmsServiceImpl implements SmsService {
         }
 
         HttpResponse response = null;
-       /* HttpClient client = HttpClientBuilder.create().build();
-
-
+        HttpClient client = HttpClientBuilder.create().build();
 
         try {
             LOGGER.info("now executing the request");
@@ -89,10 +84,9 @@ public class SmsServiceImpl implements SmsService {
             LOGGER.info("request executed");
         } catch (Exception e) {
             e.printStackTrace();
-        }*/
+        }
 
-        /*if ((response.getStatusLine()).toString().contains("success")) {*/
-        if(true){
+        if ((response.getStatusLine()).toString().contains("success")) {
             TimeZone timeZone = TimeZone.getTimeZone("Asia/Kolkata");
             Calendar calendar = Calendar.getInstance(timeZone);
 
@@ -106,13 +100,13 @@ public class SmsServiceImpl implements SmsService {
                 maCourseCompletion.setLastModifiedDate(date);
             } catch (ParseException pe) {
                 pe.printStackTrace();
-                maCourseCompletion.setSentNotification(true);
+                maCourseCompletion.setScheduleMessageSent(true);
                 maCourseCompletionDao.updateMACourseCompletion(maCourseCompletion);
 
                 return "message sent but modification date can not be updated";
             }
             maCourseCompletion.setLastModifiedDate(date);
-            maCourseCompletion.setSentNotification(true);
+            maCourseCompletion.setScheduleMessageSent(true);
 
             maCourseCompletionDao.updateMACourseCompletion(maCourseCompletion);
         }
