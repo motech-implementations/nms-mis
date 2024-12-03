@@ -38,7 +38,7 @@
                             console.log("certificate", $scope.certificate);
                         } else {
                             $scope.errorMessage = true;
-                            $scope.message = result.data.status;
+                            $scope.message = result.data.cause;
                         }
                     });
                 } else {
