@@ -4,13 +4,11 @@ import com.beehyv.nmsreporting.dao.AbstractDao;
 import com.beehyv.nmsreporting.dao.MACourseAttemptDao;
 import com.beehyv.nmsreporting.model.MACourseFirstCompletion;
 import com.beehyv.nmsreporting.model.User;
-import org.hibernate.Criteria;
-import org.hibernate.SQLQuery;
+import org.hibernate.*;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -37,6 +35,24 @@ public class MACourseAttemptDaoImpl extends AbstractDao<Integer, User> implement
         .add(Restrictions.eq("jobStatus","ACTIVE").ignoreCase());
         return criteria.list();
     }
+
+    @Override
+    public void bulkUpdateMACourseFirstCompletion(List<Long> flwIds) {
+        SQLQuery query = getSession().createSQLQuery("UPDATE ma_course_completion_first " +
+                "SET normalisedOTPEpoch = :epoch " +
+                "WHERE flw_id IN :flwIds");
+
+        query.setParameter("epoch", System.currentTimeMillis() / 1000);
+
+        query.setParameterList("flwIds", flwIds);
+
+        int result = query.executeUpdate();
+
+        System.out.println("Number of records updated: " + result);
+    }
+
+
+
 
     @Override
     public List<MACourseFirstCompletion> getSuccessFulCompletionWithDistrictId(String forMonth, Integer districtId) {

@@ -12,6 +12,8 @@ public interface MACourseAttemptDao {
 
    List<MACourseFirstCompletion> getSuccessFulCompletion(String forMonth);
 
+   void bulkUpdateMACourseFirstCompletion(List<Long> flwIds);
+
    List<MACourseFirstCompletion> getSuccessFulCompletionWithStateId(String forMonth, Integer stateId);
 
    List<MACourseFirstCompletion> getSuccessFulCompletionWithDistrictId(String forMonth, Integer districtId);

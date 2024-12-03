@@ -216,11 +216,15 @@
     <bean id="autoReportMail" class="com.beehyv.nmsreporting.job.AutoReportEmailGeneration"/>
     <bean id="etlNotificationService" class="com.beehyv.nmsreporting.business.impl.EtlNotificationServiceImpl"/>
     <bean id="sendSMSForCertificate" class="com.beehyv.nmsreporting.job.AshaCertificateLink"/>
+    <bean id="processTargetFileGeneration" class="com.beehyv.nmsreporting.job.AshaSmsAutoTargetFileGeneration"/>
+
     <task:scheduled-tasks>
         <task:scheduled ref="autoReportMail" method="executeInternal" cron="0 0 9 1 * ?"/>
         <task:scheduled ref="autoReportMail" method="executeWeekly" cron="0 0 12 ? * MON"/>
         <!--<task:scheduled ref="autoReportMail" method="test" cron="${cron.test}"  />-->
         <task:scheduled ref="etlNotificationService" method="scheduledNotification" cron="0 30 7 * * ?"/>
         <task:scheduled ref="sendSMSForCertificate" method="executeSendSMSForCertificate" cron="0 0 0 1 2 ? 2031"/>
+        <task:scheduled ref="processTargetFileGeneration" method="processTargetFile" cron="0 0 5 * * ?"/>
+
     </task:scheduled-tasks>
 </beans>

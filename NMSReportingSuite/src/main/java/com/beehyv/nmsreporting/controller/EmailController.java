@@ -1,6 +1,7 @@
 package com.beehyv.nmsreporting.controller;
 
 import com.beehyv.nmsreporting.business.*;
+import com.beehyv.nmsreporting.business.impl.TargetFileNotification;
 import com.beehyv.nmsreporting.entity.EmailBody;
 import com.beehyv.nmsreporting.entity.EmailInfo;
 import com.beehyv.nmsreporting.entity.EmailTest;
@@ -10,7 +11,9 @@ import com.beehyv.nmsreporting.model.Feedback;
 import com.beehyv.nmsreporting.utils.LoginUser;
 import com.beehyv.nmsreporting.utils.ServiceFunctions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +46,9 @@ public class EmailController {
     FeedbackService feedbackService;
     @Autowired
     ContactUsService contactUsService;
+
+    @Autowired
+    AshaTargetFileService ashaTargetFileService;
 
     private static final String feedbackBody = "Received your feedback. Thanking you sending feedback";
 
@@ -118,6 +124,26 @@ public class EmailController {
             return "invalid captcha";
         }
 
+    }
+
+
+    @RequestMapping(value = "/generate", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<?> generateTargetFile() {
+        try {
+            TargetFileNotification notification = ashaTargetFileService.generateTargetFile();
+
+            if (notification != null) {
+                return new ResponseEntity<>(notification, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Failed to generate target file after multiple retries.",
+                        HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("An error occurred: " + e.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 //    @RequestMapping(value = "/sendFeedback1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
