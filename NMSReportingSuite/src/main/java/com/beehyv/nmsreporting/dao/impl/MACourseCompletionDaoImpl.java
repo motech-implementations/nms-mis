@@ -16,22 +16,25 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Repository("maCourseCompletionDao")
 @Transactional
 public class MACourseCompletionDaoImpl extends AbstractDao<Long,MACourseCompletion> implements MACourseCompletionDao {
 
     @Override
-    public List<CourseCompletionDTO> findBySentNotificationIsFalseAndHasPassed() {
+    public List<CourseCompletionDTO> findBySentNotificationIsFalseAndHasPassed(Integer offset, Integer limit) {
 
         Session session = getSession();
 
         //TODO -- LIMIT NEED TO BE REMOVED BEFORE PRODUCTION
         // Create the native SQL query with a JOIN
-        String sql = "SELECT ma.id as Id, ma.flw_id as flwId , ma.score as score, ma.has_passed as passed, ma.chapter_wise_score as chapterWiseScore, ma.last_delivery_status as lastDeliveryStatus, ma.sent_notification as sentNotification, ma.modificationdate as lastModifiedDate, ma.schedule_message_sent as scheduleMessageSent, flw.flw_msisdn AS mobileNumber, flw.language as languageId" +
-                "  FROM ma_course_completion ma " +  "INNER JOIN front_line_worker flw ON ma.flw_id = flw.flw_id WHERE ma.schedule_message_sent = 0 AND ma.has_passed = 1 LIMIT 10";
+        String sql = "SELECT ma.id as Id, ma.flw_id as flwId , ma.score as score, ma.has_passed as passed, ma.chapter_wise_score as chapterWiseScore, ma.last_delivery_status as lastDeliveryStatus, ma.sent_notification as sentNotification, ma.modificationdate as lastModifiedDate, ma.schedule_message_sent as scheduleMessageSent, flw.flw_msisdn AS mobileNumber, flw.language_id as languageId" +
+                "  FROM ma_course_completion ma INNER JOIN front_line_worker flw ON ma.flw_id = flw.flw_id WHERE ma.schedule_message_sent = 0 AND ma.has_passed = 1 LIMIT :limit OFFSET :offset ";
 
         SQLQuery query = session.createSQLQuery(sql);
+        query.setParameter("limit", limit);
+        query.setParameter("offset", offset);
 
         List<Object[]> results = query.list();
 
@@ -54,9 +57,10 @@ public class MACourseCompletionDaoImpl extends AbstractDao<Long,MACourseCompleti
 
             BigInteger bigMobile = (BigInteger) row[9];
             Long mobile = bigMobile.longValue();
-            String languageId = (String) row[10];
+            BigInteger languageId = (BigInteger) row[10];
+            Long language = languageId.longValue();
 
-            CourseCompletionDTO dto = new CourseCompletionDTO(macc, mobile, languageId);
+            CourseCompletionDTO dto = new CourseCompletionDTO(macc, mobile, language);
             courseCompletionDTOs.add(dto);
         }
 
@@ -94,7 +98,7 @@ public class MACourseCompletionDaoImpl extends AbstractDao<Long,MACourseCompleti
         long phone_no = (long) query.uniqueResult();
         return phone_no;
     }
-    public int getAshaLanguageId(long flwId) {
+    public long getAshaLanguageId(long flwId) {
         SQLQuery query = getSession().createSQLQuery("SELECT language_id FROM front_line_worker WHERE flw_id = :flwId")
                 .addScalar("language_id", IntegerType.INSTANCE);
 
@@ -103,8 +107,8 @@ public class MACourseCompletionDaoImpl extends AbstractDao<Long,MACourseCompleti
         if(resultObject == null){
             return -1;
         }
-        int languageId = (int) resultObject;
-        return languageId;
+        long languageId = (Integer) resultObject;
+        return  languageId;
     }
     public void updateMACourseCompletion(MACourseCompletion maCourseCompletion) {
         update(maCourseCompletion);

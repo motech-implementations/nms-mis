@@ -137,356 +137,84 @@ public  final class Global {
         return prop;
     }
 
-    public static String retrieveOTPLifeSpan() {
+    private static Properties loadProperties() {
         Properties prop = new Properties();
-        InputStream input = null;
-        String otpLifeSpan = null;
-        try {
-            File file = new File("../webapps/NMSReportingSuite/WEB-INF/classes/sms.properties");
-            input = new FileInputStream(file);
+        try (InputStream input = new FileInputStream(new File("../webapps/NMSReportingSuite/WEB-INF/classes/sms.properties"))) {
             // load a properties file
             prop.load(input);
-            otpLifeSpan = prop.getProperty("otplifespan");
         } catch (IOException ex) {
             ex.printStackTrace();
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
-        return otpLifeSpan;
+        return prop;
     }
 
+    private static String getProperty(String key) {
+        Properties prop = loadProperties();
+        return prop.getProperty(key);
+    }
+
+    public static String retrieveOTPLifeSpan() {
+        return getProperty("otplifespan");
+    }
 
     public static String retrieveSMSEndPoint() {
-        Properties prop = new Properties();
-        InputStream input = null;
-        String smsEndPoint = null;
-        try {
-            File file = new File("../webapps/NMSReportingSuite/WEB-INF/classes/sms.properties");
-            input = new FileInputStream(file);
-            // load a properties file
-            prop.load(input);
-            smsEndPoint = prop.getProperty("endpoint");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return smsEndPoint;
+        return getProperty("endpoint");
     }
 
     public static String retrieveSenderId() {
-        Properties prop = new Properties();
-        InputStream input = null;
-        String senderId = null;
-        try {
-            File file = new File("../webapps/NMSReportingSuite/WEB-INF/classes/sms.properties");
-            input = new FileInputStream(file);
-            // load a properties file
-            prop.load(input);
-            senderId = prop.getProperty("senderid");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return senderId;
+        return getProperty("senderid");
     }
 
-    public static String retrieveAshaCourseCompletionMessage(int languageId) {
-        Properties prop = new Properties();
-        InputStream input = null;
-        String ashaStaticMessage  = null;
-        LOGGER.info("Retrieving message content");
-        try {
-            File file = new File("../webapps/NMSReportingSuite/WEB-INF/classes/sms.properties");
-            input = new FileInputStream(file);
-            // load a properties file
-            prop.load(input);
-            LOGGER.info(String.valueOf(prop));
-            ashaStaticMessage = prop.getProperty("sms.asha.default.message."+"2");
-            LOGGER.info("There is no exception in this!");
-            if(ashaStaticMessage == null){
-                LOGGER.info("Inside if as content is null");
-                ashaStaticMessage = prop.getProperty("sms.asha.default.message");
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+    public static String retrieveAshaCourseCompletionMessage(long languageId) {
+        String message = getProperty("sms.asha.default.message." + languageId);
+        if (message == null) {
+            message = getProperty("sms.asha.default.message");
         }
-        return ashaStaticMessage;
+        return message;
     }
 
-    public static String retrieveAshaCourseCompletionOTPMessage(int languageId) {
-        Properties prop = new Properties();
-        InputStream input = null;
-        String ashaOTPStaticMessage  = null;
-        LOGGER.info("Retrieving message content");
-        try {
-            File file = new File("../webapps/NMSReportingSuite/WEB-INF/classes/sms.properties");
-            input = new FileInputStream(file);
-            // load a properties file
-            prop.load(input);
-            ashaOTPStaticMessage = prop.getProperty("sms.asha.default.otp.message."+languageId);
-            LOGGER.info("There is no exception in this!");
-            if(ashaOTPStaticMessage  == null){
-                LOGGER.info("Inside if as content is null");
-                ashaOTPStaticMessage  = prop.getProperty("sms.asha.default.otp.message");
-            }
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+    public static String retrieveAshaCourseCompletionOTPMessage(long languageId) {
+        String message = getProperty("sms.asha.default.otp.message." + languageId);
+        if (message == null) {
+            message = getProperty("sms.asha.default.otp.message");
         }
-        return ashaOTPStaticMessage;
+        return message;
     }
 
     public static String retrieveAuthKey() {
-        Properties prop = new Properties();
-        InputStream input = null;
-        String  authKey = null;
-        try {
-            File file = new File("../webapps/NMSReportingSuite/WEB-INF/classes/sms.properties");
-            input = new FileInputStream(file);
-            // load a properties file
-            prop.load(input);
-            authKey = prop.getProperty("sms.authentication.key");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return authKey;
+        return getProperty("sms.authentication.key");
     }
 
     public static String retrieveCallBackEndPointForgotPassword() {
-        Properties prop = new Properties();
-        InputStream input = null;
-        String  callBackEndPoint= null;
-        try {
-            File file = new File("../webapps/NMSReportingSuite/WEB-INF/classes/sms.properties");
-            input = new FileInputStream(file);
-            // load a properties file
-            prop.load(input);
-            callBackEndPoint = prop.getProperty("callbackEndpoint");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return callBackEndPoint;
+        return getProperty("callbackEndpoint");
     }
 
     public static String retrieveForgotPasswordStaticMessage() {
-        Properties prop = new Properties();
-        InputStream input = null;
-        String  message= null;
-        try {
-            File file = new File("../webapps/NMSReportingSuite/WEB-INF/classes/sms.properties");
-            input = new FileInputStream(file);
-            // load a properties file
-            prop.load(input);
-            message = prop.getProperty("sms.default.message");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return message;
+        return getProperty("sms.default.message");
     }
+
     public static String retrieveAshaCertificateDownloadPageUrl() {
-        Properties prop = new Properties();
-        InputStream input = null;
-        String  message= null;
-        try {
-            File file = new File("../webapps/NMSReportingSuite/WEB-INF/classes/sms.properties");
-            input = new FileInputStream(file);
-            // load a properties file
-            prop.load(input);
-            message = prop.getProperty("sms.asha.certificate.download.url");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return message;
+        return getProperty("sms.asha.certificate.download.url");
     }
 
     public static String retrieveTemplateId() {
-        Properties prop = new Properties();
-        InputStream input = null;
-        String templateId = null;
-        try {
-            File file = new File("../webapps/NMSReportingSuite/WEB-INF/classes/sms.properties");
-            input = new FileInputStream(file);
-            // load a properties file
-            prop.load(input);
-            templateId = prop.getProperty("sms.templateId.default");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return templateId;
+        return getProperty("sms.templateId.default");
     }
 
     public static String retrieveEntityId() {
-        Properties prop = new Properties();
-        InputStream input = null;
-        String  id = null;
-        try {
-            File file = new File("../webapps/NMSReportingSuite/WEB-INF/classes/sms.properties");
-            input = new FileInputStream(file);
-            // load a properties file
-            prop.load(input);
-            id = prop.getProperty("sms.entityId.default");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return id;
+        return getProperty("sms.entityId.default");
     }
 
     public static String retrieveTelemarketerId() {
-        Properties prop = new Properties();
-        InputStream input = null;
-        String id = null;
-        try {
-            File file = new File("../webapps/NMSReportingSuite/WEB-INF/classes/sms.properties");
-            input = new FileInputStream(file);
-            // load a properties file
-            prop.load(input);
-            id = prop.getProperty("sms.telemarketerId.default");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return id;
+        return getProperty("sms.telemarketerId.default");
     }
 
     public static String retrieveAshaSMSCallBackEndPoint(String entryPoint) {
-        Properties prop = new Properties();
-        InputStream input = null;
-        String endPoint = null;
-        try {
-            File file = new File("../webapps/NMSReportingSuite/WEB-INF/classes/sms.properties");
-            input = new FileInputStream(file);
-            LOGGER.info("Inside sms.properties");
-            // load a properties file
-            prop.load(input);
-            endPoint = prop.getProperty("sms.asha.callbackEndpoint." + entryPoint);
-            LOGGER.info("Got Endpoint as {}", endPoint);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return endPoint;
+        return getProperty("sms.asha.callbackEndpoint." + entryPoint);
     }
 
     public static String retrieveAshaCertificateDownloadUrl() {
-        Properties prop = new Properties();
-        InputStream input = null;
-        String endPoint = null;
-        try {
-            File file = new File("../webapps/NMSReportingSuite/WEB-INF/classes/sms.properties");
-            input = new FileInputStream(file);
-            // load a properties file
-            prop.load(input);
-            endPoint = prop.getProperty("sms.asha.certificate.download.url");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return endPoint;
+        return getProperty("sms.asha.certificate.download.url");
     }
 
 }

@@ -54,129 +54,160 @@ public class SmsServiceImpl implements SmsService {
     public String sendSms(MACourseCompletion maCourseCompletion, String template) {
         LOGGER.info("template {}", template);
 
+        // Replace senderId in the endpoint
+        String resolvedEndpoint = endpoint.replace("senderId", senderId);
 
-        endpoint = endpoint.replace("senderId", senderId);
-
-        HttpPost httprequest = new HttpPost(endpoint);
-        httprequest.setHeader("Content-type", "application/json");
-        httprequest.setHeader("Key", authKey);
+        // Create HTTP POST request
+        HttpPost httpRequest = new HttpPost(resolvedEndpoint);
+        httpRequest.setHeader("Content-type", "application/json");
+        httpRequest.setHeader("Key", authKey);
 
         try {
-            httprequest.setEntity(new StringEntity(template));
-            LOGGER.info("entity set");
-            LOGGER.info("printing the url");
-            LOGGER.info(httprequest.getURI().toString());
-
-            String str = EntityUtils.toString((httprequest.getEntity()));
-            LOGGER.info("printing the entity set in request");
-            LOGGER.info(str);
-        } catch (IOException ue) {
-            LOGGER.error("Unable to build sms request");
-            return null;
+            // Set request entity
+            httpRequest.setEntity(new StringEntity(template));
+            LOGGER.info("Entity set for request");
+            LOGGER.info("Request URL: {}", httpRequest.getURI().toString());
+            LOGGER.info("Request entity: {}", EntityUtils.toString(httpRequest.getEntity()));
+        } catch (IOException e) {
+            LOGGER.error("Unable to build SMS request", e);
+            return "Unable to send";
         }
 
-        HttpResponse response = null;
+        // Execute the request
         HttpClient client = HttpClientBuilder.create().build();
-
+        HttpResponse response;
         try {
-            LOGGER.info("now executing the request");
-            response = client.execute(httprequest);
-            LOGGER.info("request executed");
-        } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.info("Executing the request");
+            response = client.execute(httpRequest);
+            LOGGER.info("Request executed successfully");
+        } catch (IOException e) {
+            LOGGER.error("Unable to send SMS : Error during HTTP request execution");
+            return "Unable to send SMS";
         }
 
-        if ((response.getStatusLine()).toString().contains("success")) {
-            TimeZone timeZone = TimeZone.getTimeZone("Asia/Kolkata");
-            Calendar calendar = Calendar.getInstance(timeZone);
-
-            // Format the date directly in the required format
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            dateFormat.setTimeZone(timeZone);
-            Date date;
+        // Process response
+        if (response.getStatusLine().toString().contains("success")) {
             try {
-                // Parse the formatted date string into a Date object
-               date = dateFormat.parse(dateFormat.format(calendar.getTime()));
-                maCourseCompletion.setLastModifiedDate(date);
-            } catch (ParseException pe) {
-                pe.printStackTrace();
+                // Get current date in the specified format and timezone
+                TimeZone timeZone = TimeZone.getTimeZone("Asia/Kolkata");
+                Calendar calendar = Calendar.getInstance(timeZone);
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                dateFormat.setTimeZone(timeZone);
+
+                Date currentDate = dateFormat.parse(dateFormat.format(calendar.getTime()));
+                maCourseCompletion.setLastModifiedDate(currentDate);
+            } catch (ParseException e) {
+                LOGGER.error("Error while parsing date", e);
                 maCourseCompletion.setScheduleMessageSent(true);
                 maCourseCompletionDao.updateMACourseCompletion(maCourseCompletion);
-
-                return "message sent but modification date can not be updated";
+                return "Message sent but modification date could not be updated";
             }
-            maCourseCompletion.setLastModifiedDate(date);
-            maCourseCompletion.setScheduleMessageSent(true);
 
+            // Update completion details
+            maCourseCompletion.setScheduleMessageSent(true);
             maCourseCompletionDao.updateMACourseCompletion(maCourseCompletion);
         }
         return "success";
     }
 
 
-    public String buildCertificateSMS(CourseCompletionDTO courseCompletionDTO, String message_content) {
-        long phone_no;
-        LOGGER.info("building sms for : {}", courseCompletionDTO.getFlwId());
-        try {
-            phone_no = courseCompletionDTO.getMobileNumber();
-        } catch (NullPointerException nullPointerException) {
-            LOGGER.info("phone no. does not exists for  : {}", courseCompletionDTO.getFlwId());
-            nullPointerException.printStackTrace();
-            return null;
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return null;
-        }
-        LOGGER.info("phone_no: {}", phone_no);
-        LOGGER.info("message_content: {}", message_content);
-        String template = null;
 
-        try {
-            template = FileUtils.readFileToString(new File("../webapps/NMSReportingSuite/WEB-INF/classes/smsTemplate.json"), StandardCharsets.UTF_8);
+    public String buildCertificateSMS(CourseCompletionDTO courseCompletionDTO, String messageContent) {
+        LOGGER.info("Building SMS for FLW ID: {}", courseCompletionDTO.getFlwId());
 
+        long phoneNo;
+        try {
+            phoneNo = courseCompletionDTO.getMobileNumber();
+        } catch (NullPointerException e) {
+            LOGGER.info("Phone number does not exist for FLW ID: {}", courseCompletionDTO.getFlwId(), e);
+            return null;
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Unexpected error while fetching phone number for FLW ID: {}", courseCompletionDTO.getFlwId(), e);
+            return null;
         }
 
-        String callbackEndpoint =  retrieveAshaSMSCallBackEndPoint("certificateLink");
+        LOGGER.info("Phone number: {}", phoneNo);
+        LOGGER.info("Message content: {}", messageContent);
 
-        template = template.replace("<phoneNumber>", String.valueOf(phone_no));
-        template = template.replace("<senderId>", senderId);
-        template = template.replace("<messageContent>", message_content);
-        template = template.replace("<notificationUrl>", callbackEndpoint==null?"0":"1");
-        template = template.replace("<smsTemplateId>", sms_template_id);
-        template = template.replace("<smsEntityId>", sms_entity_id);
-        template = template.replace("<smsTelemarketerId>", sms_telemarketer_id);
+        String template;
+        try {
+            template = FileUtils.readFileToString(
+                    new File("../webapps/NMSReportingSuite/WEB-INF/classes/smsTemplate.json"),
+                    StandardCharsets.UTF_8
+            );
+        } catch (IOException e) {
+            LOGGER.error("Error reading SMS template file", e);
+            return null;
+        }
+
+        String callbackEndpoint = retrieveAshaSMSCallBackEndPoint("certificateLink");
+        if (callbackEndpoint == null) {
+            callbackEndpoint = "0";
+        } else {
+            callbackEndpoint = "1";
+        }
+
+        // Replace placeholders in the template
+        try {
+            template = template
+                    .replace("<phoneNumber>", String.valueOf(phoneNo))
+                    .replace("<senderId>", senderId)
+                    .replace("<messageContent>", messageContent)
+                    .replace("<notificationUrl>", callbackEndpoint)
+                    .replace("<smsTemplateId>", sms_template_id)
+                    .replace("<smsEntityId>", sms_entity_id)
+                    .replace("<smsTelemarketerId>", sms_telemarketer_id);
+        } catch (Exception e) {
+            LOGGER.error("Error replacing placeholders in SMS template", e);
+            return null;
+        }
+
         return template;
     }
 
-    public String buildOTPSMS(MACourseFirstCompletion maCourseFirstCompletion, String message_content) {
-        long phone_no;
-        LOGGER.info("building sms for : {}", maCourseFirstCompletion.getFlwId());
-        try {
-            phone_no = maCourseCompletionDao.getAshaPhoneNo(maCourseFirstCompletion.getFlwId());
-        } catch (NullPointerException nullPointerException) {
-            nullPointerException.printStackTrace();
-            return null;
-        }
-        LOGGER.info("phone_no: {}", phone_no);
-        LOGGER.info("message_content: {}", message_content);
+    public String buildOTPSMS(MACourseFirstCompletion maCourseFirstCompletion, String messageContent) {
+        long phoneNumber;
         String template = null;
 
-        try {
-            template = FileUtils.readFileToString(new File("../webapps/NMSReportingSuite/WEB-INF/classes/smsTemplate.json"), StandardCharsets.UTF_8);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        String callbackEndpoint =  retrieveAshaSMSCallBackEndPoint("OTP");
+        LOGGER.info("Building SMS for FLW ID: {}", maCourseFirstCompletion.getFlwId());
 
-        template = template.replace("<phoneNumber>", String.valueOf(phone_no));
-        template = template.replace("<senderId>", senderId);
-        template = template.replace("<messageContent>", message_content);
-        template = template.replace("<notificationUrl>", callbackEndpoint);
-        template = template.replace("<smsTemplateId>", sms_template_id);
-        template = template.replace("<smsEntityId>", sms_entity_id);
-        template = template.replace("<smsTelemarketerId>", sms_telemarketer_id);
+        // Fetch phone number
+        try {
+            phoneNumber = maCourseCompletionDao.getAshaPhoneNo(maCourseFirstCompletion.getFlwId());
+        } catch (NullPointerException e) {
+            LOGGER.error("Phone number not found for FLW ID: {}", maCourseFirstCompletion.getFlwId(), e);
+            return null;
+        }
+
+        LOGGER.info("Phone number: {}", phoneNumber);
+        LOGGER.info("Message content: {}", messageContent);
+
+        // Read SMS template
+        try {
+            template = FileUtils.readFileToString(
+                    new File("../webapps/NMSReportingSuite/WEB-INF/classes/smsTemplate.json"),
+                    StandardCharsets.UTF_8
+            );
+        } catch (IOException e) {
+            LOGGER.error("Error reading SMS template file.", e);
+            return null;
+        }
+
+        // Populate SMS template
+        try {
+            String callbackEndpoint = retrieveAshaSMSCallBackEndPoint("OTP");
+            template = template.replace("<phoneNumber>", String.valueOf(phoneNumber))
+                    .replace("<senderId>", senderId)
+                    .replace("<messageContent>", messageContent)
+                    .replace("<notificationUrl>", callbackEndpoint)
+                    .replace("<smsTemplateId>", sms_template_id)
+                    .replace("<smsEntityId>", sms_entity_id)
+                    .replace("<smsTelemarketerId>", sms_telemarketer_id);
+        } catch (Exception e) {
+            LOGGER.error("Error populating SMS template.", e);
+            return null;
+        }
+
         return template;
     }
 

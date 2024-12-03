@@ -5,12 +5,12 @@ import com.beehyv.nmsreporting.model.MACourseCompletion;
 public class CourseCompletionDTO extends MACourseCompletion{
 
     private Long mobileNumber;
-    private String languageId;
+    private Long languageId;
 
     public CourseCompletionDTO() {
     }
 
-    public CourseCompletionDTO(MACourseCompletion macc, Long mobileNumber, String languageId) {
+    public CourseCompletionDTO(MACourseCompletion macc, Long mobileNumber, Long languageId) {
         super();
         this.setId(macc.getId());
         this.setFlwId(macc.getFlwId());
@@ -33,11 +33,11 @@ public class CourseCompletionDTO extends MACourseCompletion{
         this.mobileNumber = mobileNumber;
     }
 
-    public String getLanguageId() {
+    public Long getLanguageId() {
         return languageId;
     }
 
-    public void setLanguageId(String languageId) {
+    public void setLanguageId(Long languageId) {
         this.languageId = languageId;
     }
 }

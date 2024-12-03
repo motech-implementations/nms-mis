@@ -72,7 +72,6 @@ public class CertificateServiceImpl implements CertificateService {
     @Autowired
     private SmsService smsService;
 
-    private final Calendar c = Calendar.getInstance();
 
     private static final String documents = retrieveDocuments();
     private final int teluguStateCode = 40;
@@ -298,132 +297,164 @@ public class CertificateServiceImpl implements CertificateService {
     @Override
     public Map<String, String> getCertificate(Long msisdn, Integer otp) {
         MACourseFirstCompletion maCourseFirstCompletion = maCourseAttemptDao.getMACourseFirstCompletionByMobileNo(msisdn);
-                Map<String, String> response = new HashMap<>();
-                if (maCourseFirstCompletion == null) {
-                        response.put("status", "Course not completed yet!");
-                        return response;
-                }
-                String rootDir = documents + "Certificate/Asha/";
-                String status;
-                if (maCourseFirstCompletion.getFirstCompletionDate() != null) {
-                        long currentTime = System.currentTimeMillis() / 1000;
-                        long timeStep = Long.parseLong(retrieveOTPLifeSpan());
+        Map<String, String> response = new HashMap<>();
 
-                        String alltimeotp = String.valueOf((maCourseFirstCompletion.getFlwId() % 1000000));
-                    boolean allTimeOtpValid = otp.toString().trim().equals(alltimeotp.trim());
-                    boolean encryptedOtpValid = maCourseFirstCompletion.getEncryptedOTP() != null &&
-                            passwordEncoder.matches(String.valueOf(otp), maCourseFirstCompletion.getEncryptedOTP());
+        if (maCourseFirstCompletion == null) {
+            return createResponse("Course not completed yet!", null, null, null, null);
+        }
 
-                    if(allTimeOtpValid){
-                       response.put("status", "success") ;
-                    } else if (encryptedOtpValid) {
-                        response.put("status", "success");
-                    } else {
-                        response.put("status", "failed");
-                        response.put("cause","incorrect otp");
-                        response.put("AshaName",maCourseFirstCompletion.getFullName());
-                        return response;
-                    }
+        if (!validateOtp(maCourseFirstCompletion, otp)) {
+            return createResponse("failed", "Incorrect OTP", maCourseFirstCompletion.getFullName(), null, null);
+        }
 
-                    if(currentTime - maCourseFirstCompletion.getNormalisedOTPEpoch() > timeStep){
-                            response.put("status", "failed");
-                            response.put("cause","otp expired! please try again");
-                            response.put("AshaName",maCourseFirstCompletion.getFullName());
-                            return response;
-                        }
-                        // creating directories
-                        String dir = "";
-                        dir = dir + maCourseFirstCompletion.getStateId();
-                        if (maCourseFirstCompletion.getDistrictId() != null) {
-                                dir = dir + "/" + maCourseFirstCompletion.getDistrictId();
-                        }
-                        if (maCourseFirstCompletion.getBlockId() != null) {
-                                dir = dir + "/" + maCourseFirstCompletion.getBlockId();
-                        }
-                        File fileDr = new File(rootDir + dir);
+        if (isOtpExpired(maCourseFirstCompletion)) {
+            return createResponse("failed", "OTP expired!", maCourseFirstCompletion.getFullName(), null, null);
+        }
 
-                        String fileNameInitial = ""+maCourseFirstCompletion.getMsisdn();
-                        String fileName = "";
-                        boolean certificateExists = false;
-                        if(fileDr.exists() && fileDr.isDirectory()){
-                                File[] files = fileDr.listFiles();
-                                for(File file: files){
-                                        if(file.isFile() && file.getName().startsWith(fileNameInitial)){
-                                                fileName = file.getName();
-                                                certificateExists = true;
-                                                break;
-                                        }
-                                }
-                        }
-                        if (certificateExists) {
-                            String base64Certificate = getBase64EncodedCertificate(rootDir + dir + "/" + fileName);
-                                response.put("file", fileName);
-                                response.put("path", dir);
-                                response.put("status", "success");
-                                response.put("AshaName", maCourseFirstCompletion.getFullName());
-                                response.put("base64Certificate", base64Certificate);
-                                return response;
-                        }
-                        else{
-                                if (!fileDr.exists()) {
-                                        fileDr.mkdirs();
-                                }
-                                fileName = maCourseFirstCompletion.getMsisdn() + ".pdf";
-                                status = createCertificatePdf(rootDir + dir + "/" + fileName, maCourseFirstCompletion.getFullName(), msisdn, maCourseFirstCompletion.getFirstCompletionDate(), frontLineWorkersDao.getFlwById(maCourseFirstCompletion.getFlwId()) );
+        String certificatePath = generateCertificatePath(maCourseFirstCompletion);
+        File certificateDir = new File(certificatePath);
 
-                            // Step 3: Convert to Base64
-                            String base64Certificate = getBase64EncodedCertificate(rootDir + dir + "/" + fileName);
+        String certificateFile = findExistingCertificate(certificateDir, msisdn);
+        if (certificateFile != null) {
+            String base64Certificate = getBase64EncodedCertificate(certificatePath + "/" + certificateFile);
+            return createResponse("success", null, maCourseFirstCompletion.getFullName(), certificateFile, base64Certificate);
+        }
 
-                            if (status.equalsIgnoreCase("success")) {
-                                        response.put("file", fileName);
-                                        response.put("path", dir);
-                                        response.put("status", "success");
-                                        response.put("AshaName", maCourseFirstCompletion.getFullName());
-                                        response.put("base64Certificate", base64Certificate);
-                                       return response;
-                            }
-                        }
-                }
-                return response;
+        if (!certificateDir.exists()) {
+            certificateDir.mkdirs();
+        }
+
+        certificateFile = msisdn + ".pdf";
+        String status = createCertificatePdf(
+                certificatePath + "/" + certificateFile,
+                maCourseFirstCompletion.getFullName(),
+                msisdn,
+                maCourseFirstCompletion.getFirstCompletionDate(),
+                frontLineWorkersDao.getFlwById(maCourseFirstCompletion.getFlwId())
+        );
+
+        if ("success".equalsIgnoreCase(status)) {
+            String base64Certificate = getBase64EncodedCertificate(certificatePath + "/" + certificateFile);
+            return createResponse("success", null, maCourseFirstCompletion.getFullName(), certificateFile, base64Certificate);
+        }
+
+        return response;
     }
 
-    @Override
-    public String generateOTPForAshaCertificate(Long mobileNo) throws Exception {
-        Random random = new Random();
-                int min = 100000; // Smallest 6-digit number
-                int max = 999999; // Largest 6-digit number
-                int randomSixDigitOTP = random.nextInt(max - min + 1) + min;
-                MACourseFirstCompletion maCourseFirstCompletion = maCourseAttemptDao.getMACourseFirstCompletionByMobileNo(mobileNo);
-                if(maCourseFirstCompletion == null) {
-                    return "course is not yet completed";
-                }
-                MACourseCompletion maCourseCompletion = maCourseCompletionDao.getAshaByFLWId(maCourseFirstCompletion.getFlwId());
-                logger.info("randomOTP: {}", randomSixDigitOTP);
+    private boolean validateOtp(MACourseFirstCompletion maCourseFirstCompletion, Integer otp) {
+        String allTimeOtp = String.valueOf(maCourseFirstCompletion.getFlwId() % 1000000);
+        if(otp.toString().equals(allTimeOtp)) {
+            return true;
+        }
+        else if(maCourseFirstCompletion.getEncryptedOTP() != null &&
+                passwordEncoder.matches(String.valueOf(otp), maCourseFirstCompletion.getEncryptedOTP())){
+            return true;
+        }
 
-                long currentTime = System.currentTimeMillis() / 1000;
-                maCourseFirstCompletion.setEncryptedOTP(passwordEncoder.encode(""+randomSixDigitOTP));
-                maCourseFirstCompletion.setNormalisedOTPEpoch(currentTime);
-                logger.info("maCourseFirstCompletion: {}",maCourseFirstCompletion);
-                maCourseAttemptDao.updateMACourseFirstCompletion(maCourseFirstCompletion);
-                int languageId = maCourseCompletionDao.getAshaLanguageId(maCourseFirstCompletion.getFlwId());
-                String messageContent = retrieveAshaCourseCompletionOTPMessage(languageId)
-                                .replace("<OTP>",String.valueOf(randomSixDigitOTP));
-                logger.info("message_content: {}",messageContent);
-                String template = smsService.buildOTPSMS(maCourseFirstCompletion,messageContent);
-                return smsService.sendSms(maCourseCompletion, template);
+        return false;
+
+    }
+
+    private boolean isOtpExpired(MACourseFirstCompletion maCourseFirstCompletion) {
+        long currentTime = System.currentTimeMillis() / 1000;
+        long timeStep = Long.parseLong(retrieveOTPLifeSpan());
+        return (currentTime - maCourseFirstCompletion.getNormalisedOTPEpoch()) > timeStep;
+    }
+
+    private String generateCertificatePath(MACourseFirstCompletion maCourseFirstCompletion) {
+        StringBuilder pathBuilder = new StringBuilder(documents + "Certificate/Asha/");
+        pathBuilder.append(maCourseFirstCompletion.getStateId());
+
+        if (maCourseFirstCompletion.getDistrictId() != null) {
+            pathBuilder.append("/").append(maCourseFirstCompletion.getDistrictId());
+        }
+        if (maCourseFirstCompletion.getBlockId() != null) {
+            pathBuilder.append("/").append(maCourseFirstCompletion.getBlockId());
+        }
+
+        return pathBuilder.toString();
+    }
+
+    private String findExistingCertificate(File certificateDir, Long msisdn) {
+        if (!certificateDir.exists() || !certificateDir.isDirectory()) {
+            return null;
+        }
+
+        String fileNamePrefix = msisdn.toString();
+        for (File file : certificateDir.listFiles()) {
+            if (file.isFile() && file.getName().startsWith(fileNamePrefix)) {
+                return file.getName();
+            }
+        }
+        return null;
+    }
+
+    private Map<String, String> createResponse(String status, String cause, String ashaName, String file, String base64Certificate) {
+        Map<String, String> response = new HashMap<>();
+        response.put("status", status);
+        if (cause != null) response.put("cause", cause);
+        if (ashaName != null) response.put("AshaName", ashaName);
+        if (file != null) response.put("file", file);
+        if (base64Certificate != null) response.put("base64Certificate", base64Certificate);
+        return response;
     }
 
     public String getBase64EncodedCertificate(String filePath) {
         try {
-            // Read the file into a byte array
             byte[] fileContent = Files.readAllBytes(Paths.get(filePath));
-            // Encode the byte array to Base64
             return Base64.getEncoder().encodeToString(fileContent);
-
         } catch (IOException e) {
             throw new RuntimeException("Error while converting certificate to Base64", e);
         }
     }
+
+    @Override
+    public String generateOTPForAshaCertificate(Long mobileNo) throws Exception {
+        MACourseFirstCompletion maCourseFirstCompletion = maCourseAttemptDao.getMACourseFirstCompletionByMobileNo(mobileNo);
+        if (maCourseFirstCompletion == null) {
+            return "course is not yet completed";
+        }
+
+        int otp = generateRandomSixDigitOTP();
+        long currentTime = getCurrentEpochTimeInSeconds();
+
+        updateCourseFirstCompletion(maCourseFirstCompletion, otp, currentTime);
+
+        long languageId = maCourseCompletionDao.getAshaLanguageId(maCourseFirstCompletion.getFlwId());
+        String messageContent = buildOTPMessage(languageId, otp);
+
+        MACourseCompletion maCourseCompletion = maCourseCompletionDao.getAshaByFLWId(maCourseFirstCompletion.getFlwId());
+        return sendOTPMessage(maCourseCompletion, maCourseFirstCompletion, messageContent);
+    }
+
+    private int generateRandomSixDigitOTP() {
+        int min = 100000; // Smallest 6-digit number
+        int max = 999999; // Largest 6-digit number
+        return new Random().nextInt(max - min + 1) + min;
+    }
+
+    private long getCurrentEpochTimeInSeconds() {
+        return System.currentTimeMillis() / 1000;
+    }
+
+    private void updateCourseFirstCompletion(MACourseFirstCompletion maCourseFirstCompletion, int otp, long currentTime) {
+        maCourseFirstCompletion.setEncryptedOTP(passwordEncoder.encode(String.valueOf(otp)));
+        maCourseFirstCompletion.setNormalisedOTPEpoch(currentTime);
+        logger.info("Updated MACourseFirstCompletion: {}", maCourseFirstCompletion);
+        maCourseAttemptDao.updateMACourseFirstCompletion(maCourseFirstCompletion);
+    }
+
+    private String buildOTPMessage(long languageId, int otp) {
+        String messageTemplate = retrieveAshaCourseCompletionOTPMessage(languageId);
+        return messageTemplate.replace("<OTP>", String.valueOf(otp));
+    }
+
+    private String sendOTPMessage(MACourseCompletion maCourseCompletion, MACourseFirstCompletion maCourseFirstCompletion, String messageContent) {
+        String template = smsService.buildOTPSMS(maCourseFirstCompletion, messageContent);
+        logger.info("SMS Template: {}", template);
+        return smsService.sendSms(maCourseCompletion, template);
+    }
+
 
     @Override
     public Map<String, String> createAllCertificateUptoCurrentMonthInBulk(String forMonth, State state, HashMap<Integer, String> districtMap, HashMap<Integer, HashMap<Integer, String>> blockMap) {

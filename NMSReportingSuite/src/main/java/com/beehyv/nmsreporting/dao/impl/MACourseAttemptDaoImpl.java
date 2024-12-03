@@ -92,10 +92,15 @@ public class MACourseAttemptDaoImpl extends AbstractDao<Integer, User> implement
 
     @Override
     public MACourseFirstCompletion getMACourseFirstCompletionByMobileNo(Long msisdn) {
-        SQLQuery query = getSession().createSQLQuery("SELECT mccf.* from ma_course_completion_first mccf Join front_line_worker flw on flw.flw_id = mccf.flw_id where flw.job_status = 'ACTIVE' and flw.flw_msisdn = :msisdn");
-                query.setParameter("msisdn", msisdn);
-                query.addEntity(MACourseFirstCompletion.class);
-                return (MACourseFirstCompletion) query.uniqueResult();
+        String sql = "SELECT mccf.* from ma_course_completion_first mccf " +
+                "JOIN front_line_worker flw on flw.flw_id = mccf.flw_id " +
+                "WHERE flw.job_status = 'ACTIVE' AND flw.flw_msisdn = :msisdn";
+
+        SQLQuery query = getSession().createSQLQuery(sql);
+        query.setParameter("msisdn", msisdn);
+        query.addEntity(MACourseFirstCompletion.class);
+
+        return (MACourseFirstCompletion) query.uniqueResult();
     }
 
     @Override

@@ -26,32 +26,54 @@ public class MaCourseCompletionServiceImpl implements MACourseCompletionService 
     private SmsService smsService;
 
     public void dailyJobForMACourseCompletion() {
-        List<CourseCompletionDTO> list = maCourseCompletionDao.findBySentNotificationIsFalseAndHasPassed();
-        LOGGER.info("initiating sending sms");
-        int count = 0;
-        for (CourseCompletionDTO courseCompletionDTO : list) {
-            try {
-                LOGGER.info("sms initialised for record no.: {}", count);
-                count++;
-                String language = courseCompletionDTO.getLanguageId();
-                int languageId = (language != null) ? Integer.parseInt(language) : 2;
-                // int languageId = Integer.parseInt(courseCompletionDTO.getLanguageId());
-                String messageContent = retrieveAshaCourseCompletionMessage(languageId)
-                        .replace("<CertificateLink>", retrieveAshaCertificateDownloadPageUrl());
-                String template = smsService.buildCertificateSMS(courseCompletionDTO, messageContent);
-                if (template != null) {
-                    // Get the corresponding MACourseCompletion entity from your DB or service layer
-                    MACourseCompletion maCourseCompletion = maCourseCompletionDao.getAshaById(courseCompletionDTO.getId());
-                    if (maCourseCompletion != null) {
-                        smsService.sendSms(maCourseCompletion, template); // Pass the entity instead of the DTO
-                        LOGGER.info("sms sent ");
-                    }
+        // Define the batch size
+        int batchSize = 10;
+        int offset = 0;
+        List<CourseCompletionDTO> pendingNotifications;
+
+        do {
+            // Fetch the next batch of records
+            pendingNotifications = maCourseCompletionDao.findBySentNotificationIsFalseAndHasPassed(offset, batchSize);
+            LOGGER.info("Initiating SMS sending for {} records, offset: {}", pendingNotifications.size(), offset);
+
+            // Process the current batch
+            int count = 0;
+            for (CourseCompletionDTO courseCompletionDTO : pendingNotifications) {
+                try {
+                    LOGGER.info("Processing record no.: {}", ++count);
+                    processCourseCompletionNotification(courseCompletionDTO);
+                } catch (Exception e) {
+                    LOGGER.error("Failed to send SMS for FLW ID: {}, Error: {}", courseCompletionDTO.getFlwId(), e.getMessage(), e);
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-                Long flwid = courseCompletionDTO.getFlwId();
-                LOGGER.info("cant send sms for flw Id : {}", flwid);
             }
+
+            // Update the offset for the next batch
+            offset += batchSize;
+
+        } while (!pendingNotifications.isEmpty() && offset<=10);
+    }
+
+    private void processCourseCompletionNotification(CourseCompletionDTO courseCompletionDTO) throws Exception {
+        String messageContent = buildCompletionMessage(courseCompletionDTO);
+        String template = smsService.buildCertificateSMS(courseCompletionDTO, messageContent);
+
+        if (template != null) {
+            MACourseCompletion maCourseCompletion = maCourseCompletionDao.getAshaById(courseCompletionDTO.getId());
+            if (maCourseCompletion != null) {
+                smsService.sendSms(maCourseCompletion, template);
+                LOGGER.info("SMS sent successfully for FLW ID: {}", courseCompletionDTO.getFlwId());
+            } else {
+                LOGGER.warn("No MACourseCompletion found for FLW ID: {}", courseCompletionDTO.getFlwId());
+            }
+        } else {
+            LOGGER.warn("SMS template is null for FLW ID: {}", courseCompletionDTO.getFlwId());
         }
     }
+
+    private String buildCompletionMessage(CourseCompletionDTO courseCompletionDTO) {
+        long languageId = courseCompletionDTO.getLanguageId();
+        String messageTemplate = retrieveAshaCourseCompletionMessage(languageId);
+        return messageTemplate.replace("<CertificateLink>", retrieveAshaCertificateDownloadPageUrl());
+    }
+
 }
