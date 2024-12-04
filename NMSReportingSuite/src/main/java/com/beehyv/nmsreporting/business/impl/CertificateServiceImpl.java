@@ -301,7 +301,7 @@ public class CertificateServiceImpl implements CertificateService {
         Map<String, String> response = new HashMap<>();
 
         if (maCourseFirstCompletion == null) {
-            return createResponse("Course not completed yet!", null, null, null, null);
+            return createResponse("Course not completed yet!", "Course not completed yet!", null, null, null);
         }
 
         if (!validateOtp(maCourseFirstCompletion, otp)) {
