@@ -3,10 +3,7 @@ package com.beehyv.nmsreporting.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
@@ -42,6 +39,48 @@ public  final class Global {
         }
         return fileLocation;
     }
+
+    public static String retrieveTargetfileLocation() {
+        Properties prop = new Properties();
+        InputStream input = null;
+        String fileLocation = null;
+        try {
+            String pathname = "../webapps/NMSReportingSuite/WEB-INF/classes/sms.properties";
+            File file = new File(Paths.get(pathname).normalize().toString());
+            input = new FileInputStream(file);
+            // load a properties file
+            prop.load(input);
+            fileLocation = prop.getProperty("smsfilepath");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return fileLocation;
+    }
+
+    public static String getPropertyValue(String key) {
+        Properties properties = new Properties();
+        try (InputStreamReader reader = new InputStreamReader(
+                new FileInputStream("../webapps/NMSReportingSuite/WEB-INF/classes/sms.properties"), "UTF-8")) {
+            properties.load(reader);
+            return properties.getProperty(key);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+
+
+
+
 
     public static int retrieveFileSizeInMB(){
         Properties prop = new Properties();
