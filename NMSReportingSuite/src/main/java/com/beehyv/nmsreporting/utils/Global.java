@@ -148,21 +148,13 @@ public  final class Global {
         return prop;
     }
 
-    private static String getProperty(String key) {
+    public static String getProperty(String key) {
         Properties prop = loadProperties();
         return prop.getProperty(key);
     }
 
     public static String retrieveOTPLifeSpan() {
         return getProperty("otplifespan");
-    }
-
-    public static String retrieveSMSEndPoint() {
-        return getProperty("endpoint");
-    }
-
-    public static String retrieveSenderId() {
-        return getProperty("senderid");
     }
 
     public static String retrieveAshaCourseCompletionMessage(long languageId) {
@@ -181,40 +173,12 @@ public  final class Global {
         return message;
     }
 
-    public static String retrieveAuthKey() {
-        return getProperty("sms.authentication.key");
-    }
-
-    public static String retrieveCallBackEndPointForgotPassword() {
-        return getProperty("callbackEndpoint");
-    }
-
-    public static String retrieveForgotPasswordStaticMessage() {
-        return getProperty("sms.default.message");
-    }
-
     public static String retrieveAshaCertificateDownloadPageUrl() {
         return getProperty("sms.asha.certificate.download.url");
     }
 
-    public static String retrieveTemplateId() {
-        return getProperty("sms.templateId.default");
-    }
-
-    public static String retrieveEntityId() {
-        return getProperty("sms.entityId.default");
-    }
-
-    public static String retrieveTelemarketerId() {
-        return getProperty("sms.telemarketerId.default");
-    }
-
     public static String retrieveAshaSMSCallBackEndPoint(String entryPoint) {
         return getProperty("sms.asha.callbackEndpoint." + entryPoint);
-    }
-
-    public static String retrieveAshaCertificateDownloadUrl() {
-        return getProperty("sms.asha.certificate.download.url");
     }
 
 }

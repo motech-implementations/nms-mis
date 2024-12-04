@@ -41,12 +41,12 @@ public class SmsServiceImpl implements SmsService {
     private FrontLineWorkersDao frontLineWorkersDao;
 
 
-    private String sms_template_id = retrieveTemplateId();
-    private String sms_entity_id = retrieveEntityId();
-    private String sms_telemarketer_id = retrieveTelemarketerId();
-    private String senderId = retrieveSenderId();
-    private String authKey = retrieveAuthKey();
-    private String endpoint = retrieveSMSEndPoint();
+    private String sms_template_id = getProperty("sms.templateId.default");
+    private String sms_entity_id = getProperty("sms.entityId.default");
+    private String sms_telemarketer_id = getProperty("sms.telemarketerId.default");
+    private String senderId = getProperty("senderid");
+    private String authKey = getProperty("sms.authentication.key");
+    private String endpoint = getProperty("endpoint");
 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SmsServiceImpl.class);
