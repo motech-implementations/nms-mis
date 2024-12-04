@@ -134,13 +134,14 @@ public class CertificateServiceImpl implements CertificateService {
 //                PDDocument sampleDocument = new PDDocument();
 //                status = createCertificatePdf(document, sampleDocument, flw.getFullName(), mobileNo, flw.getFirstCompletionDate());
                 String fileName = flw.getMsisdn()+"_"+i+".pdf";
-                status = createCertificatePdf(rootDir+dir + "/" + fileName, frontLineWorkersDao.getFlwById(flw.getFlwId()).getFullName(), mobileNo, flw.getFirstCompletionDate(),  frontLineWorkersDao.getFlwById(flw.getFlwId()));
+                FrontLineWorkers frontLineWorker = frontLineWorkersDao.getFlwById(flw.getFlwId());
+                status = createCertificatePdf(rootDir+dir + "/" + fileName, frontLineWorker.getFullName(), mobileNo, flw.getFirstCompletionDate(),  frontLineWorker);
                 if (status.equalsIgnoreCase("success")){
                     Map<String, String> response = new HashMap<>();
                     response.put("file",fileName);
                     response.put("path",dir);
                     response.put("status","success");
-                    response.put("AshaName",flw.getFullName());
+                    response.put("AshaName",frontLineWorker.getFullName());
                     responseList.add(response);
                     i++;
                 }
