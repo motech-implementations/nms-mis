@@ -7,6 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static com.beehyv.nmsreporting.utils.Global.isAutoGenerate;
+
 public class AshaSmsAutoTargetFileGeneration {
 
     private Logger LOGGER = LoggerFactory.getLogger(AshaSmsAutoTargetFileGeneration.class);
@@ -19,16 +21,17 @@ public class AshaSmsAutoTargetFileGeneration {
 
     public void processTargetFile() {
 
-        try {
-            TargetFileNotification targetFileNotification = ashaTargetFileService.generateTargetFile();
-            if (targetFileNotification != null) {
-                smsNotificationService.sendNotificationRequest(targetFileNotification);
-            } else {
-                LOGGER.error("Failed to generate target file.");
+        if (isAutoGenerate()) {
+            try {
+                TargetFileNotification targetFileNotification = ashaTargetFileService.generateTargetFile();
+                if (targetFileNotification != null) {
+                    smsNotificationService.sendNotificationRequest(targetFileNotification);
+                } else {
+                    LOGGER.error("Failed to generate target file.");
+                }
+            } catch (Exception e) {
+                LOGGER.error("Error processing target file: {}", e.getMessage(), e);
             }
-        } catch (Exception e) {
-            LOGGER.error("Error processing target file: {}", e.getMessage(), e);
         }
-
     }
 }
