@@ -27,14 +27,13 @@ public class MaCourseCompletionServiceImpl implements MACourseCompletionService 
 
     public void dailyJobForMACourseCompletion() {
         // Define the batch size
-        int batchSize = 10;
-        int offset = 0;
+        int batchSize = 10000;
         List<CourseCompletionDTO> pendingNotifications;
 
         do {
             // Fetch the next batch of records
-            pendingNotifications = maCourseCompletionDao.findBySentNotificationIsFalseAndHasPassed(offset, batchSize);
-            LOGGER.info("Initiating SMS sending for {} records, offset: {}", pendingNotifications.size(), offset);
+            pendingNotifications = maCourseCompletionDao.findBySentNotificationIsFalseAndHasPassed( batchSize);
+            LOGGER.info("Initiating SMS sending for {} records", pendingNotifications.size());
 
             // Process the current batch
             int count = 0;
@@ -47,10 +46,7 @@ public class MaCourseCompletionServiceImpl implements MACourseCompletionService 
                 }
             }
 
-            // Update the offset for the next batch
-            offset += batchSize;
-
-        } while (!pendingNotifications.isEmpty() && offset<=10);
+        } while (!pendingNotifications.isEmpty());
     }
 
     private void processCourseCompletionNotification(CourseCompletionDTO courseCompletionDTO) throws Exception {

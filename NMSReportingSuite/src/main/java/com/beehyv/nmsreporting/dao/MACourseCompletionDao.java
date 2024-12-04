@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 public interface MACourseCompletionDao {
-     List<CourseCompletionDTO> findBySentNotificationIsFalseAndHasPassed(Integer offset, Integer limit);
+     List<CourseCompletionDTO> findBySentNotificationIsFalseAndHasPassed(int limit);
      Date getLastEtlTimeForTableId(int tableId);
      MACourseCompletion getAshaByFLWId(long flwId);
      long getAshaPhoneNo(long flwId);

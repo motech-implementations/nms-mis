@@ -23,18 +23,16 @@ import java.util.logging.Logger;
 public class MACourseCompletionDaoImpl extends AbstractDao<Long,MACourseCompletion> implements MACourseCompletionDao {
 
     @Override
-    public List<CourseCompletionDTO> findBySentNotificationIsFalseAndHasPassed(Integer offset, Integer limit) {
+    public List<CourseCompletionDTO> findBySentNotificationIsFalseAndHasPassed(int limit) {
 
         Session session = getSession();
 
-        //TODO -- LIMIT NEED TO BE REMOVED BEFORE PRODUCTION
         // Create the native SQL query with a JOIN
         String sql = "SELECT ma.id as Id, ma.flw_id as flwId , ma.score as score, ma.has_passed as passed, ma.chapter_wise_score as chapterWiseScore, ma.last_delivery_status as lastDeliveryStatus, ma.sent_notification as sentNotification, ma.modificationdate as lastModifiedDate, ma.schedule_message_sent as scheduleMessageSent, flw.flw_msisdn AS mobileNumber, flw.language_id as languageId" +
-                "  FROM ma_course_completion ma INNER JOIN front_line_worker flw ON ma.flw_id = flw.flw_id WHERE ma.schedule_message_sent = 0 AND ma.has_passed = 1 LIMIT :limit OFFSET :offset ";
+                "  FROM ma_course_completion ma INNER JOIN front_line_worker flw ON ma.flw_id = flw.flw_id WHERE ma.schedule_message_sent = 0 AND ma.has_passed = 1 AND ma.creationDate > '2024-11-30' LIMIT :limit ";
 
         SQLQuery query = session.createSQLQuery(sql);
         query.setParameter("limit", limit);
-        query.setParameter("offset", offset);
 
         List<Object[]> results = query.list();
 
