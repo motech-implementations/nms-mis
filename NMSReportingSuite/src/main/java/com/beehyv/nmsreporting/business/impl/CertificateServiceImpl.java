@@ -326,17 +326,17 @@ public class CertificateServiceImpl implements CertificateService {
         }
 
         certificateFile = msisdn + ".pdf";
+        FrontLineWorkers flw = frontLineWorkersDao.getFlwById(maCourseFirstCompletion.getFlwId());
         String status = createCertificatePdf(
                 certificatePath + "/" + certificateFile,
-                maCourseFirstCompletion.getFullName(),
+                flw.getFullName(),
                 msisdn,
                 maCourseFirstCompletion.getFirstCompletionDate(),
-                frontLineWorkersDao.getFlwById(maCourseFirstCompletion.getFlwId())
-        );
+                flw );
 
         if ("success".equalsIgnoreCase(status)) {
             String base64Certificate = getBase64EncodedCertificate(certificatePath + "/" + certificateFile);
-            return createResponse("success", null, maCourseFirstCompletion.getFullName(), certificateFile, base64Certificate);
+            return createResponse("success", null, flw.getFullName(), certificateFile, base64Certificate);
         }
 
         return response;
