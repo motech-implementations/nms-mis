@@ -52,7 +52,7 @@ public class AshaTargetFileServiceImpl implements AshaTargetFileService {
     private static final String SMS_CONTENT_CERTIFICATETemplateId_PREFIX = "sms.default.templateId.certificate";
     private static final String SMS_CONTENT_CERTIFICATETemplateId_OTP_PREFIX = getPropertyValue("sms.default.templateId.otp");
     private static final String lowListenershipTemplateId = getPropertyValue("sms.default.templateId.low_listenership");
-
+    private static final String certificateurl = getPropertyValue("sms.asha.certificate.download.url");
 
 
     @Override
@@ -263,7 +263,7 @@ public class AshaTargetFileServiceImpl implements AshaTargetFileService {
         }
         LOGGER.info("Using ASHA Certificate template for key {}: {}", languageSpecificKey, template);
 
-        return "\"" + template.replace("{#var1#}",record.getAshaContactNumber()) + "\"";
+        return "\"" + template.replace("{#var1#}",record.getAshaContactNumber()).replace("<CertificateLink>",certificateurl) + "\"";
     }
 
     public static String checksum(File file) throws IOException {
