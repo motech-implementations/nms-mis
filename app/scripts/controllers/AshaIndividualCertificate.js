@@ -82,6 +82,25 @@
                         $scope.countdownMessage = "";
                     }
                 }
+             $scope.validateMobileNumber = function () {
+                 if ($scope.mobile_number) {
+                     $scope.mobile_number = $scope.mobile_number.replace(/[^0-9]/g, '');
+
+                     if ($scope.mobile_number.length > 10) {
+                         $scope.mobile_number = $scope.mobile_number.substring(0, 10);
+                     }
+                 }
+             };
+
+             $scope.validateOTP = function () {
+                if ($scope.certificate_otp) {
+                    $scope.certificate_otp = $scope.certificate_otp.replace(/[^0-9]/g, '');
+
+                    if ($scope.certificate_otp.length > 6) {
+                        $scope.certificate_otp = $scope.certificate_otp.substring(0, 6);
+                    }
+                }
+             };
 
             var param= $location.search();
             if(param.mobileNo){

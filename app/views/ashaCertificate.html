@@ -12,9 +12,31 @@
     margin: 0 auto;
     text-align: center;">
 
-        <div>
-            <p style="text-align: left;">Enter 10 digit Mobile Number:</p>
-            <input type="number" ng-model="mobile_number" name="mobileNumber" style="width: 200px; padding: 8px;">
+        <div style="align-items: flex-start;
+                    display: flex;
+                    flex-direction: column;
+                    width: 100%;
+                    max-width: 400px;
+                    margin-left: 8%;">
+            <p style="
+                   font-size: 16px;
+                   font-weight: bold;
+                   color: #444;
+                   margin-bottom: 8px;
+                   text-align: left;
+                   font-family: 'Arial', sans-serif;
+                   letter-spacing: 0.5px;">
+                Enter 10 digit Mobile Number :
+            </p>
+            <input
+                    type="text"
+                    ng-model="mobile_number"
+                    name="mobileNumber"
+                    ng-change="validateMobileNumber()"
+                    ng-trim="false"
+                    style="width: 302px; padding: 8px;"
+                    maxlength="10"
+                    required >
             <input
                     style="margin-left: 10px; padding: 8px 12px;"
                     ng-disabled="!mobile_number || mobile_number.toString().length !== 10"
@@ -32,14 +54,27 @@
         </div>
 
         <div>
-            <p style="text-align: left;">Enter OTP:</p>
-            <input
-                    type="number"
+            <p style="
+                    font-size: 16px;
+                    font-weight: bold;
+                    color: #444;
+                    margin-bottom: 8px;
+                    text-align: left;
+                    font-family: 'Arial', sans-serif;
+                    letter-spacing: 0.5px;">
+                Enter OTP:
+            </p>            <input
+                    type="text"
                     data-ng-model="certificate_otp"
                     name="otp"
-                    style="width: 200px; padding: 8px;">
+                    ng-change="validateOTP()"
+                    ng-trim="false"
+                    style="width: 200px; padding: 8px;"
+                    maxlength="6"
+                    required>
             <input
                     style="margin-left: 10px; padding: 8px 12px;"
+                    ng-disabled="!certificate_otp || certificate_otp.toString().length !== 6"
                     type="button"
                     class="btn btn-sm btn-primary"
                     name="newUser"
