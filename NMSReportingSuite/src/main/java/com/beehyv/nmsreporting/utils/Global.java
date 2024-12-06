@@ -1,9 +1,9 @@
 package com.beehyv.nmsreporting.utils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
@@ -13,6 +13,7 @@ import java.util.Properties;
  */
 
 public  final class Global {
+    private static Logger LOGGER = LoggerFactory.getLogger(Global.class);
 
     public static String retrieveDocuments() {
         Properties prop = new Properties();
@@ -38,6 +39,48 @@ public  final class Global {
         }
         return fileLocation;
     }
+
+    public static String retrieveTargetfileLocation() {
+        Properties prop = new Properties();
+        InputStream input = null;
+        String fileLocation = null;
+        try {
+            String pathname = "../webapps/NMSReportingSuite/WEB-INF/classes/sms.properties";
+            File file = new File(Paths.get(pathname).normalize().toString());
+            input = new FileInputStream(file);
+            // load a properties file
+            prop.load(input);
+            fileLocation = prop.getProperty("smsfilepath");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return fileLocation;
+    }
+
+    public static String getPropertyValue(String key) {
+        Properties properties = new Properties();
+        try (InputStreamReader reader = new InputStreamReader(
+                new FileInputStream("../webapps/NMSReportingSuite/WEB-INF/classes/sms.properties"), "UTF-8")) {
+            properties.load(reader);
+            return properties.getProperty(key);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+
+
+
+
 
     public static int retrieveFileSizeInMB(){
         Properties prop = new Properties();
@@ -131,6 +174,50 @@ public  final class Global {
             }
         }
         return prop;
+    }
+
+    private static Properties loadProperties() {
+        Properties prop = new Properties();
+        try (InputStream input = new FileInputStream(new File("../webapps/NMSReportingSuite/WEB-INF/classes/sms.properties"))) {
+            // load a properties file
+            prop.load(input);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return prop;
+    }
+
+    public static String getProperty(String key) {
+        Properties prop = loadProperties();
+        return prop.getProperty(key);
+    }
+
+    public static String retrieveOTPLifeSpan() {
+        return getProperty("otplifespan");
+    }
+
+    public static String retrieveAshaCourseCompletionMessage(long languageId) {
+        String message = getProperty("sms.asha.default.message." + languageId);
+        if (message == null) {
+            message = getProperty("sms.asha.default.message");
+        }
+        return message;
+    }
+
+    public static String retrieveAshaCourseCompletionOTPMessage(long languageId) {
+        String message = getProperty("sms.asha.default.otp.message." + languageId);
+        if (message == null) {
+            message = getProperty("sms.asha.default.otp.message");
+        }
+        return message;
+    }
+
+    public static String retrieveAshaCertificateDownloadPageUrl() {
+        return getProperty("sms.asha.certificate.download.url");
+    }
+
+    public static String retrieveAshaSMSCallBackEndPoint(String entryPoint) {
+        return getProperty("sms.asha.callbackEndpoint." + entryPoint);
     }
 
 }

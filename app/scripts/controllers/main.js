@@ -263,6 +263,16 @@
                 }
                 $scope.removed();
             }
+            $scope.goToAshaCertificate = function () {
+                UserFormFactory.downloadCurrentUser().then(function(result){
+                    UserFormFactory.setCurrentUser(result.data);
+                    $scope.currentUser = UserFormFactory.getCurrentUser();
+                });
+                if (!($scope.disableCursor())){
+                    $state.go('ashaCertificate', {pageNum: 1});
+                }
+                $scope.removed();
+            }
             $scope.goToContactUs = function () {
                 UserFormFactory.downloadCurrentUser().then(function(result){
                     UserFormFactory.setCurrentUser(result.data);

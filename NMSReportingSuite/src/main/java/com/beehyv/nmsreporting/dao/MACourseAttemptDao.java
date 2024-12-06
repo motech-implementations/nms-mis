@@ -12,6 +12,8 @@ public interface MACourseAttemptDao {
 
    List<MACourseFirstCompletion> getSuccessFulCompletion(String forMonth);
 
+   void bulkUpdateMACourseFirstCompletion(List<Long> flwIds);
+
    List<MACourseFirstCompletion> getSuccessFulCompletionWithStateId(String forMonth, Integer stateId);
 
    List<MACourseFirstCompletion> getSuccessFulCompletionWithDistrictId(String forMonth, Integer districtId);
@@ -20,26 +22,28 @@ public interface MACourseAttemptDao {
 
    Long getCountForGivenDistrict(String forMonth,Integer districtId);
 
-   public MACourseFirstCompletion getSuccessFulCompletionByExtrnalFlwId(String forMonth, Long Extr_Flw_Id, Integer state_id);
+    MACourseFirstCompletion getSuccessFulCompletionByExtrnalFlwId(String forMonth, Long Extr_Flw_Id, Integer state_id);
 
-   public void updateMACourseFirstCompletion(MACourseFirstCompletion maCourseFirstCompletion);
+    void updateMACourseFirstCompletion(MACourseFirstCompletion maCourseFirstCompletion);
 
-   public List<MACourseFirstCompletion> getSuccessFulCompletion(Long msisdn);
+    List<MACourseFirstCompletion> getSuccessFulCompletion(Long msisdn);
 
-   public List<MACourseFirstCompletion> getSuccessFulCompletionByState(Long msisdn, Integer stateId);
+    MACourseFirstCompletion getMACourseFirstCompletionByMobileNo(Long msisdn);
 
-   public List<MACourseFirstCompletion> getSuccessFulCompletionByDistrict(Long msisdn, Integer stateId, Integer districtId);
+    List<MACourseFirstCompletion> getSuccessFulCompletionByState(Long msisdn, Integer stateId);
 
-   public List<MACourseFirstCompletion> getSuccessFulCompletionByBlock(Long msisdn, Integer stateId, Integer districtId, Integer blockId);
+    List<MACourseFirstCompletion> getSuccessFulCompletionByDistrict(Long msisdn, Integer stateId, Integer districtId);
 
-   public List<MACourseFirstCompletion> getSuccessFulCompletionByStateIdAndMonth(String forMonth, Integer stateId);
+    List<MACourseFirstCompletion> getSuccessFulCompletionByBlock(Long msisdn, Integer stateId, Integer districtId, Integer blockId);
 
-   public List<MACourseFirstCompletion> getSuccessFulCompletionByStateId(Integer stateId);
+    List<MACourseFirstCompletion> getSuccessFulCompletionByStateIdAndMonth(String forMonth, Integer stateId);
 
-   public  List<MACourseFirstCompletion> getSuccessFullCompletionByStateAndCompletionDate(Integer stateId, Date firstCompletionDate);
+    List<MACourseFirstCompletion> getSuccessFulCompletionByStateId(Integer stateId);
 
-   public List<MACourseFirstCompletion> getSuccessFulCompletionWithDistrictIdAndMonth(String forMonth, Integer stateId, Integer districtId);
+    List<MACourseFirstCompletion> getSuccessFullCompletionByStateAndCompletionDate(Integer stateId, Date firstCompletionDate);
 
-   public List<MACourseFirstCompletion> getSuccessFulCompletionWithBlockIdAndMont(String forMonth, Integer stateId, Integer districtId, Integer blockId);
+    List<MACourseFirstCompletion> getSuccessFulCompletionWithDistrictIdAndMonth(String forMonth, Integer stateId, Integer districtId);
+
+    List<MACourseFirstCompletion> getSuccessFulCompletionWithBlockIdAndMont(String forMonth, Integer stateId, Integer districtId, Integer blockId);
 
 }

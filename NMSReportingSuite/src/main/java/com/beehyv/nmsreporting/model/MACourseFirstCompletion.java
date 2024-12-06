@@ -63,6 +63,49 @@ public class MACourseFirstCompletion {
     @Column(name="for_month", columnDefinition = "VARCHAR(45)")
     private String forMonth;
 
+    @Column(name="last_delivery_status")
+    private String lastDeliveryStatus;
+
+    @Column(name="modification_date")
+    private Date lastModifiedDate;
+
+    private String encryptedOTP;
+
+    private long normalisedOTPEpoch;
+
+    public String getLastDeliveryStatus() {
+        return lastDeliveryStatus;
+    }
+
+    public void setLastDeliveryStatus(String lastDeliveryStatus) {
+        this.lastDeliveryStatus = lastDeliveryStatus;
+    }
+
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+
+    public String getEncryptedOTP() {
+        return encryptedOTP;
+    }
+
+    public void setEncryptedOTP(String encryptedOTP) {
+        this.encryptedOTP = encryptedOTP;
+    }
+
+    public long getNormalisedOTPEpoch() {
+        return normalisedOTPEpoch;
+    }
+
+    public void setNormalisedOTPEpoch(long normalisedOTPEpoch) {
+        this.normalisedOTPEpoch = normalisedOTPEpoch;
+    }
+
     public Integer getId() {
         return Id;
     }
@@ -197,5 +240,32 @@ public class MACourseFirstCompletion {
 
     public void setForMonth(String forMonth) {
         this.forMonth = forMonth;
+    }
+
+    @Override
+    public String toString() {
+        return "MACourseFirstCompletion{" +
+                "Id=" + Id +
+                ", flwId=" + flwId +
+                ", msisdn=" + msisdn +
+                ", stateId=" + stateId +
+                ", districtId=" + districtId +
+                ", talukaId=" + talukaId +
+                ", villageId=" + villageId +
+                ", blockId=" + blockId +
+                ", healthFacilityId=" + healthFacilityId +
+                ", healthSubFacilityId=" + healthSubFacilityId +
+                ", fullName='" + fullName + '\'' +
+                ", externalFlwId=" + externalFlwId +
+                ", jobStatus='" + jobStatus + '\'' +
+                ", creationDate=" + creationDate +
+                ", firstCompletionDate=" + firstCompletionDate +
+                ", sentNotification=" + sentNotification +
+                ", forMonth='" + forMonth + '\'' +
+                ", lastDeliveryStatus='" + lastDeliveryStatus + '\'' +
+                ", lastModifiedDate=" + lastModifiedDate +
+                ", encryptedOTP='" + encryptedOTP + '\'' +
+                ", normalisedOTPEpoch=" + normalisedOTPEpoch +
+                '}';
     }
 }
