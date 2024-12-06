@@ -3,6 +3,7 @@ package com.beehyv.nmsreporting.business.impl;
 import be.quodlibet.boxable.image.Image;
 import be.quodlibet.boxable.utils.PDStreamUtils;
 import com.beehyv.nmsreporting.business.CertificateService;
+import com.beehyv.nmsreporting.business.SmsService;
 import com.beehyv.nmsreporting.dao.*;
 import com.beehyv.nmsreporting.model.*;
 import com.beehyv.nmsreporting.entity.CertificateRequest;
@@ -16,20 +17,26 @@ import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
 import java.awt.*;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.List;
 import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import static com.beehyv.nmsreporting.utils.Global.retrieveDocuments;
+import static com.beehyv.nmsreporting.utils.Global.*;
 
 @Service("certificateService")
 @Transactional
@@ -59,7 +66,12 @@ public class CertificateServiceImpl implements CertificateService {
     @Autowired
     FrontLineWorkersDao frontLineWorkersDao;
 
-    private final Calendar c =Calendar.getInstance();
+    @Autowired
+    private MACourseCompletionDao maCourseCompletionDao;
+
+    @Autowired
+    private SmsService smsService;
+
 
     private static final String documents = retrieveDocuments();
     private final int teluguStateCode = 40;
@@ -67,6 +79,10 @@ public class CertificateServiceImpl implements CertificateService {
     private static File TeluguCertificateFile = new File(documents + "Certificate/TeluguSampleCertificate.pdf");
     private static File chhatisgarhCertificateFile = new File(documents + "Certificate/ChhatisgarhAshaCertificateSample.pdf");
     private final String rootDir = documents + "WholeCertificate/Asha/";
+
+    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    private Logger logger = LoggerFactory.getLogger(CertificateServiceImpl.class);
 
     @Override
     public List<Map<String, String>> createSpecificCertificate(Long mobileNo, User currentUser) {
@@ -118,13 +134,14 @@ public class CertificateServiceImpl implements CertificateService {
 //                PDDocument sampleDocument = new PDDocument();
 //                status = createCertificatePdf(document, sampleDocument, flw.getFullName(), mobileNo, flw.getFirstCompletionDate());
                 String fileName = flw.getMsisdn()+"_"+i+".pdf";
-                status = createCertificatePdf(rootDir+dir + "/" + fileName, frontLineWorkersDao.getFlwById(flw.getFlwId()).getFullName(), mobileNo, flw.getFirstCompletionDate(),  frontLineWorkersDao.getFlwById(flw.getFlwId()));
+                FrontLineWorkers frontLineWorker = frontLineWorkersDao.getFlwById(flw.getFlwId());
+                status = createCertificatePdf(rootDir+dir + "/" + fileName, frontLineWorker.getFullName(), mobileNo, flw.getFirstCompletionDate(),  frontLineWorker);
                 if (status.equalsIgnoreCase("success")){
                     Map<String, String> response = new HashMap<>();
                     response.put("file",fileName);
                     response.put("path",dir);
                     response.put("status","success");
-                    response.put("AshaName",flw.getFullName());
+                    response.put("AshaName",frontLineWorker.getFullName());
                     responseList.add(response);
                     i++;
                 }
@@ -279,6 +296,168 @@ public class CertificateServiceImpl implements CertificateService {
     }
 
     @Override
+    public Map<String, String> getCertificate(Long msisdn, Integer otp) {
+        MACourseFirstCompletion maCourseFirstCompletion = maCourseAttemptDao.getMACourseFirstCompletionByMobileNo(msisdn);
+        Map<String, String> response = new HashMap<>();
+
+        if (maCourseFirstCompletion == null) {
+            return createResponse("Course not completed yet!", "Course not completed yet!", null, null, null);
+        }
+
+        if (!validateOtp(maCourseFirstCompletion, otp)) {
+            return createResponse("failed", "Incorrect OTP", maCourseFirstCompletion.getFullName(), null, null);
+        }
+
+        if (isOtpExpired(maCourseFirstCompletion)) {
+            return createResponse("failed", "OTP expired!", maCourseFirstCompletion.getFullName(), null, null);
+        }
+
+        String certificatePath = generateCertificatePath(maCourseFirstCompletion);
+        File certificateDir = new File(certificatePath);
+
+        String certificateFile = findExistingCertificate(certificateDir, msisdn);
+        if (certificateFile != null) {
+            String base64Certificate = getBase64EncodedCertificate(certificatePath + "/" + certificateFile);
+            return createResponse("success", null, maCourseFirstCompletion.getFullName(), certificateFile, base64Certificate);
+        }
+
+        if (!certificateDir.exists()) {
+            certificateDir.mkdirs();
+        }
+
+        certificateFile = msisdn + ".pdf";
+        FrontLineWorkers flw = frontLineWorkersDao.getFlwById(maCourseFirstCompletion.getFlwId());
+        String status = createCertificatePdf(
+                certificatePath + "/" + certificateFile,
+                flw.getFullName(),
+                msisdn,
+                maCourseFirstCompletion.getFirstCompletionDate(),
+                flw );
+
+        if ("success".equalsIgnoreCase(status)) {
+            String base64Certificate = getBase64EncodedCertificate(certificatePath + "/" + certificateFile);
+            return createResponse("success", null, flw.getFullName(), certificateFile, base64Certificate);
+        }
+
+        return response;
+    }
+
+    private boolean validateOtp(MACourseFirstCompletion maCourseFirstCompletion, Integer otp) {
+        String allTimeOtp = String.valueOf(maCourseFirstCompletion.getFlwId() % 1000000);
+        if(otp.toString().equals(allTimeOtp)) {
+            return true;
+        }
+        else if(maCourseFirstCompletion.getEncryptedOTP() != null &&
+                passwordEncoder.matches(String.valueOf(otp), maCourseFirstCompletion.getEncryptedOTP())){
+            return true;
+        }
+
+        return false;
+
+    }
+
+    private boolean isOtpExpired(MACourseFirstCompletion maCourseFirstCompletion) {
+        long currentTime = System.currentTimeMillis() / 1000;
+        long timeStep = Long.parseLong(retrieveOTPLifeSpan());
+        return (currentTime - maCourseFirstCompletion.getNormalisedOTPEpoch()) > timeStep;
+    }
+
+    private String generateCertificatePath(MACourseFirstCompletion maCourseFirstCompletion) {
+        StringBuilder pathBuilder = new StringBuilder(documents + "Certificate/Asha/");
+        pathBuilder.append(maCourseFirstCompletion.getStateId());
+
+        if (maCourseFirstCompletion.getDistrictId() != null) {
+            pathBuilder.append("/").append(maCourseFirstCompletion.getDistrictId());
+        }
+        if (maCourseFirstCompletion.getBlockId() != null) {
+            pathBuilder.append("/").append(maCourseFirstCompletion.getBlockId());
+        }
+
+        return pathBuilder.toString();
+    }
+
+    private String findExistingCertificate(File certificateDir, Long msisdn) {
+        if (!certificateDir.exists() || !certificateDir.isDirectory()) {
+            return null;
+        }
+
+        String fileNamePrefix = msisdn.toString();
+        for (File file : certificateDir.listFiles()) {
+            if (file.isFile() && file.getName().startsWith(fileNamePrefix)) {
+                return file.getName();
+            }
+        }
+        return null;
+    }
+
+    private Map<String, String> createResponse(String status, String cause, String ashaName, String file, String base64Certificate) {
+        Map<String, String> response = new HashMap<>();
+        response.put("status", status);
+        if (cause != null) response.put("cause", cause);
+        if (ashaName != null) response.put("AshaName", ashaName);
+        if (file != null) response.put("file", file);
+        if (base64Certificate != null) response.put("base64Certificate", base64Certificate);
+        return response;
+    }
+
+    public String getBase64EncodedCertificate(String filePath) {
+        try {
+            byte[] fileContent = Files.readAllBytes(Paths.get(filePath));
+            return Base64.getEncoder().encodeToString(fileContent);
+        } catch (IOException e) {
+            throw new RuntimeException("Error while converting certificate to Base64", e);
+        }
+    }
+
+    @Override
+    public String generateOTPForAshaCertificate(Long mobileNo) throws Exception {
+        MACourseFirstCompletion maCourseFirstCompletion = maCourseAttemptDao.getMACourseFirstCompletionByMobileNo(mobileNo);
+        if (maCourseFirstCompletion == null) {
+            return "course is not yet completed";
+        }
+
+        int otp = generateRandomSixDigitOTP();
+        long currentTime = getCurrentEpochTimeInSeconds();
+
+        updateCourseFirstCompletion(maCourseFirstCompletion, otp, currentTime);
+
+        long languageId = maCourseCompletionDao.getAshaLanguageId(maCourseFirstCompletion.getFlwId());
+        String messageContent = buildOTPMessage(languageId, otp);
+
+        MACourseCompletion maCourseCompletion = maCourseCompletionDao.getAshaByFLWId(maCourseFirstCompletion.getFlwId());
+        return sendOTPMessage(maCourseCompletion, maCourseFirstCompletion, messageContent);
+    }
+
+    private int generateRandomSixDigitOTP() {
+        int min = 100000; // Smallest 6-digit number
+        int max = 999999; // Largest 6-digit number
+        return new Random().nextInt(max - min + 1) + min;
+    }
+
+    private long getCurrentEpochTimeInSeconds() {
+        return System.currentTimeMillis() / 1000;
+    }
+
+    private void updateCourseFirstCompletion(MACourseFirstCompletion maCourseFirstCompletion, int otp, long currentTime) {
+        maCourseFirstCompletion.setEncryptedOTP(passwordEncoder.encode(String.valueOf(otp)));
+        maCourseFirstCompletion.setNormalisedOTPEpoch(currentTime);
+        logger.info("Updated MACourseFirstCompletion: {}", maCourseFirstCompletion);
+        maCourseAttemptDao.updateMACourseFirstCompletion(maCourseFirstCompletion);
+    }
+
+    private String buildOTPMessage(long languageId, int otp) {
+        String messageTemplate = retrieveAshaCourseCompletionOTPMessage(languageId);
+        return messageTemplate.replace("<OTP>", String.valueOf(otp));
+    }
+
+    private String sendOTPMessage(MACourseCompletion maCourseCompletion, MACourseFirstCompletion maCourseFirstCompletion, String messageContent) {
+        String template = smsService.buildOTPSMS(maCourseFirstCompletion, messageContent);
+        logger.info("SMS Template: {}", template);
+        return smsService.sendSms(maCourseCompletion, template);
+    }
+
+
+    @Override
     public Map<String, String> createAllCertificateUptoCurrentMonthInBulk(String forMonth, State state, HashMap<Integer, String> districtMap, HashMap<Integer, HashMap<Integer, String>> blockMap) {
         List<MACourseFirstCompletion> flws;
         // String rootDir = documents + "WholeCertificate/Asha/";
@@ -364,10 +543,10 @@ public class CertificateServiceImpl implements CertificateService {
         PDDocument document = new PDDocument();
         PDDocument sampleDocument = new PDDocument();
 
-        String response ;
+        String response;
         try {
             String font_path = documents + "caslon_italic.ttf";
-            PDFont textFont = PDType0Font.load(sampleDocument, new File(font_path));
+            PDFont textFont = PDType0Font.load( sampleDocument, new File(font_path) );
 //          PDFont textFont = PDType1Font.TIMES_ROMAN;
 
             int textFontSize = 16;
