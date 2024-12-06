@@ -15,9 +15,7 @@
         <div style="align-items: flex-start;
                     display: flex;
                     flex-direction: column;
-                    width: 100%;
-                    max-width: 400px;
-                    margin-left: 8%;">
+                    max-width: 400px;">
             <p style="
                    font-size: 16px;
                    font-weight: bold;
@@ -37,6 +35,9 @@
                     style="width: 302px; padding: 8px;"
                     maxlength="10"
                     required >
+            <p ng-if="mobile_number && mobile_number.length !== 10" style="color: red;">
+                Mobile number must be 10 digits.
+            </p>
             <input
                     style="margin-left: 10px; padding: 8px 12px;"
                     ng-disabled="!mobile_number || mobile_number.toString().length !== 10"
@@ -63,17 +64,18 @@
                     font-family: 'Arial', sans-serif;
                     letter-spacing: 0.5px;">
                 Enter OTP:
-            </p>            <input
+            </p>
+            <input
                     type="text"
                     data-ng-model="certificate_otp"
                     name="otp"
                     ng-change="validateOTP()"
                     ng-trim="false"
-                    style="width: 200px; padding: 8px;"
+                    style="width: 190px; padding: 8px;"
                     maxlength="6"
                     required>
             <input
-                    style="margin-left: 10px; padding: 8px 12px;"
+                    style="height : 40px; margin-left: 8px; margin-bottom: 3px; padding: 8px 12px;"
                     ng-disabled="!certificate_otp || certificate_otp.toString().length !== 6"
                     type="button"
                     class="btn btn-sm btn-primary"
