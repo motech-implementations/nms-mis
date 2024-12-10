@@ -19,8 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -149,6 +149,7 @@ public class SmsServiceImpl implements SmsService {
 
         // Replace placeholders in the template
         try {
+            String messageType = retrieveAshaCourseCompletionMessageType(courseCompletionDTO.getLanguageId());
             template = template
                     .replace("<phoneNumber>", String.valueOf(phoneNo))
                     .replace("<senderId>", senderId)
@@ -156,7 +157,8 @@ public class SmsServiceImpl implements SmsService {
                     .replace("<notificationUrl>", callbackEndpoint)
                     .replace("<smsTemplateId>", sms_template_id)
                     .replace("<smsEntityId>", sms_entity_id)
-                    .replace("<smsTelemarketerId>", sms_telemarketer_id);
+                    .replace("<smsTelemarketerId>", sms_telemarketer_id)
+                    .replace("<messageType>", messageType);
         } catch (Exception e) {
             LOGGER.error("Error replacing placeholders in SMS template", e);
             return null;
@@ -165,7 +167,7 @@ public class SmsServiceImpl implements SmsService {
         return template;
     }
 
-    public String buildOTPSMS(MACourseFirstCompletion maCourseFirstCompletion, String messageContent) {
+    public String buildOTPSMS(MACourseFirstCompletion maCourseFirstCompletion, String messageContent, long languageId) {
         long phoneNumber;
         String template = null;
 
@@ -196,13 +198,15 @@ public class SmsServiceImpl implements SmsService {
         // Populate SMS template
         try {
             String callbackEndpoint = retrieveAshaSMSCallBackEndPoint("OTP");
+            String messageType = retrieveAshaCourseCompletionMessageType(languageId);
             template = template.replace("<phoneNumber>", String.valueOf(phoneNumber))
                     .replace("<senderId>", senderId)
                     .replace("<messageContent>", messageContent)
                     .replace("<notificationUrl>", callbackEndpoint)
                     .replace("<smsTemplateId>", sms_template_id)
                     .replace("<smsEntityId>", sms_entity_id)
-                    .replace("<smsTelemarketerId>", sms_telemarketer_id);
+                    .replace("<smsTelemarketerId>", sms_telemarketer_id)
+                    .replace("<messageType>", messageType);
         } catch (Exception e) {
             LOGGER.error("Error populating SMS template.", e);
             return null;
