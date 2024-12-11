@@ -3481,6 +3481,7 @@ public class AdminServiceImpl implements AdminService {
         }
 
     }
+    @Transactional
     @Override
     public void createChildImportRejectedFiles(int relativeMonth, boolean isWeekly) {
         Calendar aCalendar = Calendar.getInstance();
@@ -3488,7 +3489,6 @@ public class AdminServiceImpl implements AdminService {
         ReportRequest reportRequest = new ReportRequest();
 
         if (isWeekly) {
-            // Weekly range: Start of the week
             aCalendar.add(Calendar.DAY_OF_WEEK, -(aCalendar.get(Calendar.DAY_OF_WEEK) - 1));
             aCalendar.add(Calendar.DATE, -(7 * (relativeMonth - 1)));
             toDate = aCalendar.getTime();
@@ -3501,14 +3501,11 @@ public class AdminServiceImpl implements AdminService {
             aCalendar.add(Calendar.DAY_OF_MONTH, 1);
             toDate = aCalendar.getTime();
 
-
             aCalendar.add(Calendar.DAY_OF_MONTH, -7);
             fromDate = aCalendar.getTime();
-            logger.info("inside week condition and these are the fromdate: {} and enddate: {}",fromDate,toDate);
-
+            logger.info("Inside weekly condition with fromDate: {} and toDate: {}", fromDate, toDate);
             reportRequest.setPeriodType("Week");
         } else {
-            // Monthly range: Start of the month
             aCalendar.add(Calendar.MONTH, (-1) * relativeMonth);
             aCalendar.set(Calendar.DATE, 1);
             aCalendar.set(Calendar.MILLISECOND, 0);
@@ -3519,80 +3516,103 @@ public class AdminServiceImpl implements AdminService {
 
             aCalendar.add(Calendar.MONTH, 1);
             toDate = aCalendar.getTime();
+            logger.info("Inside monthly condition with fromDate: {} and toDate: {}", fromDate, toDate);
             reportRequest.setPeriodType("Month");
         }
+        final Date finalToDate = toDate;
 
         List<State> states = stateDao.getStatesByServiceType(ReportType.childRejected.getServiceType());
         String rootPath = reports + ReportType.childRejected.getReportType() + "/";
-        reportRequest.setFromDate(toDate);
-        reportRequest.setBlockId(0);
-        reportRequest.setDistrictId(0);
-        reportRequest.setStateId(0);
-        reportRequest.setReportType(ReportType.childRejected.getReportType());
-
         List<ChildImportRejection> rejectedChildImports = childImportRejectionDao.getRejectedChildRecords(fromDate, toDate);
 
-        for (State state : states) {
-            String stateName = StReplace(state.getStateName());
-            String rootPathState = rootPath + stateName + "/";
-            int stateId = state.getStateId();
+        ExecutorService executorService = Executors.newFixedThreadPool(8);
+        try {
+            for (final State state : states) {
+                final String stateName = StReplace(state.getStateName());
+                final String rootPathState = rootPath + stateName + "/";
+                final int stateId = state.getStateId();
 
-            // Filter child imports by state
-            List<ChildImportRejection> candidatesFromThisState = new ArrayList<>();
-            for (ChildImportRejection rejectedImport : rejectedChildImports) {
-                if (stateId == rejectedImport.getStateId()) {
-                    candidatesFromThisState.add(rejectedImport);
-                }
+                executorService.submit(new Runnable() {
+                    @Override
+                    public void run() {
+                        transactionTemplate.execute(new TransactionCallback<Void>() {
+                            @Override
+                            public Void doInTransaction(TransactionStatus status) {
+                                try {
+                                    List<ChildImportRejection> candidatesFromThisState = new ArrayList<>();
+                                    for (ChildImportRejection rejectedImport : rejectedChildImports) {
+                                        if (stateId == rejectedImport.getStateId()) {
+                                            candidatesFromThisState.add(rejectedImport);
+                                        }
+                                    }
+
+                                    reportRequest.setReportType(ReportType.childRejected.getReportType());
+                                    reportRequest.setFromDate(finalToDate);
+                                    reportRequest.setStateId(stateId);
+                                    reportRequest.setBlockId(0);
+                                    reportRequest.setDistrictId(0);
+                                    getCumulativeRejectedChildImports(candidatesFromThisState, rootPathState, stateName, finalToDate, reportRequest);
+
+                                    // Process districts
+                                    List<District> districts = districtDao.getDistrictsOfState(stateId);
+                                    for (final District district : districts) {
+                                        String districtName = StReplace(district.getDistrictName());
+                                        String rootPathDistrict = rootPathState + districtName + "/";
+                                        int districtId = district.getDistrictId();
+
+                                        List<ChildImportRejection> candidatesFromThisDistrict = new ArrayList<>();
+                                        for (ChildImportRejection rejectedImport : candidatesFromThisState) {
+                                            if (districtId == rejectedImport.getDistrictId()) {
+                                                candidatesFromThisDistrict.add(rejectedImport);
+                                            }
+                                        }
+
+                                        reportRequest.setDistrictId(districtId);
+                                        reportRequest.setBlockId(0);
+                                        getCumulativeRejectedChildImports(candidatesFromThisDistrict, rootPathDistrict, districtName, finalToDate, reportRequest);
+
+                                        // Process blocks
+                                        List<Block> blocks = blockDao.getBlocksOfDistrict(districtId);
+                                        for (final Block block : blocks) {
+                                            String blockName = StReplace(block.getBlockName());
+                                            String rootPathBlock = rootPathDistrict + blockName + "/";
+                                            int blockId = block.getBlockId();
+
+                                            List<ChildImportRejection> candidatesFromThisBlock = new ArrayList<>();
+                                            for (ChildImportRejection rejectedImport : candidatesFromThisDistrict) {
+                                                if (blockId == rejectedImport.getHealthBlockId()) {
+                                                    candidatesFromThisBlock.add(rejectedImport);
+                                                }
+                                            }
+
+                                            reportRequest.setBlockId(blockId);
+                                            getCumulativeRejectedChildImports(candidatesFromThisBlock, rootPathBlock, blockName, finalToDate, reportRequest);
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    logger.error("Error processing state: {} - {}", state.getStateName(), e.getMessage(), e);
+                                }
+                                return null;
+                            }
+                        });
+                    }
+                });
             }
-
-            reportRequest.setStateId(stateId);
-            reportRequest.setBlockId(0);
-            reportRequest.setDistrictId(0);
-            getCumulativeRejectedChildImports(candidatesFromThisState, rootPathState, stateName, toDate, reportRequest);
-
-            // Process districts
-            List<District> districts = districtDao.getDistrictsOfState(stateId);
-            for (District district : districts) {
-                String districtName = StReplace(district.getDistrictName());
-                String rootPathDistrict = rootPathState + districtName + "/";
-                int districtId = district.getDistrictId();
-
-                // Filter child imports by district
-                List<ChildImportRejection> candidatesFromThisDistrict = new ArrayList<>();
-                for (ChildImportRejection rejectedImport : candidatesFromThisState) {
-                    if (districtId == rejectedImport.getDistrictId()) {
-                        candidatesFromThisDistrict.add(rejectedImport);
-                    }
-                }
-
-                reportRequest.setDistrictId(districtId);
-                reportRequest.setBlockId(0);
-                getCumulativeRejectedChildImports(candidatesFromThisDistrict, rootPathDistrict, districtName, toDate, reportRequest);
-
-                // Process blocks
-                List<Block> blocks = blockDao.getBlocksOfDistrict(districtId);
-                for (Block block : blocks) {
-                    String blockName = StReplace(block.getBlockName());
-                    String rootPathBlock = rootPathDistrict + blockName + "/";
-                    int blockId = block.getBlockId();
-
-                    // Filter child imports by block
-                    List<ChildImportRejection> candidatesFromThisBlock = new ArrayList<>();
-                    for (ChildImportRejection rejectedImport : candidatesFromThisDistrict) {
-                        if (blockId == rejectedImport.getHealthBlockId()) {
-                            candidatesFromThisBlock.add(rejectedImport);
-                        }
-                    }
-
-                    reportRequest.setBlockId(blockId);
-                    getCumulativeRejectedChildImports(candidatesFromThisBlock, rootPathBlock, blockName, toDate, reportRequest);
-                }
+        } finally {
+            executorService.shutdown();
+            try {
+                executorService.awaitTermination(5, TimeUnit.HOURS);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                logger.error("ExecutorService termination interrupted.", e);
             }
         }
     }
 
 
 
+
+    @Transactional
     @Override
     public void createMotherImportRejectedFiles(int relativeMonth, boolean isWeekly) {
         Calendar aCalendar = Calendar.getInstance();
@@ -3614,7 +3634,7 @@ public class AdminServiceImpl implements AdminService {
 
             aCalendar.add(Calendar.DAY_OF_MONTH, -7);
             fromDate = aCalendar.getTime();
-            logger.info("inside week condition and these are the fromdate: {} and enddate: {}",fromDate,toDate);
+            logger.info("Inside weekly condition with fromDate: {} and toDate: {}", fromDate, toDate);
             reportRequest.setPeriodType("Week");
         } else {
             aCalendar.add(Calendar.MONTH, (-1) * relativeMonth);
@@ -3625,82 +3645,102 @@ public class AdminServiceImpl implements AdminService {
             aCalendar.set(Calendar.HOUR_OF_DAY, 0);
             fromDate = aCalendar.getTime();
 
-
             aCalendar.add(Calendar.MONTH, 1);
             toDate = aCalendar.getTime();
-            logger.info("inside month condition and these are the fromdate: {} and enddate: {}",fromDate, toDate);
+            logger.info("Inside monthly condition with fromDate: {} and toDate: {}", fromDate, toDate);
             reportRequest.setPeriodType("Month");
         }
 
-        List<State> states = stateDao.getStatesByServiceType(ReportType.motherRejected.getServiceType());
-        String rootPath = reports + ReportType.motherRejected.getReportType() + "/";
+        final Date finalToDate = toDate;
+        final List<State> states = stateDao.getStatesByServiceType(ReportType.motherRejected.getServiceType());
+        final String rootPath = reports + ReportType.motherRejected.getReportType() + "/";
+        final List<MotherImportRejection> rejectedMotherImports = motherImportRejectionDao.getAllRejectedMotherImportRecords(fromDate, toDate);
 
-        reportRequest.setFromDate(toDate);
-        reportRequest.setBlockId(0);
-        reportRequest.setDistrictId(0);
-        reportRequest.setStateId(0);
-        reportRequest.setReportType(ReportType.motherRejected.getReportType());
-
-        List<MotherImportRejection> rejectedMotherImports = motherImportRejectionDao.getAllRejectedMotherImportRecords(fromDate, toDate);
-
-        for (State state : states) {
-            String stateName = StReplace(state.getStateName());
-            String rootPathState = rootPath + stateName + "/";
-            int stateId = state.getStateId();
-
-            // Filter mother imports by state
-            List<MotherImportRejection> candidatesFromThisState = new ArrayList<>();
-            for (MotherImportRejection rejectedImport : rejectedMotherImports) {
-                if (rejectedImport.getStateId() != null && rejectedImport.getStateId() == stateId) {
-                    candidatesFromThisState.add(rejectedImport);
+        ExecutorService executorService = Executors.newFixedThreadPool(8);
+        try {
+            for (final State state : states) {
+                final String stateName = StReplace(state.getStateName());
+                final String rootPathState = rootPath + stateName + "/";
+                final int stateId = state.getStateId();
+                final List<MotherImportRejection> candidatesFromThisState = new ArrayList<>();
+                for (MotherImportRejection rejectedImport : rejectedMotherImports) {
+                    if (rejectedImport.getStateId() != null && rejectedImport.getStateId() == stateId) {
+                        candidatesFromThisState.add(rejectedImport);
+                    }
                 }
+
+                executorService.submit(new Runnable() {
+                    @Override
+                    public void run() {
+                        transactionTemplate.execute(new TransactionCallback<Void>() {
+                            @Override
+                            public Void doInTransaction(TransactionStatus status) {
+                                try {
+
+
+                                    reportRequest.setReportType(ReportType.motherRejected.getReportType());
+                                    reportRequest.setFromDate(finalToDate);
+                                    reportRequest.setStateId(stateId);
+                                    reportRequest.setBlockId(0);
+                                    reportRequest.setDistrictId(0);
+                                    getCumulativeRejectedMotherImports(candidatesFromThisState, rootPathState, stateName, finalToDate, reportRequest);
+
+                                    // Process districts
+                                    List<District> districts = districtDao.getDistrictsOfState(stateId);
+                                    for (final District district : districts) {
+                                        String districtName = StReplace(district.getDistrictName());
+                                        String rootPathDistrict = rootPathState + districtName + "/";
+                                        int districtId = district.getDistrictId();
+
+                                        List<MotherImportRejection> candidatesFromThisDistrict = new ArrayList<>();
+                                        for (MotherImportRejection rejectedImport : candidatesFromThisState) {
+                                            if (rejectedImport.getDistrictId() != null && rejectedImport.getDistrictId() == districtId) {
+                                                candidatesFromThisDistrict.add(rejectedImport);
+                                            }
+                                        }
+
+                                        reportRequest.setDistrictId(districtId);
+                                        reportRequest.setBlockId(0);
+                                        getCumulativeRejectedMotherImports(candidatesFromThisDistrict, rootPathDistrict, districtName, finalToDate, reportRequest);
+
+                                        // Process blocks
+                                        List<Block> blocks = blockDao.getBlocksOfDistrict(districtId);
+                                        for (final Block block : blocks) {
+                                            String blockName = StReplace(block.getBlockName());
+                                            String rootPathBlock = rootPathDistrict + blockName + "/";
+                                            int blockId = block.getBlockId();
+
+                                            List<MotherImportRejection> candidatesFromThisBlock = new ArrayList<>();
+                                            for (MotherImportRejection rejectedImport : candidatesFromThisDistrict) {
+                                                if (rejectedImport.getHealthBlockId() != null && rejectedImport.getHealthBlockId() == blockId) {
+                                                    candidatesFromThisBlock.add(rejectedImport);
+                                                }
+                                            }
+
+                                            reportRequest.setBlockId(blockId);
+                                            getCumulativeRejectedMotherImports(candidatesFromThisBlock, rootPathBlock, blockName, finalToDate, reportRequest);
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    logger.error("Error processing state: {} - {}", state.getStateName(), e.getMessage(), e);
+                                }
+                                return null;
+                            }
+                        });
+                    }
+                });
             }
-
-            reportRequest.setStateId(stateId);
-            reportRequest.setBlockId(0);
-            reportRequest.setDistrictId(0);
-            getCumulativeRejectedMotherImports(candidatesFromThisState, rootPathState, stateName, toDate, reportRequest);
-
-            // Process districts
-            List<District> districts = districtDao.getDistrictsOfState(stateId);
-            for (District district : districts) {
-                String districtName = StReplace(district.getDistrictName());
-                String rootPathDistrict = rootPathState + districtName + "/";
-                int districtId = district.getDistrictId();
-
-                // Filter mother imports by district
-                List<MotherImportRejection> candidatesFromThisDistrict = new ArrayList<>();
-                for (MotherImportRejection rejectedImport : candidatesFromThisState) {
-                    if (rejectedImport.getDistrictId() != null && rejectedImport.getDistrictId() == districtId) {
-                        candidatesFromThisDistrict.add(rejectedImport);
-                    }
-                }
-
-                reportRequest.setDistrictId(districtId);
-                reportRequest.setBlockId(0);
-                getCumulativeRejectedMotherImports(candidatesFromThisDistrict, rootPathDistrict, districtName, toDate, reportRequest);
-
-                // Process blocks
-                List<Block> blocks = blockDao.getBlocksOfDistrict(districtId);
-                for (Block block : blocks) {
-                    String blockName = StReplace(block.getBlockName());
-                    String rootPathBlock = rootPathDistrict + blockName + "/";
-                    int blockId = block.getBlockId();
-
-                    // Filter mother imports by block
-                    List<MotherImportRejection> candidatesFromThisBlock = new ArrayList<>();
-                    for (MotherImportRejection rejectedImport : candidatesFromThisDistrict) {
-                        if (rejectedImport.getHealthBlockId() != null && rejectedImport.getHealthBlockId() == blockId) {
-                            candidatesFromThisBlock.add(rejectedImport);
-                        }
-                    }
-
-                    reportRequest.setBlockId(blockId);
-                    getCumulativeRejectedMotherImports(candidatesFromThisBlock, rootPathBlock, blockName, toDate, reportRequest);
-                }
+        } finally {
+            executorService.shutdown();
+            try {
+                executorService.awaitTermination(5, TimeUnit.HOURS);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                logger.error("ExecutorService termination interrupted.", e);
             }
         }
     }
+
 
 
 
