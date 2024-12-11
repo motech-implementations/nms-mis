@@ -3496,7 +3496,7 @@ public class AdminServiceImpl implements AdminService {
     public void createChildImportRejectedFiles(int relativeMonth, boolean isWeekly) {
         Calendar aCalendar = Calendar.getInstance();
         Date fromDate, toDate;
-        ReportRequest reportRequest = new ReportRequest();
+
 
         if (isWeekly) {
             aCalendar.add(Calendar.DAY_OF_WEEK, -(aCalendar.get(Calendar.DAY_OF_WEEK) - 1));
@@ -3514,7 +3514,6 @@ public class AdminServiceImpl implements AdminService {
             aCalendar.add(Calendar.DAY_OF_MONTH, -7);
             fromDate = aCalendar.getTime();
             logger.info("Inside weekly condition with fromDate: {} and toDate: {}", fromDate, toDate);
-            reportRequest.setPeriodType("Week");
         } else {
             aCalendar.add(Calendar.MONTH, (-1) * relativeMonth);
             aCalendar.set(Calendar.DATE, 1);
@@ -3527,13 +3526,14 @@ public class AdminServiceImpl implements AdminService {
             aCalendar.add(Calendar.MONTH, 1);
             toDate = aCalendar.getTime();
             logger.info("Inside monthly condition with fromDate: {} and toDate: {}", fromDate, toDate);
-            reportRequest.setPeriodType("Month");
         }
         final Date finalToDate = toDate;
+        final Date finalFromDate = fromDate;
+
 
         List<State> states = stateDao.getStatesByServiceType(ReportType.childRejected.getServiceType());
         String rootPath = reports + ReportType.childRejected.getReportType() + "/";
-        List<ChildImportRejection> rejectedChildImports = childImportRejectionDao.getRejectedChildRecords(fromDate, toDate);
+        List<ChildImportRejection> rejectedChildImports = childImportRejectionDao.getRejectedChildRecords(finalFromDate, toDate);
 
         ExecutorService executorService = Executors.newFixedThreadPool(8);
         try {
@@ -3556,6 +3556,13 @@ public class AdminServiceImpl implements AdminService {
                                         }
                                     }
 
+                                    ReportRequest reportRequest = new ReportRequest();
+                                    if(isWeekly){
+                                        reportRequest.setPeriodType("Week");
+                                    }else {
+                                        reportRequest.setPeriodType("Month");
+
+                                    }
                                     reportRequest.setReportType(ReportType.childRejected.getReportType());
                                     reportRequest.setFromDate(finalToDate);
                                     reportRequest.setStateId(stateId);
@@ -3628,7 +3635,6 @@ public class AdminServiceImpl implements AdminService {
         Calendar aCalendar = Calendar.getInstance();
         Date fromDate, toDate;
 
-        ReportRequest reportRequest = new ReportRequest();
         if (isWeekly) {
             aCalendar.add(Calendar.DAY_OF_WEEK, -(aCalendar.get(Calendar.DAY_OF_WEEK) - 1));
             aCalendar.add(Calendar.DATE, -(7 * (relativeMonth - 1)));
@@ -3645,7 +3651,6 @@ public class AdminServiceImpl implements AdminService {
             aCalendar.add(Calendar.DAY_OF_MONTH, -7);
             fromDate = aCalendar.getTime();
             logger.info("Inside weekly condition with fromDate: {} and toDate: {}", fromDate, toDate);
-            reportRequest.setPeriodType("Week");
         } else {
             aCalendar.add(Calendar.MONTH, (-1) * relativeMonth);
             aCalendar.set(Calendar.DATE, 1);
@@ -3658,13 +3663,14 @@ public class AdminServiceImpl implements AdminService {
             aCalendar.add(Calendar.MONTH, 1);
             toDate = aCalendar.getTime();
             logger.info("Inside monthly condition with fromDate: {} and toDate: {}", fromDate, toDate);
-            reportRequest.setPeriodType("Month");
         }
 
         final Date finalToDate = toDate;
+        final Date finalFromDate = fromDate;
+
         final List<State> states = stateDao.getStatesByServiceType(ReportType.motherRejected.getServiceType());
         final String rootPath = reports + ReportType.motherRejected.getReportType() + "/";
-        final List<MotherImportRejection> rejectedMotherImports = motherImportRejectionDao.getAllRejectedMotherImportRecords(fromDate, toDate);
+        final List<MotherImportRejection> rejectedMotherImports = motherImportRejectionDao.getAllRejectedMotherImportRecords(finalFromDate, finalToDate);
 
         ExecutorService executorService = Executors.newFixedThreadPool(8);
         try {
@@ -3686,8 +3692,13 @@ public class AdminServiceImpl implements AdminService {
                             @Override
                             public Void doInTransaction(TransactionStatus status) {
                                 try {
+                                    ReportRequest reportRequest = new ReportRequest();
 
-
+                                    if(isWeekly){
+                                        reportRequest.setPeriodType("Week");
+                                    }else{
+                                        reportRequest.setPeriodType("Month");
+                                    }
                                     reportRequest.setReportType(ReportType.motherRejected.getReportType());
                                     reportRequest.setFromDate(finalToDate);
                                     reportRequest.setStateId(stateId);
