@@ -1336,7 +1336,7 @@ public class UserController {
         if (reportRequest.getReportType().equals(ReportType.motherRejected.getReportType()) ||
                 reportRequest.getReportType().equals(ReportType.childRejected.getReportType())) {
             if(reportRequest.getPeriodType().equalsIgnoreCase("week")){
-                filename = reportRequest.getReportType() + "_" + place + "_" + getDateMonthYear(reportRequest.getFromDate()) + ".xlsx";
+                filename = reportRequest.getReportType() + "_" + place + "_" + getDateMonthYear(reportRequest.getToDate()) + ".xlsx";
             }else{
                 filename = reportRequest.getReportType() + "_Monthly" + "_" + place + "_" + getMonthYear(reportRequest.getFromDate()) + ".xlsx";
             }
