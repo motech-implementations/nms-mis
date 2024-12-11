@@ -942,8 +942,9 @@ public class AdminServiceImpl implements AdminService {
             }
         }
         else if(reportRequest.getReportType().equals(ReportType.motherRejected.getReportType())){
+            if(reportRequest.getPeriodType().toLowerCase().equals("week")){
             Calendar calendar = Calendar.getInstance();
-            calendar.setTime(reportRequest.getFromDate());
+            calendar.setTime(reportRequest.getToDate());
             calendar.set(Calendar.MILLISECOND, 0);
             calendar.set(Calendar.SECOND, 0);
             calendar.set(Calendar.MINUTE, 0);
@@ -954,10 +955,16 @@ public class AdminServiceImpl implements AdminService {
             fromDate=calendar.getTime();
 //            List<MotherImportRejection> motherImportRejections = motherImportRejectionDao.getAllRejectedMotherImportRecords(nextDay);
             reportRequest.setFromDate(toDate);
+            }
+
+            reportRequest.setFromDate(toDate);
+
             String stateName=StReplace(stateDao.findByStateId(stateId).getStateName());
             String rootPathState = rootPath+ stateName+ "/";
+
             if(districtId==0){
                 List<MotherImportRejection> candidatesFromThisState =
+
                         motherImportRejectionDao.getAllRejectedMotherImportRecordsWithStateId(fromDate, toDate,stateId);
 
                 getCumulativeRejectedMotherImports(candidatesFromThisState,rootPathState, stateName, toDate, reportRequest);
@@ -983,8 +990,9 @@ public class AdminServiceImpl implements AdminService {
             }
         }
         else if(reportRequest.getReportType().equals(ReportType.childRejected.getReportType())){
+            if(reportRequest.getReportType().equalsIgnoreCase("week")){
             Calendar calendar = Calendar.getInstance();
-            calendar.setTime(reportRequest.getFromDate());
+            calendar.setTime(reportRequest.getToDate());
             calendar.set(Calendar.MILLISECOND, 0);
             calendar.set(Calendar.SECOND, 0);
             calendar.set(Calendar.MINUTE, 0);
@@ -994,7 +1002,9 @@ public class AdminServiceImpl implements AdminService {
             calendar.add(Calendar.DAY_OF_MONTH, -7);
             fromDate=calendar.getTime();
 //            List<ChildImportRejection> childImportRejections = childImportRejectionDao.getRejectedChildRecords(nextDay);
+            reportRequest.setFromDate(toDate);}
             reportRequest.setFromDate(toDate);
+
             String stateName=StReplace(stateDao.findByStateId(stateId).getStateName());
             String rootPathState = rootPath+ stateName+ "/";
             if(districtId==0){
@@ -1300,7 +1310,11 @@ public class AdminServiceImpl implements AdminService {
         //Write the workbook in file system
         FileOutputStream out = null;
         try {
-            out = new FileOutputStream(new File(rootPath + ReportType.childRejected.getReportType() + "_" + place + "_" + getDateMonthYear(toDate) + ".xlsx"));
+            if(reportRequest.getReportType().equalsIgnoreCase("Month")) {
+                out = new FileOutputStream(new File(rootPath + ReportType.childRejected.getReportType() +"_Monthly"+ "_" + place + "_" + getMonthYear(toDate) + ".xlsx"));
+            }else{
+                out = new FileOutputStream(new File(rootPath + ReportType.childRejected.getReportType() + "_" + place + "_" + getDateMonthYear(toDate) + ".xlsx"));
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -1435,7 +1449,11 @@ public class AdminServiceImpl implements AdminService {
         //Write the workbook in file system
         FileOutputStream out = null;
         try {
-            out = new FileOutputStream(new File(rootPath + ReportType.motherRejected.getReportType() + "_" + place + "_" + getDateMonthYear(toDate) + ".xlsx"));
+            if (reportRequest.getPeriodType().equalsIgnoreCase("Month")){
+            out = new FileOutputStream(new File(rootPath  +ReportType.motherRejected.getReportType() + "_Monthly"+ "_" + place + "_" + getMonthYear(toDate) + ".xlsx"));}
+            else{
+                out = new FileOutputStream(new File(rootPath  +ReportType.motherRejected.getReportType() + "_" + place + "_" + getDateMonthYear(toDate) + ".xlsx"));
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -3372,8 +3390,8 @@ public class AdminServiceImpl implements AdminService {
             cell5.setCellValue("Circle:");
             cell6.setCellValue(circleName);
         }else {
-            if(reportRequest.getReportType().equals(ReportType.motherRejected.getReportType())||
-                    reportRequest.getReportType().equals(ReportType.childRejected.getReportType())){
+            if((reportRequest.getReportType().equals(ReportType.motherRejected.getReportType())||
+                    reportRequest.getReportType().equals(ReportType.childRejected.getReportType())) && reportRequest.getReportType().equalsIgnoreCase("Week")){
                 cell3.setCellValue("Week:");
                 cell4.setCellValue(getDateMonthYearName(reportRequest.getFromDate()));
                 CellRangeAddress range4 = new CellRangeAddress(3,4,8,11);
@@ -3464,148 +3482,229 @@ public class AdminServiceImpl implements AdminService {
 
     }
     @Override
-    public void createChildImportRejectedFiles(Date toDate) {
-        List<State> states = stateDao.getStatesByServiceType(ReportType.childRejected.getServiceType());
-        String rootPath = reports +ReportType.childRejected.getReportType()+ "/";
+    public void createChildImportRejectedFiles(int relativeMonth, boolean isWeekly) {
         Calendar aCalendar = Calendar.getInstance();
-        aCalendar.setTime(toDate);
-        aCalendar.set(Calendar.MILLISECOND, 0);
-        aCalendar.set(Calendar.SECOND, 0);
-        aCalendar.set(Calendar.MINUTE, 0);
-        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
-        aCalendar.add(Calendar.DAY_OF_MONTH,1);
-        toDate=aCalendar.getTime();
-        aCalendar.add(Calendar.DAY_OF_MONTH, -7);
-        Date fromDate=aCalendar.getTime();
-        ReportRequest reportRequest=new ReportRequest();
+        Date fromDate, toDate;
+        ReportRequest reportRequest = new ReportRequest();
+
+        if (isWeekly) {
+            // Weekly range: Start of the week
+            aCalendar.add(Calendar.DAY_OF_WEEK, -(aCalendar.get(Calendar.DAY_OF_WEEK) - 1));
+            aCalendar.add(Calendar.DATE, -(7 * (relativeMonth - 1)));
+            toDate = aCalendar.getTime();
+
+            aCalendar.setTime(toDate);
+            aCalendar.set(Calendar.MILLISECOND, 0);
+            aCalendar.set(Calendar.SECOND, 0);
+            aCalendar.set(Calendar.MINUTE, 0);
+            aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+            aCalendar.add(Calendar.DAY_OF_MONTH, 1);
+            toDate = aCalendar.getTime();
+
+
+            aCalendar.add(Calendar.DAY_OF_MONTH, -7);
+            fromDate = aCalendar.getTime();
+            logger.info("inside week condition and these are the fromdate: {} and enddate: {}",fromDate,toDate);
+
+            reportRequest.setPeriodType("Week");
+        } else {
+            // Monthly range: Start of the month
+            aCalendar.add(Calendar.MONTH, (-1) * relativeMonth);
+            aCalendar.set(Calendar.DATE, 1);
+            aCalendar.set(Calendar.MILLISECOND, 0);
+            aCalendar.set(Calendar.SECOND, 0);
+            aCalendar.set(Calendar.MINUTE, 0);
+            aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+            fromDate = aCalendar.getTime();
+
+            aCalendar.add(Calendar.MONTH, 1);
+            toDate = aCalendar.getTime();
+            reportRequest.setPeriodType("Month");
+        }
+
+        List<State> states = stateDao.getStatesByServiceType(ReportType.childRejected.getServiceType());
+        String rootPath = reports + ReportType.childRejected.getReportType() + "/";
         reportRequest.setFromDate(toDate);
         reportRequest.setBlockId(0);
         reportRequest.setDistrictId(0);
         reportRequest.setStateId(0);
         reportRequest.setReportType(ReportType.childRejected.getReportType());
-        List<ChildImportRejection> rejectedChildImports = childImportRejectionDao.getRejectedChildRecords(fromDate,toDate);
 
-//        getCumulativeRejectedChildImports(rejectedChildImports, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
+        List<ChildImportRejection> rejectedChildImports = childImportRejectionDao.getRejectedChildRecords(fromDate, toDate);
+
         for (State state : states) {
             String stateName = StReplace(state.getStateName());
-            String rootPathState = rootPath + stateName+ "/";
+            String rootPathState = rootPath + stateName + "/";
             int stateId = state.getStateId();
+
+            // Filter child imports by state
             List<ChildImportRejection> candidatesFromThisState = new ArrayList<>();
             for (ChildImportRejection rejectedImport : rejectedChildImports) {
-                if ((rejectedImport.getStateId()!=null)&&(rejectedImport.getStateId() == stateId)) {
+                if (stateId == rejectedImport.getStateId()) {
                     candidatesFromThisState.add(rejectedImport);
                 }
             }
+
             reportRequest.setStateId(stateId);
             reportRequest.setBlockId(0);
             reportRequest.setDistrictId(0);
             getCumulativeRejectedChildImports(candidatesFromThisState, rootPathState, stateName, toDate, reportRequest);
-            List<District> districts = districtDao.getDistrictsOfState(stateId);
 
+            // Process districts
+            List<District> districts = districtDao.getDistrictsOfState(stateId);
             for (District district : districts) {
                 String districtName = StReplace(district.getDistrictName());
-                String rootPathDistrict = rootPathState + districtName+ "/";
+                String rootPathDistrict = rootPathState + districtName + "/";
                 int districtId = district.getDistrictId();
+
+                // Filter child imports by district
                 List<ChildImportRejection> candidatesFromThisDistrict = new ArrayList<>();
                 for (ChildImportRejection rejectedImport : candidatesFromThisState) {
-                    if ((rejectedImport.getDistrictId()!=null)&&(rejectedImport.getDistrictId() == districtId)) {
+                    if (districtId == rejectedImport.getDistrictId()) {
                         candidatesFromThisDistrict.add(rejectedImport);
                     }
                 }
+
                 reportRequest.setDistrictId(districtId);
                 reportRequest.setBlockId(0);
                 getCumulativeRejectedChildImports(candidatesFromThisDistrict, rootPathDistrict, districtName, toDate, reportRequest);
-                List<Block> Blocks = blockDao.getBlocksOfDistrict(districtId);
-                for (Block block : Blocks) {
-                    String blockName = StReplace(block.getBlockName());
-                    String rootPathblock = rootPathDistrict + blockName+ "/";
 
+                // Process blocks
+                List<Block> blocks = blockDao.getBlocksOfDistrict(districtId);
+                for (Block block : blocks) {
+                    String blockName = StReplace(block.getBlockName());
+                    String rootPathBlock = rootPathDistrict + blockName + "/";
                     int blockId = block.getBlockId();
+
+                    // Filter child imports by block
                     List<ChildImportRejection> candidatesFromThisBlock = new ArrayList<>();
                     for (ChildImportRejection rejectedImport : candidatesFromThisDistrict) {
-                        if ((rejectedImport.getHealthBlockId()!=null)&&(rejectedImport.getHealthBlockId() == blockId)) {
+                        if (blockId == rejectedImport.getHealthBlockId()) {
                             candidatesFromThisBlock.add(rejectedImport);
                         }
                     }
+
                     reportRequest.setBlockId(blockId);
-                    getCumulativeRejectedChildImports(candidatesFromThisBlock, rootPathblock, blockName, toDate, reportRequest);
+                    getCumulativeRejectedChildImports(candidatesFromThisBlock, rootPathBlock, blockName, toDate, reportRequest);
                 }
             }
         }
-
     }
 
+
+
     @Override
-    public void createMotherImportRejectedFiles(Date toDate) {
-        List<State> states = stateDao.getStatesByServiceType(ReportType.motherRejected.getServiceType());
-        String rootPath = reports +ReportType.motherRejected.getReportType()+ "/";
+    public void createMotherImportRejectedFiles(int relativeMonth, boolean isWeekly) {
         Calendar aCalendar = Calendar.getInstance();
-        aCalendar.setTime(toDate);
-        aCalendar.set(Calendar.MILLISECOND, 0);
-        aCalendar.set(Calendar.SECOND, 0);
-        aCalendar.set(Calendar.MINUTE, 0);
-        aCalendar.set(Calendar.HOUR_OF_DAY, 0);
-        aCalendar.add(Calendar.DAY_OF_MONTH,1);
-        toDate=aCalendar.getTime();
-        aCalendar.add(Calendar.DAY_OF_MONTH, -7);
-        Date fromDate=aCalendar.getTime();
-        ReportRequest reportRequest=new ReportRequest();
+        Date fromDate, toDate;
+
+        ReportRequest reportRequest = new ReportRequest();
+        if (isWeekly) {
+            aCalendar.add(Calendar.DAY_OF_WEEK, -(aCalendar.get(Calendar.DAY_OF_WEEK) - 1));
+            aCalendar.add(Calendar.DATE, -(7 * (relativeMonth - 1)));
+            toDate = aCalendar.getTime();
+
+            aCalendar.setTime(toDate);
+            aCalendar.set(Calendar.MILLISECOND, 0);
+            aCalendar.set(Calendar.SECOND, 0);
+            aCalendar.set(Calendar.MINUTE, 0);
+            aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+            aCalendar.add(Calendar.DAY_OF_MONTH, 1);
+            toDate = aCalendar.getTime();
+
+            aCalendar.add(Calendar.DAY_OF_MONTH, -7);
+            fromDate = aCalendar.getTime();
+            logger.info("inside week condition and these are the fromdate: {} and enddate: {}",fromDate,toDate);
+            reportRequest.setPeriodType("Week");
+        } else {
+            aCalendar.add(Calendar.MONTH, (-1) * relativeMonth);
+            aCalendar.set(Calendar.DATE, 1);
+            aCalendar.set(Calendar.MILLISECOND, 0);
+            aCalendar.set(Calendar.SECOND, 0);
+            aCalendar.set(Calendar.MINUTE, 0);
+            aCalendar.set(Calendar.HOUR_OF_DAY, 0);
+            fromDate = aCalendar.getTime();
+
+
+            aCalendar.add(Calendar.MONTH, 1);
+            toDate = aCalendar.getTime();
+            logger.info("inside month condition and these are the fromdate: {} and enddate: {}",fromDate, toDate);
+            reportRequest.setPeriodType("Month");
+        }
+
+        List<State> states = stateDao.getStatesByServiceType(ReportType.motherRejected.getServiceType());
+        String rootPath = reports + ReportType.motherRejected.getReportType() + "/";
+
         reportRequest.setFromDate(toDate);
         reportRequest.setBlockId(0);
         reportRequest.setDistrictId(0);
         reportRequest.setStateId(0);
         reportRequest.setReportType(ReportType.motherRejected.getReportType());
-        List<MotherImportRejection> rejectedMotherImports =
-                motherImportRejectionDao.getAllRejectedMotherImportRecords(fromDate, toDate);
-//        getCumulativeRejectedMotherImports(rejectedMotherImports, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate);
+
+        List<MotherImportRejection> rejectedMotherImports = motherImportRejectionDao.getAllRejectedMotherImportRecords(fromDate, toDate);
+
         for (State state : states) {
             String stateName = StReplace(state.getStateName());
-            String rootPathState = rootPath + stateName+ "/";
+            String rootPathState = rootPath + stateName + "/";
             int stateId = state.getStateId();
+
+            // Filter mother imports by state
             List<MotherImportRejection> candidatesFromThisState = new ArrayList<>();
             for (MotherImportRejection rejectedImport : rejectedMotherImports) {
-                if ((rejectedImport.getStateId()!=null)&&(rejectedImport.getStateId() == stateId)) {
+                if (rejectedImport.getStateId() != null && rejectedImport.getStateId() == stateId) {
                     candidatesFromThisState.add(rejectedImport);
                 }
             }
+
             reportRequest.setStateId(stateId);
             reportRequest.setBlockId(0);
             reportRequest.setDistrictId(0);
             getCumulativeRejectedMotherImports(candidatesFromThisState, rootPathState, stateName, toDate, reportRequest);
-            List<District> districts = districtDao.getDistrictsOfState(stateId);
 
+            // Process districts
+            List<District> districts = districtDao.getDistrictsOfState(stateId);
             for (District district : districts) {
                 String districtName = StReplace(district.getDistrictName());
-                String rootPathDistrict = rootPathState + districtName+ "/";
+                String rootPathDistrict = rootPathState + districtName + "/";
                 int districtId = district.getDistrictId();
+
+                // Filter mother imports by district
                 List<MotherImportRejection> candidatesFromThisDistrict = new ArrayList<>();
                 for (MotherImportRejection rejectedImport : candidatesFromThisState) {
-                    if ((rejectedImport.getDistrictId()!=null)&&(rejectedImport.getDistrictId() == districtId)) {
+                    if (rejectedImport.getDistrictId() != null && rejectedImport.getDistrictId() == districtId) {
                         candidatesFromThisDistrict.add(rejectedImport);
                     }
                 }
+
                 reportRequest.setDistrictId(districtId);
                 reportRequest.setBlockId(0);
                 getCumulativeRejectedMotherImports(candidatesFromThisDistrict, rootPathDistrict, districtName, toDate, reportRequest);
-                List<Block> Blocks = blockDao.getBlocksOfDistrict(districtId);
-                for (Block block : Blocks) {
-                    String blockName = StReplace(block.getBlockName());
-                    String rootPathblock = rootPathDistrict + blockName+ "/";
 
+                // Process blocks
+                List<Block> blocks = blockDao.getBlocksOfDistrict(districtId);
+                for (Block block : blocks) {
+                    String blockName = StReplace(block.getBlockName());
+                    String rootPathBlock = rootPathDistrict + blockName + "/";
                     int blockId = block.getBlockId();
+
+                    // Filter mother imports by block
                     List<MotherImportRejection> candidatesFromThisBlock = new ArrayList<>();
                     for (MotherImportRejection rejectedImport : candidatesFromThisDistrict) {
-                        if ((rejectedImport.getHealthBlockId()!=null)&&(rejectedImport.getHealthBlockId() == blockId)) {
+                        if (rejectedImport.getHealthBlockId() != null && rejectedImport.getHealthBlockId() == blockId) {
                             candidatesFromThisBlock.add(rejectedImport);
                         }
                     }
+
                     reportRequest.setBlockId(blockId);
-                    getCumulativeRejectedMotherImports(candidatesFromThisBlock, rootPathblock, blockName, toDate, reportRequest);
+                    getCumulativeRejectedMotherImports(candidatesFromThisBlock, rootPathBlock, blockName, toDate, reportRequest);
                 }
             }
         }
-
     }
+
+
+
+
 
     @Override
     public void createFlwImportRejectedFiles(Date toDate) {

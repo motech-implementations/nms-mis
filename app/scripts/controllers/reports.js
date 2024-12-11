@@ -351,13 +351,22 @@
 				return ($scope.report == null || $scope.report.reportEnum == null );
 			}
 			$scope.disableState = function(){
+                if($scope.report != null && $scope.reportCategory == 'Kilkari Reports' &&  $scope.report.name.toLowerCase().indexOf(("rejected").toLowerCase()) > -1){
+                    return false;
+                }
 				return $scope.states[0]  == null || $scope.userHasState() || $scope.report == null;
 			}
 
 			$scope.disableDistrict = function(){
+                if($scope.report != null && $scope.reportCategory == 'Kilkari Reports' &&  $scope.report.name.toLowerCase().indexOf(("rejected").toLowerCase()) > -1){
+                    return false;
+                }
 				return $scope.districts[0]  == null || $scope.userHasDistrict();
 			}
 			$scope.disableBlock = function(){
+                if($scope.report != null && $scope.reportCategory == 'Kilkari Reports' &&  $scope.report.name.toLowerCase().indexOf(("rejected").toLowerCase()) > -1){
+                    return false;
+                }
 				return $scope.blocks[0]  == null || $scope.userHasBlock();
 			}
 			$scope.disableCircle = function(){
@@ -564,6 +573,7 @@
                     $scope.periodType = ['Year','Financial Year','Quarter','Month','Week','Custom Range'];
                 if(( $scope.reportCategory == 'Kilkari Reports') &&  ($scope.report.name.toLowerCase().indexOf(("rejected").toLowerCase()) > -1)  ){
                 	$scope.datePickerContent = "Select Week";
+                	$scope.periodType = ['Month','Week'];
                 }
                 else
                     $scope.datePickerContent = "Monthly";
@@ -649,6 +659,9 @@
 			}
 
             $scope.isAggregateReport = function(){
+                if($scope.report != null && $scope.reportCategory == 'Kilkari Reports' &&  $scope.report.name.toLowerCase().indexOf(("rejected").toLowerCase()) > -1){
+                    return true;
+                }
             	return $scope.report != null && $scope.report.icon == 'images/drop-down-2.png';
             }
 
@@ -1069,6 +1082,12 @@
 			}
 
 			$scope.getReport = function(){
+			if(($scope.reportCategory == 'Kilkari Reports') && ($scope.report.name.toLowerCase().indexOf(("rejected").toLowerCase()) > -1)){
+			    $scope.dt= $scope.dt1;
+			    if($scope.periodDisplayType == 'Week'){
+			    	$scope.dateFormat= "yyyy-MM-dd"
+			    }
+			}
 			return	UserFormFactory.isLoggedIn()
             .then(function(result){
             	if(!result.data){
@@ -1204,7 +1223,6 @@
 
                 }
 
-
 			    reportRequest.reportType = $scope.report.reportEnum;
 			    reportRequest.stateId = 0;
 			    reportRequest.districtId = 0;
@@ -1261,17 +1279,6 @@
                            }
 
                     }
-		    	}
-
-		    	if(( $scope.reportCategory == 'Kilkari Reports') &&  ($scope.report.name.toLowerCase().indexOf(("rejected").toLowerCase()) > -1) && $scope.format == 'yyyy-MM'){
-                   if(UserFormFactory.isInternetExplorer()){
-                         alert("Please select a week")
-                         return;
-                   }
-                   else{
-                     UserFormFactory.showAlert("Please select a week")
-                     return;
-                   }
 		    	}
 
                 if(!$scope.isAggregateReport())
@@ -1457,7 +1464,7 @@
 				})
 				.then(function(result){
 
-					if(!$scope.isAggregateReport()){
+					if(!$scope.isAggregateReport() || ( $scope.report && $scope.report.name.toLowerCase().indexOf(("rejected").toLowerCase())  > -1 )){
 					    $scope.waiting = false;
                         $scope.status = result.data.status;
                         if($scope.status == 'success'){
@@ -1468,7 +1475,7 @@
                         if($scope.status == 'fail'){
 
                         }
-
+                        return;
 					}
 
 					if($scope.isAggregateReport()){

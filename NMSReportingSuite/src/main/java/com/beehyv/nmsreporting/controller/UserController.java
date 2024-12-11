@@ -1335,7 +1335,11 @@ public class UserController {
         String filename = reportRequest.getReportType() + "_" + place + "_" + getMonthYear(reportRequest.getFromDate()) + ".xlsx";
         if (reportRequest.getReportType().equals(ReportType.motherRejected.getReportType()) ||
                 reportRequest.getReportType().equals(ReportType.childRejected.getReportType())) {
-            filename = reportRequest.getReportType() + "_" + place + "_" + getDateMonthYear(reportRequest.getFromDate()) + ".xlsx";
+            if(reportRequest.getPeriodType().equalsIgnoreCase("week")){
+                filename = reportRequest.getReportType() + "_" + place + "_" + getDateMonthYear(reportRequest.getFromDate()) + ".xlsx";
+            }else{
+                filename = reportRequest.getReportType() + "_Monthly" + "_" + place + "_" + getMonthYear(reportRequest.getFromDate()) + ".xlsx";
+            }
         }
         reportPath = reports + reportRequest.getReportType() + "/" + rootPath;
         reportName = filename;
