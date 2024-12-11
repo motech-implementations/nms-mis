@@ -954,7 +954,8 @@ public class AdminServiceImpl implements AdminService {
             calendar.add(Calendar.DAY_OF_MONTH,-7);
             fromDate=calendar.getTime();
 //            List<MotherImportRejection> motherImportRejections = motherImportRejectionDao.getAllRejectedMotherImportRecords(nextDay);
-            reportRequest.setFromDate(toDate);
+
+                logger.info("inside mother week condition and these are fromdate: {} and todate: {}",fromDate,toDate);
             }
 
             reportRequest.setFromDate(toDate);
@@ -1415,6 +1416,10 @@ public class AdminServiceImpl implements AdminService {
 //            System.out.println("Added "+counter);
         }
         Set<String> keyid = empinfo.keySet();
+        logger.info("before header method");
+        logger.info("these are from date : {} and todate: {}",reportRequest.getFromDate(),reportRequest.getToDate());
+        logger.info("this is period type: {}",reportRequest.getPeriodType());
+
         createHeadersForReportFiles(workbook, reportRequest);
         int rowid=7;
         for (String key : keyid) {
@@ -3391,7 +3396,8 @@ public class AdminServiceImpl implements AdminService {
             cell6.setCellValue(circleName);
         }else {
             if((reportRequest.getReportType().equals(ReportType.motherRejected.getReportType())||
-                    reportRequest.getReportType().equals(ReportType.childRejected.getReportType())) && reportRequest.getReportType().equalsIgnoreCase("Week")){
+                    reportRequest.getReportType().equals(ReportType.childRejected.getReportType())) && reportRequest.getPeriodType().equalsIgnoreCase("Week")){
+                logger.info("inside header week method and this is periodtype: {}",reportRequest.getPeriodType());
                 cell3.setCellValue("Week:");
                 cell4.setCellValue(getDateMonthYearName(reportRequest.getFromDate()));
                 CellRangeAddress range4 = new CellRangeAddress(3,4,8,11);
@@ -3411,7 +3417,11 @@ public class AdminServiceImpl implements AdminService {
             }
             else {
                 cell3.setCellValue("Month:");
+                logger.info("inside header else condition and this is periodtype: {}",reportRequest.getPeriodType());
+
                 cell4.setCellValue(getMonthYearName(reportRequest.getFromDate()));
+                logger.info("inside header else condition and this is fromdate: {}",reportRequest.getFromDate());
+
                 CellRangeAddress range4 = new CellRangeAddress(3,4,8,11);
                 cleanBeforeMergeOnValidCells(spreadsheet,range4,style );
                 spreadsheet.addMergedRegion(range4);
