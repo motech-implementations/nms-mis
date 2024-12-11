@@ -300,7 +300,17 @@ public class AdminController {
         Date fromDate=new Date();
         Date toDate;
         if(tempReportType.getReportType().equals(ReportType.motherRejected.getReportType()) ||
-                tempReportType.getReportType().equals(ReportType.childRejected.getReportType())) {
+                tempReportType.getReportType().equals(ReportType.childRejected.getReportType())){
+            if(tempReportType.getReportType().equals(ReportType.motherRejected.getReportType())) {
+
+                adminService.createMotherImportRejectedFiles(relativeMonth, true);
+                adminService.createMotherImportRejectedFiles(relativeMonth, false);
+            }
+            else {
+                adminService.createChildImportRejectedFiles(relativeMonth, true);
+                adminService.createChildImportRejectedFiles(relativeMonth, false);
+            }
+
             aCalendar.add( Calendar.DAY_OF_WEEK, -(aCalendar.get(Calendar.DAY_OF_WEEK)-1));
             aCalendar.add(Calendar.DATE,-(7*(relativeMonth-1)));
             toDate=aCalendar.getTime();
@@ -346,14 +356,6 @@ public class AdminController {
             }
             case lowListenership:{
                 adminService.getKilkariLowListenershipDeactivationFiles(fromDate,toDate);
-                break;
-            }
-            case childRejected: {
-                adminService.createChildImportRejectedFiles(toDate);
-                break;
-            }
-            case motherRejected:{
-                adminService.createMotherImportRejectedFiles(toDate);
                 break;
             }
             case flwRejected:{

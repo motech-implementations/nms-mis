@@ -48,7 +48,14 @@ public class AutoReportEmailGeneration {
             adminService.createFiles(ReportType.selfDeactivated.getReportType());
             adminService.createFiles(ReportType.sixWeeks.getReportType());
             adminService.createFiles(ReportType.lowListenership.getReportType());
+            adminService.createFiles(ReportType.motherRejected.getReportType());
+            adminService.createFiles(ReportType.childRejected.getReportType());
 
+
+            adminService.createMotherImportRejectedFiles(1,false);
+            System.out.println("Mother_Rejection Monthly reports generated");
+            adminService.createChildImportRejectedFiles(1,false);
+            System.out.println("Child_Rejection Monthly reports generated");
             adminService.getCircleWiseAnonymousFiles(fromDate, toDate);
             System.out.println("MA_Anonymous reports generated");
             adminService.getCumulativeCourseCompletionFiles(toDate);
@@ -82,9 +89,9 @@ public class AutoReportEmailGeneration {
 
 //            adminService.createFlwImportRejectedFiles(toDate);
 //            System.out.println("FLW_Rejection reports generated");
-            adminService.createMotherImportRejectedFiles(toDate);
+            adminService.createMotherImportRejectedFiles(1,true);
             System.out.println("Mother_Rejection reports generated");
-            adminService.createChildImportRejectedFiles(toDate);
+            adminService.createChildImportRejectedFiles(1,true);
             System.out.println("Child_Rejection reports generated");
 
             return true;
