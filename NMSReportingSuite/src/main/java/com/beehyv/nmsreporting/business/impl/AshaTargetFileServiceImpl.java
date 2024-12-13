@@ -286,7 +286,7 @@ public class AshaTargetFileServiceImpl implements AshaTargetFileService {
         List<Date> failureDates = new ArrayList<>();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 1; i < 3; i++) {
             Date dateToCheck = DateTime.now().minusDays(i).toDate();
 
             boolean hasFailure = false;
