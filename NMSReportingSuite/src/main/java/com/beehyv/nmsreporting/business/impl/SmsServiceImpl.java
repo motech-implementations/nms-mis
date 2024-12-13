@@ -13,6 +13,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -158,6 +159,7 @@ public class SmsServiceImpl implements SmsService {
                     .replace("<smsTemplateId>", sms_template_id)
                     .replace("<smsEntityId>", sms_entity_id)
                     .replace("<smsTelemarketerId>", sms_telemarketer_id)
+                    .replace("<correlationId>", DateTime.now().toString())
                     .replace("<messageType>", messageType);
         } catch (Exception e) {
             LOGGER.error("Error replacing placeholders in SMS template", e);
@@ -206,6 +208,7 @@ public class SmsServiceImpl implements SmsService {
                     .replace("<smsTemplateId>", sms_template_id)
                     .replace("<smsEntityId>", sms_entity_id)
                     .replace("<smsTelemarketerId>", sms_telemarketer_id)
+                    .replace("<correlationId>", DateTime.now().toString())
                     .replace("<messageType>", messageType);
         } catch (Exception e) {
             LOGGER.error("Error populating SMS template.", e);
