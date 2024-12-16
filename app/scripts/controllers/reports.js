@@ -1072,6 +1072,12 @@
                         $scope.dt1 = new Date($scope.dt1.getFullYear(), $scope.dt1.getMonth() + 1, 0, 23, 59, 59);
                      }
                 }
+                if(($scope.reportCategory == 'Kilkari Reports') && ($scope.report.name.toLowerCase().indexOf(("rejected").toLowerCase()) > -1)){
+                    $scope.dt= $scope.dt1;
+                    if($scope.periodDisplayType == 'Week'){
+                        $scope.dateFormat= "yyyy-MM-dd"
+                    }
+                }
 			});
 
 			$scope.serviceStarted = function(state){
@@ -1082,12 +1088,6 @@
 			}
 
 			$scope.getReport = function(){
-			if(($scope.reportCategory == 'Kilkari Reports') && ($scope.report.name.toLowerCase().indexOf(("rejected").toLowerCase()) > -1)){
-			    $scope.dt= $scope.dt1;
-			    if($scope.periodDisplayType == 'Week'){
-			    	$scope.dateFormat= "yyyy-MM-dd"
-			    }
-			}
 			return	UserFormFactory.isLoggedIn()
             .then(function(result){
             	if(!result.data){
@@ -1931,8 +1931,8 @@
 			$scope.closeSundaysTable = function(date) {
             	$scope.sundaysTable = false;
             	$scope.sundays = [];
-            	if(( $scope.reportCategory == 'Kilkari Reports') &&  ($scope.report.name.toLowerCase().indexOf(("rejected").toLowerCase()) > -1)  ){
-            	$scope.dt = new Date($scope.dt.getFullYear(),$scope.dt.getMonth(),date);}
+//            	if(( $scope.reportCategory == 'Kilkari Reports') &&  ($scope.report.name.toLowerCase().indexOf(("rejected").toLowerCase()) > -1)  ){
+//            	$scope.dt = new Date($scope.dt.getFullYear(),$scope.dt.getMonth(),date);}
             	if($scope.showWeekTable()){
             	$scope.dt1 = new Date($scope.dt1.getFullYear(),$scope.dt1.getMonth(),date);}
             	$scope.wasSundaySelected = true;
