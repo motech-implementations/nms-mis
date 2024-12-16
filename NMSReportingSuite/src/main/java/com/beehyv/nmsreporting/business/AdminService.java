@@ -42,9 +42,9 @@ public interface AdminService {
 
   void createSpecificReport(ReportRequest reportRequest);
 
-  void createChildImportRejectedFiles(Date toDate);
+  void createChildImportRejectedFiles(int relativeMonth, boolean isWeekly);
 
-  void createMotherImportRejectedFiles(Date toDate);
+  void createMotherImportRejectedFiles(int relativeMonth, boolean isWeekly);
 
   void createFlwImportRejectedFiles(Date toDate);
 

@@ -334,7 +334,7 @@ public class Reports {
             "\t\t</div>\n" +
             "\n" +
             "\t\t<div class=\"row\">\n" +
-            "\t\t\t<div class=\"block reports-body loading\" data-ng-if=\"waiting && isAggregateReport()\">\n" +
+            "\t\t\t<div class=\"block reports-body loading\" data-ng-if=\"waiting && (isAggregateReport() && (report.name != 'Mother Rejected Records' && report.name !='Child Rejected Records'))\">\n" +
             "\t\t\t\t<img alt=\"page loading\" src=\"images/pageloader.gif\">\n" +
             "\t\t\t\t<p>Aggregate Report is being generated...</p>\n" +
             "\t\t\t</div>\n" +
@@ -384,7 +384,7 @@ public class Reports {
             "\n" +
             "\t\t</div>\n" +
             "\n" +
-            "\t\t<div class=\"block reports-body loading\" data-ng-if=\"waiting && !isAggregateReport()\">\n" +
+            "\t\t<div class=\"block reports-body loading\" data-ng-if=\"waiting && (!isAggregateReport() || (report.name == 'Mother Rejected Records' || report.name =='Child Rejected Records'))\">\n" +
             "\t\t\t<img alt=\"page loading\" src=\"images/pageloader.gif\">\n" +
             "\t\t\t<p>Report is being generated...</p>\n" +
             "\t\t</div>\n" +
