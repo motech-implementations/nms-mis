@@ -8,7 +8,8 @@
   "dependencies": {
     "angularjs-crypto": "^1.4.0",
     "angular-cryptography": "^1.0.1",
-    "angular" : "1.8.3"
+    "angular" : "1.8.3",
+    "angular-idle-service": "1.0.3"
   },
   "resolutions": {
     "angular": "1.8.3"
