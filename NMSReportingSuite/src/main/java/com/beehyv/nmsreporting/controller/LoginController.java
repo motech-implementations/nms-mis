@@ -53,7 +53,7 @@ public class LoginController extends HttpServlet{
     protected String returnLoginView(Model model, @ModelAttribute LoginUser loginUser) {
 //        System.out.println("\n\n" + SecurityUtils.getSubject().getSession()+ "!!!!!!!!!!!\n\n");
         ensureUserIsLoggedOut();
-        return "redirect:"+ retrieveUiAddress() +"login";
+        return "redirect:"+ retrieveUiAddress() ;
     }
 
     @ResponseBody

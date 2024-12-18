@@ -29,7 +29,7 @@ public class TimeOutFilter implements Filter {
             chain.doFilter(request, response);
         } else {
             System.out.println("Has timed out");
-            req.getRequestDispatcher(retrieveUiAddress() +"login").forward(request, response);
+            req.getRequestDispatcher(retrieveUiAddress()).forward(request, response);
         }
     }
 

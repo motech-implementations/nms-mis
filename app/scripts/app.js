@@ -92,7 +92,13 @@ var nmsReportsApp = angular.module('nmsReports', ['vcRecaptcha','ui.bootstrap', 
     ])
 
 
-    .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$idleProvider', function($stateProvider, $urlRouterProvider, $httpProvider, $idleProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$idleProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $httpProvider, $idleProvider, $locationProvider) {
+
+          $locationProvider.html5Mode({
+                     enabled: true,
+                     requireBase: false
+                 });
+
         $stateProvider.state('userManagement', {
             url: '/userManagement',
             abstract: true,

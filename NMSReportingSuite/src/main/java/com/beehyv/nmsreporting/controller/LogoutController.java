@@ -24,6 +24,6 @@ public class LogoutController extends AbstractController{
     @RequestMapping(method = RequestMethod.POST)
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
         SecurityUtils.getSubject().logout();
-        return new ModelAndView("redirect:"+ retrieveUiAddress() +"login");
+        return new ModelAndView("redirect:"+ retrieveUiAddress());
     }
 }
