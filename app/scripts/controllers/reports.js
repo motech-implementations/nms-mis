@@ -1232,7 +1232,7 @@
 
 			    if(!$scope.isCircleReport() ){
 
-			    	if(!$scope.isAggregateReport())
+			    	if(!$scope.isAggregateReport() || ( $scope.report && $scope.report.name.toLowerCase().indexOf(("rejected").toLowerCase())  > -1 ) )
 			    	{
                         if($scope.state != null){
                             reportRequest.stateId = $scope.state.stateId;
