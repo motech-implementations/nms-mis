@@ -41,7 +41,7 @@ public class SmsServiceImpl implements SmsService {
     @Autowired
     private FrontLineWorkersDao frontLineWorkersDao;
 
-    public SmsServiceImpl(MACourseCompletionDao maCourseCompletionDao) {
+    public void setMACourseCompletionDao(MACourseCompletionDao maCourseCompletionDao) {
         this.maCourseCompletionDao = maCourseCompletionDao;
     }
 

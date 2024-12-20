@@ -65,7 +65,8 @@ public class SmsServiceImplTest {
         PowerMockito.when(Global.getProperty("sms.authentication.key")).thenReturn("don'tsaythemagicword");
         PowerMockito.when(Global.getProperty("endpoint")).thenReturn("http://stagesmsapi.nationalmhealth.in/smsmessaging/v1/outbound/nmssenderid/requests-dummy");
 
-        smsService = new SmsServiceImpl(maCourseCompletionDao);
+        smsService = new SmsServiceImpl();
+        smsService.setMACourseCompletionDao(maCourseCompletionDao);
     }
 
     @Test
