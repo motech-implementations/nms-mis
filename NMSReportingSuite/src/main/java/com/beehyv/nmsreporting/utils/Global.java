@@ -212,6 +212,14 @@ public  final class Global {
         return message;
     }
 
+    public static String retrieveAshaCourseCompletionMessageType(long languageId) {
+        String message = getProperty("sms.asha.default.message.type." + languageId);
+        if (message == null) {
+            message = getProperty("sms.asha.default.message.type");
+        }
+        return message;
+    }
+
     public static String retrieveAshaCertificateDownloadPageUrl() {
         return getProperty("sms.asha.certificate.download.url");
     }

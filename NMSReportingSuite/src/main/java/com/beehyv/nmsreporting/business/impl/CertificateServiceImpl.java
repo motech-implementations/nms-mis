@@ -425,7 +425,7 @@ public class CertificateServiceImpl implements CertificateService {
         String messageContent = buildOTPMessage(languageId, otp);
 
         MACourseCompletion maCourseCompletion = maCourseCompletionDao.getAshaByFLWId(maCourseFirstCompletion.getFlwId());
-        return sendOTPMessage(maCourseCompletion, maCourseFirstCompletion, messageContent);
+        return sendOTPMessage(maCourseCompletion, maCourseFirstCompletion, messageContent, languageId);
     }
 
     private int generateRandomSixDigitOTP() {
@@ -450,8 +450,8 @@ public class CertificateServiceImpl implements CertificateService {
         return messageTemplate.replace("<OTP>", String.valueOf(otp));
     }
 
-    private String sendOTPMessage(MACourseCompletion maCourseCompletion, MACourseFirstCompletion maCourseFirstCompletion, String messageContent) {
-        String template = smsService.buildOTPSMS(maCourseFirstCompletion, messageContent);
+    private String sendOTPMessage(MACourseCompletion maCourseCompletion, MACourseFirstCompletion maCourseFirstCompletion, String messageContent, long languageId) {
+        String template = smsService.buildOTPSMS(maCourseFirstCompletion, messageContent, languageId);
         logger.info("SMS Template: {}", template);
         return smsService.sendSms(maCourseCompletion, template);
     }

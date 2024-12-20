@@ -9,5 +9,5 @@ public interface SmsService {
 
      String buildCertificateSMS(CourseCompletionDTO courseCompletionDTO, String message_content);
 
-     String buildOTPSMS(MACourseFirstCompletion maCourseFirstCompletion, String message_content);
+     String buildOTPSMS(MACourseFirstCompletion maCourseFirstCompletion, String message_content, long languageId);
 }
