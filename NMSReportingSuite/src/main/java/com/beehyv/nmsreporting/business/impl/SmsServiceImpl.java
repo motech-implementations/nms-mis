@@ -13,14 +13,15 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,6 +40,10 @@ public class SmsServiceImpl implements SmsService {
 
     @Autowired
     private FrontLineWorkersDao frontLineWorkersDao;
+
+    public void setMACourseCompletionDao(MACourseCompletionDao maCourseCompletionDao) {
+        this.maCourseCompletionDao = maCourseCompletionDao;
+    }
 
 
     private String sms_template_id = getProperty("sms.templateId.default");
@@ -119,10 +124,10 @@ public class SmsServiceImpl implements SmsService {
         try {
             phoneNo = courseCompletionDTO.getMobileNumber();
         } catch (NullPointerException e) {
-            LOGGER.info("Phone number does not exist for FLW ID: {}", courseCompletionDTO.getFlwId(), e);
+            LOGGER.info("Phone number does not exist for FLW ID: {}", courseCompletionDTO.getFlwId());
             return null;
         } catch (Exception e) {
-            LOGGER.error("Unexpected error while fetching phone number for FLW ID: {}", courseCompletionDTO.getFlwId(), e);
+            LOGGER.error("Unexpected error while fetching phone number for FLW ID: {}", courseCompletionDTO.getFlwId());
             return null;
         }
 
@@ -136,7 +141,7 @@ public class SmsServiceImpl implements SmsService {
                     StandardCharsets.UTF_8
             );
         } catch (IOException e) {
-            LOGGER.error("Error reading SMS template file", e);
+            LOGGER.error("Error reading SMS template file");
             return null;
         }
 
@@ -149,6 +154,7 @@ public class SmsServiceImpl implements SmsService {
 
         // Replace placeholders in the template
         try {
+            String messageType = retrieveAshaCourseCompletionMessageType(courseCompletionDTO.getLanguageId());
             template = template
                     .replace("<phoneNumber>", String.valueOf(phoneNo))
                     .replace("<senderId>", senderId)
@@ -156,16 +162,18 @@ public class SmsServiceImpl implements SmsService {
                     .replace("<notificationUrl>", callbackEndpoint)
                     .replace("<smsTemplateId>", sms_template_id)
                     .replace("<smsEntityId>", sms_entity_id)
-                    .replace("<smsTelemarketerId>", sms_telemarketer_id);
+                    .replace("<smsTelemarketerId>", sms_telemarketer_id)
+                    .replace("<correlationId>", DateTime.now().toString())
+                    .replace("<messageType>", messageType);
         } catch (Exception e) {
-            LOGGER.error("Error replacing placeholders in SMS template", e);
+            LOGGER.error("Error replacing placeholders in SMS template");
             return null;
         }
 
         return template;
     }
 
-    public String buildOTPSMS(MACourseFirstCompletion maCourseFirstCompletion, String messageContent) {
+    public String buildOTPSMS(MACourseFirstCompletion maCourseFirstCompletion, String messageContent, long languageId) {
         long phoneNumber;
         String template = null;
 
@@ -175,7 +183,7 @@ public class SmsServiceImpl implements SmsService {
         try {
             phoneNumber = maCourseCompletionDao.getAshaPhoneNo(maCourseFirstCompletion.getFlwId());
         } catch (NullPointerException e) {
-            LOGGER.error("Phone number not found for FLW ID: {}", maCourseFirstCompletion.getFlwId(), e);
+            LOGGER.error("Phone number not found for FLW ID: {}", maCourseFirstCompletion.getFlwId());
             return null;
         }
 
@@ -189,22 +197,25 @@ public class SmsServiceImpl implements SmsService {
                     StandardCharsets.UTF_8
             );
         } catch (IOException e) {
-            LOGGER.error("Error reading SMS template file.", e);
+            LOGGER.error("Error reading SMS template file");
             return null;
         }
 
         // Populate SMS template
         try {
             String callbackEndpoint = retrieveAshaSMSCallBackEndPoint("OTP");
+            String messageType = retrieveAshaCourseCompletionMessageType(languageId);
             template = template.replace("<phoneNumber>", String.valueOf(phoneNumber))
                     .replace("<senderId>", senderId)
                     .replace("<messageContent>", messageContent)
                     .replace("<notificationUrl>", callbackEndpoint)
                     .replace("<smsTemplateId>", sms_template_id)
                     .replace("<smsEntityId>", sms_entity_id)
-                    .replace("<smsTelemarketerId>", sms_telemarketer_id);
+                    .replace("<smsTelemarketerId>", sms_telemarketer_id)
+                    .replace("<correlationId>", DateTime.now().toString())
+                    .replace("<messageType>", messageType);
         } catch (Exception e) {
-            LOGGER.error("Error populating SMS template.", e);
+            LOGGER.error("Error populating SMS template.");
             return null;
         }
 
