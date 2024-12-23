@@ -47,6 +47,7 @@ public class SmsServiceImpl implements SmsService {
 
 
     private String sms_template_id = getProperty("sms.templateId.default");
+    private String sms_otp_template_id = getProperty("sms.otp.templateId.default");
     private String sms_entity_id = getProperty("sms.entityId.default");
     private String sms_telemarketer_id = getProperty("sms.telemarketerId.default");
     private String senderId = getProperty("senderid");
@@ -209,7 +210,7 @@ public class SmsServiceImpl implements SmsService {
                     .replace("<senderId>", senderId)
                     .replace("<messageContent>", messageContent)
                     .replace("<notificationUrl>", callbackEndpoint)
-                    .replace("<smsTemplateId>", sms_template_id)
+                    .replace("<smsTemplateId>", sms_otp_template_id)
                     .replace("<smsEntityId>", sms_entity_id)
                     .replace("<smsTelemarketerId>", sms_telemarketer_id)
                     .replace("<correlationId>", DateTime.now().toString())
