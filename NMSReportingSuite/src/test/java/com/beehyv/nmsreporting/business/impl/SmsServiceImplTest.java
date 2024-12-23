@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
+import static com.beehyv.nmsreporting.utils.Global.getProperty;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -57,11 +58,11 @@ public class SmsServiceImplTest {
         PowerMockito.mockStatic(FileUtils.class);
 
         PowerMockito.mockStatic(HttpClientBuilder.class);
-
+        PowerMockito.when(Global.getProperty("sms.otp.templateId.default")).thenReturn("1007689146828763356");
         PowerMockito.when(Global.getProperty("sms.templateId.default")).thenReturn("1007163065348946395");
         PowerMockito.when(Global.getProperty("sms.entityId.default")).thenReturn("1301159100860122510");
         PowerMockito.when(Global.getProperty("sms.telemarketerId.default")).thenReturn("1001096933494158");
-        PowerMockito.when(Global.getProperty("senderid")).thenReturn("nmsfoobar");
+        PowerMockito.when(Global.getProperty("senderid")).thenReturn("HEALTH");
         PowerMockito.when(Global.getProperty("sms.authentication.key")).thenReturn("don'tsaythemagicword");
         PowerMockito.when(Global.getProperty("endpoint")).thenReturn("http://stagesmsapi.nationalmhealth.in/smsmessaging/v1/outbound/nmssenderid/requests-dummy");
 
@@ -183,10 +184,10 @@ public class SmsServiceImplTest {
         // Validate the populated template
         assertNotNull(result);
         assertTrue(result.contains("tel: 1234567890"));
-        assertTrue(result.contains("tel: nmsfoobar"));
+        assertTrue(result.contains("tel: HEALTH"));
         assertTrue(result.contains("Test OTP Message"));
         assertTrue(result.contains("https://kma.mohfw.gov.in/NMSReportingSuite/nms/deliveryNotification/otp"));
-        assertTrue(result.contains("1007163065348946395"));
+        assertTrue(result.contains("1007689146828763356"));
         assertTrue(result.contains("1301159100860122510"));
         assertTrue(result.contains("1001096933494158"));
     }
@@ -299,7 +300,7 @@ public class SmsServiceImplTest {
         assertNotNull(result);
         assertTrue(result.contains(String.valueOf(phoneNumber)));
         assertTrue(result.contains(messageContent));
-        assertTrue(result.contains("tel: nmsfoobar"));
+        assertTrue(result.contains("tel: HEALTH"));
         assertTrue(result.contains("Congratulations on completing the course!"));
         assertTrue(result.contains("1"));
         assertTrue(result.contains("1007163065348946395"));
