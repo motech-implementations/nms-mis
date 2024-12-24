@@ -41,14 +41,11 @@ public class SmsServiceImplTest {
     @Mock
     private MACourseCompletion maCourseCompletion;
 
-
-
     @Mock
     private CloseableHttpClient httpClient;
 
     @Mock
     private CloseableHttpResponse httpResponse;
-
 
     private SmsServiceImpl smsService;
 
@@ -59,7 +56,7 @@ public class SmsServiceImplTest {
 
         PowerMockito.mockStatic(HttpClientBuilder.class);
         PowerMockito.when(Global.getProperty("sms.otp.templateId.default")).thenReturn("1007689146828763356");
-        PowerMockito.when(Global.getProperty("sms.templateId.default")).thenReturn("1007163065348946395");
+//        PowerMockito.when(Global.getProperty("sms.templateId.default")).thenReturn("1007163065348946395");
         PowerMockito.when(Global.getProperty("sms.entityId.default")).thenReturn("1301159100860122510");
         PowerMockito.when(Global.getProperty("sms.telemarketerId.default")).thenReturn("1001096933494158");
         PowerMockito.when(Global.getProperty("senderid")).thenReturn("HEALTH");
@@ -175,7 +172,6 @@ public class SmsServiceImplTest {
 
         PowerMockito.when(FileUtils.readFileToString(any(File.class), any(Charset.class))).thenReturn(jsonResponse);
         PowerMockito.when(Global.retrieveAshaSMSCallBackEndPoint(anyString())).thenReturn("https://kma.mohfw.gov.in/NMSReportingSuite/nms/deliveryNotification/otp");
-        PowerMockito.when(Global.retrieveAshaCourseCompletionMessageType(anyLong())).thenReturn("0");
         PowerMockito.when(maCourseCompletionDao.getAshaPhoneNo(anyLong())).thenReturn(phoneNumber);
 
         // Execute the method
@@ -274,7 +270,7 @@ public class SmsServiceImplTest {
                 "      \"message\": \"<messageContent>\"\n" +
                 "    },\n" +
                 "    \"clientCorrelator\": \"<correlationId>\",\n" +
-                "    \"messageType\": \"<messageType>\",\n" +
+                "    \"messageType\": \"4\",\n" +
                 "    \"receiptRequest\": {\n" +
                 "      \"notifyURL\": \"<notificationUrl>\",\n" +
                 "      \"callbackData\": \"\"\n" +
@@ -290,8 +286,8 @@ public class SmsServiceImplTest {
 
         PowerMockito.when(Global.retrieveAshaSMSCallBackEndPoint(anyString()))
                 .thenReturn("https://kma.mohfw.gov.in/nms/deliveryNotification/certificateLink");
-        PowerMockito.when(Global.retrieveAshaCourseCompletionMessageType(anyLong()))
-                .thenReturn("0");
+        PowerMockito.when(Global.retrieveAshaCourseCompletionTemplateId(anyLong()))
+                .thenReturn("1007118129107537794");
 
         // Act
         String result = smsService.buildCertificateSMS(courseCompletionDTO, messageContent);
@@ -302,8 +298,8 @@ public class SmsServiceImplTest {
         assertTrue(result.contains(messageContent));
         assertTrue(result.contains("tel: HEALTH"));
         assertTrue(result.contains("Congratulations on completing the course!"));
-        assertTrue(result.contains("1"));
-        assertTrue(result.contains("1007163065348946395"));
+        assertTrue(result.contains("4"));
+        assertTrue(result.contains("1007118129107537794"));
         assertTrue(result.contains("1301159100860122510"));
         assertTrue(result.contains("1001096933494158"));
     }
@@ -360,8 +356,7 @@ public class SmsServiceImplTest {
         PowerMockito.when(Global.retrieveAshaSMSCallBackEndPoint("certificateLink"))
                 .thenReturn("Callback endpoint error");
 
-        PowerMockito.when(Global.retrieveAshaCourseCompletionMessageType(14L))
-                .thenThrow(new RuntimeException("Callback endpoint error"));
+
 
         // Act
         String result = smsService.buildCertificateSMS(courseCompletionDTO, "Some message");

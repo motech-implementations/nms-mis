@@ -46,7 +46,6 @@ public class SmsServiceImpl implements SmsService {
     }
 
 
-    private String sms_template_id = getProperty("sms.templateId.default");
     private String sms_otp_template_id = getProperty("sms.otp.templateId.default");
     private String sms_entity_id = getProperty("sms.entityId.default");
     private String sms_telemarketer_id = getProperty("sms.telemarketerId.default");
@@ -70,7 +69,8 @@ public class SmsServiceImpl implements SmsService {
 
         try {
             // Set request entity
-            httpRequest.setEntity(new StringEntity(template));
+            StringEntity  entity = new StringEntity(template, StandardCharsets.UTF_8);
+            httpRequest.setEntity(entity);
             LOGGER.info("Entity set for request");
             LOGGER.info("Request URL: {}", httpRequest.getURI().toString());
             LOGGER.info("Request entity: {}", EntityUtils.toString(httpRequest.getEntity()));
@@ -155,17 +155,17 @@ public class SmsServiceImpl implements SmsService {
 
         // Replace placeholders in the template
         try {
-            String messageType = retrieveAshaCourseCompletionMessageType(courseCompletionDTO.getLanguageId());
+            String templateId = retrieveAshaCourseCompletionTemplateId(courseCompletionDTO.getLanguageId());
             template = template
                     .replace("<phoneNumber>", String.valueOf(phoneNo))
                     .replace("<senderId>", senderId)
                     .replace("<messageContent>", messageContent)
                     .replace("<notificationUrl>", callbackEndpoint)
-                    .replace("<smsTemplateId>", sms_template_id)
+                    .replace("<smsTemplateId>", templateId)
                     .replace("<smsEntityId>", sms_entity_id)
                     .replace("<smsTelemarketerId>", sms_telemarketer_id)
                     .replace("<correlationId>", DateTime.now().toString())
-                    .replace("<messageType>", messageType);
+                    .replace("<messageType>", "4");
         } catch (Exception e) {
             LOGGER.error("Error replacing placeholders in SMS template");
             return null;
@@ -205,7 +205,6 @@ public class SmsServiceImpl implements SmsService {
         // Populate SMS template
         try {
             String callbackEndpoint = retrieveAshaSMSCallBackEndPoint("OTP");
-            String messageType = retrieveAshaCourseCompletionMessageType(languageId);
             template = template.replace("<phoneNumber>", String.valueOf(phoneNumber))
                     .replace("<senderId>", senderId)
                     .replace("<messageContent>", messageContent)
@@ -214,7 +213,7 @@ public class SmsServiceImpl implements SmsService {
                     .replace("<smsEntityId>", sms_entity_id)
                     .replace("<smsTelemarketerId>", sms_telemarketer_id)
                     .replace("<correlationId>", DateTime.now().toString())
-                    .replace("<messageType>", messageType);
+                    .replace("<messageType>", "");
         } catch (Exception e) {
             LOGGER.error("Error populating SMS template.");
             return null;
