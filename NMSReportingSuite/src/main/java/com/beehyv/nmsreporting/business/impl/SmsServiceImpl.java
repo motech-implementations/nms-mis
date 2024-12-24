@@ -8,9 +8,10 @@ import com.beehyv.nmsreporting.model.MACourseCompletion;
 import com.beehyv.nmsreporting.model.MACourseFirstCompletion;
 import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.joda.time.DateTime;
@@ -80,19 +81,13 @@ public class SmsServiceImpl implements SmsService {
         }
 
         // Execute the request
-        HttpClient client = HttpClientBuilder.create().build();
-        HttpResponse response;
-        try {
-            LOGGER.info("Executing the request");
-            response = client.execute(httpRequest);
+        try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
+            HttpResponse response = client.execute(httpRequest);
+            LOGGER.info("Request executed, status: {}", response.getStatusLine());
             LOGGER.info("Request executed successfully");
-        } catch (IOException e) {
-            LOGGER.error("Unable to send SMS : Error during HTTP request execution");
-            return "Unable to send SMS";
-        }
 
-        // Process response
-        if (response.getStatusLine().toString().contains("success")) {
+            // Process response
+            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_CREATED || response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
             try {
                 // Get current date in the specified format and timezone
                 TimeZone timeZone = TimeZone.getTimeZone("Asia/Kolkata");
@@ -112,8 +107,12 @@ public class SmsServiceImpl implements SmsService {
             // Update completion details
             maCourseCompletion.setScheduleMessageSent(true);
             maCourseCompletionDao.updateMACourseCompletion(maCourseCompletion);
+            }
+            return "success";
+        } catch (IOException e) {
+            LOGGER.error("Unable to send SMS : Error during HTTP request execution");
+            return "Unable to send SMS";
         }
-        return "success";
     }
 
 
