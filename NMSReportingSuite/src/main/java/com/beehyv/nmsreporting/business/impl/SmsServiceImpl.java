@@ -9,10 +9,12 @@ import com.beehyv.nmsreporting.model.MACourseFirstCompletion;
 import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.util.EntityUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -60,8 +62,11 @@ public class SmsServiceImpl implements SmsService {
     public String sendSms(MACourseCompletion maCourseCompletion, String template) {
         LOGGER.info("template {}", template);
 
-        // Replace senderId in the endpoint
         String resolvedEndpoint = endpoint.replace("senderId", senderId);
+        RequestConfig config = RequestConfig.custom()
+                .setConnectTimeout(10000)
+                .setSocketTimeout(10000)
+                .build();
 
         // Create HTTP POST request
         HttpPost httpRequest = new HttpPost(resolvedEndpoint);
@@ -70,8 +75,11 @@ public class SmsServiceImpl implements SmsService {
 
         try {
             // Set request entity
-            StringEntity  entity = new StringEntity(template, StandardCharsets.UTF_8);
+            StringEntity entity = new StringEntity(template, StandardCharsets.UTF_8);
+            entity.setContentType("application/json");
             httpRequest.setEntity(entity);
+            httpRequest.setHeader("Content-Type", "application/json");
+
             LOGGER.info("Entity set for request");
             LOGGER.info("Request URL: {}", httpRequest.getURI().toString());
             LOGGER.info("Request entity: {}", EntityUtils.toString(httpRequest.getEntity()));
@@ -80,8 +88,15 @@ public class SmsServiceImpl implements SmsService {
             return "Unable to send";
         }
 
-        // Execute the request
-        try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
+        // Set up connection pooling and use it to create an HttpClient
+        PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
+        cm.setMaxTotal(20);
+        cm.setDefaultMaxPerRoute(2);
+
+        try (CloseableHttpClient client = HttpClientBuilder.create()
+                .setDefaultRequestConfig(config)
+                .setConnectionManager(cm)
+                .build()) {
             HttpResponse response = client.execute(httpRequest);
             LOGGER.info("Request executed, status: {}", response.getStatusLine());
             LOGGER.info("Request executed successfully");
@@ -110,6 +125,7 @@ public class SmsServiceImpl implements SmsService {
             }
             return "success";
         } catch (IOException e) {
+            LOGGER.info(e.getMessage());
             LOGGER.error("Unable to send SMS : Error during HTTP request execution");
             return "Unable to send SMS";
         }
