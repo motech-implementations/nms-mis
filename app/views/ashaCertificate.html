@@ -38,7 +38,7 @@
                         required >
                 <input
                         style="height : 40px; margin-left: 8px; margin-bottom: 3px; padding: 8px 12px;"
-                        ng-disabled="!mobile_number || mobile_number.toString().length !== 10 || (countdownMessage && countdownMessage.trim() !== '')"
+                        ng-disabled="!mobile_number || mobile_number.toString().length !== 10 || (countdownMessage && countdownMessage.trim() !== '') || !isCaptchaVerified"
                         type="button"
                         class="btn btn-sm btn-success"
                         name="getOTPButton"
@@ -54,7 +54,7 @@
         </div>
 
         <div>
-            <div vc-recaptcha key="'6LcJgYgUAAAAANaRqYM6UFUaY8H3pPUTK6Tt1qsL'"></div>
+            <div vc-recaptcha key="'6LcJgYgUAAAAANaRqYM6UFUaY8H3pPUTK6Tt1qsL'" ng-model="isCaptchaVerified"></div>
         </div>
 
         <div>
