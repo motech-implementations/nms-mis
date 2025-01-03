@@ -7,19 +7,23 @@ import com.beehyv.nmsreporting.model.MACourseFirstCompletion;
 import com.beehyv.nmsreporting.utils.Global;
 import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.ParseException;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -34,6 +38,7 @@ import static org.mockito.Mockito.*;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Global.class,FileUtils.class, HttpClientBuilder.class})
+@PowerMockIgnore({ "javax.net.ssl.*", "javax.security.*" })
 public class SmsServiceImplTest {
 
     @Mock
@@ -68,22 +73,29 @@ public class SmsServiceImplTest {
         smsService.setMACourseCompletionDao(maCourseCompletionDao);
     }
 
-    @Ignore
+
     @Test
     public void testSendSms_Success() throws IOException, ParseException {
         // Arrange
         String template = "{\"message\": \"Test SMS\"}";
 
+        // Mock HttpClient and its dependencies
+        CloseableHttpClient httpClient = mock(CloseableHttpClient.class);
         HttpClientBuilder httpClientBuilder = mock(HttpClientBuilder.class);
+        CloseableHttpResponse httpResponse = mock(CloseableHttpResponse.class);
+        StatusLine statusLine = mock(StatusLine.class);
 
-        when(HttpClientBuilder.create()).thenReturn(httpClientBuilder);
+
+        // Mock HttpClientBuilder behavior
+        PowerMockito.when(HttpClientBuilder.create()).thenReturn(httpClientBuilder);
         when(httpClientBuilder.build()).thenReturn(httpClient);
+
+        // Mock HttpResponse behavior
         when(httpClient.execute(any(HttpPost.class))).thenReturn(httpResponse);
 
         // Mock response status line
-        StatusLine statusLine = mock(StatusLine.class);
         when(httpResponse.getStatusLine()).thenReturn(statusLine);
-        when(statusLine.toString()).thenReturn("HTTP/1.1 200 success");
+        when(statusLine.getStatusCode()).thenReturn(HttpStatus.SC_OK);
 
         // Act
         String result = smsService.sendSms(maCourseCompletion, template);
@@ -94,8 +106,8 @@ public class SmsServiceImplTest {
         verify(maCourseCompletionDao).updateMACourseCompletion(maCourseCompletion);
     }
 
+
     @Test
-    @Ignore
     public void testSendSms_HttpRequestError() throws IOException {
         // Arrange
         String template = "{\"message\": \"Test SMS\"}";
@@ -116,7 +128,6 @@ public class SmsServiceImplTest {
     }
 
 
-    @Ignore
     @Test(expected = ParseException.class)
     public void testSendSms_ParseException() throws IOException, ParseException {
         // Arrange
@@ -130,7 +141,7 @@ public class SmsServiceImplTest {
 
         StatusLine statusLine = mock(StatusLine.class);
         when(httpResponse.getStatusLine()).thenReturn(statusLine);
-        when(httpResponse.getStatusLine().toString()).thenReturn("HTTP/1.1 200 success");
+        when(httpResponse.getStatusLine().getStatusCode()).thenReturn(HttpStatus.SC_OK);
         doThrow(new ParseException()).when(maCourseCompletion).setLastModifiedDate(any());
 
         // Act
