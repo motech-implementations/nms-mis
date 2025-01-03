@@ -46,15 +46,18 @@
                         value="Request OTP">
             </div>
 
-            <p ng-if="mobile_number && mobile_number.length !== 10" style="color: red;">
-                Mobile number must be 10 digits.
-            </p>
+            <span ng-if="mobile_number && mobile_number.length !== 10" style="color: red;">
+                *Mobile number must be 10 digits.
+            </span>
 
             <p>{{countdownMessage}}</p>
         </div>
 
         <div>
             <div vc-recaptcha key="'6LcJgYgUAAAAANaRqYM6UFUaY8H3pPUTK6Tt1qsL'" ng-model="isCaptchaVerified"></div>
+            <span ng-if="mobile_number && mobile_number.length == 10 && !isCaptchaVerified" style="align-items: flex-start; display: flex; color: red;">
+                *Enter Captcha for OTP.
+            </span>
         </div>
 
         <div>
@@ -84,8 +87,7 @@
                     class="btn btn-sm btn-primary"
                     name="newUser"
                     data-ng-click="getAshaCertificate()"
-                    value="Get Certificate"
-                    ng-disabled="!certificate_otp">
+                    value="Get Certificate">
         </div>
 
         <div class="block reports-body" data-ng-if="errorMessage && message !== 'success'">
