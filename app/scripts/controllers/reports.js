@@ -242,6 +242,15 @@
                 }
             }
 
+            $scope.downloadReport = function () {
+                console.log("Captcha resolved:", $scope.getCaptchaResolved());
+
+                if ($scope.getCaptchaResolved()) {
+                   const url = $scope.downloadReportUrl;
+                   window.location.href = url;
+                }
+            };
+
             $scope.getStatesForCerti = function(){
 
                     return UserFormFactory.getStates()
