@@ -1,0 +1,66 @@
+name: Build and Deploy to Staging
+
+on:
+  push:
+    branches:
+      - sms-properties-changes
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Check out the code
+    - name: Checkout Code
+	       uses: actions/checkout@v3
+
+    # Step 2: Set up Java
+    - name: Set up JDK
+	       uses: actions/setup-java@v3
+	       with:
+	      java-version: '8' # Specify your Java version
+
+    # Step 3: Build the JAR
+    - name: Build with Maven
+      	       run: mvn clean intsall
+      	  
+      	  # Step 4 : shutdown tomcat if it is started     
+  - name: Shutdown Tomcat if it is up
+	  uses: appleboy/ssh-action@v0.1.6
+	  with:
+	    host: ${{ secrets.STAGING_HOST }}
+	    username: ${{ secrets.STAGING_USER }}
+	    key: ${{ secrets.STAGING_KEY }}
+	    script: |
+	   if pgrep -f "org.apache.catalina.startup.Bootstrap" > /dev/null; then
+			echo "Tomcat is running. Shutting it down..."
+			sh /usr/local/tomcat/apache-tomcat-7.0.108/bin/shutdown.sh
+	      else
+			echo "Tomcat is not running."
+	      fi
+
+    # Step 5: Deploy to Staging Server
+    - name: Deploy to Staging
+		uses: appleboy/scp-action@v0.1.4
+		with:
+		host: ${{ secrets.STAGING_HOST }}
+		username: ${{ secrets.STAGING_USER }}
+		key: ${{ secrets.STAGING_KEY }}
+		source: "NMSReportingSuite/target/*.war"
+		target: /usr/local/tomcat/apache-tomcat-7.0.108/webapps
+
+    # Step 6: Restart Application (if needed)
+    - name: Restart tomcat
+      		uses: appleboy/ssh-action@v0.1.6
+      		with:
+        	host: ${{ secrets.STAGING_HOST }}
+        	username: ${{ secrets.STAGING_USER }}
+        	key: ${{ secrets.STAGING_KEY }}
+        	script: |
+          if ! pgrep -f "org.apache.catalina.startup.Bootstrap" > /dev/null; then
+			    	echo "Tomcat is not running. Starting it up..."
+			    	sh /usr/local/tomcat/apache-tomcat-7.0.108/bin/startup.sh
+			else
+			    	echo "Tomcat is already running."
+			fi
+
