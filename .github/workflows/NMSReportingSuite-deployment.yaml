@@ -23,7 +23,12 @@ jobs:
       - name: Build with Maven
         run: mvn clean install -f NMSReportingSuite/pom.xml
 
-      # Step 4: Build FrontEnd JS files
+      # Step 4: Install Grunt CLI
+      - name: Install Grunt CLI
+        run: |
+         npm install -g grunt-cli
+
+      # Step 5: Build FrontEnd files
       - name: Install Frontend Dependencies and Build with Grunt
         run: |
             cd app
