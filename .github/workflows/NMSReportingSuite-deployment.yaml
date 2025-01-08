@@ -29,7 +29,7 @@ jobs:
         with:
           host: ${{ secrets.STAGING_HOST }}
           username: ${{ secrets.STAGING_USER }}
-          key: ${{ secrets.STAGING_PASSWORD }}
+          password: ${{ secrets.STAGING_PASSWORD }}
           script: |
             if pgrep -f "org.apache.catalina.startup.Bootstrap" > /dev/null; then
               echo "Tomcat is running. Shutting it down..."
@@ -44,7 +44,7 @@ jobs:
         with:
           host: ${{ secrets.STAGING_HOST }}
           username: ${{ secrets.STAGING_USER }}
-          key: ${{ secrets.STAGING_PASSWORD }}
+          password: ${{ secrets.STAGING_PASSWORD }}
           source: "NMSReportingSuite/target/*.war"
           target: /usr/local/tomcat/apache-tomcat-7.0.108/webapps
 
@@ -54,7 +54,7 @@ jobs:
         with:
           host: ${{ secrets.STAGING_HOST }}
           username: ${{ secrets.STAGING_USER }}
-          key: ${{ secrets.STAGING_PASSWORD }}
+          password: ${{ secrets.STAGING_PASSWORD }}
           script: |
             if ! pgrep -f "org.apache.catalina.startup.Bootstrap" > /dev/null; then
               echo "Tomcat is not running. Starting it up..."
