@@ -45,6 +45,10 @@ jobs:
           name: my-artifact
           path: |
             NMSReportingSuite/target/*.war
-            app/*
+            app/index.html
+            app/scripts/
+            app/views/
+            app/styles/
+            app/dist/
 
 
