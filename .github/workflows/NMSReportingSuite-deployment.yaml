@@ -35,8 +35,9 @@ jobs:
       # Step 5: Build FrontEnd files
       - name: Install Frontend Dependencies and Build with Grunt
         run: |
-            cd app
-            grunt package
+          cd app
+          npm install
+          grunt package
 
       # Step 5: Download Action Button
       - uses: actions/upload-artifact@v4
