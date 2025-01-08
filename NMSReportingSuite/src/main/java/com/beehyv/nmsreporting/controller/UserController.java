@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.ParseException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -2050,17 +2051,23 @@ public class UserController {
         return certificateService.getCertificate( msisdn, otp);
 
     }
-    @RequestMapping(value = "asha/generateOTP", method = RequestMethod.GET)
+
+    @RequestMapping(value = "asha/generateOTP", method = RequestMethod.POST)
     @ResponseBody
-    public Object generateOTPToDownloadCertificate( @RequestParam Long  msisdn) throws Exception {
+    public ResponseEntity<Object> generateOTPToDownloadCertificate(@RequestBody OTPRequest request) throws Exception {
 
-        Matcher matcher = Pattern.compile("\\d{10}").matcher(msisdn.toString());
-        if(!matcher.matches()) {
-            return "Invalid phone number";
+        LOGGER.info("Incoming request to generate OTP for MSISDN: {}", request.getMsisdn());
+        if (new ServiceFunctions().validateCaptcha(request.getCaptchaResponse()).equals("success")) {
+            LOGGER.info("CAPTCHA IS Successfully verified");
+            Matcher matcher = Pattern.compile("\\d{10}").matcher(request.getMsisdn().toString());
+            if (!matcher.matches()) {
+                return ResponseEntity.badRequest().body("Invalid phone number");
+            }
+            return ResponseEntity.ok(certificateService.generateOTPForAshaCertificate(request.getMsisdn()));
+        } else {
+            LOGGER.info("CAPTCHA validation failed");
+            return ResponseEntity.badRequest().body("Invalid CAPTCHA");
         }
-
-        return certificateService.generateOTPForAshaCertificate(msisdn);
-
     }
 
     @RequestMapping(value = "/downloadCertificate", method = RequestMethod.GET,produces = "application/pdf")
