@@ -21,7 +21,7 @@ jobs:
 
       # Step 3: Build the JAR
       - name: Build with Maven
-        run: mvn clean install
+        run: mvn clean install -f NMSReportingSuite/pom.xml
 
       # Step 4: Shutdown Tomcat if it is started
       - name: Shutdown Tomcat if it is up
