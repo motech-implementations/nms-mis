@@ -269,7 +269,16 @@
                     $scope.currentUser = UserFormFactory.getCurrentUser();
                 });
                 if (!($scope.disableCursor())){
-                    $state.go('ashaCertificate', {pageNum: 1});
+                    $state.go('ashaCertificate', {pageNum: 1}).then(function() {
+                       if (window.innerWidth <= 480) {
+                             var formContainer = document.querySelector('.form-container');
+                             if (formContainer) {
+                             formContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                             } else{
+                             console.log("Form container not available");
+                             }
+                       }
+                    });
                 }
                 $scope.removed();
             }
