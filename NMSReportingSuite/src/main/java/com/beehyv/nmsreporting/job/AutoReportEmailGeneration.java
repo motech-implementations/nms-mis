@@ -62,9 +62,9 @@ public class AutoReportEmailGeneration {
             System.out.println("MA_Course_Completion reports generated");
             adminService.getCumulativeInactiveFiles(toDate);
             System.out.println("MA_Inactive reports generated");
-            adminService.getKilkariSixWeekNoAnswerFiles(fromDate, toDate);
+            adminService.porcessKilkariSixWeekNoAnswerFiles(fromDate, toDate);
             System.out.println("KilkariSixWeekNoAnswer reports generated");
-            adminService.getKilkariLowListenershipDeactivationFiles(fromDate, toDate);
+            adminService.processKilkariLowListenershipDeactivationFiles(fromDate, toDate);
             System.out.println("LowListenershipDeactivation reports generated");
             adminService.getKilkariSelfDeactivationFiles(fromDate, toDate);
             System.out.println("KilkariSelfDeactivation reports generated");

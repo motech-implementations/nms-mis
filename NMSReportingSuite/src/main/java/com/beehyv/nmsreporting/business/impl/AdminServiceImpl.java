@@ -2707,6 +2707,92 @@ public class AdminServiceImpl implements AdminService {
         if(kilkariSixWeeksNoAnswersList.isEmpty()) {
             empinfo.put(counter.toString(), new Object[]{"No Records to display"});
         }
+
+        Set<Integer> stateIds = new HashSet<>();
+        Set<Integer> districtIds = new HashSet<>();
+        Set<Integer> talukaIds = new HashSet<>();
+        Set<Integer> blockIds = new HashSet<>();
+        Set<Integer> healthFacilityIds = new HashSet<>();
+        Set<Integer> healthSubFacilityIds = new HashSet<>();
+        Set<Integer> villageIds = new HashSet<>();
+
+        for (KilkariManualDeactivations kilkariManualDeactivations : kilkariSixWeeksNoAnswersList) {
+            if (kilkariManualDeactivations.getStateId() != null) stateIds.add(kilkariManualDeactivations.getStateId());
+            if (kilkariManualDeactivations.getDistrictId() != null) districtIds.add(kilkariManualDeactivations.getDistrictId());
+            if (kilkariManualDeactivations.getTalukaId() != null) talukaIds.add(kilkariManualDeactivations.getTalukaId());
+            if (kilkariManualDeactivations.getBlockId() != null) blockIds.add(kilkariManualDeactivations.getBlockId());
+            if (kilkariManualDeactivations.getHcenterId() != null) healthFacilityIds.add(kilkariManualDeactivations.getHcenterId());
+            if (kilkariManualDeactivations.getHsubcenterId() != null) healthSubFacilityIds.add(kilkariManualDeactivations.getHsubcenterId());
+            if (kilkariManualDeactivations.getVillageId() != null) villageIds.add(kilkariManualDeactivations.getVillageId());
+        }
+
+        Map<Integer, String> stateMap = new HashMap<>();
+        Map<Integer, String> districtMap = new HashMap<>();
+        Map<Integer, String> talukaMap = new HashMap<>();
+        Map<Integer, String> blockMap = new HashMap<>();
+        Map<Integer, String> healthFacilityMap = new HashMap<>();
+        Map<Integer, String> healthSubFacilityMap = new HashMap<>();
+        Map<Integer, String> villageMap = new HashMap<>();
+
+        if (stateIds != null && !stateIds.isEmpty()) {
+            List<State> states = stateDao.findByIds(stateIds);
+
+            for (State state : states) {
+                stateMap.put(state.getStateId(), state.getStateName());
+                logger.info("this is state id: {}",state);
+            }
+        }
+
+        if (districtIds != null && !districtIds.isEmpty()) {
+            List<District> districts = districtDao.findByIds(districtIds);
+
+            for (District district : districts) {
+                districtMap.put(district.getDistrictId(), district.getDistrictName());
+            }
+        }
+
+        if (talukaIds != null && !talukaIds.isEmpty()) {
+            List<Taluka> talukas = talukaDao.findByIds(talukaIds);
+
+            for (Taluka taluka : talukas) {
+                talukaMap.put(taluka.getTalukaId(), taluka.getTalukaName());
+            }
+        }
+
+        if (blockIds != null && !blockIds.isEmpty()) {
+            List<Block> blocks = blockDao.findByIds(blockIds);
+
+            for (Block block : blocks) {
+                blockMap.put(block.getBlockId(), block.getBlockName());
+            }
+        }
+
+        if (healthFacilityIds != null && !healthFacilityIds.isEmpty()) {
+            List<HealthFacility> healthFacilities = healthFacilityDao.findByIds(healthFacilityIds);
+
+            for (HealthFacility healthFacility : healthFacilities) {
+                healthFacilityMap.put(healthFacility.getHealthFacilityId(), healthFacility.getHealthFacilityName());
+            }
+        }
+
+        if (healthSubFacilityIds != null && !healthSubFacilityIds.isEmpty()) {
+            List<HealthSubFacility> healthSubFacilities = healthSubFacilityDao.findByIds(healthSubFacilityIds);
+
+            for (HealthSubFacility healthSubFacility : healthSubFacilities) {
+                healthSubFacilityMap.put(healthSubFacility.getHealthSubFacilityId(), healthSubFacility.getHealthSubFacilityName());
+            }
+        }
+
+        if (villageIds != null && !villageIds.isEmpty()) {
+            List<Village> villages = villageDao.findByVillageIds(villageIds);
+
+            for (Village village : villages) {
+                villageMap.put(village.getVillageId(), village.getVillageName());
+            }
+        }
+
+        logger.info("before kilkari loop and fetched all the locations");
+
         for (KilkariManualDeactivations kilkari : kilkariSixWeeksNoAnswersList) {
             empinfo.put((counter.toString()), new Object[]{
                     counter-1,
@@ -2714,15 +2800,13 @@ public class AdminServiceImpl implements AdminService {
                     (kilkari.getMctsId() == null) ? "No MCTS Id" : kilkari.getMctsId(),
                     (kilkari.getRchId() == null) ? "No RCH Id" : kilkari.getRchId(),
                     (kilkari.getMsisdn() == null) ? "No MSISDN" : kilkari.getMsisdn(),
-                    (kilkari.getStateId() == null) ? "No State" : stateDao.findByStateId(kilkari.getStateId()).getStateName(),
-                    (kilkari.getDistrictId() == null) ? "No District" : districtDao.findByDistrictId(kilkari.getDistrictId()).getDistrictName(),
-//                    (kilkari.getVillageId() == null) ? "No Taluka" : talukaDao.findByTalukaId(villageDao.findByVillageId(kilkari.getVillageId()).getTalukaOfVillage()).getTalukaName(),
-                    (kilkari.getTalukaId() == null) ? "No Taluka" : talukaDao.findByTalukaId(kilkari.getTalukaId()).getTalukaName(),
-                    (kilkari.getBlockId() == null) ? "No Block" : blockDao.findByblockId(kilkari.getBlockId()).getBlockName(),
-//                    (kilkari.getHsubcenterId() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthFacilityOfHealthSubFacility()).getHealthFacilityName(),
-                    (kilkari.getHcenterId() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(kilkari.getHcenterId()).getHealthFacilityName(),
-                    (kilkari.getHsubcenterId() == null) ? "No Health Subfacility" : healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthSubFacilityName(),
-                    (kilkari.getVillageId() == null) ? "No Village" : villageDao.findByVillageId(kilkari.getVillageId()).getVillageName(),
+                    (kilkari.getStateId() == null) ? "No State" : stateMap.get(kilkari.getStateId()),
+                    (kilkari.getDistrictId() == null) ? "No District" : districtMap.get(kilkari.getDistrictId()),
+                    (kilkari.getTalukaId() == null) ? "No Taluka" : talukaMap.get(kilkari.getTalukaId()),
+                    (kilkari.getBlockId() == null) ? "No Block" : blockMap.get(kilkari.getBlockId()),
+                    (kilkari.getHcenterId() == null) ? "No Health Facility" : healthFacilityMap.get(kilkari.getHcenterId()),
+                    (kilkari.getHsubcenterId() == null) ? "No Health Subfacility" : healthSubFacilityMap.get(kilkari.getHsubcenterId()),
+                    (kilkari.getVillageId() == null) ? "No Village" : villageMap.get(kilkari.getVillageId()),
                     (kilkari.getAgeOnService() == null) ? "No Age_Data" : kilkari.getAgeOnService()
 
             });
@@ -2842,6 +2926,91 @@ public class AdminServiceImpl implements AdminService {
         if(lowListenershipList.isEmpty()) {
             empinfo.put(counter.toString(), new Object[]{"No Records to display"});
         }
+
+        Set<Integer> stateIds = new HashSet<>();
+        Set<Integer> districtIds = new HashSet<>();
+        Set<Integer> talukaIds = new HashSet<>();
+        Set<Integer> blockIds = new HashSet<>();
+        Set<Integer> healthFacilityIds = new HashSet<>();
+        Set<Integer> healthSubFacilityIds = new HashSet<>();
+        Set<Integer> villageIds = new HashSet<>();
+
+        for (KilkariManualDeactivations kilkariManualDeactivations : lowListenershipList) {
+            if (kilkariManualDeactivations.getStateId() != null) stateIds.add(kilkariManualDeactivations.getStateId());
+            if (kilkariManualDeactivations.getDistrictId() != null) districtIds.add(kilkariManualDeactivations.getDistrictId());
+            if (kilkariManualDeactivations.getTalukaId() != null) talukaIds.add(kilkariManualDeactivations.getTalukaId());
+            if (kilkariManualDeactivations.getBlockId() != null) blockIds.add(kilkariManualDeactivations.getBlockId());
+            if (kilkariManualDeactivations.getHcenterId() != null) healthFacilityIds.add(kilkariManualDeactivations.getHcenterId());
+            if (kilkariManualDeactivations.getHsubcenterId() != null) healthSubFacilityIds.add(kilkariManualDeactivations.getHsubcenterId());
+            if (kilkariManualDeactivations.getVillageId() != null) villageIds.add(kilkariManualDeactivations.getVillageId());
+        }
+
+        Map<Integer, String> stateMap = new HashMap<>();
+        Map<Integer, String> districtMap = new HashMap<>();
+        Map<Integer, String> talukaMap = new HashMap<>();
+        Map<Integer, String> blockMap = new HashMap<>();
+        Map<Integer, String> healthFacilityMap = new HashMap<>();
+        Map<Integer, String> healthSubFacilityMap = new HashMap<>();
+        Map<Integer, String> villageMap = new HashMap<>();
+
+        if (stateIds != null && !stateIds.isEmpty()) {
+            List<State> states = stateDao.findByIds(stateIds);
+
+            for (State state : states) {
+                stateMap.put(state.getStateId(), state.getStateName());
+                logger.info("this is state id: {}",state);
+            }
+        }
+
+        if (districtIds != null && !districtIds.isEmpty()) {
+            List<District> districts = districtDao.findByIds(districtIds);
+
+            for (District district : districts) {
+                districtMap.put(district.getDistrictId(), district.getDistrictName());
+            }
+        }
+
+        if (talukaIds != null && !talukaIds.isEmpty()) {
+            List<Taluka> talukas = talukaDao.findByIds(talukaIds);
+
+            for (Taluka taluka : talukas) {
+                talukaMap.put(taluka.getTalukaId(), taluka.getTalukaName());
+            }
+        }
+
+        if (blockIds != null && !blockIds.isEmpty()) {
+            List<Block> blocks = blockDao.findByIds(blockIds);
+
+            for (Block block : blocks) {
+                blockMap.put(block.getBlockId(), block.getBlockName());
+            }
+        }
+
+        if (healthFacilityIds != null && !healthFacilityIds.isEmpty()) {
+            List<HealthFacility> healthFacilities = healthFacilityDao.findByIds(healthFacilityIds);
+
+            for (HealthFacility healthFacility : healthFacilities) {
+                healthFacilityMap.put(healthFacility.getHealthFacilityId(), healthFacility.getHealthFacilityName());
+            }
+        }
+
+        if (healthSubFacilityIds != null && !healthSubFacilityIds.isEmpty()) {
+            List<HealthSubFacility> healthSubFacilities = healthSubFacilityDao.findByIds(healthSubFacilityIds);
+
+            for (HealthSubFacility healthSubFacility : healthSubFacilities) {
+                healthSubFacilityMap.put(healthSubFacility.getHealthSubFacilityId(), healthSubFacility.getHealthSubFacilityName());
+            }
+        }
+
+        if (villageIds != null && !villageIds.isEmpty()) {
+            List<Village> villages = villageDao.findByVillageIds(villageIds);
+
+            for (Village village : villages) {
+                villageMap.put(village.getVillageId(), village.getVillageName());
+            }
+        }
+
+        logger.info("before kilkari loop and fetched all the locations");
         for (KilkariManualDeactivations kilkari : lowListenershipList) {
             empinfo.put((counter.toString()), new Object[]{
                     counter-1,
@@ -2849,13 +3018,13 @@ public class AdminServiceImpl implements AdminService {
                     (kilkari.getMctsId() == null) ? "No MCTS Id" : kilkari.getMctsId(),
                     (kilkari.getRchId() == null) ? "No RCH Id" : kilkari.getRchId(),
                     (kilkari.getMsisdn() == null) ? "No MSISDN" : kilkari.getMsisdn(),
-                    (kilkari.getStateId() == null) ? "No State" : stateDao.findByStateId(kilkari.getStateId()).getStateName(),
-                    (kilkari.getDistrictId() == null) ? "No District" : districtDao.findByDistrictId(kilkari.getDistrictId()).getDistrictName(),
-                    (kilkari.getTalukaId() == null) ? "No Taluka" : talukaDao.findByTalukaId(kilkari.getTalukaId()).getTalukaName(),
-                    (kilkari.getBlockId() == null) ? "No Block" : blockDao.findByblockId(kilkari.getBlockId()).getBlockName(),
-                    (kilkari.getHcenterId() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(kilkari.getHcenterId()).getHealthFacilityName(),
-                    (kilkari.getHsubcenterId() == null) ? "No Health Subfacility" : healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthSubFacilityName(),
-                    (kilkari.getVillageId() == null) ? "No Village" : villageDao.findByVillageId(kilkari.getVillageId()).getVillageName(),
+                    (kilkari.getStateId() == null) ? "No State" : stateMap.get(kilkari.getStateId()),
+                    (kilkari.getDistrictId() == null) ? "No District" : districtMap.get(kilkari.getDistrictId()),
+                    (kilkari.getTalukaId() == null) ? "No Taluka" : talukaMap.get(kilkari.getTalukaId()),
+                    (kilkari.getBlockId() == null) ? "No Block" : blockMap.get(kilkari.getBlockId()),
+                    (kilkari.getHcenterId() == null) ? "No Health Facility" : healthFacilityMap.get(kilkari.getHcenterId()),
+                    (kilkari.getHsubcenterId() == null) ? "No Health Subfacility" : healthSubFacilityMap.get(kilkari.getHsubcenterId()),
+                    (kilkari.getVillageId() == null) ? "No Village" : villageMap.get(kilkari.getVillageId()),
                     (kilkari.getAgeOnService() == null) ? "No Age_Data" : kilkari.getAgeOnService(),
 //                    checkEmptyOrNull(kilkari.getAgeOnService())
 
@@ -4108,7 +4277,10 @@ public class AdminServiceImpl implements AdminService {
         reportRequest.setDistrictId(0);
         reportRequest.setStateId(0);
         reportRequest.setReportType(ReportType.sixWeeks.getReportType());
-        getKilkariSixWeekNoAnswer(kilkariManualDeactivations, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate,reportRequest);
+
+//        Deprecated: National-level report generation is no longer supported
+//        as reports cannot be generated without selecting a specific state.
+//        getKilkariSixWeekNoAnswer(kilkariManualDeactivations, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate,reportRequest);
         for (State state : states) {
             String stateName = StReplace(state.getStateName());
             String rootPathState = rootPath + stateName+ "/";
@@ -4158,6 +4330,107 @@ public class AdminServiceImpl implements AdminService {
         scheduledReportTrackerDao.saveScheduleReportTracker(new ScheduledReportTracker(ReportType.sixWeeks.getReportName(), new Date(), (toDate.getMonth()) + "_" + toDate.getYear()%100));
     }
 
+    @Transactional
+    @Override
+    public void porcessKilkariSixWeekNoAnswerFiles(Date fromDate, Date toDate) {
+        final Date finalToDate = toDate;
+        List<State> states = stateDao.getStatesByServiceType(ReportType.sixWeeks.getServiceType());
+        String rootPath = reports +ReportType.sixWeeks.getReportType()+ "/";
+
+        List<KilkariManualDeactivations> kilkariManualDeactivations = kilkariSixWeeksNoAnswerDao.getKilkariUsers(fromDate, toDate);
+
+
+//        Deprecated: National-level report generation is no longer supported
+//        as reports cannot be generated without selecting a specific state.
+//        getKilkariSixWeekNoAnswer(kilkariManualDeactivations, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate,reportRequest);
+
+
+        ExecutorService executorService = Executors.newFixedThreadPool(8);
+
+        try {
+            for (final State state : states) {
+                final String stateName = StReplace(state.getStateName());
+                final String rootPathState = rootPath + stateName+ "/";
+                final int stateId = state.getStateId();
+                final List<KilkariManualDeactivations> candidatesFromThisState = new ArrayList<>();
+                for (KilkariManualDeactivations kilkari : kilkariManualDeactivations) {
+                    if ((kilkari.getStateId()!=null)&&(kilkari.getStateId() == stateId)) {
+                        candidatesFromThisState.add(kilkari);
+                    }
+                }
+
+                executorService.submit(new Runnable() {
+                    @Override
+                    public void run() {
+                        transactionTemplate.execute(new TransactionCallback<Void>() {
+                            @Override
+                            public Void doInTransaction(TransactionStatus status) {
+                                try {
+
+                                    ReportRequest reportRequest=new ReportRequest();
+                                    reportRequest.setFromDate(finalToDate);
+                                    reportRequest.setBlockId(0);
+                                    reportRequest.setDistrictId(0);
+                                    reportRequest.setStateId(stateId);
+                                    reportRequest.setReportType(ReportType.sixWeeks.getReportType());
+
+                                    getKilkariSixWeekNoAnswer(candidatesFromThisState, rootPathState, stateName, finalToDate, reportRequest);
+
+                                    List<District> districts = districtDao.getDistrictsOfState(stateId);
+
+                                    for (District district : districts) {
+                                        String districtName = StReplace(district.getDistrictName());
+                                        String rootPathDistrict = rootPathState + districtName+ "/";
+                                        int districtId = district.getDistrictId();
+                                        List<KilkariManualDeactivations> candidatesFromThisDistrict = new ArrayList<>();
+                                        for (KilkariManualDeactivations kilkari : candidatesFromThisState) {
+                                            if ((kilkari.getDistrictId()!=null)&&(kilkari.getDistrictId() == districtId)) {
+                                                candidatesFromThisDistrict.add(kilkari);
+                                            }
+                                        }
+                                        reportRequest.setDistrictId(districtId);
+                                        reportRequest.setBlockId(0);
+                                        getKilkariSixWeekNoAnswer(candidatesFromThisDistrict, rootPathDistrict, districtName, finalToDate, reportRequest);
+
+                                        List<Block> Blocks = blockDao.getBlocksOfDistrict(districtId);
+                                        for (Block block : Blocks) {
+                                            String blockName = StReplace(block.getBlockName());
+                                            String rootPathblock = rootPathDistrict + blockName+ "/";
+
+                                            int blockId = block.getBlockId();
+                                            List<KilkariManualDeactivations> candidatesFromThisBlock = new ArrayList<>();
+                                            for (KilkariManualDeactivations kilkari : candidatesFromThisDistrict) {
+                                                if ((kilkari.getBlockId()!=null)&&(kilkari.getBlockId() == blockId)) {
+                                                    candidatesFromThisBlock.add(kilkari);
+                                                }
+                                            }
+                                            reportRequest.setBlockId(blockId);
+                                            getKilkariSixWeekNoAnswer(candidatesFromThisBlock, rootPathblock, blockName, finalToDate, reportRequest);
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    logger.error("Error processing state: {} - {}", state.getStateName(), e.getMessage(), e);
+
+                                }
+                                return null;
+                            }
+                        });
+                    }
+                });
+            }
+            scheduledReportTrackerDao.saveScheduleReportTracker(new ScheduledReportTracker(ReportType.sixWeeks.getReportName(), new Date(), (toDate.getMonth()) + "_" + toDate.getYear()%100));
+        } finally {
+            executorService.shutdown();
+            try {
+                executorService.awaitTermination(5, TimeUnit.HOURS);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                logger.error("ExecutorService termination interrupted.", e);
+            }
+        }
+    }
+
     @Override
     public void getKilkariLowListenershipDeactivationFiles(Date fromDate, Date toDate) {
         List<State> states = stateDao.getStatesByServiceType(ReportType.lowListenership.getServiceType());
@@ -4169,7 +4442,10 @@ public class AdminServiceImpl implements AdminService {
         reportRequest.setDistrictId(0);
         reportRequest.setStateId(0);
         reportRequest.setReportType(ReportType.lowListenership.getReportType());
-        getKilkariLowListenershipDeactivation(kilkariManualDeactivations, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate, reportRequest);
+
+//        Deprecated: National-level report generation is no longer supported
+//        as reports cannot be generated without selecting a specific state.
+//        getKilkariLowListenershipDeactivation(kilkariManualDeactivations, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate, reportRequest);
         for (State state : states) {
             String stateName = StReplace(state.getStateName());
             String rootPathState = rootPath + stateName+ "/";
@@ -4217,6 +4493,106 @@ public class AdminServiceImpl implements AdminService {
             }
         }
         scheduledReportTrackerDao.saveScheduleReportTracker(new ScheduledReportTracker(ReportType.lowListenership.getReportName(), new Date(), (toDate.getMonth()) + "_" + toDate.getYear()%100));
+    }
+
+    @Transactional
+    @Override
+    public void processKilkariLowListenershipDeactivationFiles(Date fromDate, Date toDate) {
+        final Date finalToDate = toDate;
+        List<State> states = stateDao.getStatesByServiceType(ReportType.lowListenership.getServiceType());
+        String rootPath = reports +ReportType.lowListenership.getReportType()+ "/";
+
+        List<KilkariManualDeactivations> kilkariManualDeactivations = kilkariSixWeeksNoAnswerDao.getLowListenershipUsers(fromDate, toDate);
+
+//        Deprecated: National-level report generation is no longer supported
+//        as reports cannot be generated without selecting a specific state.
+//        getKilkariLowListenershipDeactivation(kilkariManualDeactivations, rootPath, AccessLevel.NATIONAL.getAccessLevel(), finalToDate, reportRequest);
+
+
+        ExecutorService executorService = Executors.newFixedThreadPool(8);
+
+        try {
+            for ( final State state : states) {
+                final String stateName = StReplace(state.getStateName());
+                final String rootPathState = rootPath + stateName+ "/";
+                final int stateId = state.getStateId();
+                final List<KilkariManualDeactivations> candidatesFromThisState = new ArrayList<>();
+                for (KilkariManualDeactivations kilkari : kilkariManualDeactivations) {
+                    if ((kilkari.getStateId()!=null)&&(kilkari.getStateId() == stateId)) {
+                        candidatesFromThisState.add(kilkari);
+                    }
+                }
+
+                executorService.submit(new Runnable() {
+                    @Override
+                    public void run() {
+                        transactionTemplate.execute(new TransactionCallback<Void>() {
+                            @Override
+                            public Void doInTransaction(TransactionStatus status) {
+                                try {
+
+                                    ReportRequest reportRequest=new ReportRequest();
+                                    reportRequest.setFromDate(finalToDate);
+                                    reportRequest.setBlockId(0);
+                                    reportRequest.setDistrictId(0);
+                                    reportRequest.setStateId(stateId);
+                                    reportRequest.setReportType(ReportType.lowListenership.getReportType());
+                                    getKilkariLowListenershipDeactivation(candidatesFromThisState, rootPathState, stateName, finalToDate, reportRequest);
+
+
+                                    List<District> districts = districtDao.getDistrictsOfState(stateId);
+
+                                    for (District district : districts) {
+                                        String districtName = StReplace(district.getDistrictName());
+                                        String rootPathDistrict = rootPathState + districtName+ "/";
+                                        int districtId = district.getDistrictId();
+                                        List<KilkariManualDeactivations> candidatesFromThisDistrict = new ArrayList<>();
+                                        for (KilkariManualDeactivations kilkari : candidatesFromThisState) {
+                                            if ((kilkari.getDistrictId()!=null)&&(kilkari.getDistrictId() == districtId)) {
+                                                candidatesFromThisDistrict.add(kilkari);
+                                            }
+                                        }
+                                        reportRequest.setDistrictId(districtId);
+                                        reportRequest.setBlockId(0);
+                                        getKilkariLowListenershipDeactivation(candidatesFromThisDistrict, rootPathDistrict, districtName, finalToDate, reportRequest);
+                                        List<Block> Blocks = blockDao.getBlocksOfDistrict(districtId);
+                                        for (Block block : Blocks) {
+                                            String blockName = StReplace(block.getBlockName());
+                                            String rootPathblock = rootPathDistrict + blockName+ "/";
+
+                                            int blockId = block.getBlockId();
+                                            List<KilkariManualDeactivations> candidatesFromThisBlock = new ArrayList<>();
+                                            for (KilkariManualDeactivations kilkari : candidatesFromThisDistrict) {
+                                                if ((kilkari.getBlockId()!=null)&&(kilkari.getBlockId() == blockId)) {
+                                                    candidatesFromThisBlock.add(kilkari);
+                                                }
+                                            }
+                                            reportRequest.setBlockId(blockId);
+                                            getKilkariLowListenershipDeactivation(candidatesFromThisBlock, rootPathblock, blockName, finalToDate, reportRequest);
+
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    logger.error("Error processing state: {} - {}", state.getStateName(), e.getMessage(), e);
+
+                                }
+                                return null;
+                            }
+                        });
+                    }
+                });
+            }
+            scheduledReportTrackerDao.saveScheduleReportTracker(new ScheduledReportTracker(ReportType.lowListenership.getReportName(), new Date(), (toDate.getMonth()) + "_" + toDate.getYear()%100));
+        } finally {
+            executorService.shutdown();
+            try {
+                executorService.awaitTermination(5, TimeUnit.HOURS);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                logger.error("ExecutorService termination interrupted.", e);
+            }
+        }
     }
 
     //Method Deprecated, It was taking more than 24 hours of time to generate line list
