@@ -6,18 +6,6 @@
             $scope.otpButtonDisabled = false;
             $scope.countdownMessage = "";
             $scope.getAshaCertificate = function() {
-                if(grecaptcha.getResponse() === ""){
-                    if(UserFormFactory.isInternetExplorer()){
-                        alert("Please tick the checkbox showing 'I'm not a robot'");
-                        $scope.reverse();
-                        return;
-                    }
-                    else{
-                        UserFormFactory.showAlert("Please tick the checkbox showing 'I'm not a robot'");
-                        $scope.reverse();
-                        return;
-                    }
-                }
                 $scope.errorMessage=false;
                 $scope.fileDownloadedSuccessFully=false;
                 const l = '' + $scope.mobile_number;
@@ -52,19 +40,40 @@
                             $scope.otpButtonDisabled = true;
                             const l = '' + $scope.mobile_number;
                             if(l.length==10) {
+                                const captchaResponse = grecaptcha.getResponse();
+                                 if (!captchaResponse) {
+                                            $scope.errorMessage = true;
+                                            $scope.message = "Please complete the CAPTCHA validation.";
+                                            $scope.otpButtonDisabled = false;
+                                            grecaptcha.reset();
+                                            return;
+                                 }
                                 var token = 'dhty'+UserFormFactory.getCurrentUser().userId+'alkihkf';
                                 $http({
-                                      method: 'GET',
-                                      url: backend_root + 'nms/user/asha/generateOTP' + "?msisdn=" + $scope.mobile_number,
+                                      method: 'POST',
+                                      url: backend_root + 'nms/user/asha/generateOTP',
+                                      data: {
+                                                      msisdn: $scope.mobile_number,
+                                                      captchaResponse: captchaResponse
+                                                  },
                                       headers: {'Content-Type': 'application/json', 'csrfToken': token}
                                       }).then(function (result) {
                                       $scope.errorMessage = true;
                                       $scope.message = result.data;
-                                });
+                                }).catch(function (error) {
+                                              $scope.errorMessage = true;
+                                              $scope.message = "Failed to generate OTP. Please try again.";
+                                              console.error(error);
+                                          }).finally(function () {
+                                              $scope.otpButtonDisabled = false; // Re-enable the button
+                                               grecaptcha.reset();
+                                          });
                                 $scope.updateCountdown();
                             } else {
                                     $scope.errorMessage = true;
                                     $scope.message = "Please Enter Valid Mobile Number";
+                                    $scope.otpButtonDisabled = false; // Re-enable OTP button if validation fails
+                                     grecaptcha.reset();
                             }
                         }
 

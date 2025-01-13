@@ -8,10 +8,13 @@ import com.beehyv.nmsreporting.model.MACourseCompletion;
 import com.beehyv.nmsreporting.model.MACourseFirstCompletion;
 import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.util.EntityUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -46,7 +49,6 @@ public class SmsServiceImpl implements SmsService {
     }
 
 
-    private String sms_template_id = getProperty("sms.templateId.default");
     private String sms_otp_template_id = getProperty("sms.otp.templateId.default");
     private String sms_entity_id = getProperty("sms.entityId.default");
     private String sms_telemarketer_id = getProperty("sms.telemarketerId.default");
@@ -60,8 +62,11 @@ public class SmsServiceImpl implements SmsService {
     public String sendSms(MACourseCompletion maCourseCompletion, String template) {
         LOGGER.info("template {}", template);
 
-        // Replace senderId in the endpoint
         String resolvedEndpoint = endpoint.replace("senderId", senderId);
+        RequestConfig config = RequestConfig.custom()
+                .setConnectTimeout(10000)
+                .setSocketTimeout(10000)
+                .build();
 
         // Create HTTP POST request
         HttpPost httpRequest = new HttpPost(resolvedEndpoint);
@@ -70,7 +75,11 @@ public class SmsServiceImpl implements SmsService {
 
         try {
             // Set request entity
-            httpRequest.setEntity(new StringEntity(template));
+            StringEntity entity = new StringEntity(template, StandardCharsets.UTF_8);
+            entity.setContentType("application/json");
+            httpRequest.setEntity(entity);
+            httpRequest.setHeader("Content-Type", "application/json");
+
             LOGGER.info("Entity set for request");
             LOGGER.info("Request URL: {}", httpRequest.getURI().toString());
             LOGGER.info("Request entity: {}", EntityUtils.toString(httpRequest.getEntity()));
@@ -79,20 +88,21 @@ public class SmsServiceImpl implements SmsService {
             return "Unable to send";
         }
 
-        // Execute the request
-        HttpClient client = HttpClientBuilder.create().build();
-        HttpResponse response;
-        try {
-            LOGGER.info("Executing the request");
-            response = client.execute(httpRequest);
-            LOGGER.info("Request executed successfully");
-        } catch (IOException e) {
-            LOGGER.error("Unable to send SMS : Error during HTTP request execution");
-            return "Unable to send SMS";
-        }
+        // Set up connection pooling and use it to create an HttpClient
+        PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
+        cm.setMaxTotal(20);
+        cm.setDefaultMaxPerRoute(2);
 
-        // Process response
-        if (response.getStatusLine().toString().contains("success")) {
+        try (CloseableHttpClient client = HttpClientBuilder.create()
+                .setDefaultRequestConfig(config)
+                .setConnectionManager(cm)
+                .build()) {
+            HttpResponse response = client.execute(httpRequest);
+            LOGGER.info("Request executed, status: {}", response.getStatusLine());
+            LOGGER.info("Request executed successfully");
+
+            // Process response
+            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_CREATED || response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
             try {
                 // Get current date in the specified format and timezone
                 TimeZone timeZone = TimeZone.getTimeZone("Asia/Kolkata");
@@ -112,8 +122,13 @@ public class SmsServiceImpl implements SmsService {
             // Update completion details
             maCourseCompletion.setScheduleMessageSent(true);
             maCourseCompletionDao.updateMACourseCompletion(maCourseCompletion);
+            }
+            return "success";
+        } catch (IOException e) {
+            LOGGER.info(e.getMessage());
+            LOGGER.error("Unable to send SMS : Error during HTTP request execution");
+            return "Unable to send SMS";
         }
-        return "success";
     }
 
 
@@ -155,17 +170,17 @@ public class SmsServiceImpl implements SmsService {
 
         // Replace placeholders in the template
         try {
-            String messageType = retrieveAshaCourseCompletionMessageType(courseCompletionDTO.getLanguageId());
+            String templateId = retrieveAshaCourseCompletionTemplateId(courseCompletionDTO.getLanguageId());
             template = template
                     .replace("<phoneNumber>", String.valueOf(phoneNo))
                     .replace("<senderId>", senderId)
                     .replace("<messageContent>", messageContent)
                     .replace("<notificationUrl>", callbackEndpoint)
-                    .replace("<smsTemplateId>", sms_template_id)
+                    .replace("<smsTemplateId>", templateId)
                     .replace("<smsEntityId>", sms_entity_id)
                     .replace("<smsTelemarketerId>", sms_telemarketer_id)
                     .replace("<correlationId>", DateTime.now().toString())
-                    .replace("<messageType>", messageType);
+                    .replace("<messageType>", "4");
         } catch (Exception e) {
             LOGGER.error("Error replacing placeholders in SMS template");
             return null;
@@ -205,7 +220,6 @@ public class SmsServiceImpl implements SmsService {
         // Populate SMS template
         try {
             String callbackEndpoint = retrieveAshaSMSCallBackEndPoint("OTP");
-            String messageType = retrieveAshaCourseCompletionMessageType(languageId);
             template = template.replace("<phoneNumber>", String.valueOf(phoneNumber))
                     .replace("<senderId>", senderId)
                     .replace("<messageContent>", messageContent)
@@ -214,7 +228,7 @@ public class SmsServiceImpl implements SmsService {
                     .replace("<smsEntityId>", sms_entity_id)
                     .replace("<smsTelemarketerId>", sms_telemarketer_id)
                     .replace("<correlationId>", DateTime.now().toString())
-                    .replace("<messageType>", messageType);
+                    .replace("<messageType>", "");
         } catch (Exception e) {
             LOGGER.error("Error populating SMS template.");
             return null;

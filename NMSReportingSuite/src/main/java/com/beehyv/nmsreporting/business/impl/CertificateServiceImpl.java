@@ -413,7 +413,7 @@ public class CertificateServiceImpl implements CertificateService {
     public String generateOTPForAshaCertificate(Long mobileNo) throws Exception {
         MACourseFirstCompletion maCourseFirstCompletion = maCourseAttemptDao.getMACourseFirstCompletionByMobileNo(mobileNo);
         if (maCourseFirstCompletion == null) {
-            return "course is not yet completed";
+            return "Course is not yet completed";
         }
 
         int otp = generateRandomSixDigitOTP();

@@ -1003,7 +1003,7 @@ public class AdminServiceImpl implements AdminService {
             calendar.add(Calendar.DAY_OF_MONTH, -7);
             fromDate=calendar.getTime();
 //            List<ChildImportRejection> childImportRejections = childImportRejectionDao.getRejectedChildRecords(nextDay);
-            reportRequest.setFromDate(toDate);}
+          }
             reportRequest.setFromDate(toDate);
 
             String stateName=StReplace(stateDao.findByStateId(stateId).getStateName());
@@ -1311,7 +1311,7 @@ public class AdminServiceImpl implements AdminService {
         //Write the workbook in file system
         FileOutputStream out = null;
         try {
-            if(reportRequest.getReportType().equalsIgnoreCase("Month")) {
+            if(reportRequest.getPeriodType().equalsIgnoreCase("Month")) {
                 out = new FileOutputStream(new File(rootPath + ReportType.childRejected.getReportType() +"_Monthly"+ "_" + place + "_" + getMonthYear(toDate) + ".xlsx"));
             }else{
                 out = new FileOutputStream(new File(rootPath + ReportType.childRejected.getReportType() + "_" + place + "_" + getDateMonthYear(toDate) + ".xlsx"));
@@ -3531,9 +3531,9 @@ public class AdminServiceImpl implements AdminService {
         final Date finalFromDate = fromDate;
 
 
-        List<State> states = stateDao.getStatesByServiceType(ReportType.childRejected.getServiceType());
-        String rootPath = reports + ReportType.childRejected.getReportType() + "/";
-        List<ChildImportRejection> rejectedChildImports = childImportRejectionDao.getRejectedChildRecords(finalFromDate, toDate);
+       final List<State> states = stateDao.getStatesByServiceType(ReportType.childRejected.getServiceType());
+       final String rootPath = reports + ReportType.childRejected.getReportType() + "/";
+       final List<ChildImportRejection> rejectedChildImports = childImportRejectionDao.getRejectedChildRecords(finalFromDate, toDate);
 
         ExecutorService executorService = Executors.newFixedThreadPool(8);
         try {
@@ -3541,6 +3541,12 @@ public class AdminServiceImpl implements AdminService {
                 final String stateName = StReplace(state.getStateName());
                 final String rootPathState = rootPath + stateName + "/";
                 final int stateId = state.getStateId();
+                final List<ChildImportRejection> candidatesFromThisState = new ArrayList<>();
+                for (ChildImportRejection rejectedImport : rejectedChildImports) {
+                    if (rejectedImport.getStateId()!=null && stateId == rejectedImport.getStateId()) {
+                        candidatesFromThisState.add(rejectedImport);
+                    }
+                }
 
                 executorService.submit(new Runnable() {
                     @Override
@@ -3549,12 +3555,7 @@ public class AdminServiceImpl implements AdminService {
                             @Override
                             public Void doInTransaction(TransactionStatus status) {
                                 try {
-                                    List<ChildImportRejection> candidatesFromThisState = new ArrayList<>();
-                                    for (ChildImportRejection rejectedImport : rejectedChildImports) {
-                                        if (stateId == rejectedImport.getStateId()) {
-                                            candidatesFromThisState.add(rejectedImport);
-                                        }
-                                    }
+
 
                                     ReportRequest reportRequest = new ReportRequest();
                                     if(isWeekly){

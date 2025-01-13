@@ -1,116 +1,243 @@
 <div class="container-fluid uMManagement" data-ng-controller="AshaIndividualCertificateController">
     <div data-ui-view></div>
-    <h4><b>Mobile Academy Certificate</b></h4>
-    <br/>
+    <h4 class="form-title">Mobile Academy Certificate</h4>
 
-    <div class='col-6-sm' style="
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    height: 100vh;
-    margin: 0 auto;
-    text-align: center;">
+    <div class="form-container">
+        <!-- Mobile Number Form Group -->
+        <div class="form-group">
+            <label for="mobileNumber" class="form-label">Enter Mobile Number:</label>
+            <div class="input-group">
+                <input
+                        id="mobileNumber"
+                        type="text"
+                        ng-model="mobile_number"
+                        name="mobileNumber"
+                        ng-change="validateMobileNumber()"
+                        ng-trim="false"
+                        maxlength="10"
+                        required
+                        class="form-input">
+            </div>
+            <span ng-if="mobile_number && mobile_number.length !== 10" class="error-message">
+                *Mobile number must be 10 digits.
+            </span>
+        </div>
 
-        <div style="align-items: flex-start;
-                    display: flex;
-                    flex-direction: column;
-                    max-width: 400px;">
-            <p style="
-                   font-size: 16px;
-                   font-weight: bold;
-                   color: #444;
-                   margin-bottom: 8px;
-                   text-align: left;
-                   font-family: 'Arial', sans-serif;
-                   letter-spacing: 0.5px;">
-                Enter 10 digit Mobile Number :
-            </p>
-            <input
-                    type="text"
-                    ng-model="mobile_number"
-                    name="mobileNumber"
-                    ng-change="validateMobileNumber()"
-                    ng-trim="false"
-                    style="width: 302px; padding: 8px;"
-                    maxlength="10"
-                    required >
-            <p ng-if="mobile_number && mobile_number.length !== 10" style="color: red;">
-                Mobile number must be 10 digits.
-            </p>
-            <input
-                    style="margin-left: 10px; padding: 8px 12px;"
-                    ng-disabled="!mobile_number || mobile_number.toString().length !== 10"
-                    type="button"
-                    class="btn btn-sm btn-success"
+        <div class="form-group">
+            <div vc-recaptcha key="'6LcJgYgUAAAAANaRqYM6UFUaY8H3pPUTK6Tt1qsL'" ng-model="isCaptchaVerified" class="captcha-container"></div>
+            <span ng-if="mobile_number && mobile_number.length == 10 && !isCaptchaVerified" class="error-message">
+                *Enter Captcha for OTP.
+            </span>
+        </div>
+
+        <!-- Request OTP Button -->
+        <div class="form-group">
+            <button
+                    ng-disabled="!mobile_number || mobile_number.toString().length !== 10 || (countdownMessage && countdownMessage.trim() !== '') || !isCaptchaVerified"
+                    ng-required="!isCaptchaVerified"
+                    class="btn btn-primary"
                     name="getOTPButton"
-                    data-ng-click="getAshaCertificateOTP()"
-                    value="Request OTP"
-                    ng-hide="true">
-            <p>{{countdownMessage}}</p>
+                    data-ng-click="getAshaCertificateOTP()">
+                Request OTP
+            </button>
         </div>
 
-        <div>
-            <div vc-recaptcha key="'6LcJgYgUAAAAANaRqYM6UFUaY8H3pPUTK6Tt1qsL'"></div>
+        <!-- OTP Form Group -->
+        <div class="form-group">
+            <label for="otp" class="form-label">Enter OTP:</label>
+            <div class="input-group">
+                <input
+                        id="otp"
+                        type="text"
+                        data-ng-model="certificate_otp"
+                        name="otp"
+                        ng-change="validateOTP()"
+                        ng-trim="false"
+                        maxlength="6"
+                        required
+                        class="form-input">
+                <button
+                        ng-disabled="!certificate_otp || certificate_otp.toString().length !== 6"
+                        class="btn btn-secondary"
+                        name="newUser"
+                        data-ng-click="getAshaCertificate()">
+                    Get Certificate
+                </button>
+            </div>
         </div>
 
-        <div>
-            <p style="
-                    font-size: 16px;
-                    font-weight: bold;
-                    color: #444;
-                    margin-bottom: 8px;
-                    text-align: left;
-                    font-family: 'Arial', sans-serif;
-                    letter-spacing: 0.5px;">
-                Enter OTP:
-            </p>
-            <input
-                    type="text"
-                    data-ng-model="certificate_otp"
-                    name="otp"
-                    ng-change="validateOTP()"
-                    ng-trim="false"
-                    style="width: 190px; padding: 8px;"
-                    maxlength="6"
-                    required>
-            <input
-                    style="height : 40px; margin-left: 8px; margin-bottom: 3px; padding: 8px 12px;"
-                    ng-disabled="!certificate_otp || certificate_otp.toString().length !== 6"
-                    type="button"
-                    class="btn btn-sm btn-primary"
-                    name="newUser"
-                    data-ng-click="getAshaCertificate()"
-                    value="Get Certificate"
-                    ng-disabled="!certificate_otp">
+        <!-- Error Message -->
+        <div class="form-group" data-ng-if="errorMessage && message !== 'success'">
+            <p class="error-message"><b>{{message}}</b></p>
         </div>
 
-        <div class="block reports-body" data-ng-if="errorMessage && message !== 'success'">
-            <p><b>{{message}}</b></p>
-        </div>
-
-        <div style="width: 50%; margin-top: 20px;" data-ng-if="fileDownloadedSuccessFully">
-            <p style="margin-bottom: 10px;">The Certificate has been generated:</p>
-            <table style="width: 100%; border-collapse: collapse; border: 1px solid #ddd;">
+        <div class="form-group" data-ng-if="fileDownloadedSuccessFully">
+            <p>The Certificate has been generated:</p>
+            <table class="certificate-table">
                 <thead>
-                <tr style="background-color: #f4f4f4;">
-                    <th style="padding: 10px; border: 1px solid #ddd;">Name</th>
-                    <th style="padding: 10px; border: 1px solid #ddd;">Certificate<br>Click on the icon to download</th>
+                <tr>
+                    <th>Name</th>
+                    <th>Certificate</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
-                    <td style="padding: 10px; border: 1px solid #ddd;"><b>{{certificate.AshaName}}</b></td>
-                    <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+                    <td><b>{{certificate.AshaName}}</b></td>
+                    <td class="download-icon">
                         <a href="data:application/pdf;base64,{{certificate.base64Certificate}}" download="Certificate.pdf">
-                            <img src="images/export2.png" alt="Download" style="width: 20px; height: 20px;">
+                            <img src="images/export2.png" alt="Download">
                         </a>
                     </td>
                 </tr>
                 </tbody>
             </table>
         </div>
-
-
     </div>
 </div>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .container-fluid {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .form-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        text-align: center;
+        text-align: center; /* Keep text centered in desktop */
+        align-self: center; /* Align header with form on desktop */
+    }
+
+    .form-container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: 500px;
+        background-color: #fff;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 15px;
+    }
+
+    .form-label {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .btn {
+        padding: 10px;
+        font-size: 14px;
+        font-weight: bold;
+        text-align: center;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .btn-secondary {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .btn:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
+
+    .input-group {
+        display: flex;
+        gap: 10px;
+    }
+
+    .error-message {
+        color: red;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+
+    .certificate-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    .certificate-table th,
+    .certificate-table td {
+        padding: 10px;
+        text-align: center;
+        border: 1px solid #ccc;
+    }
+
+    .download-icon img {
+        width: 20px;
+        height: 20px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .form-container {
+            padding: 15px;
+            margin: 0; /* Remove center alignment */
+            align-self: flex-start;
+        }
+    }
+
+    @media (max-width: 480px) {
+         .container-fluid {
+        align-items: flex-start; /* Align container contents to the left */
+        }
+
+         .form-title {
+        text-align: left;
+        align-self: flex-start; /* Align the header to the left with the form */
+        }
+        .form-container {
+            padding: 10px;
+        }
+
+        .form-label {
+            font-size: 12px;
+        }
+
+        .form-input,
+        .btn {
+            font-size: 12px;
+        }
+
+        .certificate-table th,
+        .certificate-table td {
+            font-size: 12px;
+        }
+    }
+</style>
