@@ -2708,29 +2708,6 @@ public class AdminServiceImpl implements AdminService {
             empinfo.put(counter.toString(), new Object[]{"No Records to display"});
         }
 
-
-//        for (KilkariManualDeactivations kilkari : kilkariSixWeeksNoAnswersList) {
-//            empinfo.put((counter.toString()), new Object[]{
-//                    counter-1,
-//                    (kilkari.getName() == null) ? "No Name" : kilkari.getName(),
-//                    (kilkari.getMctsId() == null) ? "No MCTS Id" : kilkari.getMctsId(),
-//                    (kilkari.getRchId() == null) ? "No RCH Id" : kilkari.getRchId(),
-//                    (kilkari.getMsisdn() == null) ? "No MSISDN" : kilkari.getMsisdn(),
-//                    (kilkari.getStateId() == null) ? "No State" : stateDao.findByStateId(kilkari.getStateId()).getStateName(),
-//                    (kilkari.getDistrictId() == null) ? "No District" : districtDao.findByDistrictId(kilkari.getDistrictId()).getDistrictName(),
-////                    (kilkari.getVillageId() == null) ? "No Taluka" : talukaDao.findByTalukaId(villageDao.findByVillageId(kilkari.getVillageId()).getTalukaOfVillage()).getTalukaName(),
-//                    (kilkari.getTalukaId() == null) ? "No Taluka" : talukaDao.findByTalukaId(kilkari.getTalukaId()).getTalukaName(),
-//                    (kilkari.getBlockId() == null) ? "No Block" : blockDao.findByblockId(kilkari.getBlockId()).getBlockName(),
-////                    (kilkari.getHsubcenterId() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthFacilityOfHealthSubFacility()).getHealthFacilityName(),
-//                    (kilkari.getHcenterId() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(kilkari.getHcenterId()).getHealthFacilityName(),
-//                    (kilkari.getHsubcenterId() == null) ? "No Health Subfacility" : healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthSubFacilityName(),
-//                    (kilkari.getVillageId() == null) ? "No Village" : villageDao.findByVillageId(kilkari.getVillageId()).getVillageName(),
-//                    (kilkari.getAgeOnService() == null) ? "No Age_Data" : kilkari.getAgeOnService()
-//
-//            });
-//            counter++;
-//        }
-
         Set<Integer> stateIds = new HashSet<>();
         Set<Integer> districtIds = new HashSet<>();
         Set<Integer> talukaIds = new HashSet<>();
@@ -2949,29 +2926,6 @@ public class AdminServiceImpl implements AdminService {
         if(lowListenershipList.isEmpty()) {
             empinfo.put(counter.toString(), new Object[]{"No Records to display"});
         }
-
-
-//        for (KilkariManualDeactivations kilkari : lowListenershipList) {
-//            empinfo.put((counter.toString()), new Object[]{
-//                    counter-1,
-//                    (kilkari.getName() == null) ? "No Name" : kilkari.getName(),
-//                    (kilkari.getMctsId() == null) ? "No MCTS Id" : kilkari.getMctsId(),
-//                    (kilkari.getRchId() == null) ? "No RCH Id" : kilkari.getRchId(),
-//                    (kilkari.getMsisdn() == null) ? "No MSISDN" : kilkari.getMsisdn(),
-//                    (kilkari.getStateId() == null) ? "No State" : stateDao.findByStateId(kilkari.getStateId()).getStateName(),
-//                    (kilkari.getDistrictId() == null) ? "No District" : districtDao.findByDistrictId(kilkari.getDistrictId()).getDistrictName(),
-//                    (kilkari.getTalukaId() == null) ? "No Taluka" : talukaDao.findByTalukaId(kilkari.getTalukaId()).getTalukaName(),
-//                    (kilkari.getBlockId() == null) ? "No Block" : blockDao.findByblockId(kilkari.getBlockId()).getBlockName(),
-//                    (kilkari.getHcenterId() == null) ? "No Health Facility" : healthFacilityDao.findByHealthFacilityId(kilkari.getHcenterId()).getHealthFacilityName(),
-//                    (kilkari.getHsubcenterId() == null) ? "No Health Subfacility" : healthSubFacilityDao.findByHealthSubFacilityId(kilkari.getHsubcenterId()).getHealthSubFacilityName(),
-//                    (kilkari.getVillageId() == null) ? "No Village" : villageDao.findByVillageId(kilkari.getVillageId()).getVillageName(),
-//                    (kilkari.getAgeOnService() == null) ? "No Age_Data" : kilkari.getAgeOnService(),
-//                    checkEmptyOrNull(kilkari.getAgeOnService())
-//
-//            });
-//            counter++;
-//            logger.info("counter:{}",counter);
-//        }
 
         Set<Integer> stateIds = new HashSet<>();
         Set<Integer> districtIds = new HashSet<>();
