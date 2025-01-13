@@ -2708,7 +2708,6 @@ public class AdminServiceImpl implements AdminService {
             empinfo.put(counter.toString(), new Object[]{"No Records to display"});
         }
 
-        logger.info("created object empinfo and completed the check for isEmpty");
 
 //        for (KilkariManualDeactivations kilkari : kilkariSixWeeksNoAnswersList) {
 //            empinfo.put((counter.toString()), new Object[]{
@@ -2951,7 +2950,6 @@ public class AdminServiceImpl implements AdminService {
             empinfo.put(counter.toString(), new Object[]{"No Records to display"});
         }
 
-        logger.info("created object empinfo and completed the check for isEmpty");
 
 //        for (KilkariManualDeactivations kilkari : lowListenershipList) {
 //            empinfo.put((counter.toString()), new Object[]{
@@ -4381,14 +4379,11 @@ public class AdminServiceImpl implements AdminService {
         final Date finalToDate = toDate;
         List<State> states = stateDao.getStatesByServiceType(ReportType.sixWeeks.getServiceType());
         String rootPath = reports +ReportType.sixWeeks.getReportType()+ "/";
-        logger.info("multi In porcessKilkariSixWeekNoAnswerFiles");
 
         List<KilkariManualDeactivations> kilkariManualDeactivations = kilkariSixWeeksNoAnswerDao.getKilkariUsers(fromDate, toDate);
 
-        logger.info("multi Data fetched with the method getKilkariUsers");
 
 //        getKilkariSixWeekNoAnswer(kilkariManualDeactivations, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate,reportRequest);
-//        logger.info("Multi report generated for users");
 
 
         ExecutorService executorService = Executors.newFixedThreadPool(8);
@@ -4421,7 +4416,6 @@ public class AdminServiceImpl implements AdminService {
                                     reportRequest.setReportType(ReportType.sixWeeks.getReportType());
 
                                     getKilkariSixWeekNoAnswer(candidatesFromThisState, rootPathState, stateName, finalToDate, reportRequest);
-                                    logger.info("multi report generated for state:{} users", state);
 
                                     List<District> districts = districtDao.getDistrictsOfState(stateId);
 
@@ -4438,7 +4432,6 @@ public class AdminServiceImpl implements AdminService {
                                         reportRequest.setDistrictId(districtId);
                                         reportRequest.setBlockId(0);
                                         getKilkariSixWeekNoAnswer(candidatesFromThisDistrict, rootPathDistrict, districtName, finalToDate, reportRequest);
-                                        logger.info("multi report generated for district:{} users", districtName);
 
                                         List<Block> Blocks = blockDao.getBlocksOfDistrict(districtId);
                                         for (Block block : Blocks) {
@@ -4454,7 +4447,6 @@ public class AdminServiceImpl implements AdminService {
                                             }
                                             reportRequest.setBlockId(blockId);
                                             getKilkariSixWeekNoAnswer(candidatesFromThisBlock, rootPathblock, blockName, finalToDate, reportRequest);
-                                            logger.info("multi report generated for block:{} users", blockName);
                                         }
                                     }
                                 } catch (Exception e) {
@@ -4548,13 +4540,10 @@ public class AdminServiceImpl implements AdminService {
         final Date finalToDate = toDate;
         List<State> states = stateDao.getStatesByServiceType(ReportType.lowListenership.getServiceType());
         String rootPath = reports +ReportType.lowListenership.getReportType()+ "/";
-        logger.info("Multi In processKilkariLowListenershipDeactivationFiles");
 
         List<KilkariManualDeactivations> kilkariManualDeactivations = kilkariSixWeeksNoAnswerDao.getLowListenershipUsers(fromDate, toDate);
-        logger.info("Multi Data fetched with the method getKilkariUsers");
 
 //        getKilkariLowListenershipDeactivation(kilkariManualDeactivations, rootPath, AccessLevel.NATIONAL.getAccessLevel(), finalToDate, reportRequest);
-//        logger.info("Multi report generated for users");
 
 
         ExecutorService executorService = Executors.newFixedThreadPool(8);
@@ -4604,7 +4593,6 @@ public class AdminServiceImpl implements AdminService {
                                         reportRequest.setDistrictId(districtId);
                                         reportRequest.setBlockId(0);
                                         getKilkariLowListenershipDeactivation(candidatesFromThisDistrict, rootPathDistrict, districtName, finalToDate, reportRequest);
-                                        logger.info("Multi report generated for district:{} users", districtName);
                                         List<Block> Blocks = blockDao.getBlocksOfDistrict(districtId);
                                         for (Block block : Blocks) {
                                             String blockName = StReplace(block.getBlockName());
@@ -4619,7 +4607,6 @@ public class AdminServiceImpl implements AdminService {
                                             }
                                             reportRequest.setBlockId(blockId);
                                             getKilkariLowListenershipDeactivation(candidatesFromThisBlock, rootPathblock, blockName, finalToDate, reportRequest);
-                                            logger.info("Multi report generated for block:{} users", blockName);
 
                                         }
                                     }
