@@ -4277,6 +4277,9 @@ public class AdminServiceImpl implements AdminService {
         reportRequest.setDistrictId(0);
         reportRequest.setStateId(0);
         reportRequest.setReportType(ReportType.sixWeeks.getReportType());
+
+//        Deprecated: National-level report generation is no longer supported
+//        as reports cannot be generated without selecting a specific state.
 //        getKilkariSixWeekNoAnswer(kilkariManualDeactivations, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate,reportRequest);
         for (State state : states) {
             String stateName = StReplace(state.getStateName());
@@ -4337,6 +4340,8 @@ public class AdminServiceImpl implements AdminService {
         List<KilkariManualDeactivations> kilkariManualDeactivations = kilkariSixWeeksNoAnswerDao.getKilkariUsers(fromDate, toDate);
 
 
+//        Deprecated: National-level report generation is no longer supported
+//        as reports cannot be generated without selecting a specific state.
 //        getKilkariSixWeekNoAnswer(kilkariManualDeactivations, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate,reportRequest);
 
 
@@ -4437,8 +4442,10 @@ public class AdminServiceImpl implements AdminService {
         reportRequest.setDistrictId(0);
         reportRequest.setStateId(0);
         reportRequest.setReportType(ReportType.lowListenership.getReportType());
+
+//        Deprecated: National-level report generation is no longer supported
+//        as reports cannot be generated without selecting a specific state.
 //        getKilkariLowListenershipDeactivation(kilkariManualDeactivations, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate, reportRequest);
-//        logger.info("report generated for national users");
         for (State state : states) {
             String stateName = StReplace(state.getStateName());
             String rootPathState = rootPath + stateName+ "/";
@@ -4497,6 +4504,8 @@ public class AdminServiceImpl implements AdminService {
 
         List<KilkariManualDeactivations> kilkariManualDeactivations = kilkariSixWeeksNoAnswerDao.getLowListenershipUsers(fromDate, toDate);
 
+//        Deprecated: National-level report generation is no longer supported
+//        as reports cannot be generated without selecting a specific state.
 //        getKilkariLowListenershipDeactivation(kilkariManualDeactivations, rootPath, AccessLevel.NATIONAL.getAccessLevel(), finalToDate, reportRequest);
 
 
@@ -4529,7 +4538,6 @@ public class AdminServiceImpl implements AdminService {
                                     reportRequest.setStateId(stateId);
                                     reportRequest.setReportType(ReportType.lowListenership.getReportType());
                                     getKilkariLowListenershipDeactivation(candidatesFromThisState, rootPathState, stateName, finalToDate, reportRequest);
-                                    logger.info("Multi report generated for state:{} users", state);
 
 
                                     List<District> districts = districtDao.getDistrictsOfState(stateId);
