@@ -3,10 +3,7 @@ NMSReportingSuite/NMSReportingSuite.iml
 NMSReportingSuite/src/main/resources/app.properties
 NMSReportingSuite/target
 app/.idea/
-app/bower_components/
-app/scripts/global/urls.js
 app.zip
-app/node_modules/
 Email/NMSReportingSuite/.idea/
 Email/NMSReportingSuite/NMSReportingSuite.iml
 Email/NMSReportingSuite/src/main/resources/app.properties
