@@ -197,25 +197,25 @@ public  final class Global {
     }
 
     public static String retrieveAshaCourseCompletionMessage(long languageId) {
-        String message = getProperty("sms.asha.default.message." + languageId);
+        String message = getPropertyValue("sms.asha.default.message." + languageId);
         if (message == null) {
-            message = getProperty("sms.asha.default.message");
+            message = getPropertyValue("sms.asha.default.message");
         }
         return message;
     }
 
     public static String retrieveAshaCourseCompletionOTPMessage(long languageId) {
-        String message = getProperty("sms.asha.default.otp.message." + languageId);
+        String message = getPropertyValue("sms.asha.default.otp.message." + languageId);
         if (message == null) {
-            message = getProperty("sms.asha.default.otp.message");
+            message = getPropertyValue("sms.asha.default.otp.message");
         }
         return message;
     }
 
-    public static String retrieveAshaCourseCompletionMessageType(long languageId) {
-        String message = getProperty("sms.asha.default.message.type." + languageId);
+    public static String retrieveAshaCourseCompletionTemplateId(long languageId) {
+        String message = getProperty("sms.templateId.default." + languageId);
         if (message == null) {
-            message = getProperty("sms.asha.default.message.type");
+            message = getProperty("sms.templateId.default");
         }
         return message;
     }

@@ -351,11 +351,11 @@ public class AdminController {
                 break;
             }
             case sixWeeks:{
-                adminService.getKilkariSixWeekNoAnswerFiles(fromDate, toDate);
+                adminService.porcessKilkariSixWeekNoAnswerFiles(fromDate, toDate);
                 break;
             }
             case lowListenership:{
-                adminService.getKilkariLowListenershipDeactivationFiles(fromDate,toDate);
+                adminService.processKilkariLowListenershipDeactivationFiles(fromDate,toDate);
                 break;
             }
             case flwRejected:{

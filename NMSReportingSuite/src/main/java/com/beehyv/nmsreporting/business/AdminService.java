@@ -3,6 +3,7 @@ package com.beehyv.nmsreporting.business;
 import com.beehyv.nmsreporting.entity.ReportRequest;
 import com.beehyv.nmsreporting.model.User;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
@@ -28,7 +29,11 @@ public interface AdminService {
 
   void getKilkariSixWeekNoAnswerFiles(Date fromDate, Date toDate);
 
+  void porcessKilkariSixWeekNoAnswerFiles(Date fromDate, Date toDate);
+
   void getKilkariLowListenershipDeactivationFiles(Date fromDate, Date toDate);
+
+  void processKilkariLowListenershipDeactivationFiles(Date fromDate, Date toDate);
 
   void getKilkariLowUsageFiles(Date fromDate, Date toDate);
 

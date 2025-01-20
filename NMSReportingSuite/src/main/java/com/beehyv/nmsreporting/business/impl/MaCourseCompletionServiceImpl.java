@@ -68,7 +68,7 @@ public class MaCourseCompletionServiceImpl implements MACourseCompletionService 
 
     private String buildCompletionMessage(CourseCompletionDTO courseCompletionDTO) {
         long languageId = courseCompletionDTO.getLanguageId();
-        String messageTemplate = retrieveAshaCourseCompletionMessage(languageId);
+        String messageTemplate = retrieveAshaCourseCompletionMessage(languageId).replace("<MobileNumber>", courseCompletionDTO.getMobileNumber().toString());
         return messageTemplate.replace("<CertificateLink>", retrieveAshaCertificateDownloadPageUrl());
     }
 
