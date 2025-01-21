@@ -47,13 +47,19 @@ public class AggregateCumulativeBeneficiary {
     @Column(name="joined_subscription",columnDefinition = "BIGINT(20)")
     private Long joinedSubscription;
 
+    @Column(name="Mother_subscriptions_joined",columnDefinition = "BIGINT(20)")
+    private Long motherSubscriptionJoined;
+
+    @Column(name="Child_subscriptions_joined",columnDefinition = "BIGINT(20)")
+    private Long childSubscriptionJoined;
+
     @Column(name="period_type", columnDefinition = "VARCHAR(45)")
     private String periodType;
 
     @Column(name="subscriptions_rejected",columnDefinition = "BIGINT(20)")
     private Long subscriptionsRejected;
 
-    public AggregateCumulativeBeneficiary(Integer id, String locationType, Long locationId, Date date, Long selfDeactivated, Long notAnswering, Long lowListenership, Long systemDeactivation, Long motherCompletion, Long childCompletion, Long joinedSubscription, String periodType, Long subscriptionsRejected ) {
+    public AggregateCumulativeBeneficiary(Integer id, String locationType, Long locationId, Date date, Long selfDeactivated, Long notAnswering, Long lowListenership, Long systemDeactivation, Long motherCompletion, Long childCompletion, Long joinedSubscription, Long motherSubscriptionJoined, Long childSubscriptionJoined, String periodType, Long subscriptionsRejected ) {
         this.id = id;
         this.locationType = locationType;
         this.locationId = locationId;
@@ -65,6 +71,8 @@ public class AggregateCumulativeBeneficiary {
         this.motherCompletion = motherCompletion;
         this.childCompletion = childCompletion;
         this.joinedSubscription = joinedSubscription;
+        this.motherSubscriptionJoined = motherSubscriptionJoined;
+        this.childSubscriptionJoined = childSubscriptionJoined;
         this.periodType = periodType;
         this.subscriptionsRejected = subscriptionsRejected;
     }
@@ -159,6 +167,22 @@ public class AggregateCumulativeBeneficiary {
 
     public void setJoinedSubscription(Long joinedSubscription) {
         this.joinedSubscription = joinedSubscription;
+    }
+
+    public Long getMotherSubscriptionJoined() {
+        return motherSubscriptionJoined;
+    }
+
+    public void setMotherSubscriptionJoined(Long motherSubscriptionJoined) {
+        this.motherSubscriptionJoined = motherSubscriptionJoined;
+    }
+
+    public Long getChildSubscriptionJoined() {
+        return childSubscriptionJoined;
+    }
+
+    public void setChildSubscriptionJoined(Long childSubscriptionJoined) {
+        this.childSubscriptionJoined = childSubscriptionJoined;
     }
 
     public String getPeriodType() {
