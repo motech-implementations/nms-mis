@@ -6,7 +6,7 @@ package com.beehyv.nmsreporting.enums;
 public enum ReportType {
     messageMatrix("Kilkari_Message_Matrix","Kilkari Message Matrix","KILKARI","Kilkari Message Matrix Report", "Message Matrix"),
     kilkariCalls("Kilkari_Call","Kilkari Call","KILKARI","Kilkari Call Report", "Call Report"),
-    kilkariCallsWithBeneficiaries("District-wise Performance of the State for Kilkari","District-wise Performance of the State for Kilkari","KILKARI","District-wise Performance of the State for Kilkari", "District-wise Performance of the State for Kilkari"),
+    kilkariCallsWithBeneficiaries("Kilkari Performance Report","Kilkari Performance Report","KILKARI","Kilkari Performance Report", "Kilkari Performance Report"),
     listeningMatrix("Kilkari_Listening_Matrix","Kilkari Listening Matrix","KILKARI","Kilkari Listening Matrix Report", "Listening Matrix"),
     beneficiary("Kilkari_Aggregate_Beneficiaries","Kilkari Aggregate Beneficiaries","KILKARI","Kilkari Aggregate Beneficiaries Report", "Aggregate Beneficiaries"),
     usage("Kilkari_Usage","Kilkari Usage","KILKARI","Kilkari Usage Report", "Usage Report"),
@@ -14,7 +14,7 @@ public enum ReportType {
     kilkariCumulative("Kilkari_Cumulative_Summary","Kilkari Cumulative Summary","KILKARI","Kilkari Cumulative Summary Aggregate Report", "Cumulative Summary"),
     maPerformance("MA_Performance","MA Performance","MOBILE_ACADEMY","MA Performance Aggregate Report", "Performance Report"),
     maSubscriber("MA_Subscriber","MA Subscriber","MOBILE_ACADEMY","MA Subscriber Aggregate Report", "Subscriber Report"),
-    maCumulative("District-wise Performance of the State for Mobile Academy","District-wise Performance of the State for Mobile Academy","MOBILE_ACADEMY","District-wise Performance of the State for Mobile Academy", "District-wise Performance of the State for Mobile Academy"),
+    maCumulative("Mobile Academy Performance Report","Mobile Academy Performance Report","MOBILE_ACADEMY","Mobile Academy Performance Report", "Mobile Academy Performance Report"),
     maCourse("MA_Cumulative_Course_Completion", "Course Completion", "MOBILE_ACADEMY","MA Completion Line-Listing Report", "Course Completion"),
     maAnonymous("MA_Anonymous_Users", "Circle wise Anonymous Users", "MOBILE_ACADEMY", "MA Circle Wise Anonymous Line-Listing Report", "Circle wise Anonymous Users"),
     maInactive("Registered_ASHAs_not_Started_MA_Course", "Registered ASHAs not Started MA Course", "MOBILE_ACADEMY", "Registered ASHAs not Started MA Course Line-Listing Report", "Registered ASHAs not Started MA Course"),
