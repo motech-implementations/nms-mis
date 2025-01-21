@@ -37,11 +37,13 @@ public class AggregateCumulativeBeneficiaryDaoImpl extends AbstractDao<Integer,A
         List<AggregateCumulativeBeneficiary> result = criteria.list();
         if(result.size() < 1){
             Long a = (long)0;
-            AggregateCumulativeBeneficiary aggregateCumulativeBeneficiary = new AggregateCumulativeBeneficiary(0,locationType,locationId,toDate,a,a,a,a,a,a,a,"",a);
+            AggregateCumulativeBeneficiary aggregateCumulativeBeneficiary = new AggregateCumulativeBeneficiary(0,locationType,locationId,toDate,a,a,a,a,a,a,a,a,a,"",a);
             return aggregateCumulativeBeneficiary;
         }
         AggregateCumulativeBeneficiary aggregateCumulativeBeneficiary = result.get(0);
         aggregateCumulativeBeneficiary.setJoinedSubscription(aggregateCumulativeBeneficiary.getJoinedSubscription() == null ? 0 : aggregateCumulativeBeneficiary.getJoinedSubscription());
+        aggregateCumulativeBeneficiary.setChildSubscriptionJoined(aggregateCumulativeBeneficiary.getChildSubscriptionJoined() == null ? 0 : aggregateCumulativeBeneficiary.getChildSubscriptionJoined());
+        aggregateCumulativeBeneficiary.setMotherSubscriptionJoined(aggregateCumulativeBeneficiary.getMotherSubscriptionJoined() == null ? 0 : aggregateCumulativeBeneficiary.getMotherSubscriptionJoined());
         aggregateCumulativeBeneficiary.setChildCompletion(aggregateCumulativeBeneficiary.getChildCompletion() == null ? 0 : aggregateCumulativeBeneficiary.getChildCompletion());
         aggregateCumulativeBeneficiary.setMotherCompletion(aggregateCumulativeBeneficiary.getMotherCompletion() == null ? 0 : aggregateCumulativeBeneficiary.getMotherCompletion());
         aggregateCumulativeBeneficiary.setLowListenership(aggregateCumulativeBeneficiary.getLowListenership() == null ? 0 : aggregateCumulativeBeneficiary.getLowListenership());
