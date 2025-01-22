@@ -318,14 +318,14 @@
         function exportToPdf1(gridApi, gridApi1, excelHeaderName, reportCategory, matrixContent1, matrixContent2, uiGridExporterConstants, rowTypes, colTypes, fileName1,rejectionStart) {
             var pageHeading;
             switch(excelHeaderName.reportName){
-            case 'Mobile Academy Performance Report': pageHeading='Mobile Academy Performance Report Report'; break;
+            case 'Mobile Academy Performance Report': pageHeading='Mobile Academy Performance Report'; break;
             case 'MA Subscriber': pageHeading='Mobile Academy Subscriber Report'; break;
             case 'MA Performance': pageHeading='Mobile Academy Performance Report'; break;
             case 'Kilkari Cumulative Summary': pageHeading='Kilkari Cumulative Summary Report' ;break;
             case 'Kilkari Beneficiary Completion': pageHeading='Kilkari Beneficiary Completion Report'; break;
             case 'Kilkari Usage': pageHeading='Kilkari Usage Report'; break;
             case 'Kilkari Call': pageHeading='Kilkari Call Report'; break;
-            case 'Kilkari Performance Report': pageHeading=' Kilkari Performance Report Report'; break;
+            case 'Kilkari Performance Report': pageHeading=' Kilkari Performance Report'; break;
             case 'kilkari message matrix for only successful calls': pageHeading='kilkari message matrix for only successful calls'; break;
             case 'Kilkari Listening Matrix': pageHeading='Kilkari Listening Matrix Report'; break;
             case 'Kilkari Thematic Content': pageHeading='Kilkari Thematic Content Report'; break;
