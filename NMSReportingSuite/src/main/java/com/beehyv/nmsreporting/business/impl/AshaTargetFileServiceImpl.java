@@ -134,12 +134,12 @@ public class AshaTargetFileServiceImpl implements AshaTargetFileService {
                         case ASHACERTIFICATE:
                             productName = "MA Certificate Download through SMS";
                             messageText = formatCertificateMessage(beneficiary, SMS_CONTENT_ASHACERTIFICATE_PREFIX, languageCode);
-                            String otpMessage = formatCertificateOTPMessage(beneficiary, SMS_CONTENT_ASHACERTIFICATE_OTP_PREFIX, languageCode);
+//                            String otpMessage = formatCertificateOTPMessage(beneficiary, SMS_CONTENT_ASHACERTIFICATE_OTP_PREFIX, languageCode);
                              templateId = formatTemplateId(languageCode);
                             writeMessage(writer, msisdn, stateName, productName, templateId, messageText);
-                            writeMessage(writer, msisdn, stateName, productName, SMS_CONTENT_CERTIFICATETemplateId_OTP_PREFIX, otpMessage);
+//                            writeMessage(writer, msisdn, stateName, productName, SMS_CONTENT_CERTIFICATETemplateId_OTP_PREFIX, otpMessage);
                             flwIds.add(beneficiary.getAshaId());
-                            recordsWritten += 2;
+                            recordsWritten ++;
                             continue;
 
                         default:

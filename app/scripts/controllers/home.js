@@ -413,7 +413,7 @@ console.log("sdkjghkjhkjhkj")
                             $scope.hideGrid = true;
                             $scope.hideMessageMatrix = true;
                             $scope.showEmptyData = false;
-                            if($scope.report.name == 'District-wise Performance of the State for Mobile Academy') {
+                            if($scope.report.name == 'Mobile Academy Performance Report') {
                             $scope.dateFormat = 'yyyy-MM-dd';
                                                 $scope.endDatePickerOptions.minDate = new Date(2015,12,1)
                                                 $scope.endDatePickerOptions.maxDate = new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate()-1);
@@ -968,7 +968,7 @@ console.log("sdkjghkjhkjhkj")
 //                                    return;
 //                                }
 //            				}
-            				else if($scope.periodDisplayType == '' && ($scope.isAggregateReport() ) && ($scope.report.name != 'District-wise Performance of the State for Mobile Academy' && $scope.report.reportEnum != 'Kilkari_Cumulative_Summary')){
+            				else if($scope.periodDisplayType == '' && ($scope.isAggregateReport() ) && ($scope.report.name != 'Mobile Academy Performance Report' && $scope.report.reportEnum != 'Kilkari_Cumulative_Summary')){
                                if(UserFormFactory.isInternetExplorer()){
                                    alert("Please select a period type")
                                    return;
@@ -978,7 +978,7 @@ console.log("sdkjghkjhkjhkj")
                                    return;
                                }
                             }
-            				else if($scope.dt1 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType != 'Custom Range' && $scope.periodDisplayType != 'Current Period' && $scope.periodDisplayType != 'Quarter' && $scope.report.name != 'District-wise Performance of the State for Mobile Academy' && $scope.report.reportEnum != 'Kilkari_Cumulative_Summary') ){
+            				else if($scope.dt1 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType != 'Custom Range' && $scope.periodDisplayType != 'Current Period' && $scope.periodDisplayType != 'Quarter' && $scope.report.name != 'Mobile Academy Performance Report' && $scope.report.reportEnum != 'Kilkari_Cumulative_Summary') ){
                                 if(UserFormFactory.isInternetExplorer()){
                                       alert("Please select a " +  $scope.periodDisplayType)
                                       return;
@@ -1010,7 +1010,7 @@ console.log("sdkjghkjhkjhkj")
                                }
 
                             }
-                            else if($scope.dt2 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType == 'Custom Range' || $scope.report.name == 'District-wise Performance of the State for Mobile Academy' || $scope.report.reportEnum == 'Kilkari_Cumulative_Summary' )){
+                            else if($scope.dt2 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType == 'Custom Range' || $scope.report.name == 'Mobile Academy Performance Report' || $scope.report.reportEnum == 'Kilkari_Cumulative_Summary' )){
                                if(UserFormFactory.isInternetExplorer()){
                                      alert("Please select an end date")
                                      return;
@@ -1639,8 +1639,8 @@ debugger;
                                    for (j = 0; j < exportData[i].length; j++) {
                                           var temp = exportData[i][j].value;
                                                 if((excelHeaderName.reportName == "Kilkari Call" && (j == "7"||j == "8") )||
-                                                    (excelHeaderName.reportName == "District-wise Performance of the State for Kilkari" && (j == "4"||j == "6"||j == "8"||j == "9"||j == "10"))||
-                                                    (excelHeaderName.reportName == "District-wise Performance of the State for Mobile Academy" && (j == "3"||j == "5"||j == "7"||j=="9"))||
+                                                    (excelHeaderName.reportName == "Kilkari Performance Report" && (j == "4"||j == "6"||j == "8"||j == "9"||j == "10"))||
+                                                    (excelHeaderName.reportName == "Mobile Academy Performance Report" && (j == "3"||j == "5"||j == "7"||j=="9"))||
                                                     (excelHeaderName.reportName == "Kilkari Cumulative Summary" && (j == "4"||j == "3") )||
                                                     (excelHeaderName.reportName == "Kilkari Thematic Content" && (j == "4") )||
                                                     (excelHeaderName.reportName == "Kilkari Beneficiary Completion" && (j == "2") )){
@@ -1676,23 +1676,23 @@ debugger;
                                                        var temp = ft.getAggregationValue();
                                                        v = (parseFloat(temp));
                                                    }
-                                                   else if(ft.displayName == "Average Duration of Calls(Mins)" && excelHeaderName.reportName == "District-wise Performance of the State for Kilkari"){
+                                                   else if(ft.displayName == "Average Duration of Calls(Mins)" && excelHeaderName.reportName == "Kilkari Performance Report"){
                                                        var temp = $scope.gridApi.grid.columns[4].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[10].getAggregationValue()/$scope.gridApi.grid.columns[4].getAggregationValue());
                                                        v = (parseFloat(temp));
                                                    }
-                                                   else if(ft.displayName == "Total Billable Minutes" && excelHeaderName.reportName == "District-wise Performance of the State for Kilkari"){
+                                                   else if(ft.displayName == "Total Billable Minutes" && excelHeaderName.reportName == "Kilkari Performance Report"){
                                                        var temp = ft.getAggregationValue();
                                                        v = (parseFloat(temp));
                                                    }
-                                                   else if(ft.displayName == "% attempted calls that were successful" && excelHeaderName.reportName == "District-wise Performance of the State for Kilkari"){
+                                                   else if(ft.displayName == "% attempted calls that were successful" && excelHeaderName.reportName == "Kilkari Performance Report"){
                                                        var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00: (($scope.gridApi.grid.columns[4].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue()) * 100);
                                                        v = (parseFloat(temp));
                                                    }
-                                                   else if(ft.displayName == "% successful calls where >= 75% content listened to" && excelHeaderName.reportName == "District-wise Performance of the State for Kilkari"){
+                                                   else if(ft.displayName == "% successful calls where >= 75% content listened to" && excelHeaderName.reportName == "Kilkari Performance Report"){
                                                        var temp = $scope.gridApi.grid.columns[4].getAggregationValue()==0?0.00: (($scope.gridApi.grid.columns[6].getAggregationValue()/$scope.gridApi.grid.columns[4].getAggregationValue()) * 100);
                                                        v = (parseFloat(temp));
                                                    }
-                                                   else if(ft.displayName == "% successful calls where <25% content listened to" && excelHeaderName.reportName == "District-wise Performance of the State for Kilkari"){
+                                                   else if(ft.displayName == "% successful calls where <25% content listened to" && excelHeaderName.reportName == "Kilkari Performance Report"){
                                                        var temp = $scope.gridApi.grid.columns[4].getAggregationValue()==0?0.00: (($scope.gridApi.grid.columns[8].getAggregationValue()/$scope.gridApi.grid.columns[4].getAggregationValue()) * 100);
                                                        v = (parseFloat(temp));
                                                    }
@@ -1703,19 +1703,19 @@ debugger;
                                                    else if(ft.displayName == "Total Beneficiary Records Rejected" && excelHeaderName.reportName == "Kilkari Subscriber"&&!rejectionStart){
                                                        v = "N/A";
                                                    }
-                                                   else if(ft.displayName == "% Not Started (of total registered)" && excelHeaderName.reportName == "District-wise Performance of the State for Mobile Academy"){
+                                                   else if(ft.displayName == "% Not Started (of total registered)" && excelHeaderName.reportName == "Mobile Academy Performance Report"){
                                                       var temp = $scope.gridApi.grid.columns[2].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[7].getAggregationValue()/$scope.gridApi.grid.columns[2].getAggregationValue())*100;
                                                       v = (parseFloat(temp));
                                                    }
-                                                   else if(ft.displayName == "% Started (of total registered)" && excelHeaderName.reportName == "District-wise Performance of the State for Mobile Academy"){
+                                                   else if(ft.displayName == "% Started (of total registered)" && excelHeaderName.reportName == "Mobile Academy Performance Report"){
                                                        var temp = $scope.gridApi.grid.columns[2].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[3].getAggregationValue()/$scope.gridApi.grid.columns[2].getAggregationValue())*100;
                                                        v = (parseFloat(temp));
                                                    }
-                                                   else if(ft.displayName == "% Completed (of total registered)" && excelHeaderName.reportName == "District-wise Performance of the State for Mobile Academy"){
+                                                   else if(ft.displayName == "% Completed (of total registered)" && excelHeaderName.reportName == "Mobile Academy Performance Report"){
                                                       var temp = $scope.gridApi.grid.columns[2].getAggregationValue()==0?0.00:($scope.gridApi.grid.columns[5].getAggregationValue()/$scope.gridApi.grid.columns[2].getAggregationValue())*100;
                                                       v = (parseFloat(temp));
                                                    }
-                                                   else if(ft.displayName == "% Failed (of total registered)" && excelHeaderName.reportName == "District-wise Performance of the State for Mobile Academy"){
+                                                   else if(ft.displayName == "% Failed (of total registered)" && excelHeaderName.reportName == "Mobile Academy Performance Report"){
                                                       var temp = $scope.gridApi.grid.columns[2].getAggregationValue()==0?0.00:($scope.gridApi.grid.columns[9].getAggregationValue()/$scope.gridApi.grid.columns[2].getAggregationValue())*100;
                                                       v = (parseFloat(temp));
                                                    }
@@ -1750,8 +1750,8 @@ debugger;
                                    for (j = 0; j < exportData1[i].length; j++) {
                                           var temp1 = exportData1[i][j].value;
                                                 if((excelHeaderName.reportName == "Kilkari Call" && (j == "7"||j == "8") )||
-                                                    (excelHeaderName.reportName == "District-wise Performance of the State for Kilkari" && (j == "4"||j == "6"||j == "8"||j == "9"||j == "10"))||
-                                                    (excelHeaderName.reportName == "District-wise Performance of the State for Mobile Academy" && (j == "3"||j == "5"||j == "7"||j=="9"))||
+                                                    (excelHeaderName.reportName == "Kilkari Performance Report" && (j == "4"||j == "6"||j == "8"||j == "9"||j == "10"))||
+                                                    (excelHeaderName.reportName == "Mobile Academy Performance Report" && (j == "3"||j == "5"||j == "7"||j=="9"))||
                                                     (excelHeaderName.reportName == "Kilkari Cumulative Summary" && (j == "4"||j=="3") )||
                                                     (excelHeaderName.reportName == "Kilkari Thematic Content" && (j == "4") )||
                                                     (excelHeaderName.reportName == "Kilkari Beneficiary Completion" && (j == "2") )){
@@ -1790,7 +1790,7 @@ debugger;
                               var months    = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
                               var toDateString = $scope.headerToDate.getDate()<10?"0"+$scope.headerToDate.getDate():$scope.headerToDate.getDate();
 
-                              if($scope.report.reportEnum == 'Kilkari_Cumulative_Summary'||$scope.report.reportEnum == 'District-wise Performance of the State for Mobile Academy'){
+                              if($scope.report.reportEnum == 'Kilkari_Cumulative_Summary'||$scope.report.reportEnum == 'Mobile Academy Performance Report'){
                                excelHeaderName.timePeriod = "till "+toDateString+" "+months[$scope.headerToDate.getMonth()]+" "+$scope.headerToDate.getFullYear();}
                               else{
                               var fromDateString = $scope.headerFromDate.getDate()<10?"0"+$scope.headerFromDate.getDate():$scope.headerFromDate.getDate();
@@ -1843,7 +1843,7 @@ debugger;
                               var months    = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
                               var toDateString = $scope.headerToDate.getDate()<10?"0"+$scope.headerToDate.getDate():$scope.headerToDate.getDate();
 
-                              if($scope.report.reportEnum == 'Kilkari_Cumulative_Summary'||$scope.report.reportEnum == 'District-wise Performance of the State for Mobile Academy'){
+                              if($scope.report.reportEnum == 'Kilkari_Cumulative_Summary'||$scope.report.reportEnum == 'Mobile Academy Performance Report'){
                                excelHeaderName.timePeriod = "till "+toDateString+" "+months[$scope.headerToDate.getMonth()]+" "+$scope.headerToDate.getFullYear();}
                               else{
                               var fromDateString = $scope.headerFromDate.getDate()<10?"0"+$scope.headerFromDate.getDate():$scope.headerFromDate.getDate();
@@ -1872,8 +1872,8 @@ debugger;
                                 for (j = 0; j < exportData[i].length; j++) {
                                     var temp = exportData[i][j].value;
                                     if((excelHeaderName.reportName == "Kilkari Call" && (j == "7"||j == "8"))||
-                                        (excelHeaderName.reportName == "District-wise Performance of the State for Kilkari" && (j == "4"||j == "6"||j == "8"||j == "10"))||
-                                        (excelHeaderName.reportName == "District-wise Performance of the State for Mobile Academy" && (j == "3"||j == "5"||j == "7"||j=="9"))||
+                                        (excelHeaderName.reportName == "Kilkari Performance Report" && (j == "4"||j == "6"||j == "8"||j == "10"))||
+                                        (excelHeaderName.reportName == "Mobile Academy Performance Report" && (j == "3"||j == "5"||j == "7"||j=="9"))||
                                         (excelHeaderName.reportName == "Kilkari Cumulative Summary" && (j == "4"||j == "3") )||
                                         (excelHeaderName.reportName == "Kilkari Thematic Content" && (j == "4") )||
                                         (excelHeaderName.reportName == "Kilkari Beneficiary Completion" && (j == "2") )){
@@ -1912,23 +1912,23 @@ debugger;
                                         var temp = ft.getAggregationValue();
                                         v = indianDecimal(temp);
                                     }
-                                    else if(ft.displayName == "Average Duration of Calls(Mins)" && excelHeaderName.reportName == "District-wise Performance of the State for Kilkari"){
+                                    else if(ft.displayName == "Average Duration of Calls(Mins)" && excelHeaderName.reportName == "Kilkari Performance Report"){
                                         var temp = $scope.gridApi.grid.columns[4].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[10].getAggregationValue()/$scope.gridApi.grid.columns[4].getAggregationValue());
                                         v = indianDecimal(temp);
                                     }
-                                    else if(ft.displayName == "Total Billable Minutes" && excelHeaderName.reportName == "District-wise Performance of the State for Kilkari"){
+                                    else if(ft.displayName == "Total Billable Minutes" && excelHeaderName.reportName == "Kilkari Performance Report"){
                                         var temp = ft.getAggregationValue();
                                         v = indianDecimal(temp);
                                     }
-                                    else if(ft.displayName == "% attempted calls that were successful" && excelHeaderName.reportName == "District-wise Performance of the State for Kilkari"){
+                                    else if(ft.displayName == "% attempted calls that were successful" && excelHeaderName.reportName == "Kilkari Performance Report"){
                                         var temp = $scope.gridApi.grid.columns[3].getAggregationValue()==0?0.00: (($scope.gridApi.grid.columns[4].getAggregationValue()/$scope.gridApi.grid.columns[3].getAggregationValue()) * 100);
                                         v = indianDecimal(temp);
                                     }
-                                    else if(ft.displayName == "% successful calls where >= 75% content listened to" && excelHeaderName.reportName == "District-wise Performance of the State for Kilkari"){
+                                    else if(ft.displayName == "% successful calls where >= 75% content listened to" && excelHeaderName.reportName == "Kilkari Performance Report"){
                                         var temp = $scope.gridApi.grid.columns[4].getAggregationValue()==0?0.00: (($scope.gridApi.grid.columns[6].getAggregationValue()/$scope.gridApi.grid.columns[4].getAggregationValue()) * 100);
                                         v = indianDecimal(temp);
                                     }
-                                    else if(ft.displayName == "% successful calls where <25% content listened to" && excelHeaderName.reportName == "District-wise Performance of the State for Kilkari"){
+                                    else if(ft.displayName == "% successful calls where <25% content listened to" && excelHeaderName.reportName == "Kilkari Performance Report"){
                                         var temp = $scope.gridApi.grid.columns[4].getAggregationValue()==0?0.00: (($scope.gridApi.grid.columns[8].getAggregationValue()/$scope.gridApi.grid.columns[4].getAggregationValue()) * 100);
                                         v = indianDecimal(temp);
                                     }
@@ -1939,19 +1939,19 @@ debugger;
                                     else if(ft.displayName == "Total Beneficiary Records Rejected" && excelHeaderName.reportName == "Kilkari Subscriber"&&!rejectionStart){
                                         v = "N/A";
                                     }
-                                    else if(ft.displayName == "% Not Started (of total registered)" && excelHeaderName.reportName == "District-wise Performance of the State for Mobile Academy"){
+                                    else if(ft.displayName == "% Not Started (of total registered)" && excelHeaderName.reportName == "Mobile Academy Performance Report"){
                                         var temp = $scope.gridApi.grid.columns[2].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[7].getAggregationValue()/$scope.gridApi.grid.columns[2].getAggregationValue())*100;
                                         v = indianDecimal(temp);
                                     }
-                                    else if(ft.displayName == "% Completed (of total registered)" && excelHeaderName.reportName == "District-wise Performance of the State for Mobile Academy"){
+                                    else if(ft.displayName == "% Completed (of total registered)" && excelHeaderName.reportName == "Mobile Academy Performance Report"){
                                         var temp = $scope.gridApi.grid.columns[2].getAggregationValue()==0?0.00:($scope.gridApi.grid.columns[5].getAggregationValue()/$scope.gridApi.grid.columns[2].getAggregationValue())*100;
                                         v = indianDecimal(temp);
                                     }
-                                    else if(ft.displayName == "% Started (of total registered)" && excelHeaderName.reportName == "District-wise Performance of the State for Mobile Academy"){
+                                    else if(ft.displayName == "% Started (of total registered)" && excelHeaderName.reportName == "Mobile Academy Performance Report"){
                                         var temp = $scope.gridApi.grid.columns[2].getAggregationValue()==0?0.00: ($scope.gridApi.grid.columns[3].getAggregationValue()/$scope.gridApi.grid.columns[2].getAggregationValue())*100;
                                         v = indianDecimal(temp);
                                     }
-                                    else if(ft.displayName == "% Failed (of total registered)" && excelHeaderName.reportName == "District-wise Performance of the State for Mobile Academy"){
+                                    else if(ft.displayName == "% Failed (of total registered)" && excelHeaderName.reportName == "Mobile Academy Performance Report"){
                                         var temp = $scope.gridApi.grid.columns[2].getAggregationValue()==0?0.00:($scope.gridApi.grid.columns[9].getAggregationValue()/$scope.gridApi.grid.columns[2].getAggregationValue())*100;
                                         v = indianDecimal(temp);
                                     }
@@ -1991,8 +1991,8 @@ debugger;
                                     for (j = 0; j < exportData1[i].length; j++) {
                                         var temp1 = exportData1[i][j].value;
                                         if((excelHeaderName.reportName == "Kilkari Call" && (j == "7"||j == "8") )||
-                                            (excelHeaderName.reportName == "District-wise Performance of the State for Kilkari" && (j == "4"||j == "6"||j == "8"||j == "10"))||
-                                            (excelHeaderName.reportName == "District-wise Performance of the State for Mobile Academy" && (j == "3"||j == "5"||j == "7"||j=="9"))||
+                                            (excelHeaderName.reportName == "Kilkari Performance Report" && (j == "4"||j == "6"||j == "8"||j == "10"))||
+                                            (excelHeaderName.reportName == "Mobile Academy Performance Report" && (j == "3"||j == "5"||j == "7"||j=="9"))||
                                             (excelHeaderName.reportName == "Kilkari Cumulative Summary" && (j == "4"||j=="3") )||
                                             (excelHeaderName.reportName == "Kilkari Thematic Content" && (j == "4") )||
                                             (excelHeaderName.reportName == "Kilkari Beneficiary Completion" && (j == "2") )){
@@ -2033,7 +2033,7 @@ debugger;
                             var months    = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
                             var toDateString = $scope.headerToDate.getDate()<10?"0"+$scope.headerToDate.getDate():$scope.headerToDate.getDate();
 
-                            if($scope.report.reportEnum == 'Kilkari_Cumulative_Summary'||$scope.report.reportEnum == 'District-wise Performance of the State for Mobile Academy'){
+                            if($scope.report.reportEnum == 'Kilkari_Cumulative_Summary'||$scope.report.reportEnum == 'Mobile Academy Performance Report'){
                                 excelHeaderName.timePeriod = "till "+toDateString+" "+months[$scope.headerToDate.getMonth()]+" "+$scope.headerToDate.getFullYear();}
                             else{
                                 var fromDateString = $scope.headerFromDate.getDate()<10?"0"+$scope.headerFromDate.getDate():$scope.headerFromDate.getDate();

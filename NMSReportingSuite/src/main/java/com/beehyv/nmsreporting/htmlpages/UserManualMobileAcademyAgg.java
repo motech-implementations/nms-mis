@@ -6,7 +6,7 @@ public class UserManualMobileAcademyAgg {
             "        <h2 class=\"user-manual-header\">Mobile Academy Aggregate Reports</h2>\n" +
             "        <div style=\"color: #0071bc; font-size: 16px\">\n" +
             "            <p>\n" +
-            "            <div data-ng-click=\"func('csr')\"><u>District-wise Performance of the State for Mobile Academy Report</u></div>\n" +
+            "            <div data-ng-click=\"func('csr')\"><u>Mobile Academy Performance Report Report</u></div>\n" +
             "            </p>\n" +
             "            <p>\n" +
             "            <div data-ng-click=\"func('sr')\"><u>MA Subscriber Report</u></div>\n" +
@@ -22,7 +22,7 @@ public class UserManualMobileAcademyAgg {
             "            <div style=\"display: inline-block\" class=\"imageModify\"><b>Mobile Academy Aggregate Report</b><br>\n" +
             "                <div data-ng-hide=\"selectRole != 1 && selectRole !=5\"><!--National User-->\n" +
             "                    <div data-ng-hide=\"param!=='csr'\" style=\"display: inline-block\">\n" +
-            "                        <p style=\"font-size: 30px\"><b>District-wise Performance of the State for Mobile Academy Report</b></p><br>\n" +
+            "                        <p style=\"font-size: 30px\"><b>Mobile Academy Performance Report Report</b></p><br>\n" +
             "                        <p>This report provides the performance of the Mobile Academy project from the launch date of\n" +
             "                            the service in the state to till date. It gives information about the number of ASHAs\n" +
             "                            registered with the program, the number of ASHAs that have started the course, the number of\n" +
@@ -235,7 +235,7 @@ public class UserManualMobileAcademyAgg {
             "                </div>\n" +
             "                <div data-ng-hide=\"selectRole != 2 && selectRole != 6\">\n" +
             "                    <div data-ng-hide=\"param!=='csr'\" style=\"display: inline-block\">\n" +
-            "                        <p style=\"font-size: 30px\"><b>District-wise Performance of the State for Mobile Academy Report</b></p><br>\n" +
+            "                        <p style=\"font-size: 30px\"><b>Mobile Academy Performance Report Report</b></p><br>\n" +
             "                        <p>This report provides the performance of the Mobile Academy project from the launch date of\n" +
             "                            the service in the state to till date. It gives information about the number of ASHAs\n" +
             "                            registered with the program, the number of ASHAs that have started the course, the number of\n" +
@@ -449,7 +449,7 @@ public class UserManualMobileAcademyAgg {
     public static String pageContent2 =
             "                <div data-ng-hide=\"selectRole != 3 && selectRole != 7\"><!--Disrict User-->\n" +
             "                    <div data-ng-hide=\"param!=='csr'\" style=\"display: inline-block\">\n" +
-            "                        <p style=\"font-size: 30px\"><b>District-wise Performance of the State for Mobile Academy Report</b></p><br>\n" +
+            "                        <p style=\"font-size: 30px\"><b>Mobile Academy Performance Report Report</b></p><br>\n" +
             "                        <p>This report provides the performance of the Mobile Academy project from the launch date of\n" +
             "                            the service in the state to till date. It gives information about the number of ASHAs\n" +
             "                            registered with the program, the number of ASHAs that have started the course, the number of\n" +
@@ -662,7 +662,7 @@ public class UserManualMobileAcademyAgg {
             "                </div>\n" +
             "                <div data-ng-hide=\"selectRole !=4\">\n" +
             "                    <div data-ng-hide=\"param!=='csr'\" style=\"display: inline-block\">\n" +
-            "                        <p style=\"font-size: 30px\"><b>District-wise Performance of the State for Mobile Academy Report</b></p><br>\n" +
+            "                        <p style=\"font-size: 30px\"><b>Mobile Academy Performance Report Report</b></p><br>\n" +
             "                        <p>This report provides the performance of the Mobile Academy project from the launch date of\n" +
             "                            the service in the state to till date. It gives information about the number of ASHAs\n" +
             "                            registered with the program, the number of ASHAs that have started the course, the number of\n" +
