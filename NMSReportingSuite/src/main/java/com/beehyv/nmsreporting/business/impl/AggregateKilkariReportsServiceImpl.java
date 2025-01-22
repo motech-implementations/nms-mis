@@ -921,8 +921,8 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 }
                 if ((a.getBeneficiariesCalled()+a.getAnsweredAtleastOneCall()+a.getSelfDeactivated()+
                         a.getNotAnswering()+a.getLowListenership()+a.getSystemDeactivation()+a.getMotherCompletion()+
-                        a.getChildCompletion()+a.getCalledInbox()+a.getJoinedSubscription() != 0)
-                        && !locationType.equalsIgnoreCase("DifferenceState")) {
+                        a.getChildCompletion()+a.getCalledInbox()+a.getJoinedSubscription()+a.getMotherSubscriptionJoined()+
+                        a.getChildSubscriptionJoined()!= 0) && !locationType.equalsIgnoreCase("DifferenceState")) {
                     summaryDto.add(summaryDto1);
                 }
             }
