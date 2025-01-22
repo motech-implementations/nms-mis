@@ -2671,6 +2671,8 @@
                                                      { field: 'childCompletion', name: 'Beneficiaries completed Child Pack',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
                                                      { field: 'calledInbox', name: 'Beneficiaries who have called the Kilkari Inbox',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
                                                      { field: 'joinedSubscription', name: 'Beneficiaries who have joined the subscription',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                     { field: 'motherSubscriptionJoined', name: 'Mother Beneficiaries who have joined the subscription',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
+                                                     { field: 'childSubscriptionJoined', name: 'Child Beneficiaries who have joined the subscription',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false},
 
             ]
 
