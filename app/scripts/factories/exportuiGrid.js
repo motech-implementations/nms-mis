@@ -1010,7 +1010,7 @@
 
 
                 var customMarginLeft;
-                if(excelHeaderName.reportName == "Kilkari Call" || excelHeaderName.reportName == "District-wise Performance of the State for Mobile Academy"||excelHeaderName.reportName == "District-wise Performance of the State for Kilkari") {
+                if(excelHeaderName.reportName == "Kilkari Call" || excelHeaderName.reportName == "Mobile Academy Performance Report"||excelHeaderName.reportName == "Kilkari Performance Report") {
                     customMarginLeft=-10
                 }else{
                     customMarginLeft=10
