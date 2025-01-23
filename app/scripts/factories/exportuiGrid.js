@@ -453,25 +453,25 @@
                 var colWidth = [25];
                 var colWidth1 = [25];
                 //Dynamically getting the number of columns for each kind of table
-               if(excelHeaderName.reportName == "kilkari message matrix for only successful calls"){
-                for (i = 0; i < exportColumnHeaders.length; i++) {
-                    colWidth[i+1] = 80;
-                }
-                //For 2nd Table
+                if(excelHeaderName.reportName == "kilkari message matrix for only successful calls"){
+                    for (i = 0; i < exportColumnHeaders.length; i++) {
+                        colWidth[i+1] = 80;
+                    }
+                    //For 2nd Table
 
-                for (i = 0; i < exportColumnHeaders1.length; i++) {
-                    colWidth1[i+1] = 80;
-                }
+                    for (i = 0; i < exportColumnHeaders1.length; i++) {
+                        colWidth1[i+1] = 80;
+                    }
 
-               }else{
+                }else{
 
-                for (i = 0; i < exportColumnHeaders.length; i++) {
-                    colWidth[i+1] = 70;
-                }
-                //For 2nd Table
-                for (i = 0; i < exportColumnHeaders1.length; i++) {
-                    colWidth1[i+1] = 80;
-                }
+                    for (i = 0; i < exportColumnHeaders.length; i++) {
+                        colWidth[i+1] = 70;
+                    }
+                    //For 2nd Table
+                    for (i = 0; i < exportColumnHeaders1.length; i++) {
+                        colWidth1[i+1] = 80;
+                    }
                 }
 
                 //Contains data on the pdf as well as the styling
@@ -538,7 +538,7 @@
                             style: 'subsubsubheader'
                         },
 
-                      {
+                        {
                             columns: [{
                                     width: '*',
                                     text: ''
@@ -583,13 +583,12 @@
                                         // headerRows:1,
                                         widths: colWidth,
                                         body: datapdf
-                                    },
+                                   },
                                     layout: {
-                                                vLineColor:'#d4d4d4',
-                                                hLineColor:'#d4d4d4',
-                                       fillColor: function(i) {
-                                             if (i % 2 === 0 ) {
-
+                                        vLineColor:'#d4d4d4',
+                                        hLineColor:'#d4d4d4',
+                                        fillColor: function(i) {
+                                            if (i % 2 === 0 ) {
                                                 return '#f4f3f3';
                                             } else {
                                                 return null;
@@ -610,7 +609,7 @@
                             style: 'subsubsubheader'
                         },
 
-                      {
+                        {
                             columns: [{
                                     width: '*',
                                     text: ''
@@ -621,9 +620,8 @@
                                     table: {
                                         widths: colWidth1,
                                         heights: [18],
-
                                         body: datapdf1.splice(0,1)
-                                            },
+                                    },
                                     layout: {
                                     paddingTop: function(i) { return 6; },
                                      paddingBottom: function(i) { return 6; },
@@ -651,16 +649,16 @@
                                 {
                                     width: 'auto',
                                     style: 'tableExample2',
-                                   table: {
+                                    table: {
                                         // headerRows:1,
                                         widths: colWidth1,
                                         body: datapdf1
                                     },
-                                    layout: {vLineColor:'#d4d4d4',
-                                             hLineColor:'#d4d4d4',
-                                       fillColor: function(i) {
+                                    layout: {
+                                        vLineColor:'#d4d4d4',
+                                        hLineColor:'#d4d4d4',
+                                        fillColor: function(i) {
                                              if (i % 2 === 0) {
-
                                                 return '#f4f3f3';
                                             } else {
                                                 return null;
@@ -724,8 +722,6 @@
                     defaultStyle: {
                         alignment: 'center'
                     }
-
-
                 };
             }
             //Listening Matrix unlike other single table reports has it's total calculation coming from back-end
@@ -967,50 +963,50 @@
                 //Dynamically setting width of the column
                 var colWidth = [25];
                 if(excelHeaderName.reportName == "MA Subscriber"||excelHeaderName.reportName == 'Kilkari Beneficiary Completion'){
-                for (i = 0; i < exportColumnHeaders.length; i++) {
-                    colWidth[i+1] = 90;
+                    for (i = 0; i < exportColumnHeaders.length; i++) {
+                        colWidth[i+1] = 90;
                     }
                 }
                 else if(excelHeaderName.reportName == "MA Performance"){
-                for (i = 0; i < exportColumnHeaders.length; i++) {
-                    colWidth[i+1] = 60;
+                    for (i = 0; i < exportColumnHeaders.length; i++) {
+                        colWidth[i+1] = 60;
                     }
                 }
                 else if(excelHeaderName.reportName== "Kilkari Cumulative Summary"){
-                for (i = 0; i < exportColumnHeaders.length; i++) {
-                    colWidth[i+1] = 120;
-                }
+                    for (i = 0; i < exportColumnHeaders.length; i++) {
+                        colWidth[i+1] = 120;
+                    }
                 }
                 else if(excelHeaderName.reportName== "Mobile Academy Performance Report"){
-                for (i = 0; i < exportColumnHeaders.length; i++) {
-                    colWidth[i+1] = 67;
-                }
+                    for (i = 0; i < exportColumnHeaders.length; i++) {
+                        colWidth[i+1] = 67;
+                    }
                 }
                 else if(excelHeaderName.reportName== "Kilkari Usage"
                 ||excelHeaderName.reportName=="Kilkari Message Listenership"
                 ||excelHeaderName.reportName=="Kilkari Subscriber" ||
                 excelHeaderName.reportName == "Kilkari Subscriber Registration Date"){
-                for (i = 0; i < exportColumnHeaders.length; i++) {
-                    colWidth[i+1] = 80;
-                }
+                    for (i = 0; i < exportColumnHeaders.length; i++) {
+                        colWidth[i+1] = 80;
+                    }
                 }
                 else if(excelHeaderName.reportName == "Kilkari Call"){
-                for (i = 0; i < exportColumnHeaders.length; i++) {
-                    colWidth[i+1] = 65;
-                }
+                    for (i = 0; i < exportColumnHeaders.length; i++) {
+                        colWidth[i+1] = 65;
+                    }
                 }else if(excelHeaderName.reportName == "Kilkari Performance Report"){
                     for (i = 0; i < exportColumnHeaders.length; i++) {
                         colWidth[i+1] = 54;
                     }
                 }else if(excelHeaderName.reportName == "MA Report"){
-                                     for (i = 0; i < exportColumnHeaders.length; i++) {
-                                         colWidth[i+1] = 90;
-                                     }
-                                 }else if(excelHeaderName.reportName == "Kilkari Report"){
-                                                                       for (i = 0; i < exportColumnHeaders.length; i++) {
-                                                                           colWidth[i+1] = 90;
-                                                                       }
-                                                                   }
+                     for (i = 0; i < exportColumnHeaders.length; i++) {
+                         colWidth[i+1] = 90;
+                     }
+                }else if(excelHeaderName.reportName == "Kilkari Report"){
+                    for (i = 0; i < exportColumnHeaders.length; i++) {
+                        colWidth[i+1] = 90;
+                    }
+                }
 
 
                 var customMarginLeft;
@@ -1035,8 +1031,8 @@
                             (excelHeaderName.reportName == "Kilkari Cumulative Summary" && (j == "4" || j == "3")) ||
                             (excelHeaderName.reportName == "Kilkari Thematic Content" && (j == "4")) ||
                             (excelHeaderName.reportName == "Kilkari Beneficiary Completion" && (j == "2"))) {
-//                            temp = Number(temp);
-//                            temp = indianDecimal(temp);
+                            //temp = Number(temp);
+                            //temp = indianDecimal(temp);
                         }
                         //else if(!j=="0") {temp = indianInteger(temp);}
                         tempcol.push(temp);
@@ -1101,15 +1097,15 @@
                         var temp = gridApi.grid.columns[2].getAggregationValue() == 0.00 ? 0.00 : (gridApi.grid.columns[9].getAggregationValue() / gridApi.grid.columns[2].getAggregationValue()) * 100;
                         v = Math.floor(indianDecimal(temp) * 100) / 100;
                     } else {
-                             if (ft.displayName != "S No.") {
-                                if (ft.displayName == "Location Name") {
-                                   v = "Total";
-                                } else {
-                                    v = indianInteger(ft.getAggregationValue());
-                                  }
+                        if (ft.displayName != "S No.") {
+                            if (ft.displayName == "Location Name") {
+                                v = "Total";
+                            } else {
+                                v = indianInteger(ft.getAggregationValue());
                             }
+                        }
                         else{
-                        v = ft.getAggregationValue();
+                            v = ft.getAggregationValue();
                         }
                     }
 
@@ -1138,8 +1134,9 @@
                 } else if (excelHeaderName.reportName === 'Kilkari Aggregate Beneficiaries') {
                     fontHasSize = 8;
                     for (i = 0; i < exportColumnHeaders.length; i++) {
-                                        colWidth[i+1] = 56;
-                                        }
+                        colWidth[i+1] = 46;
+                    }
+                    colWidth[1] = 56;
                 } else {
                     fontHasSize = 9;
                 }
@@ -1153,7 +1150,7 @@
                         columns: [
                           { text: 'Date Filed : '+d,fontSize:9, alignment: 'right', margin: [ 5, 2, 10, 0 ]}
                         ]
-                      },
+                    },
                     content: [{
                             //                                       // you'll most often use dataURI images on the browser side
                             //                                       // if no width/height/fit is provided, the original size will be used
@@ -1223,10 +1220,10 @@
                                     layout: {
 
 
-                                          paddingTop: function(i) { return 6; },
-                                          paddingBottom: function(i) { return 6; },
-                                          vLineColor:'#d4d4d4',
-                                          hLineColor:'#d4d4d4',
+                                        paddingTop: function(i) { return 6; },
+                                        paddingBottom: function(i) { return 6; },
+                                        vLineColor:'#d4d4d4',
+                                        hLineColor:'#d4d4d4',
 
 
                                         fillColor: function(i) {
