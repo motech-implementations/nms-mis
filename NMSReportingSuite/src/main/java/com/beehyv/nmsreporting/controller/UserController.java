@@ -755,6 +755,20 @@ public class UserController {
             return aggregateResponseDto;
         }
 
+        if (reportRequest.getReportType().equals(ReportType.usageMother.getReportType())) {
+            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
+            List<UsageDto> kilkariMotherUsageDtos = aggregateKilkariReportsService.getMotherUsageReport(reportRequest, currentUser);
+            aggregateResponseDto.setTableData(kilkariMotherUsageDtos);
+            return aggregateResponseDto;
+        }
+
+        if (reportRequest.getReportType().equals(ReportType.usageChild.getReportType())) {
+            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
+            List<UsageDto> kilkariChildUsageDtos = aggregateKilkariReportsService.getChildUsageReport(reportRequest, currentUser);
+            aggregateResponseDto.setTableData(kilkariChildUsageDtos);
+            return aggregateResponseDto;
+        }
+
         if(reportRequest.getReportType().equals(ReportType.kilkariHomePageReport.getReportType())){
             LOGGER.debug("inside this home api");
             aggregateResponseDto.setBreadCrumbData(breadCrumbs);

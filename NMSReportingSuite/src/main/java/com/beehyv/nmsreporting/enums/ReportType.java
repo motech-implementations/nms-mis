@@ -10,6 +10,8 @@ public enum ReportType {
     listeningMatrix("Kilkari_Listening_Matrix","Kilkari Listening Matrix","KILKARI","Kilkari Listening Matrix Report", "Listening Matrix"),
     beneficiary("Kilkari_Aggregate_Beneficiaries","Kilkari Aggregate Beneficiaries","KILKARI","Kilkari Aggregate Beneficiaries Report", "Aggregate Beneficiaries"),
     usage("Kilkari_Usage","Kilkari Usage","KILKARI","Kilkari Usage Report", "Usage Report"),
+    usageMother("Kilkari_Usage_Mother","Kilkari Usage Mother","KILKARI","Kilkari Usage Mother Report", "Mother Usage Report"),
+    usageChild("Kilkari_Usage_Child","Kilkari Usage Child","KILKARI","Kilkari Usage Child Report", "Child Usage Report"),
     beneficiaryCompletion("Kilkari_Beneficiary_Completion","Kilkari Beneficiary Completion","KILKARI","Kilkari Beneficiary Completion Report", "Beneficiary Completion"),
     kilkariCumulative("Kilkari_Cumulative_Summary","Kilkari Cumulative Summary","KILKARI","Kilkari Cumulative Summary Aggregate Report", "Cumulative Summary"),
     maPerformance("MA_Performance","MA Performance","MOBILE_ACADEMY","MA Performance Aggregate Report", "Performance Report"),
