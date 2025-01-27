@@ -231,7 +231,7 @@ public class Home {
             "\t\t\t\t<div class=\"row\">\n" +
             "\t\t\t\t\t<div class=\"col-xs-7 left\">\n" +
             "\n" +
-            "\t\t\t\t\t\t<div class=\"form-group col-xs-4\" data-ng-hide = \"report.name == 'District-wise Performance of the State for Mobile Academy' || report.reportEnum == 'Kilkari_Cumulative_Summary'\">\n" +
+            "\t\t\t\t\t\t<div class=\"form-group col-xs-4\" data-ng-hide = \"report.name == 'Mobile Academy Performance Report' || report.reportEnum == 'Kilkari_Cumulative_Summary'\">\n" +
             "\t\t\t\t\t\t\t<label> Period Type</label><br>\n" +
             "\t\t\t\t\t\t\t<div class=\"btn-group \" data-uib-dropdown data-dropdown-append-to-body >\n" +
             "\t\t\t\t\t\t\t\t<button id=\"btn-append-to-body9\" type=\"button\"  class=\"btn btn-sm btn-default\"  data-uib-dropdown-toggle >\n" +
@@ -251,7 +251,7 @@ public class Home {
             "\t\t\t\t\t\t\t</div>\n" +
             "\t\t\t\t\t\t</div>\n" +
             "\n" +
-            "\t\t\t\t\t\t<div class=\"form-group col-xs-4\" data-ng-hide = \" periodDisplayType == '' || (report.name == 'District-wise Performance of the State for Mobile Academy' ||  report.reportEnum == 'Kilkari_Cumulative_Summary' || periodDisplayType == 'Current Period' ) \">\n" +
+            "\t\t\t\t\t\t<div class=\"form-group col-xs-4\" data-ng-hide = \" periodDisplayType == '' || (report.name == 'Mobile Academy Performance Report' ||  report.reportEnum == 'Kilkari_Cumulative_Summary' || periodDisplayType == 'Current Period' ) \">\n" +
             "\t\t\t\t\t\t\t<label>{{periodTypeContent}}</label><br>\n" +
             "\t\t\t\t\t\t\t<p class=\"input-group\" data-ng-class=\"{disabled :disableDate() }\" data-ng-disabled=\"disableDate()\">\n" +
             "\t\t\t\t\t\t\t\t<input type=\"text\" class=\"form-control input input-sm\" data-uib-datepicker-popup=\"{{dateFormat}}\" data-ng-model=\"dt1\" is-open=\"popup2.opened\" datepicker-options=\"datePickerOptions\"  data-ng-required = \"true\" close-text=\"Close\" alt-input-formats=\"altInputFormats\" data-ng-disabled='disableDate()' readonly />\n" +
@@ -267,7 +267,7 @@ public class Home {
             "\t\t\t\t\t\t\t</ul>\n" +
             "\t\t\t\t\t\t</div>\n" +
             "\n" +
-            "\t\t\t\t\t\t<div class=\"form-group col-xs-4\" data-ng-hide = \" (report.name != 'District-wise Performance of the State for Mobile Academy' &&  report.reportEnum != 'Kilkari_Cumulative_Summary' && periodDisplayType != 'Custom Range')\">\n" +
+            "\t\t\t\t\t\t<div class=\"form-group col-xs-4\" data-ng-hide = \" (report.name != 'Mobile Academy Performance Report' &&  report.reportEnum != 'Kilkari_Cumulative_Summary' && periodDisplayType != 'Custom Range')\">\n" +
             "\t\t\t\t\t\t\t<label>End Date</label><br>\n" +
             "\t\t\t\t\t\t\t<p class=\"input-group\" data-ng-class=\"{disabled :disableDate() }\" data-ng-disabled=\"disableDate()\">\n" +
             "\t\t\t\t\t\t\t\t<input type=\"text\" class=\"form-control input input-sm\" data-uib-datepicker-popup=\"{{dateFormat}}\" data-ng-model=\"dt2\" is-open=\"popup3.opened\" datepicker-options=\"endDatePickerOptions\"  data-ng-required= \"true\" close-text=\"Close\" alt-input-formats=\"altInputFormats\" data-ng-disabled='disableDate()' readonly />\n" +
@@ -345,7 +345,7 @@ public class Home {
             "\t\t<div class=\"reportheader\" data-ng-hide=\"hideGrid\">\n" +
             "\t\t\t<p class=\"ng-binding\" style=\"display: inline-block;\"> {{reportHeaderName}} Report</p>\n" +
             "\t\t\t<div style=\"display: inline-block;float: right\">\n" +
-            "\t\t\t\t<i class=\"glyphicon glyphicon-calendar aggregate-calender\"> <span data-ng-if=\" report.name != 'District-wise Performance of the State for Mobile Academy' && report.reportEnum != 'Kilkari_Cumulative_Summary' \" class=\"calender-date\">{{ headerFromDate | date:'dd/MM/y'}}</span> <span class=\"calender-date\" style=\"font-size: 13px\" data-ng-if=\" report.name == 'District-wise Performance of the State for Mobile Academy' || report.reportEnum == 'Kilkari_Cumulative_Summary' \">Up</span><span class=\"calender-date\">to</span> <span class=\"calender-date\">{{headerToDate | date:'dd/MM/y'}}</span></i>\n" +
+            "\t\t\t\t<i class=\"glyphicon glyphicon-calendar aggregate-calender\"> <span data-ng-if=\" report.name != 'Mobile Academy Performance Report' && report.reportEnum != 'Kilkari_Cumulative_Summary' \" class=\"calender-date\">{{ headerFromDate | date:'dd/MM/y'}}</span> <span class=\"calender-date\" style=\"font-size: 13px\" data-ng-if=\" report.name == 'Mobile Academy Performance Report' || report.reportEnum == 'Kilkari_Cumulative_Summary' \">Up</span><span class=\"calender-date\">to</span> <span class=\"calender-date\">{{headerToDate | date:'dd/MM/y'}}</span></i>\n" +
             "\t\t\t\t<img alt=\"export to excel\" data-ng-click = \"exportToExcel()\" style=\"float: right;margin-right: 7px; cursor : pointer\" src=\"images/export3.png\">\n" +
             "\t\t\t\t<img alt=\"export to csv\" data-ng-click = \"exportCsv()\" style=\"float: right;margin-right: 7px; cursor : pointer\" src=\"images/export1.png\">\n" +
             "\t\t\t\t<img alt=\"export to pdf\" data-ng-hide=\"isIE9()\"data-ng-click = \"exportPdf()\" style=\"float: right;margin-right: 7px; cursor : pointer\" src=\"images/export2.png\">\n" +
@@ -405,7 +405,7 @@ public class Home {
             "\t\t\t<p data-ng-if =\"!hideGrid && !waiting && (report.reportEnum == 'Kilkari_Subscriber')\" ><b>Note3 :</b> rejection reasons are captured only after Sep 2017</p>\n" +
             "\t\t\t<p data-ng-if =\"!hideGrid && !waiting && (report.reportEnum == 'Kilkari_Subscriber_with_RegistrationDate')\" ><b>Note3 :</b> rejection reasons are captured only after Sep 2017</p>\n" +
             "\t\t\t<p data-ng-if =\"!hideGrid && !waiting && (report.reportEnum == 'Kilkari_Subscriber_with_RegistrationDate')\" ><b>Note4 :</b> Registration Dates are captured only after July 2023</p>\n"+
-            "\t\t\t<p data-ng-if =\"!hideGrid && !waiting && ((report.reportEnum == 'MA_Subscriber') || (report.reportEnum == 'MA_Performance')  || (report.reportEnum == 'Kilkari_Report') || (report.reportEnum == 'District-wise Performance of the State for Mobile Academy'))\" ><b>Note:</b> This report is a dynamic report and Manual deactivations count might differ from live database for two given time periods.</p>\n" +
+            "\t\t\t<p data-ng-if =\"!hideGrid && !waiting && ((report.reportEnum == 'MA_Subscriber') || (report.reportEnum == 'MA_Performance')  || (report.reportEnum == 'Kilkari_Report') || (report.reportEnum == 'Mobile Academy Performance Report'))\" ><b>Note:</b> This report is a dynamic report and Manual deactivations count might differ from live database for two given time periods.</p>\n" +
             "\n" +
             "\n" +
             "\t\t</div>\n" +

@@ -707,7 +707,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
 //                    gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix")||
 //                    gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener Month Wise")||
 //                    gridData.getReportName().equalsIgnoreCase("Kilkari Cumulative Summary")||
-//                    gridData.getReportName().equalsIgnoreCase("District-wise Performance of the State for Mobile Academy")){
+//                    gridData.getReportName().equalsIgnoreCase("Mobile Academy Performance Report")){
                 spreadsheet.autoSizeColumn(1);
 //            }
 
@@ -736,7 +736,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
                "Number of ASHAs who have successfully completed the course for the first time",
                "Number of ASHAs presently Subscribed in the Mobile Academy program but are yet to start or complete the course."
                ));
-       map.put("District-wise Performance of the State for Mobile Academy",Arrays.asList("State",
+       map.put("Mobile Academy Performance Report",Arrays.asList("State",
                "Number of ASHAs registered with the program.","Number of ASHA have started the course","% Started (of total registered)",
                "number of ASHAs who have passed the course (first successful completion only)",
                "% Completed (of total registered)","Number of ASHA have not started the course","% Not Started (of total registered)",
@@ -971,7 +971,7 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         float tableFont = 7;
         //contents.close();
 
-        if (gridData.getReportName().equalsIgnoreCase("District-wise Performance of the State for Mobile Academy") || gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener Month Wise")) {
+        if (gridData.getReportName().equalsIgnoreCase("Mobile Academy Performance Report") || gridData.getReportName().equalsIgnoreCase("Kilkari Repeat Listener Month Wise")) {
             cellWidth = 10f;
             tableMargin = 60;
             tableFont = 7;
