@@ -1616,8 +1616,12 @@
                                 $scope.showEmptyData = true;
                             }
 
-                            fileName = $scope.report.reportEnum + "_" + $scope.reportBreadCrumbData[$scope.reportBreadCrumbData.length -1].locationName ;
-
+                            if ($scope.reportBreadCrumbData && $scope.reportBreadCrumbData.length > 0) {
+                                fileName = $scope.report.reportEnum + "_" +
+                                           ($scope.reportBreadCrumbData[$scope.reportBreadCrumbData.length - 1].locationName || 'Unknown');
+                            } else {
+                                fileName = $scope.report.reportEnum + "_Unknown";
+                            }
                         }
                         if($scope.report.reportEnum == 'Kilkari_Listening_Matrix'){
                             if(result.data.tableData.length >0){
