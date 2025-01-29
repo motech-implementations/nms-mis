@@ -90,6 +90,8 @@
                        localStorage.preUrl == base_url + "/#!/reports/kilkari/message-listenership-report" ||
                        localStorage.preUrl == base_url + "/#!/reports/kilkari/aggregate-beneficiary-report" ||
                        localStorage.preUrl == base_url + "/#!/reports/kilkari/usage-report" ||
+                       localStorage.preUrl == base_url + "/#!/reports/kilkari/usage-mother-report" ||
+                       localStorage.preUrl == base_url + "/#!/reports/kilkari/usage-child-report" ||
                        localStorage.preUrl == base_url + "/#!/reports/kilkari/cumulative-summary-report" ||
                        localStorage.preUrl == base_url + "/#!/reports/kilkari/subscriber-report" ||
                        localStorage.preUrl == base_url + "/#!/reports/kilkari/beneficiary-completion-report"

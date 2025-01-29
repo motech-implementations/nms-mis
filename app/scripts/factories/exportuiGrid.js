@@ -157,7 +157,7 @@
                     }else if (ft.displayName == "% Failed (of total registered)" && excelHeaderName.reportName == "Mobile Academy Performance Report") {
                         var temp = gridApi.grid.columns[2].getAggregationValue() == 0 ? 0.00 : (gridApi.grid.columns[9].getAggregationValue() / gridApi.grid.columns[2].getAggregationValue()) * 100;
                         v = Math.floor(parseFloat(temp) * 100) / 100;
-//                        parseFloat(Math.round(temp * 100) / 100).toFixed(2);
+                        //parseFloat(Math.round(temp * 100) / 100).toFixed(2);
                     } else {
                         v = ft.getAggregationValue();
                     }
@@ -219,8 +219,8 @@
 
                     }, this);
                     row1 = row1.slice(0, -1);
-                    CSV += row1;}
-
+                    CSV += row1;
+                }
 
             }
 
@@ -238,81 +238,81 @@
                 }), fileName + ".csv");
             } else {
 
-            if (navigator.appName == "Microsoft Internet Explorer") {
-                var oWin = window.open();
-                oWin.document.write('sep=,\r\n' + CSV);
-                oWin.document.close();
-                oWin.document.execCommand('SaveAs', true, fileName + ".csv");
-                oWin.close();
-              }  else{
+                if (navigator.appName == "Microsoft Internet Explorer") {
+                    var oWin = window.open();
+                    oWin.document.write('sep=,\r\n' + CSV);
+                    oWin.document.close();
+                    oWin.document.execCommand('SaveAs', true, fileName + ".csv");
+                    oWin.close();
+                }  else{
 
-                var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
+                    var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
 
-                //this trick will generate a temp <a /> tag
-                var link = document.createElement("a");
-                link.href = uri;
+                    //this trick will generate a temp <a /> tag
+                    var link = document.createElement("a");
+                    link.href = uri;
 
-                //set the visibility hidden so it will not effect on web-layout
-                link.style = "visibility:hidden";
-                link.download = fileName + ".csv";
+                    //set the visibility hidden so it will not effect on web-layout
+                    link.style = "visibility:hidden";
+                    link.download = fileName + ".csv";
 
-                //this part will append the anchor tag and remove it after automatic click
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }}
+                    //this part will append the anchor tag and remove it after automatic click
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+            }
         }
 
         function indianDecimal( value){
-        if(!value){
-            return "N/A";
-        }
-                x=value.toString();
-                var isNegative = false;
-                if (x.substring(0,1) === '-'){
-                    x = x.substring(1);
-                    isNegative = true;
-                }
-                var afterPoint = '';
-                if(x.indexOf('.') > 0)
-                   afterPoint = x.substring(x.indexOf('.'),x.length);
-                   afterPoint = parseFloat(Number(afterPoint));
-                   afterPoint = afterPoint.toString().substring(afterPoint.toString().indexOf('.'),afterPoint.length);
-                x = Math.floor(x);
-                x=x.toString();
-                var lastThree = x.substring(x.length-3);
-                var otherNumbers = x.substring(0,x.length-3);
-                if(otherNumbers != '')
-                    lastThree = ',' + lastThree;
-                var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree + afterPoint;
-               if (isNegative) {
-                       return '-' + res;
-                   } else {
-                       return res;
-                   }
+            if(!value){
+                return "N/A";
+            }
+            x=value.toString();
+            var isNegative = false;
+            if (x.substring(0,1) === '-'){
+                x = x.substring(1);
+                isNegative = true;
+            }
+            var afterPoint = '';
+            if(x.indexOf('.') > 0)
+               afterPoint = x.substring(x.indexOf('.'),x.length);
+               afterPoint = parseFloat(Number(afterPoint));
+               afterPoint = afterPoint.toString().substring(afterPoint.toString().indexOf('.'),afterPoint.length);
+            x = Math.floor(x);
+            x=x.toString();
+            var lastThree = x.substring(x.length-3);
+            var otherNumbers = x.substring(0,x.length-3);
+            if(otherNumbers != '')
+                lastThree = ',' + lastThree;
+            var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree + afterPoint;
+           if (isNegative) {
+               return '-' + res;
+           } else {
+               return res;
+           }
         }
 
         function indianInteger(value){
-                            if(!value){
-                                return "N/A";
-                            }
-                            x=value.toString();
-                            var isNegative = false;
-                            if (x.substring(0,1) === '-'){
-                                x = x.substring(1);
-                                isNegative = true;
-                            }
-                        var lastThree = x.substring(x.length-3);
-                        var otherNumbers = x.substring(0,x.length-3);
-                        if(otherNumbers != '')
-                            lastThree = ',' + lastThree;
-                        var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree ;
-                        if (isNegative) {
-                            return '-' + res;
-                        } else {
-                            return res;
-                        }
-
+            if(!value){
+                return "N/A";
+            }
+            x=value.toString();
+            var isNegative = false;
+            if (x.substring(0,1) === '-'){
+                x = x.substring(1);
+                isNegative = true;
+            }
+            var lastThree = x.substring(x.length-3);
+            var otherNumbers = x.substring(0,x.length-3);
+            if(otherNumbers != '')
+                lastThree = ',' + lastThree;
+            var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree ;
+            if (isNegative) {
+                return '-' + res;
+            } else {
+                return res;
+            }
         }
 
         function exportToPdf1(gridApi, gridApi1, excelHeaderName, reportCategory, matrixContent1, matrixContent2, uiGridExporterConstants, rowTypes, colTypes, fileName1,rejectionStart) {
@@ -324,6 +324,8 @@
             case 'Kilkari Cumulative Summary': pageHeading='Kilkari Cumulative Summary Report' ;break;
             case 'Kilkari Beneficiary Completion': pageHeading='Kilkari Beneficiary Completion Report'; break;
             case 'Kilkari Usage': pageHeading='Kilkari Usage Report'; break;
+            case 'Kilkari Usage Mother': pageHeading='Kilkari Usage Mother Report'; break;
+            case 'Kilkari Usage Child': pageHeading='Kilkari Usage Child Report'; break;
             case 'Kilkari Call': pageHeading='Kilkari Call Report'; break;
             case 'Kilkari Performance Report': pageHeading=' Kilkari Performance Report'; break;
             case 'kilkari message matrix for only successful calls': pageHeading='kilkari message matrix for only successful calls'; break;
@@ -343,14 +345,14 @@
             var toDateString = newD.getDate()<10?"0"+newD.getDate():newD.getDate();
            var d = toDateString+" "+months[newD.getMonth()]+" "+newD.getFullYear();
 
-//            var period="";
-//            if(excelHeaderName.reportName=="Mobile Academy Performance Report"||excelHeaderName.reportName=="Kilkari Cumulative Summary"){
-//            period=excelHeaderName.timePeriod;
-//            } else{
-//            toDate= toDate.toString().split(' ').splice(1,3).join(' ');
-//            fromDate= fromDate.toString().split(' ').splice(1,3).join(' ');
-//            period= fromDate + " - " + toDate;
-//            }
+            /*var period="";
+            if(excelHeaderName.reportName=="Mobile Academy Performance Report"||excelHeaderName.reportName=="Kilkari Cumulative Summary"){
+            period=excelHeaderName.timePeriod;
+            } else{
+            toDate= toDate.toString().split(' ').splice(1,3).join(' ');
+            fromDate= fromDate.toString().split(' ').splice(1,3).join(' ');
+            period= fromDate + " - " + toDate;
+            }*/
 
 
             if (excelHeaderName.reportName == "kilkari message matrix for only successful calls" || excelHeaderName.reportName == "Kilkari Repeat Listener Month Wise") {
@@ -481,7 +483,7 @@
                         columns: [
                           { text: 'Date Filed : '+d,fontSize:9, alignment: 'right', margin: [ 5, 2, 10, 0 ]}
                         ]
-                      },
+                    },
 
                     content: [
 
@@ -739,14 +741,13 @@
 
                 var colWidth = [25];
                 if(excelHeaderName.reportName === "Kilkari Thematic Content"){
-                for (i = 0; i < exportColumnHeaders.length; i++) {
-                    colWidth[i+1] = 120;
-                }
-
+                    for (i = 0; i < exportColumnHeaders.length; i++) {
+                        colWidth[i+1] = 120;
+                    }
                 }else{
-                for (i = 0; i < exportColumnHeaders.length; i++) {
-                    colWidth[i+1] = 110;
-                }
+                    for (i = 0; i < exportColumnHeaders.length; i++) {
+                        colWidth[i+1] = 110;
+                    }
                 }
                 var index=1;
                 for (i = 0; i < exportData.length; i++) {
@@ -768,9 +769,13 @@
                         tempcol.push(temp);
                     }
                     datapdf.push(tempcol);
-                    if(index==exportData.length-1){ index=" "}
+
+                    if(index==exportData.length-1){
+                        index=" "
+                    }
                     else{
-                    index++;}
+                        index++;
+                    }
 
                 }
 
@@ -832,7 +837,7 @@
                             text: 'Period : ' + excelHeaderName.timePeriod,
                             style: 'subsubheader'
                         },
-                      {
+                        {
                             columns: [{
                                     width: '*',
                                     text: ''
@@ -873,16 +878,16 @@
                                 {
                                     width: 'auto',
                                     style: 'tableExample2',
-                                   table: {
+                                    table: {
                                         // headerRows:1,
                                         widths: colWidth,
                                         body: datapdf
                                     },
                                     layout: {
-                                                vLineColor:'#d4d4d4',
-                                                hLineColor:'#d4d4d4',
-                                       fillColor: function(i) {
-                                             if (i % 2 === 0) {
+                                        vLineColor:'#d4d4d4',
+                                        hLineColor:'#d4d4d4',
+                                        fillColor: function(i) {
+                                            if (i % 2 === 0) {
 
                                                 return '#f4f3f3';
                                             } else {
@@ -983,6 +988,8 @@
                     }
                 }
                 else if(excelHeaderName.reportName== "Kilkari Usage"
+                ||excelHeaderName.reportName== "Kilkari Usage Mother"
+                ||excelHeaderName.reportName== "Kilkari Usage Child"
                 ||excelHeaderName.reportName=="Kilkari Message Listenership"
                 ||excelHeaderName.reportName=="Kilkari Subscriber" ||
                 excelHeaderName.reportName == "Kilkari Subscriber Registration Date"){
@@ -1129,6 +1136,7 @@
                     fontHasSize = 10;
                 } else if (excelHeaderName.reportName === 'MA Subscriber' || excelHeaderName.reportName === 'MA Performance' ||
                     excelHeaderName.reportName === 'Kilkari Cumulative Summary' || excelHeaderName.reportName === 'Kilkari Usage' ||
+                    excelHeaderName.reportName === 'Kilkari Usage Mother' || excelHeaderName.reportName === 'Kilkari Usage Child' ||
                     excelHeaderName.reportName === 'Kilkari Beneficiary Completion' || excelHeaderName.reportName === 'Kilkari Message Listenership') {
                     fontHasSize = 10;
                 } else if (excelHeaderName.reportName === 'Kilkari Aggregate Beneficiaries') {
@@ -1141,9 +1149,9 @@
                     fontHasSize = 9;
                 }
 
-//                if(excelHeaderName.stateName=='UTTAR PRADESH' && excelHeaderName.districtName=='Ambedkar Nagar'){
-//
-//                }
+                /*if(excelHeaderName.stateName=='UTTAR PRADESH' && excelHeaderName.districtName=='Ambedkar Nagar'){
+
+                }*/
                 var docDefinition = {
                     pageOrientation: 'landscape',
                     footer: {
@@ -1971,7 +1979,7 @@
                     } else if (ft.displayName == "% Failed (of total registered)" && excelHeaderName.reportName == "Mobile Academy Performance Report") {
                         var temp = gridApi.grid.columns[2].getAggregationValue() == 0 ? 0.00 : (gridApi.grid.columns[9].getAggregationValue() / gridApi.grid.columns[2].getAggregationValue()) * 100;
                         v = Math.floor(NumberparseFloat(temp) * 100) / 100;
-//                        parseFloat(Math.round(temp * 100) / 100).toFixed(2);
+                        //parseFloat(Math.round(temp * 100) / 100).toFixed(2);
                     }else {
                         v = ft.getAggregationValue();
                     }
