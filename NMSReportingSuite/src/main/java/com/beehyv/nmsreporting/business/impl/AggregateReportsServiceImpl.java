@@ -481,7 +481,8 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         int rowid = 8;
 
         if (gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix") || gridData.getReportName().equalsIgnoreCase("Kilkari Beneficiary Completion")
-        || gridData.getReportName().equalsIgnoreCase("Kilkari Usage") || gridData.getReportName().equalsIgnoreCase("Kilkari Call")) {
+        || gridData.getReportName().equalsIgnoreCase("Kilkari Usage") || gridData.getReportName().equalsIgnoreCase("Kilkari Call")
+                || gridData.getReportName().equalsIgnoreCase("Kilkari Usage Child") || gridData.getReportName().equalsIgnoreCase("Kilkari Usage Mother")) {
             for (int i = 1; i < 15; i++) {
                 spreadsheet.setColumnWidth(i, 10000);
             }
@@ -994,6 +995,12 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
             cellWidth = 12f;
             tableMargin = 40;
         } else if (gridData.getReportName().equalsIgnoreCase("Kilkari Usage")) {
+            cellWidth = 20f;
+            tableMargin = 40;
+        } else if (gridData.getReportName().equalsIgnoreCase("Kilkari Usage Mother")) {
+            cellWidth = 20f;
+            tableMargin = 40;
+        } else if (gridData.getReportName().equalsIgnoreCase("Kilkari Usage Child")) {
             cellWidth = 20f;
             tableMargin = 40;
         } else if (gridData.getReportName().equalsIgnoreCase("Kilkari Call")) {

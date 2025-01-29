@@ -1840,6 +1840,20 @@ public class UserController {
                 ReportType.usage.getServiceType(),showAggregateReports)
         );
         kList.add(new Report(
+                ReportType.usageMother.getReportName(),
+                ReportType.usageMother.getReportType(),
+                ReportType.usageMother.getSimpleName(),
+                "images/drop-down-2.png",
+                ReportType.usageMother.getServiceType(),showAggregateReports)
+        );
+        kList.add(new Report(
+                ReportType.usageChild.getReportName(),
+                ReportType.usageChild.getReportType(),
+                ReportType.usageChild.getSimpleName(),
+                "images/drop-down-2.png",
+                ReportType.usageChild.getServiceType(),showAggregateReports)
+        );
+        kList.add(new Report(
                 ReportType.kilkariCalls.getReportName(),
                 ReportType.kilkariCalls.getReportType(),
                 ReportType.kilkariCalls.getSimpleName(),
