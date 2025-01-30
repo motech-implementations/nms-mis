@@ -483,7 +483,7 @@
                     $scope.datePickerOptions.minMode = '';
                     $scope.datePickerOptions.datepickerMode = 'month';
                     $scope.datePickerOptions.minMode ='month';
-                    //$scope.datePickerOptions.maxDate = new Date().setMonth(new Date().getMonth() -1);
+//                    $scope.datePickerOptions.maxDate = new Date().setMonth(new Date().getMonth() -1);
                 }
                 if($scope.periodDisplayType == 'Custom Range'){
                     $scope.periodTypeContent = "Start Date";
@@ -535,12 +535,12 @@
 
 			$scope.getArrayElementByName = function(arr, value) {
                 var element = [];
-                for (var i=0 ; i<arr.length; i++) {
+              for (var i=0 ; i<arr.length; i++) {
 
-                  if (arr[i].name === value)
-                   element.push(arr[i]);
-                }
-                return element[0];
+                if (arr[i].name === value)
+                 element.push(arr[i]);
+              }
+              return element[0];
             }
 
 			$scope.selectReport = function(item){
@@ -849,69 +849,69 @@
 			$scope.setDateMode = function(){
 
 			     $scope.setDateOptions();
-                 if($scope.periodDisplayType == 'Year'){
-                     $scope.periodTypeContent = " Year";
-                     $scope.dateFormat = "yyyy";
-                     $scope.datePickerOptions.minMode = '';
-                     $scope.datePickerOptions.datepickerMode = 'year';
-                     $scope.datePickerOptions.minMode = 'year';
-                     if(new Date().getMonth()>0){
-                         $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear());
-                     }
-                     else
-                         $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear() -1);
+                                 if($scope.periodDisplayType == 'Year'){
+                                     $scope.periodTypeContent = " Year";
+                                     $scope.dateFormat = "yyyy";
+                                     $scope.datePickerOptions.minMode = '';
+                                     $scope.datePickerOptions.datepickerMode = 'year';
+                                     $scope.datePickerOptions.minMode = 'year';
+                                     if(new Date().getMonth()>0){
+                                         $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear());
+                                     }
+                                     else
+                                         $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear() -1);
 
 
-                 }
-                 if( $scope.periodDisplayType == 'Quarter'){
-                     $scope.periodTypeContent = " Year";
-                     $scope.dateFormat = "yyyy";
-                     $scope.datePickerOptions.minMode = '';
-                     $scope.datePickerOptions.datepickerMode = 'year';
-                     $scope.datePickerOptions.minMode = 'year';
-                     if(new Date().getMonth()>2){
-                         $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear());
-                     }else{
-                         $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear() -1);
-                     }
+                                 }
+                                 if( $scope.periodDisplayType == 'Quarter'){
+                                     $scope.periodTypeContent = " Year";
+                                     $scope.dateFormat = "yyyy";
+                                     $scope.datePickerOptions.minMode = '';
+                                     $scope.datePickerOptions.datepickerMode = 'year';
+                                     $scope.datePickerOptions.minMode = 'year';
+                                     if(new Date().getMonth()>2){
+                                         $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear());
+                                     }else{
+                                         $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear() -1);
+                                     }
 
-                 }
-                 if($scope.periodDisplayType == 'Financial Year'){
-                     $scope.periodTypeContent = "Select Start Year";
-                     $scope.dateFormat = "yyyy";
-                     $scope.datePickerOptions.minMode = '';
-                     $scope.datePickerOptions.datepickerMode = 'year';
-                     $scope.datePickerOptions.minMode = 'year';
-                     if(new Date().getMonth()>2){
-                         $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear());
-                     }else{
-                         $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear() -1);
-                     }
+                                 }
+                                 if($scope.periodDisplayType == 'Financial Year'){
+                                     $scope.periodTypeContent = "Select Start Year";
+                                     $scope.dateFormat = "yyyy";
+                                     $scope.datePickerOptions.minMode = '';
+                                     $scope.datePickerOptions.datepickerMode = 'year';
+                                     $scope.datePickerOptions.minMode = 'year';
+                                     if(new Date().getMonth()>2){
+                                         $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear());
+                                     }else{
+                                         $scope.datePickerOptions.maxDate = new Date().setYear(new Date().getFullYear() -1);
+                                     }
 
-                 }
-                 if($scope.periodDisplayType == 'Month'){
-                     $scope.periodTypeContent = " Month";
-                     $scope.dateFormat = "yyyy-MM";
-                      $scope.datePickerOptions.minMode = '';
-                     $scope.datePickerOptions.datepickerMode = 'month';
-                     $scope.datePickerOptions.minMode ='month';
-                     $scope.datePickerOptions.maxDate = new Date().setMonth(new Date().getMonth() -1);
-                 }
-                 if($scope.periodDisplayType == 'Week'){
-                     $scope.periodTypeContent = " Week";
-                     $scope.dateFormat = "yyyy-MM-dd";
-                     $scope.datePickerOptions.minMode = '';
-                     $scope.datePickerOptions.datepickerMode = 'month';
-                     $scope.datePickerOptions.minMode ='month';
-                     //$scope.datePickerOptions.maxDate = new Date().setMonth(new Date().getMonth() -1);
-                 }
-                 if($scope.periodDisplayType == 'Custom Range'){
-                     $scope.periodTypeContent = "Start Date";
-                     $scope.dateFormat = "yyyy-MM-dd";
-                     delete $scope.datePickerOptions.datepickerMode;
-                     $scope.datePickerOptions.minMode = '';
-                     $scope.datePickerOptions.maxDate = new Date().setDate(new Date().getDate() - 1);
-                 }
+                                 }
+                                 if($scope.periodDisplayType == 'Month'){
+                                     $scope.periodTypeContent = " Month";
+                                     $scope.dateFormat = "yyyy-MM";
+                                      $scope.datePickerOptions.minMode = '';
+                                     $scope.datePickerOptions.datepickerMode = 'month';
+                                     $scope.datePickerOptions.minMode ='month';
+                                     $scope.datePickerOptions.maxDate = new Date().setMonth(new Date().getMonth() -1);
+                                 }
+                                 if($scope.periodDisplayType == 'Week'){
+                                     $scope.periodTypeContent = " Week";
+                                     $scope.dateFormat = "yyyy-MM-dd";
+                                     $scope.datePickerOptions.minMode = '';
+                                     $scope.datePickerOptions.datepickerMode = 'month';
+                                     $scope.datePickerOptions.minMode ='month';
+                 //                    $scope.datePickerOptions.maxDate = new Date().setMonth(new Date().getMonth() -1);
+                                 }
+                                 if($scope.periodDisplayType == 'Custom Range'){
+                                     $scope.periodTypeContent = "Start Date";
+                                     $scope.dateFormat = "yyyy-MM-dd";
+                                     delete $scope.datePickerOptions.datepickerMode;
+                                     $scope.datePickerOptions.minMode = '';
+                                     $scope.datePickerOptions.maxDate = new Date().setDate(new Date().getDate() - 1);
+                                 }
 
 			}
 
@@ -937,13 +937,13 @@
 					$scope.district = district;
 					excelHeaderName.districtName = district.districtName;
 				}
-                $scope.dt1 = null;
-                $scope.dt2 = null;
-                $scope.hideGrid = true;
-                $scope.hideMessageMatrix = true;
-                $scope.showEmptyData = false;
-                $scope.setDateMode();
-			    $scope.clearFile();
+              $scope.dt1 = null;
+              $scope.dt2 = null;
+              $scope.hideGrid = true;
+              $scope.hideMessageMatrix = true;
+              $scope.showEmptyData = false;
+              $scope.setDateMode();
+			  $scope.clearFile();
 			}
 
 
@@ -969,13 +969,13 @@
 					$scope.block = block;
 					excelHeaderName.blockName = block.blockName;
 				}
-                $scope.dt1 = null;
-                $scope.dt2 = null;
-                $scope.hideGrid = true;
-                $scope.hideMessageMatrix = true;
-                $scope.showEmptyData = false;
-                $scope.setDateMode();
-                $scope.clearFile();
+              $scope.dt1 = null;
+              $scope.dt2 = null;
+              $scope.hideGrid = true;
+              $scope.hideMessageMatrix = true;
+              $scope.showEmptyData = false;
+              $scope.setDateMode();
+              $scope.clearFile();
 			}
 
 
@@ -1136,14 +1136,14 @@
                     }
 				}
 				else if($scope.periodDisplayType == '' && ($scope.isAggregateReport() ) && ($scope.report.name != 'Mobile Academy Performance Report' && $scope.report.reportEnum != 'Kilkari_Cumulative_Summary')){
-                    if(UserFormFactory.isInternetExplorer()){
-                        alert("Please select a period type")
-                        return;
-                    }
-                    else{
-                        UserFormFactory.showAlert("Please select a period type")
-                        return;
-                    }
+                   if(UserFormFactory.isInternetExplorer()){
+                       alert("Please select a period type")
+                       return;
+                   }
+                   else{
+                       UserFormFactory.showAlert("Please select a period type")
+                       return;
+                   }
                 }
 				else if($scope.dt1 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType != 'Custom Range' && $scope.periodDisplayType != 'Current Period' && $scope.periodDisplayType != 'Quarter' && $scope.report.name != 'Mobile Academy Performance Report' && $scope.report.reportEnum != 'Kilkari_Cumulative_Summary') ){
                     if(UserFormFactory.isInternetExplorer()){
@@ -1156,36 +1156,36 @@
                     }
                 }
                 else if($scope.dt1 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType == 'Custom Range')){
-                    if(UserFormFactory.isInternetExplorer()){
-                       alert("Please select a start date")
-                       return;
-                    }
-                    else{
-                       UserFormFactory.showAlert("Please select a start date")
-                       return;
-                    }
+                   if(UserFormFactory.isInternetExplorer()){
+                      alert("Please select a start date")
+                      return;
+                   }
+                   else{
+                      UserFormFactory.showAlert("Please select a start date")
+                      return;
+                   }
                 }
-                else if($scope.dt1 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType == 'Quarter')){
+                 else if($scope.dt1 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType == 'Quarter')){
 
-                    if(UserFormFactory.isInternetExplorer()){
-                        alert("Please select a year")
-                        return;
-                    }
-                    else{
-                        UserFormFactory.showAlert("Please select a year")
-                        return;
-                    }
+                   if(UserFormFactory.isInternetExplorer()){
+                         alert("Please select a year")
+                         return;
+                   }
+                   else{
+                     UserFormFactory.showAlert("Please select a year")
+                     return;
+                   }
 
                 }
                 else if($scope.dt2 == null && ($scope.isAggregateReport() ) && ($scope.periodDisplayType == 'Custom Range' || $scope.report.name == 'Mobile Academy Performance Report' || $scope.report.reportEnum == 'Kilkari_Cumulative_Summary' )){
-                    if(UserFormFactory.isInternetExplorer()){
-                        alert("Please select an end date")
-                        return;
-                    }
-                    else{
-                        UserFormFactory.showAlert("Please select an end date")
-                        return;
-                    }
+                   if(UserFormFactory.isInternetExplorer()){
+                         alert("Please select an end date")
+                         return;
+                   }
+                   else{
+                         UserFormFactory.showAlert("Please select an end date")
+                         return;
+                   }
 
                 }
 
@@ -1238,14 +1238,14 @@
                             reportRequest.stateId = $scope.state.stateId;
                         }
                         else{
-                            if(UserFormFactory.isInternetExplorer()){
-                                alert("Please select a state")
-                                return;
-                            }
-                            else{
-                                UserFormFactory.showAlert("Please select a state")
-                                return;
-                            }
+                               if(UserFormFactory.isInternetExplorer()){
+                                     alert("Please select a state")
+                                     return;
+                               }
+                               else{
+                                 UserFormFactory.showAlert("Please select a state")
+                                 return;
+                               }
                         }
                     }
                     else
@@ -1265,18 +1265,18 @@
 		    		if($scope.circle != null){
 				    	reportRequest.circleId = $scope.circle.circleId;
 				    	if($scope.state != null) {
-				    	    reportRequest.stateId = $scope.state.stateId;
+				    	reportRequest.stateId = $scope.state.stateId;
 				    	}
 				    }
                     else{
-                        if(UserFormFactory.isInternetExplorer()){
-                            alert("Please select a circle")
-                            return;
-                        }
-                        else{
-                            UserFormFactory.showAlert("Please select a circle")
-                            return;
-                        }
+                           if(UserFormFactory.isInternetExplorer()){
+                                 alert("Please select a circle")
+                                 return;
+                           }
+                           else{
+                             UserFormFactory.showAlert("Please select a circle")
+                             return;
+                           }
 
                     }
 		    	}
@@ -1327,11 +1327,11 @@
                              reportRequest.toDate = new Date($scope.dt1.getFullYear()+1,2,31);
                          }
 
-                         dateString = reportRequest.fromDate.getDate() + "_" + (reportRequest.fromDate.getMonth() + 1 ) + "_" + reportRequest.fromDate.getFullYear() + "to" + reportRequest.toDate.getDate() + "_" +  ( reportRequest.toDate.getMonth() + 1 ) +
+                        dateString = reportRequest.fromDate.getDate() + "_" + (reportRequest.fromDate.getMonth() + 1 ) + "_" + reportRequest.fromDate.getFullYear() + "to" + reportRequest.toDate.getDate() + "_" +  ( reportRequest.toDate.getMonth() + 1 ) +
                                      "_" + reportRequest.toDate.getFullYear();
-                         excelHeaderName.timePeriod = reportRequest.fromDate.getDate() + "-" + (reportRequest.fromDate.getMonth() + 1 ) + "-" + reportRequest.fromDate.getFullYear() + " to " + reportRequest.toDate.getDate() + "-" +  ( reportRequest.toDate.getMonth() + 1 ) +
+                        excelHeaderName.timePeriod = reportRequest.fromDate.getDate() + "-" + (reportRequest.fromDate.getMonth() + 1 ) + "-" + reportRequest.fromDate.getFullYear() + " to " + reportRequest.toDate.getDate() + "-" +  ( reportRequest.toDate.getMonth() + 1 ) +
                                                                                           "-" + reportRequest.toDate.getFullYear();
-                         toDateVal = reportRequest.toDate;
+                        toDateVal = reportRequest.toDate;
                     }
 
                     else if($scope.periodDisplayType == 'Month' ){
@@ -1352,57 +1352,57 @@
                          }
                     }
                     else if($scope.periodDisplayType == 'Quarter' ){
-                        if($scope.quarterDisplayType == 'Q1 (Jan to Mar)'){
-                            reportRequest.fromDate = new Date($scope.dt1.getFullYear(),0,1);
+                         if($scope.quarterDisplayType == 'Q1 (Jan to Mar)'){
+                         reportRequest.fromDate = new Date($scope.dt1.getFullYear(),0,1);
 
-                            if($scope.dt1.getFullYear() == new Date().getFullYear() && $scope.currentDate.getMonth() > 0 && $scope.currentDate.getMonth()< 4){
-                                reportRequest.toDate = new Date($scope.dt1.getFullYear(),$scope.currentDate.getMonth()-1,$scope.currentPeriodDate);
-                                if($scope.currentDate.getMonth()!= 3){
-                                    reportRequest.periodType = 'CURRENT QUARTER';
-                                }
+                         if($scope.dt1.getFullYear() == new Date().getFullYear() && $scope.currentDate.getMonth() > 0 && $scope.currentDate.getMonth()< 4){
+                            reportRequest.toDate = new Date($scope.dt1.getFullYear(),$scope.currentDate.getMonth()-1,$scope.currentPeriodDate);
+                            if($scope.currentDate.getMonth()!= 3){
+                                reportRequest.periodType = 'CURRENT QUARTER';
+                            }
 
-                            }
-                            else{
-                                reportRequest.toDate = new Date($scope.dt1.getFullYear(),2,31);
-                            }
-                        }
+                         }
+                         else{
+                            reportRequest.toDate = new Date($scope.dt1.getFullYear(),2,31);
+                         }
+                         }
                          if($scope.quarterDisplayType == 'Q2 (Apr to Jun)'){
                          reportRequest.fromDate = new Date($scope.dt1.getFullYear(),3,1);
                          if($scope.dt1.getFullYear() == new Date().getFullYear() && $scope.currentDate.getMonth() >=4  && $scope.currentDate.getMonth()< 7){
                             reportRequest.toDate = new Date($scope.dt1.getFullYear(),$scope.currentDate.getMonth()-1,$scope.currentPeriodDate);
                             if($scope.currentDate.getMonth()!= 6){
                                 reportRequest.periodType = 'CURRENT QUARTER';
-                            }
+                             }
                          }
                          else{
                              reportRequest.toDate = new Date($scope.dt1.getFullYear(),5,30);
                          }
                          }
                          if($scope.quarterDisplayType == 'Q3 (Jul to Sep)'){
-                             reportRequest.fromDate = new Date($scope.dt1.getFullYear(),6,1);
+                         reportRequest.fromDate = new Date($scope.dt1.getFullYear(),6,1);
 
-                             if($scope.dt1.getFullYear() == new Date().getFullYear() && $scope.currentDate.getMonth() >=7 && $scope.currentDate.getMonth()< 10){
-                                reportRequest.toDate = new Date($scope.dt1.getFullYear(),$scope.currentDate.getMonth()-1,$scope.currentPeriodDate);
-                                if($scope.currentDate.getMonth()!= 9){
-                                    reportRequest.periodType = 'CURRENT QUARTER';
-                                }
-                             }
-                             else{
-                                 reportRequest.toDate = new Date($scope.dt1.getFullYear(),8,30);
-                             }
+                         if($scope.dt1.getFullYear() == new Date().getFullYear() && $scope.currentDate.getMonth() >=7 && $scope.currentDate.getMonth()< 10){
+                            reportRequest.toDate = new Date($scope.dt1.getFullYear(),$scope.currentDate.getMonth()-1,$scope.currentPeriodDate);
+                            if($scope.currentDate.getMonth()!= 9){
+                                reportRequest.periodType = 'CURRENT QUARTER';
+                            }
+                         }
+                         else{
                              reportRequest.toDate = new Date($scope.dt1.getFullYear(),8,30);
                          }
+                         reportRequest.toDate = new Date($scope.dt1.getFullYear(),8,30);
+                         }
                          if($scope.quarterDisplayType == 'Q4 (Oct to Dec)'){
-                             reportRequest.fromDate = new Date($scope.dt1.getFullYear(),9,1);
+                         reportRequest.fromDate = new Date($scope.dt1.getFullYear(),9,1);
 
-                             if($scope.dt1.getFullYear() == new Date().getFullYear() &&  $scope.currentDate.getMonth() >= 10){
-                                 reportRequest.toDate = new Date($scope.dt1.getFullYear(),$scope.currentDate.getMonth()-1,$scope.currentPeriodDate);
-                                 reportRequest.periodType = 'CURRENT QUARTER';
+                         if($scope.dt1.getFullYear() == new Date().getFullYear() &&  $scope.currentDate.getMonth() >= 10){
+                             reportRequest.toDate = new Date($scope.dt1.getFullYear(),$scope.currentDate.getMonth()-1,$scope.currentPeriodDate);
+                             reportRequest.periodType = 'CURRENT QUARTER';
 
-                             }
-                             else{
-                                  reportRequest.toDate = new Date($scope.dt1.getFullYear(),11,31);
-                             }
+                          }
+                          else{
+                              reportRequest.toDate = new Date($scope.dt1.getFullYear(),11,31);
+                          }
                          }
 
                          dateString = (reportRequest.fromDate.getMonth() + 1) + "_" + reportRequest.fromDate.getFullYear() + "to" + (reportRequest.toDate.getMonth() + 1)  +
