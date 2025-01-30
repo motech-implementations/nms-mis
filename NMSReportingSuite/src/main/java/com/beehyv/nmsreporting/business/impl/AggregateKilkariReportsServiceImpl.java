@@ -1454,6 +1454,8 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         return KilkariUsageDto;
     }
 
+    /*----------5.3.4. Kilkari Usage Mother Report -------*/
+
     @Override
     public List<UsageDto> getMotherUsageReport(ReportRequest reportRequest, User currentUser){
 
@@ -1712,6 +1714,8 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         }
         return KilkariUsageDto;
     }
+
+    /*----------5.3.4. Kilkari Usage Child Report -------*/
 
     @Override
     public List<UsageDto> getChildUsageReport(ReportRequest reportRequest, User currentUser){
