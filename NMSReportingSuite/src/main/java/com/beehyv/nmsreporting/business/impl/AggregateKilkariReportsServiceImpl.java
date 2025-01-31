@@ -1217,13 +1217,11 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
 
         if (reportRequest.getStateId() == 0) {
             kilkariUsageList.addAll(this.getKilkariUsage(0,"State",fromDate,toDate,reportRequest.getPeriodType()));
-        }
-        else if (reportRequest.getDistrictId() == 0) {
+        } else if (reportRequest.getDistrictId() == 0) {
             kilkariUsageList.addAll(this.getKilkariUsage(reportRequest.getStateId(),"District",fromDate,toDate,reportRequest.getPeriodType()));
         } else if(reportRequest.getBlockId() == 0){
             kilkariUsageList.addAll(this.getKilkariUsage(reportRequest.getDistrictId(),"Block",fromDate,toDate,reportRequest.getPeriodType()));
-        }
-        else {
+        } else {
             kilkariUsageList.addAll(this.getKilkariUsage(reportRequest.getBlockId(),"Subcentre",fromDate,toDate,reportRequest.getPeriodType()));
         }
 
@@ -1234,7 +1232,6 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 summaryDto1.setCalls_75_100(a.getCalls_75_100());
                 summaryDto1.setCalls_50_75(a.getCalls_50_75());
                 summaryDto1.setCalls_25_50(a.getCalls_25_50());
-
                 summaryDto1.setCalls_1_25(a.getCalls_1_25());
                 summaryDto1.setLocationType(a.getLocationType());
                 summaryDto1.setCalledInbox(a.getCalledInbox());
@@ -1485,13 +1482,11 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
 
         if (reportRequest.getStateId() == 0) {
             kilkariMotherUsageList.addAll(this.getKilkariMotherUsage(0,"State",fromDate,toDate,reportRequest.getPeriodType()));
-        }
-        else if (reportRequest.getDistrictId() == 0) {
+        } else if (reportRequest.getDistrictId() == 0) {
             kilkariMotherUsageList.addAll(this.getKilkariMotherUsage(reportRequest.getStateId(),"District",fromDate,toDate,reportRequest.getPeriodType()));
         } else if(reportRequest.getBlockId() == 0){
             kilkariMotherUsageList.addAll(this.getKilkariMotherUsage(reportRequest.getDistrictId(),"Block",fromDate,toDate,reportRequest.getPeriodType()));
-        }
-        else {
+        } else {
             kilkariMotherUsageList.addAll(this.getKilkariMotherUsage(reportRequest.getBlockId(),"Subcentre",fromDate,toDate,reportRequest.getPeriodType()));
         }
 
@@ -1502,7 +1497,6 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 tempSummaryDto.setCalls_75_100(a.getCalls_75_100());
                 tempSummaryDto.setCalls_50_75(a.getCalls_50_75());
                 tempSummaryDto.setCalls_25_50(a.getCalls_25_50());
-
                 tempSummaryDto.setCalls_1_25(a.getCalls_1_25());
                 tempSummaryDto.setLocationType(a.getLocationType());
                 tempSummaryDto.setCalledInbox(a.getCalledInbox());
@@ -1746,13 +1740,11 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
 
         if (reportRequest.getStateId() == 0) {
             kilkariChildUsageList.addAll(this.getKilkariChildUsage(0,"State",fromDate,toDate,reportRequest.getPeriodType()));
-        }
-        else if (reportRequest.getDistrictId() == 0) {
+        } else if (reportRequest.getDistrictId() == 0) {
             kilkariChildUsageList.addAll(this.getKilkariChildUsage(reportRequest.getStateId(),"District",fromDate,toDate,reportRequest.getPeriodType()));
         } else if(reportRequest.getBlockId() == 0){
             kilkariChildUsageList.addAll(this.getKilkariChildUsage(reportRequest.getDistrictId(),"Block",fromDate,toDate,reportRequest.getPeriodType()));
-        }
-        else {
+        } else {
             kilkariChildUsageList.addAll(this.getKilkariChildUsage(reportRequest.getBlockId(),"Subcentre",fromDate,toDate,reportRequest.getPeriodType()));
         }
 
@@ -1763,7 +1755,6 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 tempSummaryDto.setCalls_75_100(a.getCalls_75_100());
                 tempSummaryDto.setCalls_50_75(a.getCalls_50_75());
                 tempSummaryDto.setCalls_25_50(a.getCalls_25_50());
-
                 tempSummaryDto.setCalls_1_25(a.getCalls_1_25());
                 tempSummaryDto.setLocationType(a.getLocationType());
                 tempSummaryDto.setCalledInbox(a.getCalledInbox());
