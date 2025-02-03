@@ -218,11 +218,7 @@ console.log("sdkjghkjhkjhkj")
             				return $scope.circles[0]  == null || $scope.userHasOneCircle();
             			}
 
-            			$scope.showWeekTable = function(){
-            				//return (($state.current.name == 'Kilkari Message Matrix' || $state.current.name == 'Kilkari Listening Matrix' || $state.current.name == 'Kilkari Usage' || $state.current.name == 'Kilkari Message Listenership' || $state.current.name == 'Kilkari Thematic Content' || $state.current.name == 'Kilkari Aggregate Beneficiaries')&& ($scope.periodDisplayType == 'Week'));
-            				return ( $scope.isAggregateReport() &&  !($scope.report.reportEnum == 'Kilkari_Repeat_Listener') && ($scope.periodDisplayType == 'Week'));
 
-            			}
 
             			$scope.userHasState = function(){
             				return UserFormFactory.getCurrentUser().stateId != null;
@@ -885,11 +881,6 @@ console.log("sdkjghkjhkjhkj")
                                         $scope.quarterType = ['Q1 (Jan to Mar)','Q2 (Apr to Jun)','Q3 (Jul to Sep)', 'Q4 (Oct to Dec)'];
                                     }
                                 }
-                           	if($scope.isAggregateReport() &&  $scope.showWeekTable() && $scope.dt1 != null) {
-                           		 $scope.getSundays($scope.dt1);
-                                 $scope.sundaysTable = true;
-            			    	 $scope.popup2.opened = true;
-            			    }
 
                             if(!$scope.wasSundaySelected && $scope.periodDisplayType == 'Week'){
                                 if((newDate != null) && newDate.getDate() == 1){

@@ -755,6 +755,20 @@ public class UserController {
             return aggregateResponseDto;
         }
 
+        if (reportRequest.getReportType().equals(ReportType.usageMother.getReportType())) {
+            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
+            List<UsageDto> kilkariMotherUsageDtos = aggregateKilkariReportsService.getMotherUsageReport(reportRequest, currentUser);
+            aggregateResponseDto.setTableData(kilkariMotherUsageDtos);
+            return aggregateResponseDto;
+        }
+
+        if (reportRequest.getReportType().equals(ReportType.usageChild.getReportType())) {
+            aggregateResponseDto.setBreadCrumbData(breadCrumbs);
+            List<UsageDto> kilkariChildUsageDtos = aggregateKilkariReportsService.getChildUsageReport(reportRequest, currentUser);
+            aggregateResponseDto.setTableData(kilkariChildUsageDtos);
+            return aggregateResponseDto;
+        }
+
         if(reportRequest.getReportType().equals(ReportType.kilkariHomePageReport.getReportType())){
             LOGGER.debug("inside this home api");
             aggregateResponseDto.setBreadCrumbData(breadCrumbs);
@@ -1824,6 +1838,20 @@ public class UserController {
                 ReportType.usage.getSimpleName(),
                 "images/drop-down-2.png",
                 ReportType.usage.getServiceType(),showAggregateReports)
+        );
+        kList.add(new Report(
+                ReportType.usageMother.getReportName(),
+                ReportType.usageMother.getReportType(),
+                ReportType.usageMother.getSimpleName(),
+                "images/drop-down-2.png",
+                ReportType.usageMother.getServiceType(),showAggregateReports)
+        );
+        kList.add(new Report(
+                ReportType.usageChild.getReportName(),
+                ReportType.usageChild.getReportType(),
+                ReportType.usageChild.getSimpleName(),
+                "images/drop-down-2.png",
+                ReportType.usageChild.getServiceType(),showAggregateReports)
         );
         kList.add(new Report(
                 ReportType.kilkariCalls.getReportName(),

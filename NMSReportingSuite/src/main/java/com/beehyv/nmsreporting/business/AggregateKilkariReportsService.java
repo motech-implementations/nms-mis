@@ -21,6 +21,10 @@ public interface AggregateKilkariReportsService {
 
     List<UsageDto> getUsageReport(ReportRequest reportRequest, User currentUser);
 
+    List<UsageDto> getMotherUsageReport(ReportRequest reportRequest, User currentUser);
+
+    List<UsageDto> getChildUsageReport(ReportRequest reportRequest, User currentUser);
+
     AggregateKilkariReportsDto getKilkariMessageListenershipReport(ReportRequest reportRequest);
 
     AggregateKilkariReportsDto getWhatsAppSubscriberCountReport(ReportRequest reportRequest);
