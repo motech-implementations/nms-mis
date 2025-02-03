@@ -473,8 +473,8 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
 
         spreadsheet.setColumnWidth(0, 4000);
 
-        for (int i = 1; i < 15; i++) {
-            spreadsheet.setColumnWidth(i, 6000);
+        for (int columnNumber = 1; columnNumber < 15; columnNumber++) {
+            spreadsheet.setColumnWidth(columnNumber, 6000);
         }
 
         XSSFRow row;
@@ -483,8 +483,8 @@ public class AggregateReportsServiceImpl implements AggregateReportsService {
         if (gridData.getReportName().equalsIgnoreCase("Kilkari Message Matrix") || gridData.getReportName().equalsIgnoreCase("Kilkari Beneficiary Completion")
         || gridData.getReportName().equalsIgnoreCase("Kilkari Usage") || gridData.getReportName().equalsIgnoreCase("Kilkari Call")
                 || gridData.getReportName().equalsIgnoreCase("Kilkari Usage Child") || gridData.getReportName().equalsIgnoreCase("Kilkari Usage Mother")) {
-            for (int i = 1; i < 15; i++) {
-                spreadsheet.setColumnWidth(i, 10000);
+            for (int columnNumber = 1; columnNumber < 15; columnNumber++) {
+                spreadsheet.setColumnWidth(columnNumber, 10000);
             }
         }
 
