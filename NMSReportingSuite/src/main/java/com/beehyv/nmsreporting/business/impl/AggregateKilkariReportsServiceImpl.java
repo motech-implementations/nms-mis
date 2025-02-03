@@ -860,7 +860,7 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         toDate = aCalendar.getTime();
 
 
-        List<KilkariAggregateBeneficiariesDto> summaryDto = new ArrayList<>();
+        List<KilkariAggregateBeneficiariesDto> summaryDtos = new ArrayList<>();
         List<KilkariAggregateBeneficiariesDto> aggregateCumulativeBeneficiaryList = new ArrayList<>();
 
 
@@ -878,54 +878,56 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
         if(!(aggregateCumulativeBeneficiaryList.isEmpty())){
             for (int i = 0; i < aggregateCumulativeBeneficiaryList.size(); i++) {
                 KilkariAggregateBeneficiariesDto a = aggregateCumulativeBeneficiaryList.get(i);
-                KilkariAggregateBeneficiariesDto summaryDto1 = new KilkariAggregateBeneficiariesDto();
-                summaryDto1.setLocationId(a.getLocationId());
-                summaryDto1.setSelfDeactivated(a.getSelfDeactivated());
-                summaryDto1.setJoinedSubscription(a.getJoinedSubscription());
-                summaryDto1.setCalledInbox(a.getCalledInbox());
-                summaryDto1.setMotherCompletion(a.getMotherCompletion());
-                summaryDto1.setChildCompletion(a.getChildCompletion());
-                summaryDto1.setLowListenership(a.getLowListenership());
-                summaryDto1.setNotAnswering(a.getNotAnswering());
-                summaryDto1.setSystemDeactivation(a.getSystemDeactivation());
-                summaryDto1.setBeneficiariesCalled(a.getBeneficiariesCalled());
-                summaryDto1.setAnsweredAtleastOneCall(a.getAnsweredAtleastOneCall());
-                summaryDto1.setLocationType(a.getLocationType());
+                KilkariAggregateBeneficiariesDto summaryDto = new KilkariAggregateBeneficiariesDto();
+                summaryDto.setLocationId(a.getLocationId());
+                summaryDto.setSelfDeactivated(a.getSelfDeactivated());
+                summaryDto.setJoinedSubscription(a.getJoinedSubscription());
+                summaryDto.setChildSubscriptionJoined(a.getChildSubscriptionJoined());
+                summaryDto.setMotherSubscriptionJoined(a.getMotherSubscriptionJoined());
+                summaryDto.setCalledInbox(a.getCalledInbox());
+                summaryDto.setMotherCompletion(a.getMotherCompletion());
+                summaryDto.setChildCompletion(a.getChildCompletion());
+                summaryDto.setLowListenership(a.getLowListenership());
+                summaryDto.setNotAnswering(a.getNotAnswering());
+                summaryDto.setSystemDeactivation(a.getSystemDeactivation());
+                summaryDto.setBeneficiariesCalled(a.getBeneficiariesCalled());
+                summaryDto.setAnsweredAtleastOneCall(a.getAnsweredAtleastOneCall());
+                summaryDto.setLocationType(a.getLocationType());
                 String locationType = a.getLocationType();
                 if (locationType.equalsIgnoreCase("State")) {
-                    summaryDto1.setLocationName(stateDao.findByStateId(a.getLocationId().intValue()).getStateName());
+                    summaryDto.setLocationName(stateDao.findByStateId(a.getLocationId().intValue()).getStateName());
                 }
                 if (locationType.equalsIgnoreCase("District")) {
-                    summaryDto1.setLocationName(districtDao.findByDistrictId(a.getLocationId().intValue()).getDistrictName());
+                    summaryDto.setLocationName(districtDao.findByDistrictId(a.getLocationId().intValue()).getDistrictName());
                 }
                 if (locationType.equalsIgnoreCase("Block")) {
-                    summaryDto1.setLocationName(blockDao.findByblockId(a.getLocationId().intValue()).getBlockName());
+                    summaryDto.setLocationName(blockDao.findByblockId(a.getLocationId().intValue()).getBlockName());
                 }
                 if (locationType.equalsIgnoreCase("Subcentre")) {
-                    summaryDto1.setLocationName(healthSubFacilityDao.findByHealthSubFacilityId(a.getLocationId().intValue()).getHealthSubFacilityName());
-                    summaryDto1.setLink(true);
+                    summaryDto.setLocationName(healthSubFacilityDao.findByHealthSubFacilityId(a.getLocationId().intValue()).getHealthSubFacilityName());
+                    summaryDto.setLink(true);
                 }
                 if (locationType.equalsIgnoreCase("DifferenceState")) {
-                    summaryDto1.setLocationName("No District");
-                    summaryDto1.setLink(true);
+                    summaryDto.setLocationName("No District");
+                    summaryDto.setLink(true);
                 }
                 if (locationType.equalsIgnoreCase("DifferenceDistrict")) {
-                    summaryDto1.setLocationName("No Block");
-                    summaryDto1.setLink(true);
+                    summaryDto.setLocationName("No Block");
+                    summaryDto.setLink(true);
                 }
                 if (locationType.equalsIgnoreCase("DifferenceBlock")) {
-                    summaryDto1.setLocationName("No Subcentre");
-                    summaryDto1.setLink(true);
+                    summaryDto.setLocationName("No Subcentre");
+                    summaryDto.setLink(true);
                 }
                 if ((a.getBeneficiariesCalled()+a.getAnsweredAtleastOneCall()+a.getSelfDeactivated()+
                         a.getNotAnswering()+a.getLowListenership()+a.getSystemDeactivation()+a.getMotherCompletion()+
-                        a.getChildCompletion()+a.getCalledInbox()+a.getJoinedSubscription() != 0)
-                        && !locationType.equalsIgnoreCase("DifferenceState")) {
-                    summaryDto.add(summaryDto1);
+                        a.getChildCompletion()+a.getCalledInbox()+a.getJoinedSubscription()+a.getMotherSubscriptionJoined()+
+                        a.getChildSubscriptionJoined()!= 0) && !locationType.equalsIgnoreCase("DifferenceState")) {
+                    summaryDtos.add(summaryDto);
                 }
             }
         }
-        return summaryDto;
+        return summaryDtos;
     }
 
     private List<KilkariAggregateBeneficiariesDto> getCumulativeBeneficiary(Integer locationId, String locationType, Date fromDate,Date toDate, String periodType){
@@ -935,31 +937,34 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             List<State> states = stateDao.getStatesByServiceType("KILKARI");
             for(State s:states){
                 if(!toDate.before(stateServiceDao.getServiceStartDateForState(s.getStateId(),"KILKARI"))){
-                    AggregateCumulativeBeneficiary stateCount1=(aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary((long)s.getStateId(),locationType,fromDate,periodType));
-                    KilkariUsage stateCount2=(kilkariUsageDao.getUsage(s.getStateId(),locationType,fromDate,periodType));
-                    KilkariMessageListenership stateCount3 = kilkariMessageListenershipReportDao.getListenerData(s.getStateId(),locationType,fromDate,periodType);
+                    AggregateCumulativeBeneficiary aggregateCumulativeBeneficiaryState=(aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary((long)s.getStateId(),locationType,fromDate,periodType));
+                    KilkariUsage kilkariUsageState=(kilkariUsageDao.getUsage(s.getStateId(),locationType,fromDate,periodType));
+                    KilkariMessageListenership kilkariMessageListenershipState = kilkariMessageListenershipReportDao.getListenerData(s.getStateId(),locationType,fromDate,periodType);
                     KilkariAggregateBeneficiariesDto stateCount = new KilkariAggregateBeneficiariesDto();
-                    stateCount.setJoinedSubscription(stateCount1.getJoinedSubscription());
-                    stateCount.setChildCompletion(stateCount1.getChildCompletion());
-                    stateCount.setMotherCompletion(stateCount1.getMotherCompletion());
-                    stateCount.setLowListenership(stateCount1.getLowListenership());
-                    stateCount.setSelfDeactivated(stateCount1.getSelfDeactivated());
-                    stateCount.setNotAnswering(stateCount1.getNotAnswering());
-                    stateCount.setSystemDeactivation(stateCount1.getSystemDeactivation());
-                    stateCount.setCalledInbox(stateCount2.getCalledInbox());
-                    stateCount.setBeneficiariesCalled(stateCount3.getTotalBeneficiariesCalled());
-                    stateCount.setAnsweredAtleastOneCall(stateCount3.getAnsweredAtleastOneCall());
+                    stateCount.setJoinedSubscription(aggregateCumulativeBeneficiaryState.getJoinedSubscription());
+                    stateCount.setMotherSubscriptionJoined(aggregateCumulativeBeneficiaryState.getMotherSubscriptionJoined());
+                    stateCount.setChildSubscriptionJoined(aggregateCumulativeBeneficiaryState.getChildSubscriptionJoined());
+                    stateCount.setChildCompletion(aggregateCumulativeBeneficiaryState.getChildCompletion());
+                    stateCount.setMotherCompletion(aggregateCumulativeBeneficiaryState.getMotherCompletion());
+                    stateCount.setLowListenership(aggregateCumulativeBeneficiaryState.getLowListenership());
+                    stateCount.setSelfDeactivated(aggregateCumulativeBeneficiaryState.getSelfDeactivated());
+                    stateCount.setNotAnswering(aggregateCumulativeBeneficiaryState.getNotAnswering());
+                    stateCount.setSystemDeactivation(aggregateCumulativeBeneficiaryState.getSystemDeactivation());
+                    stateCount.setCalledInbox(kilkariUsageState.getCalledInbox());
+                    stateCount.setBeneficiariesCalled(kilkariMessageListenershipState.getTotalBeneficiariesCalled());
+                    stateCount.setAnsweredAtleastOneCall(kilkariMessageListenershipState.getAnsweredAtleastOneCall());
                     stateCount.setLocationType(locationType);
                     stateCount.setLocationId((long)s.getStateId());
                     stateCount.setId((int)(stateCount.getSystemDeactivation()+stateCount.getNotAnswering()+stateCount.getLowListenership()+stateCount.getChildCompletion()+stateCount.getCalledInbox()+stateCount.getJoinedSubscription()+stateCount.getMotherCompletion()+stateCount.getSelfDeactivated()));
                     CumulativeBeneficiary.add(stateCount);
 
-                }}
+                }
+            }
         } else if(locationType.equalsIgnoreCase("District")){
             List<District> districts = districtDao.getDistrictsOfState(locationId);
-            AggregateCumulativeBeneficiary stateCounts1 = (aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary((long)locationId,"State",fromDate,periodType));
-            KilkariUsage stateCounts2=(kilkariUsageDao.getUsage(locationId,"State",fromDate,periodType));
-            KilkariMessageListenership stateCounts3 = kilkariMessageListenershipReportDao.getListenerData(locationId,"State",fromDate,periodType);
+            AggregateCumulativeBeneficiary aggregateCumulativeBeneficiaryState = (aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary((long)locationId,"State",fromDate,periodType));
+            KilkariUsage kilkariUsageState=(kilkariUsageDao.getUsage(locationId,"State",fromDate,periodType));
+            KilkariMessageListenership kilkariMessageListenershipState = kilkariMessageListenershipReportDao.getListenerData(locationId,"State",fromDate,periodType);
 
             Long beneficiariesCalled = (long)0;
             Long beneficiariesAnsweredAtleastOnce = (long)0;
@@ -971,21 +976,25 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             Long childCompletion = (long)0;
             Long calledInbox = (long)0;
             Long joinedSubscription = (long)0;
+            Long childSubscriptionJoined = (long)0;
+            Long motherSubscriptionJoined = (long)0;
             for(District d:districts){
-                AggregateCumulativeBeneficiary districtCount1 = aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary((long)d.getDistrictId(),locationType,fromDate,periodType);
-                KilkariUsage districtCount2=(kilkariUsageDao.getUsage(d.getDistrictId(),locationType,fromDate,periodType));
-                KilkariMessageListenership districtCount3 = kilkariMessageListenershipReportDao.getListenerData(d.getDistrictId(),locationType,fromDate,periodType);
+                AggregateCumulativeBeneficiary aggregateCumulativeBeneficiaryDistrict = aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary((long)d.getDistrictId(),locationType,fromDate,periodType);
+                KilkariUsage kilkariUsageDistrict=(kilkariUsageDao.getUsage(d.getDistrictId(),locationType,fromDate,periodType));
+                KilkariMessageListenership kilkariMessageListenershipDistrict = kilkariMessageListenershipReportDao.getListenerData(d.getDistrictId(),locationType,fromDate,periodType);
                 KilkariAggregateBeneficiariesDto districtCount = new KilkariAggregateBeneficiariesDto();
-                districtCount.setJoinedSubscription(districtCount1.getJoinedSubscription());
-                districtCount.setChildCompletion(districtCount1.getChildCompletion());
-                districtCount.setMotherCompletion(districtCount1.getMotherCompletion());
-                districtCount.setLowListenership(districtCount1.getLowListenership());
-                districtCount.setSelfDeactivated(districtCount1.getSelfDeactivated());
-                districtCount.setNotAnswering(districtCount1.getNotAnswering());
-                districtCount.setSystemDeactivation(districtCount1.getSystemDeactivation());
-                districtCount.setCalledInbox(districtCount2.getCalledInbox());
-                districtCount.setBeneficiariesCalled(districtCount3.getTotalBeneficiariesCalled());
-                districtCount.setAnsweredAtleastOneCall(districtCount3.getAnsweredAtleastOneCall());
+                districtCount.setJoinedSubscription(aggregateCumulativeBeneficiaryDistrict.getJoinedSubscription());
+                districtCount.setChildSubscriptionJoined(aggregateCumulativeBeneficiaryDistrict.getChildSubscriptionJoined());
+                districtCount.setMotherSubscriptionJoined(aggregateCumulativeBeneficiaryDistrict.getMotherSubscriptionJoined());
+                districtCount.setChildCompletion(aggregateCumulativeBeneficiaryDistrict.getChildCompletion());
+                districtCount.setMotherCompletion(aggregateCumulativeBeneficiaryDistrict.getMotherCompletion());
+                districtCount.setLowListenership(aggregateCumulativeBeneficiaryDistrict.getLowListenership());
+                districtCount.setSelfDeactivated(aggregateCumulativeBeneficiaryDistrict.getSelfDeactivated());
+                districtCount.setNotAnswering(aggregateCumulativeBeneficiaryDistrict.getNotAnswering());
+                districtCount.setSystemDeactivation(aggregateCumulativeBeneficiaryDistrict.getSystemDeactivation());
+                districtCount.setCalledInbox(kilkariUsageDistrict.getCalledInbox());
+                districtCount.setBeneficiariesCalled(kilkariMessageListenershipDistrict.getTotalBeneficiariesCalled());
+                districtCount.setAnsweredAtleastOneCall(kilkariMessageListenershipDistrict.getAnsweredAtleastOneCall());
                 districtCount.setLocationType(locationType);
                 districtCount.setLocationId((long)d.getDistrictId());
                 districtCount.setId((int)(districtCount.getSystemDeactivation()+districtCount.getNotAnswering()+districtCount.getLowListenership()+districtCount.getChildCompletion()+districtCount.getCalledInbox()+districtCount.getJoinedSubscription()+districtCount.getMotherCompletion()+districtCount.getSelfDeactivated()));
@@ -1002,18 +1011,22 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 childCompletion += districtCount.getChildCompletion();
                 calledInbox += districtCount.getCalledInbox();
                 joinedSubscription += districtCount.getJoinedSubscription();
+                childSubscriptionJoined += districtCount.getChildSubscriptionJoined();
+                motherSubscriptionJoined += districtCount.getMotherSubscriptionJoined();
             }
             KilkariAggregateBeneficiariesDto noDistrictCount = new KilkariAggregateBeneficiariesDto();
-            noDistrictCount.setAnsweredAtleastOneCall(stateCounts3.getAnsweredAtleastOneCall() - beneficiariesAnsweredAtleastOnce);
-            noDistrictCount.setBeneficiariesCalled(stateCounts3.getTotalBeneficiariesCalled() - beneficiariesCalled);
-            noDistrictCount.setSelfDeactivated(stateCounts1.getSelfDeactivated()-selfDeactivated);
-            noDistrictCount.setNotAnswering(stateCounts1.getNotAnswering()-notAnswering);
-            noDistrictCount.setLowListenership(stateCounts1.getLowListenership()-lowListenership);
-            noDistrictCount.setSystemDeactivation(stateCounts1.getSystemDeactivation()-systemDeactivation);
-            noDistrictCount.setMotherCompletion(stateCounts1.getMotherCompletion()-motherCompletion);
-            noDistrictCount.setChildCompletion(stateCounts1.getChildCompletion()-childCompletion);
-            noDistrictCount.setCalledInbox(stateCounts2.getCalledInbox()-calledInbox);
-            noDistrictCount.setJoinedSubscription(stateCounts1.getJoinedSubscription()-joinedSubscription);
+            noDistrictCount.setAnsweredAtleastOneCall(kilkariMessageListenershipState.getAnsweredAtleastOneCall() - beneficiariesAnsweredAtleastOnce);
+            noDistrictCount.setBeneficiariesCalled(kilkariMessageListenershipState.getTotalBeneficiariesCalled() - beneficiariesCalled);
+            noDistrictCount.setSelfDeactivated(aggregateCumulativeBeneficiaryState.getSelfDeactivated()-selfDeactivated);
+            noDistrictCount.setNotAnswering(aggregateCumulativeBeneficiaryState.getNotAnswering()-notAnswering);
+            noDistrictCount.setLowListenership(aggregateCumulativeBeneficiaryState.getLowListenership()-lowListenership);
+            noDistrictCount.setSystemDeactivation(aggregateCumulativeBeneficiaryState.getSystemDeactivation()-systemDeactivation);
+            noDistrictCount.setMotherCompletion(aggregateCumulativeBeneficiaryState.getMotherCompletion()-motherCompletion);
+            noDistrictCount.setChildCompletion(aggregateCumulativeBeneficiaryState.getChildCompletion()-childCompletion);
+            noDistrictCount.setCalledInbox(kilkariUsageState.getCalledInbox()-calledInbox);
+            noDistrictCount.setJoinedSubscription(aggregateCumulativeBeneficiaryState.getJoinedSubscription()-joinedSubscription);
+            noDistrictCount.setChildSubscriptionJoined(aggregateCumulativeBeneficiaryState.getChildSubscriptionJoined() - childSubscriptionJoined);
+            noDistrictCount.setMotherSubscriptionJoined(aggregateCumulativeBeneficiaryState.getMotherSubscriptionJoined() - motherSubscriptionJoined);
             noDistrictCount.setLocationType("DifferenceState");
             noDistrictCount.setId((int)(noDistrictCount.getSystemDeactivation()+noDistrictCount.getNotAnswering()+noDistrictCount.getLowListenership()+noDistrictCount.getChildCompletion()+noDistrictCount.getCalledInbox()+noDistrictCount.getJoinedSubscription()+noDistrictCount.getMotherCompletion()+noDistrictCount.getSelfDeactivated()));
             noDistrictCount.setLocationId((long)(-1));
@@ -1021,9 +1034,9 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
 
         } else if(locationType.equalsIgnoreCase("Block")) {
             List<Block> blocks = blockDao.getBlocksOfDistrict(locationId);
-            AggregateCumulativeBeneficiary districtCounts1 = aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary((long)locationId,"District",fromDate,periodType);
-            KilkariUsage districtCounts2=(kilkariUsageDao.getUsage(locationId,"District",fromDate,periodType));
-            KilkariMessageListenership districtCounts3 = kilkariMessageListenershipReportDao.getListenerData(locationId,"District",fromDate,periodType);
+            AggregateCumulativeBeneficiary aggregateCumulativeBeneficiaryDistrict = aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary((long)locationId,"District",fromDate,periodType);
+            KilkariUsage kilkariUsageDistrict=(kilkariUsageDao.getUsage(locationId,"District",fromDate,periodType));
+            KilkariMessageListenership kilkariMessageListenershipDistrict = kilkariMessageListenershipReportDao.getListenerData(locationId,"District",fromDate,periodType);
 
 
             Long beneficiariesCalled = (long)0;
@@ -1036,21 +1049,25 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             Long childCompletion = (long)0;
             Long calledInbox = (long)0;
             Long joinedSubscription = (long)0;
+            Long childSubscriptionJoined = (long)0;
+            Long motherSubscriptionJoined = (long)0;
             for (Block d : blocks) {
-                AggregateCumulativeBeneficiary blockCount1 = aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary((long)d.getBlockId(),locationType,fromDate,periodType);
-                KilkariUsage blockCount2=(kilkariUsageDao.getUsage(d.getBlockId(),locationType,fromDate,periodType));
-                KilkariMessageListenership blockCount3 = kilkariMessageListenershipReportDao.getListenerData(d.getBlockId(),locationType,fromDate,periodType);
+                AggregateCumulativeBeneficiary aggregateCumulativeBeneficiaryBlock = aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary((long)d.getBlockId(),locationType,fromDate,periodType);
+                KilkariUsage kilkariUsageBlock=(kilkariUsageDao.getUsage(d.getBlockId(),locationType,fromDate,periodType));
+                KilkariMessageListenership kilkariMessageListenershipBlock = kilkariMessageListenershipReportDao.getListenerData(d.getBlockId(),locationType,fromDate,periodType);
                 KilkariAggregateBeneficiariesDto blockCount = new KilkariAggregateBeneficiariesDto();
-                blockCount.setJoinedSubscription(blockCount1.getJoinedSubscription());
-                blockCount.setChildCompletion(blockCount1.getChildCompletion());
-                blockCount.setMotherCompletion(blockCount1.getMotherCompletion());
-                blockCount.setLowListenership(blockCount1.getLowListenership());
-                blockCount.setSelfDeactivated(blockCount1.getSelfDeactivated());
-                blockCount.setNotAnswering(blockCount1.getNotAnswering());
-                blockCount.setSystemDeactivation(blockCount1.getSystemDeactivation());
-                blockCount.setCalledInbox(blockCount2.getCalledInbox());
-                blockCount.setBeneficiariesCalled(blockCount3.getTotalBeneficiariesCalled());
-                blockCount.setAnsweredAtleastOneCall(blockCount3.getAnsweredAtleastOneCall());
+                blockCount.setJoinedSubscription(aggregateCumulativeBeneficiaryBlock.getJoinedSubscription());
+                blockCount.setChildSubscriptionJoined(aggregateCumulativeBeneficiaryBlock.getChildSubscriptionJoined());
+                blockCount.setMotherSubscriptionJoined(aggregateCumulativeBeneficiaryBlock.getMotherSubscriptionJoined());
+                blockCount.setChildCompletion(aggregateCumulativeBeneficiaryBlock.getChildCompletion());
+                blockCount.setMotherCompletion(aggregateCumulativeBeneficiaryBlock.getMotherCompletion());
+                blockCount.setLowListenership(aggregateCumulativeBeneficiaryBlock.getLowListenership());
+                blockCount.setSelfDeactivated(aggregateCumulativeBeneficiaryBlock.getSelfDeactivated());
+                blockCount.setNotAnswering(aggregateCumulativeBeneficiaryBlock.getNotAnswering());
+                blockCount.setSystemDeactivation(aggregateCumulativeBeneficiaryBlock.getSystemDeactivation());
+                blockCount.setCalledInbox(kilkariUsageBlock.getCalledInbox());
+                blockCount.setBeneficiariesCalled(kilkariMessageListenershipBlock.getTotalBeneficiariesCalled());
+                blockCount.setAnsweredAtleastOneCall(kilkariMessageListenershipBlock.getAnsweredAtleastOneCall());
                 blockCount.setLocationType(locationType);
                 blockCount.setLocationId((long)d.getBlockId());
                 blockCount.setId((int)(blockCount.getSystemDeactivation()+blockCount.getNotAnswering()+blockCount.getLowListenership()+blockCount.getChildCompletion()+blockCount.getCalledInbox()+blockCount.getJoinedSubscription()+blockCount.getMotherCompletion()+blockCount.getSelfDeactivated()));
@@ -1066,18 +1083,22 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 childCompletion += blockCount.getChildCompletion();
                 calledInbox += blockCount.getCalledInbox();
                 joinedSubscription += blockCount.getJoinedSubscription();
+                childSubscriptionJoined += blockCount.getChildSubscriptionJoined();
+                motherSubscriptionJoined += blockCount.getMotherSubscriptionJoined();
             }
             KilkariAggregateBeneficiariesDto noBlockCount = new KilkariAggregateBeneficiariesDto();
-            noBlockCount.setSelfDeactivated(districtCounts1.getSelfDeactivated()-selfDeactivated);
-            noBlockCount.setBeneficiariesCalled(districtCounts3.getTotalBeneficiariesCalled() - beneficiariesCalled);
-            noBlockCount.setAnsweredAtleastOneCall(districtCounts3.getAnsweredAtleastOneCall() - beneficiariesAnsweredAtleastOnce);
-            noBlockCount.setNotAnswering(districtCounts1.getNotAnswering()-notAnswering);
-            noBlockCount.setLowListenership(districtCounts1.getLowListenership()-lowListenership);
-            noBlockCount.setSystemDeactivation(districtCounts1.getSystemDeactivation()-systemDeactivation);
-            noBlockCount.setMotherCompletion(districtCounts1.getMotherCompletion()-motherCompletion);
-            noBlockCount.setChildCompletion(districtCounts1.getChildCompletion()-childCompletion);
-            noBlockCount.setCalledInbox(districtCounts2.getCalledInbox()-calledInbox);
-            noBlockCount.setJoinedSubscription(districtCounts1.getJoinedSubscription()-joinedSubscription);
+            noBlockCount.setSelfDeactivated(aggregateCumulativeBeneficiaryDistrict.getSelfDeactivated()-selfDeactivated);
+            noBlockCount.setBeneficiariesCalled(kilkariMessageListenershipDistrict.getTotalBeneficiariesCalled() - beneficiariesCalled);
+            noBlockCount.setAnsweredAtleastOneCall(kilkariMessageListenershipDistrict.getAnsweredAtleastOneCall() - beneficiariesAnsweredAtleastOnce);
+            noBlockCount.setNotAnswering(aggregateCumulativeBeneficiaryDistrict.getNotAnswering()-notAnswering);
+            noBlockCount.setLowListenership(aggregateCumulativeBeneficiaryDistrict.getLowListenership()-lowListenership);
+            noBlockCount.setSystemDeactivation(aggregateCumulativeBeneficiaryDistrict.getSystemDeactivation()-systemDeactivation);
+            noBlockCount.setMotherCompletion(aggregateCumulativeBeneficiaryDistrict.getMotherCompletion()-motherCompletion);
+            noBlockCount.setChildCompletion(aggregateCumulativeBeneficiaryDistrict.getChildCompletion()-childCompletion);
+            noBlockCount.setCalledInbox(kilkariUsageDistrict.getCalledInbox()-calledInbox);
+            noBlockCount.setJoinedSubscription(aggregateCumulativeBeneficiaryDistrict.getJoinedSubscription()-joinedSubscription);
+            noBlockCount.setChildSubscriptionJoined(aggregateCumulativeBeneficiaryDistrict.getChildSubscriptionJoined()-childSubscriptionJoined);
+            noBlockCount.setMotherSubscriptionJoined(aggregateCumulativeBeneficiaryDistrict.getMotherSubscriptionJoined()-motherSubscriptionJoined);
             noBlockCount.setLocationType("DifferenceDistrict");
             noBlockCount.setId((int)(noBlockCount.getSystemDeactivation()+noBlockCount.getNotAnswering()+noBlockCount.getLowListenership()+noBlockCount.getChildCompletion()+noBlockCount.getCalledInbox()+noBlockCount.getJoinedSubscription()+noBlockCount.getMotherCompletion()+noBlockCount.getSelfDeactivated()));
             noBlockCount.setLocationId((long)-1);
@@ -1088,9 +1109,9 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             for(HealthFacility hf :healthFacilities){
                 subcenters.addAll(healthSubFacilityDao.findByHealthFacilityId(hf.getHealthFacilityId()));
             }
-            AggregateCumulativeBeneficiary blockCounts1 = aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary((long)locationId,"block",fromDate,periodType);
-            KilkariUsage blockCounts2=(kilkariUsageDao.getUsage(locationId,"block",fromDate,periodType));
-            KilkariMessageListenership blockCounts3 = kilkariMessageListenershipReportDao.getListenerData(locationId,"block",fromDate,periodType);
+            AggregateCumulativeBeneficiary aggregateCumulativeBeneficiaryBlock = aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary((long)locationId,"block",fromDate,periodType);
+            KilkariUsage kilkariUsageBlock=(kilkariUsageDao.getUsage(locationId,"block",fromDate,periodType));
+            KilkariMessageListenership kilkariMessageListenershipBlock = kilkariMessageListenershipReportDao.getListenerData(locationId,"block",fromDate,periodType);
 
             Long beneficiariesCalled = (long)0;
             Long beneficiariesAnsweredAtleastOnce = (long)0;
@@ -1102,21 +1123,25 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
             Long childCompletion = (long)0;
             Long calledInbox = (long)0;
             Long joinedSubscription = (long)0;
+            Long childSubscriptionJoined = (long)0;
+            Long motherSubscriptionJoined = (long)0;
             for(HealthSubFacility s: subcenters){
-                AggregateCumulativeBeneficiary subcenterCount1 = aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary((long)s.getHealthSubFacilityId(),locationType,fromDate,periodType);
-                KilkariUsage subcenterCount2=(kilkariUsageDao.getUsage(s.getHealthSubFacilityId(),locationType,fromDate,periodType));
-                KilkariMessageListenership subcenterCount3 = kilkariMessageListenershipReportDao.getListenerData(s.getHealthSubFacilityId(),locationType,fromDate,periodType);
+                AggregateCumulativeBeneficiary aggregateCumulativeBeneficiarySubcentre = aggregateCumulativeBeneficiaryDao.getCumulativeBeneficiary((long)s.getHealthSubFacilityId(),locationType,fromDate,periodType);
+                KilkariUsage kilkariUsageSubcentre=(kilkariUsageDao.getUsage(s.getHealthSubFacilityId(),locationType,fromDate,periodType));
+                KilkariMessageListenership kilkariMessageListenershipSubcentre = kilkariMessageListenershipReportDao.getListenerData(s.getHealthSubFacilityId(),locationType,fromDate,periodType);
                 KilkariAggregateBeneficiariesDto subCenterCount = new KilkariAggregateBeneficiariesDto();
-                subCenterCount.setJoinedSubscription(subcenterCount1.getJoinedSubscription());
-                subCenterCount.setChildCompletion(subcenterCount1.getChildCompletion());
-                subCenterCount.setMotherCompletion(subcenterCount1.getMotherCompletion());
-                subCenterCount.setLowListenership(subcenterCount1.getLowListenership());
-                subCenterCount.setSelfDeactivated(subcenterCount1.getSelfDeactivated());
-                subCenterCount.setNotAnswering(subcenterCount1.getNotAnswering());
-                subCenterCount.setSystemDeactivation(subcenterCount1.getSystemDeactivation());
-                subCenterCount.setCalledInbox(subcenterCount2.getCalledInbox());
-                subCenterCount.setBeneficiariesCalled(subcenterCount3.getTotalBeneficiariesCalled());
-                subCenterCount.setAnsweredAtleastOneCall(subcenterCount3.getAnsweredAtleastOneCall());
+                subCenterCount.setJoinedSubscription(aggregateCumulativeBeneficiarySubcentre.getJoinedSubscription());
+                subCenterCount.setChildSubscriptionJoined(aggregateCumulativeBeneficiarySubcentre.getChildSubscriptionJoined());
+                subCenterCount.setMotherSubscriptionJoined(aggregateCumulativeBeneficiarySubcentre.getMotherSubscriptionJoined());
+                subCenterCount.setChildCompletion(aggregateCumulativeBeneficiarySubcentre.getChildCompletion());
+                subCenterCount.setMotherCompletion(aggregateCumulativeBeneficiarySubcentre.getMotherCompletion());
+                subCenterCount.setLowListenership(aggregateCumulativeBeneficiarySubcentre.getLowListenership());
+                subCenterCount.setSelfDeactivated(aggregateCumulativeBeneficiarySubcentre.getSelfDeactivated());
+                subCenterCount.setNotAnswering(aggregateCumulativeBeneficiarySubcentre.getNotAnswering());
+                subCenterCount.setSystemDeactivation(aggregateCumulativeBeneficiarySubcentre.getSystemDeactivation());
+                subCenterCount.setCalledInbox(kilkariUsageSubcentre.getCalledInbox());
+                subCenterCount.setBeneficiariesCalled(kilkariMessageListenershipSubcentre.getTotalBeneficiariesCalled());
+                subCenterCount.setAnsweredAtleastOneCall(kilkariMessageListenershipSubcentre.getAnsweredAtleastOneCall());
                 subCenterCount.setLocationType(locationType);
                 subCenterCount.setLocationId((long)s.getHealthSubFacilityId());
                 subCenterCount.setId((int)(subCenterCount.getSystemDeactivation()+subCenterCount.getNotAnswering()+subCenterCount.getLowListenership()+subCenterCount.getChildCompletion()+subCenterCount.getCalledInbox()+subCenterCount.getJoinedSubscription()+subCenterCount.getMotherCompletion()+subCenterCount.getSelfDeactivated()));
@@ -1132,18 +1157,22 @@ public class AggregateKilkariReportsServiceImpl implements AggregateKilkariRepor
                 childCompletion += subCenterCount.getChildCompletion();
                 calledInbox += subCenterCount.getCalledInbox();
                 joinedSubscription += subCenterCount.getJoinedSubscription();
+                childSubscriptionJoined += subCenterCount.getChildSubscriptionJoined();
+                motherSubscriptionJoined += subCenterCount.getMotherSubscriptionJoined();
             }
             KilkariAggregateBeneficiariesDto noSubcenterCount = new KilkariAggregateBeneficiariesDto();
-            noSubcenterCount.setAnsweredAtleastOneCall(blockCounts3.getAnsweredAtleastOneCall() - beneficiariesAnsweredAtleastOnce);
-            noSubcenterCount.setBeneficiariesCalled(blockCounts3.getTotalBeneficiariesCalled() - beneficiariesCalled);
-            noSubcenterCount.setSelfDeactivated(blockCounts1.getSelfDeactivated()-selfDeactivated);
-            noSubcenterCount.setNotAnswering(blockCounts1.getNotAnswering()-notAnswering);
-            noSubcenterCount.setLowListenership(blockCounts1.getLowListenership()-lowListenership);
-            noSubcenterCount.setSystemDeactivation(blockCounts1.getSystemDeactivation()-systemDeactivation);
-            noSubcenterCount.setMotherCompletion(blockCounts1.getMotherCompletion()-motherCompletion);
-            noSubcenterCount.setChildCompletion(blockCounts1.getChildCompletion()-childCompletion);
-            noSubcenterCount.setCalledInbox(blockCounts2.getCalledInbox()-calledInbox);
-            noSubcenterCount.setJoinedSubscription(blockCounts1.getJoinedSubscription()-joinedSubscription);
+            noSubcenterCount.setAnsweredAtleastOneCall(kilkariMessageListenershipBlock.getAnsweredAtleastOneCall() - beneficiariesAnsweredAtleastOnce);
+            noSubcenterCount.setBeneficiariesCalled(kilkariMessageListenershipBlock.getTotalBeneficiariesCalled() - beneficiariesCalled);
+            noSubcenterCount.setSelfDeactivated(aggregateCumulativeBeneficiaryBlock.getSelfDeactivated()-selfDeactivated);
+            noSubcenterCount.setNotAnswering(aggregateCumulativeBeneficiaryBlock.getNotAnswering()-notAnswering);
+            noSubcenterCount.setLowListenership(aggregateCumulativeBeneficiaryBlock.getLowListenership()-lowListenership);
+            noSubcenterCount.setSystemDeactivation(aggregateCumulativeBeneficiaryBlock.getSystemDeactivation()-systemDeactivation);
+            noSubcenterCount.setMotherCompletion(aggregateCumulativeBeneficiaryBlock.getMotherCompletion()-motherCompletion);
+            noSubcenterCount.setChildCompletion(aggregateCumulativeBeneficiaryBlock.getChildCompletion()-childCompletion);
+            noSubcenterCount.setCalledInbox(kilkariUsageBlock.getCalledInbox()-calledInbox);
+            noSubcenterCount.setJoinedSubscription(aggregateCumulativeBeneficiaryBlock.getJoinedSubscription()-joinedSubscription);
+            noSubcenterCount.setChildSubscriptionJoined(aggregateCumulativeBeneficiaryBlock.getChildSubscriptionJoined()-childSubscriptionJoined);
+            noSubcenterCount.setMotherSubscriptionJoined(aggregateCumulativeBeneficiaryBlock.getMotherSubscriptionJoined()-motherSubscriptionJoined);
             noSubcenterCount.setLocationType("DifferenceBlock");
             noSubcenterCount.setId((int)(noSubcenterCount.getSystemDeactivation()+noSubcenterCount.getNotAnswering()+noSubcenterCount.getLowListenership()+noSubcenterCount.getChildCompletion()+noSubcenterCount.getCalledInbox()+noSubcenterCount.getJoinedSubscription()+noSubcenterCount.getMotherCompletion()+noSubcenterCount.getSelfDeactivated()));
             noSubcenterCount.setLocationId((long)(-1));

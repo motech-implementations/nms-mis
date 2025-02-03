@@ -19,6 +19,8 @@ public class KilkariAggregateBeneficiariesDto {
     private Long childCompletion;
     private Long calledInbox;
     private Long joinedSubscription;
+    private Long motherSubscriptionJoined;
+    private Long childSubscriptionJoined;
     private boolean link = false;
 
     public Integer getId() {
@@ -131,6 +133,22 @@ public class KilkariAggregateBeneficiariesDto {
 
     public void setJoinedSubscription(Long joinedSubscription) {
         this.joinedSubscription = joinedSubscription;
+    }
+
+    public Long getChildSubscriptionJoined() {
+        return childSubscriptionJoined;
+    }
+
+    public void setChildSubscriptionJoined(Long childSubscriptionJoined) {
+        this.childSubscriptionJoined = childSubscriptionJoined;
+    }
+
+    public Long getMotherSubscriptionJoined() {
+        return motherSubscriptionJoined;
+    }
+
+    public void setMotherSubscriptionJoined(Long motherSubscriptionJoined) {
+        this.motherSubscriptionJoined = motherSubscriptionJoined;
     }
 
     public boolean isLink() {
