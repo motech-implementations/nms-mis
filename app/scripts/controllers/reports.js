@@ -562,7 +562,7 @@
 				if($scope.userHasOneCircle()){
                 	$scope.selectCircle($scope.circles[0]);
                 }
-                if($scope.report.reportEnum == 'Kilkari_Message_Matrix' || $scope.report.reportEnum == 'Kilkari_Subscriber' || $scope.report.reportEnum == 'Kilkari_Subscriber_Report_with_RegistrationDate' || $scope.report.reportEnum == 'Kilkari_Listening_Matrix' || $scope.report.reportEnum == 'Kilkari_Usage' || $scope.report.reportEnum == 'Kilkari_Message_Listenership' || $scope.report.reportEnum == 'Kilkari_Thematic_Content' || $scope.report.reportEnum == 'Kilkari_Aggregate_Beneficiaries' || $scope.report.reportEnum == 'Kilkari_Beneficiary_Completion' || $scope.report.reportEnum == 'Kilkari Performance Report' || $scope.report.reportEnum == 'Aggregate_Whatsapp_Subscriber' || $scope.report.reportEnum == 'Aggregate_Whatsapp_Message' || $scope.report.reportEnum == 'Aggregate_Whatsapp_Opt_In_Report'){
+                if($scope.report.reportEnum == 'Kilkari_Message_Matrix' || $scope.report.reportEnum == 'Kilkari_Subscriber' || $scope.report.reportEnum == 'Kilkari_Subscriber_Report_with_RegistrationDate' || $scope.report.reportEnum == 'Kilkari_Listening_Matrix' || $scope.report.reportEnum == 'Kilkari_Usage' || $scope.report.reportEnum == 'Kilkari_Usage_Child' || $scope.report.reportEnum == 'Kilkari_Usage_Mother' || $scope.report.reportEnum == 'Kilkari_Message_Listenership' || $scope.report.reportEnum == 'Kilkari_Thematic_Content' || $scope.report.reportEnum == 'Kilkari_Aggregate_Beneficiaries' || $scope.report.reportEnum == 'Kilkari_Beneficiary_Completion' || $scope.report.reportEnum == 'Kilkari Performance Report' || $scope.report.reportEnum == 'Aggregate_Whatsapp_Subscriber' || $scope.report.reportEnum == 'Aggregate_Whatsapp_Message' || $scope.report.reportEnum == 'Aggregate_Whatsapp_Opt_In_Report'){
                     $scope.periodType = ['Year','Financial Year','Quarter','Month','Week'];
                 }
                 else if($scope.report.reportEnum == 'Kilkari_Repeat_Listener_Month_Wise'){
@@ -1515,8 +1515,15 @@
 					    else if($scope.report.reportEnum == 'Kilkari_Cumulative_Summary'){
 					        $scope.gridOptions1.columnDefs = $scope.Kilkari_Cumulative_Summary_Definitions;
 					    }
-					    else if($scope.report.reportEnum == 'Kilkari_Usage')
+					    else if($scope.report.reportEnum == 'Kilkari_Usage'){
 					        $scope.gridOptions1.columnDefs = $scope.Kilkari_Usage_Definitions;
+					    }
+					    else if($scope.report.reportEnum == 'Kilkari_Usage_Mother'){
+					        $scope.gridOptions1.columnDefs = $scope.Kilkari_Usage_Mother_Definitions;
+					    }
+					    else if($scope.report.reportEnum == 'Kilkari_Usage_Child'){
+                            $scope.gridOptions1.columnDefs = $scope.Kilkari_Usage_Child_Definitions;
+                        }
 					    else if($scope.report.reportEnum == 'Kilkari_Aggregate_Beneficiaries'){
 					        $scope.gridOptions1.columnDefs = $scope.Kilkari_Aggregate_Beneficiaries_Definitions;
 					    }
@@ -1609,8 +1616,12 @@
                                 $scope.showEmptyData = true;
                             }
 
-                            fileName = $scope.report.reportEnum + "_" + $scope.reportBreadCrumbData[$scope.reportBreadCrumbData.length -1].locationName ;
-
+                            if ($scope.reportBreadCrumbData && $scope.reportBreadCrumbData.length > 0) {
+                                fileName = $scope.report.reportEnum + "_" +
+                                           ($scope.reportBreadCrumbData[$scope.reportBreadCrumbData.length - 1].locationName || 'Unknown');
+                            } else {
+                                fileName = $scope.report.reportEnum + "_Unknown";
+                            }
                         }
                         if($scope.report.reportEnum == 'Kilkari_Listening_Matrix'){
                             if(result.data.tableData.length >0){
@@ -2640,6 +2651,38 @@
             ]
 
             $scope.Kilkari_Usage_Definitions =[
+                                                 {name: 'S No.', displayName: 'S No.',width:"5%", enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
+                                                 { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',defaultSort: { direction: uiGridConstants.ASC },
+                                                    cellTemplate:'<a   ng-if= !row.entity.link class="btn aggregate-location" title="{{COL_FIELD}}"  ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a><p ng-if= row.entity.link class="ui-grid-cell-contents" title="{{COL_FIELD}}" >{{ COL_FIELD }}</p>',
+                                                    enableHiding: false, width:"*",
+                                                 },
+                                                 { field: 'beneficiariesCalled', name: 'Total beneficiaries Called',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                 { field: 'answeredCall', name: 'Beneficiaries who have answered at least one call',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                 { field: 'calls_75_100', name: 'Beneficiaries who have listened greater than or equal to 75% content (avg)',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
+                                                 { field: 'calls_50_75', name: 'Beneficiaries who have listened greater than or equal to 50% and less than 75% content (avg)',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
+                                                 { field: 'calls_25_50', name: 'Beneficiaries who have listened greater than or equal to 25% and less than 50% content (avg)',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
+                                                 { field: 'calls_1_25', name: 'Beneficiaries who have listened less than 25% content (avg)',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                 { field: 'calledInbox', name: 'Beneficiaries who have called the Kilkari Inbox', width:"*",cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, enableHiding: false},
+
+            ]
+
+            $scope.Kilkari_Usage_Mother_Definitions =[
+                                                 {name: 'S No.', displayName: 'S No.',width:"5%", enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
+                                                 { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',defaultSort: { direction: uiGridConstants.ASC },
+                                                    cellTemplate:'<a   ng-if= !row.entity.link class="btn aggregate-location" title="{{COL_FIELD}}"  ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a><p ng-if= row.entity.link class="ui-grid-cell-contents" title="{{COL_FIELD}}" >{{ COL_FIELD }}</p>',
+                                                    enableHiding: false, width:"*",
+                                                 },
+                                                 { field: 'beneficiariesCalled', name: 'Total beneficiaries Called',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                 { field: 'answeredCall', name: 'Beneficiaries who have answered at least one call',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                 { field: 'calls_75_100', name: 'Beneficiaries who have listened greater than or equal to 75% content (avg)',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
+                                                 { field: 'calls_50_75', name: 'Beneficiaries who have listened greater than or equal to 50% and less than 75% content (avg)',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false},
+                                                 { field: 'calls_25_50', name: 'Beneficiaries who have listened greater than or equal to 25% and less than 50% content (avg)',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true,  width:"*", enableHiding: false },
+                                                 { field: 'calls_1_25', name: 'Beneficiaries who have listened less than 25% content (avg)',cellFilter: 'indianFilter',footerCellFilter: 'indianFilter', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, width:"*", enableHiding: false },
+                                                 { field: 'calledInbox', name: 'Beneficiaries who have called the Kilkari Inbox', width:"*",cellFilter: 'indianFilter',footerCellFilter: 'indianFilter',  aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true, enableHiding: false},
+
+            ]
+
+            $scope.Kilkari_Usage_Child_Definitions =[
                                                  {name: 'S No.', displayName: 'S No.',width:"5%", enableSorting: false, exporterSuppressExport: true, cellTemplate: '<p class="serial-no">{{rowRenderIndex+1}}</p>'},
                                                  { field: 'locationName', footerCellTemplate: '<div class="ui-grid-cell-contents" >Total</div>',defaultSort: { direction: uiGridConstants.ASC },
                                                     cellTemplate:'<a   ng-if= !row.entity.link class="btn aggregate-location" title="{{COL_FIELD}}"  ng-click="grid.appScope.drillDownData(row.entity.locationId,row.entity.locationType,row.entity.locationName)">{{ COL_FIELD }}</a><p ng-if= row.entity.link class="ui-grid-cell-contents" title="{{COL_FIELD}}" >{{ COL_FIELD }}</p>',

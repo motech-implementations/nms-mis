@@ -324,6 +324,8 @@
             case 'Kilkari Cumulative Summary': pageHeading='Kilkari Cumulative Summary Report' ;break;
             case 'Kilkari Beneficiary Completion': pageHeading='Kilkari Beneficiary Completion Report'; break;
             case 'Kilkari Usage': pageHeading='Kilkari Usage Report'; break;
+            case 'Kilkari Usage Mother': pageHeading='Kilkari Usage Mother Report'; break;
+            case 'Kilkari Usage Child': pageHeading='Kilkari Usage Child Report'; break;
             case 'Kilkari Call': pageHeading='Kilkari Call Report'; break;
             case 'Kilkari Performance Report': pageHeading=' Kilkari Performance Report'; break;
             case 'kilkari message matrix for only successful calls': pageHeading='kilkari message matrix for only successful calls'; break;
@@ -983,6 +985,8 @@
                     }
                 }
                 else if(excelHeaderName.reportName== "Kilkari Usage"
+                ||excelHeaderName.reportName== "Kilkari Usage Mother"
+                ||excelHeaderName.reportName== "Kilkari Usage Child"
                 ||excelHeaderName.reportName=="Kilkari Message Listenership"
                 ||excelHeaderName.reportName=="Kilkari Subscriber" ||
                 excelHeaderName.reportName == "Kilkari Subscriber Registration Date"){
@@ -1129,6 +1133,7 @@
                     fontHasSize = 10;
                 } else if (excelHeaderName.reportName === 'MA Subscriber' || excelHeaderName.reportName === 'MA Performance' ||
                     excelHeaderName.reportName === 'Kilkari Cumulative Summary' || excelHeaderName.reportName === 'Kilkari Usage' ||
+                    excelHeaderName.reportName === 'Kilkari Usage Mother' || excelHeaderName.reportName === 'Kilkari Usage Child' ||
                     excelHeaderName.reportName === 'Kilkari Beneficiary Completion' || excelHeaderName.reportName === 'Kilkari Message Listenership') {
                     fontHasSize = 10;
                 } else if (excelHeaderName.reportName === 'Kilkari Aggregate Beneficiaries') {
