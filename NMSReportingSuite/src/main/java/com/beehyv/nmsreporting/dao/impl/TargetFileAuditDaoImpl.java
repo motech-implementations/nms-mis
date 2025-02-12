@@ -43,7 +43,6 @@ public class TargetFileAuditDaoImpl extends AbstractDao<Integer, SmsFileAuditLog
             throw new IllegalArgumentException("Date cannot be null");
         }
 
-        // Set date range for the specific day.
         Calendar startOfDay = Calendar.getInstance();
         startOfDay.setTime(date);
         startOfDay.set(Calendar.HOUR_OF_DAY, 0);
@@ -54,14 +53,12 @@ public class TargetFileAuditDaoImpl extends AbstractDao<Integer, SmsFileAuditLog
         Calendar endOfDay = (Calendar) startOfDay.clone();
         endOfDay.add(Calendar.DAY_OF_MONTH, 1);
 
-        // Build criteria for all audit logs on the given day regardless of successStatus.
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.ge("createdAt", startOfDay.getTime()));
         criteria.add(Restrictions.lt("createdAt", endOfDay.getTime()));
 
         List<SmsFileAuditLog> logs = criteria.list();
 
-        // If no logs exist for that day, there's no failure.
         if (logs == null || logs.isEmpty()) {
             return true;
         }
