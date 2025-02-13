@@ -158,11 +158,6 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 
         <!-- Apache Shiro -->
 <!--        latest versions no longer work with our projects, so switched to the lastest working version-->
-        <dependency>
-            <groupId>org.apache.shiro.samples</groupId>
-            <artifactId>samples-spring-client</artifactId>
-            <version>1.4.1</version>
-        </dependency>
 
         <dependency>
             <groupId>org.apache.shiro</groupId>

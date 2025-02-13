@@ -1,0 +1,32 @@
+<configuration debug="true">
+    <!-- Console Appender -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Root logger level set to INFO and output to console and file -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+    </root>
+
+    <!-- NMSReportingSuite -->
+    <logger name="com.beehyv.nmsreporting" level="DEBUG"/>
+
+    <!-- General Apache libraries -->
+    <logger name="org.apache" level="WARN"/>
+
+    <!-- Spring -->
+    <logger name="org.springframework" level="WARN"/>
+
+    <!-- Hibernate -->
+    <logger name="org.hibernate" level="WARN"/>
+
+    <!-- Default Shiro logging -->
+    <logger name="org.apache.shiro" level="WARN"/>
+
+    <!-- Disable verbose logging -->
+    <logger name="org.apache.shiro.util.ThreadContext" level="WARN"/>
+    <logger name="org.apache.shiro.cache.ehcache.EhCache" level="WARN"/>
+</configuration>
