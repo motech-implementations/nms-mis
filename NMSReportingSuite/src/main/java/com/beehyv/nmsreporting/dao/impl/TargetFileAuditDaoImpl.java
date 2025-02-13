@@ -39,11 +39,10 @@ public class TargetFileAuditDaoImpl extends AbstractDao<Integer, SmsFileAuditLog
     @Override
     @Transactional
     public boolean hasFailureOnDate(Date date) {
+        if (date == null) {
+            throw new IllegalArgumentException("Date cannot be null");
+        }
 
-        Criteria criteria = createEntityCriteria();
-        criteria.add(Restrictions.eq("successStatus", false));
-
-        // Set date range for the specific day
         Calendar startOfDay = Calendar.getInstance();
         startOfDay.setTime(date);
         startOfDay.set(Calendar.HOUR_OF_DAY, 0);
@@ -54,11 +53,26 @@ public class TargetFileAuditDaoImpl extends AbstractDao<Integer, SmsFileAuditLog
         Calendar endOfDay = (Calendar) startOfDay.clone();
         endOfDay.add(Calendar.DAY_OF_MONTH, 1);
 
+        Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.ge("createdAt", startOfDay.getTime()));
         criteria.add(Restrictions.lt("createdAt", endOfDay.getTime()));
 
         List<SmsFileAuditLog> logs = criteria.list();
-        return logs != null && !logs.isEmpty();
+
+        if (logs == null || logs.isEmpty()) {
+            return true;
+        }
+
+        // If any log on that day indicates success
+        // then we return false because the day is not considered as having a failure.
+        for (SmsFileAuditLog log : logs) {
+            if (Boolean.TRUE.equals(log.getSuccessStatus())) {
+                return false;
+            }
+        }
+
+        // If all entries are failures then we return true.
+        return true;
     }
 
 
