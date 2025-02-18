@@ -1521,9 +1521,10 @@ public class UserController {
         aggregateReportsService.createSpecificAggreagateExcel(workbook,data);
 
         File dir = new File(reports+"/Aggregates");
-        LOGGER.info("Directory path set to: {}, directory exists:{}", dir.getAbsolutePath(), dir.exists());
         if (!dir.exists())
             dir.mkdirs();
+
+        LOGGER.info("Directory path set to: {}, directory exists:{}", dir.getAbsolutePath(), dir.exists());
         FileOutputStream out = null;
         try {
             out = new FileOutputStream(new File(reports+"/Aggregates/"+filename));
