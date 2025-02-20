@@ -117,6 +117,20 @@
                     $scope.fileDownloadedSucessFully=false;
                 }
             }
+
+            $scope.isAdmin = false;
+
+            UserFormFactory.isAdminLoggedIn().then(function(response) {
+                $scope.isAdmin = response.data;
+            });
+
+            $scope.shouldShowReport = function(item) {
+                if ($scope.currentUser.accessLevel === 'NATIONAL' || $scope.isAdmin) {
+                    return true; // National users and Admins see all reports
+                } else {
+                    return item.reportEnum !== 'Kilkari_Subscriber'; // Others don't see Kilkari_Subscriber
+                }
+            };
             $scope.getCertificateInBulk=function(){
                 certificateRequest.date =$scope.certificateDate;
                 certificateRequest.stateId =$scope.selectedStateId;
@@ -2154,7 +2168,9 @@
                                     if(response.data =="success"){
                                     var fileName = $scope.gridApi.grid.options.exporterExcelFilename ? $scope.gridApi.grid.options.exporterExcelFilename : 'dokuman';
                                        fileName += '.xlsx';
-                                       window.location.href = backend_root + 'nms/user/downloadAgg?fileName='+fileName;
+                                       fileName = fileName.replace(/\s+/g, "_");
+                                       console.log("Final file name: " + fileName);
+                                       window.location.href = backend_root + 'nms/user/downloadAgg?fileName='+encodeURIComponent(fileName);
 
                                     }
                                     }

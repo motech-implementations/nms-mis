@@ -1513,8 +1513,8 @@ public class UserController {
     public String generateAggregates(@RequestBody AggregateExcelDto data, HttpServletResponse response) throws ParseException, java.text.ParseException {
         response.setContentType("APPLICATION/OCTECT-STREAM");
 
-        String filename = data.getFileName()+".xlsx";
-
+        String filename = data.getFileName().replace(" ", "_")+".xlsx";
+        LOGGER.info("Entered generateAggregates method with fileName: {}", filename);
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet spreadsheet = workbook.createSheet(
                 "Sheet 1");
@@ -1523,25 +1523,31 @@ public class UserController {
         File dir = new File(reports+"/Aggregates");
         if (!dir.exists())
             dir.mkdirs();
-        FileOutputStream out1 = null;
+
+        LOGGER.info("Directory path set to: {}, directory exists:{}", dir.getAbsolutePath(), dir.exists());
+        FileOutputStream out = null;
         try {
-            out1 = new FileOutputStream(new File(reports+"/Aggregates/"+filename));
+            out = new FileOutputStream(new File(reports+"/Aggregates/"+filename));
         } catch (FileNotFoundException e) {
+            LOGGER.error("File not found at path: {}" , reports+"/Aggregates");
             e.printStackTrace();
         }
         try {
-            workbook.write(out1);
+            workbook.write(out);
         } catch (IOException e) {
+            LOGGER.error("IO Exception while writing workbook to file :{}", filename);
             e.printStackTrace();
         }
         try {
-            out1.close();
+            out.close();
         } catch (IOException e) {
+            LOGGER.error("IO Exception while closing workbook");
             e.printStackTrace();
         }
 
         // workbook.write(response.getOutputStream());
 
+        LOGGER.info("generateAggregates method completed successfully");
         return "success";
     }
 
@@ -1550,6 +1556,7 @@ public class UserController {
     public String downloadAggregates(HttpServletResponse response, @DefaultValue("") @QueryParam("fileName") String fileName) throws ParseException, java.text.ParseException {
 //        adminService.getBulkDataImportCSV();
         response.setContentType("APPLICATION/OCTECT-STREAM");
+        LOGGER.info("Entered downloadAggregates method with fileName: {}", fileName);
         if (StringUtils.isEmpty(fileName)) {
             fileName = "";
             return "fail";
@@ -1566,6 +1573,7 @@ public class UserController {
             out.close();
             //workbook.close();
         } catch (IOException e) {
+            LOGGER.error("I/O error during file download for: {}", fileName);
             e.printStackTrace();
         }
         try {
@@ -1573,8 +1581,11 @@ public class UserController {
             file.delete();
         }
         catch(Exception e){
+            LOGGER.error("Error while attempting to delete file: {}", fileName);
             e.printStackTrace();
         }
+
+        LOGGER.info("downloadAggregates method completed successfully");
         return "success";
     }
 

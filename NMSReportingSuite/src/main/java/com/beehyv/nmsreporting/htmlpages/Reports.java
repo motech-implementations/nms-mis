@@ -34,7 +34,7 @@ public class Reports {
             "\t\t\t\t\t\t\t\t</button>\n" +
             "\t\t\t\t\t\t\t\t<ul class=\"dropdown-menu\" data-uib-dropdown-menu role=\"menu\" aria-labelledby=\"btn-append-to-body\">\n" +
             "\t\t\t\t\t\t\t\t\t<li role=\"menuitem\" data-ng-repeat=\"item in reportNames\">\n" +
-            "\t\t\t\t\t\t\t\t\t\t<a data-ng-if=\"item.showItem\" class=\"select_report\" data-ng-click='selectReport(item)'>\n" +
+            "\t\t\t\t\t\t\t\t\t\t<a data-ng-if=\"shouldShowReport(item)\" class=\"select_report\" data-ng-click='selectReport(item)'>\n" +
             "\t\t\t\t\t\t\t\t\t\t\t<img alt=\"Report Icon\" class='block' src=\"{{item.icon}}\">\n" +
             "\t\t\t\t\t\t\t\t\t\t\t<span>{{item.simpleName}}</span>\n" +
             "\t\t\t\t\t\t\t\t\t\t</a>\n" +
