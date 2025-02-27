@@ -42,7 +42,6 @@ import static com.beehyv.nmsreporting.utils.Global.*;
 @Transactional
 public class CertificateServiceImpl implements CertificateService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CertificateServiceImpl.class);
     @Autowired
     private MACourseAttemptDao maCourseAttemptDao;
 
@@ -191,7 +190,6 @@ public class CertificateServiceImpl implements CertificateService {
         Integer blockId = certificateRequest.getBlockId();
         Map<String, String> response = new HashMap<>();
 
-        LOGGER.info("Starting bulk certificate generation for stateId: {}, districtId: {}, blockId: {}, queryLevel: {}", stateId, districtId, blockId, queryLevel);
 
         if(queryLevel.equalsIgnoreCase("STATE")){
             flws = maCourseAttemptDao.getSuccessFulCompletionByStateIdAndMonth(forMonth, stateId);
@@ -205,9 +203,6 @@ public class CertificateServiceImpl implements CertificateService {
         else {
             flws = new ArrayList<>();
         }
-
-        LOGGER.info("Total FLWs found for certificate generation: {}", flws.size());
-
 
         int failed = 0;
         int success = 0;
@@ -277,8 +272,6 @@ public class CertificateServiceImpl implements CertificateService {
                 failed++;
             }
         }
-
-        LOGGER.info("Certificate generation completed. Total certificates generated: {}, failed: {}", success, failed);
         if (success>0){
             if (auditable){
                 BulkCertificateAudit audit = new BulkCertificateAudit();
@@ -298,8 +291,6 @@ public class CertificateServiceImpl implements CertificateService {
         response.put("Total_Asha",  Integer.toString(flws.size()));
         response.put("Total_Certificate", Integer.toString(success));
         response.put("Error",Integer.toString(failed));
-
-        LOGGER.info("Final response: {}", response);
 
         return response;
     }
@@ -550,12 +541,12 @@ public class CertificateServiceImpl implements CertificateService {
         String healthSubFacility = frontLineWorkers.getSubfacility() == null ? " " : healthSubFacilityDao.findByHealthSubFacilityId(frontLineWorkers.getSubfacility()).getHealthSubFacilityName();
 
         PDDocument document = new PDDocument();
-        PDDocument sampleDocument = null;
+        PDDocument sampleDocument = new PDDocument();
 
         String response;
         try {
             String font_path = documents + "caslon_italic.ttf";
-            PDFont textFont;
+            PDFont textFont = PDType0Font.load( sampleDocument, new File(font_path) );
 //          PDFont textFont = PDType1Font.TIMES_ROMAN;
 
             int textFontSize = 16;
@@ -566,7 +557,6 @@ public class CertificateServiceImpl implements CertificateService {
                 // File file = new File(documents + "Certificate/TeluguSampleCertificate.pdf");
                 sampleDocument = PDDocument.load(TeluguCertificateFile);
                 document.addPage(sampleDocument.getPage(0));
-                textFont = PDType0Font.load( sampleDocument, new File(font_path) );
                 generateTeluguCertificate(document, textFont, name, rchId, msisdn, district, phc, village, healthSubFacility, completionDate);
             } else if(state == chhatisgarhStateCode){
                 // File file = new File(documents + "Certificate/ChhatisgarhAshaCertificateSample.pdf");
@@ -580,7 +570,6 @@ public class CertificateServiceImpl implements CertificateService {
                 File file = new File(documents + "Certificate/SampleAshaCertificate.pdf");
                 sampleDocument = PDDocument.load(file);
                 document.addPage(sampleDocument.getPage(0));
-                textFont = PDType0Font.load( sampleDocument, new File(font_path) );
                 PDPage page = document.getPage(0);
 
                 PDPageContentStream contents = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true, true);
@@ -628,19 +617,13 @@ public class CertificateServiceImpl implements CertificateService {
 
             response = "success";
             document.save(pdfFile);
+            document.close();
+            sampleDocument.close();
+
 
         } catch (IOException ignore) {
             response = "failed to load sample certificate";
             System.out.println("---Error---=>" + response);
-        } finally {
-            try {
-                if (sampleDocument != null) {
-                    sampleDocument.close();
-                }
-                document.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
         return response;
     }
