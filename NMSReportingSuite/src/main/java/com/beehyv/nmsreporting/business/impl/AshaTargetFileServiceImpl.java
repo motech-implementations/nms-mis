@@ -152,7 +152,6 @@ public class AshaTargetFileServiceImpl implements AshaTargetFileService {
                     recordsWritten++;
                 } catch (Exception e) {
                     LOGGER.error("Error processing message: {}", e.getMessage());
-                    logFailure(targetFileName, e.getMessage());
                 }
             }
             writer.close();
@@ -174,7 +173,10 @@ public class AshaTargetFileServiceImpl implements AshaTargetFileService {
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
             logFailure(targetFileName, e.getMessage());
-        }
+        } catch (Exception e) {
+            LOGGER.error("Unexpected error: {}", e.getMessage());
+            logFailure(targetFileName, "Unexpected error: " + e.getMessage());
+    }
 
         return null;
 
