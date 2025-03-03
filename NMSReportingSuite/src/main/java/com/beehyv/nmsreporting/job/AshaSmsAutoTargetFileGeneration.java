@@ -6,6 +6,7 @@ import com.beehyv.nmsreporting.business.impl.TargetFileNotification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
 
 import static com.beehyv.nmsreporting.utils.Global.isAutoGenerate;
 
@@ -19,18 +20,19 @@ public class AshaSmsAutoTargetFileGeneration {
     @Autowired
     AshaTargetFileService ashaTargetFileService;
 
+    @Autowired
+    private JmsTemplate jmsTemplate;
+
     public void processTargetFile() {
 
         if (isAutoGenerate()) {
             try {
-                TargetFileNotification targetFileNotification = ashaTargetFileService.generateTargetFile();
-                if (targetFileNotification != null) {
-                    smsNotificationService.sendNotificationRequest(targetFileNotification);
-                } else {
-                    LOGGER.error("Failed to generate target file.");
-                }
+                // You can publish a simple text message...
+                jmsTemplate.convertAndSend("target-file-queue", "PROCESS_TARGET_FILE");
+
+                LOGGER.info("Published target file processing event to 'target-file-queue'.");
             } catch (Exception e) {
-                LOGGER.error("Error processing target file: {}", e.getMessage(), e);
+                LOGGER.error("Failed to publish target file processing event: {}", e.getMessage(), e);
             }
         }
     }

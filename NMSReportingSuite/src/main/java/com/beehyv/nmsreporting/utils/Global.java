@@ -130,6 +130,30 @@ public  final class Global {
         return uiAddress;
     }
 
+    public static String getPropertyValueApp(String key) {
+        Properties prop = new Properties();
+        InputStream input = null;
+        String propertyValue = null;
+        try {
+            File file = new File("../webapps/NMSReportingSuite/WEB-INF/classes/app.properties");
+            input = new FileInputStream(file);
+            // load a properties file
+            prop.load(input);
+            propertyValue = prop.getProperty(key);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return propertyValue;
+    }
+
     public static boolean isAutoGenerate() {
         Properties prop = new Properties();
         InputStream input = null;
