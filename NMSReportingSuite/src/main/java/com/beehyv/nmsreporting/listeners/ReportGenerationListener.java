@@ -1,6 +1,7 @@
 package com.beehyv.nmsreporting.listeners;
 
 import com.beehyv.nmsreporting.business.AshaTargetFileService;
+import com.beehyv.nmsreporting.business.EtlNotificationService;
 import com.beehyv.nmsreporting.business.SmsNotificationService;
 import com.beehyv.nmsreporting.business.impl.TargetFileNotification;
 import org.slf4j.Logger;
@@ -23,6 +24,9 @@ public class ReportGenerationListener {
 
     @Autowired
     AshaTargetFileService ashaTargetFileService;
+
+    @Autowired
+    private EtlNotificationService etlNotificationService;
 
     private Logger LOGGER = LoggerFactory.getLogger(ReportGenerationListener.class);
 
@@ -126,18 +130,41 @@ public class ReportGenerationListener {
     }
 
 
+
     @JmsListener(destination = "target-file-queue")
     public void handleTargetFileMessage(String message) {
-        LOGGER.info("Received target file processing event: {}", message);
+        if (message == null) {
+            LOGGER.error("Target file message cannot be null");
+            return;
+        }
+
+        LOGGER.info("Processing target file event: {}", message);
         try {
-            TargetFileNotification targetFileNotification = ashaTargetFileService.generateTargetFile();
-            if (targetFileNotification != null) {
-                smsNotificationService.sendNotificationRequest(targetFileNotification);
-            } else {
+            TargetFileNotification notification = ashaTargetFileService.generateTargetFile();
+            if (notification == null) {
                 LOGGER.error("Failed to generate target file.");
             }
+            smsNotificationService.sendNotificationRequest(notification);
+            LOGGER.info("Target file processed successfully");
         } catch (Exception e) {
             LOGGER.error("Error processing target file: {}", e.getMessage(), e);
         }
     }
+
+    @JmsListener(destination = "etl-notification")
+    public void handleEtlNotificationMessage(String message) {
+        if (message == null || message.trim().isEmpty()) {
+            LOGGER.warn("Received an empty or null daily notification message. Skipping processing.");
+            return;
+        }
+
+        LOGGER.info("Received daily notification message: {}", message);
+        try {
+            etlNotificationService.dailyNotifications();
+            LOGGER.info("Daily notification processing completed successfully for message: {}", message);
+        } catch (Exception e) {
+            LOGGER.error("Error processing daily notification message: {}. Exception: {}", message, e.getMessage(), e);
+        }
+    }
+
 }

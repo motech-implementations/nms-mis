@@ -32,7 +32,7 @@ public class ActiveMQConfig {
     public ActiveMQConnectionFactory connectionFactory() {
         ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory();
         factory.setBrokerURL(activeMqUrl);
-        factory.setTrustAllPackages(false); // Don't trust all packages for security
+        factory.setTrustAllPackages(false);
         factory.setTrustedPackages(Arrays.asList(
                 "com.beehyv.nmsreporting.model",
                 "com.beehyv.nmsreporting.entity",

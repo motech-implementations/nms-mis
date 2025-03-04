@@ -27,7 +27,7 @@ public class AshaSmsAutoTargetFileGeneration {
 
         if (isAutoGenerate()) {
             try {
-                // You can publish a simple text message...
+
                 jmsTemplate.convertAndSend("target-file-queue", "PROCESS_TARGET_FILE");
 
                 LOGGER.info("Published target file processing event to 'target-file-queue'.");
