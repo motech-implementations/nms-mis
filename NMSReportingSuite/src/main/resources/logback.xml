@@ -29,4 +29,5 @@
     <!-- Disable verbose logging -->
     <logger name="org.apache.shiro.util.ThreadContext" level="WARN"/>
     <logger name="org.apache.shiro.cache.ehcache.EhCache" level="WARN"/>
+    <logger name="org.hibernate.validator" level="DEBUG"/>
 </configuration>
