@@ -65,22 +65,23 @@ public  final class Global {
         return fileLocation;
     }
 
-    public static String getPropertyValue(String key) {
+    public static Properties getProperties() {
         Properties properties = new Properties();
         try (InputStreamReader reader = new InputStreamReader(
                 new FileInputStream("../webapps/NMSReportingSuite/WEB-INF/classes/sms.properties"), "UTF-8")) {
             properties.load(reader);
-            return properties.getProperty(key);
+
         } catch (IOException ex) {
             ex.printStackTrace();
-            return null;
+
         }
+        return properties;
     }
 
-
-
-
-
+    public static String getPropertyValue(String key) {
+        Properties prop = getProperties();
+        return prop.getProperty(key);
+    }
 
     public static int retrieveFileSizeInMB(){
         Properties prop = new Properties();
@@ -186,6 +187,7 @@ public  final class Global {
         }
         return prop;
     }
+
 
     public static String getProperty(String key) {
         Properties prop = loadProperties();
