@@ -379,7 +379,8 @@ public class Reports {
             "\t\t\t<p data-ng-if =\"!hideGrid && !waiting && (report.reportEnum == 'Kilkari_Subscriber')\" ><b>Note3 :</b> rejection reasons are captured only after Sep 2017</p>\n" +
             "\t\t\t<p data-ng-if =\"!hideGrid && !waiting && (report.reportEnum == 'Kilkari_Subscriber_with_RegistrationDate')\" ><b>Note3 :</b> rejection reasons are captured only after Sep 2017</p>\n" +
             "\t\t\t<p data-ng-if =\"!hideGrid && !waiting && (report.reportEnum == 'Kilkari_Subscriber_with_RegistrationDate')\" ><b>Note4 :</b> Registration Dates are captured only after July 2023</p>\n"+
-            "\t\t\t<p data-ng-if =\"!hideGrid && !waiting && ((report.reportEnum == 'MA_Subscriber') || (report.reportEnum == 'MA_Performance') || (report.reportEnum == 'Mobile Academy Performance Report'))\" ><b>Note:</b> This report is a dynamic report and number of ASHAs (in each column) might differ for two given time periods.</p>\n" +
+            "\t\t\t<p data-ng-if =\"!hideGrid && !waiting && ((report.reportEnum == 'MA_Subscriber') || (report.reportEnum == 'MA_Performance') || (report.reportEnum == 'Mobile Academy Performance Report'))\" ><b>Note1:</b> This report is a dynamic report and number of ASHAs (in each column) might differ for two given time periods.</p>\n" +
+            "\t\t\t<p data-ng-if =\"!hideGrid && !waiting && ((report.reportEnum == 'MA_Subscriber') || (report.reportEnum == 'MA_Performance') || (report.reportEnum == 'Mobile Academy Performance Report'))\" ><b>Note2:</b> The negative numbers in the columns are due to discrepancies in the mapping of ASHAs at the Block level. Some ASHA workers are mapped to the respective blocks but belong to different districts. Hence the Block level reports show a different number compared to the District level reports. </p>\n" +
             "\n" +
             "\n" +
             "\t\t</div>\n" +
