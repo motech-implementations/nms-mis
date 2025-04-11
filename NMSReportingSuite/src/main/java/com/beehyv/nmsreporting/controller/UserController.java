@@ -346,6 +346,8 @@ public class UserController {
                 String email = user.getEmailId();
                 byte[] encoded = Base64.encodeBase64((email + "||" + password + "||new").getBytes());
                 String encrypted = new String(encoded);
+                long start = System.currentTimeMillis();
+                LOGGER.info("Starting internal mail API call...");
                 String url = "http://192.168.200.4:8080/NMSReportingSuite/nms/mail/sendPassword/" + encrypted;
                 URL obj = new URL(url);
                 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -369,6 +371,8 @@ public class UserController {
                     response.append(inputLine);
                 }
                 in.close();
+                long end = System.currentTimeMillis();
+                LOGGER.info("Internal mail API call completed. Time taken: " + (end - start) + " ms");
 
                 //print result
                 System.out.println(response.toString());
