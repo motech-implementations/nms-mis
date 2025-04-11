@@ -4662,29 +4662,24 @@ public class AdminServiceImpl implements AdminService {
         final Date finalToDate = toDate;
         final String rootPath = reports + ReportType.lowUsage.getReportType() + "/";
         final List<State> states = stateDao.getStatesByServiceType(ReportType.lowUsage.getServiceType());
-        final List<KilkariLowUsage> kilkariLowUsageList = kilkariLowUsageDao.getKilkariLowUsageUsers(getMonthYear(finalToDate));
+        // final List<KilkariLowUsage> kilkariLowUsageList = kilkariLowUsageDao.getKilkariLowUsageUsers(getMonthYear(finalToDate));
 
         ExecutorService executorService = Executors.newFixedThreadPool(8);
-
         try {
-            for ( final State state : states) {
-                logger.info("State name is: {}", state.getStateName());
-                final String stateName = StReplace(state.getStateName());
-                final String rootPathState = rootPath + stateName + "/";
-                final int stateId = state.getStateId();
-                final List<KilkariLowUsage> candidatesFromThisState = new ArrayList<KilkariLowUsage>();
-                for (KilkariLowUsage kilkari : kilkariLowUsageList) {
-                    if ((kilkari.getStateId() != null) && (kilkari.getStateId() == stateId)) {
-                        candidatesFromThisState.add(kilkari);
-                    }
-                }
-
+            for (final State state : states) {
                 executorService.submit(new Runnable() {
                     @Override
                     public void run() {
                         transactionTemplate.execute(new TransactionCallback<Void>() {
                             @Override
                             public Void doInTransaction(TransactionStatus status) {
+                                logger.info("Processing State: {}", state.getStateName());
+                                final String stateName = StReplace(state.getStateName());
+                                final String rootPathState = rootPath + stateName + "/";
+                                final int stateId = state.getStateId();
+
+                                List<KilkariLowUsage> candidatesFromThisState = kilkariLowUsageDao.getKilkariLowUsageUsersWithStateId(getMonthYear(finalToDate), stateId);
+                                //final List<KilkariLowUsage> candidatesFromThisState = new ArrayList<KilkariLowUsage>();
                                 try {
                                     ReportRequest reportRequest = new ReportRequest();
                                     reportRequest.setFromDate(finalToDate);
@@ -4708,6 +4703,7 @@ public class AdminServiceImpl implements AdminService {
 
                                         reportRequest.setDistrictId(districtId);
                                         reportRequest.setBlockId(0);
+                                        logger.info("Generating district report for {} - {}", stateName, districtName);
                                         getKilkariLowUsage(candidatesFromThisDistrict, rootPathDistrict, districtName, finalToDate, reportRequest);
 
                                         List<Block> blocks = blockDao.getBlocksOfDistrict(districtId);
