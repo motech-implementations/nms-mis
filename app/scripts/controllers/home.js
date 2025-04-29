@@ -101,8 +101,13 @@ console.log("sdkjghkjhkjhkj")
                                 financialYearStart.setFullYear(currentDate.getFullYear() - 1);
                             }
 
-                            var lastMonthEnd = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0);
+                            var lastMonthEnd;
 
+                            if (currentDate.getMonth() === 3) {
+                                lastMonthEnd = currentDate;
+                            } else {
+                                lastMonthEnd = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0);
+                            }
                             $scope.dt1 = financialYearStart;
                             $scope.dt2 = lastMonthEnd;
                         };
