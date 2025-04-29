@@ -105,9 +105,10 @@ console.log("sdkjghkjhkjhkj")
                             $scope.dt1 = financialYearStart;
                             $scope.dt2 = lastMonthEnd;
 
-                            if ($scope.dt2 && $scope.dt1 && new Date($scope.dt2) < new Date($scope.dt1)) {
-                                    $scope.dt1 = financialYearStart.setFullYear(currentDate.getFullYear() - 1);
-                            }
+                           if ($scope.dt2 && $scope.dt1 && new Date($scope.dt2) < new Date($scope.dt1)) {
+                               financialYearStart.setFullYear(currentDate.getFullYear() - 1); // modifies the Date object
+                               $scope.dt1 = new Date(financialYearStart); // reassigns it as a Date, not number
+                           }
                         };
 
                         $scope.updateDateRange();
