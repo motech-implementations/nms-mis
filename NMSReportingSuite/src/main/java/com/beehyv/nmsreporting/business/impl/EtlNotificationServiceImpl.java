@@ -12,6 +12,7 @@ import com.beehyv.nmsreporting.model.ScheduledReportTracker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -32,6 +33,9 @@ public class EtlNotificationServiceImpl implements EtlNotificationService {
 
     @Autowired
     private NoticeDao noticeDao;
+
+    @Autowired
+    private JmsTemplate jmsTemplate;
 
     public final String getNoticeTypeAsMonthlyReports = "MONTHLY_REPORTS";
     public final String getNoticeTypeAsQuarterReports = "QUARTERLY_NOTICE";
@@ -213,17 +217,20 @@ public class EtlNotificationServiceImpl implements EtlNotificationService {
     @Override
     @Transactional
     public boolean scheduledNotification() {
-        if (isAutoGenerate()){
-        try {
-            dailyNotifications();
-        } catch (Exception e) {
-            LOGGER.error("Error occurred while processing daily failed ETL: ", e);
+        if (isAutoGenerate()) {
+            try {
+                jmsTemplate.convertAndSend("etl-notification", "PROCESS_DAILY_NOTIFICATIONS");
+                LOGGER.info("Successfully sent PROCESS_DAILY_NOTIFICATIONS to etl-notification queue.");
+            } catch (Exception e) {
+                LOGGER.error("Error occurred while sending message to etl-notification queue: ", e);
+                return false;
+            }
+            return true;
         }
-        LOGGER.info("Finished dailyFailedEtlForTheDay method");
-        return true;
-    }
+        LOGGER.info("Auto-generation is disabled. Skipping scheduled notification.");
         return false;
     }
+
 
     private java.sql.Date getYesterdayDate() {
         Calendar calendar = Calendar.getInstance();
