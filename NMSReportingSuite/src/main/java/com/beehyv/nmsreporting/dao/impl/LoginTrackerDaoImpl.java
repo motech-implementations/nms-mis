@@ -56,4 +56,24 @@ public class LoginTrackerDaoImpl extends AbstractDao<Integer, LoginTracker> impl
         return (Date) criteria.uniqueResult();
     }
 
+    @Override
+    public List<LoginTracker> getActiveLoginUsers(Integer userId){
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.eq("userId" , userId));
+        criteria.add(Restrictions.eq("isActive" , true));
+        return criteria.list();
+    }
+
+    @Override
+    public void updateLoginDetails(LoginTracker loginTracker){
+        update(loginTracker);
+    }
+
+    @Override
+    public LoginTracker getLoginTrackerByUniqueId(String uniqueId){
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.eq("uniqueId" , uniqueId));
+        return criteria.list().size() ==0 ? null : (LoginTracker) criteria.list().get(0);
+    }
+
 }

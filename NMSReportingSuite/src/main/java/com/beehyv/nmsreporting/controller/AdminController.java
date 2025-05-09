@@ -74,7 +74,8 @@ public class AdminController {
         if (!file.isEmpty()) {
             try {
                 //validating file type and content type
-                if(!(file.getOriginalFilename().endsWith(".csv"))){
+                boolean fileCheck =  file.getOriginalFilename().substring(0, file.getOriginalFilename().lastIndexOf(".")- 1).contains(".");
+                if(!(file.getOriginalFilename().endsWith(".csv")) || fileCheck){
                     responseMap.put(0 , "fail");
                     responseMap.put(1 , "Upload csv file only " + file.getOriginalFilename());
                     return responseMap;

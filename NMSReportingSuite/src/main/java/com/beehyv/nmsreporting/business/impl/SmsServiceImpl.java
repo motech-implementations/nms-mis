@@ -103,23 +103,8 @@ public class SmsServiceImpl implements SmsService {
 
             // Process response
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_CREATED || response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-            try {
-                // Get current date in the specified format and timezone
-                TimeZone timeZone = TimeZone.getTimeZone("Asia/Kolkata");
-                Calendar calendar = Calendar.getInstance(timeZone);
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                dateFormat.setTimeZone(timeZone);
-
-                Date currentDate = dateFormat.parse(dateFormat.format(calendar.getTime()));
-                maCourseCompletion.setLastModifiedDate(currentDate);
-            } catch (ParseException e) {
-                LOGGER.error("Error while parsing date", e);
-                maCourseCompletion.setScheduleMessageSent(true);
-                maCourseCompletionDao.updateMACourseCompletion(maCourseCompletion);
-                return "Message sent but modification date could not be updated";
-            }
-
-            // Update completion details
+                // No need to change the modification date as it is not serving any purpose and also it is effecting the ETL process
+                LOGGER.info("SMS sent successfully");
             maCourseCompletion.setScheduleMessageSent(true);
             maCourseCompletionDao.updateMACourseCompletion(maCourseCompletion);
             }

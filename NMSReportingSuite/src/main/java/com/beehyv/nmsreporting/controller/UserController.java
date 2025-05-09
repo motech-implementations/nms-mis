@@ -18,6 +18,8 @@ import net.sf.ehcache.Element;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +45,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -122,6 +125,9 @@ public class UserController {
 
     @Autowired
     BulkCertificateAuditDao bulkCertificateAuditDao;
+
+    @Autowired
+    private LoginTrackerService loginTrackerService;
 
     @Autowired
     private EtlNotificationService etlNotificationService;
@@ -223,12 +229,47 @@ public class UserController {
     public @ResponseBody Boolean isLoggedIn(
             HttpServletRequest request) {
          request.getSession(false);
+            checkActiveUser();
 //        request.getSession().getId();
 //        if (userService.getCurrentUser() == null) {
 //            isAdminLoggedIn();
 //        }
         return userService.getCurrentUser() != null;
     }
+
+    private void checkActiveUser(){
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");;
+        try {
+            Session session = SecurityUtils.getSubject().getSession();
+            String SessionUniqueId = (String) session.getAttribute("unique_id");
+            String dateTimeString1 = SessionUniqueId.split("_")[0];
+
+            Date sessionDateTime = dateFormat.parse(dateTimeString1);
+
+            Integer userid = (Integer) SecurityUtils.getSubject().getPrincipal();
+            List<LoginTracker> loginTrackerList = loginTrackerService.getActiveLoginUsers(userid);
+
+            System.out.println(" test - loginTrackerList for userid " + userid + " got. size is " + loginTrackerList.size());
+
+            for (LoginTracker loginTracker : loginTrackerList) {
+                String unique_id = loginTracker.getUniqueId();
+                String dateTimeStringInDB = unique_id.split("_")[0];
+                Date dbDateTime = dateFormat.parse(dateTimeStringInDB);
+
+                if(sessionDateTime.compareTo(dbDateTime) < 0){
+                    LoginTracker loginTracker1 = loginTrackerService.getLoginTrackerByUniqueId(SessionUniqueId);
+                    loginTracker1.setActive(false);
+                    loginTrackerService.updateLoginDetails(loginTracker1);
+                    session.stop();
+                }
+            }
+        }
+        catch (Exception e){
+            System.out.println("test - Exception found " + e + " - handled.");
+        }
+    }
+
 
     @RequestMapping(value={"/isAdminLoggedIn"} , method = RequestMethod.POST)
     public @ResponseBody Boolean isAdminLoggedIn() {
