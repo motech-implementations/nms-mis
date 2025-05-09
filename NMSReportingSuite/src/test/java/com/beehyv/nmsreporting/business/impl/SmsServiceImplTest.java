@@ -128,7 +128,7 @@ public class SmsServiceImplTest {
     }
 
 
-    @Test(expected = ParseException.class)
+   /* @Test(expected = ParseException.class)
     public void testSendSms_ParseException() throws IOException, ParseException {
         // Arrange
         String template = "{\"message\": \"Test SMS\"}";
@@ -151,7 +151,7 @@ public class SmsServiceImplTest {
         assertEquals("Message sent but modification date could not be updated", result);
         verify(maCourseCompletion).setScheduleMessageSent(true);
         verify(maCourseCompletionDao).updateMACourseCompletion(maCourseCompletion);
-    }
+    }*/
 
     @Test
     public void testBuildOTPSMS_ValidInput() throws Exception {

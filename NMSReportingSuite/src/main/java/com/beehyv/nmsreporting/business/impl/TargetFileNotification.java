@@ -1,9 +1,18 @@
 package com.beehyv.nmsreporting.business.impl;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class TargetFileNotification {
+
+    @JsonProperty("filename")
     private String fileName;
+
+    @JsonProperty("checksum")
     private String checksum;
+
+    @JsonProperty("recordscount")
     private Integer recordsCount;
+
 
     public TargetFileNotification() { }
 

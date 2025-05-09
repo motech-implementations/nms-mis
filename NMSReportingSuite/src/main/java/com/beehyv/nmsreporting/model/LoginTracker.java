@@ -21,6 +21,11 @@ public class LoginTracker {
     @Column(name = "login_successful")
     private boolean loginSuccessful;
 
+    @Column(name = "unique_id")
+    private String uniqueId;
+
+    @Column(name = "is_active")
+    private boolean isActive;
 
     public Integer getLoginId() {
         return loginId;
@@ -52,5 +57,21 @@ public class LoginTracker {
 
     public void setLoginSuccessful(boolean loginSuccessful) {
         this.loginSuccessful = loginSuccessful;
+    }
+
+    public String getUniqueId() {
+        return uniqueId;
+    }
+
+    public void setUniqueId(String uniqueId) {
+        this.uniqueId = uniqueId;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 }

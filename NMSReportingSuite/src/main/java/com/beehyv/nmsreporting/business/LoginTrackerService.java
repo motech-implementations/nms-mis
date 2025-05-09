@@ -11,4 +11,9 @@ public interface LoginTrackerService {
 
     Date getLastLoginTime(Integer userId);
 
+    List<LoginTracker> getActiveLoginUsers(Integer userId);
+
+    void  updateLoginDetails(LoginTracker loginTracker);
+
+    LoginTracker getLoginTrackerByUniqueId(String uniqueId);
 }

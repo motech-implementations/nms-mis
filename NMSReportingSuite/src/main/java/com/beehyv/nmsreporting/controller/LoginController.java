@@ -29,6 +29,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -110,14 +112,23 @@ public class LoginController extends HttpServlet{
 
                     return retrieveUiAddress() + "login?error";
                 } else {
+                    Calendar calendar = Calendar.getInstance();
+                    Date currentDate = calendar.getTime();
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+                    String formattedDateTime = dateFormat.format(currentDate);
+                    String unique_id = formattedDateTime + "_" + user.getUsername();
+
                     user.setUnSuccessfulAttempts(0);
                     LoginTracker loginTracker = new LoginTracker();
                     loginTracker.setUserId(user.getUserId());
                     loginTracker.setLoginSuccessful(true);
                     loginTracker.setLoginTime(new Date());
+                    loginTracker.setActive(true);
+                    loginTracker.setUniqueId(unique_id);
                     loginTrackerService.saveLoginDetails(loginTracker);
                     Session session = SecurityUtils.getSubject().getSession();
                     session.setAttribute( "userName", user.getUsername());
+                    session.setAttribute("unique_id" , unique_id);
                     if (user.getDefault() == null) {
                         user.setDefault(true);
                     }

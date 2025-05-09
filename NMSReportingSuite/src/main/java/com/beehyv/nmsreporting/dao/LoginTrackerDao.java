@@ -19,4 +19,10 @@ public interface LoginTrackerDao {
     public List<LoginTracker> getAllLoginDetailsByDate(Date fromDate, Date toDate);
 
     public Date getLastLoginTime(Integer userId);
+
+    public List<LoginTracker> getActiveLoginUsers(Integer userId);
+
+    public void updateLoginDetails(LoginTracker loginTracker);
+
+    public LoginTracker getLoginTrackerByUniqueId(String uniqueId);
 }

@@ -1,7 +1,11 @@
 package com.beehyv.nmsreporting.controller;
 
+import com.beehyv.nmsreporting.business.LoginTrackerService;
+import com.beehyv.nmsreporting.model.LoginTracker;
 import com.beehyv.nmsreporting.utils.Global;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,8 +25,22 @@ import static com.beehyv.nmsreporting.utils.Global.retrieveUiAddress;
 @RequestMapping("/nms/logout")
 public class LogoutController extends AbstractController{
 
+    @Autowired
+    private LoginTrackerService loginTrackerService;
     @RequestMapping(method = RequestMethod.POST)
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        try {
+            Session session = SecurityUtils.getSubject().getSession();
+            String unique_id = (String) session.getAttribute("unique_id");
+            LoginTracker loginTracker = loginTrackerService.getLoginTrackerByUniqueId(unique_id);
+            loginTracker.setActive(false);
+            loginTrackerService.updateLoginDetails(loginTracker);
+        }
+        catch (Exception e){
+            System.out.println("test - exception found");
+            e.printStackTrace();
+        }
+
         SecurityUtils.getSubject().logout();
         return new ModelAndView("redirect:"+ retrieveUiAddress() +"login");
     }
