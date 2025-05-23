@@ -131,6 +131,21 @@ public  final class Global {
         return uiAddress;
     }
 
+    private static Properties loadAppProperties() {
+            Properties prop = new Properties();
+           try (InputStream input = new FileInputStream(new File("../webapps/NMSReportingSuite/WEB-INF/classes/app.properties"))) {
+                   prop.load(input);
+                } catch (IOException ex) {
+                   LOGGER.error("Failed to load app.properties", ex);
+               }
+            return prop;
+        }
+
+        public static String getPropertyValueApp(String key) {
+            return loadAppProperties().getProperty(key);
+        }
+
+
     public static boolean isAutoGenerate() {
         Properties prop = new Properties();
         InputStream input = null;
