@@ -22,6 +22,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -118,6 +120,10 @@ public class LoginController extends HttpServlet{
                     String formattedDateTime = dateFormat.format(currentDate);
                     String unique_id = formattedDateTime + "_" + user.getUsername();
 
+                    HttpServletRequest httpRequest = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+                    String userAgent = httpRequest.getHeader("User-Agent");
+                    String ipAddress = httpRequest.getRemoteAddr();
+
                     user.setUnSuccessfulAttempts(0);
                     LoginTracker loginTracker = new LoginTracker();
                     loginTracker.setUserId(user.getUserId());
@@ -129,6 +135,8 @@ public class LoginController extends HttpServlet{
                     Session session = SecurityUtils.getSubject().getSession();
                     session.setAttribute( "userName", user.getUsername());
                     session.setAttribute("unique_id" , unique_id);
+                    session.setAttribute("userAgent", userAgent);
+                    session.setAttribute("ipAddress", ipAddress);
                     if (user.getDefault() == null) {
                         user.setDefault(true);
                     }
