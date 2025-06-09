@@ -7,6 +7,7 @@ import com.beehyv.nmsreporting.enums.*;
 import com.beehyv.nmsreporting.model.*;
 import com.google.common.base.Strings;
 import com.opencsv.CSVReader;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
@@ -1995,9 +1996,9 @@ public class AdminServiceImpl implements AdminService {
                     CellRangeAddress range4 = new CellRangeAddress(rowid-1,rowid-1,7,9);
                     spreadsheet.addMergedRegion(range4);
                     cell1.setCellValue(rowid - 8);
-                    cell2.setCellValue(objectArr[1].toString());
-                    cell3.setCellValue(objectArr[2].toString());
-                    cell4.setCellValue(objectArr[3].toString());
+                    cell2.setCellValue(objectArr[1] != null ? objectArr[1].toString() : "");
+                    cell3.setCellValue(objectArr[2] != null ? objectArr[2].toString() : "");
+                    cell4.setCellValue(objectArr[3] != null ? objectArr[3].toString() : "");
                     cell1.setCellStyle(borderStyle);
                     cell2.setCellStyle(borderStyle);
                     cell3.setCellStyle(borderStyle);
@@ -4133,32 +4134,60 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void getCircleWiseAnonymousFiles(Date startDate, Date toDate) {
-        List<Circle> circleList = circleDao.getAllCircles();
-        String rootPath = reports+ReportType.maAnonymous.getReportType()+ "/";
-        List<AnonymousUsers> anonymousUsersList = anonymousUsersDao.getAnonymousUsers(getMonthYear(toDate));
-        ReportRequest reportRequest=new ReportRequest();
-        reportRequest.setFromDate(toDate);
-        reportRequest.setBlockId(0);
-        reportRequest.setDistrictId(0);
-        reportRequest.setStateId(0);
-        reportRequest.setCircleId(0);
-        reportRequest.setReportType(ReportType.maAnonymous.getReportType());
-        getCircleWiseAnonymousUsers(anonymousUsersList, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate, reportRequest);
-        for (Circle circle : circleList) {
-            String circleName = StReplace(circle.getCircleName());
-            String circleFullName = StReplace(circle.getCircleFullName());
-            String circleFullNamewithSpace = circle.getCircleFullName();
-            String rootPathCircle=rootPath+circleFullName+"/";
-            List<AnonymousUsers> anonymousUsersListCircle = new ArrayList<>();
-            for(AnonymousUsers anonymousUser : anonymousUsersList){
-                if(anonymousUser.getCircleName().equalsIgnoreCase(circleFullNamewithSpace)){
-                    anonymousUsersListCircle.add(anonymousUser);
+        logger.info("Report Time Window: startDate = {}, toDate = {}", startDate, toDate);
+        try {
+            List<Circle> circleList = circleDao.getAllCircles();
+            String rootPath = reports + ReportType.maAnonymous.getReportType() + "/";
+
+            List<AnonymousUsers> anonymousUsersList = anonymousUsersDao.getAnonymousUsers(getMonthYear(toDate));
+            logger.info("Fetched {} anonymous user records for month {}",
+                    anonymousUsersList != null ? anonymousUsersList.size() : 0,
+                    getMonthYear(toDate));
+
+            ReportRequest reportRequest = new ReportRequest();
+            reportRequest.setFromDate(toDate);
+            reportRequest.setBlockId(0);
+            reportRequest.setDistrictId(0);
+            reportRequest.setStateId(0);
+            reportRequest.setCircleId(0);
+            reportRequest.setReportType(ReportType.maAnonymous.getReportType());
+
+            logger.info("Calling national level report generator...");
+            getCircleWiseAnonymousUsers(anonymousUsersList, rootPath, AccessLevel.NATIONAL.getAccessLevel(), toDate, reportRequest);
+
+            for (Circle circle : circleList) {
+                String circleName = StReplace(circle.getCircleName());
+                String circleFullName = StReplace(circle.getCircleFullName());
+                String circleFullNameWithSpace = circle.getCircleFullName();
+                String rootPathCircle = rootPath + circleFullName + "/";
+
+                logger.info("Processing circle: {} (ID: {}, Cleaned: {})", circleFullNameWithSpace, circle.getCircleId(), circleFullName);
+
+                List<AnonymousUsers> anonymousUsersListCircle = new ArrayList<>();
+                for (AnonymousUsers anonymousUser : anonymousUsersList) {
+                    if (StringUtils.equalsIgnoreCase(circleFullNameWithSpace, anonymousUser.getCircleName())) {
+                        anonymousUsersListCircle.add(anonymousUser);
+                    }
                 }
+
+                reportRequest.setCircleId(circle.getCircleId());
+
+                logger.info("Generating report for circle {}", circleFullName);
+                getCircleWiseAnonymousUsers(anonymousUsersListCircle, rootPathCircle, circleFullName, toDate, reportRequest);
             }
-            reportRequest.setCircleId(circle.getCircleId());
-            getCircleWiseAnonymousUsers(anonymousUsersListCircle, rootPathCircle, circleFullName, toDate, reportRequest);
+
+            ScheduledReportTracker tracker = new ScheduledReportTracker(
+                    ReportType.maAnonymous.getReportName(),
+                    new Date(),
+                    (toDate.getMonth()) + "_" + (toDate.getYear() % 100)
+            );
+            scheduledReportTrackerDao.saveScheduleReportTracker(tracker);
+            logger.info("Report tracker saved: {}", tracker);
+
+        } catch (Exception e) {
+            logger.error("Exception while generating MA Anonymous Report: {}", e.getMessage(), e);
+            throw new RuntimeException("Failed to generate MA Anonymous Report", e);
         }
-        scheduledReportTrackerDao.saveScheduleReportTracker(new ScheduledReportTracker(ReportType.maAnonymous.getReportName(), new Date(), (toDate.getMonth()) + "_" + toDate.getYear()%100));
     }
 
     @Override
