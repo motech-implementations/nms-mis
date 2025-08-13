@@ -26,6 +26,9 @@ import org.springframework.stereotype.Service;
 import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.WritableRaster;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -77,13 +80,27 @@ public class CertificateServiceImpl implements CertificateService {
     private static final String documents = retrieveDocuments();
     private final int teluguStateCode = 40;
     private final int chhatisgarhStateCode = 46;
-    private static File TeluguCertificateFile = new File(documents + "Certificate/TeluguSampleCertificate.pdf");
-    private static File chhatisgarhCertificateFile = new File(documents + "Certificate/ChhatisgarhAshaCertificateSample.pdf");
+    private static final File TeluguCertificateFile = new File(documents + "Certificate/TeluguSampleCertificate.pdf");
+    private static final File chhatisgarhCertificateFile = new File(documents + "Certificate/ChhatisgarhAshaCertificateSample.pdf");
     private final String rootDir = documents + "WholeCertificate/Asha/";
 
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     private Logger logger = LoggerFactory.getLogger(CertificateServiceImpl.class);
+
+    private static BufferedImage certificateSign1Image;
+    private static BufferedImage certificateSign2Image;
+    private static BufferedImage certificateSign3Image;
+
+    static {
+        try {
+            certificateSign1Image = ImageIO.read(Files.newInputStream(Paths.get(retrieveDocuments() + "Certificate/certificate_sign1.png")));
+            certificateSign2Image = ImageIO.read(Files.newInputStream(Paths.get(retrieveDocuments() + "Certificate/certificate_sign2.png")));
+            certificateSign3Image = ImageIO.read(Files.newInputStream(Paths.get(retrieveDocuments() + "Certificate/certificate_sign3.png")));
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to preload signature images", e);
+        }
+    }
 
     @Override
     public List<Map<String, String>> createSpecificCertificate(Long mobileNo, User currentUser) {
@@ -496,13 +513,13 @@ public class CertificateServiceImpl implements CertificateService {
         for (MACourseFirstCompletion flw : flws) {
             try {
                 if (flw.getFirstCompletionDate() != null) {
-
+                    FrontLineWorkers frontLineWorker = frontLineWorkersDao.getFlwById(flw.getFlwId());
                     // creating directories
-                    String dir = flw.getStateId() + "_" + stateName + "/";
-                    if (flw.getDistrictId() != null) {
-                        dir = dir + "/" + flw.getDistrictId() + "_" + districtMap.get(flw.getDistrictId());
-                        if (flw.getBlockId() != null) {
-                            dir = dir + "/" + flw.getBlockId() + "_" + blockMap.get(flw.getDistrictId()).get(flw.getBlockId());
+                    String dir = frontLineWorker.getState() + "_" + stateName + "/";
+                    if (frontLineWorker.getDistrict() != null) {
+                        dir = dir + "/" + frontLineWorker.getDistrict() + "_" + districtMap.get(frontLineWorker.getDistrict());
+                        if (frontLineWorker.getBlock() != null) {
+                            dir = dir + "/" + frontLineWorker.getBlock() + "_" + blockMap.get(frontLineWorker.getDistrict()).get(frontLineWorker.getBlock());
                         } else {
                             dir = dir + "/" + "other";
                         }
@@ -515,9 +532,9 @@ public class CertificateServiceImpl implements CertificateService {
                         fileDr.mkdirs();
                     }
 
-                    String fileName = flw.getMsisdn() + "_" + flw.getId() * 2 + 1 + ".pdf";
+                    String fileName = frontLineWorker.getMobileNumber() + "_" + flw.getId() * 2 + 1 + ".pdf";
 
-                    status = createCertificatePdf(rootDir + dir + "/" + fileName, frontLineWorkersDao.getFlwById(flw.getFlwId()).getFullName(), flw.getMsisdn(), flw.getFirstCompletionDate(), frontLineWorkersDao.getFlwById(flw.getFlwId()));
+                    status = createCertificatePdf(rootDir + dir + "/" + fileName, frontLineWorker.getFullName(), frontLineWorker.getMobileNumber(), flw.getFirstCompletionDate(), frontLineWorker);
                     if (status.equalsIgnoreCase("success")) {
                         success++;
                     } else {
@@ -568,6 +585,7 @@ public class CertificateServiceImpl implements CertificateService {
                 document.addPage(sampleDocument.getPage(0));
                 textFont = PDType0Font.load( sampleDocument, new File(font_path) );
                 generateTeluguCertificate(document, textFont, name, rchId, msisdn, district, phc, village, healthSubFacility, completionDate);
+                LOGGER.info("Successfully generated Telugu certificate for FLW: {}", name);
             } else if(state == chhatisgarhStateCode){
                 // File file = new File(documents + "Certificate/ChhatisgarhAshaCertificateSample.pdf");
                 sampleDocument = PDDocument.load(chhatisgarhCertificateFile);
@@ -632,6 +650,7 @@ public class CertificateServiceImpl implements CertificateService {
         } catch (IOException ignore) {
             response = "failed to load sample certificate";
             System.out.println("---Error---=>" + response);
+            LOGGER.info(ignore.getMessage());
         } finally {
             try {
                 if (sampleDocument != null) {
@@ -699,44 +718,16 @@ public class CertificateServiceImpl implements CertificateService {
 
 //          be.quodlibet.boxable.utils.PDStreamUtils.write(contents, signature, textFont, textFontSize, signatureX, signatureY, Color.RED);
 
-            InputStream is = new FileInputStream(retrieveDocuments() + "Certificate/certificate_sign1.png");
-            byte[] bytes = IOUtils.toByteArray(is);
-            ByteArrayInputStream bin = new ByteArrayInputStream(bytes);
-            Image image1 = new Image(ImageIO.read(bin));
-            is.close();
-            bin.close();
+            Image image1 = new Image(deepCopy(certificateSign1Image));
+            image1 = image1.scaleByWidth(110).scaleByHeight(110);
+            image1.draw(document, contents1, signatureX1, signatureY - 10);
 
-            float imageWidth = 110;
-            float imageHeight = 110;
-            image1 = image1.scaleByWidth(imageWidth);
-            image1 = image1.scaleByHeight(imageHeight);
-            image1.draw(document, contents1, signatureX1, signatureY -10);
-            // contents1.close();
+            Image image2 = new Image(deepCopy(certificateSign2Image));
+            image2 = image2.scaleByWidth(65).scaleByHeight(55);
+            image2.draw(document, contents1, signatureX2, signatureY + 7);
 
-            InputStream is2 = new FileInputStream(retrieveDocuments() + "Certificate/certificate_sign2.png");
-            byte[] bytes2 = IOUtils.toByteArray(is2);
-            ByteArrayInputStream bin2 = new ByteArrayInputStream(bytes2);
-            Image image2 = new Image(ImageIO.read(bin2));
-            is2.close();
-            bin2.close();
-
-            float imageWidth2 = 65;
-            float imageHeight2 = 55;
-            image2 = image2.scaleByWidth(imageWidth2);
-            image2 = image2.scaleByHeight(imageHeight2);
-            image2.draw(document, contents1, signatureX2, signatureY+7);
-
-            InputStream is3 = new FileInputStream(retrieveDocuments() + "Certificate/certificate_sign3.png");
-            byte[] bytes3 = IOUtils.toByteArray(is3);
-            ByteArrayInputStream bin3 = new ByteArrayInputStream(bytes3);
-            Image image3 = new Image(ImageIO.read(bin3));
-            is3.close();
-            bin3.close();
-
-            float imageWidth3 = 125;
-            float imageHeight3 = 105;
-            image3 = image3.scaleByWidth(imageWidth3);
-            image3 = image3.scaleByHeight(imageHeight3);
+            Image image3 = new Image(deepCopy(certificateSign3Image));
+            image3 = image3.scaleByWidth(125).scaleByHeight(105);
             image3.draw(document, contents1, signatureX3, signatureY + 17);
             contents1.close();
         } catch (IOException erros){
@@ -817,6 +808,13 @@ public class CertificateServiceImpl implements CertificateService {
             zipOut.write(bytes, 0, length);
         }
         fis.close();
+    }
+
+    private static BufferedImage deepCopy(BufferedImage bi) {
+        ColorModel cm = bi.getColorModel();
+        boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
+        WritableRaster raster = bi.copyData(null);
+        return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
     }
 
 

@@ -47,12 +47,12 @@ public class ContactUs {
             "                 </div>\n" +
             "             </div>-->\n" +
             "            <div class=\"col-sm-8 col-xs-8 col-lg-8 contactUs-locationColumn\">" +
-            "                  <p><b>Ms. Rangoli Pathak</b></p>\n" +
-            "                  <p>Deputy Director (MMP Cell)</p>\n" +
-            "                  <p>Room No. 407, Indian Red Cross Society Building</p>\n" +
-            "                  <p>Ministry of Health & Family Welfare</p>\n" +
-            "                  <p>New Delhi - 110011</p>\n" +
-            "                  <p>Email Id : rv.rangoli@gov.in</p>" +
+            "                  <p><b>Mr. Nikhil Agarwal</b></p>\n" +
+            "                  <p>Director, MMP Cell</p>\n" +
+            "                  <p>3rd Floor, Indian Red Cross Society Building,</p>\n" +
+            "                  <p>Ministry of Health & Family Welfare (MoHFW),</p>\n" +
+            "                  <p>Sansad Marg, New Delhi-110001</p>\n" +
+            "                  <p>Email Id - mmpc-mohfw@gov.in</p>" +
 //            "                MMP Cell, MoHFW, Room No.509-D, Nirman\n" +
 //            "                Bhawan, and New Delhi 110001.\n" +
             "            </div>\n" +
