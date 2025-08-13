@@ -33,8 +33,8 @@ public class KilkariThematicContentReportDaoImpl extends AbstractDao<Integer,Kil
                 Restrictions.eq("locationId",locationId.longValue()),
                 Restrictions.eq("locationType",locationType),
                 Restrictions.eq("periodType",periodType),
-                Restrictions.eq("date", date)
-              //  Restrictions.eq("messageWeekNumber", week_id)
+                Restrictions.eq("date", date),
+                Restrictions.ne("messageWeekNumber", "opt")
         ));
 
         List<KilkariThematicContent> result = (List<KilkariThematicContent>)criteria.list();
